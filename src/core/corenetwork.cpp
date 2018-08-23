@@ -33,7 +33,6 @@
 // IRCv3 capabilities
 #include "irccap.h"
 
-INIT_SYNCABLE_OBJECT(CoreNetwork)
 CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     : Network(networkid, session),
     _coreSession(session),

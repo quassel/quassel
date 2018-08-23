@@ -28,7 +28,6 @@
 #include <QTextCodec>
 #include <QDebug>
 
-INIT_SYNCABLE_OBJECT(IrcUser)
 IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(network),
     _initialized(false),
     _nick(nickFromMask(hostmask)),

@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREIDENTITY_H
-#define COREIDENTITY_H
+#pragma once
 
 #include "identity.h"
 
@@ -37,8 +36,7 @@ class SignalProxy;
 class CoreIdentity;
 class CoreCertManager : public CertManager
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreCertManager(CoreIdentity &identity);
@@ -66,8 +64,7 @@ private:
 // =========================================
 class CoreIdentity : public Identity
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreIdentity(IdentityId id, QObject *parent = 0);
@@ -109,7 +106,4 @@ inline const QSslCertificate &CoreCertManager::sslCert() const
     return identity.sslCert();
 }
 
-
 #endif
-
-#endif //COREIDENTITY_H

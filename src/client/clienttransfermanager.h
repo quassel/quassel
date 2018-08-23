@@ -27,7 +27,6 @@
 class ClientTransferManager : public TransferManager
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
 
 public:
     using TransferManager::TransferManager;

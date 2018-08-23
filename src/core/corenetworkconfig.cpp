@@ -22,7 +22,6 @@
 #include "coresession.h"
 #include "corenetworkconfig.h"
 
-INIT_SYNCABLE_OBJECT(CoreNetworkConfig)
 CoreNetworkConfig::CoreNetworkConfig(const QString &objectName, CoreSession *session)
     : NetworkConfig(objectName, session)
 {

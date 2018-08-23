@@ -18,15 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTBUFFERVIEWCONFIG_H
-#define CLIENTBUFFERVIEWCONFIG_H
+#pragma once
 
 #include "bufferviewconfig.h"
 
 class ClientBufferViewConfig : public BufferViewConfig
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     ClientBufferViewConfig(int bufferViewId, QObject *parent = 0);
@@ -42,6 +40,3 @@ private slots:
 private:
     bool _locked;
 };
-
-
-#endif //CLIENTBUFFERVIEWCONFIG_H

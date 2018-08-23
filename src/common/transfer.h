@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef TRANSFER_H
-#define TRANSFER_H
+#pragma once
 
 #include <QHostAddress>
 #include <QUuid>
@@ -62,7 +61,6 @@ public:
 
     Transfer(const QUuid &uuid, QObject *parent = 0); // for creating a syncable object client-side
     Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
-    inline const QMetaObject *syncMetaObject() const override { return &staticMetaObject; }
 
     QUuid uuid() const;
     Status status() const;
@@ -137,5 +135,3 @@ QDataStream &operator<<(QDataStream &out, Transfer::Status state);
 QDataStream &operator>>(QDataStream &in, Transfer::Status &state);
 QDataStream &operator<<(QDataStream &out, Transfer::Direction direction);
 QDataStream &operator>>(QDataStream &in, Transfer::Direction &direction);
-
-#endif

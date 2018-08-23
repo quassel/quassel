@@ -20,7 +20,6 @@
 
 #include "clientbufferviewconfig.h"
 
-INIT_SYNCABLE_OBJECT(ClientBufferViewConfig)
 ClientBufferViewConfig::ClientBufferViewConfig(int bufferViewId, QObject *parent)
     : BufferViewConfig(bufferViewId, parent),
     _locked(false)

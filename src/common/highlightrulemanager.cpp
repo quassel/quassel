@@ -25,8 +25,6 @@
 #include "expressionmatch.h"
 #include "util.h"
 
-INIT_SYNCABLE_OBJECT(HighlightRuleManager)
-
 HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager &other)
 {
     if (this == &other)

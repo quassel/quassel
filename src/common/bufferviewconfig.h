@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERVIEWCONFIG_H
-#define BUFFERVIEWCONFIG_H
+#pragma once
 
 #include "syncableobject.h"
 
@@ -28,8 +27,8 @@
 
 class BufferViewConfig : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
 
     Q_PROPERTY(QString bufferViewName READ bufferViewName WRITE setBufferViewName)
     Q_PROPERTY(NetworkId networkId READ networkId WRITE setNetworkId)
@@ -43,10 +42,8 @@ class BufferViewConfig : public SyncableObject
     Q_PROPERTY(bool showSearch READ showSearch WRITE setShowSearch)
 
 public :
-        BufferViewConfig(int bufferViewId, QObject *parent = 0);
+    BufferViewConfig(int bufferViewId, QObject *parent = 0);
     BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
 public slots:
     inline int bufferViewId() const { return _bufferViewId; }
@@ -149,6 +146,3 @@ private:
     QSet<BufferId> _removedBuffers;
     QSet<BufferId> _temporarilyRemovedBuffers;
 };
-
-
-#endif // BUFFERVIEWCONFIG_H

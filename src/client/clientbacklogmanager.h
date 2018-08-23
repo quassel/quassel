@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTBACKLOGMANAGER_H
-#define CLIENTBACKLOGMANAGER_H
+#pragma once
 
 #include "backlogmanager.h"
 #include "message.h"
@@ -28,8 +27,7 @@ class BacklogRequester;
 
 class ClientBacklogManager : public BacklogManager
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     ClientBacklogManager(QObject *parent = 0);
@@ -73,6 +71,3 @@ inline void ClientBacklogManager::checkForBacklog(BufferId bufferId)
 {
     checkForBacklog(BufferIdList() << bufferId);
 }
-
-
-#endif // CLIENTBACKLOGMANAGER_H

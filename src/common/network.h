@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NETWORK_H
-#define NETWORK_H
+#pragma once
 
 #include <QString>
 #include <QStringList>
@@ -49,8 +48,9 @@ struct NetworkInfo;
 
 class Network : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
+
     Q_ENUMS(ConnectionState)
 
     Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName)
@@ -807,5 +807,3 @@ QDataStream &operator<<(QDataStream &out, const Network::Server &server);
 QDataStream &operator>>(QDataStream &in, Network::Server &server);
 QDebug operator<<(QDebug dbg, const Network::Server &server);
 Q_DECLARE_METATYPE(Network::Server)
-
-#endif

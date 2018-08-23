@@ -20,7 +20,6 @@
 
 #include "buffersyncer.h"
 
-INIT_SYNCABLE_OBJECT(BufferSyncer)
 BufferSyncer::BufferSyncer(QObject *parent)
     : SyncableObject(parent)
 {

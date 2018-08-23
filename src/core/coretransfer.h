@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORETRANSFER_H
-#define CORETRANSFER_H
+#pragma once
 
 #include <QPointer>
 
@@ -31,7 +30,6 @@ class QTcpSocket;
 class CoreTransfer : public Transfer
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
 
 public:
     CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
@@ -62,5 +60,3 @@ private:
     QByteArray _buffer;
     bool _reading;
 };
-
-#endif

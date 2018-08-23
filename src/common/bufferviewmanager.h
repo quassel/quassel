@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERVIEWMANAGER_H
-#define BUFFERVIEWMANAGER_H
+#pragma once
 
 #include "syncableobject.h"
 
@@ -31,13 +30,11 @@ class SignalProxy;
 
 class BufferViewManager : public SyncableObject
 {
+    Q_OBJECT
     SYNCABLE_OBJECT
-        Q_OBJECT
 
 public:
     BufferViewManager(SignalProxy *proxy, QObject *parent = 0);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
     inline QList<BufferViewConfig *> bufferViewConfigs() const { return _bufferViewConfigs.values(); }
     BufferViewConfig *bufferViewConfig(int bufferViewId) const;
@@ -73,6 +70,3 @@ private:
     BufferViewConfigHash _bufferViewConfigs;
     SignalProxy *_proxy;
 };
-
-
-#endif // BUFFERVIEWMANAGER_H

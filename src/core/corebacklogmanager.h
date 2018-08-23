@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREBACKLOGMANAGER_H
-#define COREBACKLOGMANAGER_H
+#pragma once
 
 #include "backlogmanager.h"
 
@@ -27,8 +26,7 @@ class CoreSession;
 
 class CoreBacklogManager : public BacklogManager
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreBacklogManager(CoreSession *coreSession = 0);
@@ -46,6 +44,3 @@ public slots:
 private:
     CoreSession *_coreSession;
 };
-
-
-#endif // COREBACKLOGMANAGER_H

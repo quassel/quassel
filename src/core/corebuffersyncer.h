@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREBUFFERSYNCER_H
-#define COREBUFFERSYNCER_H
+#pragma once
 
 #include "buffersyncer.h"
 
@@ -27,8 +26,7 @@ class CoreSession;
 
 class CoreBufferSyncer : public BufferSyncer
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit CoreBufferSyncer(CoreSession *parent);
@@ -89,6 +87,3 @@ private:
 
     void purgeBufferIds();
 };
-
-
-#endif //COREBUFFERSYNCER_H

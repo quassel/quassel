@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORENETWORK_H
-#define CORENETWORK_H
+#pragma once
 
 #include "network.h"
 #include "coreircchannel.h"
@@ -52,14 +51,12 @@ class Event;
 
 class CoreNetwork : public Network
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreNetwork(const NetworkId &networkid, CoreSession *session);
     virtual ~CoreNetwork();
 
-    inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
 
     inline CoreIdentity *identityPtr() const { return coreSession()->identity(identity()); }
     inline CoreSession *coreSession() const { return _coreSession; }
@@ -601,6 +598,3 @@ private:
     // List of blowfish keys for channels
     QHash<QString, QByteArray> _cipherKeys;
 };
-
-
-#endif //CORENETWORK_H

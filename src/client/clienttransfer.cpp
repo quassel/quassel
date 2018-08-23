@@ -22,7 +22,6 @@
 
 #include "clienttransfer.h"
 
-INIT_SYNCABLE_OBJECT(ClientTransfer)
 ClientTransfer::ClientTransfer(const QUuid &uuid, QObject *parent)
     : Transfer(uuid, parent),
     _file(0)

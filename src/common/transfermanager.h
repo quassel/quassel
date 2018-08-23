@@ -39,7 +39,6 @@ public:
     using TransferIdList = QList<QUuid>;
 
     TransferManager(QObject *parent = nullptr);
-    const QMetaObject *syncMetaObject() const override { return &staticMetaObject; }
 
     Transfer *transfer(const QUuid &uuid) const;
     TransferIdList transferIds() const;

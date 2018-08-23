@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SYNCABLEOBJECT_H
-#define SYNCABLEOBJECT_H
+#pragma once
 
 #include <QDataStream>
 #include <QMetaType>
@@ -28,19 +27,22 @@
 
 #include "signalproxy.h"
 
-#define SYNCABLE_OBJECT static int _classNameOffset__();
-#define INIT_SYNCABLE_OBJECT(x) int x ::_classNameOffset__() {\
-    static int offset = QByteArray(x ::staticMetaObject.className()).length() + 2;\
-    return offset;\
-}\
+/**
+ * This macro needs to be declared in syncable objects, next to the Q_OBJECT macro.
+ *
+ * @note: Specializations of a base syncable object for core/client must not use the macro;
+ *        i.e., if you have Foo, ClientFoo and/or CoreFoo, the SYNCABLE_OBJECT macro would
+ *        only be declared in the class declaration of Foo.
+ */
+#define SYNCABLE_OBJECT \
+    public: \
+        const QMetaObject *syncMetaObject() const final override { \
+            return &staticMetaObject; \
+        } \
+    private: \
 
-#ifdef Q_CC_MSVC
-#    define SYNC(...) sync_call__(SignalProxy::Server, (__FUNCTION__ + _classNameOffset__()), __VA_ARGS__);
-#    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__()), __VA_ARGS__);
-#else
-#    define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
-#    define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
-#endif //Q_CC_MSVC
+#define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
+#define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
 
 #define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
 #define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
@@ -50,14 +52,13 @@
 
 class SyncableObject : public QObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
 
 public:
     SyncableObject(QObject *parent = 0);
     SyncableObject(const QString &objectName, QObject *parent = 0);
     SyncableObject(const SyncableObject &other, QObject *parent = 0);
-    ~SyncableObject();
+    ~SyncableObject() override;
 
     //! Stores the object's state into a QVariantMap.
     /** The default implementation takes dynamic properties as well as getters that have
@@ -113,6 +114,3 @@ private:
 
     friend class SignalProxy;
 };
-
-
-#endif

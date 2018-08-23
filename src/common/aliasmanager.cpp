@@ -24,7 +24,6 @@
 #include "aliasmanager.h"
 #include "network.h"
 
-INIT_SYNCABLE_OBJECT(AliasManager)
 AliasManager &AliasManager::operator=(const AliasManager &other)
 {
     if (this == &other)

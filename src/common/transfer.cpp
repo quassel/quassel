@@ -20,7 +20,6 @@
 
 #include "transfer.h"
 
-INIT_SYNCABLE_OBJECT(Transfer)
 Transfer::Transfer(const QUuid &uuid, QObject *parent)
     : SyncableObject(parent),
     _status(Status::New),

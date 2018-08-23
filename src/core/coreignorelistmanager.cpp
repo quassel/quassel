@@ -23,7 +23,6 @@
 #include "core.h"
 #include "coresession.h"
 
-INIT_SYNCABLE_OBJECT(CoreIgnoreListManager)
 CoreIgnoreListManager::CoreIgnoreListManager(CoreSession *parent)
     : IgnoreListManager(parent)
 {

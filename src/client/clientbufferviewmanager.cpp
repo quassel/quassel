@@ -24,7 +24,6 @@
 #include "client.h"
 #include "networkmodel.h"
 
-INIT_SYNCABLE_OBJECT(ClientBufferViewManager)
 ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
     : BufferViewManager(proxy, parent)
 {

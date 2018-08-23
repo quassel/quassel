@@ -22,8 +22,6 @@
 
 #include "transfer.h"
 
-INIT_SYNCABLE_OBJECT(TransferManager)
-
 TransferManager::TransferManager(QObject *parent)
     : SyncableObject(parent)
 {

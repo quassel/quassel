@@ -20,7 +20,6 @@
 
 #include "coreinfo.h"
 
-INIT_SYNCABLE_OBJECT(CoreInfo)
 CoreInfo::CoreInfo(QObject *parent) : SyncableObject(parent) {}
 
 QVariantMap CoreInfo::coreData() const

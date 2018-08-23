@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IRCUSER_H
-#define IRCUSER_H
+#pragma once
 
 #include <QSet>
 #include <QString>
@@ -36,8 +35,8 @@ class IrcChannel;
 
 class IrcUser : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
 
     Q_PROPERTY(QString user READ user WRITE setUser)
     Q_PROPERTY(QString host READ host WRITE setHost)
@@ -261,6 +260,3 @@ private:
     /// Tracks if changes in away state (away/here, message) have yet to be acknowledged
     bool _awayChanged = true;
 };
-
-
-#endif

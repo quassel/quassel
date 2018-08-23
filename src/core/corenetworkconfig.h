@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORENETWORKCONFIG_H_
-#define CORENETWORKCONFIG_H_
+#pragma once
 
 #include "networkconfig.h"
 
@@ -27,13 +26,10 @@ class CoreSession;
 
 class CoreNetworkConfig : public NetworkConfig
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreNetworkConfig(const QString &objectName, CoreSession *parent);
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &NetworkConfig::staticMetaObject; }
 
     void save();
 
@@ -47,6 +43,3 @@ public slots:
     virtual inline void requestSetAutoWhoDelay(int delay) { setAutoWhoDelay(delay); }
     virtual inline void requestSetStandardCtcp(bool enabled) { setStandardCtcp(enabled); }
 };
-
-
-#endif

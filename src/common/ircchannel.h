@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IRCCHANNEL_H
-#define IRCCHANNEL_H
+#pragma once
 
 #include <QHash>
 #include <QSet>
@@ -34,8 +33,8 @@ class Network;
 
 class IrcChannel : public SyncableObject
 {
-    SYNCABLE_OBJECT
     Q_OBJECT
+    SYNCABLE_OBJECT
 
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(QString topic READ topic WRITE setTopic)
@@ -150,6 +149,3 @@ private:
     QHash<QChar, QString> _C_channelModes;
     QSet<QChar> _D_channelModes;
 };
-
-
-#endif

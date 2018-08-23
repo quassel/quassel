@@ -19,5 +19,3 @@
  ***************************************************************************/
 
 #include "coretransfermanager.h"
-
-INIT_SYNCABLE_OBJECT(CoreTransferManager)

@@ -42,7 +42,6 @@
 #  include <Security.h>
 #endif
 
-INIT_SYNCABLE_OBJECT(Identity)
 Identity::Identity(IdentityId id, QObject *parent)
     : SyncableObject(parent),
     _identityId(id)
@@ -389,8 +388,3 @@ QDataStream &operator>>(QDataStream &in, Identity &id)
     id.fromVariantMap(i);
     return in;
 }
-
-
-#ifdef HAVE_SSL
-INIT_SYNCABLE_OBJECT(CertManager)
-#endif // HAVE_SSL

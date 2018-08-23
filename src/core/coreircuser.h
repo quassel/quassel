@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREIRCUSER_H_
-#define COREIRCUSER_H_
+#pragma once
 
 #include "ircuser.h"
 
@@ -29,14 +28,11 @@
 
 class CoreIrcUser : public IrcUser
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     CoreIrcUser(const QString &hostmask, Network *network);
     virtual ~CoreIrcUser();
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &IrcUser::staticMetaObject; }
 
 #ifdef HAVE_QCA2
     Cipher *cipher() const;
@@ -47,6 +43,3 @@ private:
     mutable Cipher *_cipher;
 #endif
 };
-
-
-#endif

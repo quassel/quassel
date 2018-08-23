@@ -18,20 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTIRCLISTHELPER_H
-#define CLIENTIRCLISTHELPER_H
+#pragma once
 
 #include "irclisthelper.h"
 
 class ClientIrcListHelper : public IrcListHelper
 {
-    SYNCABLE_OBJECT
-        Q_OBJECT
+    Q_OBJECT
 
 public:
     inline ClientIrcListHelper(QObject *object = 0) : IrcListHelper(object) {};
-
-    inline virtual const QMetaObject *syncMetaObject() const { return &IrcListHelper::staticMetaObject; }
 
 public slots:
     virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
@@ -47,6 +43,3 @@ signals:
 private:
     NetworkId _netId;
 };
-
-
-#endif //CLIENTIRCLISTHELPER_H

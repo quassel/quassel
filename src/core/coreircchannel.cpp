@@ -21,7 +21,6 @@
 #include "coreircchannel.h"
 #include "corenetwork.h"
 
-INIT_SYNCABLE_OBJECT(CoreIrcChannel)
 CoreIrcChannel::CoreIrcChannel(const QString &channelname, Network *network)
     : IrcChannel(channelname, network),
     _receivedWelcomeMsg(false)

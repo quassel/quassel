@@ -25,7 +25,6 @@
 
 constexpr auto kTimeoutMs = 5000;
 
-INIT_SYNCABLE_OBJECT(CoreIrcListHelper)
 QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters)
 {
     if (_finishedChannelLists.contains(netId))

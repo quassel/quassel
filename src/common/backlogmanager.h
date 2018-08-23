@@ -18,20 +18,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BACKLOGMANAGER_H
-#define BACKLOGMANAGER_H
+#pragma once
 
 #include "syncableobject.h"
 #include "types.h"
 
 class BacklogManager : public SyncableObject
 {
+    Q_OBJECT
     SYNCABLE_OBJECT
-        Q_OBJECT
 
 public:
     BacklogManager(QObject *parent = 0) : SyncableObject(parent) {}
-    inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
 public slots:
     virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
@@ -48,6 +46,3 @@ signals:
     void backlogRequested(BufferId, MsgId, MsgId, int, int);
     void backlogAllRequested(MsgId, MsgId, int, int);
 };
-
-
-#endif // BACKLOGMANAGER_H
