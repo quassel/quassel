@@ -165,6 +165,7 @@ void IrcUser::setAway(const bool &away)
 {
     if (away != _away) {
         _away = away;
+        markAwayChanged();
         SYNC(ARG(away))
         emit awaySet(away);
     }
@@ -175,6 +176,7 @@ void IrcUser::setAwayMessage(const QString &awayMessage)
 {
     if (!awayMessage.isEmpty() && _awayMessage != awayMessage) {
         _awayMessage = awayMessage;
+        markAwayChanged();
         SYNC(ARG(awayMessage))
     }
 }

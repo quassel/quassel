@@ -106,6 +106,31 @@ public :
     inline QDateTime lastSpokenTo(BufferId id) const { return _lastSpokenTo.value(id); }
     void setLastSpokenTo(BufferId id, const QDateTime &time);
 
+    /**
+     * Gets whether or not the away state has changed since it was last acknowledged
+     *
+     * Away state is marked as changed by any modification to away status (away/here, message)
+     *
+     * NOTE: On servers lacking support for IRCv3 away-notify, this won't update until an autoWHO-
+     * run for away/here changes, or until sending a message to the user for away message changes.
+     *
+     * @see IrcUser::acknowledgeAwayChanged()
+     *
+     * @return True if current away state is unchanged from last acknowledgement, otherwise false
+     */
+    inline bool hasAwayChanged() const { return _awayChanged; }
+
+    /**
+     * Sets the last away state change as acknowledged
+     *
+     * @see IrcUser::hasAwayChanged()
+     */
+    inline void acknowledgeAwayChanged()
+    {
+        // Don't sync this as individual clients may suppress different kinds of behaviors
+        _awayChanged = false;
+    }
+
 public slots:
     void setUser(const QString &user);
     void setHost(const QString &host);
@@ -191,6 +216,15 @@ private:
         return (_nick.toLower() == nickname.toLower());
     }
 
+    /**
+     * Sets the last away state change as unacknowledged
+     *
+     * @see IrcUser::hasAwayChanged()
+     */
+    inline void markAwayChanged()
+    {
+        _awayChanged = true;
+    }
 
     bool _initialized;
 
@@ -222,6 +256,10 @@ private:
 
     QHash<BufferId, QDateTime> _lastActivity;
     QHash<BufferId, QDateTime> _lastSpokenTo;
+
+    // Given it's never been acknowledged, assume changes exist on IrcUser creation
+    /// Tracks if changes in away state (away/here, message) have yet to be acknowledged
+    bool _awayChanged = true;
 };
 
 
