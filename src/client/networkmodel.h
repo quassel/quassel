@@ -41,7 +41,9 @@ class NetworkItem : public PropertyMapItem
     Q_PROPERTY(int nickCount READ nickCount)
 
 public :
-        NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
+    NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
+
+    virtual QStringList propertyOrder() const;
 
     virtual QVariant data(int column, int row) const;
 
@@ -106,7 +108,9 @@ class BufferItem : public PropertyMapItem
     Q_PROPERTY(int nickCount READ nickCount)
 
 public :
-        BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent = 0);
+    BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent = 0);
+
+    virtual QStringList propertyOrder() const;
 
     inline const BufferInfo &bufferInfo() const { return _bufferInfo; }
     virtual QVariant data(int column, int role) const;
@@ -252,7 +256,9 @@ class UserCategoryItem : public PropertyMapItem
     Q_PROPERTY(QString categoryName READ categoryName)
 
 public :
-        UserCategoryItem(int category, AbstractTreeItem *parent);
+    UserCategoryItem(int category, AbstractTreeItem *parent);
+
+    virtual QStringList propertyOrder() const;
 
     QString categoryName() const;
     inline int categoryId() const { return _category; }
@@ -280,7 +286,9 @@ class IrcUserItem : public PropertyMapItem
     Q_PROPERTY(QString nickName READ nickName)
 
 public :
-        IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
+    IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
+
+    virtual QStringList propertyOrder() const;
 
     inline QString nickName() const { return _ircUser ? _ircUser->nick() : QString(); }
     inline bool isActive() const { return _ircUser ? !_ircUser->isAway() : false; }
