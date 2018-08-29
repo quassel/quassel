@@ -47,6 +47,10 @@ target_link_libraries(${TARGET}
         Quassel::Common
 )
 
+if (EMBED_DATA)
+    set_property(SOURCE graphicalui.cpp APPEND PROPERTY COMPILE_DEFINITIONS EMBED_DATA)
+endif()
+
 if (WITH_KF5)
     target_link_libraries(${TARGET}
         PUBLIC

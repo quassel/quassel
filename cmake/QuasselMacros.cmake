@@ -142,8 +142,9 @@ function(quassel_add_resource _name)
         WORKING_DIRECTORY ${basedir}
     )
 
-    # Generate library target that can be referenced elsewhere
-    quassel_add_module(Resource::${_name})
+    # Generate library target that can be referenced elsewhere. Force static, because
+    # we can't easily export symbols from the generated sources.
+    quassel_add_module(Resource::${_name} STATIC)
     target_sources(${TARGET} PRIVATE ${qrc_srcpath})
     set_target_properties(${TARGET} PROPERTIES AUTOMOC OFF AUTOUIC OFF AUTORCC OFF)
 

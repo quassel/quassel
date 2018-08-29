@@ -44,4 +44,8 @@ target_link_libraries(${TARGET}
         Quassel::Common
 )
 
+if (EMBED_DATA)
+    set_property(SOURCE client.cpp APPEND PROPERTY COMPILE_DEFINITIONS EMBED_DATA)
+endif()
+
 target_link_if_exists(${TARGET} PUBLIC Quassel::Resource::Data)

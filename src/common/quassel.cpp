@@ -56,6 +56,9 @@ Quassel::Quassel()
     : Singleton<Quassel>{this}
     , _logger{new Logger{this}}
 {
+#ifdef EMBED_DATA
+    Q_INIT_RESOURCE(i18n);
+#endif
 }
 
 

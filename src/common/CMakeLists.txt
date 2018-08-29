@@ -68,6 +68,10 @@ target_link_libraries(${TARGET} PUBLIC
     ZLIB::ZLIB
 )
 
+if (EMBED_DATA)
+    set_property(SOURCE quassel.cpp APPEND PROPERTY COMPILE_DEFINITIONS EMBED_DATA)
+endif()
+
 if (HAVE_SYSLOG)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_SYSLOG)
 endif()

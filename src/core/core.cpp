@@ -70,6 +70,8 @@ public:
 Core::Core()
     : Singleton<Core>{this}
 {
+    Q_INIT_RESOURCE(sql);
+
     // Parent all QObject-derived attributes, so when the Core instance gets moved into another
     // thread, they get moved with it
     _server.setParent(this);

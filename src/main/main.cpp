@@ -57,26 +57,6 @@
 
 int main(int argc, char **argv)
 {
-    // We need to explicitly initialize the required resources when linking statically
-#ifndef BUILD_QTUI
-    Q_INIT_RESOURCE(sql);
-#endif
-#ifndef BUILD_CORE
-    Q_INIT_RESOURCE(pics);
-    Q_INIT_RESOURCE(hicolor_icons);
-#endif
-
-#ifdef EMBED_DATA
-    Q_INIT_RESOURCE(i18n);
-# ifndef BUILD_CORE
-    Q_INIT_RESOURCE(data);
-    Q_INIT_RESOURCE(icons);
-#  ifdef WITH_BUNDLED_ICONS
-    Q_INIT_RESOURCE(iconthemes);
-#  endif
-# endif
-#endif
-
     // Set umask so files are created with restricted permissions
 #ifdef HAVE_UMASK
     umask(S_IRWXG | S_IRWXO);
