@@ -12,10 +12,18 @@ include(QuasselCompileFeatures)
 ###################################################################################################
 # Adds a library target for a Quassel module.
 #
-# It expects the (CamelCased) module name as a parameter, and derives various
+# quassel_add_module(Module
+#                    [STATIC]
+# )
+#
+# The function expects the (CamelCased) module name as a parameter, and derives various
 # strings from it. For example, quassel_add_module(Client) produces
 #  - a library target named quassel_client with output name (lib)quassel-client(.so)
 #  - an alias target named Quassel::Client in global scope
+#
+# If the optional argument STATIC is given, a static library is built; otherwise, on
+# platforms other than Windows, a shared library is created. For shared libraries, also
+# an install rule is added.
 #
 # The function exports the TARGET variable which can be used in the current scope
 # for setting source files, properties, link dependencies and so on.
@@ -23,6 +31,11 @@ include(QuasselCompileFeatures)
 # the alias name.
 #
 function(quassel_add_module _module)
+    set(options STATIC)
+    set(oneValueArgs )
+    set(multiValueArgs )
+    cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
     # Derive target, alias target, output name from the given module name
     set(alias "Quassel::${_module}")
     set(target ${alias})
@@ -32,7 +45,7 @@ function(quassel_add_module _module)
 
     # On Windows, building shared libraries requires export headers.
     # Let's bother with that later.
-    if (WIN32)
+    if (ARG_STATIC OR WIN32)
         set(buildmode STATIC)
     else()
         set(buildmode SHARED)
