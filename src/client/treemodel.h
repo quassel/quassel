@@ -154,6 +154,8 @@ public:
     TreeModel(const QList<QVariant> &, QObject *parent = 0);
     virtual ~TreeModel();
 
+    AbstractTreeItem *root() const;
+
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 

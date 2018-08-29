@@ -204,6 +204,7 @@ private slots:
     void on_actionDebugMessageModel_triggered();
     void on_actionDebugHotList_triggered();
     void on_actionDebugLog_triggered();
+    void on_actionShowResourceTree_triggered();
 
     void bindJumpKey();
     void onJumpKey();

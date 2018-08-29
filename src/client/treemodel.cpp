@@ -347,6 +347,12 @@ TreeModel::~TreeModel()
 }
 
 
+AbstractTreeItem *TreeModel::root() const
+{
+    return rootItem;
+}
+
+
 QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (row < 0 || row >= rowCount(parent) || column < 0 || column >= columnCount(parent))
