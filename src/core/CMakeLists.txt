@@ -44,12 +44,21 @@ target_sources(${TARGET} PRIVATE
     coreeventmanager.h
 )
 
-if (HAVE_SSL)
-    target_sources(${TARGET} PRIVATE sslserver.cpp)
-endif()
+target_link_libraries(${TARGET}
+    PUBLIC
+        Qt5::Core
+        Qt5::Network
+        Qt5::Script
+        Qt5::Sql
+        Quassel::Common
+)
 
 if (HAVE_UMASK)
     set_property(SOURCE oidentdconfiggenerator.cpp APPEND PROPERTY COMPILE_DEFINITIONS HAVE_UMASK)
+endif()
+
+if (HAVE_SSL)
+    target_sources(${TARGET} PRIVATE sslserver.cpp)
 endif()
 
 if (Ldap_FOUND)
@@ -63,15 +72,6 @@ if (Qca-qt5_FOUND)
     target_link_libraries(${TARGET} PUBLIC qca-qt5)
     target_compile_definitions(${TARGET} PUBLIC -DHAVE_QCA2)
 endif()
-
-target_link_libraries(${TARGET}
-    PUBLIC
-        Qt5::Core
-        Qt5::Network
-        Qt5::Script
-        Qt5::Sql
-        Quassel::Common
-)
 
 quassel_add_resource(Sql PATTERNS SQL/*.sql)
 target_link_libraries(${TARGET} PUBLIC Quassel::Resource::Sql)
