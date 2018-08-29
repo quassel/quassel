@@ -41,6 +41,13 @@ UiStyle *GraphicalUi::_uiStyle = 0;
 
 GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent), Singleton<GraphicalUi>(this)
 {
+    Q_INIT_RESOURCE(pics);
+    Q_INIT_RESOURCE(hicolor_icons);
+#ifdef EMBED_DATA
+    Q_INIT_RESOURCE(icons);
+    Q_INIT_RESOURCE(iconthemes);
+#endif
+
 #ifdef Q_OS_WIN
     _dwTickCount = 0;
 #endif

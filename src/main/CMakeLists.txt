@@ -8,11 +8,6 @@ function(setup_executable _target _define)
     install(TARGETS ${_target} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endfunction()
 
-# We need to initialize the appropriate resources, so let's give our main.cpp some hints
-if (EMBED_DATA)
-    set_property(SOURCE main.cpp APPEND PROPERTY COMPILE_DEFINITIONS EMBED_DATA)
-endif()
-
 if (HAVE_UMASK)
     set_property(SOURCE main.cpp APPEND PROPERTY COMPILE_DEFINITIONS HAVE_UMASK)
 endif()

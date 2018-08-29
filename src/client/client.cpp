@@ -81,6 +81,10 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     _coreConnection(new CoreConnection(this)),
     _connected(false)
 {
+#ifdef EMBED_DATA
+    Q_INIT_RESOURCE(data);
+#endif
+
     //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
     connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
     connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
