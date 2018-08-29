@@ -86,6 +86,7 @@
 #include "qtuisettings.h"
 #include "qtuistyle.h"
 #include "receivefiledlg.h"
+#include "resourcetreedlg.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "statusnotifieritem.h"
@@ -454,6 +455,8 @@ void MainWin::setupActions()
             this, SLOT(on_actionDebugHotList_triggered())));
     coll->addAction("DebugLog", new Action(icon::get("tools-report-bug"), tr("Debug &Log"), coll,
             this, SLOT(on_actionDebugLog_triggered())));
+    coll->addAction("ShowResourceTree", new Action(icon::get("tools-report-bug"), tr("Show &Resource Tree"), coll,
+            this, SLOT(on_actionShowResourceTree_triggered())));
     coll->addAction("ReloadStyle", new Action(icon::get("view-refresh"), tr("Reload Stylesheet"), coll,
             QtUi::style(), SLOT(reload()), QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R)));
 
@@ -629,6 +632,7 @@ void MainWin::setupMenus()
     _helpDebugMenu->addAction(coll->action("DebugMessageModel"));
     _helpDebugMenu->addAction(coll->action("DebugHotList"));
     _helpDebugMenu->addAction(coll->action("DebugLog"));
+    _helpDebugMenu->addAction(coll->action("ShowResourceTree"));
     _helpDebugMenu->addSeparator();
     _helpDebugMenu->addAction(coll->action("ReloadStyle"));
 
@@ -1975,10 +1979,15 @@ void MainWin::on_actionDebugMessageModel_triggered()
 
 void MainWin::on_actionDebugLog_triggered()
 {
-    auto dlg = new DebugLogDlg(this);
+    auto dlg = new DebugLogDlg(this);  // will be deleted on close
     dlg->show();
 }
 
+void MainWin::on_actionShowResourceTree_triggered()
+{
+    auto dlg = new ResourceTreeDlg(this);  // will be deleted on close
+    dlg->show();
+}
 
 void MainWin::showStatusBarMessage(const QString &message)
 {

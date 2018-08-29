@@ -42,6 +42,7 @@ target_sources(${TARGET} PRIVATE
     qtuisettings.cpp
     qtuistyle.cpp
     receivefiledlg.cpp
+    resourcetreedlg.cpp
     settingsdlg.cpp
     settingspagedlg.cpp
     simplenetworkeditor.cpp
@@ -77,6 +78,7 @@ target_sources(${TARGET} PRIVATE
     nicklistwidget.ui
     passwordchangedlg.ui
     receivefiledlg.ui
+    resourcetreedlg.ui
     settingsdlg.ui
     settingspagedlg.ui
     simplenetworkeditor.ui
