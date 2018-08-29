@@ -316,8 +316,9 @@ bool PropertyMapItem::setData(int column, const QVariant &value, int role)
     if (column >= columnCount() || role != Qt::DisplayRole)
         return false;
 
+    setProperty(_propertyOrder[column].toLatin1(), value);
     emit dataChanged(column);
-    return setProperty(_propertyOrder[column].toLatin1(), value);
+    return true;
 }
 
 
