@@ -126,21 +126,15 @@ class PropertyMapItem : public AbstractTreeItem
     Q_OBJECT
 
 public:
-    PropertyMapItem(const QStringList &propertyOrder, AbstractTreeItem *parent = 0);
     PropertyMapItem(AbstractTreeItem *parent = 0);
 
-    virtual ~PropertyMapItem();
+    virtual QStringList propertyOrder() const = 0;
 
     virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role);
 
     virtual QString toolTip(int column) const { Q_UNUSED(column) return QString(); }
     virtual int columnCount() const;
-
-    void appendProperty(const QString &property);
-
-private:
-    QStringList _propertyOrder;
 };
 
 

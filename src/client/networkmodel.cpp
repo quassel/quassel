@@ -40,7 +40,7 @@
 *  Network Items
 *****************************************/
 NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
-    : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
+    : PropertyMapItem(parent),
     _networkId(netid),
     _statusBufferItem(0)
 {
@@ -50,6 +50,13 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     connect(this, SIGNAL(networkDataChanged(int)), this, SIGNAL(dataChanged(int)));
     connect(this, SIGNAL(beginRemoveChilds(int, int)), this, SLOT(onBeginRemoveChilds(int, int)));
+}
+
+
+QStringList NetworkItem::propertyOrder() const
+{
+    static QStringList order{"networkName", "currentServer", "nickCount"};
+    return order;
 }
 
 
@@ -283,11 +290,18 @@ void NetworkItem::onNetworkDestroyed()
 *  Fancy Buffer Items
 *****************************************/
 BufferItem::BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent)
-    : PropertyMapItem(QStringList() << "bufferName" << "topic" << "nickCount", parent),
+    : PropertyMapItem(parent),
     _bufferInfo(bufferInfo),
     _activity(BufferInfo::NoActivity)
 {
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+}
+
+
+QStringList BufferItem::propertyOrder() const
+{
+    static QStringList order{"bufferName", "topic", "nickCount"};
+    return order;
 }
 
 
@@ -992,12 +1006,19 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser)
 const QList<QChar> UserCategoryItem::categories = QList<QChar>() << 'q' << 'a' << 'o' << 'h' << 'v';
 
 UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
-    : PropertyMapItem(QStringList() << "categoryName", parent),
+    : PropertyMapItem(parent),
     _category(category)
 {
     setFlags(Qt::ItemIsEnabled);
     setTreeItemFlags(AbstractTreeItem::DeleteOnLastChildRemoved);
     setObjectName(parent->data(0, Qt::DisplayRole).toString() + "/" + QString::number(category));
+}
+
+
+QStringList UserCategoryItem::propertyOrder() const
+{
+    static QStringList order{"categoryName"};
+    return order;
 }
 
 
@@ -1094,13 +1115,20 @@ QVariant UserCategoryItem::data(int column, int role) const
 *  Irc User Items
 *****************************************/
 IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
-    : PropertyMapItem(QStringList() << "nickName", parent),
+    : PropertyMapItem(parent),
     _ircUser(ircUser)
 {
     setObjectName(ircUser->nick());
     connect(ircUser, SIGNAL(quited()), this, SLOT(ircUserQuited()));
     connect(ircUser, SIGNAL(nickSet(QString)), this, SIGNAL(dataChanged()));
     connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
+}
+
+
+QStringList IrcUserItem::propertyOrder() const
+{
+    static QStringList order{"nickName"};
+    return order;
 }
 
 

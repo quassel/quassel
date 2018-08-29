@@ -275,21 +275,8 @@ int SimpleTreeItem::columnCount() const
 /*****************************************
  * PropertyMapItem
  *****************************************/
-PropertyMapItem::PropertyMapItem(const QStringList &propertyOrder, AbstractTreeItem *parent)
-    : AbstractTreeItem(parent),
-    _propertyOrder(propertyOrder)
-{
-}
-
-
 PropertyMapItem::PropertyMapItem(AbstractTreeItem *parent)
-    : AbstractTreeItem(parent),
-    _propertyOrder(QStringList())
-{
-}
-
-
-PropertyMapItem::~PropertyMapItem()
+    : AbstractTreeItem(parent)
 {
 }
 
@@ -304,7 +291,7 @@ QVariant PropertyMapItem::data(int column, int role) const
         return toolTip(column);
     case Qt::DisplayRole:
     case TreeModel::SortRole: // fallthrough, since SortRole should default to DisplayRole
-        return property(_propertyOrder[column].toLatin1());
+        return property(propertyOrder()[column].toLatin1());
     default:
         return QVariant();
     }
@@ -316,7 +303,7 @@ bool PropertyMapItem::setData(int column, const QVariant &value, int role)
     if (column >= columnCount() || role != Qt::DisplayRole)
         return false;
 
-    setProperty(_propertyOrder[column].toLatin1(), value);
+    setProperty(propertyOrder()[column].toLatin1(), value);
     emit dataChanged(column);
     return true;
 }
@@ -324,13 +311,7 @@ bool PropertyMapItem::setData(int column, const QVariant &value, int role)
 
 int PropertyMapItem::columnCount() const
 {
-    return _propertyOrder.count();
-}
-
-
-void PropertyMapItem::appendProperty(const QString &property)
-{
-    _propertyOrder << property;
+    return propertyOrder().count();
 }
 
 
