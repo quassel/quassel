@@ -127,15 +127,15 @@ void IgnoreListSettingsPage::deleteSelectedIgnoreRule()
 void IgnoreListSettingsPage::newIgnoreRule(QString rule)
 {
     IgnoreListManager::IgnoreListItem newItem = IgnoreListManager::IgnoreListItem();
-    newItem.strictness = IgnoreListManager::SoftStrictness;
-    newItem.scope = IgnoreListManager::GlobalScope;
-    newItem.isRegEx = false;
-    newItem.isActive = true;
+    newItem.setStrictness(IgnoreListManager::SoftStrictness);
+    newItem.setScope(IgnoreListManager::GlobalScope);
+    newItem.setIsRegEx(false);
+    newItem.setIsEnabled(true);
 
     bool enableOkButton = false;
     if (!rule.isEmpty()) {
         // we're called from contextmenu
-        newItem.ignoreRule = rule;
+        newItem.setContents(rule);
         enableOkButton = true;
     }
 
@@ -146,7 +146,7 @@ void IgnoreListSettingsPage::newIgnoreRule(QString rule)
             if (QMessageBox::warning(this,
                     tr("Rule already exists"),
                     tr("There is already a rule\n\"%1\"\nPlease choose another rule.")
-                    .arg(dlg->ignoreListItem().ignoreRule),
+                    .arg(dlg->ignoreListItem().contents()),
                     QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok)
                 == QMessageBox::Cancel)
                 break;
@@ -252,24 +252,24 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
 
     ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-    ui.ignoreRuleLineEdit->setText(item.ignoreRule);
+    ui.ignoreRuleLineEdit->setText(item.contents());
 
-    if (item.type == IgnoreListManager::MessageIgnore)
+    if (item.type() == IgnoreListManager::MessageIgnore)
         ui.messageTypeButton->setChecked(true);
-    else if (item.type == IgnoreListManager::CtcpIgnore)
+    else if (item.type() == IgnoreListManager::CtcpIgnore)
         ui.ctcpTypeButton->setChecked(true);
     else
         ui.senderTypeButton->setChecked(true);
 
-    ui.isRegExCheckBox->setChecked(item.isRegEx);
-    ui.isActiveCheckBox->setChecked(item.isActive);
+    ui.isRegExCheckBox->setChecked(item.isRegEx());
+    ui.isActiveCheckBox->setChecked(item.isEnabled());
 
-    if (item.strictness == IgnoreListManager::HardStrictness)
+    if (item.strictness() == IgnoreListManager::HardStrictness)
         ui.permanentStrictnessButton->setChecked(true);
     else
         ui.dynamicStrictnessButton->setChecked(true);
 
-    switch (item.scope) {
+    switch (item.scope()) {
     case IgnoreListManager::NetworkScope:
         ui.networkScopeButton->setChecked(true);
         ui.scopeRuleTextEdit->setEnabled(true);
@@ -283,10 +283,10 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
         ui.scopeRuleTextEdit->setEnabled(false);
     }
 
-    if (item.scope == IgnoreListManager::GlobalScope)
+    if (item.scope() == IgnoreListManager::GlobalScope)
         ui.scopeRuleTextEdit->clear();
     else
-        ui.scopeRuleTextEdit->setPlainText(item.scopeRule);
+        ui.scopeRuleTextEdit->setPlainText(item.scopeRule());
 
     connect(ui.ignoreRuleLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(widgetHasChanged()));
     connect(ui.scopeRuleTextEdit, SIGNAL(textChanged()), this, SLOT(widgetHasChanged()));
@@ -304,44 +304,45 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
 void IgnoreListEditDlg::widgetHasChanged()
 {
     if (ui.messageTypeButton->isChecked())
-        _clonedIgnoreListItem.type = IgnoreListManager::MessageIgnore;
+        _clonedIgnoreListItem.setType(IgnoreListManager::MessageIgnore);
     else if (ui.ctcpTypeButton->isChecked())
-        _clonedIgnoreListItem.type = IgnoreListManager::CtcpIgnore;
+        _clonedIgnoreListItem.setType(IgnoreListManager::CtcpIgnore);
     else
-        _clonedIgnoreListItem.type = IgnoreListManager::SenderIgnore;
+        _clonedIgnoreListItem.setType(IgnoreListManager::SenderIgnore);
 
     if (ui.permanentStrictnessButton->isChecked())
-        _clonedIgnoreListItem.strictness = IgnoreListManager::HardStrictness;
+        _clonedIgnoreListItem.setStrictness(IgnoreListManager::HardStrictness);
     else
-        _clonedIgnoreListItem.strictness = IgnoreListManager::SoftStrictness;
+        _clonedIgnoreListItem.setStrictness(IgnoreListManager::SoftStrictness);
 
     if (ui.networkScopeButton->isChecked()) {
-        _clonedIgnoreListItem.scope = IgnoreListManager::NetworkScope;
+        _clonedIgnoreListItem.setScope(IgnoreListManager::NetworkScope);
         ui.scopeRuleTextEdit->setEnabled(true);
     }
     else if (ui.channelScopeButton->isChecked()) {
-        _clonedIgnoreListItem.scope = IgnoreListManager::ChannelScope;
+        _clonedIgnoreListItem.setScope(IgnoreListManager::ChannelScope);
         ui.scopeRuleTextEdit->setEnabled(true);
     }
     else {
-        _clonedIgnoreListItem.scope = IgnoreListManager::GlobalScope;
+        _clonedIgnoreListItem.setScope(IgnoreListManager::GlobalScope);
         ui.scopeRuleTextEdit->setEnabled(false);
     }
 
-    if (_clonedIgnoreListItem.scope == IgnoreListManager::GlobalScope) {
-        _clonedIgnoreListItem.scopeRule = QString();
+    if (_clonedIgnoreListItem.scope() == IgnoreListManager::GlobalScope) {
+        _clonedIgnoreListItem.setScopeRule(QString());
     }
     else {
         // Trim the resulting MultiWildcard expression
-        _clonedIgnoreListItem.scopeRule =
-                ExpressionMatch::trimMultiWildcardWhitespace(ui.scopeRuleTextEdit->toPlainText());
+        _clonedIgnoreListItem.setScopeRule(
+                    ExpressionMatch::trimMultiWildcardWhitespace(
+                        ui.scopeRuleTextEdit->toPlainText()));
     }
 
-    _clonedIgnoreListItem.ignoreRule = ui.ignoreRuleLineEdit->text();
-    _clonedIgnoreListItem.isRegEx = ui.isRegExCheckBox->isChecked();
-    _clonedIgnoreListItem.isActive = ui.isActiveCheckBox->isChecked();
+    _clonedIgnoreListItem.setContents(ui.ignoreRuleLineEdit->text());
+    _clonedIgnoreListItem.setIsRegEx(ui.isRegExCheckBox->isChecked());
+    _clonedIgnoreListItem.setIsEnabled(ui.isActiveCheckBox->isChecked());
 
-    if (!_clonedIgnoreListItem.ignoreRule.isEmpty() && _clonedIgnoreListItem != _ignoreListItem)
+    if (!_clonedIgnoreListItem.contents().isEmpty() && _clonedIgnoreListItem != _ignoreListItem)
         _hasChanged = true;
     else
         _hasChanged = false;

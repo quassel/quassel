@@ -87,7 +87,7 @@ QVariant IgnoreListModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         switch (index.column()) {
         case 1:
-            if (ignoreListManager()[index.row()].type == IgnoreListManager::SenderIgnore)
+            if (ignoreListManager()[index.row()].type() == IgnoreListManager::SenderIgnore)
                 return tr("By Sender");
             else
                 return tr("By Message");
@@ -95,11 +95,11 @@ QVariant IgnoreListModel::data(const QModelIndex &index, int role) const
     case Qt::EditRole:
         switch (index.column()) {
         case 0:
-            return ignoreListManager()[index.row()].isActive;
+            return ignoreListManager()[index.row()].isEnabled();
         case 1:
-            return ignoreListManager()[index.row()].type;
+            return ignoreListManager()[index.row()].type();
         case 2:
-            return ignoreListManager()[index.row()].ignoreRule;
+            return ignoreListManager()[index.row()].contents();
         default:
             return QVariant();
         }
@@ -123,17 +123,18 @@ bool IgnoreListModel::setData(const QModelIndex &index, const QVariant &value, i
 
     switch (index.column()) {
     case 0:
-        cloneIgnoreListManager()[index.row()].isActive = newValue.toBool();
+        cloneIgnoreListManager()[index.row()].setIsEnabled(newValue.toBool());
         return true;
     case 1:
-        cloneIgnoreListManager()[index.row()].type = (IgnoreListManager::IgnoreType)newValue.toInt();
+        cloneIgnoreListManager()[index.row()].setType(
+                    (IgnoreListManager::IgnoreType)newValue.toInt());
         return true;
     case 2:
         if (ignoreListManager().contains(newValue.toString())) {
             return false;
         }
         else {
-            cloneIgnoreListManager()[index.row()].ignoreRule = newValue.toString();
+            cloneIgnoreListManager()[index.row()].setContents(newValue.toString());
             return true;
         }
     default:
@@ -145,12 +146,12 @@ bool IgnoreListModel::setData(const QModelIndex &index, const QVariant &value, i
 bool IgnoreListModel::newIgnoreRule(const IgnoreListManager::IgnoreListItem &item)
 {
     IgnoreListManager &manager = cloneIgnoreListManager();
-    if (manager.contains(item.ignoreRule))
+    if (manager.contains(item.contents()))
         return false;
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     // manager.addIgnoreListItem(item);
-    manager.addIgnoreListItem(item.type, item.ignoreRule, item.isRegEx, item.strictness, item.scope,
-        item.scopeRule, item.isActive);
+    manager.addIgnoreListItem(item.type(), item.contents(), item.isRegEx(), item.strictness(),
+                              item.scope(), item.scopeRule(), item.isEnabled());
     endInsertRows();
     return true;
 }
@@ -173,7 +174,8 @@ void IgnoreListModel::loadDefaults()
     IgnoreListManager::IgnoreList defaults = IgnoreListModel::defaults();
     beginInsertRows(QModelIndex(), 0, defaults.count() - 1);
     foreach(IgnoreListManager::IgnoreListItem item, defaults) {
-      manager.addIgnoreListItem(item.ignoreRule, item.isRegEx, item.strictness, item.scope, item.scopeRule);
+      manager.addIgnoreListItem(item.contents(), item.isRegEx(), item.strictness(), item.scope(),
+                                item.scopeRule());
     }
     endInsertRows();*/
 }

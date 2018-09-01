@@ -21,13 +21,14 @@
 #ifndef IGNORELISTMANAGER_H
 #define IGNORELISTMANAGER_H
 
+#include <QDebug>
 #include <QString>
+#include <QStringList>
 #include <QRegExp>
 
+#include "expressionmatch.h"
 #include "message.h"
 #include "syncableobject.h"
-// Scope matching
-#include "util.h"
 
 class IgnoreListManager : public SyncableObject
 {
@@ -55,35 +56,265 @@ public:
         ChannelScope,
     };
 
-    struct IgnoreListItem {
-        IgnoreType type;
-        QString ignoreRule;
-        bool isRegEx;
-        StrictnessType strictness;
-        ScopeType scope;
-        QString scopeRule;
-        bool isActive;
-        QRegExp regEx;
+    /**
+     * Individual ignore list rule
+     */
+    class IgnoreListItem {
+    public:
+        /**
+         * Construct an empty ignore rule
+         */
         IgnoreListItem() {}
-        IgnoreListItem(IgnoreType type_, const QString &ignoreRule_, bool isRegEx_, StrictnessType strictness_,
-            ScopeType scope_, const QString &scopeRule_, bool isActive_)
-            : type(type_), ignoreRule(ignoreRule_), isRegEx(isRegEx_), strictness(strictness_), scope(scope_), scopeRule(scopeRule_), isActive(isActive_), regEx(ignoreRule_) {
-            regEx.setCaseSensitivity(Qt::CaseInsensitive);
-            if (!isRegEx_) {
-                regEx.setPatternSyntax(QRegExp::Wildcard);
-            }
-        }
-        bool operator!=(const IgnoreListItem &other)
+
+        /**
+         * Construct an ignore rule with the given parameters
+         *
+         * CAUTION: For legacy reasons, "contents" doubles as the identifier for the ignore rule.
+         * Duplicate entries are not allowed.
+         *
+         * @param type             Type of ignore rule
+         * @param contents         String representing a message contents expression to match
+         * @param isRegEx          True if regular expression, otherwise false
+         * @param strictness       Strictness of ignore rule
+         * @param scope            What to match scope rule against
+         * @param scopeRule        String representing a scope rule expression to match
+         * @param isEnabled        True if enabled, otherwise false
+         */
+        IgnoreListItem(IgnoreType type, const QString &contents, bool isRegEx,
+                       StrictnessType strictness, ScopeType scope, const QString &scopeRule,
+                       bool isEnabled)
+            : _contents(contents), _isRegEx(isRegEx), _strictness(strictness),
+              _scope(scope), _scopeRule(scopeRule), _isEnabled(isEnabled)
         {
-            return (type != other.type ||
-                    ignoreRule != other.ignoreRule ||
-                    isRegEx != other.isRegEx ||
-                    strictness != other.strictness ||
-                    scope != other.scope ||
-                    scopeRule != other.scopeRule ||
-                    isActive != other.isActive);
+            // Allow passing empty "contents" as they can happen when editing an ignore rule
+
+            // Handle CTCP ignores
+            setType(type);
+
+            _cacheInvalid = true;
+            // Cache expression matches on construction
+            //
+            // This provides immediate feedback on errors when loading the rule.  If profiling shows
+            // this as a performance bottleneck, this can be removed in deference to caching on
+            // first use.
+            //
+            // Inversely, if needed for validity checks, caching can be done on every update below
+            // instead of on first use.
+            determineExpressions();
         }
+
+        /**
+         * Gets the type of this ignore rule
+         *
+         * @return IgnoreType of the rule
+         */
+        inline IgnoreType type() const {
+            return _type;
+        }
+        /**
+         * Sets the type of this ignore rule
+         *
+         * @param type IgnoreType of the rule
+         */
+        inline void setType(IgnoreType type) {
+            // Handle CTCP ignores
+            if (type == CtcpIgnore) {
+                // This is not performance-intensive; sticking with QRegExp for Qt 4 is fine
+                // Split based on whitespace characters
+                QStringList split(contents().split(QRegExp("\\s+"), QString::SkipEmptyParts));
+                // Match on the first item
+                _cacheCtcpSender = split.takeFirst();
+                // Track the rest as CTCP types to ignore
+                _cacheCtcpTypes = split;
+            }
+            _type = type;
+        }
+
+        /**
+         * Gets the message contents this rule matches
+         *
+         * NOTE: Use IgnoreListItem::contentsMatcher() for performing matches
+         *
+         * CAUTION: For legacy reasons, "contents" doubles as the identifier for the ignore rule.
+         * Duplicate entries are not allowed.
+         *
+         * @return String representing a phrase or expression to match
+         */
+        inline QString contents() const {
+            return _contents;
+        }
+        /**
+         * Sets the message contents this rule matches
+         *
+         * @param contents String representing a phrase or expression to match
+         */
+        inline void setContents(const QString &contents) {
+            // Allow passing empty "contents" as they can happen when editing an ignore rule
+            _contents = contents;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this is a regular expression rule
+         *
+         * @return True if regular expression, otherwise false
+         */
+        inline bool isRegEx() const {
+            return _isRegEx;
+        }
+        /**
+         * Sets if this rule is a regular expression rule
+         *
+         * @param isRegEx True if regular expression, otherwise false
+         */
+        inline void setIsRegEx(bool isRegEx) {
+            _isRegEx = isRegEx;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets the strictness of this ignore rule
+         *
+         * @return StrictnessType of the rule
+         */
+        inline StrictnessType strictness() const {
+            return _strictness;
+        }
+        /**
+         * Sets the strictness of this ignore rule
+         *
+         * @param strictness StrictnessType of the rule
+         */
+        inline void setStrictness(StrictnessType strictness) {
+            _strictness = strictness;
+        }
+
+        /**
+         * Gets what to match scope rule against
+         *
+         * @return ScopeType of the rule
+         */
+        inline ScopeType scope() const {
+            return _scope;
+        }
+        /**
+         * Sets what to match scope rule against
+         *
+         * @param type ScopeType of the rule
+         */
+        inline void setScope(ScopeType scope) {
+            _scope = scope;
+        }
+
+        /**
+         * Gets the scope rule this rule matches
+         *
+         * NOTE: Use IgnoreListItem::scopeRuleMatcher() for performing matches
+         *
+         * @return String representing a phrase or expression to match
+         */
+        inline QString scopeRule() const {
+            return _scopeRule;
+        }
+        /**
+         * Sets the scope rule this rule matches
+         *
+         * @param scopeRule String representing a phrase or expression to match
+         */
+        inline void setScopeRule(const QString &scopeRule) {
+            _scopeRule = scopeRule;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this rule is enabled and active
+         *
+         * @return True if enabled, otherwise false
+         */
+        inline bool isEnabled() const {
+            return _isEnabled;
+        }
+        /**
+         * Sets if this rule is enabled and active
+         *
+         * @param isEnabled True if enabled, otherwise false
+         */
+        inline void setIsEnabled(bool isEnabled) {
+            _isEnabled = isEnabled;
+        }
+
+        /**
+         * Gets the ignored CTCP types for CTCP ignores
+         *
+         * @return List of CTCP types to ignore, or empty for all
+         */
+        inline QStringList ctcpTypes() const {
+            return _cacheCtcpTypes;
+        }
+
+        /**
+         * Gets the expression matcher for the message contents, caching if needed
+         *
+         * @return Expression matcher to compare with message contents
+         */
+        inline ExpressionMatch contentsMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _contentsMatch;
+        }
+
+        /**
+         * Gets the expression matcher for the scope, caching if needed
+         *
+         * @return Expression matcher to compare with scope
+         */
+        inline ExpressionMatch scopeRuleMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _scopeRuleMatch;
+        }
+
+        /**
+         * Gets the expression matcher for the message contents, caching if needed
+         *
+         * @return Expression matcher to compare with message contents
+         */
+        inline ExpressionMatch senderCTCPMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _ctcpSenderMatch;
+        }
+
+        bool operator!=(const IgnoreListItem &other) const;
+
+    private:
+        /**
+         * Update internal cache of expression matching if needed
+         */
+        void determineExpressions() const;
+
+        IgnoreType _type = {};
+        QString _contents = {};
+        bool _isRegEx = false;
+        StrictnessType _strictness = {};
+        ScopeType _scope = {};
+        QString _scopeRule = {};
+        bool _isEnabled = true;
+
+        QString _cacheCtcpSender = {};                    ///< For CTCP rules, precalculate sender
+        QStringList _cacheCtcpTypes = {};                 ///< For CTCP rules, precalculate types
+
+        // These represent internal cache and should be safe to mutate in 'const' functions
+        // See https://stackoverflow.com/questions/3141087/what-is-meant-with-const-at-end-of-function-declaration
+        mutable bool _cacheInvalid = true;                ///< If true, match cache needs redone
+        mutable ExpressionMatch _contentsMatch = {};      ///< Expression match cache for message
+        mutable ExpressionMatch _scopeRuleMatch = {};     ///< Expression match cache for scope rule
+        mutable ExpressionMatch _ctcpSenderMatch = {};    ///< Expression match cache for CTCP nick
     };
+
     typedef QList<IgnoreListItem> IgnoreList;
 
     int indexOf(const QString &ignore) const;
