@@ -29,6 +29,8 @@
 #include <QEvent>
 #include <QDebug>
 
+#include "expressionmatch.h"
+
 #include "icon.h"
 
 IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
@@ -330,14 +332,9 @@ void IgnoreListEditDlg::widgetHasChanged()
         _clonedIgnoreListItem.scopeRule = QString();
     }
     else {
-        QStringList text = ui.scopeRuleTextEdit->toPlainText().split(";", QString::SkipEmptyParts);
-        QStringList::iterator it = text.begin();
-        while (it != text.end()) {
-            *it = it->trimmed();
-            ++it;
-        }
-
-        _clonedIgnoreListItem.scopeRule = text.join("; ");
+        // Trim the resulting MultiWildcard expression
+        _clonedIgnoreListItem.scopeRule =
+                ExpressionMatch::trimMultiWildcardWhitespace(ui.scopeRuleTextEdit->toPlainText());
     }
 
     _clonedIgnoreListItem.ignoreRule = ui.ignoreRuleLineEdit->text();
