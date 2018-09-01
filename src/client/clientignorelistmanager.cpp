@@ -20,8 +20,6 @@
 
 #include "clientignorelistmanager.h"
 
-#include <QRegExp>
-
 INIT_SYNCABLE_OBJECT(ClientIgnoreListManager)
 
 ClientIgnoreListManager::ClientIgnoreListManager(QObject *parent)
@@ -33,15 +31,7 @@ ClientIgnoreListManager::ClientIgnoreListManager(QObject *parent)
 
 bool ClientIgnoreListManager::pureMatch(const IgnoreListItem &item, const QString &string) const
 {
-    QRegExp ruleRx = QRegExp(item.ignoreRule);
-    ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
-    if (!item.isRegEx)
-        ruleRx.setPatternSyntax(QRegExp::Wildcard);
-
-    if ((!item.isRegEx && ruleRx.exactMatch(string)) ||
-        (item.isRegEx && ruleRx.indexIn(string) != -1))
-        return true;
-    return false;
+    return (item.contentsMatcher().match(string));
 }
 
 
@@ -49,11 +39,14 @@ QMap<QString, bool> ClientIgnoreListManager::matchingRulesForHostmask(const QStr
 {
     QMap<QString, bool> result;
     foreach(IgnoreListItem item, ignoreList()) {
-        if (item.type == SenderIgnore && pureMatch(item, hostmask)
-            && ((network.isEmpty() && channel.isEmpty()) || item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(network, item.scopeRule))
-                || (item.scope == ChannelScope && scopeMatch(channel, item.scopeRule)))) {
-            result[item.ignoreRule] = item.isActive;
-//      qDebug() << "matchingRulesForHostmask found: " << item.ignoreRule << "is active: " << item.isActive;
+        if (item.type() == SenderIgnore && pureMatch(item, hostmask)
+            && ((network.isEmpty() && channel.isEmpty())
+                || item.scope() == GlobalScope
+                || (item.scope() == NetworkScope && item.scopeRuleMatcher().match(network))
+                || (item.scope() == ChannelScope && item.scopeRuleMatcher().match(channel)))) {
+            result[item.contents()] = item.isEnabled();
+            // qDebug() << "matchingRulesForHostmask found: " << item.contents()
+            //         << "is active: " << item.isActive;
         }
     }
     return result;

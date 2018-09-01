@@ -39,7 +39,7 @@ IgnoreListManager &IgnoreListManager::operator=(const IgnoreListManager &other)
 int IgnoreListManager::indexOf(const QString &ignore) const
 {
     for (int i = 0; i < _ignoreList.count(); i++) {
-        if (_ignoreList[i].ignoreRule == ignore)
+        if (_ignoreList[i].contents() == ignore)
             return i;
     }
     return -1;
@@ -58,13 +58,13 @@ QVariantMap IgnoreListManager::initIgnoreList() const
     QVariantList isActiveList;
 
     for (int i = 0; i < _ignoreList.count(); i++) {
-        ignoreTypeList << _ignoreList[i].type;
-        ignoreRuleList << _ignoreList[i].ignoreRule;
-        scopeRuleList << _ignoreList[i].scopeRule;
-        isRegExList << _ignoreList[i].isRegEx;
-        scopeList << _ignoreList[i].scope;
-        strictnessList << _ignoreList[i].strictness;
-        isActiveList << _ignoreList[i].isActive;
+        ignoreTypeList << _ignoreList[i].type();
+        ignoreRuleList << _ignoreList[i].contents();
+        scopeRuleList << _ignoreList[i].scopeRule();
+        isRegExList << _ignoreList[i].isRegEx();
+        scopeList << _ignoreList[i].scope();
+        strictnessList << _ignoreList[i].strictness();
+        isActiveList << _ignoreList[i].isEnabled();
     }
 
     ignoreListMap["ignoreType"] = ignoreTypeList;
@@ -106,7 +106,7 @@ void IgnoreListManager::initSetIgnoreList(const QVariantMap &ignoreList)
 
 /* since overloaded methods aren't syncable (yet?) we can't use that anymore
 void IgnoreListManager::addIgnoreListItem(const IgnoreListItem &item) {
-  addIgnoreListItem(item.type, item.ignoreRule, item.isRegEx, item.strictness, item.scope, item.scopeRule, item.isActive);
+  addIgnoreListItem(item.type(), item.contents(), item.isRegEx(), item.strictness(), item.scope(), item.scopeRule(), item.isEnabled());
 }
 */
 void IgnoreListManager::addIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
@@ -133,13 +133,13 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
         return UnmatchedStrictness;
 
     foreach(IgnoreListItem item, _ignoreList) {
-        if (!item.isActive || item.type == CtcpIgnore)
+        if (!item.isEnabled() || item.type() == CtcpIgnore)
             continue;
-        if (item.scope == GlobalScope
-            || (item.scope == NetworkScope && scopeMatch(network, item.scopeRule))
-            || (item.scope == ChannelScope && scopeMatch(bufferName, item.scopeRule))) {
+        if (item.scope() == GlobalScope
+            || (item.scope() == NetworkScope && item.scopeRuleMatcher().match(network))
+            || (item.scope() == ChannelScope && item.scopeRuleMatcher().match(bufferName))) {
             QString str;
-            if (item.type == MessageIgnore)
+            if (item.type() == MessageIgnore)
                 str = msgContents;
             else
                 str = msgSender;
@@ -149,10 +149,8 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(const QString &msgCo
 //      qDebug() << "pattern: " << ruleRx.pattern();
 //      qDebug() << "scopeRule: " << item.scopeRule;
 //      qDebug() << "now testing";
-            if ((!item.isRegEx && item.regEx.exactMatch(str)) ||
-                (item.isRegEx && item.regEx.indexIn(str) != -1)) {
-//        qDebug() << "MATCHED!";
-                return item.strictness;
+            if (item.contentsMatcher().match(str)) {
+                return item.strictness();
             }
         }
     }
@@ -172,7 +170,7 @@ void IgnoreListManager::toggleIgnoreRule(const QString &ignoreRule)
     int idx = indexOf(ignoreRule);
     if (idx == -1)
         return;
-    _ignoreList[idx].isActive = !_ignoreList[idx].isActive;
+    _ignoreList[idx].setIsEnabled(!_ignoreList[idx].isEnabled());
     SYNC(ARG(ignoreRule))
 }
 
@@ -180,24 +178,73 @@ void IgnoreListManager::toggleIgnoreRule(const QString &ignoreRule)
 bool IgnoreListManager::ctcpMatch(const QString sender, const QString &network, const QString &type)
 {
     foreach(IgnoreListItem item, _ignoreList) {
-        if (!item.isActive)
+        if (!item.isEnabled())
             continue;
-        if (item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(network, item.scopeRule))) {
-            QString sender_;
-            QStringList types = item.ignoreRule.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        if (item.scope() == GlobalScope
+                || (item.scope() == NetworkScope && item.scopeRuleMatcher().match(network))) {
 
-            sender_ = types.takeAt(0);
-
-            QRegExp ruleRx = QRegExp(sender_);
-            ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
-            if (!item.isRegEx)
-                ruleRx.setPatternSyntax(QRegExp::Wildcard);
-            if ((!item.isRegEx && ruleRx.exactMatch(sender)) ||
-                (item.isRegEx && ruleRx.indexIn(sender) != -1)) {
-                if (types.isEmpty() || types.contains(type, Qt::CaseInsensitive))
+            // For CTCP ignore rules, use ctcpSender
+            if (item.senderCTCPMatcher().match(sender)) {
+                // Sender matches, check types
+                if (item.ctcpTypes().isEmpty()
+                        || item.ctcpTypes().contains(type, Qt::CaseInsensitive)) {
+                    // Either all types are blocked, or type matches
                     return true;
+                }
             }
         }
     }
     return false;
+}
+
+
+/**************************************************************************
+ * IgnoreListItem
+ *************************************************************************/
+bool IgnoreListManager::IgnoreListItem::operator!=(const IgnoreListItem &other) const
+{
+    return (_type != other._type ||
+            _contents != other._contents ||
+            _isRegEx != other._isRegEx ||
+            _strictness != other._strictness ||
+            _scope != other._scope ||
+            _scopeRule != other._scopeRule ||
+            _isEnabled != other._isEnabled);
+    // Don't compare ExpressionMatch objects as they are created as needed from the above
+}
+
+
+void IgnoreListManager::IgnoreListItem::determineExpressions() const
+{
+    // Don't update if not needed
+    if (!_cacheInvalid) {
+        return;
+    }
+
+    // Set up matching rules
+    // Message is either wildcard or regex
+    ExpressionMatch::MatchMode contentsMode =
+            _isRegEx ? ExpressionMatch::MatchMode::MatchRegEx :
+                       ExpressionMatch::MatchMode::MatchWildcard;
+
+    // Ignore rules are always case-insensitive
+    // Scope matching is always wildcard
+    // TODO: Expand upon ignore rule handling with next protocol break
+
+    if (_type == CtcpIgnore) {
+        // Set up CTCP sender
+        _contentsMatch = {};
+        _ctcpSenderMatch = ExpressionMatch(_cacheCtcpSender, contentsMode, false);
+    }
+    else {
+        // Set up message contents
+        _contentsMatch = ExpressionMatch(_contents, contentsMode, false);
+        _ctcpSenderMatch = {};
+    }
+    // Scope rules are always multiple wildcard entries
+    // (Adding a regex option would be awesome, but requires a backwards-compatible protocol change)
+    _scopeRuleMatch = ExpressionMatch(_scopeRule,
+                                      ExpressionMatch::MatchMode::MatchMultiWildcard, false);
+
+    _cacheInvalid = false;
 }

@@ -65,6 +65,7 @@ void CoreIgnoreListManager::save() const
 
 //void CoreIgnoreListManager::loadDefaults() {
 //  foreach(IgnoreListItem item, IgnoreListManager::defaults()) {
-//    addIgnoreListItem(item.ignoreRule, item.isRegEx, item.strictness, item.scope, item.scopeRule);
+//    addIgnoreListItem(item.contents(), item.isRegEx(), item.strictness(), item.scope(),
+//                      item.scopeRule());
 //  }
 //}
