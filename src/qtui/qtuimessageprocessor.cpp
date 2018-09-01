@@ -33,7 +33,10 @@ QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
 {
     NotificationSettings notificationSettings;
     _nicksCaseSensitive = notificationSettings.nicksCaseSensitive();
+    _nickMatcher.setCaseSensitive(_nicksCaseSensitive);
     _highlightNick = notificationSettings.highlightNick();
+    _nickMatcher.setHighlightMode(
+                static_cast<NickHighlightMatcher::HighlightNickType>(_highlightNick));
     highlightListChanged(notificationSettings.highlightList());
     notificationSettings.notify("Highlights/NicksCaseSensitive", this, SLOT(nicksCaseSensitiveChanged(const QVariant &)));
     notificationSettings.notify("Highlights/CustomList", this, SLOT(highlightListChanged(const QVariant &)));
@@ -114,8 +117,10 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
     if (!((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && !(msg.flags() & Message::Self)))
         return;
 
-    // TODO: Cache this (per network)
-    const Network *net = Client::network(msg.bufferInfo().networkId());
+    // Cached per network
+    const NetworkId &netId = msg.bufferInfo().networkId();
+    const Network *net = Client::network(netId);
+
     if (net && !net->myNick().isEmpty()) {
         // Get current nick
         QString currentNick = net->myNick();
@@ -166,13 +171,10 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
 
         // Check nicknames
         if (_highlightNick != HighlightNickType::NoNick && !currentNick.isEmpty()) {
-            // Update cache if needed
-            determineNickExpressions(currentNick, identityNicks);
-
-            // Check for a match
-            if (_cachedNickMatcher.isValid()
-                    && _cachedNickMatcher.match(stripFormatCodes(msgContents))) {
-                // Nick matcher is valid and match found
+            // Nickname matching allowed and current nickname is known
+            // Run the nickname matcher on the unformatted string
+            if (_nickMatcher.match(stripFormatCodes(msgContents), netId, currentNick,
+                                   identityNicks)) {
                 msg.setFlags(msg.flags() | Message::Highlight);
                 return;
             }
@@ -184,7 +186,8 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
 void QtUiMessageProcessor::nicksCaseSensitiveChanged(const QVariant &variant)
 {
     _nicksCaseSensitive = variant.toBool();
-    _cacheNickConfigInvalid = true;
+    // Update nickname matcher, too
+    _nickMatcher.setCaseSensitive(_nicksCaseSensitive);
 }
 
 
@@ -208,45 +211,11 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant)
 
 void QtUiMessageProcessor::highlightNickChanged(const QVariant &variant)
 {
-    _highlightNick = (NotificationSettings::HighlightNickType)variant.toInt();
-    _cacheNickConfigInvalid = true;
-}
-
-
-void QtUiMessageProcessor::determineNickExpressions(const QString &currentNick,
-                                                    const QStringList identityNicks) const
-{
-    // Don't do anything for no nicknames
-    if (_highlightNick == HighlightNickType::NoNick) {
-        return;
-    }
-
-    // Only update if needed (check nickname config, current nick, identity nicks for change)
-    if (!_cacheNickConfigInvalid
-          && _cachedNickCurrent == currentNick
-          && _cachedIdentityNicks == identityNicks) {
-        return;
-    }
-
-    // Add all nicknames
-    QStringList nickList;
-    if (_highlightNick == HighlightNickType::CurrentNick) {
-        nickList << currentNick;
-    }
-    else if (_highlightNick == HighlightNickType::AllNicks) {
-        nickList = identityNicks;
-        if (!nickList.contains(currentNick))
-            nickList.prepend(currentNick);
-    }
-
-    // Set up phrase matcher, joining with newlines
-    _cachedNickMatcher = ExpressionMatch(nickList.join("\n"),
-                                        ExpressionMatch::MatchMode::MatchMultiPhrase,
-                                        _nicksCaseSensitive);
-
-    _cacheNickConfigInvalid = false;
-    _cachedNickCurrent = currentNick;
-    _cachedIdentityNicks = identityNicks;
+    _highlightNick = (HighlightNickType)variant.toInt();
+    // Convert from QtUiMessageProcessor::HighlightNickType (which is from NotificationSettings) to
+    // NickHighlightMatcher::HighlightNickType
+    _nickMatcher.setHighlightMode(
+                static_cast<NickHighlightMatcher::HighlightNickType>(_highlightNick));
 }
 
 
