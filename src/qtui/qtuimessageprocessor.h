@@ -24,6 +24,7 @@
 #include <QTimer>
 
 #include "abstractmessageprocessor.h"
+#include "expressionmatch.h"
 
 class QtUiMessageProcessor : public AbstractMessageProcessor
 {
@@ -53,28 +54,224 @@ private slots:
     void highlightNickChanged(const QVariant &variant);
 
 private:
+    /**
+     * Individual highlight rule (legacy client-side version)
+     */
+    class LegacyHighlightRule
+    {
+    public:
+        /**
+         * Construct an empty highlight rule
+         */
+        LegacyHighlightRule() {}
+
+        /**
+         * Construct a highlight rule with the given parameters
+         *
+         * @param contents         String representing a message contents expression to match
+         * @param isRegEx          True if regular expression, otherwise false
+         * @param isCaseSensitive  True if case sensitive, otherwise false
+         * @param isEnabled        True if enabled, otherwise false
+         * @param chanName         String representing a channel name expression to match
+         */
+        LegacyHighlightRule(QString contents, bool isRegEx, bool isCaseSensitive, bool isEnabled,
+                      QString chanName)
+            : _contents(contents), _isRegEx(isRegEx), _isCaseSensitive(isCaseSensitive),
+              _isEnabled(isEnabled), _chanName(chanName)
+        {
+            _cacheInvalid = true;
+            // Cache expression matches on construction
+            //
+            // This provides immediate feedback on errors when loading the rule.  If profiling shows
+            // this as a performance bottleneck, this can be removed in deference to caching on
+            // first use.
+            //
+            // Inversely, if needed for validity checks, caching can be done on every update below
+            // instead of on first use.
+            determineExpressions();
+        }
+
+        /**
+         * Gets the message contents this rule matches
+         *
+         * NOTE: Use HighlightRule::contentsMatcher() for performing matches
+         *
+         * CAUTION: For legacy reasons, "contents" doubles as the identifier for the ignore rule.
+         * Duplicate entries are not allowed.
+         *
+         * @return String representing a phrase or expression to match
+         */
+        inline QString contents() const {
+            return _contents;
+        }
+        /**
+         * Sets the message contents this rule matches
+         *
+         * @param contents String representing a phrase or expression to match
+         */
+        inline void setContents(const QString &contents) {
+            _contents = contents;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this is a regular expression rule
+         *
+         * @return True if regular expression, otherwise false
+         */
+        inline bool isRegEx() const {
+            return _isRegEx;
+        }
+        /**
+         * Sets if this rule is a regular expression rule
+         *
+         * @param isRegEx True if regular expression, otherwise false
+         */
+        inline void setIsRegEx(bool isRegEx) {
+            _isRegEx = isRegEx;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this rule is case sensitive
+         *
+         * @return True if case sensitive, otherwise false
+         */
+        inline bool isCaseSensitive() const {
+            return _isCaseSensitive;
+        }
+        /**
+         * Sets if this rule is case sensitive
+         *
+         * @param isCaseSensitive True if case sensitive, otherwise false
+         */
+        inline void setIsCaseSensitive(bool isCaseSensitive) {
+            _isCaseSensitive = isCaseSensitive;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this rule is enabled and active
+         *
+         * @return True if enabled, otherwise false
+         */
+        inline bool isEnabled() const {
+            return _isEnabled;
+        }
+        /**
+         * Sets if this rule is enabled and active
+         *
+         * @param isEnabled True if enabled, otherwise false
+         */
+        inline void setIsEnabled(bool isEnabled) {
+            _isEnabled = isEnabled;
+        }
+
+        /**
+         * Gets the channel name this rule matches
+         *
+         * NOTE: Use HighlightRule::chanNameMatcher() for performing matches
+         *
+         * @return String representing a phrase or expression to match
+         */
+        inline QString chanName() const {
+            return _chanName;
+        }
+        /**
+         * Sets the channel name this rule matches
+         *
+         * @param chanName String representing a phrase or expression to match
+         */
+        inline void setChanName(const QString &chanName) {
+            _chanName = chanName;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets the expression matcher for the message contents, caching if needed
+         *
+         * @return Expression matcher to compare with message contents
+         */
+        inline ExpressionMatch contentsMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _contentsMatch;
+        }
+
+        /**
+         * Gets the expression matcher for the channel name, caching if needed
+         *
+         * @return Expression matcher to compare with channel name
+         */
+        inline ExpressionMatch chanNameMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _chanNameMatch;
+        }
+
+        bool operator!=(const LegacyHighlightRule &other) const;
+
+    private:
+        /**
+         * Update internal cache of expression matching if needed
+         */
+        void determineExpressions() const;
+
+        QString _contents = {};
+        bool _isRegEx = false;
+        bool _isCaseSensitive = false;
+        bool _isEnabled = true;
+        QString _chanName = {};
+
+        // These represent internal cache and should be safe to mutate in 'const' functions
+        // See https://stackoverflow.com/questions/3141087/what-is-meant-with-const-at-end-of-function-declaration
+        mutable bool _cacheInvalid = true;           ///< If true, match cache needs redone
+        mutable ExpressionMatch _contentsMatch = {}; ///< Expression match cache for message content
+        mutable ExpressionMatch _chanNameMatch = {}; ///< Expression match cache for channel name
+    };
+
+    using LegacyHighlightRuleList = QList<LegacyHighlightRule>;
+
     void checkForHighlight(Message &msg);
     void startProcessing();
+
+    using HighlightNickType = NotificationSettings::HighlightNickType;
+
+    /**
+     * Update internal cache of expression matching if needed
+     */
+    void determineNickExpressions(const QString &currentNick,
+                                  const QStringList identityNicks) const;
+
+    /**
+     * Check if nickname matching cache is invalid
+     * @param currentNick
+     * @param identityNicks
+     * @return
+     */
+    bool cacheNickInvalid(const QString &currentNick, const QStringList identityNicks) const {
+        if (_cacheNickConfigInvalid) return true;
+        if (_cachedNickCurrent != currentNick) return true;
+        if (_cachedIdentityNicks != identityNicks) return true;
+    }
+
+    LegacyHighlightRuleList _highlightRuleList;
+    HighlightNickType _highlightNick = HighlightNickType::CurrentNick;
+    bool _nicksCaseSensitive = false;
+
+    // These represent internal cache and should be safe to mutate in 'const' functions
+    mutable bool _cacheNickConfigInvalid = true;     ///< If true, nick match cache needs redone
+    mutable QString _cachedNickCurrent = {};         ///< Last cached current nick
+    mutable QStringList _cachedIdentityNicks = {};   ///< Last cached identity nicks
+    mutable ExpressionMatch _cachedNickMatcher = {}; ///< Expression match cache for nicks
 
     QList<QList<Message> > _processQueue;
     QList<Message> _currentBatch;
     QTimer _processTimer;
     bool _processing;
     Mode _processMode;
-
-    struct HighlightRule {
-        QString name;
-        bool isEnabled;
-        Qt::CaseSensitivity caseSensitive;
-        bool isRegExp;
-        QString chanName;
-        inline HighlightRule(const QString &name, bool enabled, Qt::CaseSensitivity cs, bool regExp, const QString &chanName)
-            : name(name), isEnabled(enabled), caseSensitive(cs), isRegExp(regExp), chanName(chanName) {}
-    };
-
-    QList<HighlightRule> _highlightRules;
-    NotificationSettings::HighlightNickType _highlightNick;
-    bool _nicksCaseSensitive;
 };
 
 
