@@ -117,47 +117,62 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
     // TODO: Cache this (per network)
     const Network *net = Client::network(msg.bufferInfo().networkId());
     if (net && !net->myNick().isEmpty()) {
-        QStringList nickList;
-        if (_highlightNick == NotificationSettings::CurrentNick) {
-            nickList << net->myNick();
-        }
-        else if (_highlightNick == NotificationSettings::AllNicks) {
-            const Identity *myIdentity = Client::identity(net->identity());
-            if (myIdentity)
-                nickList = myIdentity->nicks();
-            if (!nickList.contains(net->myNick()))
-                nickList.prepend(net->myNick());
-        }
-        foreach(QString nickname, nickList) {
-            QRegExp nickRegExp("(^|\\W)" + QRegExp::escape(nickname) + "(\\W|$)", _nicksCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-            if (nickRegExp.indexIn(stripFormatCodes(msg.contents())) >= 0) {
-                msg.setFlags(msg.flags() | Message::Highlight);
-                return;
-            }
+        // Get current nick
+        QString currentNick = net->myNick();
+        // Get identity nicks
+        QStringList identityNicks = {};
+        const Identity *myIdentity = Client::identity(net->identity());
+        if (myIdentity) {
+            identityNicks = myIdentity->nicks();
         }
 
-        for (int i = 0; i < _highlightRules.count(); i++) {
-            const HighlightRule &rule = _highlightRules.at(i);
-            if (!rule.isEnabled)
+        // Get buffer name, message contents
+        QString bufferName = msg.bufferInfo().bufferName();
+        QString msgContents = msg.contents();
+        bool matches = false;
+
+        for (int i = 0; i < _highlightRuleList.count(); i++) {
+            auto &rule = _highlightRuleList.at(i);
+            if (!rule.isEnabled())
                 continue;
 
-            if (!rule.chanName.isEmpty()
-                    && !scopeMatch(msg.bufferInfo().bufferName(), rule.chanName,
-                                   rule.isRegExp, rule.caseSensitive)) {
+            // Skip if channel name doesn't match and channel rule is not empty
+            //
+            // Match succeeds if...
+            //   Channel name matches a defined rule
+            //   Defined rule is empty
+            // And take the inverse of the above
+            if (!rule.chanNameMatcher().match(bufferName, true)) {
                 // A channel name rule is specified and does NOT match the current buffer name, skip
                 // this rule
                 continue;
             }
 
-            QRegExp rx;
-            if (rule.isRegExp) {
-                rx = QRegExp(rule.name, rule.caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+            // Check message according to specified rule, allowing empty rules to match
+            bool contentsMatch = rule.contentsMatcher().match(stripFormatCodes(msgContents), true);
+
+            // Support for sender matching can be added here
+
+            if (contentsMatch) {
+                // Support for inverse rules can be added here
+                matches = true;
             }
-            else {
-                rx = QRegExp("(^|\\W)" + QRegExp::escape(rule.name) + "(\\W|$)", rule.caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-            }
-            bool match = (rx.indexIn(stripFormatCodes(msg.contents())) >= 0);
-            if (match) {
+        }
+
+        if (matches) {
+            msg.setFlags(msg.flags() | Message::Highlight);
+            return;
+        }
+
+        // Check nicknames
+        if (_highlightNick != HighlightNickType::NoNick && !currentNick.isEmpty()) {
+            // Update cache if needed
+            determineNickExpressions(currentNick, identityNicks);
+
+            // Check for a match
+            if (_cachedNickMatcher.isValid()
+                    && _cachedNickMatcher.match(stripFormatCodes(msgContents))) {
+                // Nick matcher is valid and match found
                 msg.setFlags(msg.flags() | Message::Highlight);
                 return;
             }
@@ -169,6 +184,7 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg)
 void QtUiMessageProcessor::nicksCaseSensitiveChanged(const QVariant &variant)
 {
     _nicksCaseSensitive = variant.toBool();
+    _cacheNickConfigInvalid = true;
 }
 
 
@@ -176,15 +192,15 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant)
 {
     QVariantList varList = variant.toList();
 
-    _highlightRules.clear();
+    _highlightRuleList.clear();
     QVariantList::const_iterator iter = varList.constBegin();
     while (iter != varList.constEnd()) {
         QVariantMap rule = iter->toMap();
-        _highlightRules << HighlightRule(rule["Name"].toString(),
-            rule["Enable"].toBool(),
-            rule["CS"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
-            rule["RegEx"].toBool(),
-            rule["Channel"].toString());
+        _highlightRuleList << LegacyHighlightRule(rule["Name"].toString(),
+                rule["RegEx"].toBool(),
+                rule["CS"].toBool(),
+                rule["Enable"].toBool(),
+                rule["Channel"].toString());
         ++iter;
     }
 }
@@ -193,4 +209,80 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant)
 void QtUiMessageProcessor::highlightNickChanged(const QVariant &variant)
 {
     _highlightNick = (NotificationSettings::HighlightNickType)variant.toInt();
+    _cacheNickConfigInvalid = true;
+}
+
+
+void QtUiMessageProcessor::determineNickExpressions(const QString &currentNick,
+                                                    const QStringList identityNicks) const
+{
+    // Don't do anything for no nicknames
+    if (_highlightNick == HighlightNickType::NoNick) {
+        return;
+    }
+
+    // Only update if needed (check nickname config, current nick, identity nicks for change)
+    if (!_cacheNickConfigInvalid
+          && _cachedNickCurrent == currentNick
+          && _cachedIdentityNicks == identityNicks) {
+        return;
+    }
+
+    // Add all nicknames
+    QStringList nickList;
+    if (_highlightNick == HighlightNickType::CurrentNick) {
+        nickList << currentNick;
+    }
+    else if (_highlightNick == HighlightNickType::AllNicks) {
+        nickList = identityNicks;
+        if (!nickList.contains(currentNick))
+            nickList.prepend(currentNick);
+    }
+
+    // Set up phrase matcher, joining with newlines
+    _cachedNickMatcher = ExpressionMatch(nickList.join("\n"),
+                                        ExpressionMatch::MatchMode::MatchMultiPhrase,
+                                        _nicksCaseSensitive);
+
+    _cacheNickConfigInvalid = false;
+    _cachedNickCurrent = currentNick;
+    _cachedIdentityNicks = identityNicks;
+}
+
+
+/**************************************************************************
+ * LegacyHighlightRule
+ *************************************************************************/
+bool QtUiMessageProcessor::LegacyHighlightRule::operator!=(const LegacyHighlightRule &other) const
+{
+    return (_contents != other._contents ||
+            _isRegEx != other._isRegEx ||
+            _isCaseSensitive != other._isCaseSensitive ||
+            _isEnabled != other._isEnabled ||
+            _chanName != other._chanName);
+    // Don't compare ExpressionMatch objects as they are created as needed from the above
+}
+
+
+void QtUiMessageProcessor::LegacyHighlightRule::determineExpressions() const
+{
+    // Don't update if not needed
+    if (!_cacheInvalid) {
+        return;
+    }
+
+    // Set up matching rules
+    // Message is either phrase or regex
+    ExpressionMatch::MatchMode contentsMode =
+            _isRegEx ? ExpressionMatch::MatchMode::MatchRegEx :
+                       ExpressionMatch::MatchMode::MatchPhrase;
+    // Sender (when added) and channel are either multiple wildcard entries or regex
+    ExpressionMatch::MatchMode scopeMode =
+            _isRegEx ? ExpressionMatch::MatchMode::MatchRegEx :
+                       ExpressionMatch::MatchMode::MatchMultiWildcard;
+
+    _contentsMatch = ExpressionMatch(_contents, contentsMode, _isCaseSensitive);
+    _chanNameMatch = ExpressionMatch(_chanName, scopeMode, _isCaseSensitive);
+
+    _cacheInvalid = false;
 }
