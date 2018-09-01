@@ -22,12 +22,12 @@
 
 #include <utility>
 
-#include <QRegExp>
 #include <QString>
 #include <QStringList>
 #include <QVariantList>
 #include <QVariantMap>
 
+#include "expressionmatch.h"
 #include "message.h"
 #include "syncableobject.h"
 
@@ -49,34 +49,250 @@ public:
     inline HighlightRuleManager(QObject *parent = nullptr) : SyncableObject(parent) { setAllowClientUpdates(true); }
     HighlightRuleManager &operator=(const HighlightRuleManager &other);
 
-    struct HighlightRule
+    /**
+     * Individual highlight rule
+     */
+    class HighlightRule
     {
-        int id;
-        QString name;
-        bool isRegEx = false;
-        bool isCaseSensitive = false;
-        bool isEnabled = true;
-        bool isInverse = false;
-        QString sender;
-        QString chanName;
+    public:
+        /**
+         * Construct an empty highlight rule
+         */
         HighlightRule() {}
-        HighlightRule(int id_, QString name_, bool isRegEx_, bool isCaseSensitive_, bool isEnabled_, bool isInverse_,
-                      QString sender_, QString chanName_)
-            : id(id_), name(std::move(name_)), isRegEx(isRegEx_), isCaseSensitive(isCaseSensitive_),
-              isEnabled(isEnabled_), isInverse(isInverse_), sender(std::move(sender_)), chanName(std::move(chanName_))
-        {}
 
-        bool operator!=(const HighlightRule &other) const
+        /**
+         * Construct a highlight rule with the given parameters
+         *
+         * @param id               Integer ID of the rule
+         * @param contents         String representing a message contents expression to match
+         * @param isRegEx          True if regular expression, otherwise false
+         * @param isCaseSensitive  True if case sensitive, otherwise false
+         * @param isEnabled        True if enabled, otherwise false
+         * @param isInverse        True if rule is treated as highlight ignore, otherwise false
+         * @param sender           String representing a message sender expression to match
+         * @param chanName         String representing a channel name expression to match
+         */
+        HighlightRule(int id, QString contents, bool isRegEx, bool isCaseSensitive, bool isEnabled,
+                      bool isInverse, QString sender, QString chanName)
+            : _id(id), _contents(contents), _isRegEx(isRegEx), _isCaseSensitive(isCaseSensitive),
+              _isEnabled(isEnabled), _isInverse(isInverse), _sender(sender), _chanName(chanName)
         {
-            return (id != other.id ||
-                    name != other.name ||
-                    isRegEx != other.isRegEx ||
-                    isCaseSensitive != other.isCaseSensitive ||
-                    isEnabled != other.isEnabled ||
-                    isInverse != other.isInverse ||
-                    sender != other.sender ||
-                    chanName != other.chanName);
+            _cacheInvalid = true;
+            // Cache expression matches on construction
+            //
+            // This provides immediate feedback on errors when loading the rule.  If profiling shows
+            // this as a performance bottleneck, this can be removed in deference to caching on
+            // first use.
+            //
+            // Inversely, if needed for validity checks, caching can be done on every update below
+            // instead of on first use.
+            determineExpressions();
         }
+
+        /**
+         * Gets the unique ID of this rule
+         *
+         * @return Integer ID of the rule
+         */
+        inline int id() const {
+            return _id;
+        }
+        /**
+         * Sets the ID of this rule
+         *
+         * CAUTION: IDs should be kept unique!
+         *
+         * @param id Integer ID of the rule
+         */
+        inline void setId(int id) {
+            _id = id;
+        }
+
+        /**
+         * Gets the message contents this rule matches
+         *
+         * NOTE: Use HighlightRule::contentsMatcher() for performing matches
+         *
+         * @return String representing a phrase or expression to match
+         */
+        inline QString contents() const {
+            return _contents;
+        }
+        /**
+         * Sets the message contents this rule matches
+         *
+         * @param contents String representing a phrase or expression to match
+         */
+        inline void setContents(const QString &contents) {
+            _contents = contents;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this is a regular expression rule
+         *
+         * @return True if regular expression, otherwise false
+         */
+        inline bool isRegEx() const {
+            return _isRegEx;
+        }
+        /**
+         * Sets if this rule is a regular expression rule
+         *
+         * @param isRegEx True if regular expression, otherwise false
+         */
+        inline void setIsRegEx(bool isRegEx) {
+            _isRegEx = isRegEx;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this rule is case sensitive
+         *
+         * @return True if case sensitive, otherwise false
+         */
+        inline bool isCaseSensitive() const {
+            return _isCaseSensitive;
+        }
+        /**
+         * Sets if this rule is case sensitive
+         *
+         * @param isCaseSensitive True if case sensitive, otherwise false
+         */
+        inline void setIsCaseSensitive(bool isCaseSensitive) {
+            _isCaseSensitive = isCaseSensitive;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets if this rule is enabled and active
+         *
+         * @return True if enabled, otherwise false
+         */
+        inline bool isEnabled() const {
+            return _isEnabled;
+        }
+        /**
+         * Sets if this rule is enabled and active
+         *
+         * @param isEnabled True if enabled, otherwise false
+         */
+        inline void setIsEnabled(bool isEnabled) {
+            _isEnabled = isEnabled;
+        }
+
+        /**
+         * Gets if this rule is a highlight ignore rule
+         *
+         * @return True if rule is treated as highlight ignore, otherwise false
+         */
+        inline bool isInverse() const {
+            return _isInverse;
+        }
+        /**
+         * Sets if this rule is a highlight ignore rule
+         *
+         * @param isInverse True if rule is treated as highlight ignore, otherwise false
+         */
+        inline void setIsInverse(bool isInverse) {
+            _isInverse = isInverse;
+        }
+
+        /**
+         * Gets the message sender this rule matches
+         *
+         * NOTE: Use HighlightRule::senderMatcher() for performing matches
+         *
+         * @return String representing a phrase or expression to match
+         */
+        inline QString sender() const { return _sender; }
+        /**
+         * Sets the message sender this rule matches
+         *
+         * @param sender String representing a phrase or expression to match
+         */
+        inline void setSender(const QString &sender) {
+            _sender = sender;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets the channel name this rule matches
+         *
+         * NOTE: Use HighlightRule::chanNameMatcher() for performing matches
+         *
+         * @return String representing a phrase or expression to match
+         */
+        inline QString chanName() const { return _chanName; }
+        /**
+         * Sets the channel name this rule matches
+         *
+         * @param chanName String representing a phrase or expression to match
+         */
+        inline void setChanName(const QString &chanName) {
+            _chanName = chanName;
+            _cacheInvalid = true;
+        }
+
+        /**
+         * Gets the expression matcher for the message contents, caching if needed
+         *
+         * @return Expression matcher to compare with message contents
+         */
+        inline ExpressionMatch contentsMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _contentsMatch;
+        }
+
+        /**
+         * Gets the expression matcher for the message sender, caching if needed
+         *
+         * @return Expression matcher to compare with message sender
+         */
+        inline ExpressionMatch senderMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _senderMatch;
+        }
+
+        /**
+         * Gets the expression matcher for the channel name, caching if needed
+         *
+         * @return Expression matcher to compare with channel name
+         */
+        inline ExpressionMatch chanNameMatcher() const {
+            if (_cacheInvalid) {
+                determineExpressions();
+            }
+            return _chanNameMatch;
+        }
+
+        bool operator!=(const HighlightRule &other) const;
+
+    private:
+        /**
+         * Update internal cache of expression matching if needed
+         */
+        void determineExpressions() const;
+
+        int _id = -1;
+        QString _contents = {};
+        bool _isRegEx = false;
+        bool _isCaseSensitive = false;
+        bool _isEnabled = true;
+        bool _isInverse = false;
+        QString _sender = {};
+        QString _chanName = {};
+
+        // These represent internal cache and should be safe to mutate in 'const' functions
+        // See https://stackoverflow.com/questions/3141087/what-is-meant-with-const-at-end-of-function-declaration
+        mutable bool _cacheInvalid = true;           ///< If true, match cache needs redone
+        mutable ExpressionMatch _contentsMatch = {}; ///< Expression match cache for message content
+        mutable ExpressionMatch _senderMatch = {};   ///< Expression match cache for sender
+        mutable ExpressionMatch _chanNameMatch = {}; ///< Expression match cache for channel name
     };
 
     using HighlightRuleList = QList<HighlightRule>;
@@ -146,14 +362,20 @@ public slots:
         REQUEST(ARG(highlightNick))
     }
 
-    inline void setHighlightNick(int highlightNick) { _highlightNick = static_cast<HighlightNickType>(highlightNick); }
+    inline void setHighlightNick(int highlightNick) {
+        _highlightNick = static_cast<HighlightNickType>(highlightNick);
+        _cacheNickConfigInvalid = true;
+    }
 
     virtual inline void requestSetNicksCaseSensitive(bool nicksCaseSensitive)
     {
         REQUEST(ARG(nicksCaseSensitive))
     }
 
-    inline void setNicksCaseSensitive(bool nicksCaseSensitive) { _nicksCaseSensitive = nicksCaseSensitive; }
+    inline void setNicksCaseSensitive(bool nicksCaseSensitive) {
+        _nicksCaseSensitive = nicksCaseSensitive;
+        _cacheNickConfigInvalid = true;
+    }
 
 protected:
     void setHighlightRuleList(const QList<HighlightRule> &HighlightRuleList) { _highlightRuleList = HighlightRuleList; }
@@ -170,7 +392,31 @@ signals:
     void ruleAdded(QString name, bool isRegEx, bool isCaseSensitive, bool isEnabled, bool isInverse, QString sender, QString chanName);
 
 private:
+    /**
+     * Update internal cache of expression matching if needed
+     */
+    void determineNickExpressions(const QString &currentNick,
+                                  const QStringList identityNicks) const;
+
+    /**
+     * Check if nickname matching cache is invalid
+     * @param currentNick
+     * @param identityNicks
+     * @return
+     */
+    bool cacheNickInvalid(const QString &currentNick, const QStringList identityNicks) const {
+        if (_cacheNickConfigInvalid) return true;
+        if (_cachedNickCurrent != currentNick) return true;
+        if (_cachedIdentityNicks != identityNicks) return true;
+    }
+
     HighlightRuleList _highlightRuleList;
     HighlightNickType _highlightNick = HighlightNickType::CurrentNick;
     bool _nicksCaseSensitive = false;
+
+    // These represent internal cache and should be safe to mutate in 'const' functions
+    mutable bool _cacheNickConfigInvalid = true;     ///< If true, nick match cache needs redone
+    mutable QString _cachedNickCurrent = {};         ///< Last cached current nick
+    mutable QStringList _cachedIdentityNicks = {};   ///< Last cached identity nicks
+    mutable ExpressionMatch _cachedNickMatcher = {}; ///< Expression match cache for nicks
 };

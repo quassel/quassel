@@ -547,26 +547,26 @@ void CoreHighlightSettingsPage::highlightTableChanged(QTableWidgetItem *item)
 
     switch (item->column()) {
         case CoreHighlightSettingsPage::EnableColumn:
-            highlightRule.isEnabled = (item->checkState() == Qt::Checked);
+            highlightRule.setIsEnabled(item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::NameColumn:
-            highlightRule.name = item->text();
+            highlightRule.setContents(item->text());
             break;
         case CoreHighlightSettingsPage::RegExColumn:
-            highlightRule.isRegEx = (item->checkState() == Qt::Checked);
+            highlightRule.setIsRegEx(item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::CsColumn:
-            highlightRule.isCaseSensitive = (item->checkState() == Qt::Checked);
+            highlightRule.setIsCaseSensitive(item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::SenderColumn:
             if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
                 item->setText("");
-            highlightRule.sender = item->text();
+            highlightRule.setSender(item->text());
             break;
         case CoreHighlightSettingsPage::ChanColumn:
             if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
                 item->setText("");
-            highlightRule.chanName = item->text();
+            highlightRule.setChanName(item->text());
             break;
     }
     highlightList[item->row()] = highlightRule;
@@ -584,26 +584,26 @@ void CoreHighlightSettingsPage::ignoredTableChanged(QTableWidgetItem *item)
 
     switch (item->column()) {
         case CoreHighlightSettingsPage::EnableColumn:
-            ignoredRule.isEnabled = (item->checkState() == Qt::Checked);
+            ignoredRule.setIsEnabled(item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::NameColumn:
-            ignoredRule.name = item->text();
+            ignoredRule.setContents(item->text());
             break;
         case CoreHighlightSettingsPage::RegExColumn:
-            ignoredRule.isRegEx = (item->checkState() == Qt::Checked);
+            ignoredRule.setIsRegEx(item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::CsColumn:
-            ignoredRule.isCaseSensitive = (item->checkState() == Qt::Checked);
+            ignoredRule.setIsCaseSensitive(item->checkState() == Qt::Checked);
             break;
         case CoreHighlightSettingsPage::SenderColumn:
             if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
                 item->setText("");
-            ignoredRule.sender = item->text();
+            ignoredRule.setSender(item->text());
             break;
         case CoreHighlightSettingsPage::ChanColumn:
             if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
                 item->setText("");
-            ignoredRule.chanName = item->text();
+            ignoredRule.setChanName(item->text());
             break;
     }
     ignoredList[item->row()] = ignoredRule;
@@ -619,18 +619,13 @@ void CoreHighlightSettingsPage::load()
     auto ruleManager = Client::highlightRuleManager();
     if (ruleManager) {
         for (auto &rule : ruleManager->highlightRuleList()) {
-            if (rule.isInverse) {
-                addNewIgnoredRow(rule.isEnabled,
-                                 rule.id,
-                                 rule.name,
-                                 rule.isRegEx,
-                                 rule.isCaseSensitive,
-                                 rule.sender,
-                                 rule.chanName);
+            if (rule.isInverse()) {
+                addNewIgnoredRow(rule.isEnabled(), rule.id(), rule.contents(), rule.isRegEx(),
+                                 rule.isCaseSensitive(), rule.sender(), rule.chanName());
             }
             else {
-                addNewHighlightRow(rule.isEnabled, rule.id, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.sender,
-                                   rule.chanName);
+                addNewHighlightRow(rule.isEnabled(), rule.id(), rule.contents(), rule.isRegEx(),
+                                   rule.isCaseSensitive(), rule.sender(), rule.chanName());
             }
         }
 
@@ -665,13 +660,15 @@ void CoreHighlightSettingsPage::save()
     clonedManager.clear();
 
     for (auto &rule : highlightList) {
-        clonedManager.addHighlightRule(rule.id, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, false,
-                                       rule.sender, rule.chanName);
+        clonedManager.addHighlightRule(rule.id(), rule.contents(), rule.isRegEx(),
+                                       rule.isCaseSensitive(), rule.isEnabled(), false,
+                                       rule.sender(), rule.chanName());
     }
 
     for (auto &rule : ignoredList) {
-        clonedManager.addHighlightRule(rule.id, rule.name, rule.isRegEx, rule.isCaseSensitive, rule.isEnabled, true,
-                                       rule.sender, rule.chanName);
+        clonedManager.addHighlightRule(rule.id(), rule.contents(), rule.isRegEx(),
+                                       rule.isCaseSensitive (), rule.isEnabled(), true,
+                                       rule.sender(), rule.chanName());
     }
 
     auto highlightNickType = ui.highlightNicksComboBox->itemData(ui.highlightNicksComboBox->currentIndex()).value<int>();
@@ -689,13 +686,13 @@ int CoreHighlightSettingsPage::nextId()
 {
     int max = 0;
     for (int i = 0; i < highlightList.count(); i++) {
-        int id = highlightList[i].id;
+        int id = highlightList[i].id();
         if (id > max) {
             max = id;
         }
     }
     for (int i = 0; i < ignoredList.count(); i++) {
-        int id = ignoredList[i].id;
+        int id = ignoredList[i].id();
         if (id > max) {
             max = id;
         }
