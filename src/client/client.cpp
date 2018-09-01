@@ -444,6 +444,9 @@ void Client::setSyncedToCore()
     Q_ASSERT(!_highlightRuleManager);
     _highlightRuleManager = new HighlightRuleManager(this);
     p->synchronize(highlightRuleManager());
+    // Listen to network removed events
+    connect(this, SIGNAL(networkRemoved(NetworkId)),
+        _highlightRuleManager, SLOT(networkRemoved(NetworkId)));
 
 /*  not ready yet
     // create TransferManager and DccConfig if core supports them

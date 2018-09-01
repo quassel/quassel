@@ -48,5 +48,6 @@ void CoreHighlightRuleManager::save()
 bool CoreHighlightRuleManager::match(const RawMessage &msg, const QString &currentNick,
                                      const QStringList &identityNicks)
 {
-    return match(msg.text, msg.sender, msg.type, msg.flags, msg.target, currentNick, identityNicks);
+    return match(msg.networkId, msg.text, msg.sender, msg.type, msg.flags, msg.target, currentNick,
+                 identityNicks);
 }

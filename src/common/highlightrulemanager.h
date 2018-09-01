@@ -29,6 +29,7 @@
 
 #include "expressionmatch.h"
 #include "message.h"
+#include "nickhighlightmatcher.h"
 #include "syncableobject.h"
 
 class HighlightRuleManager : public SyncableObject
@@ -364,7 +365,10 @@ public slots:
 
     inline void setHighlightNick(int highlightNick) {
         _highlightNick = static_cast<HighlightNickType>(highlightNick);
-        _cacheNickConfigInvalid = true;
+        // Convert from HighlightRuleManager::HighlightNickType to
+        // NickHighlightMatcher::HighlightNickType
+        _nickMatcher.setHighlightMode(
+                    static_cast<NickHighlightMatcher::HighlightNickType>(_highlightNick));
     }
 
     virtual inline void requestSetNicksCaseSensitive(bool nicksCaseSensitive)
@@ -374,49 +378,42 @@ public slots:
 
     inline void setNicksCaseSensitive(bool nicksCaseSensitive) {
         _nicksCaseSensitive = nicksCaseSensitive;
-        _cacheNickConfigInvalid = true;
+        // Update nickname matcher, too
+        _nickMatcher.setCaseSensitive(nicksCaseSensitive);
+    }
+
+    /**
+     * Network removed from system
+     *
+     * Handles cleaning up cache from stale networks.
+     *
+     * @param id Network ID of removed network
+     */
+    inline void networkRemoved(NetworkId id) {
+        // Clean up nickname matching cache
+        _nickMatcher.removeNetwork(id);
     }
 
 protected:
     void setHighlightRuleList(const QList<HighlightRule> &HighlightRuleList) { _highlightRuleList = HighlightRuleList; }
 
-    bool match(const QString &msgContents,
+    bool match(const NetworkId &netId,
+               const QString &msgContents,
                const QString &msgSender,
                Message::Type msgType,
                Message::Flags msgFlags,
                const QString &bufferName,
                const QString &currentNick,
-               const QStringList identityNicks);
+               const QStringList &identityNicks);
 
 signals:
     void ruleAdded(QString name, bool isRegEx, bool isCaseSensitive, bool isEnabled, bool isInverse, QString sender, QString chanName);
 
 private:
-    /**
-     * Update internal cache of expression matching if needed
-     */
-    void determineNickExpressions(const QString &currentNick,
-                                  const QStringList identityNicks) const;
+    HighlightRuleList _highlightRuleList = {}; ///< Custom highlight rule list
+    NickHighlightMatcher _nickMatcher = {};    ///< Nickname highlight matcher
 
-    /**
-     * Check if nickname matching cache is invalid
-     * @param currentNick
-     * @param identityNicks
-     * @return
-     */
-    bool cacheNickInvalid(const QString &currentNick, const QStringList identityNicks) const {
-        if (_cacheNickConfigInvalid) return true;
-        if (_cachedNickCurrent != currentNick) return true;
-        if (_cachedIdentityNicks != identityNicks) return true;
-    }
-
-    HighlightRuleList _highlightRuleList;
+    /// Nickname highlighting mode
     HighlightNickType _highlightNick = HighlightNickType::CurrentNick;
-    bool _nicksCaseSensitive = false;
-
-    // These represent internal cache and should be safe to mutate in 'const' functions
-    mutable bool _cacheNickConfigInvalid = true;     ///< If true, nick match cache needs redone
-    mutable QString _cachedNickCurrent = {};         ///< Last cached current nick
-    mutable QStringList _cachedIdentityNicks = {};   ///< Last cached identity nicks
-    mutable ExpressionMatch _cachedNickMatcher = {}; ///< Expression match cache for nicks
+    bool _nicksCaseSensitive = false; ///< If true, match nicknames with exact case
 };
