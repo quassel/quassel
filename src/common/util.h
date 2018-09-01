@@ -80,28 +80,6 @@ QByteArray prettyDigest(const QByteArray &digest);
  */
 QString formatCurrentDateTimeInString(const QString &formatStr);
 
-/** Check if a scope rule matches a string
- *
- * When isRegEx is false:
- * Checks that the string does NOT match ANY inverted rules (prefixed by '!'), then checks that
- * it matches AT LEAST one normal (non-inverted) rule.
- *
- * If only inverted rules are specified, it'll match so long as the string does not match any
- * inverted rules (implicit wildcard).
- *
- * When isRegEx is true:
- * Checks that the string matches the entire scopeRule as a regular expression.  If scopeRule starts
- * with a '!', check that the string does NOT match the regular expression.
- *
- * @param string           String to test, e.g. network/channel name
- * @param scopeRule        ';'-separated list of wildcard expressions, prefix of '!' inverts subrule
- * @param isRegEx          If true, treat entire scope rule as regular expression, not wildcards
- * @param isCaseSensitive  If true, treat as case-sensitive, else case-insensitive
- * @return True if matches, otherwise false
- */
-bool scopeMatch(const QString &string, const QString &scopeRule,
-                const bool &isRegEx = false, const bool &isCaseSensitive = false);
-
 /**
  * Try to localize a given date/time in seconds from Unix epoch, pass through string if invalid
  *
