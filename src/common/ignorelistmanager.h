@@ -122,10 +122,27 @@ public:
                 // This is not performance-intensive; sticking with QRegExp for Qt 4 is fine
                 // Split based on whitespace characters
                 QStringList split(contents().split(QRegExp("\\s+"), QString::SkipEmptyParts));
-                // Match on the first item
-                _cacheCtcpSender = split.takeFirst();
-                // Track the rest as CTCP types to ignore
-                _cacheCtcpTypes = split;
+                // Match on the first item, handling empty rules/matches
+                if (!split.isEmpty()) {
+                    // Take the first item as the sender
+                    _cacheCtcpSender = split.takeFirst();
+                    // Track the rest as CTCP types to ignore
+                    _cacheCtcpTypes = split;
+                }
+                else {
+                    // No match found - this can happen if a pure whitespace CTCP ignore rule is
+                    // created.  Fall back to matching all senders.
+                    if (_isRegEx) {
+                        // RegEx match everything
+                        _cacheCtcpSender = ".*";
+                    }
+                    else {
+                        // Wildcard match everything
+                        _cacheCtcpSender = "*";
+                    }
+                    // Clear the types (split is already empty)
+                    _cacheCtcpTypes = split;
+                }
             }
             _type = type;
         }
