@@ -32,6 +32,7 @@ set(SOURCES
     network.cpp
     networkconfig.cpp
     networkevent.cpp
+    nickhighlightmatcher.cpp
     peer.cpp
     peerfactory.cpp
     presetnetworks.cpp
