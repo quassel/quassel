@@ -25,6 +25,7 @@
 
 #include "abstractmessageprocessor.h"
 #include "expressionmatch.h"
+#include "nickhighlightmatcher.h"
 
 class QtUiMessageProcessor : public AbstractMessageProcessor
 {
@@ -46,6 +47,18 @@ public:
 public slots:
     void process(Message &msg);
     void process(QList<Message> &msgs);
+
+    /**
+     * Network removed from system
+     *
+     * Handles cleaning up cache from stale networks.
+     *
+     * @param id Network ID of removed network
+     */
+    inline void networkRemoved(NetworkId id) {
+        // Clean up nickname matching cache
+        _nickMatcher.removeNetwork(id);
+    }
 
 private slots:
     void processNextMessage();
@@ -239,33 +252,12 @@ private:
 
     using HighlightNickType = NotificationSettings::HighlightNickType;
 
-    /**
-     * Update internal cache of expression matching if needed
-     */
-    void determineNickExpressions(const QString &currentNick,
-                                  const QStringList identityNicks) const;
+    LegacyHighlightRuleList _highlightRuleList; ///< Custom highlight rule list
+    NickHighlightMatcher _nickMatcher = {};     ///< Nickname highlight matcher
 
-    /**
-     * Check if nickname matching cache is invalid
-     * @param currentNick
-     * @param identityNicks
-     * @return
-     */
-    bool cacheNickInvalid(const QString &currentNick, const QStringList identityNicks) const {
-        if (_cacheNickConfigInvalid) return true;
-        if (_cachedNickCurrent != currentNick) return true;
-        if (_cachedIdentityNicks != identityNicks) return true;
-    }
-
-    LegacyHighlightRuleList _highlightRuleList;
+    /// Nickname highlighting mode
     HighlightNickType _highlightNick = HighlightNickType::CurrentNick;
-    bool _nicksCaseSensitive = false;
-
-    // These represent internal cache and should be safe to mutate in 'const' functions
-    mutable bool _cacheNickConfigInvalid = true;     ///< If true, nick match cache needs redone
-    mutable QString _cachedNickCurrent = {};         ///< Last cached current nick
-    mutable QStringList _cachedIdentityNicks = {};   ///< Last cached identity nicks
-    mutable ExpressionMatch _cachedNickMatcher = {}; ///< Expression match cache for nicks
+    bool _nicksCaseSensitive = false; ///< If true, match nicknames with exact case
 
     QList<QList<Message> > _processQueue;
     QList<Message> _currentBatch;

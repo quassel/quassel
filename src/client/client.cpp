@@ -168,6 +168,10 @@ void Client::init()
     connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
     connect(this, SIGNAL(disconnected()), mainUi(), SLOT(disconnectedFromCore()));
 
+    // Listen to network removed events
+    connect(this, SIGNAL(networkRemoved(NetworkId)),
+        _messageProcessor, SLOT(networkRemoved(NetworkId)));
+
     // attach backlog manager
     p->synchronize(backlogManager());
     connect(backlogManager(), SIGNAL(messagesReceived(BufferId, int)), _messageModel, SLOT(messagesReceived(BufferId, int)));
