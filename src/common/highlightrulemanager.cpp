@@ -141,13 +141,14 @@ void HighlightRuleManager::addHighlightRule(int id, const QString &name, bool is
 }
 
 
-bool HighlightRuleManager::match(const QString &msgContents,
+bool HighlightRuleManager::match(const NetworkId &netId,
+                                 const QString &msgContents,
                                  const QString &msgSender,
                                  Message::Type msgType,
                                  Message::Flags msgFlags,
                                  const QString &bufferName,
                                  const QString &currentNick,
-                                 const QStringList identityNicks)
+                                 const QStringList &identityNicks)
 {
     if (!((msgType & (Message::Plain | Message::Notice | Message::Action)) && !(msgFlags & Message::Self))) {
        return false;
@@ -194,13 +195,9 @@ bool HighlightRuleManager::match(const QString &msgContents,
 
     // Check nicknames
     if (_highlightNick != HighlightNickType::NoNick && !currentNick.isEmpty()) {
-        // Update cache if needed
-        determineNickExpressions(currentNick, identityNicks);
-
-        // Check for a match
-        if (_cachedNickMatcher.isValid()
-                && _cachedNickMatcher.match(stripFormatCodes(msgContents))) {
-            // Nick matcher is valid and match found
+        // Nickname matching allowed and current nickname is known
+        // Run the nickname matcher on the unformatted string
+        if (_nickMatcher.match(stripFormatCodes(msgContents), netId, currentNick, identityNicks)) {
             return true;
         }
     }
@@ -228,44 +225,8 @@ void HighlightRuleManager::toggleHighlightRule(int highlightRule)
 
 bool HighlightRuleManager::match(const Message &msg, const QString &currentNick, const QStringList &identityNicks)
 {
-    return match(msg.contents(), msg.sender(), msg.type(), msg.flags(), msg.bufferInfo().bufferName(), currentNick, identityNicks);
-}
-
-
-void HighlightRuleManager::determineNickExpressions(const QString &currentNick,
-                                                    const QStringList identityNicks) const
-{
-    // Don't do anything for no nicknames
-    if (_highlightNick == HighlightNickType::NoNick) {
-        return;
-    }
-
-    // Only update if needed (check nickname config, current nick, identity nicks for change)
-    if (!_cacheNickConfigInvalid
-          && _cachedNickCurrent == currentNick
-          && _cachedIdentityNicks == identityNicks) {
-        return;
-    }
-
-    // Add all nicknames
-    QStringList nickList;
-    if (_highlightNick == CurrentNick) {
-        nickList << currentNick;
-    }
-    else if (_highlightNick == AllNicks) {
-        nickList = identityNicks;
-        if (!nickList.contains(currentNick))
-            nickList.prepend(currentNick);
-    }
-
-    // Set up phrase matcher, joining with newlines
-    _cachedNickMatcher = ExpressionMatch(nickList.join("\n"),
-                                        ExpressionMatch::MatchMode::MatchMultiPhrase,
-                                        _nicksCaseSensitive);
-
-    _cacheNickConfigInvalid = false;
-    _cachedNickCurrent = currentNick;
-    _cachedIdentityNicks = identityNicks;
+    return match(msg.bufferInfo().networkId(), msg.contents(), msg.sender(), msg.type(), msg.flags(),
+                 msg.bufferInfo().bufferName(), currentNick, identityNicks);
 }
 
 

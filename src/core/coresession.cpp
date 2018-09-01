@@ -142,6 +142,9 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     p->synchronize(_coreInfo);
     p->synchronize(&_ignoreListManager);
     p->synchronize(&_highlightRuleManager);
+    // Listen to network removed events
+    connect(this, SIGNAL(networkRemoved(NetworkId)),
+        &_highlightRuleManager, SLOT(networkRemoved(NetworkId)));
     p->synchronize(transferManager());
     // Restore session state
     if (restoreState)
