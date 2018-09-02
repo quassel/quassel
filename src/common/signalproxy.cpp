@@ -166,7 +166,9 @@ int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **
 //  SignalProxy
 // ==================================================
 
-thread_local SignalProxy *SignalProxy::_current{nullptr};
+namespace {
+thread_local SignalProxy *_current{nullptr};
+}
 
 SignalProxy::SignalProxy(QObject *parent)
     : QObject(parent)
@@ -201,6 +203,12 @@ SignalProxy::~SignalProxy()
     removeAllPeers();
 
     _current = nullptr;
+}
+
+
+SignalProxy *SignalProxy::current()
+{
+    return _current;
 }
 
 
