@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLICKABLE_H_
-#define CLICKABLE_H_
+#pragma once
+
+#include <vector>
 
 #include <QStackedWidget>
 
@@ -57,13 +58,10 @@ private:
 };
 
 
-class ClickableList : public QList<Clickable>
+class ClickableList : public std::vector<Clickable>
 {
 public:
     static ClickableList fromString(const QString &);
 
     Clickable atCursorPos(int idx);
 };
-
-
-#endif // CLICKABLE_H_
