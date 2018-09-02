@@ -45,9 +45,7 @@ function(quassel_add_module _module)
     string(REPLACE "::" "_" target ${target})
     string(REPLACE "_" "-" output_name ${target})
 
-    # On Windows, building shared libraries requires export headers.
-    # Let's bother with that later.
-    if (ARG_STATIC OR WIN32)
+    if (ARG_STATIC)
         set(buildmode STATIC)
     else()
         set(buildmode SHARED)
