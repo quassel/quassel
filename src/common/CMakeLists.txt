@@ -1,4 +1,4 @@
-quassel_add_module(Common)
+quassel_add_module(Common EXPORT)
 
 target_sources(${TARGET} PRIVATE
     abstractsignalwatcher.h

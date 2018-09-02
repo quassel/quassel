@@ -20,13 +20,15 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QHostAddress>
 #include <QUuid>
 
 #include "peer.h"
 #include "syncableobject.h"
 
-class Transfer : public SyncableObject
+class COMMON_EXPORT Transfer : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

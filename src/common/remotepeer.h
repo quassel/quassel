@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef REMOTEPEER_H
-#define REMOTEPEER_H
+#pragma once
+
+#include "common-export.h"
 
 #include <QDateTime>
 
@@ -32,7 +33,7 @@ class QTimer;
 
 class AuthHandler;
 
-class RemotePeer : public Peer
+class COMMON_EXPORT RemotePeer : public Peer
 {
     Q_OBJECT
 
@@ -106,5 +107,3 @@ private:
     int _lag;
     quint32 _msgSize;
 };
-
-#endif

@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef AUTHHANDLER_H
-#define AUTHHANDLER_H
+#pragma once
+
+#include "common-export.h"
 
 #include <QTcpSocket>
 
@@ -27,7 +28,7 @@
 
 class Peer;
 
-class AuthHandler : public QObject
+class COMMON_EXPORT AuthHandler : public QObject
 {
     Q_OBJECT
 
@@ -73,5 +74,3 @@ private:
     QTcpSocket *_socket; // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
     bool _disconnectedSent;
 };
-
-#endif

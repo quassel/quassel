@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include "syncableobject.h"
 #include "types.h"
 
@@ -31,7 +33,7 @@
  *      when RPL_LISTEND is received the clients will be informed, that they can pull the data
  *  3.) client pulls the data by calling requestChannelList again. receiving the data in receiveChannelList
  */
-class IrcListHelper : public SyncableObject
+class COMMON_EXPORT IrcListHelper : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

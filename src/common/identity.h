@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QByteArray>
 #include <QDataStream>
 #include <QMetaType>
@@ -29,7 +31,7 @@
 #include "types.h"
 #include "syncableobject.h"
 
-class Identity : public SyncableObject
+class COMMON_EXPORT Identity : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT
@@ -163,7 +165,7 @@ Q_DECLARE_METATYPE(Identity)
 #include <QSslKey>
 #include <QSslCertificate>
 
-class CertManager : public SyncableObject
+class COMMON_EXPORT CertManager : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

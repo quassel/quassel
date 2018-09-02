@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef GRAPHICALUI_H_
-#define GRAPHICALUI_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include "abstractui.h"
 #include "singleton.h"
@@ -36,7 +37,7 @@ class UiStyle;
 #include <Carbon/Carbon.h>
 #endif
 
-class GraphicalUi : public AbstractUi, protected Singleton<GraphicalUi>
+class UISUPPORT_EXPORT GraphicalUi : public AbstractUi, protected Singleton<GraphicalUi>
 {
     Q_OBJECT
 
@@ -132,5 +133,3 @@ ToolBarActionProvider *GraphicalUi::toolBarActionProvider() { return _toolBarAct
 UiStyle *GraphicalUi::uiStyle() { return _uiStyle; }
 QWidget *GraphicalUi::mainWidget() { return _mainWidget; }
 bool GraphicalUi::isHidingMainWidgetAllowed() const { return false; }
-
-#endif

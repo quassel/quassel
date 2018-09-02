@@ -18,13 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERHOTLISTFILTER_H
-#define BUFFERHOTLISTFILTER_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QSortFilterProxyModel>
 #include "types.h"
 
-class BufferHotListFilter : public QSortFilterProxyModel
+class UISUPPORT_EXPORT BufferHotListFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -39,6 +40,3 @@ protected:
     virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
     virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
 };
-
-
-#endif //BUFFERHOTLISTFILTER_H

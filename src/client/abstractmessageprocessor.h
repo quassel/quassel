@@ -18,14 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ABSTRACTMESSAGEPROCESSOR_H_
-#define ABSTRACTMESSAGEPROCESSOR_H_
+#pragma once
+
+#include "client-export.h"
 
 #include "client.h"
 #include "message.h"
 #include "networkmodel.h"
 
-class AbstractMessageProcessor : public QObject
+class CLIENT_EXPORT AbstractMessageProcessor : public QObject
 {
     Q_OBJECT
 
@@ -43,6 +44,3 @@ protected:
     // is called before inserting the message into the model
     inline void preProcess(Message &msg) { Client::networkModel()->updateBufferActivity(msg); }
 };
-
-
-#endif

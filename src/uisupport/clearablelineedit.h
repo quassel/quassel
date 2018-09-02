@@ -18,14 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLEARABLELINEEDIT_H
-#define CLEARABLELINEEDIT_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QLineEdit>
 
 class QToolButton;
 
-class ClearableLineEdit : public QLineEdit
+class UISUPPORT_EXPORT ClearableLineEdit : public QLineEdit
 {
     Q_OBJECT
 
@@ -41,6 +42,3 @@ private slots:
 private:
     QToolButton *clearButton;
 };
-
-
-#endif // CLEARABLELINEEDIT_H

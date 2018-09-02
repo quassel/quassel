@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ABSTRACTNOTIFICATIONBACKEND_H_
-#define ABSTRACTNOTIFICATIONBACKEND_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QObject>
 #include <QString>
@@ -28,7 +29,7 @@
 
 class SettingsPage;
 
-class AbstractNotificationBackend : public QObject
+class UISUPPORT_EXPORT AbstractNotificationBackend : public QObject
 {
     Q_OBJECT
 
@@ -68,6 +69,3 @@ signals:
     //! May be emitted by the notification to tell the MainWin to raise itself
     void activated(uint notificationId = 0);
 };
-
-
-#endif

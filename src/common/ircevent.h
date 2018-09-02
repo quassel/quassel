@@ -18,13 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IRCEVENT_H
-#define IRCEVENT_H
+#pragma once
+
+#include "common-export.h"
 
 #include "networkevent.h"
 #include "util.h"
 
-class IrcEvent : public NetworkEvent
+class COMMON_EXPORT IrcEvent : public NetworkEvent
 {
 public:
     explicit IrcEvent(EventManager::EventType type, Network *network, const QString &prefix, const QStringList &params = QStringList())
@@ -62,7 +63,7 @@ private:
 };
 
 
-class IrcEventNumeric : public IrcEvent
+class COMMON_EXPORT IrcEventNumeric : public IrcEvent
 {
 public:
     explicit IrcEventNumeric(uint number, Network *network, const QString &prefix, const QString &target, const QStringList &params = QStringList())
@@ -99,7 +100,7 @@ private:
 };
 
 
-class IrcEventRawMessage : public IrcEvent
+class COMMON_EXPORT IrcEventRawMessage : public IrcEvent
 {
 public:
     explicit inline IrcEventRawMessage(EventManager::EventType type, Network *network,
@@ -137,6 +138,3 @@ private:
 
     friend class IrcEvent;
 };
-
-
-#endif

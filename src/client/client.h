@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include <memory>
 
 #include <QList>
@@ -66,7 +68,7 @@ class TransferModel;
 
 struct NetworkInfo;
 
-class Client : public QObject, public Singleton<Client>
+class CLIENT_EXPORT Client : public QObject, public Singleton<Client>
 {
     Q_OBJECT
 

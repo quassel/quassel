@@ -18,14 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef TOOLBARACTIONPROVIDER_H_
-#define TOOLBARACTIONPROVIDER_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include "networkmodelcontroller.h"
 
 class QToolBar;
 
-class ToolBarActionProvider : public NetworkModelController
+class UISUPPORT_EXPORT ToolBarActionProvider : public NetworkModelController
 {
     Q_OBJECT
 
@@ -67,6 +68,3 @@ private:
     QModelIndex _currentBuffer;
     QModelIndexList _selectedNicks;
 };
-
-
-#endif

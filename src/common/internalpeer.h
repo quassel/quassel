@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QPointer>
 #include <QString>
 
@@ -27,7 +29,7 @@
 #include "protocol.h"
 #include "signalproxy.h"
 
-class InternalPeer : public Peer
+class COMMON_EXPORT InternalPeer : public Peer
 {
     Q_OBJECT
 

@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QHostAddress>
 
 #include "syncableobject.h"
@@ -30,7 +32,7 @@
  * @warning Equality and assignment operators are optimized for use in a settings page
  *          and do not cover all attributes!
  */
-class DccConfig : public SyncableObject
+class COMMON_EXPORT DccConfig : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

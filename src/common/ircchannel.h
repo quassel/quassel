@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QHash>
 #include <QSet>
 #include <QString>
@@ -31,7 +33,7 @@
 class IrcUser;
 class Network;
 
-class IrcChannel : public SyncableObject
+class COMMON_EXPORT IrcChannel : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

@@ -18,15 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERINFO_H
-#define BUFFERINFO_H
+#pragma once
+
+#include "common-export.h"
 
 #include "types.h"
 
 class QString;
 class QDataStream;
 
-class BufferInfo
+class COMMON_EXPORT BufferInfo
 {
 public:
     enum Type {
@@ -84,5 +85,3 @@ Q_DECLARE_METATYPE(BufferInfo)
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferInfo::ActivityLevel)
 
 uint qHash(const BufferInfo &);
-
-#endif

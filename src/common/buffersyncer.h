@@ -20,11 +20,13 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include "syncableobject.h"
 #include "types.h"
 #include "message.h"
 
-class BufferSyncer : public SyncableObject
+class COMMON_EXPORT BufferSyncer : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

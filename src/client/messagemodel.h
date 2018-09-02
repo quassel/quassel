@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef MESSAGEMODEL_H_
-#define MESSAGEMODEL_H_
+#pragma once
+
+#include "client-export.h"
 
 #include <QAbstractItemModel>
 #include <QDateTime>
@@ -31,7 +32,7 @@
 class MessageModelItem;
 struct MsgId;
 
-class MessageModel : public QAbstractItemModel
+class CLIENT_EXPORT MessageModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -134,7 +135,7 @@ QModelIndex MessageModel::index(int row, int column, const QModelIndex &parent) 
 // **************************************************
 //  MessageModelItem
 // **************************************************
-class MessageModelItem
+class CLIENT_EXPORT MessageModelItem
 {
 public:
     //! Creates a MessageModelItem from a Message object.
@@ -168,5 +169,3 @@ private:
 
 
 QDebug operator<<(QDebug dbg, const MessageModelItem &msgItem);
-
-#endif

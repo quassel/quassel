@@ -18,14 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IRCLISTMODEL_H
-#define IRCLISTMODEL_H
+#pragma once
+
+#include "client-export.h"
 
 #include "irclisthelper.h"
 
 #include <QAbstractItemModel>
 
-class IrcListModel : public QAbstractItemModel
+class CLIENT_EXPORT IrcListModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -50,6 +51,3 @@ public slots:
 private:
     QList<IrcListHelper::ChannelDescription> _channelList;
 };
-
-
-#endif //IRCLISTMODEL_H

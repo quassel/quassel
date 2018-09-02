@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#pragma once
+
+#include "common-export.h"
 
 #include <QCoreApplication>
 #include <QHash>
@@ -29,7 +30,7 @@
 
 #include "quassel.h"
 
-class SettingsChangeNotifier : public QObject
+class COMMON_EXPORT SettingsChangeNotifier : public QObject
 {
     Q_OBJECT
 
@@ -41,7 +42,7 @@ private:
 };
 
 
-class Settings
+class COMMON_EXPORT Settings
 {
 public:
     enum Mode { Default, Custom };
@@ -222,6 +223,3 @@ private:
         return settingsChangeNotifier.contains(normKey);
     }
 };
-
-
-#endif

@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QString>
 #include <QStringList>
 #include <QList>
@@ -46,7 +48,7 @@ struct NetworkInfo;
 
 // TODO: ConnectionInfo to propagate and sync the current state of NetworkConnection, encodings etcpp
 
-class Network : public SyncableObject
+class COMMON_EXPORT Network : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT
@@ -758,7 +760,7 @@ private:
 
 
 //! Stores all editable information about a network (as opposed to runtime state).
-struct NetworkInfo
+struct COMMON_EXPORT NetworkInfo
 {
     QString networkName;
 
@@ -798,12 +800,12 @@ public:
     bool operator!=(const NetworkInfo &other) const;
 };
 
-QDataStream &operator<<(QDataStream &out, const NetworkInfo &info);
-QDataStream &operator>>(QDataStream &in, NetworkInfo &info);
-QDebug operator<<(QDebug dbg, const NetworkInfo &i);
+COMMON_EXPORT QDataStream &operator<<(QDataStream &out, const NetworkInfo &info);
+COMMON_EXPORT QDataStream &operator>>(QDataStream &in, NetworkInfo &info);
+COMMON_EXPORT QDebug operator<<(QDebug dbg, const NetworkInfo &i);
 Q_DECLARE_METATYPE(NetworkInfo)
 
-QDataStream &operator<<(QDataStream &out, const Network::Server &server);
-QDataStream &operator>>(QDataStream &in, Network::Server &server);
-QDebug operator<<(QDebug dbg, const Network::Server &server);
+COMMON_EXPORT QDataStream &operator<<(QDataStream &out, const Network::Server &server);
+COMMON_EXPORT QDataStream &operator>>(QDataStream &in, Network::Server &server);
+COMMON_EXPORT QDebug operator<<(QDebug dbg, const Network::Server &server);
 Q_DECLARE_METATYPE(Network::Server)

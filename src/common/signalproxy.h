@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QEvent>
 #include <QSet>
 
@@ -34,7 +36,7 @@ class QIODevice;
 class Peer;
 class SyncableObject;
 
-class SignalProxy : public QObject
+class COMMON_EXPORT SignalProxy : public QObject
 {
     Q_OBJECT
 

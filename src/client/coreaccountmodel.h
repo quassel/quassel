@@ -18,15 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREACCOUNTMODEL_H_
-#define COREACCOUNTMODEL_H_
+#pragma once
+
+#include "client-export.h"
 
 #include <QAbstractListModel>
 #include <QUuid>
 
 #include "coreaccount.h"
 
-class CoreAccountModel : public QAbstractListModel
+class CLIENT_EXPORT CoreAccountModel : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -88,6 +89,3 @@ AccountId CoreAccountModel::internalAccount() const
 {
     return _internalAccount;
 }
-
-
-#endif

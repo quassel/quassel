@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include "syncableobject.h"
 
 #include <QList>
@@ -28,7 +30,7 @@
 class BufferViewConfig;
 class SignalProxy;
 
-class BufferViewManager : public SyncableObject
+class COMMON_EXPORT BufferViewManager : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

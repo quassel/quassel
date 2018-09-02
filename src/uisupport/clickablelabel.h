@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLICKABLELABEL_H
-#define CLICKABLELABEL_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QLabel>
 
-class ClickableLabel : public QLabel
+class UISUPPORT_EXPORT ClickableLabel : public QLabel
 {
     Q_OBJECT
 
@@ -36,6 +37,3 @@ signals:
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
 };
-
-
-#endif //CLICKABLELABEL_H

@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NICKVIEWFILTER_H
-#define NICKVIEWFILTER_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QSortFilterProxyModel>
 
@@ -28,7 +29,7 @@
 class NetworkModel;
 
 // This is proxymodel is purely for the sorting right now
-class NickViewFilter : public QSortFilterProxyModel
+class UISUPPORT_EXPORT NickViewFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -45,6 +46,3 @@ protected:
 private:
     BufferId _bufferId;
 };
-
-
-#endif

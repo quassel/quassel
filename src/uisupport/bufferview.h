@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERVIEW_H_
-#define BUFFERVIEW_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QAction>
 #include <QMenu>
@@ -37,7 +38,7 @@
 /*****************************************
  * The TreeView showing the Buffers
  *****************************************/
-class BufferView : public TreeViewTouch
+class UISUPPORT_EXPORT BufferView : public TreeViewTouch
 {
     Q_OBJECT
 
@@ -160,7 +161,7 @@ protected:
 // ==============================
 //  BufferView Dock
 // ==============================
-class BufferViewDock : public QDockWidget
+class UISUPPORT_EXPORT BufferViewDock : public QDockWidget
 {
     Q_OBJECT
     Q_PROPERTY(bool active READ isActive WRITE setActive STORED true)
@@ -199,6 +200,3 @@ private:
     bool _active;
     QString _title;
 };
-
-
-#endif

@@ -1,4 +1,4 @@
-quassel_add_module(QtUi)
+quassel_add_module(QtUi EXPORT)
 
 target_sources(${TARGET} PRIVATE
     aboutdlg.cpp

@@ -1,4 +1,4 @@
-quassel_add_module(Client)
+quassel_add_module(Client EXPORT)
 
 target_sources(${TARGET} PRIVATE
     abstractmessageprocessor.cpp

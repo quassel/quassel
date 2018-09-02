@@ -20,13 +20,15 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include "syncableobject.h"
 
 /*
  * gather various information about the core.
  */
 
-class CoreInfo : public SyncableObject
+class COMMON_EXPORT CoreInfo : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

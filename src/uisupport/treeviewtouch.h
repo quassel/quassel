@@ -20,12 +20,14 @@
 
 #pragma once
 
+#include "uisupport-export.h"
+
 #include <QTreeView>
 
 /**
 * This class handles Touch Events for TreeViews
 */
-class TreeViewTouch : public QTreeView
+class UISUPPORT_EXPORT TreeViewTouch : public QTreeView
 {
     Q_OBJECT
 

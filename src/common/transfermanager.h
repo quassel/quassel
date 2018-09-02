@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QHash>
 #include <QList>
 #include <QUuid>
@@ -28,7 +30,7 @@
 
 class Transfer;
 
-class TransferManager : public SyncableObject
+class COMMON_EXPORT TransferManager : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

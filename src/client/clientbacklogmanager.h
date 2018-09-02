@@ -20,12 +20,14 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include "backlogmanager.h"
 #include "message.h"
 
 class BacklogRequester;
 
-class ClientBacklogManager : public BacklogManager
+class CLIENT_EXPORT ClientBacklogManager : public BacklogManager
 {
     Q_OBJECT
 

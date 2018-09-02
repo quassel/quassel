@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef TREEMODEL_H
-#define TREEMODEL_H
+#pragma once
+
+#include "client-export.h"
 
 #include <QList>
 #include <QStringList>
@@ -31,7 +32,7 @@
 /*****************************************
  *  general item used in the Tree Model
  *****************************************/
-class AbstractTreeItem : public QObject
+class CLIENT_EXPORT AbstractTreeItem : public QObject
 {
     Q_OBJECT
 
@@ -100,7 +101,7 @@ private:
 /*****************************************
  * SimpleTreeItem
  *****************************************/
-class SimpleTreeItem : public AbstractTreeItem
+class CLIENT_EXPORT SimpleTreeItem : public AbstractTreeItem
 {
     Q_OBJECT
 
@@ -121,7 +122,7 @@ private:
 /*****************************************
  * PropertyMapItem
  *****************************************/
-class PropertyMapItem : public AbstractTreeItem
+class CLIENT_EXPORT PropertyMapItem : public AbstractTreeItem
 {
     Q_OBJECT
 
@@ -141,7 +142,7 @@ public:
 /*****************************************
  * TreeModel
  *****************************************/
-class TreeModel : public QAbstractItemModel
+class CLIENT_EXPORT TreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -204,6 +205,3 @@ private slots:
     void debug_rowsRemoved(const QModelIndex &parent, int start, int end);
     void debug_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 };
-
-
-#endif

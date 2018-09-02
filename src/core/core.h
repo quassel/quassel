@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "core-export.h"
+
 #include <memory>
 #include <vector>
 
@@ -59,7 +61,7 @@ struct NetworkInfo;
 class AbstractSqlMigrationReader;
 class AbstractSqlMigrationWriter;
 
-class Core : public QObject, public Singleton<Core>
+class CORE_EXPORT Core : public QObject, public Singleton<Core>
 {
     Q_OBJECT
 

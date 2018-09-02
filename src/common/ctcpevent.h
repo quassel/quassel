@@ -18,14 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CTCPEVENT_H
-#define CTCPEVENT_H
+#pragma once
+
+#include "common-export.h"
 
 #include "ircevent.h"
 
 #include <QUuid>
 
-class CtcpEvent : public IrcEvent
+class COMMON_EXPORT CtcpEvent : public IrcEvent
 {
 public:
     enum CtcpType {
@@ -90,6 +91,3 @@ private:
     QString _target, _param, _reply;
     QUuid _uuid;
 };
-
-
-#endif

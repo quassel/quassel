@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef MESSAGEEVENT_H
-#define MESSAGEEVENT_H
+#pragma once
+
+#include "common-export.h"
 
 #include "message.h"
 #include "networkevent.h"
@@ -27,7 +28,7 @@
 // this corresponds to CoreSession::RawMessage for now and should contain the information we need to convert events
 // into messages for the legacy code to work with
 
-class MessageEvent : public NetworkEvent
+class COMMON_EXPORT MessageEvent : public NetworkEvent
 {
 public:
     explicit MessageEvent(Message::Type msgType,
@@ -80,6 +81,3 @@ private:
     QString _text, _sender, _target;
     Message::Flags _msgFlags;
 };
-
-
-#endif

@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QHash>
 #include <QString>
 #include <QStringList>
@@ -30,7 +32,7 @@
 /**
  * Nickname matcher with automatic caching for performance
  */
-class NickHighlightMatcher
+class COMMON_EXPORT NickHighlightMatcher
 {
 public:
     /// Nickname highlighting mode

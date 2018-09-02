@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <vector>
 
 #include <QDateTime>
@@ -31,7 +33,7 @@
 /**
  * The Logger class encapsulates the various configured logging backends.
  */
-class Logger : public QObject
+class COMMON_EXPORT Logger : public QObject
 {
     Q_OBJECT
 
