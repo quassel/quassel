@@ -80,9 +80,7 @@ public:
     void dumpProxyStats();
     void dumpSyncMap(SyncableObject *object);
 
-    static SignalProxy *current() {
-        return _current;
-    }
+    static SignalProxy *current();
 
     /**@{*/
     /**
@@ -216,8 +214,6 @@ private:
 
     Peer *_sourcePeer = nullptr;
     Peer *_targetPeer = nullptr;
-
-    thread_local static SignalProxy *_current;
 
     friend class SignalRelay;
     friend class SyncableObject;
