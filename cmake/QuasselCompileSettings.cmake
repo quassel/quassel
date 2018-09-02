@@ -21,6 +21,9 @@ endfunction()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED OFF)    # Rely on compile features if standard is not supported
 set(CMAKE_CXX_EXTENSIONS OFF)           # We like to be standard conform
+
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # For GCC and Clang, enable a whole bunch of warnings
@@ -36,8 +39,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -Wundef
         -fno-common
         -fstack-protector-strong
-        -fvisibility=default
-        -fvisibility-inlines-hidden
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
     )
 
