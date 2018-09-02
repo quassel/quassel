@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef FLATPROXYMODEL_H
-#define FLATPROXYMODEL_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QAbstractProxyModel>
 
-class FlatProxyModel : public QAbstractProxyModel
+class UISUPPORT_EXPORT FlatProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
 
@@ -121,6 +122,3 @@ private:
 
     friend class FlatProxyModel;
 };
-
-
-#endif //FLATPROXYMODEL_H

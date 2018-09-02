@@ -18,15 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef _SELECTIONMODELSYNCHRONIZER_H_
-#define _SELECTIONMODELSYNCHRONIZER_H_
+#pragma once
+
+#include "client-export.h"
 
 #include <QObject>
 #include <QItemSelectionModel>
 
 class QAbstractItemModel;
 
-class SelectionModelSynchronizer : public QObject
+class CLIENT_EXPORT SelectionModelSynchronizer : public QObject
 {
     Q_OBJECT
 
@@ -67,6 +68,3 @@ private:
 
     QSet<QItemSelectionModel *> _selectionModels;
 };
-
-
-#endif

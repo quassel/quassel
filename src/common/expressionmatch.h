@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QRegularExpression>
 #include <QString>
 #include <QStringList>
@@ -27,7 +29,7 @@
 /**
  * Expression matcher with multiple modes of operation and automatic caching for performance
  */
-class ExpressionMatch
+class COMMON_EXPORT ExpressionMatch
 {
 
 public:

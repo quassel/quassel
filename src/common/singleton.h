@@ -20,7 +20,53 @@
 
 #pragma once
 
-#include <QtGlobal>
+#include <iostream>
+
+// For Windows DLLs, we must not export the template function.
+// For other systems, we must, otherwise the local static variables won't work across library boundaries...
+#ifndef Q_OS_WIN
+#    include "common-export.h"
+#    define QUASSEL_SINGLETON_EXPORT COMMON_EXPORT
+#else
+#    define QUASSEL_SINGLETON_EXPORT
+#endif
+
+namespace detail {
+
+// This needs to be a free function instead of a member function of Singleton, because
+// - MSVC can't deal with static attributes in an exported template class
+// - Clang produces weird and unreliable results for local static variables in static member functions
+//
+// We need to export the function on anything not using Windows DLLs, otherwise local static members don't
+// work across library boundaries.
+template<typename T>
+QUASSEL_SINGLETON_EXPORT T *getOrSetInstance(T *instance = nullptr, bool destroyed = false)
+{
+    static T *_instance = instance;
+    static bool _destroyed = destroyed;
+
+    if (destroyed) {
+        _destroyed = true;
+        return _instance = nullptr;
+    }
+    if (instance) {
+        if (_destroyed) {
+            std::cerr << "Trying to reinstantiate a destroyed singleton, this must not happen!\n";
+            abort();  // This produces a backtrace, which is highly useful for finding the culprit
+        }
+        if (_instance != instance) {
+            std::cerr << "Trying to reinstantiate a singleton that is already instantiated, this must not happen!\n";
+            abort();
+        }
+    }
+    if (!_instance) {
+        std::cerr << "Trying to access a singleton that has not been instantiated yet!\n";
+        abort();
+    }
+    return _instance;
+}
+
+}  // detail
 
 /**
  * Mixin class for "pseudo" singletons.
@@ -49,15 +95,7 @@ public:
      */
     Singleton(T *instance)
     {
-        if (_destroyed) {
-            qFatal("Trying to reinstantiate a destroyed singleton, this must not happen!");
-            abort();  // This produces a backtrace, which is highly useful for finding the culprit
-        }
-        if (_instance) {
-            qFatal("Trying to reinstantiate a singleton that is already instantiated, this must not happen!");
-            abort();
-        }
-        _instance = instance;
+        detail::getOrSetInstance<T>(instance);
     }
 
     // Satisfy Rule of Five
@@ -73,8 +111,7 @@ public:
      */
     ~Singleton()
     {
-        _instance = nullptr;
-        _destroyed = true;
+        detail::getOrSetInstance<T>(nullptr, true);
     }
 
     /**
@@ -87,21 +124,6 @@ public:
      */
     static T *instance()
     {
-        if (_instance) {
-            return _instance;
-        }
-        qFatal("Trying to access a singleton that has not been instantiated yet");
-        abort();
+        return detail::getOrSetInstance<T>();
     }
-
-private:
-    static T *_instance;
-    static bool _destroyed;
-
 };
-
-template<typename T>
-T *Singleton<T>::_instance{nullptr};
-
-template<typename T>
-bool Singleton<T>::_destroyed{false};

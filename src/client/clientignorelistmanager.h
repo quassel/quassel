@@ -20,10 +20,12 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include "ignorelistmanager.h"
 #include <QMap>
 
-class ClientIgnoreListManager : public IgnoreListManager
+class CLIENT_EXPORT ClientIgnoreListManager : public IgnoreListManager
 {
     Q_OBJECT
 

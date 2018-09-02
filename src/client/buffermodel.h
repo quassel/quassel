@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERMODEL_H
-#define BUFFERMODEL_H
+#pragma once
+
+#include "client-export.h"
 
 #include <QSortFilterProxyModel>
 #include <QItemSelectionModel>
@@ -32,7 +33,7 @@
 
 class QAbstractItemView;
 
-class BufferModel : public QSortFilterProxyModel
+class CLIENT_EXPORT BufferModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -75,6 +76,3 @@ private:
     SelectionModelSynchronizer _selectionModelSynchronizer;
     QPair<NetworkId, QString> _bufferToSwitchTo;
 };
-
-
-#endif // BUFFERMODEL_H

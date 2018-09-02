@@ -18,15 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NICKVIEW_H_
-#define NICKVIEW_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QTreeView>
 
 #include "bufferinfo.h"
 #include "treeviewtouch.h"
 
-class NickView : public TreeViewTouch
+class UISUPPORT_EXPORT NickView : public TreeViewTouch
 {
     Q_OBJECT
 
@@ -54,6 +55,3 @@ signals:
 private:
     friend class NickListWidget; // needs selectedIndexes()
 };
-
-
-#endif

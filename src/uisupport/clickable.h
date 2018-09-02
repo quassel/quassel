@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "uisupport-export.h"
+
 #include <vector>
 
 #include <QStackedWidget>
@@ -28,7 +30,7 @@
 
 class QModelIndex;
 
-class Clickable
+class UISUPPORT_EXPORT Clickable
 {
 public:
     // Don't change these enums without also changing dependent methods!
@@ -58,7 +60,7 @@ private:
 };
 
 
-class ClickableList : public std::vector<Clickable>
+class UISUPPORT_EXPORT ClickableList : public std::vector<Clickable>
 {
 public:
     static ClickableList fromString(const QString &);

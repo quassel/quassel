@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREACCOUNT_H_
-#define COREACCOUNT_H_
+#pragma once
+
+#include "client-export.h"
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -28,7 +29,8 @@
 #include <QVariantMap>
 
 #include "types.h"
-class CoreAccount
+
+class CLIENT_EXPORT CoreAccount
 {
     Q_DECLARE_TR_FUNCTIONS(CoreAccount)
 
@@ -95,5 +97,3 @@ private:
 };
 
 QDebug operator<<(QDebug dbg, const CoreAccount &msg);
-
-#endif

@@ -20,9 +20,11 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include "bufferviewconfig.h"
 
-class ClientBufferViewConfig : public BufferViewConfig
+class CLIENT_EXPORT ClientBufferViewConfig : public BufferViewConfig
 {
     Q_OBJECT
 

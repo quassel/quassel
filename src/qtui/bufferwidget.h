@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERWIDGET_H_
-#define BUFFERWIDGET_H_
+#pragma once
 
 #include "ui_bufferwidget.h"
 
@@ -75,6 +74,3 @@ private:
     bool _autoMarkerLine;
     bool _autoMarkerLineOnLostFocus;
 };
-
-
-#endif

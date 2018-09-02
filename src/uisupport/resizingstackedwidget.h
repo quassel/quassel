@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef RESIZINGSTACKEDWIDGET_H_
-#define RESIZINGSTACKEDWIDGET_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QStackedWidget>
 
-class ResizingStackedWidget : public QStackedWidget
+class UISUPPORT_EXPORT ResizingStackedWidget : public QStackedWidget
 {
     Q_OBJECT
 
@@ -35,6 +36,3 @@ public:
 private slots:
     void indexChanged(int index);
 };
-
-
-#endif // RESIZINGSTACKEDWIDGET_H_

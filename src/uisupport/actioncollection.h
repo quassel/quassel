@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "uisupport-export.h"
+
 #ifndef HAVE_KDE
 
 #include <QDebug>
@@ -35,7 +37,7 @@ class QWidget;
 class Action;
 class QAction;
 
-class ActionCollection : public QObject
+class UISUPPORT_EXPORT ActionCollection : public QObject
 {
     Q_OBJECT
 

@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef _SETTINGSPAGE_H_
-#define _SETTINGSPAGE_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QWidget>
 
@@ -55,7 +56,7 @@ class FontSelector;
  *    - QComboBox (currentIndex())
  *    - QSpinBox (value())
  */
-class SettingsPage : public QWidget
+class UISUPPORT_EXPORT SettingsPage : public QWidget
 {
     Q_OBJECT
 
@@ -167,6 +168,3 @@ private:
     bool _changed, _autoWidgetsChanged;
     QObjectList _autoWidgets;
 };
-
-
-#endif

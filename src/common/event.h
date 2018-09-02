@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef EVENT_H
-#define EVENT_H
+#pragma once
+
+#include "common-export.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -28,7 +29,7 @@
 
 class Network;
 
-class Event
+class COMMON_EXPORT Event
 {
 public:
     explicit Event(EventManager::EventType type = EventManager::Invalid);
@@ -71,15 +72,9 @@ private:
     EventManager::EventType _type;
     EventManager::EventFlags _flags;
     QDateTime _timestamp;
-    //QVariant _data;
     bool _valid;
 
-    friend QDebug operator<<(QDebug dbg, Event *e);
+    friend COMMON_EXPORT QDebug operator<<(QDebug dbg, Event *e);
 };
 
-
-QDebug operator<<(QDebug dbg, Event *e);
-
-/*******/
-
-#endif
+COMMON_EXPORT QDebug operator<<(QDebug dbg, Event *e);

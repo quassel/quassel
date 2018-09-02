@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "qtui-export.h"
+
 #include <memory>
 
 #include <QApplication>
@@ -32,7 +34,7 @@
 
 class QtUi;
 
-class QtUiApplication : public QApplication
+class QTUI_EXPORT QtUiApplication : public QApplication
 {
     Q_OBJECT
 

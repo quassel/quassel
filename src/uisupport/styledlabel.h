@@ -18,15 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef STYLEDLABEL_H
-#define STYLEDLABEL_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QFrame>
 
 #include "clickable.h"
 #include "uistyle.h"
 
-class StyledLabel : public QFrame
+class UISUPPORT_EXPORT StyledLabel : public QFrame
 {
     Q_OBJECT
 
@@ -89,6 +90,3 @@ private:
     void setHoverMode(int start, int length);
     void endHoverMode();
 };
-
-
-#endif

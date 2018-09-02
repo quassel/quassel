@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "uisupport-export.h"
+
 #include <utility>
 #include <vector>
 
@@ -38,7 +40,7 @@
 #include "networkmodel.h"
 #include "settings.h"
 
-class UiStyle : public QObject
+class UISUPPORT_EXPORT UiStyle : public QObject
 {
     Q_OBJECT
     Q_ENUMS(SenderPrefixModes)
@@ -365,7 +367,7 @@ private:
 };
 
 
-class UiStyle::StyledMessage : public Message
+class UISUPPORT_EXPORT UiStyle::StyledMessage : public Message
 {
     Q_DECLARE_TR_FUNCTIONS(UiStyle::StyledMessage)
 
@@ -393,26 +395,26 @@ uint qHash(UiStyle::ItemFormatType key, uint seed);
 
 // ---- Operators for dealing with enums ----------------------------------------------------------
 
-UiStyle::FormatType operator|(UiStyle::FormatType lhs, UiStyle::FormatType rhs);
-UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
-UiStyle::FormatType operator|(UiStyle::FormatType lhs, quint32 rhs);
-UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, quint32 rhs);
-UiStyle::FormatType operator&(UiStyle::FormatType lhs, UiStyle::FormatType rhs);
-UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
-UiStyle::FormatType operator&(UiStyle::FormatType lhs, quint32 rhs);
-UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, quint32 rhs);
-UiStyle::FormatType& operator^=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
+UISUPPORT_EXPORT UiStyle::FormatType operator|(UiStyle::FormatType lhs, UiStyle::FormatType rhs);
+UISUPPORT_EXPORT UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
+UISUPPORT_EXPORT UiStyle::FormatType operator|(UiStyle::FormatType lhs, quint32 rhs);
+UISUPPORT_EXPORT UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, quint32 rhs);
+UISUPPORT_EXPORT UiStyle::FormatType operator&(UiStyle::FormatType lhs, UiStyle::FormatType rhs);
+UISUPPORT_EXPORT UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
+UISUPPORT_EXPORT UiStyle::FormatType operator&(UiStyle::FormatType lhs, quint32 rhs);
+UISUPPORT_EXPORT UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, quint32 rhs);
+UISUPPORT_EXPORT UiStyle::FormatType& operator^=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs);
 
-UiStyle::MessageLabel operator|(UiStyle::MessageLabel lhs, UiStyle::MessageLabel rhs);
-UiStyle::MessageLabel& operator|=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs);
-UiStyle::MessageLabel operator&(UiStyle::MessageLabel lhs, quint32 rhs);
-UiStyle::MessageLabel& operator&=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs);
+UISUPPORT_EXPORT UiStyle::MessageLabel operator|(UiStyle::MessageLabel lhs, UiStyle::MessageLabel rhs);
+UISUPPORT_EXPORT UiStyle::MessageLabel& operator|=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs);
+UISUPPORT_EXPORT UiStyle::MessageLabel operator&(UiStyle::MessageLabel lhs, quint32 rhs);
+UISUPPORT_EXPORT UiStyle::MessageLabel& operator&=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs);
 
 // Shifts the label into the upper half of the return value
-quint64 operator|(UiStyle::FormatType lhs, UiStyle::MessageLabel rhs);
+UISUPPORT_EXPORT quint64 operator|(UiStyle::FormatType lhs, UiStyle::MessageLabel rhs);
 
-UiStyle::ItemFormatType operator|(UiStyle::ItemFormatType lhs, UiStyle::ItemFormatType rhs);
-UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType &lhs, UiStyle::ItemFormatType rhs);
+UISUPPORT_EXPORT UiStyle::ItemFormatType operator|(UiStyle::ItemFormatType lhs, UiStyle::ItemFormatType rhs);
+UISUPPORT_EXPORT UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType &lhs, UiStyle::ItemFormatType rhs);
 
 // ---- Allow for FormatList in QVariant ----------------------------------------------------------
 

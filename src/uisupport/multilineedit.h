@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef MULTILINEEDIT_H_
-#define MULTILINEEDIT_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QKeyEvent>
 #include <QHash>
@@ -38,7 +39,7 @@
 #  include <Sonnet/SpellCheckDecorator>
 #endif
 
-class MultiLineEdit : public MultiLineEditParent
+class UISUPPORT_EXPORT MultiLineEdit : public MultiLineEditParent
 {
     Q_OBJECT
 
@@ -153,6 +154,3 @@ private:
     Sonnet::SpellCheckDecorator *_spellCheckDecorator{nullptr};
 #endif
 };
-
-
-#endif

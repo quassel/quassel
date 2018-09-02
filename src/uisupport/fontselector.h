@@ -18,13 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef FONTSELECTOR_H_
-#define FONTSELECTOR_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QLabel>
 #include <QWidget>
 
-class FontSelector : public QWidget
+class UISUPPORT_EXPORT FontSelector : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(QFont selectedFont READ selectedFont WRITE setSelectedFont)
@@ -50,6 +51,3 @@ private:
     QFont _font;
     QLabel *_demo;
 };
-
-
-#endif // FONTSELECTOR_H_

@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <memory>
 #include <type_traits>
 

@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef MESSAGE_H_
-#define MESSAGE_H_
+#pragma once
+
+#include "common-export.h"
 
 #include <QCoreApplication>
 #include <QDateTime>
@@ -27,7 +28,7 @@
 #include "bufferinfo.h"
 #include "types.h"
 
-class Message
+class COMMON_EXPORT Message
 {
     Q_DECLARE_TR_FUNCTIONS(Message)
 
@@ -120,5 +121,3 @@ QDebug operator<<(QDebug dbg, const Message &msg);
 Q_DECLARE_METATYPE(Message)
 Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Types)
 Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Flags)
-
-#endif

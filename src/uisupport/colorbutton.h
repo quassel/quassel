@@ -18,18 +18,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COLORBUTTON_H_
-#define COLORBUTTON_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QToolButton>
 
-class ColorButton : public QToolButton
+class UISUPPORT_EXPORT ColorButton : public QToolButton
 {
     Q_OBJECT
     Q_PROPERTY(QColor color READ color WRITE setColor USER true)
 
 public :
-        explicit ColorButton(QWidget *parent = 0);
+    explicit ColorButton(QWidget *parent = 0);
     explicit ColorButton(const QColor &c, QWidget *parent = 0);
 
     void setColor(const QColor &color);
@@ -38,15 +39,9 @@ public :
 signals:
     void colorChanged(const QColor &);
 
-protected:
-    //void paintEvent(QPaintEvent *event);
-
 private slots:
     void chooseColor();
 
 private:
     QColor _color;
 };
-
-
-#endif

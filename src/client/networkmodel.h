@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NETWORKMODEL_H
-#define NETWORKMODEL_H
+#pragma once
+
+#include "client-export.h"
 
 #include "bufferinfo.h"
 #include "clientsettings.h"
@@ -250,7 +251,8 @@ private:
 *  User Category Items (like @vh etc.)
 *****************************************/
 class IrcUserItem;
-class UserCategoryItem : public PropertyMapItem
+
+class CLIENT_EXPORT UserCategoryItem : public PropertyMapItem
 {
     Q_OBJECT
     Q_PROPERTY(QString categoryName READ categoryName)
@@ -315,7 +317,7 @@ private:
 /*****************************************
  * NetworkModel
  *****************************************/
-class NetworkModel : public TreeModel
+class CLIENT_EXPORT NetworkModel : public TreeModel
 {
     Q_OBJECT
 
@@ -427,5 +429,3 @@ private:
 
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(NetworkModel::ItemTypes)
-
-#endif // NETWORKMODEL_H

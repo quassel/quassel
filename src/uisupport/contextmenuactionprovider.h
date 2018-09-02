@@ -18,12 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CONTEXTMENUACTIONPROVIDER_H
-#define CONTEXTMENUACTIONPROVIDER_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include "networkmodelcontroller.h"
 
-class ContextMenuActionProvider : public NetworkModelController
+class UISUPPORT_EXPORT ContextMenuActionProvider : public NetworkModelController
 {
     Q_OBJECT
 
@@ -74,6 +75,3 @@ private:
     Action *_nickIgnoreMenuAction;
     QList<QAction *> _ignoreDescriptions;
 };
-
-
-#endif

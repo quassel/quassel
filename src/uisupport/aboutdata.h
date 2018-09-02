@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "uisupport-export.h"
+
 #include <QList>
 #include <QLocale>
 #include <QString>
@@ -34,7 +36,7 @@
  *
  * This is used to show a list of contributors in the About Quassel dialog.
  */
-class AboutPerson
+class UISUPPORT_EXPORT AboutPerson
 {
 public:
     /**
@@ -106,7 +108,7 @@ private:
  * the About Quassel dialog. Additionally, this class can provide a KAboutData object to be shown
  * if KDE integration is enabled.
  */
-class AboutData : public QObject
+class UISUPPORT_EXPORT AboutData : public QObject
 {
     Q_OBJECT
 public:

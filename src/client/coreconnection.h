@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include <QNetworkConfigurationManager>
 #include <QPointer>
 #include <QTimer>
@@ -41,7 +43,7 @@ class Network;
 class Peer;
 class SignalProxy;
 
-class CoreConnection : public QObject
+class CLIENT_EXPORT CoreConnection : public QObject
 {
     Q_OBJECT
 

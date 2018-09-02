@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ABSTRACTBUFFERCONTAINER_H_
-#define ABSTRACTBUFFERCONTAINER_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include "abstractitemview.h"
 #include "buffermodel.h"
@@ -28,7 +29,7 @@ class AbstractChatView;
 class AbstractUiMsg;
 class Buffer;
 
-class AbstractBufferContainer : public AbstractItemView
+class UISUPPORT_EXPORT AbstractBufferContainer : public AbstractItemView
 {
     Q_OBJECT
 
@@ -85,6 +86,3 @@ public:
     virtual ~AbstractChatView() {};
     virtual MsgId lastMsgId() const = 0;
 };
-
-
-#endif

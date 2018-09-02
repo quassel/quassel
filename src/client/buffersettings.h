@@ -18,14 +18,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERSETTINGS_H
-#define BUFFERSETTINGS_H
+#include "client-export.h"
 
 #include "clientsettings.h"
 #include "message.h"
 #include "types.h"
 
-class BufferSettings : public ClientSettings
+class CLIENT_EXPORT BufferSettings : public ClientSettings
 {
 public:
     enum RedirectTarget {
@@ -59,6 +58,3 @@ public:
     inline int errorMsgsTarget() { return localValue("ErrorMsgsTarget", DefaultBuffer).toInt(); }
     inline void setErrorMsgsTarget(int target) { setLocalValue("ErrorMsgsTarget", target); }
 };
-
-
-#endif

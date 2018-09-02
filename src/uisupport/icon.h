@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "uisupport-export.h"
+
 #include <vector>
 
 #include <QIcon>
@@ -39,7 +41,7 @@ namespace icon {
  * @param fallbackPath Full path to a fallback icon
  * @returns The requested icon, if available
  */
-QIcon get(const QString &iconName, const QString &fallbackPath = {});
+UISUPPORT_EXPORT QIcon get(const QString &iconName, const QString &fallbackPath = {});
 
 /**
  * Gets an icon from the current icon theme.
@@ -53,6 +55,6 @@ QIcon get(const QString &iconName, const QString &fallbackPath = {});
  * @param fallbackPath Full path to a fallback icon
  * @returns The requested icon, if available
  */
-QIcon get(const std::vector<QString> &iconNames, const QString &fallbackPath = {});
+UISUPPORT_EXPORT QIcon get(const std::vector<QString> &iconNames, const QString &fallbackPath = {});
 
 }

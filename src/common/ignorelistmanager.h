@@ -20,7 +20,8 @@
 
 #pragma once
 
-#include <QDebug>
+#include "common-export.h"
+
 #include <QString>
 #include <QStringList>
 #include <QRegExp>
@@ -29,7 +30,7 @@
 #include "message.h"
 #include "syncableobject.h"
 
-class IgnoreListManager : public SyncableObject
+class COMMON_EXPORT IgnoreListManager : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT
@@ -59,7 +60,7 @@ public:
     /**
      * Individual ignore list rule
      */
-    class IgnoreListItem {
+    class COMMON_EXPORT IgnoreListItem {
     public:
         /**
          * Construct an empty ignore rule

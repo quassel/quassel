@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CLIENTSETTINGS_H
-#define CLIENTSETTINGS_H
+#pragma once
+
+#include "client-export.h"
 
 #include "settings.h"
 
@@ -28,7 +29,7 @@
 class QHostAddress;
 class QSslSocket;
 
-class ClientSettings : public Settings
+class CLIENT_EXPORT ClientSettings : public Settings
 {
 public:
     virtual ~ClientSettings();
@@ -49,7 +50,7 @@ protected:
 //
 // Note that you'll get invalid data (and setting is ignored) if you are not connected to a core!
 
-class CoreAccountSettings : public ClientSettings
+class CLIENT_EXPORT CoreAccountSettings : public ClientSettings
 {
 public:
     // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
@@ -90,7 +91,7 @@ private:
 // ========================================
 //  NotificationSettings
 // ========================================
-class NotificationSettings : public ClientSettings
+class CLIENT_EXPORT NotificationSettings : public ClientSettings
 {
 public:
     enum HighlightNickType {
@@ -120,7 +121,7 @@ public:
 // CoreConnectionSettings
 // ========================================
 
-class CoreConnectionSettings : public ClientSettings
+class CLIENT_EXPORT CoreConnectionSettings : public ClientSettings
 {
 public:
     enum NetworkDetectionMode {
@@ -149,7 +150,7 @@ public:
 // TabCompletionSettings
 // ========================================
 
-class TabCompletionSettings : public ClientSettings
+class CLIENT_EXPORT TabCompletionSettings : public ClientSettings
 {
 public:
     enum SortMode {
@@ -179,7 +180,7 @@ public:
 // ========================================
 // ItemViewSettings
 // ========================================
-class ItemViewSettings : public ClientSettings
+class CLIENT_EXPORT ItemViewSettings : public ClientSettings
 {
 public:
     ItemViewSettings(const QString &group = "ItemViews");
@@ -187,6 +188,3 @@ public:
     bool displayTopicInTooltip();
     bool mouseWheelChangesBuffer();
 };
-
-
-#endif

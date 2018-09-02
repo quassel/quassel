@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <utility>
 
 #include <QString>
@@ -32,7 +34,7 @@
 #include "nickhighlightmatcher.h"
 #include "syncableobject.h"
 
-class HighlightRuleManager : public SyncableObject
+class COMMON_EXPORT HighlightRuleManager : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT
@@ -53,7 +55,7 @@ public:
     /**
      * Individual highlight rule
      */
-    class HighlightRule
+    class COMMON_EXPORT HighlightRule
     {
     public:
         /**

@@ -20,11 +20,13 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include "identity.h"
 
 class ClientCertManager;
 
-class CertIdentity : public Identity
+class CLIENT_EXPORT CertIdentity : public Identity
 {
     Q_OBJECT
 
@@ -69,6 +71,7 @@ private:
 //  ClientCertManager
 // ========================================
 #ifdef HAVE_SSL
+
 class ClientCertManager : public CertManager
 {
     Q_OBJECT

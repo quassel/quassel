@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QAbstractSocket>
 #include <QDataStream>
 #include <QPointer>
@@ -29,7 +31,7 @@
 #include "quassel.h"
 #include "signalproxy.h"
 
-class Peer : public QObject
+class COMMON_EXPORT Peer : public QObject
 {
     Q_OBJECT
 

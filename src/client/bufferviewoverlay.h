@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERVIEWOVERLAY_H
-#define BUFFERVIEWOVERLAY_H
+#pragma once
+
+#include "client-export.h"
 
 #include <QObject>
 
@@ -28,7 +29,7 @@
 class BufferViewConfig;
 class ClientBufferViewConfig;
 
-class BufferViewOverlay : public QObject
+class CLIENT_EXPORT BufferViewOverlay : public QObject
 {
     Q_OBJECT
 
@@ -89,6 +90,3 @@ private:
 
     static const int _updateEventId;
 };
-
-
-#endif //BUFFERVIEWOVERLAY_H

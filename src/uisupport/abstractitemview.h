@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ABSTRACTITEMVIEW_H
-#define ABSTRACTITEMVIEW_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QWidget>
 #include <QAbstractItemModel>
@@ -29,7 +30,7 @@
 #include <QAbstractItemDelegate>
 #include <QPointer>
 
-class AbstractItemView : public QWidget
+class UISUPPORT_EXPORT AbstractItemView : public QWidget
 {
     Q_OBJECT
 
@@ -58,6 +59,3 @@ protected:
     QPointer<QAbstractItemModel> _model;
     QPointer<QItemSelectionModel> _selectionModel;
 };
-
-
-#endif // ABSTRACTITEMVIEW_H

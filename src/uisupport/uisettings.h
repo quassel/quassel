@@ -18,13 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef UISETTINGS_H
-#define UISETTINGS_H
+#pragma once
+
+#include "uisupport-export.h"
 
 #include "clientsettings.h"
 #include "uistyle.h"
 
-class UiSettings : public ClientSettings
+class UISUPPORT_EXPORT UiSettings : public ClientSettings
 {
 public:
     UiSettings(const QString &group = "Ui");
@@ -44,7 +45,7 @@ public:
 };
 
 
-class UiStyleSettings : public UiSettings
+class UISUPPORT_EXPORT UiStyleSettings : public UiSettings
 {
 public:
     UiStyleSettings();
@@ -58,7 +59,7 @@ public:
 };
 
 
-class SessionSettings : public UiSettings
+class UISUPPORT_EXPORT SessionSettings : public UiSettings
 {
 public:
     SessionSettings(const QString &sessionId, const QString &group = "Session");
@@ -82,7 +83,7 @@ private:
 };
 
 
-class ShortcutSettings : public UiSettings
+class UISUPPORT_EXPORT ShortcutSettings : public UiSettings
 {
 public:
     ShortcutSettings();
@@ -95,6 +96,3 @@ public:
     void saveShortcut(const QString &name, const QKeySequence &shortcut);
     QKeySequence loadShortcut(const QString &name);
 };
-
-
-#endif

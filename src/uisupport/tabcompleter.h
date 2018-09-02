@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef TABCOMPLETER_H_
-#define TABCOMPLETER_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QPointer>
 #include <QString>
@@ -31,7 +32,7 @@ class MultiLineEdit;
 class IrcUser;
 class Network;
 
-class TabCompleter : public QObject
+class UISUPPORT_EXPORT TabCompleter : public QObject
 {
     Q_OBJECT
 
@@ -76,6 +77,3 @@ private:
 
     void buildCompletionList();
 };
-
-
-#endif

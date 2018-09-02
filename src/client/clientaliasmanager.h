@@ -20,9 +20,11 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include "aliasmanager.h"
 
-class ClientAliasManager : public AliasManager
+class CLIENT_EXPORT ClientAliasManager : public AliasManager
 {
     Q_OBJECT
 

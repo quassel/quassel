@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BASICHANDLER_H
-#define BASICHANDLER_H
+#pragma once
+
+#include "common-export.h"
 
 #include <QObject>
 #include <QString>
@@ -27,7 +28,7 @@
 #include <QHash>
 #include <QGenericArgument>
 
-class BasicHandler : public QObject
+class COMMON_EXPORT BasicHandler : public QObject
 {
     Q_OBJECT
 
@@ -51,6 +52,3 @@ private:
     bool _initDone;
     QString _methodPrefix;
 };
-
-
-#endif

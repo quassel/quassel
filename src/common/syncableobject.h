@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QDataStream>
 #include <QMetaType>
 #include <QObject>
@@ -50,7 +52,7 @@
 #define ARG(x) const_cast<void *>(reinterpret_cast<const void *>(&x))
 #define NO_ARG 0
 
-class SyncableObject : public QObject
+class COMMON_EXPORT SyncableObject : public QObject
 {
     Q_OBJECT
 

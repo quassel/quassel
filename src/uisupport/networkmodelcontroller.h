@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NETWORKMODELCONTROLLER_H_
-#define NETWORKMODELCONTROLLER_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QDialog>
 
@@ -31,7 +32,7 @@ class QComboBox;
 class QDialogButtonBox;
 class QLineEdit;
 
-class NetworkModelController : public QObject
+class UISUPPORT_EXPORT NetworkModelController : public QObject
 {
     Q_OBJECT
 
@@ -222,5 +223,3 @@ MessageFilter *NetworkModelController::messageFilter() const { return _messageFi
 QString NetworkModelController::contextItem() const { return _contextItem; }
 QObject *NetworkModelController::receiver() const { return _receiver; }
 const char *NetworkModelController::method() const { return _method; }
-
-#endif

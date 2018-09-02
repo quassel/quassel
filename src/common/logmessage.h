@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QStringList>
 #include <QTextStream>
 
@@ -31,7 +33,7 @@
  *
  * Very similar in concept to qDebug() and friends.
  */
-class LogMessage
+class COMMON_EXPORT LogMessage
 {
 public:
     LogMessage(Logger::LogLevel level);

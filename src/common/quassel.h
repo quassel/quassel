@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <functional>
 #include <vector>
 
@@ -38,7 +40,7 @@ class QFile;
 
 class Logger;
 
-class Quassel : public QObject, public Singleton<Quassel>
+class COMMON_EXPORT Quassel : public QObject, public Singleton<Quassel>
 {
     // TODO Qt5: Use Q_GADGET
     Q_OBJECT
@@ -263,7 +265,7 @@ private:
  *
  * @sa Quassel::Feature
  */
-class Quassel::Features
+class COMMON_EXPORT Quassel::Features
 {
 public:
     /**

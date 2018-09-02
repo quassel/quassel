@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef EVENTMANAGER_H
-#define EVENTMANAGER_H
+#pragma once
+
+#include "common-export.h"
 
 #include <QMetaEnum>
 
@@ -28,7 +29,7 @@
 class Event;
 class Network;
 
-class EventManager : public QObject
+class COMMON_EXPORT EventManager : public QObject
 {
     Q_OBJECT
     Q_FLAGS(EventFlag EventFlags)
@@ -196,5 +197,3 @@ private:
 
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(EventManager::EventFlags)
-
-#endif

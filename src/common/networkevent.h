@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NETWORKEVENT_H
-#define NETWORKEVENT_H
+#pragma once
 
 #include <QStringList>
 #include <QVariantList>
@@ -27,7 +26,7 @@
 #include "event.h"
 #include "network.h"
 
-class NetworkEvent : public Event
+class COMMON_EXPORT NetworkEvent : public Event
 {
 public:
     explicit NetworkEvent(EventManager::EventType type, Network *network)
@@ -54,7 +53,7 @@ private:
 
 /*****************************************************************************/
 
-class NetworkConnectionEvent : public NetworkEvent
+class COMMON_EXPORT NetworkConnectionEvent : public NetworkEvent
 {
 public:
     explicit NetworkConnectionEvent(EventManager::EventType type, Network *network, Network::ConnectionState state)
@@ -84,7 +83,7 @@ private:
 };
 
 
-class NetworkDataEvent : public NetworkEvent
+class COMMON_EXPORT NetworkDataEvent : public NetworkEvent
 {
 public:
     explicit NetworkDataEvent(EventManager::EventType type, Network *network, const QByteArray &data)
@@ -114,7 +113,7 @@ private:
 };
 
 
-class NetworkSplitEvent : public NetworkEvent
+class COMMON_EXPORT NetworkSplitEvent : public NetworkEvent
 {
 public:
     explicit NetworkSplitEvent(EventManager::EventType type,
@@ -153,6 +152,3 @@ private:
 
     friend class NetworkEvent;
 };
-
-
-#endif

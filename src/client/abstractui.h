@@ -18,12 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ABSTRACTUI_H
-#define ABSTRACTUI_H
+#pragma once
+
+#include "client-export.h"
 
 #include <QObject>
 #include <QVariantMap>
-//#include "message.h"
 
 class MessageFilter;
 class MessageModel;
@@ -33,7 +33,7 @@ class AbstractActionProvider;
 class QAction;
 class QMenu;
 
-class AbstractUi : public QObject
+class CLIENT_EXPORT AbstractUi : public QObject
 {
     Q_OBJECT
 
@@ -52,6 +52,3 @@ signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
 };
-
-
-#endif

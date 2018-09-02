@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "uisupport-export.h"
+
 #include <QShortcut>
 #include <QWidgetAction>
 
@@ -29,7 +31,7 @@
 /** This declares/implements a subset of KAction's API (notably we've left out global shortcuts
  *  for now), which should make it easy to plug in KDE support later on.
  */
-class Action : public QWidgetAction
+class UISUPPORT_EXPORT Action : public QWidgetAction
 {
     Q_OBJECT
 

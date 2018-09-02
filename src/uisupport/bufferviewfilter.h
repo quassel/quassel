@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERVIEWFILTER_H_
-#define BUFFERVIEWFILTER_H_
+#pragma once
+
+#include "uisupport-export.h"
 
 #include <QAction>
 #include <QDropEvent>
@@ -34,7 +35,7 @@
 /*****************************************
  * Buffer View Filter
  *****************************************/
-class BufferViewFilter : public QSortFilterProxyModel
+class UISUPPORT_EXPORT BufferViewFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -106,5 +107,3 @@ private:
 
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)
-
-#endif // BUFFERVIEWFILTER_H_

@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "core-export.h"
+
 #include <memory>
 
 #include <QCoreApplication>
@@ -29,7 +31,7 @@
 
 class Core;
 
-class CoreApplication : public QCoreApplication
+class CORE_EXPORT CoreApplication : public QCoreApplication
 {
     Q_OBJECT
 

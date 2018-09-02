@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QSet>
 #include <QString>
 #include <QStringList>
@@ -33,7 +35,7 @@ class SignalProxy;
 class Network;
 class IrcChannel;
 
-class IrcUser : public SyncableObject
+class COMMON_EXPORT IrcUser : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

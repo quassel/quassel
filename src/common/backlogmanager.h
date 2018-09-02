@@ -20,10 +20,12 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include "syncableobject.h"
 #include "types.h"
 
-class BacklogManager : public SyncableObject
+class COMMON_EXPORT BacklogManager : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

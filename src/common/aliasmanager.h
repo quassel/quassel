@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <QVariantMap>
 
 #include "bufferinfo.h"
@@ -27,7 +29,7 @@
 
 class Network;
 
-class AliasManager : public SyncableObject
+class COMMON_EXPORT AliasManager : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT

@@ -1,4 +1,4 @@
-quassel_add_module(Core)
+quassel_add_module(Core EXPORT)
 
 target_sources(${TARGET} PRIVATE
     abstractsqlstorage.cpp

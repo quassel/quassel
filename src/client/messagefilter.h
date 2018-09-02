@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef MESSAGEFILTER_H_
-#define MESSAGEFILTER_H_
+#pragma once
+
+#include "client-export.h"
 
 #include <QSortFilterProxyModel>
 #include <set>
@@ -30,7 +31,7 @@
 #include "networkmodel.h"
 #include "types.h"
 
-class MessageFilter : public QSortFilterProxyModel
+class CLIENT_EXPORT MessageFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -72,6 +73,3 @@ private:
     int _serverNoticesTarget;
     int _errorMsgsTarget;
 };
-
-
-#endif

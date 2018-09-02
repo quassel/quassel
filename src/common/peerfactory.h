@@ -18,8 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef PEERFACTORY_H
-#define PEERFACTORY_H
+#pragma once
+
+#include "common-export.h"
 
 #include <QPair>
 
@@ -32,7 +33,7 @@ class QTcpSocket;
 class AuthHandler;
 class RemotePeer;
 
-class PeerFactory
+class COMMON_EXPORT PeerFactory
 {
 
 public:
@@ -46,5 +47,3 @@ public:
     static RemotePeer *createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = 0);
 
 };
-
-#endif
