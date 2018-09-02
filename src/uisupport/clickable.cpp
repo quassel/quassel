@@ -110,7 +110,7 @@ ClickableList ClickableList::fromString(const QString &str)
                 if (QRegExp("^#\\d+$").exactMatch(match))
                     continue;
             }
-            result.append(Clickable((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]));
+            result.emplace_back((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]);
         }
     }
     while (type >= 0);

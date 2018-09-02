@@ -759,7 +759,7 @@ Clickable ContentsChatItem::clickableAt(const QPointF &pos) const
 UiStyle::FormatList ContentsChatItem::formatList() const
 {
     UiStyle::FormatList fmtList = ChatItem::formatList();
-    for (int i = 0; i < privateData()->clickables.count(); i++) {
+    for (size_t i = 0; i < privateData()->clickables.size(); i++) {
         Clickable click = privateData()->clickables.at(i);
         if (click.type() == Clickable::Url) {
             overlayFormat(fmtList, click.start(), click.start() + click.length(), UiStyle::FormatType::Url);
