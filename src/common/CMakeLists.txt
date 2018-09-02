@@ -15,6 +15,7 @@ set(SOURCES
     dccconfig.cpp
     event.cpp
     eventmanager.cpp
+    expressionmatch.cpp
     highlightrulemanager.cpp
     identity.cpp
     ignorelistmanager.cpp
