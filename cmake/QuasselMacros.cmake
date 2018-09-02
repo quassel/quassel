@@ -7,14 +7,13 @@
 ###################################################################################################
 
 include(CMakeParseArguments)
+include(GenerateExportHeader)
 include(QuasselCompileFeatures)
 
 ###################################################################################################
 # Adds a library target for a Quassel module.
 #
-# quassel_add_module(Module
-#                    [STATIC]
-# )
+# quassel_add_module(Module [STATIC] [EXPORT])
 #
 # The function expects the (CamelCased) module name as a parameter, and derives various
 # strings from it. For example, quassel_add_module(Client) produces
@@ -25,13 +24,16 @@ include(QuasselCompileFeatures)
 # platforms other than Windows, a shared library is created. For shared libraries, also
 # an install rule is added.
 #
+# To generate an export header for the library, specify EXPORT. The header will be named
+# ${module}-export.h (where ${module} is the lower-case name of the module).
+#
 # The function exports the TARGET variable which can be used in the current scope
 # for setting source files, properties, link dependencies and so on.
 # To refer to the target outside of the current scope, e.g. for linking, use
 # the alias name.
 #
 function(quassel_add_module _module)
-    set(options STATIC)
+    set(options EXPORT STATIC)
     set(oneValueArgs )
     set(multiValueArgs )
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -67,7 +69,23 @@ function(quassel_add_module _module)
     )
 
     if (buildmode STREQUAL "SHARED")
-        install(TARGETS ${target} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+        install(TARGETS ${target}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
+    endif()
+
+    if (ARG_EXPORT)
+        string(TOLOWER ${_module} lower_module)
+        string(TOUPPER ${_module} upper_module)
+        string(REPLACE "::" "-" header_base ${lower_module})
+        string(REPLACE "::" "_" macro_base ${upper_module})
+        generate_export_header(${target}
+            BASE_NAME ${macro_base}
+            EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/export/${header_base}-export.h
+        )
+        target_include_directories(${target} PUBLIC ${CMAKE_BINARY_DIR}/export)
     endif()
 
     # Export the target name for further use
