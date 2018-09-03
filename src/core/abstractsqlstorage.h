@@ -205,37 +205,35 @@ public:
     };
 
     struct NetworkMO {
-        NetworkId networkid;
         UserId userid;
         QString networkname;
-        IdentityId identityid;
-        QString encodingcodec;
-        QString decodingcodec;
-        QString servercodec;
-        bool userandomserver;
         QString perform;
-        bool useautoidentify;
         QString autoidentifyservice;
         QString autoidentifypassword;
-        bool useautoreconnect;
-        int autoreconnectinterval;
-        int autoreconnectretries;
-        bool unlimitedconnectretries;
-        bool rejoinchannels;
-        // Custom rate limiting
-        bool usecustommessagerate;
-        int messagerateburstsize;
-        int messageratedelay;
-        bool unlimitedmessagerate;
-        // ...
-        bool connected;
+        QString saslaccount;
+        QString saslpassword;
+        QString servercodec;
+        QString encodingcodec;
+        QString decodingcodec;
         QString usermode;
         QString awaymessage;
         QString attachperform;
         QString detachperform;
+        NetworkId networkid;
+        IdentityId identityid;
+        int messagerateburstsize;
+        int messageratedelay;
+        int autoreconnectinterval;
+        int autoreconnectretries;
+        bool rejoinchannels;
+        bool userandomserver;
+        bool useautoidentify;
         bool usesasl;
-        QString saslaccount;
-        QString saslpassword;
+        bool useautoreconnect;
+        bool unlimitedconnectretries;
+        bool usecustommessagerate;
+        bool unlimitedmessagerate;
+        bool connected;
     };
 
     struct BufferMO {
