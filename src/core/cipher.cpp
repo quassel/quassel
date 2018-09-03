@@ -56,7 +56,8 @@ bool Cipher::setKey(QByteArray key)
 //    if(Preferences::self()->encryptionType())
 //      m_cbc = true;
 //    else
-        m_cbc = false;
+//    default to CBC
+        m_cbc = true;
         m_key = key;
     }
     return true;
