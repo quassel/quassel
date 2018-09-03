@@ -18,9 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QHostInfo>
-
 #include "corenetwork.h"
+
+#include <QDebug>
+#include <QHostInfo>
 
 #include "core.h"
 #include "coreidentity.h"
@@ -46,6 +47,10 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
 
     _requestedUserModes('-')
 {
+    // Check if raw IRC logging is enabled
+    _debugLogRawIrc = (Quassel::isOptionSet("debug-irc") || Quassel::isOptionSet("debug-irc-id"));
+    _debugLogRawNetId = Quassel::optionValue("debug-irc-id").toInt();
+
     _autoReconnectTimer.setSingleShot(true);
     connect(&_socketCloseTimer, SIGNAL(timeout()), this, SLOT(socketCloseTimeout()));
 
@@ -1460,6 +1465,12 @@ void CoreNetwork::fillBucketAndProcessQueue()
 
 void CoreNetwork::writeToSocket(const QByteArray &data)
 {
+    // Log the message if enabled and network ID matches or allows all
+    if (_debugLogRawIrc
+            && (_debugLogRawNetId == -1 || networkId().toInt() == _debugLogRawNetId)) {
+        // Include network ID
+        qDebug() << "IRC net" << networkId() << ">>" << data;
+    }
     socket.write(data);
     socket.write("\r\n");
     if (!_skipMessageRates) {

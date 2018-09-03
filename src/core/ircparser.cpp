@@ -20,6 +20,8 @@
 
 #include "ircparser.h"
 
+#include <QDebug>
+
 #include "corenetwork.h"
 #include "eventmanager.h"
 #include "ircevent.h"
@@ -35,6 +37,10 @@ IrcParser::IrcParser(CoreSession *session) :
     QObject(session),
     _coreSession(session)
 {
+    // Check if raw IRC logging is enabled
+    _debugLogRawIrc = (Quassel::isOptionSet("debug-irc") || Quassel::isOptionSet("debug-irc-id"));
+    _debugLogRawNetId = Quassel::optionValue("debug-irc-id").toInt();
+
     connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
 }
 
@@ -89,6 +95,13 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
     if (msg.isEmpty()) {
         qWarning() << "Received empty string from server!";
         return;
+    }
+
+    // Log the message if enabled and network ID matches or allows all
+    if (_debugLogRawIrc
+            && (_debugLogRawNetId == -1 || net->networkId().toInt() == _debugLogRawNetId)) {
+        // Include network ID
+        qDebug() << "IRC net" << net->networkId() << "<<" << msg;
     }
 
     // Now we split the raw message into its various parts...
