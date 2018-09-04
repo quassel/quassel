@@ -63,7 +63,7 @@ void MessageFilter::init()
     _messageTypeFilter = defaultSettings.messageFilter();
     defaultSettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));
 
-    BufferSettings mySettings(idString());
+    BufferSettings mySettings(MessageFilter::idString());
     if (mySettings.hasFilter())
         _messageTypeFilter = mySettings.messageFilter();
     mySettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));

@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CHATMONITORFILTER_H_
-#define CHATMONITORFILTER_H_
+#pragma once
 
 #include <QDateTime>
 
@@ -79,6 +78,3 @@ private:
     bool _includeRead;
     bool _showSenderBrackets;   /// If true, show brackets around sender names
 };
-
-
-#endif
