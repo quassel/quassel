@@ -655,8 +655,8 @@ QString QueryBufferItem::toolTip(int column) const
                    NetworkItem::escapeHTML(tr("Identified for this nick")),
                    !accountAdded);
             // Don't add the account row again if information's already added via account-notify
-            // Mark the row as added
-            accountAdded = true;
+            // Not used further down...
+            // accountAdded = true;
         } else {
             addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
                    NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
@@ -1236,8 +1236,8 @@ QString IrcUserItem::toolTip(int column) const
                NetworkItem::escapeHTML(tr("Identified for this nick")),
                !accountAdded);
         // Don't add the account row again if information's already added via account-notify
-        // Mark the row as added
-        accountAdded = true;
+        // Not used further down...
+        // accountAdded = true;
     } else {
         addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
                NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
