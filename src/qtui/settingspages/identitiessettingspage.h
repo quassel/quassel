@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IDENTITIESSETTINGSPAGE_H
-#define IDENTITIESSETTINGSPAGE_H
+#pragma once
 
 #include "clientidentity.h"
 #include "settingspage.h"
@@ -44,8 +43,8 @@ public:
     bool aboutToSave();
 
 public slots:
-    void save();
-    void load();
+    void save() final override;
+    void load() final override;
 
 private slots:
     void coreConnectionStateChanged(bool);
@@ -127,6 +126,3 @@ private:
 
     int numevents, rcvevents;
 };
-
-
-#endif

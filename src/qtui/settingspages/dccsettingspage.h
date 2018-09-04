@@ -44,9 +44,9 @@ public:
 
 public slots:
     // See base class docs
-    void save() override;
-    void load() override;
-    void defaults() override;
+    void save() final override;
+    void load() final override;
+    void defaults() final override;
 
 private:
     /**
