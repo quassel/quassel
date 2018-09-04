@@ -43,12 +43,6 @@ public:
     BufferViewConfig *bufferViewConfig(int bufferViewId) const;
 
 public slots:
-    void addBufferViewConfig(BufferViewConfig *config);
-    void addBufferViewConfig(int bufferViewConfigId);
-    inline void newBufferViewConfig(int bufferViewConfigId)  { addBufferViewConfig(bufferViewConfigId); }
-
-    void deleteBufferViewConfig(int bufferViewConfigId);
-
     QVariantList initBufferViewIds() const;
     void initSetBufferViewIds(const QVariantList bufferViewIds);
 
@@ -69,6 +63,10 @@ protected:
     typedef QHash<int, BufferViewConfig *> BufferViewConfigHash;
     inline const BufferViewConfigHash &bufferViewConfigHash() { return _bufferViewConfigs; }
     virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
+
+    void addBufferViewConfig(BufferViewConfig *config);
+    void addBufferViewConfig(int bufferViewConfigId);
+    void deleteBufferViewConfig(int bufferViewConfigId);
 
 private:
     BufferViewConfigHash _bufferViewConfigs;

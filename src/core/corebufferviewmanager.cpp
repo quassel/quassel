@@ -74,8 +74,7 @@ void CoreBufferViewManager::requestCreateBufferView(const QVariantMap &propertie
     }
     maxId++;
 
-    CoreBufferViewConfig *config = new CoreBufferViewConfig(maxId, properties);
-    addBufferViewConfig(config);
+    addBufferViewConfig(new CoreBufferViewConfig(maxId, properties, this));
 }
 
 
