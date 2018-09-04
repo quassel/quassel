@@ -47,25 +47,28 @@ BufferViewConfig *BufferViewManager::bufferViewConfigFactory(int bufferViewConfi
 }
 
 
+void BufferViewManager::addBufferViewConfig(int bufferViewConfigId)
+{
+    if (_bufferViewConfigs.contains(bufferViewConfigId)) {
+        return;
+    }
+
+    addBufferViewConfig(bufferViewConfigFactory(bufferViewConfigId));
+}
+
+
 void BufferViewManager::addBufferViewConfig(BufferViewConfig *config)
 {
-    if (_bufferViewConfigs.contains(config->bufferViewId()))
+    if (_bufferViewConfigs.contains(config->bufferViewId())) {
+        delete config;
         return;
+    }
 
     _proxy->synchronize(config);
     _bufferViewConfigs[config->bufferViewId()] = config;
     int bufferViewId = config->bufferViewId();
     SYNC_OTHER(addBufferViewConfig, ARG(bufferViewId))
     emit bufferViewConfigAdded(bufferViewId);
-}
-
-
-void BufferViewManager::addBufferViewConfig(int bufferViewConfigId)
-{
-    if (_bufferViewConfigs.contains(bufferViewConfigId))
-        return;
-
-    addBufferViewConfig(bufferViewConfigFactory(bufferViewConfigId));
 }
 
 
@@ -96,10 +99,7 @@ QVariantList BufferViewManager::initBufferViewIds() const
 
 void BufferViewManager::initSetBufferViewIds(const QVariantList bufferViewIds)
 {
-    QVariantList::const_iterator iter = bufferViewIds.constBegin();
-    QVariantList::const_iterator iterEnd = bufferViewIds.constEnd();
-    while (iter != iterEnd) {
-        newBufferViewConfig((*iter).value<int>());
-        ++iter;
+    for (auto &&id : bufferViewIds) {
+        addBufferViewConfig(id.value<int>());
     }
 }
