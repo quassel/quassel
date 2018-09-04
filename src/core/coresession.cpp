@@ -348,7 +348,8 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
     if (_ignoreListManager.match(rawMsg, networkName) == IgnoreListManager::HardStrictness)
         return;
 
-    if (_highlightRuleManager.match(rawMsg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
+
+    if (currentNetwork && _highlightRuleManager.match(rawMsg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
         rawMsg.flags |= Message::Flag::Highlight;
 
     _messageQueue << rawMsg;
