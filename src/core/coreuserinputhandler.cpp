@@ -769,7 +769,8 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo& bufferInfo, const QStr
             typeByTarget(bufname),
             bufname,
             tr("[usage] /setkey <nick|channel> <key> sets the encryption key for nick or channel. "
-               "/setkey <key> when in a channel or query buffer sets the key for it.")
+               "/setkey <key> when in a channel or query buffer sets the key for it. "
+               "Prefix <key> by cbc: or ebc: to explicitly set the encryption mode respectively. Default is CBC.")
         ));
         return;
     }
