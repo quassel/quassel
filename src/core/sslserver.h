@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SSLSERVER_H
-#define SSLSERVER_H
+#pragma once
 
 #ifdef HAVE_SSL
 
@@ -36,12 +35,12 @@ class SslServer : public QTcpServer
 public:
     SslServer(QObject *parent = 0);
 
-    virtual inline bool hasPendingConnections() const { return !_pendingConnections.isEmpty(); }
-    virtual QTcpSocket *nextPendingConnection();
+    bool hasPendingConnections() const override { return !_pendingConnections.isEmpty(); }
+    QTcpSocket *nextPendingConnection() override;
 
-    virtual inline const QSslCertificate &certificate() const { return _cert; }
-    virtual inline const QSslKey &key() const { return _key; }
-    virtual inline bool isCertValid() const { return _isCertValid; }
+    const QSslCertificate &certificate() const { return _cert; }
+    const QSslKey &key() const { return _key; }
+    bool isCertValid() const { return _isCertValid; }
 
     /**
      * Reloads SSL certificates used for connections
@@ -55,12 +54,12 @@ public:
 
 protected:
 #if QT_VERSION >= 0x050000
-    virtual void incomingConnection(qintptr socketDescriptor);
+    void incomingConnection(qintptr socketDescriptor) override;
 #else
-    virtual void incomingConnection(int socketDescriptor);
+    void incomingConnection(int socketDescriptor) override;
 #endif
 
-    virtual bool setCertificate(const QString &path, const QString &keyPath);
+    bool setCertificate(const QString &path, const QString &keyPath);
 
 private:
     /**
@@ -87,5 +86,3 @@ private:
 
 
 #endif //HAVE_SSL
-
-#endif //SSLSERVER_H
