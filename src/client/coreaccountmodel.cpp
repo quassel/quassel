@@ -87,12 +87,10 @@ void CoreAccountModel::save()
 
 void CoreAccountModel::clear()
 {
-    if (rowCount()) {
-        beginRemoveRows(QModelIndex(), 0, rowCount()-1);
-        _internalAccount = 0;
-        _accounts.clear();
-        endRemoveRows();
-    }
+    beginResetModel();
+    _internalAccount = 0;
+    _accounts.clear();
+    endResetModel();
 }
 
 
