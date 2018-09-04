@@ -40,12 +40,14 @@ protected:
 public:
     MessageFilter(MessageModel *, const QList<BufferId> &buffers = QList<BufferId>(), QObject *parent = 0);
 
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     virtual QString idString() const;
-    inline bool isSingleBufferFilter() const { return _validBuffers.count() == 1; }
+
+    bool isSingleBufferFilter() const { return _validBuffers.count() == 1; }
     BufferId singleBufferId() const { return *(_validBuffers.constBegin()); }
-    inline bool containsBuffer(const BufferId &id) const { return _validBuffers.contains(id); }
-    inline QSet<BufferId> containedBuffers() const { return _validBuffers; }
+    bool containsBuffer(const BufferId &id) const { return _validBuffers.contains(id); }
+    QSet<BufferId> containedBuffers() const { return _validBuffers; }
+
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
 public slots:
     void messageTypeFilterChanged();

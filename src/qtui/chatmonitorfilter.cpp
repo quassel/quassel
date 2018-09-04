@@ -38,7 +38,7 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     // and ChatMonitorSettingsPage::defaults() to match
 
     // Chat Monitor specific configuration
-    ChatViewSettings viewSettings(idString());
+    ChatViewSettings viewSettings(ChatMonitorFilter::idString());
     _showFields = viewSettings.value("ShowFields", AllFields).toInt();
     _showOwnMessages = viewSettings.value("ShowOwnMsgs", true).toBool();
     viewSettings.notify("ShowFields", this, SLOT(showFieldsSettingChanged(const QVariant &)));
