@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BUFFERVIEWSETTINGSPAGE_H
-#define BUFFERVIEWSETTINGSPAGE_H
+#pragma once
 
 #include "settingspage.h"
 #include "ui_bufferviewsettingspage.h"
@@ -38,8 +37,8 @@ public:
     ~BufferViewSettingsPage();
 
 public slots:
-    void save();
-    void load();
+    void save() final override;
+    void load() final override;
     void reset();
 
 private slots:
@@ -107,6 +106,3 @@ private:
 
     QStringList existing;
 };
-
-
-#endif // BUFFERVIEWSETTINGSPAGE_H

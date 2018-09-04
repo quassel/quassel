@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef NOTIFICATIONSSETTINGSPAGE_H_
-#define NOTIFICATIONSSETTINGSPAGE_H_
+#pragma once
 
 #include <QHash>
 
@@ -40,9 +39,9 @@ public:
     bool hasDefaults() const;
 
 public slots:
-    void save();
-    void load();
-    void defaults();
+    void save() final override;
+    void load() final override;
+    void defaults() final override;
 
 private slots:
     void widgetHasChanged();
@@ -51,6 +50,3 @@ private:
     QList<SettingsPage *> _configWidgets;
     bool _hasDefaults;
 };
-
-
-#endif

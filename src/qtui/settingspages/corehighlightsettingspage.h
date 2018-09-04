@@ -40,9 +40,9 @@ public:
     bool isSelectable() const override;
 
 public slots:
-    void save() override;
-    void load() override;
-    void defaults() override;
+    void save() final override;
+    void load() final override;
+    void defaults() final override;
     void revert();
     void clientConnected();
 
