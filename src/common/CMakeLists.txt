@@ -16,7 +16,7 @@ set(SOURCES
     event.cpp
     eventmanager.cpp
     expressionmatch.cpp
-    expressionmatchtests.cpp
+    # expressionmatchtests.cpp
     highlightrulemanager.cpp
     identity.cpp
     ignorelistmanager.cpp
