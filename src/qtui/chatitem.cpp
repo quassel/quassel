@@ -312,7 +312,7 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
         return LabelFormat{f.first, f.second, itemLabel};
     });
     // Append dummy element to avoid special-casing handling the last real format
-    labelFmtList.push_back(LabelFormat{quint16(data(MessageModel::DisplayRole).toString().length()), {}, itemLabel});
+    labelFmtList.push_back(LabelFormat{quint16(data(MessageModel::DisplayRole).toString().length()), Format(), itemLabel});
 
     // Apply the given label to the given range in the format list, splitting formats as necessary
     auto applyLabel = [&labelFmtList](quint16 start, quint16 end, Label label) {
