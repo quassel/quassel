@@ -44,6 +44,8 @@
 #  include "legacysystemtray.h"
 #endif
 
+class QDBusServiceWatcher;
+
 class StatusNotifierItemDBus;
 
 class StatusNotifierItem : public StatusNotifierItemParent
@@ -87,6 +89,7 @@ private slots:
 private:
     void registerToWatcher();
 
+    QDBusServiceWatcher *_serviceWatcher{nullptr};
     StatusNotifierItemDBus *_statusNotifierItemDBus{nullptr};
     org::kde::StatusNotifierWatcher *_statusNotifierWatcher{nullptr};
     org::freedesktop::Notifications *_notificationsClient{nullptr};

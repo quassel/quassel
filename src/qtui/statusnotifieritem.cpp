@@ -113,11 +113,11 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
     connect(this, SIGNAL(toolTipChanged(QString, QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
 
     // Service watcher to keep track of the StatusNotifierWatcher service
-    QDBusServiceWatcher *watcher = new QDBusServiceWatcher(kSniWatcherService,
-                                                           QDBusConnection::sessionBus(),
-                                                           QDBusServiceWatcher::WatchForOwnerChange,
-                                                           this);
-    connect(watcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), SLOT(serviceChange(QString, QString, QString)));
+    _serviceWatcher = new QDBusServiceWatcher(kSniWatcherService,
+                                              QDBusConnection::sessionBus(),
+                                              QDBusServiceWatcher::WatchForOwnerChange,
+                                              this);
+    connect(_serviceWatcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), SLOT(serviceChange(QString, QString, QString)));
 
     // Client instance for StatusNotifierWatcher
     _statusNotifierWatcher = new org::kde::StatusNotifierWatcher(kSniWatcherService,
