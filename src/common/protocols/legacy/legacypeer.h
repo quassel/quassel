@@ -39,29 +39,29 @@ public:
 
     LegacyPeer(AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = nullptr);
 
-    Protocol::Type protocol() const { return Protocol::LegacyProtocol; }
-    QString protocolName() const { return "the legacy protocol"; }
+    Protocol::Type protocol() const override { return Protocol::LegacyProtocol; }
+    QString protocolName() const override { return "the legacy protocol"; }
 
-    void setSignalProxy(SignalProxy *proxy);
+    void setSignalProxy(SignalProxy *proxy) override;
 
-    void dispatch(const Protocol::RegisterClient &msg);
-    void dispatch(const Protocol::ClientDenied &msg);
-    void dispatch(const Protocol::ClientRegistered &msg);
-    void dispatch(const Protocol::SetupData &msg);
-    void dispatch(const Protocol::SetupFailed &msg);
-    void dispatch(const Protocol::SetupDone &msg);
-    void dispatch(const Protocol::Login &msg);
-    void dispatch(const Protocol::LoginFailed &msg);
-    void dispatch(const Protocol::LoginSuccess &msg);
-    void dispatch(const Protocol::SessionState &msg);
+    void dispatch(const Protocol::RegisterClient &msg) override;
+    void dispatch(const Protocol::ClientDenied &msg) override;
+    void dispatch(const Protocol::ClientRegistered &msg) override;
+    void dispatch(const Protocol::SetupData &msg) override;
+    void dispatch(const Protocol::SetupFailed &msg) override;
+    void dispatch(const Protocol::SetupDone &msg) override;
+    void dispatch(const Protocol::Login &msg) override;
+    void dispatch(const Protocol::LoginFailed &msg) override;
+    void dispatch(const Protocol::LoginSuccess &msg) override;
+    void dispatch(const Protocol::SessionState &msg) override;
 
-    void dispatch(const Protocol::SyncMessage &msg);
-    void dispatch(const Protocol::RpcCall &msg);
-    void dispatch(const Protocol::InitRequest &msg);
-    void dispatch(const Protocol::InitData &msg);
+    void dispatch(const Protocol::SyncMessage &msg) override;
+    void dispatch(const Protocol::RpcCall &msg) override;
+    void dispatch(const Protocol::InitRequest &msg) override;
+    void dispatch(const Protocol::InitData &msg) override;
 
-    void dispatch(const Protocol::HeartBeat &msg);
-    void dispatch(const Protocol::HeartBeatReply &msg);
+    void dispatch(const Protocol::HeartBeat &msg) override;
+    void dispatch(const Protocol::HeartBeatReply &msg) override;
 
 signals:
     void protocolError(const QString &errorString);
@@ -72,7 +72,7 @@ signals:
 private:
     using RemotePeer::writeMessage;
     void writeMessage(const QVariant &item);
-    void processMessage(const QByteArray &msg);
+    void processMessage(const QByteArray &msg) override;
 
     void handleHandshakeMessage(const QVariant &msg);
     void handlePackedFunc(const QVariant &packedFunc);

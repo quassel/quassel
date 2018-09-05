@@ -40,7 +40,7 @@ class CLIENT_EXPORT BufferModel : public QSortFilterProxyModel
 public:
     BufferModel(NetworkModel *parent = nullptr);
 
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const override;
 
     inline const SelectionModelSynchronizer *selectionModelSynchronizer() const { return &_selectionModelSynchronizer; }
     inline QItemSelectionModel *standardSelectionModel() const { return _selectionModelSynchronizer.selectionModel(); }

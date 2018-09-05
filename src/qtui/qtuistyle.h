@@ -30,7 +30,7 @@ class QtUiStyle : public UiStyle
 
 public:
     QtUiStyle(QObject *parent = nullptr);
-    virtual ~QtUiStyle();
+    ~QtUiStyle() override;
 
     virtual inline qreal firstColumnSeparator() const { return 6; }
     virtual inline qreal secondColumnSeparator() const { return 6; }

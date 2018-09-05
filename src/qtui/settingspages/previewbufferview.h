@@ -31,8 +31,8 @@ public:
     PreviewBufferView(QWidget *parent = nullptr) : BufferView(parent) {}
 
 protected:
-    virtual void keyPressEvent(QKeyEvent *event) { QTreeView::keyPressEvent(event); }
-    virtual void contextMenuEvent(QContextMenuEvent *) {}
+    void keyPressEvent(QKeyEvent *event) override { QTreeView::keyPressEvent(event); }
+    void contextMenuEvent(QContextMenuEvent *) override {}
 };
 
 

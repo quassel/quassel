@@ -35,16 +35,16 @@ public:
     NickView(QWidget *parent = nullptr);
 
 protected:
-    virtual void rowsInserted(const QModelIndex &parent, int start, int end);
+    void rowsInserted(const QModelIndex &parent, int start, int end) override;
 
     //! This reimplementation ensures that the current index is first in list
-    virtual QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexes() const override;
 
     void unanimatedExpandAll();
 
 public slots:
-    virtual void setModel(QAbstractItemModel *model);
-    virtual void setRootIndex(const QModelIndex &index);
+    void setModel(QAbstractItemModel *model) override;
+    void setRootIndex(const QModelIndex &index) override;
     void init();
     void showContextMenu(const QPoint &pos);
     void startQuery(const QModelIndex &modelIndex);

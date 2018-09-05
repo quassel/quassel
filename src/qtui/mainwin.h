@@ -76,7 +76,7 @@ public:
     inline BufferWidget *bufferWidget() const { return _bufferWidget; }
     inline SystemTray *systemTray() const { return _systemTray; }
 
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
     static void flagRemoteCoreOnly(QObject *object) { object->setProperty("REMOTE_CORE_ONLY", true); }
     static bool isRemoteCoreOnly(QObject *object) { return object->property("REMOTE_CORE_ONLY").toBool(); }
@@ -85,7 +85,7 @@ public:
     void restoreStateFromSettings(UiSettings &);
 
     // We need to override this to add the show/hide menu bar option
-    virtual QMenu *createPopupMenu();
+    QMenu *createPopupMenu() override;
 
 public slots:
     void showStatusBarMessage(const QString &message);
@@ -100,9 +100,9 @@ public slots:
     void onExitRequested(const QString &reason);
 
 protected:
-    void closeEvent(QCloseEvent *event);
-    void moveEvent(QMoveEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    void closeEvent(QCloseEvent *event) override;
+    void moveEvent(QMoveEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 protected slots:
     void connectedToCore();

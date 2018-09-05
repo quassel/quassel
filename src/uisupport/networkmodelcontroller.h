@@ -38,7 +38,7 @@ class UISUPPORT_EXPORT NetworkModelController : public QObject
 
 public:
     NetworkModelController(QObject *parent = nullptr);
-    virtual ~NetworkModelController();
+    ~NetworkModelController() override;
 
     // don't change enums without doublechecking masks etc. in code
     enum ActionType {

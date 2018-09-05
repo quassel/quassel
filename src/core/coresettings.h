@@ -26,7 +26,7 @@
 class CoreSettings : public Settings
 {
 public:
-    virtual ~CoreSettings();
+    ~CoreSettings() override;
     CoreSettings(const QString group = "Core");
 
     void setStorageSettings(const QVariant &data);

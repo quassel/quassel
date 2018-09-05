@@ -69,7 +69,7 @@ class StatusNotifierItemDBus : public QObject
     friend class StatusNotifierItem;
 public:
     StatusNotifierItemDBus(StatusNotifierItem *parent);
-    ~StatusNotifierItemDBus();
+    ~StatusNotifierItemDBus() override;
 
     /**
      * @return the dbus connection used by this object

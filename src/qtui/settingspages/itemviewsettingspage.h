@@ -35,10 +35,10 @@ class ItemViewSettingsPage : public SettingsPage
 public:
     ItemViewSettingsPage(QWidget *parent = nullptr);
 
-    inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const override { return true; }
 
 public slots:
-    void save();
+    void save() override;
 
 private slots:
     void updateBufferViewPreview(QWidget *button);
@@ -49,7 +49,7 @@ private:
     QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem,
     *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
 
-    inline QString settingsKey() const { return QString("ItemViews"); }
+    inline QString settingsKey() const override { return QString("ItemViews"); }
 };
 
 

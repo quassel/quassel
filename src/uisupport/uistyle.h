@@ -47,7 +47,7 @@ class UISUPPORT_EXPORT UiStyle : public QObject
 
 public:
     UiStyle(QObject *parent = nullptr);
-    virtual ~UiStyle();
+    ~UiStyle() override;
 
     //! This enumerates the possible formats a text element may have. */
     /** These formats are ordered on increasing importance, in cases where a given property is specified

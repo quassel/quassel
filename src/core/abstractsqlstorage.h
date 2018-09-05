@@ -37,21 +37,21 @@ class AbstractSqlStorage : public Storage
 
 public:
     AbstractSqlStorage(QObject *parent = nullptr);
-    virtual ~AbstractSqlStorage();
+    ~AbstractSqlStorage() override;
 
     virtual std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() { return {}; }
     virtual std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter() { return {}; }
 
 public slots:
-    virtual State init(const QVariantMap &settings = QVariantMap(),
+    State init(const QVariantMap &settings = QVariantMap(),
                        const QProcessEnvironment &environment = {},
-                       bool loadFromEnvironment = false);
-    virtual bool setup(const QVariantMap &settings = QVariantMap(),
+                       bool loadFromEnvironment = false) override;
+    bool setup(const QVariantMap &settings = QVariantMap(),
                        const QProcessEnvironment &environment = {},
-                       bool loadFromEnvironment = false);
+                       bool loadFromEnvironment = false) override;
 
 protected:
-    inline virtual void sync() {};
+    inline void sync() override {};
 
     QSqlDatabase logDb();
 
@@ -142,7 +142,7 @@ class AbstractSqlStorage::Connection : public QObject
 
 public:
     Connection(const QString &name, QObject *parent = nullptr);
-    ~Connection();
+    ~Connection() override;
 
     inline QLatin1String name() const { return QLatin1String(_name); }
 

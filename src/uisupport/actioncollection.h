@@ -43,7 +43,7 @@ class UISUPPORT_EXPORT ActionCollection : public QObject
 
 public:
     explicit ActionCollection(QObject *parent);
-    virtual ~ActionCollection();
+    ~ActionCollection() override;
 
     /// Clears the entire action collection, deleting all actions.
     void clear();
@@ -97,7 +97,7 @@ signals:
     void actionTriggered(QAction *action);
 
 protected slots:
-    virtual void connectNotify(const QMetaMethod &signal);
+    void connectNotify(const QMetaMethod &signal) override;
     virtual void slotActionTriggered();
 
 private slots:

@@ -33,8 +33,8 @@ public:
     TitleSetter(MainWin *parent);
 
 protected slots:
-    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
 
 private:
     MainWin *_mainWin;

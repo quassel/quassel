@@ -30,10 +30,10 @@ public:
     inline ClientIrcListHelper(QObject *object = nullptr) : IrcListHelper(object) {};
 
 public slots:
-    virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
-    virtual void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QVariantList &channels);
-    virtual void reportFinishedList(const NetworkId &netId);
-    inline virtual void reportError(const QString &error) { emit errorReported(error); }
+    QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters) override;
+    void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QVariantList &channels) override;
+    void reportFinishedList(const NetworkId &netId) override;
+    inline void reportError(const QString &error) override { emit errorReported(error); }
 
 signals:
     void channelListReceived(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);

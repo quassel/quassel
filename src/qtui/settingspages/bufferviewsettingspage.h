@@ -34,7 +34,7 @@ class BufferViewSettingsPage : public SettingsPage
 
 public:
     BufferViewSettingsPage(QWidget *parent = nullptr);
-    ~BufferViewSettingsPage();
+    ~BufferViewSettingsPage() override;
 
 public slots:
     void save() final override;

@@ -30,7 +30,7 @@ class UISUPPORT_EXPORT ContextMenuActionProvider : public NetworkModelController
 
 public:
     ContextMenuActionProvider(QObject *parent = nullptr);
-    virtual ~ContextMenuActionProvider();
+    ~ContextMenuActionProvider() override;
 
     //! Provide a list of actions applying to the given item
     /**

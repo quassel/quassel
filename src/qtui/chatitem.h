@@ -158,8 +158,8 @@ class TimestampChatItem : public ChatItem
 {
 public:
     TimestampChatItem(const QRectF &boundingRect, ChatLine *parent) : ChatItem(boundingRect, parent) {}
-    virtual inline int type() const { return ChatScene::TimestampChatItemType; }
-    virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::TimestampColumn; }
+    inline int type() const override { return ChatScene::TimestampChatItemType; }
+    inline ChatLineModel::ColumnType column() const override { return ChatLineModel::TimestampColumn; }
 };
 
 
@@ -171,13 +171,13 @@ class SenderChatItem : public ChatItem
 {
 public:
     SenderChatItem(const QRectF &boundingRect, ChatLine *parent) : ChatItem(boundingRect, parent) {}
-    virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::SenderColumn; }
-    virtual void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode);
+    inline ChatLineModel::ColumnType column() const override { return ChatLineModel::SenderColumn; }
+    void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) override;
 
 protected:
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
-    virtual inline int type() const { return ChatScene::SenderChatItemType; }
-    virtual void initLayout(QTextLayout *layout) const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    inline int type() const override { return ChatScene::SenderChatItemType; }
+    void initLayout(QTextLayout *layout) const override;
 };
 
 
@@ -193,30 +193,30 @@ class ContentsChatItem : public ChatItem
 
 public:
     ContentsChatItem(const QPointF &pos, const qreal &width, ChatLine *parent);
-    ~ContentsChatItem();
+    ~ContentsChatItem() override;
 
-    virtual inline int type() const { return ChatScene::ContentsChatItemType; }
+    inline int type() const override { return ChatScene::ContentsChatItemType; }
 
-    inline ChatLineModel::ColumnType column() const { return ChatLineModel::ContentsColumn; }
+    inline ChatLineModel::ColumnType column() const override { return ChatLineModel::ContentsColumn; }
     QFontMetricsF *fontMetrics() const;
 
-    virtual void clearCache();
+    void clearCache() override;
 
 protected:
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-    virtual void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+    void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) override;
 
-    virtual bool hasActiveClickable() const;
-    virtual std::pair<quint16, quint16> activeClickableRange() const;
+    bool hasActiveClickable() const override;
+    std::pair<quint16, quint16> activeClickableRange() const override;
 
-    virtual void addActionsToMenu(QMenu *menu, const QPointF &itemPos);
+    void addActionsToMenu(QMenu *menu, const QPointF &itemPos) override;
     virtual void copyLinkToClipboard();
 
-    virtual void initLayout(QTextLayout *layout) const;
-    virtual void doLayout(QTextLayout *layout) const;
-    virtual UiStyle::FormatList formatList() const;
+    void initLayout(QTextLayout *layout) const override;
+    void doLayout(QTextLayout *layout) const override;
+    UiStyle::FormatList formatList() const override;
 
 private:
     class ActionProxy;

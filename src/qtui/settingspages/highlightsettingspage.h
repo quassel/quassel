@@ -34,12 +34,12 @@ class HighlightSettingsPage : public SettingsPage
 public:
     HighlightSettingsPage(QWidget *parent = nullptr);
 
-    bool hasDefaults() const;
+    bool hasDefaults() const override;
 
 public slots:
-    void save();
-    void load();
-    void defaults();
+    void save() override;
+    void load() override;
+    void defaults() override;
 
 private slots:
     void widgetHasChanged();

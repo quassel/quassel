@@ -83,7 +83,7 @@ signals:
     void endRemoveChilds();
 
 protected:
-    void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
 
 private:
     QList<AbstractTreeItem *> _childItems;
@@ -107,12 +107,12 @@ class CLIENT_EXPORT SimpleTreeItem : public AbstractTreeItem
 
 public:
     SimpleTreeItem(const QList<QVariant> &data, AbstractTreeItem *parent = nullptr);
-    virtual ~SimpleTreeItem();
+    ~SimpleTreeItem() override;
 
-    virtual QVariant data(int column, int role) const;
-    virtual bool setData(int column, const QVariant &value, int role);
+    QVariant data(int column, int role) const override;
+    bool setData(int column, const QVariant &value, int role) override;
 
-    virtual int columnCount() const;
+    int columnCount() const override;
 
 private:
     QList<QVariant> _itemData;
@@ -131,11 +131,11 @@ public:
 
     virtual QStringList propertyOrder() const = 0;
 
-    virtual QVariant data(int column, int role) const;
-    virtual bool setData(int column, const QVariant &value, int role);
+    QVariant data(int column, int role) const override;
+    bool setData(int column, const QVariant &value, int role) override;
 
     virtual QString toolTip(int column) const { Q_UNUSED(column) return QString(); }
-    virtual int columnCount() const;
+    int columnCount() const override;
 };
 
 
@@ -153,23 +153,23 @@ public:
     };
 
     TreeModel(const QList<QVariant> &, QObject *parent = nullptr);
-    virtual ~TreeModel();
+    ~TreeModel() override;
 
     AbstractTreeItem *root() const;
 
-    virtual QVariant data(const QModelIndex &index, int role) const;
-    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex indexByItem(AbstractTreeItem *item) const;
 
-    QModelIndex parent(const QModelIndex &index) const;
+    QModelIndex parent(const QModelIndex &index) const override;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     virtual void clear();
 

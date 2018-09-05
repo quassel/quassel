@@ -79,12 +79,12 @@ class ClientCertManager : public CertManager
 public:
     ClientCertManager(IdentityId id, CertIdentity *parent) : CertManager(id, parent), _certIdentity(parent) {}
 
-    virtual inline const QSslKey &sslKey() const { return _certIdentity->sslKey(); }
-    virtual inline const QSslCertificate &sslCert() const { return _certIdentity->sslCert(); }
+    inline const QSslKey &sslKey() const override { return _certIdentity->sslKey(); }
+    inline const QSslCertificate &sslCert() const override { return _certIdentity->sslCert(); }
 
 public slots:
-    virtual void setSslKey(const QByteArray &encoded);
-    virtual void setSslCert(const QByteArray &encoded);
+    void setSslKey(const QByteArray &encoded) override;
+    void setSslCert(const QByteArray &encoded) override;
 
 private:
     CertIdentity *_certIdentity;

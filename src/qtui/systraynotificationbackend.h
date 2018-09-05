@@ -33,12 +33,12 @@ class SystrayNotificationBackend : public AbstractNotificationBackend
 public:
     SystrayNotificationBackend(QObject *parent = nullptr);
 
-    void notify(const Notification &);
-    void close(uint notificationId);
-    virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &) override;
+    void close(uint notificationId) override;
+    SettingsPage *createConfigWidget() const override;
 
 protected:
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 private slots:
     void notificationActivated(uint notificationId);
@@ -62,10 +62,10 @@ class SystrayNotificationBackend::ConfigWidget : public SettingsPage
 
 public:
     ConfigWidget(QWidget *parent = nullptr);
-    void save();
-    void load();
-    bool hasDefaults() const;
-    void defaults();
+    void save() override;
+    void load() override;
+    bool hasDefaults() const override;
+    void defaults() override;
 
 private slots:
     void widgetChanged();

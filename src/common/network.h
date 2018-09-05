@@ -146,7 +146,7 @@ public :
     typedef QList<Server> ServerList;
 
     Network(const NetworkId &networkid, QObject *parent = nullptr);
-    ~Network();
+    ~Network() override;
 
     inline NetworkId networkId() const { return _networkId; }
 

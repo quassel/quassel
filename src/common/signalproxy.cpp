@@ -59,7 +59,7 @@ public:
     SignalRelay(SignalProxy *parent) : QObject(parent), _proxy(parent) {}
     inline SignalProxy *proxy() const { return _proxy; }
 
-    int qt_metacall(QMetaObject::Call _c, int _id, void **_a);
+    int qt_metacall(QMetaObject::Call _c, int _id, void **_a) override;
 
     void attachSignal(QObject *sender, int signalId, const QByteArray &funcName);
     void detachSignal(QObject *sender, int signalId = -1);

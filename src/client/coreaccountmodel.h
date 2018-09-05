@@ -40,8 +40,8 @@ public:
     CoreAccountModel(QObject *parent = nullptr);
     CoreAccountModel(const CoreAccountModel *other, QObject *parent = nullptr);
 
-    inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    inline int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     CoreAccount account(const QModelIndex &) const;
     CoreAccount account(AccountId) const;

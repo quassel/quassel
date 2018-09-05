@@ -42,11 +42,11 @@ public:
     inline bool isProcessing() const { return _processing; }
     inline Mode processMode() const { return _processMode; }
 
-    void reset();
+    void reset() override;
 
 public slots:
-    void process(Message &msg);
-    void process(QList<Message> &msgs);
+    void process(Message &msg) override;
+    void process(QList<Message> &msgs) override;
 
     /**
      * Network removed from system

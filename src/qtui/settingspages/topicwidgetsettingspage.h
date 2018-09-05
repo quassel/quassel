@@ -31,12 +31,12 @@ class TopicWidgetSettingsPage : public SettingsPage
 public:
     TopicWidgetSettingsPage(QWidget *parent = nullptr);
 
-    inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const override { return true; }
 
 private:
     Ui::TopicWidgetSettingsPage ui;
 
-    inline QString settingsKey() const { return QString("TopicWidget"); }
+    inline QString settingsKey() const override { return QString("TopicWidget"); }
 };
 
 

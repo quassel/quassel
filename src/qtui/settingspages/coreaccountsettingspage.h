@@ -41,14 +41,14 @@ class CoreAccountSettingsPage : public SettingsPage
 public:
     CoreAccountSettingsPage(QWidget *parent = nullptr);
 
-    inline bool hasDefaults() const { return false; }
+    inline bool hasDefaults() const override { return false; }
     inline bool isStandAlone() const { return _standalone; }
 
     AccountId selectedAccount() const;
 
 public slots:
-    void save();
-    void load();
+    void save() override;
+    void load() override;
 
     void setSelectedAccount(AccountId accId);
     void setStandAlone(bool);
@@ -83,7 +83,7 @@ private:
 
     bool testHasChanged();
 
-    inline QString settingsKey() const { return QString("CoreAccounts"); }
+    inline QString settingsKey() const override { return QString("CoreAccounts"); }
 };
 
 
@@ -127,7 +127,7 @@ public:
     FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent = nullptr);
 
 protected:
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     AccountId _internalAccount;

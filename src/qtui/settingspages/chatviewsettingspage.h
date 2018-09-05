@@ -33,10 +33,10 @@ class ChatViewSettingsPage : public SettingsPage
 public:
     ChatViewSettingsPage(QWidget *parent = nullptr);
 
-    inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const override { return true; }
 
 public slots:
-    void save();
+    void save() override;
 
 private:
     Ui::ChatViewSettingsPage ui;
@@ -46,7 +46,7 @@ private:
      */
     void initSenderPrefixComboBox();
 
-    inline QString settingsKey() const { return QString("QtUi/ChatView/__default__"); }
+    inline QString settingsKey() const override { return QString("QtUi/ChatView/__default__"); }
 };
 
 

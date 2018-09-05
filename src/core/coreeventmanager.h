@@ -36,7 +36,7 @@ public:
     {}
 
 protected:
-    inline Network *networkById(NetworkId id) const { return _coreSession->network(id); }
+    inline Network *networkById(NetworkId id) const override { return _coreSession->network(id); }
 
 private:
     CoreSession *_coreSession;

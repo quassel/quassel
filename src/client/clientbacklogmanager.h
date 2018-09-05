@@ -40,9 +40,9 @@ public:
     void reset();
 
 public slots:
-    virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
-    virtual void receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
-    virtual void receiveBacklogAll(MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
+    QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0) override;
+    void receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, QVariantList msgs) override;
+    void receiveBacklogAll(MsgId first, MsgId last, int limit, int additional, QVariantList msgs) override;
 
     void requestInitialBacklog();
 

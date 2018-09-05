@@ -31,7 +31,7 @@ class AwayLogView : public ChatMonitorView
 
 public:
     AwayLogView(AwayLogFilter *filter, QWidget *parent = nullptr);
-    virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
+    void addActionsToMenu(QMenu *menu, const QPointF &pos) override;
 };
 
 

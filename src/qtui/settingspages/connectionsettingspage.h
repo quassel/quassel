@@ -33,8 +33,8 @@ class ConnectionSettingsPage : public SettingsPage
 public:
     ConnectionSettingsPage(QWidget *parent = nullptr);
 
-    bool hasDefaults() const;
-    bool needsCoreConnection() const { return true; }
+    bool hasDefaults() const override;
+    bool needsCoreConnection() const override { return true; }
 
 public slots:
 
@@ -44,8 +44,8 @@ private slots:
     void initDone();
 
 private:
-    QVariant loadAutoWidgetValue(const QString &widgetName);
-    void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
+    QVariant loadAutoWidgetValue(const QString &widgetName) override;
+    void saveAutoWidgetValue(const QString &widgetName, const QVariant &value) override;
 
     Ui::ConnectionSettingsPage ui;
 };

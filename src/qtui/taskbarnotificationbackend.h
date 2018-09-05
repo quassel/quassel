@@ -35,9 +35,9 @@ class TaskbarNotificationBackend : public AbstractNotificationBackend
 public:
     TaskbarNotificationBackend(QObject *parent = nullptr);
 
-    void notify(const Notification &);
-    void close(uint notificationId);
-    virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &) override;
+    void close(uint notificationId) override;
+    SettingsPage *createConfigWidget() const override;
 
 private slots:
     void enabledChanged(const QVariant &);
@@ -57,10 +57,10 @@ class TaskbarNotificationBackend::ConfigWidget : public SettingsPage
 
 public:
     ConfigWidget(QWidget *parent = nullptr);
-    void save();
-    void load();
-    bool hasDefaults() const;
-    void defaults();
+    void save() override;
+    void load() override;
+    bool hasDefaults() const override;
+    void defaults() override;
 
 private slots:
     void widgetChanged();

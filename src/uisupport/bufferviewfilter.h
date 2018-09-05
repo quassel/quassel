@@ -54,27 +54,27 @@ public:
 
     BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = nullptr);
 
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-    virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 
-    QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const override;
     QVariant checkedState(const QModelIndex &index) const;
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     bool setCheckedState(const QModelIndex &index, Qt::CheckState state);
 
     void setConfig(BufferViewConfig *config);
     inline BufferViewConfig *config() const { return _config; }
 
-    virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
     QList<QAction *> actions(const QModelIndex &index);
 
     void setFilterString(const QString string);
 
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
     bool bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
     bool networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
 

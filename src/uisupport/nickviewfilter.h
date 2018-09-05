@@ -36,11 +36,11 @@ class UISUPPORT_EXPORT NickViewFilter : public QSortFilterProxyModel
 public:
     NickViewFilter(const BufferId &bufferId, NetworkModel *parent = nullptr);
 
-    virtual QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const override;
     QVariant icon(const QModelIndex &index) const;
 
 protected:
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
     QVariant styleData(const QModelIndex &index, int role) const;
 
 private:

@@ -64,8 +64,8 @@ class UISUPPORT_EXPORT SessionSettings : public UiSettings
 public:
     SessionSettings(const QString &sessionId, const QString &group = "Session");
 
-    virtual void setValue(const QString &key, const QVariant &data);
-    virtual QVariant value(const QString &key, const QVariant &def = QVariant());
+    void setValue(const QString &key, const QVariant &data) override;
+    QVariant value(const QString &key, const QVariant &def = QVariant()) override;
 
     void removeKey(const QString &key);
     void removeSession();

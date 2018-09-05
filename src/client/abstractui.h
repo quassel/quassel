@@ -39,7 +39,7 @@ class CLIENT_EXPORT AbstractUi : public QObject
 
 public:
     AbstractUi(QObject *parent = nullptr) : QObject(parent) {}
-    virtual ~AbstractUi() {}
+    ~AbstractUi() override {}
     virtual void init() = 0; // called after the client is initialized
     virtual MessageModel *createMessageModel(QObject *parent) = 0;
     virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;

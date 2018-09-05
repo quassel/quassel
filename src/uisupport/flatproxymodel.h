@@ -31,19 +31,19 @@ class UISUPPORT_EXPORT FlatProxyModel : public QAbstractProxyModel
 public:
     FlatProxyModel(QObject *parent = nullptr);
 
-    virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
-    virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
-    virtual QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection) const;
-    virtual QItemSelection mapSelectionToSource(const QItemSelection &proxySelection) const;
+    QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection) const override;
+    QItemSelection mapSelectionToSource(const QItemSelection &proxySelection) const override;
 
-    virtual void setSourceModel(QAbstractItemModel *sourceModel);
+    void setSourceModel(QAbstractItemModel *sourceModel) override;
 
-    virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    virtual QModelIndex parent(const QModelIndex &index) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
 
-    virtual int rowCount(const QModelIndex &index) const;
-    virtual int columnCount(const QModelIndex &index) const;
+    int rowCount(const QModelIndex &index) const override;
+    int columnCount(const QModelIndex &index) const override;
 
 public slots:
     void linkTest() const;

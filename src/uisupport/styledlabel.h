@@ -43,7 +43,7 @@ public:
     void setText(const QString &text);
     void setCustomFont(const QFont &font);
 
-    virtual QSize sizeHint() const;
+    QSize sizeHint() const override;
     //virtual QSize minimumSizeHint() const;
 
     inline QTextOption::WrapMode wrapMode() const { return _wrapMode; }
@@ -62,12 +62,12 @@ signals:
     void clickableActivated(const Clickable &click);
 
 protected:
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void resizeEvent(QResizeEvent *event);
-    virtual void enterEvent(QEvent *);
-    virtual void leaveEvent(QEvent *);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mousePressEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void enterEvent(QEvent *) override;
+    void leaveEvent(QEvent *) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
     int posToCursor(const QPointF &pos);
 

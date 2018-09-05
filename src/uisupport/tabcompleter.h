@@ -47,7 +47,7 @@ public:
     void reset();
     void complete();
 
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 public slots:
     void onTabCompletionKey();

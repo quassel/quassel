@@ -35,10 +35,10 @@ public:
     StrictnessType match(const RawMessage &rawMsg, const QString &networkName);
 
 public slots:
-    virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { toggleIgnoreRule(ignoreRule); }
-    virtual inline void requestRemoveIgnoreListItem(const QString &ignoreRule) { removeIgnoreListItem(ignoreRule); }
-    virtual inline void requestAddIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
-        int scope, const QString &scopeRule, bool isActive)
+    inline void requestToggleIgnoreRule(const QString &ignoreRule) override { toggleIgnoreRule(ignoreRule); }
+    inline void requestRemoveIgnoreListItem(const QString &ignoreRule) override { removeIgnoreListItem(ignoreRule); }
+    inline void requestAddIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
+        int scope, const QString &scopeRule, bool isActive) override
     {
         addIgnoreListItem(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
     }

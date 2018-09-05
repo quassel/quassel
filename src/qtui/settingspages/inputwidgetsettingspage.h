@@ -31,12 +31,12 @@ class InputWidgetSettingsPage : public SettingsPage
 public:
     InputWidgetSettingsPage(QWidget *parent = nullptr);
 
-    inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const override { return true; }
 
 private:
     Ui::InputWidgetSettingsPage ui;
 
-    inline QString settingsKey() const { return QString("InputWidget"); }
+    inline QString settingsKey() const override { return QString("InputWidget"); }
 };
 
 

@@ -38,8 +38,8 @@ public:
     ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
 
 public slots:
-    virtual void setInitialized();
+    void setInitialized() override;
 
 protected:
-    virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
+    BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId) override;
 };

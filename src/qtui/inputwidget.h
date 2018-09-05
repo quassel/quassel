@@ -42,7 +42,7 @@ class InputWidget : public AbstractItemView
 
 public:
     InputWidget(QWidget *parent = nullptr);
-    virtual ~InputWidget();
+    ~InputWidget() override;
 
     const Network *currentNetwork() const;
 
@@ -92,12 +92,12 @@ public slots:
     void clearFormat();
 
 protected:
-    virtual bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 protected slots:
-    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-    virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) override;
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
 
 private slots:
     void setCustomFont(const QVariant &font);
@@ -198,5 +198,5 @@ class MouseWheelFilter : public QObject
 
 public:
     MouseWheelFilter(QObject *parent = nullptr);
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 };

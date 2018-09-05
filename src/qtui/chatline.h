@@ -36,9 +36,9 @@ public:
         const QPointF &senderPos, const QPointF &contentsPos,
         QGraphicsItem *parent = nullptr);
 
-    virtual ~ChatLine();
+    ~ChatLine() override;
 
-    virtual inline QRectF boundingRect() const { return QRectF(0, 0, _width, _height); }
+    inline QRectF boundingRect() const override { return QRectF(0, 0, _width, _height); }
 
     inline QModelIndex index() const { return model()->index(row(), 0); }
     inline MsgId msgId() const { return index().data(MessageModel::MsgIdRole).value<MsgId>(); }
@@ -60,9 +60,9 @@ public:
     inline ChatItem *senderItem() { return &_senderItem; }
     inline ContentsChatItem *contentsItem() { return &_contentsItem; }
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     enum { Type = ChatScene::ChatLineType };
-    virtual inline int type() const { return Type; }
+    inline int type() const override { return Type; }
 
     // pos is relative to the parent ChatLine
     void setFirstColumn(const qreal &timestampWidth, const qreal &senderWidth, const QPointF &senderPos);
@@ -77,15 +77,15 @@ public:
     void clearCache();
 
 protected:
-    virtual bool sceneEvent(QEvent *event);
+    bool sceneEvent(QEvent *event) override;
 
     // These need to be relayed to the appropriate ChatItem
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
 
     ChatItem *mouseEventTargetItem(const QPointF &pos);
 

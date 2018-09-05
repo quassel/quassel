@@ -36,15 +36,15 @@ public:
     void setCustomFont(const QFont &);
     void setReadOnly(const bool &readonly);
 
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
     inline bool isReadOnly() const { return _readonly; }
 
 signals:
     void switchedPlain();
 
 protected slots:
-    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
 
 private slots:
     void on_topicLineEdit_textEntered();

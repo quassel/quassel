@@ -44,9 +44,9 @@ class NetworkItem : public PropertyMapItem
 public :
     NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = nullptr);
 
-    virtual QStringList propertyOrder() const;
+    QStringList propertyOrder() const override;
 
-    virtual QVariant data(int column, int row) const;
+    QVariant data(int column, int row) const override;
 
     /**
      * Escapes a string as HTML, ready for Qt markup.
@@ -68,7 +68,7 @@ public :
     inline QString currentServer() const { return (bool)_network ? _network->currentServer() : QString(); }
     inline int nickCount() const { return (bool)_network ? _network->ircUsers().count() : 0; }
 
-    virtual QString toolTip(int column) const;
+    QString toolTip(int column) const override;
 
     BufferItem *findBufferItem(BufferId bufferId);
     inline BufferItem *findBufferItem(const BufferInfo &bufferInfo) { return findBufferItem(bufferInfo.bufferId()); }
@@ -111,11 +111,11 @@ class BufferItem : public PropertyMapItem
 public :
     BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent = nullptr);
 
-    virtual QStringList propertyOrder() const;
+    QStringList propertyOrder() const override;
 
     inline const BufferInfo &bufferInfo() const { return _bufferInfo; }
-    virtual QVariant data(int column, int role) const;
-    virtual bool setData(int column, const QVariant &value, int role);
+    QVariant data(int column, int role) const override;
+    bool setData(int column, const QVariant &value, int role) override;
 
     inline BufferId bufferId() const { return _bufferInfo.bufferId(); }
     inline BufferInfo::Type bufferType() const { return _bufferInfo.type(); }
@@ -142,7 +142,7 @@ public :
     inline const MsgId &firstUnreadMsgId() const { return _firstUnreadMsgId; }
 
     bool isCurrentBuffer() const;
-    virtual QString toolTip(int column) const;
+    QString toolTip(int column) const override;
 
 public slots:
     virtual inline void setTopic(const QString &) { emit dataChanged(1); }
@@ -167,8 +167,8 @@ class StatusBufferItem : public BufferItem
 public:
     StatusBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent);
 
-    virtual QString toolTip(int column) const;
-    virtual inline QString bufferName() const { return tr("Status Buffer"); }
+    QString toolTip(int column) const override;
+    inline QString bufferName() const override { return tr("Status Buffer"); }
 };
 
 
@@ -182,13 +182,13 @@ class QueryBufferItem : public BufferItem
 public:
     QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent);
 
-    virtual QVariant data(int column, int role) const;
-    virtual bool setData(int column, const QVariant &value, int role);
+    QVariant data(int column, int role) const override;
+    bool setData(int column, const QVariant &value, int role) override;
 
-    virtual inline bool isActive() const { return (bool)_ircUser; }
-    virtual QString toolTip(int column) const;
+    inline bool isActive() const override { return (bool)_ircUser; }
+    QString toolTip(int column) const override;
 
-    virtual void setBufferName(const QString &name);
+    void setBufferName(const QString &name) override;
 
 public slots:
     void setIrcUser(IrcUser *ircUser);
@@ -211,12 +211,12 @@ class ChannelBufferItem : public BufferItem
 public:
     ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent);
 
-    virtual QVariant data(int column, int role) const;
-    virtual inline bool isActive() const { return (bool)_ircChannel; }
-    virtual QString toolTip(int column) const;
+    QVariant data(int column, int role) const override;
+    inline bool isActive() const override { return (bool)_ircChannel; }
+    QString toolTip(int column) const override;
 
-    virtual inline QString topic() const { return (bool)_ircChannel ? _ircChannel->topic() : QString(); }
-    virtual inline int nickCount() const { return (bool)_ircChannel ? _ircChannel->ircUsers().count() : 0; }
+    inline QString topic() const override { return (bool)_ircChannel ? _ircChannel->topic() : QString(); }
+    inline int nickCount() const override { return (bool)_ircChannel ? _ircChannel->ircUsers().count() : 0; }
 
     void attachIrcChannel(IrcChannel *ircChannel);
 
@@ -260,11 +260,11 @@ class CLIENT_EXPORT UserCategoryItem : public PropertyMapItem
 public :
     UserCategoryItem(int category, AbstractTreeItem *parent);
 
-    virtual QStringList propertyOrder() const;
+    QStringList propertyOrder() const override;
 
     QString categoryName() const;
     inline int categoryId() const { return _category; }
-    virtual QVariant data(int column, int role) const;
+    QVariant data(int column, int role) const override;
 
     IrcUserItem *findIrcUser(IrcUser *ircUser);
     void addUsers(const QList<IrcUser *> &ircUser);
@@ -290,14 +290,14 @@ class IrcUserItem : public PropertyMapItem
 public :
     IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
 
-    virtual QStringList propertyOrder() const;
+    QStringList propertyOrder() const override;
 
     inline QString nickName() const { return _ircUser ? _ircUser->nick() : QString(); }
     inline bool isActive() const { return _ircUser ? !_ircUser->isAway() : false; }
 
     inline IrcUser *ircUser() { return _ircUser; }
-    virtual QVariant data(int column, int role) const;
-    virtual QString toolTip(int column) const;
+    QVariant data(int column, int role) const override;
+    QString toolTip(int column) const override;
 
     /**
      * Gets the list of channel modes for this nick if parented to channel.
@@ -351,8 +351,8 @@ public:
     static bool mimeContainsBufferList(const QMimeData *mimeData);
     static QList<QPair<NetworkId, BufferId> > mimeDataToBufferList(const QMimeData *mimeData);
 
-    virtual QStringList mimeTypes() const;
-    virtual QMimeData *mimeData(const QModelIndexList &) const;
+    QStringList mimeTypes() const override;
+    QMimeData *mimeData(const QModelIndexList &) const override;
 
     void attachNetwork(Network *network);
 

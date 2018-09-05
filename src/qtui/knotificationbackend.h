@@ -36,9 +36,9 @@ class KNotificationBackend : public AbstractNotificationBackend
 public:
     KNotificationBackend(QObject *parent = nullptr);
 
-    void notify(const Notification &);
-    void close(uint notificationId);
-    virtual SettingsPage *createConfigWidget() const;
+    void notify(const Notification &) override;
+    void close(uint notificationId) override;
+    SettingsPage *createConfigWidget() const override;
 
 private slots:
     void notificationActivated();
@@ -62,8 +62,8 @@ class KNotificationBackend::ConfigWidget : public SettingsPage
 public:
     ConfigWidget(QWidget *parent = nullptr);
 
-    void save();
-    void load();
+    void save() override;
+    void load() override;
 
 private slots:
     void widgetChanged(bool);

@@ -32,5 +32,5 @@ public:
     explicit ClientAliasManager(QObject *parent = nullptr);
 
 protected:
-    const Network *network(NetworkId) const;
+    const Network *network(NetworkId) const override;
 };

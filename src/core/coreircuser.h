@@ -32,7 +32,7 @@ class CoreIrcUser : public IrcUser
 
 public:
     CoreIrcUser(const QString &hostmask, Network *network);
-    virtual ~CoreIrcUser();
+    ~CoreIrcUser() override;
 
 #ifdef HAVE_QCA2
     Cipher *cipher() const;

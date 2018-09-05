@@ -61,7 +61,7 @@ public:
     {}
 
 protected:
-    virtual QString iconNameForAction(QAction *action) // TODO Qt 4.7: fixme when we have converted our iconloader
+    QString iconNameForAction(QAction *action) override // TODO Qt 4.7: fixme when we have converted our iconloader
     {
         QIcon icon(action->icon());
         return icon.isNull() ? QString() : icon.name();

@@ -41,22 +41,22 @@ public:
 
     typedef ChatLineModelItem::Word Word;
     typedef ChatLineModelItem::WrapList WrapList;
-    virtual inline const MessageModelItem *messageItemAt(int i) const { return &_messageList[i]; }
+    inline const MessageModelItem *messageItemAt(int i) const override { return &_messageList[i]; }
 protected:
 //   virtual MessageModelItem *createMessageModelItem(const Message &);
 
-    virtual inline int messageCount() const { return _messageList.count(); }
-    virtual inline bool messagesIsEmpty() const { return _messageList.isEmpty(); }
-    virtual inline MessageModelItem *messageItemAt(int i) { return &_messageList[i]; }
-    virtual inline const MessageModelItem *firstMessageItem() const { return &_messageList.first(); }
-    virtual inline MessageModelItem *firstMessageItem() { return &_messageList.first(); }
-    virtual inline const MessageModelItem *lastMessageItem() const { return &_messageList.last(); }
-    virtual inline MessageModelItem *lastMessageItem() { return &_messageList.last(); }
-    virtual inline void insertMessage__(int pos, const Message &msg) { _messageList.insert(pos, ChatLineModelItem(msg)); }
-    virtual void insertMessages__(int pos, const QList<Message> &);
-    virtual inline void removeMessageAt(int i) { _messageList.removeAt(i); }
-    virtual inline void removeAllMessages() { _messageList.clear(); }
-    virtual Message takeMessageAt(int i);
+    inline int messageCount() const override { return _messageList.count(); }
+    inline bool messagesIsEmpty() const override { return _messageList.isEmpty(); }
+    inline MessageModelItem *messageItemAt(int i) override { return &_messageList[i]; }
+    inline const MessageModelItem *firstMessageItem() const override { return &_messageList.first(); }
+    inline MessageModelItem *firstMessageItem() override { return &_messageList.first(); }
+    inline const MessageModelItem *lastMessageItem() const override { return &_messageList.last(); }
+    inline MessageModelItem *lastMessageItem() override { return &_messageList.last(); }
+    inline void insertMessage__(int pos, const Message &msg) override { _messageList.insert(pos, ChatLineModelItem(msg)); }
+    void insertMessages__(int pos, const QList<Message> &) override;
+    inline void removeMessageAt(int i) override { _messageList.removeAt(i); }
+    inline void removeAllMessages() override { _messageList.clear(); }
+    Message takeMessageAt(int i) override;
 
 protected slots:
     virtual void styleChanged();

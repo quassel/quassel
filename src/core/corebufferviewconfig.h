@@ -31,9 +31,9 @@ public:
     CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = nullptr);
 
 public slots:
-    virtual inline void requestSetBufferViewName(const QString &bufferViewName) { setBufferViewName(bufferViewName); }
-    virtual inline void requestRemoveBuffer(const BufferId &bufferId) { removeBuffer(bufferId); }
-    virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { removeBufferPermanently(bufferId); }
-    virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { addBuffer(bufferId, pos); }
-    virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { moveBuffer(bufferId, pos); }
+    inline void requestSetBufferViewName(const QString &bufferViewName) override { setBufferViewName(bufferViewName); }
+    inline void requestRemoveBuffer(const BufferId &bufferId) override { removeBuffer(bufferId); }
+    inline void requestRemoveBufferPermanently(const BufferId &bufferId) override { removeBufferPermanently(bufferId); }
+    inline void requestAddBuffer(const BufferId &bufferId, int pos) override { addBuffer(bufferId, pos); }
+    inline void requestMoveBuffer(const BufferId &bufferId, int pos) override { moveBuffer(bufferId, pos); }
 };

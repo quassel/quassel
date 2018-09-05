@@ -53,7 +53,7 @@ public slots:
 
 protected:
 #ifdef HAVE_SSL
-    virtual bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
 #endif
 
 signals:

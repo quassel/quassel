@@ -41,12 +41,12 @@ public:
     inline bool requestInProgress(const NetworkId &netId) const { return _channelLists.contains(netId); }
 
 public slots:
-    virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
+    QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters) override;
     bool addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic);
     bool endOfChannelList(const NetworkId &netId);
 
 protected:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     bool dispatchQuery(const NetworkId &netId, const QString &query);
