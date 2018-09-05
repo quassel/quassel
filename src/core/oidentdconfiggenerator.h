@@ -55,7 +55,7 @@ class OidentdConfigGenerator : public QObject
     Q_OBJECT
 public:
     explicit OidentdConfigGenerator(QObject *parent = nullptr);
-    ~OidentdConfigGenerator();
+    ~OidentdConfigGenerator() override;
 
 public slots:
     bool addSocket(const CoreIdentity *identity, const QHostAddress &localAddress,

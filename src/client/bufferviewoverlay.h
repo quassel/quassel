@@ -65,7 +65,7 @@ signals:
     void initDone();
 
 protected:
-    virtual void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
 
 private slots:
     void viewInitialized();

@@ -50,7 +50,7 @@ public:
     };
 
     Compressor(QTcpSocket *socket, CompressionLevel level, QObject *parent = nullptr);
-    ~Compressor();
+    ~Compressor() override;
 
     CompressionLevel compressionLevel() const { return _level; }
 

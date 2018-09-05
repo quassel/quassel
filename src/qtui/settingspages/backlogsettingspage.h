@@ -33,13 +33,13 @@ class BacklogSettingsPage : public SettingsPage
 public:
     BacklogSettingsPage(QWidget *parent = nullptr);
 
-    inline QString settingsKey() const { return "Backlog"; }
-    bool hasDefaults() const;
+    inline QString settingsKey() const override { return "Backlog"; }
+    bool hasDefaults() const override;
 
 public slots:
-    void save();
-    void load();
-    void defaults();
+    void save() override;
+    void load() override;
+    void defaults() override;
 
 private slots:
     void widgetHasChanged();

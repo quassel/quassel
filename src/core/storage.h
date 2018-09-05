@@ -34,7 +34,7 @@ class Storage : public QObject
 
 public:
     Storage(QObject *parent = nullptr);
-    virtual ~Storage() {};
+    ~Storage() override {};
 
     enum State {
         IsReady,    // ready to go

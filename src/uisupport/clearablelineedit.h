@@ -34,7 +34,7 @@ public:
     ClearableLineEdit(QWidget *parent = nullptr);
 
 protected:
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
     void updateClearButton(const QString &text);

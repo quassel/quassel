@@ -33,19 +33,19 @@ class AliasesModel : public QAbstractItemModel
 public:
     AliasesModel(QObject *parent = nullptr);
 
-    virtual QVariant data(const QModelIndex &index, int role) const;
-    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
-    inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
+    inline QModelIndex parent(const QModelIndex &) const override { return QModelIndex(); }
 
-    inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    inline int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    inline int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    inline int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     inline bool configChanged() const { return _configChanged; }
     inline bool isReady() const { return _modelReady; }
@@ -54,7 +54,7 @@ public slots:
     void newAlias();
     void loadDefaults();
     void removeAlias(int index);
-    void revert();
+    void revert() override;
     void commit();
 
 signals:

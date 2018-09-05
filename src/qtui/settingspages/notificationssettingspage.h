@@ -36,7 +36,7 @@ class NotificationsSettingsPage : public SettingsPage
 public:
     NotificationsSettingsPage(QWidget *parent = nullptr);
 
-    bool hasDefaults() const;
+    bool hasDefaults() const override;
 
 public slots:
     void save() final override;

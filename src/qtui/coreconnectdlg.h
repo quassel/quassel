@@ -37,7 +37,7 @@ public:
     CoreConnectDlg(QWidget *parent = nullptr);
     AccountId selectedAccount() const;
 
-    void accept();
+    void accept() override;
 
 private:
     CoreAccountSettingsPage *_settingsPage;
@@ -51,7 +51,7 @@ class CoreConnectAuthDlg : public QDialog
 public:
     CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = nullptr);
 
-    void accept();
+    void accept() override;
 
 private slots:
     void setButtonStates();

@@ -38,7 +38,7 @@ public:
     void setOverlay(BufferViewOverlay *overlay);
 
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private slots:
     void overlayDestroyed();

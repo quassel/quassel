@@ -78,7 +78,7 @@ public:
 
 protected:
     GraphicalUi(QObject *parent = nullptr);
-    virtual void init();
+    void init() override;
 
     //! This is the widget we associate global actions with, typically the main window
     void setMainWidget(QWidget *);
@@ -105,10 +105,10 @@ protected:
     void setToolBarActionProvider(ToolBarActionProvider *);
     void setUiStyle(UiStyle *);
 
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 protected slots:
-    virtual void disconnectedFromCore();
+    void disconnectedFromCore() override;
 
 private:
     static QWidget *_mainWidget;

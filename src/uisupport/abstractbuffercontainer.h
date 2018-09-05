@@ -35,7 +35,7 @@ class UISUPPORT_EXPORT AbstractBufferContainer : public AbstractItemView
 
 public:
     AbstractBufferContainer(QWidget *parent);
-    virtual ~AbstractBufferContainer();
+    ~AbstractBufferContainer() override;
 
     inline BufferId currentBuffer() const { return _currentBuffer; }
 
@@ -60,8 +60,8 @@ protected:
     virtual inline bool autoMarkerLine() const { return true; }
 
 protected slots:
-    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-    virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) override;
 
     //! Show the given chat view
     /** This method is called when the given chat view should be displayed. Use this e.g. for

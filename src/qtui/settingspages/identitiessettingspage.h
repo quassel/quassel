@@ -38,9 +38,9 @@ class IdentitiesSettingsPage : public SettingsPage
 public:
     IdentitiesSettingsPage(QWidget *parent = nullptr);
 
-    virtual inline bool needsCoreConnection() const { return true; }
+    inline bool needsCoreConnection() const override { return true; }
 
-    bool aboutToSave();
+    bool aboutToSave() override;
 
 public slots:
     void save() final override;

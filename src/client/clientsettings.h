@@ -32,7 +32,7 @@ class QSslSocket;
 class CLIENT_EXPORT ClientSettings : public Settings
 {
 public:
-    virtual ~ClientSettings();
+    ~ClientSettings() override;
 
 protected:
     ClientSettings(QString group = "General");
@@ -56,7 +56,7 @@ public:
     // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
     CoreAccountSettings(const QString &subgroup = "General");
 
-    virtual void notify(const QString &key, QObject *receiver, const char *slot);
+    void notify(const QString &key, QObject *receiver, const char *slot) override;
 
     QList<AccountId> knownAccounts();
     AccountId lastAccount();

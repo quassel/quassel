@@ -58,10 +58,10 @@ public:
 
 protected:
     explicit MessageEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "MessageEvent"; }
-    virtual inline void debugInfo(QDebug &dbg) const
+    inline QString className() const override { return "MessageEvent"; }
+    inline void debugInfo(QDebug &dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
         dbg.nospace() << ", sender = " << qPrintable(sender())

@@ -42,7 +42,7 @@ public:
     ChatView(MessageFilter *, QWidget *parent = nullptr);
     ChatView(BufferId bufferId, QWidget *parent = nullptr);
 
-    virtual MsgId lastMsgId() const;
+    MsgId lastMsgId() const override;
     virtual MsgId lastVisibleMsgId() const;
     inline AbstractBufferContainer *bufferContainer() const { return _bufferContainer; }
     inline void setBufferContainer(AbstractBufferContainer *c) { _bufferContainer = c; }
@@ -90,9 +90,9 @@ public slots:
     void jumpToMarkerLine(bool requestBacklog);
 
 protected:
-    virtual bool event(QEvent *event);
-    virtual void resizeEvent(QResizeEvent *event);
-    virtual void scrollContentsBy(int dx, int dy);
+    bool event(QEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void scrollContentsBy(int dx, int dy) override;
 
 protected slots:
     virtual void verticalScrollbarChanged(int);

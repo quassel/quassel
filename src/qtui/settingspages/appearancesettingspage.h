@@ -37,12 +37,12 @@ class AppearanceSettingsPage : public SettingsPage
 public:
     AppearanceSettingsPage(QWidget *parent = nullptr);
 
-    inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const override { return true; }
 
 public slots:
-    void save();
-    void load();
-    void defaults();
+    void save() override;
+    void load() override;
+    void defaults() override;
 
 private slots:
     void widgetHasChanged();
@@ -61,7 +61,7 @@ private:
     QHash<QString, QVariant> settings;
     QMap<QString, QLocale> _locales;
 
-    inline QString settingsKey() const { return QString("QtUi"); }
+    inline QString settingsKey() const override { return QString("QtUi"); }
 };
 
 

@@ -34,13 +34,13 @@ class ChatMonitorSettingsPage : public SettingsPage
 
 public:
     ChatMonitorSettingsPage(QWidget *parent = nullptr);
-    bool hasDefaults() const;
+    bool hasDefaults() const override;
 
 public slots:
-    void save();
-    void load();
+    void save() override;
+    void load() override;
     void loadSettings();
-    void defaults();
+    void defaults() override;
 
 private slots:
     void widgetHasChanged();

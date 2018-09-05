@@ -61,7 +61,7 @@ class COMMON_EXPORT IrcUser : public SyncableObject
 
 public :
         IrcUser(const QString &hostmask, Network *network);
-    virtual ~IrcUser();
+    ~IrcUser() override;
 
     inline QString user() const { return _user; }
     inline QString host() const { return _host; }

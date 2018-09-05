@@ -42,12 +42,12 @@ public:
     CoreCertManager(CoreIdentity &identity);
 
 #ifdef HAVE_SSL
-    virtual const QSslKey &sslKey() const;
-    virtual const QSslCertificate &sslCert() const;
+    const QSslKey &sslKey() const override;
+    const QSslCertificate &sslCert() const override;
 
 public slots:
-    virtual void setSslKey(const QByteArray &encoded);
-    virtual void setSslCert(const QByteArray &encoded);
+    void setSslKey(const QByteArray &encoded) override;
+    void setSslCert(const QByteArray &encoded) override;
 #endif
 
     void setId(IdentityId id);

@@ -42,13 +42,13 @@ public:
      *
      * @return True if defaults available, otherwise false
      */
-    inline bool hasDefaults() const { return true; }
+    inline bool hasDefaults() const override { return true; }
 
 public slots:
     /**
      * Save and apply current settings
      */
-    void save();
+    void save() override;
 
 private:
     Ui::ChatViewColorSettingsPage ui;  /// Reference to the Qt settings page UI
@@ -58,5 +58,5 @@ private:
      *
      * @return QString pointing to settings group and key for configuration values
      */
-    inline QString settingsKey() const { return QString("QtUi/ChatView/__default__"); }
+    inline QString settingsKey() const override { return QString("QtUi/ChatView/__default__"); }
 };

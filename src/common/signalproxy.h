@@ -54,7 +54,7 @@ public:
 
     SignalProxy(QObject *parent);
     SignalProxy(ProxyMode mode, QObject *parent);
-    virtual ~SignalProxy();
+    ~SignalProxy() override;
 
     void setProxyMode(ProxyMode mode);
     inline ProxyMode proxyMode() const { return _proxyMode; }
@@ -128,7 +128,7 @@ public slots:
     void detachSlots(QObject *receiver);
 
 protected:
-    void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
     void sync_call__(const SyncableObject *obj, ProxyMode modeType, const char *funcname, va_list ap);
     void renameObject(const SyncableObject *obj, const QString &newname, const QString &oldname);
 

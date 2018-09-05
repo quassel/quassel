@@ -73,7 +73,7 @@ public:
     };
 
     ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent);
-    virtual ~ChatScene();
+    ~ChatScene() override;
 
     inline QAbstractItemModel *model() const { return _model; }
     inline MessageFilter *filter() const { return qobject_cast<MessageFilter *>(_model); }
@@ -177,11 +177,11 @@ signals:
     void mouseMoveWhileSelecting(const QPointF &scenePos);
 
 protected:
-    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent);
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     virtual void handleClick(Qt::MouseButton button, const QPointF &scenePos);
 
 protected slots:

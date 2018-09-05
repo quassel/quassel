@@ -32,7 +32,7 @@ class UISUPPORT_EXPORT ToolBarActionProvider : public NetworkModelController
 
 public:
     ToolBarActionProvider(QObject *parent = nullptr);
-    virtual ~ToolBarActionProvider();
+    ~ToolBarActionProvider() override;
 
     enum ToolBarType {
         MainToolBar,
@@ -43,13 +43,13 @@ public:
     void addActions(QToolBar *, ToolBarType type);
 
 public slots:
-    virtual void disconnectedFromCore();
+    void disconnectedFromCore() override;
 
 protected:
-    virtual void handleNetworkAction(ActionType, QAction *);
-    virtual void handleBufferAction(ActionType, QAction *);
-    virtual void handleNickAction(ActionType, QAction *);
-    virtual void handleGeneralAction(ActionType, QAction *);
+    void handleNetworkAction(ActionType, QAction *) override;
+    void handleBufferAction(ActionType, QAction *) override;
+    void handleNickAction(ActionType, QAction *) override;
+    void handleGeneralAction(ActionType, QAction *) override;
 
 private slots:
     void networkCreated(NetworkId id);

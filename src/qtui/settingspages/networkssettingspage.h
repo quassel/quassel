@@ -40,13 +40,13 @@ class NetworksSettingsPage : public SettingsPage
 public:
     NetworksSettingsPage(QWidget *parent = nullptr);
 
-    virtual inline bool needsCoreConnection() const { return true; }
+    inline bool needsCoreConnection() const override { return true; }
 
-    bool aboutToSave();
+    bool aboutToSave() override;
 
 public slots:
-    void save();
-    void load();
+    void save() override;
+    void load() override;
     void bufferList_Open(NetworkId);
 
 private slots:

@@ -39,9 +39,9 @@ public:
 
     ChatMonitorFilter(MessageModel *model, QObject *parent = nullptr);
 
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-    virtual QString idString() const { return "ChatMonitor"; }
-    virtual QVariant data(const QModelIndex &index, int role) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    QString idString() const override { return "ChatMonitor"; }
+    QVariant data(const QModelIndex &index, int role) const override;
 
     int showFields() const { return _showFields; }
     bool showOwnMessages() const { return _showOwnMessages; }

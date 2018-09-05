@@ -29,16 +29,16 @@ class ChatLineModelItem : public MessageModelItem
 public:
     ChatLineModelItem(const Message &);
 
-    virtual QVariant data(int column, int role) const;
-    virtual bool setData(int column, const QVariant &value, int role);
+    QVariant data(int column, int role) const override;
+    bool setData(int column, const QVariant &value, int role) override;
 
-    virtual inline const Message &message() const { return _styledMsg; }
-    virtual inline const QDateTime &timestamp() const { return _styledMsg.timestamp(); }
-    virtual inline const MsgId &msgId() const { return _styledMsg.msgId(); }
-    virtual inline const BufferId &bufferId() const { return _styledMsg.bufferId(); }
-    virtual inline void setBufferId(BufferId bufferId) { _styledMsg.setBufferId(bufferId); }
-    virtual inline Message::Type msgType() const { return _styledMsg.type(); }
-    virtual inline Message::Flags msgFlags() const { return _styledMsg.flags(); }
+    inline const Message &message() const override { return _styledMsg; }
+    inline const QDateTime &timestamp() const override { return _styledMsg.timestamp(); }
+    inline const MsgId &msgId() const override { return _styledMsg.msgId(); }
+    inline const BufferId &bufferId() const override { return _styledMsg.bufferId(); }
+    inline void setBufferId(BufferId bufferId) override { _styledMsg.setBufferId(bufferId); }
+    inline Message::Type msgType() const override { return _styledMsg.type(); }
+    inline Message::Flags msgFlags() const override { return _styledMsg.flags(); }
 
     virtual inline void invalidateWrapList() { _wrapList.clear(); }
 

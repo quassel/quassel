@@ -31,7 +31,7 @@ class UISUPPORT_EXPORT ResizingStackedWidget : public QStackedWidget
 public:
     ResizingStackedWidget(QWidget *parent = nullptr);
 
-    virtual QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 private slots:
     void indexChanged(int index);

@@ -34,12 +34,12 @@ public:
     void save();
 
 public slots:
-    virtual inline void requestSetPingTimeoutEnabled(bool enabled) { setPingTimeoutEnabled(enabled); }
-    virtual inline void requestSetPingInterval(int interval) { setPingInterval(interval); }
-    virtual inline void requestSetMaxPingCount(int count) { setMaxPingCount(count); }
-    virtual inline void requestSetAutoWhoEnabled(bool enabled) { setAutoWhoEnabled(enabled); }
-    virtual inline void requestSetAutoWhoInterval(int interval) { setAutoWhoInterval(interval); }
-    virtual inline void requestSetAutoWhoNickLimit(int nickLimit) { setAutoWhoNickLimit(nickLimit); }
-    virtual inline void requestSetAutoWhoDelay(int delay) { setAutoWhoDelay(delay); }
-    virtual inline void requestSetStandardCtcp(bool enabled) { setStandardCtcp(enabled); }
+    inline void requestSetPingTimeoutEnabled(bool enabled) override { setPingTimeoutEnabled(enabled); }
+    inline void requestSetPingInterval(int interval) override { setPingInterval(interval); }
+    inline void requestSetMaxPingCount(int count) override { setMaxPingCount(count); }
+    inline void requestSetAutoWhoEnabled(bool enabled) override { setAutoWhoEnabled(enabled); }
+    inline void requestSetAutoWhoInterval(int interval) override { setAutoWhoInterval(interval); }
+    inline void requestSetAutoWhoNickLimit(int nickLimit) override { setAutoWhoNickLimit(nickLimit); }
+    inline void requestSetAutoWhoDelay(int delay) override { setAutoWhoDelay(delay); }
+    inline void requestSetStandardCtcp(bool enabled) override { setStandardCtcp(enabled); }
 };

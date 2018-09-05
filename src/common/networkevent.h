@@ -41,10 +41,10 @@ public:
 
 protected:
     explicit NetworkEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "NetworkEvent"; }
-    virtual inline void debugInfo(QDebug &dbg) const { dbg.nospace() << ", net = " << qPrintable(_network->networkName()); }
+    inline QString className() const override { return "NetworkEvent"; }
+    inline void debugInfo(QDebug &dbg) const override { dbg.nospace() << ", net = " << qPrintable(_network->networkName()); }
 
 private:
     Network *_network;
@@ -66,10 +66,10 @@ public:
 
 protected:
     explicit NetworkConnectionEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "NetworkConnectionEvent"; }
-    virtual inline void debugInfo(QDebug &dbg) const
+    inline QString className() const override { return "NetworkConnectionEvent"; }
+    inline void debugInfo(QDebug &dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
         dbg.nospace() << ", state = " << qPrintable(QString::number(_state));
@@ -96,10 +96,10 @@ public:
 
 protected:
     explicit NetworkDataEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "NetworkDataEvent"; }
-    virtual inline void debugInfo(QDebug &dbg) const
+    inline QString className() const override { return "NetworkDataEvent"; }
+    inline void debugInfo(QDebug &dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
         dbg.nospace() << ", data = " << data();
@@ -133,10 +133,10 @@ public:
 
 protected:
     explicit NetworkSplitEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "NetworkSplitEvent"; }
-    virtual inline void debugInfo(QDebug &dbg) const
+    inline QString className() const override { return "NetworkSplitEvent"; }
+    inline void debugInfo(QDebug &dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
         dbg.nospace() << ", channel = " << qPrintable(channel())

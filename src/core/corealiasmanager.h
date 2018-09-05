@@ -32,7 +32,7 @@ public:
     explicit CoreAliasManager(CoreSession *parent);
 
 protected:
-    const Network *network(NetworkId) const;
+    const Network *network(NetworkId) const override;
 
 private slots:
     void save() const;

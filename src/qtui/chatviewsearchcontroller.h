@@ -94,11 +94,11 @@ class SearchHighlightItem : public QObject, public QGraphicsItem
 
 public:
     SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = nullptr);
-    virtual inline QRectF boundingRect() const { return _boundingRect; }
+    inline QRectF boundingRect() const override { return _boundingRect; }
     void updateGeometry(qreal width, qreal height);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     enum { Type = ChatScene::SearchHighlightType };
-    virtual inline int type() const { return Type; }
+    inline int type() const override { return Type; }
 
     void setHighlighted(bool highlighted);
 

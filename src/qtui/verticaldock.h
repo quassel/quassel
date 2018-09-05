@@ -31,12 +31,12 @@ class VerticalDockTitle : public QWidget
 public:
     VerticalDockTitle(QDockWidget *parent);
 
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
     void show(bool show_);
 
 protected:
-    virtual void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
 
 private:
     bool _show;
@@ -50,7 +50,7 @@ class EmptyDockTitle : public QWidget
 public:
     inline EmptyDockTitle(QDockWidget *parent) : QWidget(parent) {}
 
-    inline virtual QSize sizeHint() const { return QSize(0, 0); }
+    inline QSize sizeHint() const override { return QSize(0, 0); }
 };
 
 

@@ -32,10 +32,10 @@ public:
     CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
 
 public slots:
-    virtual void requestCreateBufferView(const QVariantMap &properties);
-    virtual void requestCreateBufferViews(const QVariantList &properties);
-    virtual void requestDeleteBufferView(int bufferViewId);
-    virtual void requestDeleteBufferViews(const QVariantList &bufferViews);
+    void requestCreateBufferView(const QVariantMap &properties) override;
+    void requestCreateBufferViews(const QVariantList &properties) override;
+    void requestDeleteBufferView(int bufferViewId) override;
+    void requestDeleteBufferViews(const QVariantList &bufferViews) override;
 
     void saveBufferViews();
 

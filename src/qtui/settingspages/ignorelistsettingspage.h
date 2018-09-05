@@ -42,9 +42,9 @@ class IgnoreListDelegate : public QStyledItemDelegate
 public:
     IgnoreListDelegate(QWidget *parent = nullptr) : QStyledItemDelegate(parent) {}
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
-        const QModelIndex &index) const;
+        const QModelIndex &index) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-        const QModelIndex &index);
+        const QModelIndex &index) override;
 };
 
 
@@ -78,15 +78,15 @@ class IgnoreListSettingsPage : public SettingsPage
 
 public:
     IgnoreListSettingsPage(QWidget *parent = nullptr);
-    ~IgnoreListSettingsPage();
-    virtual inline bool hasDefaults() const { return false; }
-    virtual inline bool needsCoreConnection() const { return true; }
+    ~IgnoreListSettingsPage() override;
+    inline bool hasDefaults() const override { return false; }
+    inline bool needsCoreConnection() const override { return true; }
     void editIgnoreRule(const QString &ignoreRule);
 
 public slots:
-    void save();
-    void load();
-    void defaults();
+    void save() override;
+    void load() override;
+    void defaults() override;
     void newIgnoreRule(QString rule = QString());
 
 private slots:

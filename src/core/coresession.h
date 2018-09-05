@@ -195,7 +195,7 @@ signals:
     void disconnectFromCore();
 
 protected:
-    virtual void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
 
 private slots:
     void removeClient(Peer *peer);

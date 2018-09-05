@@ -59,13 +59,13 @@ public:
 
     MessageModel(QObject *parent);
 
-    inline QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-    inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
-    inline int rowCount(const QModelIndex &parent = QModelIndex()) const { return parent.isValid() ? 0 : messageCount(); }
-    inline int columnCount(const QModelIndex & /*parent*/ = QModelIndex()) const { return 3; }
+    inline QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    inline QModelIndex parent(const QModelIndex &) const override { return QModelIndex(); }
+    inline int rowCount(const QModelIndex &parent = QModelIndex()) const override { return parent.isValid() ? 0 : messageCount(); }
+    inline int columnCount(const QModelIndex & /*parent*/ = QModelIndex()) const override { return 3; }
 
-    virtual QVariant data(const QModelIndex &index, int role) const;
-    virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+    QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
     //virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
@@ -100,7 +100,7 @@ protected:
     virtual void removeAllMessages() = 0;
     virtual Message takeMessageAt(int i) = 0;
 
-    virtual void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
 
 private slots:
     void changeOfDay();

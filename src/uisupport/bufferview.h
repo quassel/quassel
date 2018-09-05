@@ -51,7 +51,7 @@ public:
     BufferView(QWidget *parent = nullptr);
     void init();
 
-    void setModel(QAbstractItemModel *model);
+    void setModel(QAbstractItemModel *model) override;
     void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
 
     void setConfig(BufferViewConfig *config);
@@ -79,14 +79,14 @@ signals:
     void removeBufferPermanently(const QModelIndex &);
 
 protected:
-    virtual void dropEvent(QDropEvent *event);
-    virtual void rowsInserted(const QModelIndex &parent, int start, int end);
-    virtual void wheelEvent(QWheelEvent *);
-    virtual QSize sizeHint() const;
-    virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
-    virtual void contextMenuEvent(QContextMenuEvent *event);
+    void dropEvent(QDropEvent *event) override;
+    void rowsInserted(const QModelIndex &parent, int start, int end) override;
+    void wheelEvent(QWheelEvent *) override;
+    QSize sizeHint() const override;
+    void focusInEvent(QFocusEvent *event) override { QAbstractScrollArea::focusInEvent(event); }
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
-    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles) override;
 
 private slots:
     void joinChannel(const QModelIndex &index);
@@ -183,8 +183,8 @@ public slots:
     void setActive(bool active = true);
 
 protected slots:
-    virtual bool eventFilter(QObject *object, QEvent *event);
-    virtual void focusInEvent(QFocusEvent*event) { qDebug() << event; }
+    bool eventFilter(QObject *object, QEvent *event) override;
+    void focusInEvent(QFocusEvent*event) override { qDebug() << event; }
 
 private slots:
     void bufferViewRenamed(const QString &newName);

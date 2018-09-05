@@ -39,9 +39,9 @@ signals:
 private:
     using AuthHandler::handle;
 
-    void handle(const Protocol::RegisterClient &msg);
-    void handle(const Protocol::SetupData &msg);
-    void handle(const Protocol::Login &msg);
+    void handle(const Protocol::RegisterClient &msg) override;
+    void handle(const Protocol::SetupData &msg) override;
+    void handle(const Protocol::Login &msg) override;
 
     void setPeer(RemotePeer *peer);
     void startSsl();

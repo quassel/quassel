@@ -33,8 +33,8 @@ public:
     ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
 
 protected:
-    virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
+    void addActionsToMenu(QMenu *menu, const QPointF &pos) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 private slots:
     void showFieldsChanged(bool checked);

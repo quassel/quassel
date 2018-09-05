@@ -46,7 +46,7 @@ public:
     CustomWebView(QGraphicsProxyWidget *pItem) {
         proxyItem = pItem;
     }
-    bool event(QEvent *event) {
+    bool event(QEvent *event) override {
         if (event->type() == QEvent::UpdateRequest)
         {
             proxyItem->update();

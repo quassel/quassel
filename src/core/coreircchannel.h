@@ -32,7 +32,7 @@ class CoreIrcChannel : public IrcChannel
 
 public:
     CoreIrcChannel(const QString &channelname, Network *network);
-    virtual ~CoreIrcChannel();
+    ~CoreIrcChannel() override;
 
 #ifdef HAVE_QCA2
     Cipher *cipher() const;

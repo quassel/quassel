@@ -78,13 +78,13 @@ signals:
 private:
     using AuthHandler::handle;
 
-    void handle(const Protocol::ClientDenied &msg);
-    void handle(const Protocol::ClientRegistered &msg);
-    void handle(const Protocol::SetupFailed &msg);
-    void handle(const Protocol::SetupDone &msg);
-    void handle(const Protocol::LoginFailed &msg);
-    void handle(const Protocol::LoginSuccess &msg);
-    void handle(const Protocol::SessionState &msg);
+    void handle(const Protocol::ClientDenied &msg) override;
+    void handle(const Protocol::ClientRegistered &msg) override;
+    void handle(const Protocol::SetupFailed &msg) override;
+    void handle(const Protocol::SetupDone &msg) override;
+    void handle(const Protocol::LoginFailed &msg) override;
+    void handle(const Protocol::LoginSuccess &msg) override;
+    void handle(const Protocol::SessionState &msg) override;
 
     void setPeer(RemotePeer *peer);
     void checkAndEnableSsl(bool coreSupportsSsl);
@@ -93,8 +93,8 @@ private:
 private slots:
     void onSocketConnected();
     void onSocketStateChanged(QAbstractSocket::SocketState state);
-    void onSocketError(QAbstractSocket::SocketError);
-    void onSocketDisconnected();
+    void onSocketError(QAbstractSocket::SocketError) override;
+    void onSocketDisconnected() override;
     void onReadyRead();
 
 #ifdef HAVE_SSL

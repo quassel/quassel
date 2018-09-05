@@ -38,7 +38,7 @@ public:
 
     void notify(const Notification &) override;
     void close(uint notificationId) override;
-    virtual SettingsPage *createConfigWidget() const override;
+    SettingsPage *createConfigWidget() const override;
 
 private slots:
     void enabledChanged(const QVariant &);

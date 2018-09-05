@@ -90,7 +90,7 @@ class IntroPage : public QWizardPage
 
 public:
     IntroPage(QWidget *parent = nullptr);
-    int nextId() const;
+    int nextId() const override;
 private:
     Ui::CoreConfigWizardIntroPage ui;
 };
@@ -102,8 +102,8 @@ class AdminUserPage : public QWizardPage
 
 public:
     AdminUserPage(QWidget *parent = nullptr);
-    int nextId() const;
-    bool isComplete() const;
+    int nextId() const override;
+    bool isComplete() const override;
 private:
     Ui::CoreConfigWizardAdminUserPage ui;
 };
@@ -116,7 +116,7 @@ class AuthenticationSelectionPage : public QWizardPage
 
 public:
     AuthenticationSelectionPage(const QVariantList &authInfos, QWidget *parent = nullptr);
-    int nextId() const;
+    int nextId() const override;
     QString displayName() const;
     QString authenticator() const;
     QVariantMap authProperties() const;
@@ -138,7 +138,7 @@ class StorageSelectionPage : public QWizardPage
 
 public:
     StorageSelectionPage(const QVariantList &backendInfos, QWidget *parent = nullptr);
-    int nextId() const;
+    int nextId() const override;
     QString displayName() const;
     QString backend() const;
     QVariantMap backendProperties() const;
@@ -159,9 +159,9 @@ class SyncPage : public QWizardPage
 
 public:
     SyncPage(QWidget *parent = nullptr);
-    void initializePage();
-    int nextId() const;
-    bool isComplete() const;
+    void initializePage() override;
+    int nextId() const override;
+    bool isComplete() const override;
 
 public slots:
     void setStatus(const QString &status);
@@ -184,7 +184,7 @@ class SyncRelayPage : public QWizardPage
 
 public:
     SyncRelayPage(QWidget *parent = nullptr);
-    int nextId() const;
+    int nextId() const override;
     enum Mode { Success, Error };
 
 public slots:

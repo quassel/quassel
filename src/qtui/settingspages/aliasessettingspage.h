@@ -33,13 +33,13 @@ class AliasesSettingsPage : public SettingsPage
 public:
     AliasesSettingsPage(QWidget *parent = nullptr);
 
-    virtual inline bool hasDefaults() const { return true; }
-    virtual inline bool needsCoreConnection() const { return true; }
+    inline bool hasDefaults() const override { return true; }
+    inline bool needsCoreConnection() const override { return true; }
 
 public slots:
-    void save();
-    void load();
-    void defaults();
+    void save() override;
+    void load() override;
+    void defaults() override;
 
 private slots:
     void enableDialog(bool);

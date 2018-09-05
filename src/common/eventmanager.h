@@ -152,7 +152,7 @@ public slots:
 
 protected:
     virtual Network *networkById(NetworkId id) const = 0;
-    virtual void customEvent(QEvent *event);
+    void customEvent(QEvent *event) override;
 
 private:
     struct Handler {

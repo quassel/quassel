@@ -107,7 +107,7 @@ public slots:
     void issueAway(const QString &msg, bool autoCheck = true, const bool skipFormatting = false);
 
 protected:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     void doMode(const BufferInfo& bufferInfo, const QChar &addOrRemove, const QChar &mode, const QString &nickList);

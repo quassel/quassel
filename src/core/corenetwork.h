@@ -55,8 +55,7 @@ class CoreNetwork : public Network
 
 public:
     CoreNetwork(const NetworkId &networkid, CoreSession *session);
-    virtual ~CoreNetwork();
-
+    ~CoreNetwork() override;
 
     inline CoreIdentity *identityPtr() const { return coreSession()->identity(identity()); }
     inline CoreSession *coreSession() const { return _coreSession; }
@@ -204,15 +203,15 @@ public:
     };
 
 public slots:
-    virtual void setMyNick(const QString &mynick);
+    void setMyNick(const QString &mynick) override;
 
-    virtual void requestConnect() const;
-    virtual void requestDisconnect() const;
-    virtual void requestSetNetworkInfo(const NetworkInfo &info);
+    void requestConnect() const override;
+    void requestDisconnect() const override;
+    void requestSetNetworkInfo(const NetworkInfo &info) override;
 
-    virtual void setUseAutoReconnect(bool);
-    virtual void setAutoReconnectInterval(quint32);
-    virtual void setAutoReconnectRetries(quint16);
+    void setUseAutoReconnect(bool) override;
+    void setAutoReconnectInterval(quint32) override;
+    void setAutoReconnectRetries(quint16) override;
 
     void setPingInterval(int interval);
 
@@ -446,8 +445,8 @@ signals:
     void socketDisconnected(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId);
 
 protected:
-    inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new CoreIrcChannel(channelname, this); }
-    inline virtual IrcUser *ircUserFactory(const QString &hostmask) { return new CoreIrcUser(hostmask, this); }
+    inline IrcChannel *ircChannelFactory(const QString &channelname) override { return new CoreIrcChannel(channelname, this); }
+    inline IrcUser *ircUserFactory(const QString &hostmask) override { return new CoreIrcUser(hostmask, this); }
 
 protected slots:
     // TODO: remove cached cipher keys, when appropriate

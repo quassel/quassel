@@ -46,10 +46,10 @@ public:
 
 protected:
     explicit IrcEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "IrcEvent"; }
-    virtual inline void debugInfo(QDebug &dbg) const
+    inline QString className() const override { return "IrcEvent"; }
+    inline void debugInfo(QDebug &dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
         dbg << ", prefix = " << qPrintable(prefix())
@@ -79,10 +79,10 @@ public:
 
 protected:
     explicit IrcEventNumeric(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "IrcEventNumeric"; }
-    virtual inline void debugInfo(QDebug &dbg) const
+    inline QString className() const override { return "IrcEventNumeric"; }
+    inline void debugInfo(QDebug &dbg) const override
     {
         dbg << ", num = " << number();
         NetworkEvent::debugInfo(dbg);
@@ -121,10 +121,10 @@ public:
 
 protected:
     explicit IrcEventRawMessage(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const;
+    void toVariantMap(QVariantMap &map) const override;
 
-    virtual inline QString className() const { return "IrcEventRawMessage"; }
-    virtual inline void debugInfo(QDebug &dbg) const
+    inline QString className() const override { return "IrcEventRawMessage"; }
+    inline void debugInfo(QDebug &dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
         dbg << ", target = " << qPrintable(target())

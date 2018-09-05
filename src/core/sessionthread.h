@@ -37,7 +37,7 @@ class SessionThread : public QObject
 
 public:
     SessionThread(UserId user, bool restoreState, bool strictIdentEnabled, QObject *parent = nullptr);
-    ~SessionThread();
+    ~SessionThread() override;
 
 public slots:
     void addClient(Peer *peer);

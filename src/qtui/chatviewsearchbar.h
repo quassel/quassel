@@ -44,7 +44,7 @@ public:
     inline QToolButton *searchDownButton() const { return ui.searchDownButton; }
 
 public slots:
-    void setVisible(bool);
+    void setVisible(bool) override;
 
 signals:
     void searchChanged(const QString &);

@@ -32,11 +32,11 @@ class UISUPPORT_EXPORT BufferHotListFilter : public QSortFilterProxyModel
 public:
     BufferHotListFilter(QAbstractItemModel *source, QObject *parent = nullptr);
 
-    virtual inline int columnCount(const QModelIndex &) const { return 1; }
+    inline int columnCount(const QModelIndex &) const override { return 1; }
     BufferId hottestBuffer();
 //   QVariant data(const QModelIndex &index, int role) const;
 
 protected:
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-    virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
 };

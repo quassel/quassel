@@ -30,9 +30,9 @@ class AwayLogFilter : public ChatMonitorFilter
 public:
     AwayLogFilter(MessageModel *model, QObject *parent = nullptr);
 
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-    virtual QString idString() const { return "AwayLog"; }
-    virtual QVariant data(const QModelIndex &index, int role) const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    QString idString() const override { return "AwayLog"; }
+    QVariant data(const QModelIndex &index, int role) const override;
 };
 
 

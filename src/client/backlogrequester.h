@@ -81,7 +81,7 @@ class FixedBacklogRequester : public BacklogRequester
 {
 public:
     FixedBacklogRequester(ClientBacklogManager *backlogManager);
-    virtual void requestBacklog(const BufferIdList &bufferIds);
+    void requestBacklog(const BufferIdList &bufferIds) override;
 
 private:
     int _backlogCount;
@@ -95,8 +95,8 @@ class GlobalUnreadBacklogRequester : public BacklogRequester
 {
 public:
     GlobalUnreadBacklogRequester(ClientBacklogManager *backlogManager);
-    virtual void requestInitialBacklog();
-    virtual void requestBacklog(const BufferIdList &) {}
+    void requestInitialBacklog() override;
+    void requestBacklog(const BufferIdList &) override {}
 
 private:
     int _limit;
@@ -111,7 +111,7 @@ class PerBufferUnreadBacklogRequester : public BacklogRequester
 {
 public:
     PerBufferUnreadBacklogRequester(ClientBacklogManager *backlogManager);
-    virtual void requestBacklog(const BufferIdList &bufferIds);
+    void requestBacklog(const BufferIdList &bufferIds) override;
 
 private:
     int _limit;

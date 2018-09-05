@@ -35,9 +35,9 @@ class BufferWidget : public AbstractBufferContainer
 
 public:
     BufferWidget(QWidget *parent);
-    ~BufferWidget();
+    ~BufferWidget() override;
 
-    virtual bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
     inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
     void addActionsToMenu(QMenu *, const QPointF &pos);
@@ -48,13 +48,13 @@ public slots:
     virtual void jumpToMarkerLine(ChatView *view = nullptr, bool requestBacklog = true);
 
 protected:
-    virtual AbstractChatView *createChatView(BufferId);
-    virtual void removeChatView(BufferId);
-    virtual inline bool autoMarkerLine() const { return _autoMarkerLine; }
+    AbstractChatView *createChatView(BufferId) override;
+    void removeChatView(BufferId) override;
+    inline bool autoMarkerLine() const override { return _autoMarkerLine; }
 
 protected slots:
-    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-    virtual void showChatView(BufferId);
+    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+    void showChatView(BufferId) override;
 
 private slots:
     void scrollToHighlight(QGraphicsItem *highlightItem);

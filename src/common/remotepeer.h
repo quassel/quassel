@@ -44,20 +44,20 @@ public:
 
     RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = nullptr);
 
-    void setSignalProxy(SignalProxy *proxy);
+    void setSignalProxy(SignalProxy *proxy) override;
 
     virtual QString protocolName() const = 0;
-    virtual QString description() const;
+    QString description() const override;
     virtual quint16 enabledFeatures() const { return 0; }
 
-    virtual QString address() const;
-    virtual quint16 port() const;
+    QString address() const override;
+    quint16 port() const override;
 
-    bool isOpen() const;
-    bool isSecure() const;
-    bool isLocal() const;
+    bool isOpen() const override;
+    bool isSecure() const override;
+    bool isLocal() const override;
 
-    int lag() const;
+    int lag() const override;
 
     bool compressionEnabled() const;
     void setCompressionEnabled(bool enabled);
@@ -65,7 +65,7 @@ public:
     QTcpSocket *socket() const;
 
 public slots:
-    void close(const QString &reason = QString());
+    void close(const QString &reason = QString()) override;
 
 signals:
     void transferProgress(int current, int max);
@@ -73,7 +73,7 @@ signals:
     void statusMessage(const QString &msg);
 
 protected:
-    SignalProxy *signalProxy() const;
+    SignalProxy *signalProxy() const override;
 
     void writeMessage(const QByteArray &msg);
     virtual void processMessage(const QByteArray &msg) = 0;
