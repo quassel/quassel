@@ -71,7 +71,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _markerLineJumpPending(false),
     _cutoffMode(CutoffRight),
     _alwaysBracketSender(false),
-    _selectingItem(0),
+    _selectingItem(nullptr),
     _selectionStart(-1),
     _isSelecting(false),
     _clickMode(NoClick),
@@ -182,7 +182,7 @@ void ChatScene::resetColumnWidths()
 ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange) const
 {
     if (!_lines.count())
-        return 0;
+        return nullptr;
 
     QList<ChatLine *>::ConstIterator start = _lines.begin();
     QList<ChatLine *>::ConstIterator end = _lines.end();
@@ -207,10 +207,10 @@ ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange
         return *start;
 
     if (matchExact)
-        return 0;
+        return nullptr;
 
     if (start == _lines.begin()) // not (yet?) in our scene
-        return 0;
+        return nullptr;
 
     // if we didn't find the exact msgId, take the next-lower one (this makes sense for lastSeen)
 
@@ -222,7 +222,7 @@ ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange
             if (_lines.at(i)->msgType() != Message::DayChange)
                 return _lines.at(i);
         }
-        return 0;
+        return nullptr;
     }
 
     // return the next-lower line
@@ -234,7 +234,7 @@ ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange
             return *start;
     }
     while (start != _lines.begin());
-    return 0;
+    return nullptr;
 }
 
 
@@ -245,7 +245,7 @@ ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const
         if (line)
             return line->itemAt(line->mapFromScene(scenePos));
     }
-    return 0;
+    return nullptr;
 }
 
 
@@ -419,7 +419,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end)
 
     // neither pre- or append means we have to do dirty work: move items...
     if (!(atTop || atBottom)) {
-        ChatLine *line = 0;
+        ChatLine *line = nullptr;
         for (int i = 0; i <= end; i++) {
             line = _lines.at(i);
             line->setPos(0, line->pos().y() - h);
@@ -484,7 +484,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     if (_selectingItem) {
         int row = _selectingItem->row();
         if (row >= start && row <= end)
-            setSelectingItem(0);
+            setSelectingItem(nullptr);
     }
 
     // remove items from scene
@@ -492,7 +492,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     int lineCount = start;
     while (lineIter != _lines.end() && lineCount <= end) {
         if ((*lineIter) == markerLine()->chatLine())
-            markerLine()->setChatLine(0);
+            markerLine()->setChatLine(nullptr);
         h += (*lineIter)->height();
         delete *lineIter;
         lineIter = _lines.erase(lineIter);
@@ -534,7 +534,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
             moveStart = start;
             offset = -offset;
         }
-        ChatLine *line = 0;
+        ChatLine *line = nullptr;
         for (int i = moveStart; i <= moveEnd; i++) {
             line = _lines.at(i);
             line->setPos(0, line->pos().y() + offset);
@@ -1227,7 +1227,7 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRec
             if (webPreview.previewItem->scene())
                 removeItem(webPreview.previewItem);
             delete webPreview.previewItem;
-            webPreview.previewItem = 0;
+            webPreview.previewItem = nullptr;
         }
         webPreview.previewState = WebPreview::NoPreview;
     }
@@ -1297,9 +1297,9 @@ void ChatScene::webPreviewNextStep()
     case WebPreview::HidePreview:
         if (webPreview.previewItem) {
             delete webPreview.previewItem;
-            webPreview.previewItem = 0;
+            webPreview.previewItem = nullptr;
         }
-        webPreview.parentItem = 0;
+        webPreview.parentItem = nullptr;
         webPreview.url = QUrl();
         webPreview.urlRect = QRectF();
         webPreview.previewState = WebPreview::NoPreview;
@@ -1316,7 +1316,7 @@ void ChatScene::clearWebPreview(ChatItem *parentItem)
         webPreview.previewState = WebPreview::NoPreview; // we haven't loaded anything yet
         break;
     case WebPreview::ShowPreview:
-        if (parentItem == 0 || webPreview.parentItem == parentItem) {
+        if (parentItem == nullptr || webPreview.parentItem == parentItem) {
             if (webPreview.previewItem && webPreview.previewItem->scene())
                 removeItem(webPreview.previewItem);
         }

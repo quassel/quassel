@@ -24,7 +24,7 @@
 CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(hostmask, network)
 {
 #ifdef HAVE_QCA2
-    _cipher = 0;
+    _cipher = nullptr;
 
     // Get the cipher key from CoreNetwork if present
     CoreNetwork *coreNetwork = qobject_cast<CoreNetwork *>(network);

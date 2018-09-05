@@ -44,8 +44,8 @@ class COMMON_EXPORT BufferViewConfig : public SyncableObject
     Q_PROPERTY(bool showSearch READ showSearch WRITE setShowSearch)
 
 public :
-    BufferViewConfig(int bufferViewId, QObject *parent = 0);
-    BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
+    BufferViewConfig(int bufferViewId, QObject *parent = nullptr);
+    BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = nullptr);
 
 public slots:
     inline int bufferViewId() const { return _bufferViewId; }

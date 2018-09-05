@@ -24,7 +24,7 @@
 
 AuthHandler::AuthHandler(QObject *parent)
     : QObject(parent),
-    _socket(0),
+    _socket(nullptr),
     _disconnectedSent(false)
 {
 

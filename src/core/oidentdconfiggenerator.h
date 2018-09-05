@@ -54,7 +54,7 @@ class OidentdConfigGenerator : public QObject
 {
     Q_OBJECT
 public:
-    explicit OidentdConfigGenerator(QObject *parent = 0);
+    explicit OidentdConfigGenerator(QObject *parent = nullptr);
     ~OidentdConfigGenerator();
 
 public slots:

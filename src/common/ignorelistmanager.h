@@ -36,7 +36,7 @@ class COMMON_EXPORT IgnoreListManager : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    inline IgnoreListManager(QObject *parent = 0) : SyncableObject(parent) { setAllowClientUpdates(true); }
+    inline IgnoreListManager(QObject *parent = nullptr) : SyncableObject(parent) { setAllowClientUpdates(true); }
     IgnoreListManager &operator=(const IgnoreListManager &other);
 
     enum IgnoreType {

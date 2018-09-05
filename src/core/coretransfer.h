@@ -32,7 +32,7 @@ class CoreTransfer : public Transfer
     Q_OBJECT
 
 public:
-    CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
+    CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = nullptr);
 
     quint64 transferred() const override;
 

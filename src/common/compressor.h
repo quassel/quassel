@@ -49,7 +49,7 @@ public:
         Flush
     };
 
-    Compressor(QTcpSocket *socket, CompressionLevel level, QObject *parent = 0);
+    Compressor(QTcpSocket *socket, CompressionLevel level, QObject *parent = nullptr);
     ~Compressor();
 
     CompressionLevel compressionLevel() const { return _level; }

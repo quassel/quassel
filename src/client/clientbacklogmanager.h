@@ -32,7 +32,7 @@ class CLIENT_EXPORT ClientBacklogManager : public BacklogManager
     Q_OBJECT
 
 public:
-    ClientBacklogManager(QObject *parent = 0);
+    ClientBacklogManager(QObject *parent = nullptr);
 
     // helper for the backlogRequester, as it isn't a QObject and can't emit itself
     inline void emitMessagesRequested(const QString &msg) const { emit messagesRequested(msg); }

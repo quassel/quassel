@@ -31,7 +31,7 @@
 
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
     : BacklogManager(parent),
-    _requester(0),
+    _requester(nullptr),
     _initBacklogRequested(false)
 {
 }
@@ -181,7 +181,7 @@ void ClientBacklogManager::dispatchMessages(const MessageList &messages, bool so
 void ClientBacklogManager::reset()
 {
     delete _requester;
-    _requester = 0;
+    _requester = nullptr;
     _initBacklogRequested = false;
     _buffersRequested.clear();
 }

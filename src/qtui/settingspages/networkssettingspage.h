@@ -38,7 +38,7 @@ class NetworksSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    NetworksSettingsPage(QWidget *parent = 0);
+    NetworksSettingsPage(QWidget *parent = nullptr);
 
     virtual inline bool needsCoreConnection() const { return true; }
 
@@ -57,7 +57,7 @@ private slots:
     void networkConnectionError(const QString &msg);
 
     void displayNetwork(NetworkId);
-    void setItemState(NetworkId, QListWidgetItem *item = 0);
+    void setItemState(NetworkId, QListWidgetItem *item = nullptr);
 
     /**
      * Reset the capability-dependent settings to the default unknown states
@@ -166,7 +166,7 @@ class NetworkAddDlg : public QDialog
     Q_OBJECT
 
 public:
-    NetworkAddDlg(const QStringList &existing = QStringList(), QWidget *parent = 0);
+    NetworkAddDlg(const QStringList &existing = QStringList(), QWidget *parent = nullptr);
 
     NetworkInfo networkInfo() const;
 
@@ -195,7 +195,7 @@ class NetworkEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    NetworkEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    NetworkEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = nullptr);
 
     QString networkName() const;
 
@@ -214,7 +214,7 @@ class ServerEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    ServerEditDlg(const Network::Server &server = Network::Server(), QWidget *parent = 0);
+    ServerEditDlg(const Network::Server &server = Network::Server(), QWidget *parent = nullptr);
 
     Network::Server serverData() const;
 
@@ -241,7 +241,7 @@ class SaveNetworksDlg : public QDialog
     Q_OBJECT
 
 public:
-    SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList<NetworkInfo> &toUpdate, const QList<NetworkId> &toRemove, QWidget *parent = 0);
+    SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList<NetworkInfo> &toUpdate, const QList<NetworkId> &toRemove, QWidget *parent = nullptr);
 
 private slots:
     void clientEvent();

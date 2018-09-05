@@ -43,7 +43,7 @@ public:
     };
     Q_DECLARE_FLAGS(TreeItemFlags, TreeItemFlag)
 
-    AbstractTreeItem(AbstractTreeItem *parent = 0);
+    AbstractTreeItem(AbstractTreeItem *parent = nullptr);
 
     bool newChild(AbstractTreeItem *child);
     bool newChilds(const QList<AbstractTreeItem *> &items);
@@ -106,7 +106,7 @@ class CLIENT_EXPORT SimpleTreeItem : public AbstractTreeItem
     Q_OBJECT
 
 public:
-    SimpleTreeItem(const QList<QVariant> &data, AbstractTreeItem *parent = 0);
+    SimpleTreeItem(const QList<QVariant> &data, AbstractTreeItem *parent = nullptr);
     virtual ~SimpleTreeItem();
 
     virtual QVariant data(int column, int role) const;
@@ -127,7 +127,7 @@ class CLIENT_EXPORT PropertyMapItem : public AbstractTreeItem
     Q_OBJECT
 
 public:
-    PropertyMapItem(AbstractTreeItem *parent = 0);
+    PropertyMapItem(AbstractTreeItem *parent = nullptr);
 
     virtual QStringList propertyOrder() const = 0;
 
@@ -152,7 +152,7 @@ public:
         UserRole
     };
 
-    TreeModel(const QList<QVariant> &, QObject *parent = 0);
+    TreeModel(const QList<QVariant> &, QObject *parent = nullptr);
     virtual ~TreeModel();
 
     AbstractTreeItem *root() const;

@@ -22,8 +22,8 @@
 
 AbstractItemView::AbstractItemView(QWidget *parent)
     : QWidget(parent),
-    _model(0),
-    _selectionModel(0)
+    _model(nullptr),
+    _selectionModel(nullptr)
 {
 }
 
@@ -31,7 +31,7 @@ AbstractItemView::AbstractItemView(QWidget *parent)
 void AbstractItemView::setModel(QAbstractItemModel *model)
 {
     if (_model) {
-        disconnect(_model, 0, this, 0);
+        disconnect(_model, nullptr, this, nullptr);
     }
     _model = model;
     connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
@@ -46,7 +46,7 @@ void AbstractItemView::setModel(QAbstractItemModel *model)
 void AbstractItemView::setSelectionModel(QItemSelectionModel *selectionModel)
 {
     if (_selectionModel) {
-        disconnect(_selectionModel, 0, this, 0);
+        disconnect(_selectionModel, nullptr, this, nullptr);
     }
     _selectionModel = selectionModel;
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),

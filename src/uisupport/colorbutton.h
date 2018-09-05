@@ -30,8 +30,8 @@ class UISUPPORT_EXPORT ColorButton : public QToolButton
     Q_PROPERTY(QColor color READ color WRITE setColor USER true)
 
 public :
-    explicit ColorButton(QWidget *parent = 0);
-    explicit ColorButton(const QColor &c, QWidget *parent = 0);
+    explicit ColorButton(QWidget *parent = nullptr);
+    explicit ColorButton(const QColor &c, QWidget *parent = nullptr);
 
     void setColor(const QColor &color);
     QColor color() const;

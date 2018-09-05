@@ -56,7 +56,7 @@ public:
         Synchronized
     };
 
-    CoreConnection(QObject *parent = 0);
+    CoreConnection(QObject *parent = nullptr);
 
     void init();
 

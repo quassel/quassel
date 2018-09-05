@@ -107,7 +107,7 @@ BufferWidget::BufferWidget(QWidget *parent)
 BufferWidget::~BufferWidget()
 {
     delete _chatViewSearchController;
-    _chatViewSearchController = 0;
+    _chatViewSearchController = nullptr;
 }
 
 

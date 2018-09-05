@@ -30,7 +30,7 @@ class ExecWrapper : public QObject
     Q_OBJECT
 
 public:
-    ExecWrapper(QObject *parent = 0);
+    ExecWrapper(QObject *parent = nullptr);
 
 public slots:
     void start(const BufferInfo &info, const QString &command);

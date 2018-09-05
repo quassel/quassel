@@ -29,9 +29,9 @@
 
 IrcConnectionWizard::IrcConnectionWizard(QWidget *parent, Qt::WindowFlags flags)
     : QWizard(parent, flags),
-    _introductionPage(0),
-    _identityPage(0),
-    _networkPage(0)
+    _introductionPage(nullptr),
+    _identityPage(nullptr),
+    _networkPage(nullptr)
 {
     _introductionPage = createIntroductionPage(this);
     _identityPage = new IdentityPage(this);
@@ -111,7 +111,7 @@ void IrcConnectionWizard::networkReady(NetworkId id)
 IdentityPage::IdentityPage(QWidget *parent)
     : QWizardPage(parent),
     _identityEditWidget(new IdentityEditWidget(this)),
-    _identity(0)
+    _identity(nullptr)
 {
     setTitle(tr("Setup Identity"));
 

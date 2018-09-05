@@ -29,7 +29,7 @@ class CoreBacklogManager : public BacklogManager
     Q_OBJECT
 
 public:
-    CoreBacklogManager(CoreSession *coreSession = 0);
+    CoreBacklogManager(CoreSession *coreSession = nullptr);
 
     CoreSession *coreSession() { return _coreSession; }
 

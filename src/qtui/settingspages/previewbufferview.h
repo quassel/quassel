@@ -28,7 +28,7 @@ class PreviewBufferView : public BufferView
     Q_OBJECT
 
 public:
-    PreviewBufferView(QWidget *parent = 0) : BufferView(parent) {}
+    PreviewBufferView(QWidget *parent = nullptr) : BufferView(parent) {}
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event) { QTreeView::keyPressEvent(event); }

@@ -29,7 +29,7 @@ class QtUiStyle : public UiStyle
     Q_OBJECT
 
 public:
-    QtUiStyle(QObject *parent = 0);
+    QtUiStyle(QObject *parent = nullptr);
     virtual ~QtUiStyle();
 
     virtual inline qreal firstColumnSeparator() const { return 6; }

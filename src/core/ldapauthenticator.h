@@ -50,7 +50,7 @@ class LdapAuthenticator : public Authenticator
     Q_OBJECT
 
 public:
-    LdapAuthenticator(QObject *parent = 0);
+    LdapAuthenticator(QObject *parent = nullptr);
     ~LdapAuthenticator() override;
 
 public slots:

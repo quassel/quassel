@@ -24,7 +24,7 @@
 
 ClientTransfer::ClientTransfer(const QUuid &uuid, QObject *parent)
     : Transfer(uuid, parent),
-    _file(0)
+    _file(nullptr)
 {
     connect(this, SIGNAL(statusChanged(Transfer::Status)), SLOT(onStatusChanged(Transfer::Status)));
 }
@@ -44,7 +44,7 @@ void ClientTransfer::cleanUp()
     if (_file) {
         _file->close();
         _file->deleteLater();
-        _file = 0;
+        _file = nullptr;
     }
 }
 
@@ -58,7 +58,7 @@ QString ClientTransfer::savePath() const
 void ClientTransfer::accept(const QString &savePath) const
 {
     _savePath = savePath;
-    PeerPtr ptr = 0;
+    PeerPtr ptr = nullptr;
     REQUEST_OTHER(requestAccepted, ARG(ptr));
     emit accepted();
 }
@@ -66,7 +66,7 @@ void ClientTransfer::accept(const QString &savePath) const
 
 void ClientTransfer::reject() const
 {
-    PeerPtr ptr = 0;
+    PeerPtr ptr = nullptr;
     REQUEST_OTHER(requestRejected, ARG(ptr));
     emit rejected();
 }

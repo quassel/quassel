@@ -32,7 +32,7 @@ class Netsplit : public QObject
 {
     Q_OBJECT
 public:
-    Netsplit(Network *network, QObject *parent = 0);
+    Netsplit(Network *network, QObject *parent = nullptr);
 
     inline Network *network() const { return _network; }
 

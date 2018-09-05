@@ -27,7 +27,7 @@ class ClientIrcListHelper : public IrcListHelper
     Q_OBJECT
 
 public:
-    inline ClientIrcListHelper(QObject *object = 0) : IrcListHelper(object) {};
+    inline ClientIrcListHelper(QObject *object = nullptr) : IrcListHelper(object) {};
 
 public slots:
     virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);

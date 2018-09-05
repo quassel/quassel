@@ -49,7 +49,7 @@ public:
         MultiLine
     };
 
-    MultiLineEdit(QWidget *parent = 0);
+    MultiLineEdit(QWidget *parent = nullptr);
     ~MultiLineEdit();
 
     void setCustomFont(const QFont &); // should be used instead setFont(), so we can set our size correctly
@@ -85,7 +85,7 @@ public slots:
     void setMaxHeight(int numLines);
     void setEmacsMode(bool enable = true);
     void setScrollBarsEnabled(bool enable = true);
-    void setPasteProtectionEnabled(bool enable = true, QWidget *msgBoxParent = 0);
+    void setPasteProtectionEnabled(bool enable = true, QWidget *msgBoxParent = nullptr);
     void setLineWrapEnabled(bool enable = false);
 
     inline void setHistory(QStringList history) { _history = history; }

@@ -32,7 +32,7 @@ class DebugBufferViewOverlay : public QWidget
     Q_OBJECT
 
 public:
-    DebugBufferViewOverlay(QWidget *parent = 0);
+    DebugBufferViewOverlay(QWidget *parent = nullptr);
 
 private slots:
     void update();

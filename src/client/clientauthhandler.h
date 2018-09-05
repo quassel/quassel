@@ -39,7 +39,7 @@ public:
         Latest=Sha2_512
     };
 
-    ClientAuthHandler(CoreAccount account, QObject *parent = 0);
+    ClientAuthHandler(CoreAccount account, QObject *parent = nullptr);
 
     Peer *peer() const;
 

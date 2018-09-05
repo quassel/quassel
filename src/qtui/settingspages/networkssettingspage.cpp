@@ -40,7 +40,7 @@
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("Networks"), parent)
 #ifdef HAVE_SSL
-      , _cid(0)
+      , _cid(nullptr)
 #endif
 {
     ui.setupUi(this);
@@ -474,7 +474,7 @@ QListWidgetItem *NetworksSettingsPage::networkItem(NetworkId id) const
         QListWidgetItem *item = ui.networkList->item(i);
         if (item->data(Qt::UserRole).value<NetworkId>() == id) return item;
     }
-    return 0;
+    return nullptr;
 }
 
 
@@ -558,7 +558,7 @@ QListWidgetItem *NetworksSettingsPage::insertNetwork(NetworkId id)
 
 QListWidgetItem *NetworksSettingsPage::insertNetwork(const NetworkInfo &info)
 {
-    QListWidgetItem *item = 0;
+    QListWidgetItem *item = nullptr;
     QList<QListWidgetItem *> items = ui.networkList->findItems(info.networkName, Qt::MatchExactly);
     if (!items.count()) item = new QListWidgetItem(disconnectedIcon, info.networkName, ui.networkList);
     else {

@@ -188,14 +188,14 @@ void CoreSession::onNetworkDisconnected(NetworkId networkId)
 CoreNetwork *CoreSession::network(NetworkId id) const
 {
     if (_networks.contains(id)) return _networks[id];
-    return 0;
+    return nullptr;
 }
 
 
 CoreIdentity *CoreSession::identity(IdentityId id) const
 {
     if (_identities.contains(id)) return _identities[id];
-    return 0;
+    return nullptr;
 }
 
 
@@ -245,7 +245,7 @@ void CoreSession::saveSessionState() const
 void CoreSession::restoreSessionState()
 {
     QList<NetworkId> nets = Core::connectedNetworks(user());
-    CoreNetwork *net = 0;
+    CoreNetwork *net = nullptr;
     foreach(NetworkId id, nets) {
         net = network(id);
         Q_ASSERT(net);
@@ -649,8 +649,8 @@ void CoreSession::removeNetwork(NetworkId id)
 
     if (net->connectionState() != Network::Disconnected) {
         // make sure we no longer receive data from the tcp buffer
-        disconnect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)), this, 0);
-        disconnect(net, SIGNAL(displayStatusMsg(QString)), this, 0);
+        disconnect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)), this, nullptr);
+        disconnect(net, SIGNAL(displayStatusMsg(QString)), this, nullptr);
         connect(net, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetwork(NetworkId)));
         net->disconnectFromIrc();
     }
@@ -697,9 +697,9 @@ void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newNam
 void CoreSession::clientsConnected()
 {
     QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
-    Identity *identity = 0;
-    CoreNetwork *net = 0;
-    IrcUser *me = 0;
+    Identity *identity = nullptr;
+    CoreNetwork *net = nullptr;
+    IrcUser *me = nullptr;
     while (netIter != _networks.end()) {
         net = *netIter;
         ++netIter;
@@ -723,9 +723,9 @@ void CoreSession::clientsConnected()
 void CoreSession::clientsDisconnected()
 {
     QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
-    Identity *identity = 0;
-    CoreNetwork *net = 0;
-    IrcUser *me = 0;
+    Identity *identity = nullptr;
+    CoreNetwork *net = nullptr;
+    IrcUser *me = nullptr;
     QString awayReason;
     while (netIter != _networks.end()) {
         net = *netIter;
@@ -755,7 +755,7 @@ void CoreSession::clientsDisconnected()
 void CoreSession::globalAway(const QString &msg, const bool skipFormatting)
 {
     QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
-    CoreNetwork *net = 0;
+    CoreNetwork *net = nullptr;
     while (netIter != _networks.end()) {
         net = *netIter;
         ++netIter;

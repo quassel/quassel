@@ -32,7 +32,7 @@ class DebugLogDlg : public QDialog
     Q_OBJECT
 
 public:
-    DebugLogDlg(QWidget *parent = 0);
+    DebugLogDlg(QWidget *parent = nullptr);
 
 private slots:
     void logUpdated(const Logger::LogEntry &msg);

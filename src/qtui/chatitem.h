@@ -66,7 +66,7 @@ public:
     QPointF mapToScene(const QPointF &) const;
     QPointF mapFromScene(const QPointF &) const;
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
     virtual inline int type() const { return ChatScene::ChatItemType; }
 
     QVariant data(int role) const;
@@ -175,7 +175,7 @@ public:
     virtual void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode);
 
 protected:
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
     virtual inline int type() const { return ChatScene::SenderChatItemType; }
     virtual void initLayout(QTextLayout *layout) const;
 };

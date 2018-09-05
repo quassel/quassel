@@ -32,7 +32,7 @@ class UISUPPORT_EXPORT TreeViewTouch : public QTreeView
     Q_OBJECT
 
 public:
-    explicit TreeViewTouch(QWidget *parent = 0);
+    explicit TreeViewTouch(QWidget *parent = nullptr);
 
 protected:
 

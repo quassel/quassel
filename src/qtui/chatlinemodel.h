@@ -37,7 +37,7 @@ public:
         SelectedBackgroundRole
     };
 
-    ChatLineModel(QObject *parent = 0);
+    ChatLineModel(QObject *parent = nullptr);
 
     typedef ChatLineModelItem::Word Word;
     typedef ChatLineModelItem::WrapList WrapList;

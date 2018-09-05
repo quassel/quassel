@@ -27,7 +27,7 @@ class SqlAuthenticator : public Authenticator
     Q_OBJECT
 
 public:
-    SqlAuthenticator(QObject *parent = 0);
+    SqlAuthenticator(QObject *parent = nullptr);
     virtual ~SqlAuthenticator();
 
 public slots:

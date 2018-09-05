@@ -36,10 +36,10 @@ class CLIENT_EXPORT MessageFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 protected:
-    MessageFilter(QAbstractItemModel *source, QObject *parent = 0);
+    MessageFilter(QAbstractItemModel *source, QObject *parent = nullptr);
 
 public:
-    MessageFilter(MessageModel *, const QList<BufferId> &buffers = QList<BufferId>(), QObject *parent = 0);
+    MessageFilter(MessageModel *, const QList<BufferId> &buffers = QList<BufferId>(), QObject *parent = nullptr);
 
     virtual QString idString() const;
 

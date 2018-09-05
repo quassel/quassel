@@ -37,8 +37,8 @@ IrcChannel::IrcChannel(const QString &channelname, Network *network)
     _topic(QString()),
     _encrypted(false),
     _network(network),
-    _codecForEncoding(0),
-    _codecForDecoding(0)
+    _codecForEncoding(nullptr),
+    _codecForDecoding(nullptr)
 {
     setObjectName(QString::number(network->networkId().toInt()) + "/" +  channelname);
 }
@@ -54,7 +54,7 @@ IrcChannel::~IrcChannel()
 // ====================
 bool IrcChannel::isKnownUser(IrcUser *ircuser) const
 {
-    if (ircuser == 0) {
+    if (ircuser == nullptr) {
         qWarning() << "Channel" << name() << "received IrcUser Nullpointer!";
         return false;
     }
@@ -241,7 +241,7 @@ void IrcChannel::part(IrcUser *ircuser)
         ircuser->partChannel(this);
         // If you wonder why there is no counterpart to ircUserParted:
         // the joins are propagted by the ircuser. The signal ircUserParted is only for convenience
-        disconnect(ircuser, 0, this, 0);
+        disconnect(ircuser, nullptr, this, nullptr);
         emit ircUserParted(ircuser);
 
         if (network()->isMe(ircuser) || _userModes.isEmpty()) {
@@ -250,7 +250,7 @@ void IrcChannel::part(IrcUser *ircuser)
             QList<IrcUser *> users = _userModes.keys();
             _userModes.clear();
             foreach(IrcUser *user, users) {
-                disconnect(user, 0, this, 0);
+                disconnect(user, nullptr, this, nullptr);
                 user->partChannel(this);
             }
             emit parted();

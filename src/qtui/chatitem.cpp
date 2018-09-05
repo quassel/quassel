@@ -49,7 +49,7 @@ ChatItem::ChatItem(const QRectF &boundingRect, ChatLine *parent)
     _boundingRect(boundingRect),
     _selectionMode(NoSelection),
     _selectionStart(-1),
-    _cachedLayout(0)
+    _cachedLayout(nullptr)
 {
 }
 
@@ -141,7 +141,7 @@ QTextLayout *ChatItem::layout() const
 void ChatItem::clearCache()
 {
     delete _cachedLayout;
-    _cachedLayout = 0;
+    _cachedLayout = nullptr;
 }
 
 
@@ -630,7 +630,7 @@ ContentsChatItem::ActionProxy ContentsChatItem::_actionProxy;
 
 ContentsChatItem::ContentsChatItem(const QPointF &pos, const qreal &width, ChatLine *parent)
     : ChatItem(QRectF(pos, QSizeF(width, 0)), parent),
-    _data(0)
+    _data(nullptr)
 {
     setPos(pos);
     setGeometryByWidth(width);
@@ -652,7 +652,7 @@ ContentsChatItem::~ContentsChatItem()
 void ContentsChatItem::clearCache()
 {
     delete _data;
-    _data = 0;
+    _data = nullptr;
     ChatItem::clearCache();
 }
 
@@ -679,7 +679,7 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w)
     qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height()); // cope with negative leading()
     qreal h = lines * spacing;
     delete _data;
-    _data = 0;
+    _data = nullptr;
 
     if (w != width() || h != height())
         setGeometry(w, h);

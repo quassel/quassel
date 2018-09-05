@@ -46,7 +46,7 @@ class UISUPPORT_EXPORT UiStyle : public QObject
     Q_ENUMS(SenderPrefixModes)
 
 public:
-    UiStyle(QObject *parent = 0);
+    UiStyle(QObject *parent = nullptr);
     virtual ~UiStyle();
 
     //! This enumerates the possible formats a text element may have. */

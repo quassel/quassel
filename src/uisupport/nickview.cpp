@@ -76,7 +76,7 @@ void NickView::init()
 void NickView::setModel(QAbstractItemModel *model_)
 {
     if (model())
-        disconnect(model(), 0, this, 0);
+        disconnect(model(), nullptr, this, nullptr);
 
     TreeViewTouch::setModel(model_);
     init();

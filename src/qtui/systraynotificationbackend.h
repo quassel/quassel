@@ -31,7 +31,7 @@ class SystrayNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    SystrayNotificationBackend(QObject *parent = 0);
+    SystrayNotificationBackend(QObject *parent = nullptr);
 
     void notify(const Notification &);
     void close(uint notificationId);
@@ -61,7 +61,7 @@ class SystrayNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(QWidget *parent = nullptr);
     void save();
     void load();
     bool hasDefaults() const;

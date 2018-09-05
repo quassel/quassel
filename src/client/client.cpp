@@ -61,19 +61,19 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     _mainUi(std::move(ui)),
     _networkModel(new NetworkModel(this)),
     _bufferModel(new BufferModel(_networkModel)),
-    _bufferSyncer(0),
-    _aliasManager(0),
+    _bufferSyncer(nullptr),
+    _aliasManager(nullptr),
     _backlogManager(new ClientBacklogManager(this)),
-    _bufferViewManager(0),
+    _bufferViewManager(nullptr),
     _bufferViewOverlay(new BufferViewOverlay(this)),
     _coreInfo(new CoreInfo(this)),
-    _dccConfig(0),
+    _dccConfig(nullptr),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(new ClientUserInputHandler(this)),
-    _networkConfig(0),
-    _ignoreListManager(0),
-    _highlightRuleManager(0),
-    _transferManager(0),
+    _networkConfig(nullptr),
+    _ignoreListManager(nullptr),
+    _highlightRuleManager(nullptr),
+    _transferManager(nullptr),
     _transferModel(new TransferModel(this)),
     _messageModel(_mainUi->createMessageModel(this)),
     _messageProcessor(_mainUi->createMessageProcessor(this)),
@@ -187,7 +187,7 @@ QList<NetworkId> Client::networkIds()
 const Network *Client::network(NetworkId networkid)
 {
     if (instance()->_networks.contains(networkid)) return instance()->_networks[networkid];
-    else return 0;
+    else return nullptr;
 }
 
 
@@ -257,7 +257,7 @@ QList<IdentityId> Client::identityIds()
 const Identity *Client::identity(IdentityId id)
 {
     if (instance()->_identities.contains(id)) return instance()->_identities[id];
-    else return 0;
+    else return nullptr;
 }
 
 
@@ -492,26 +492,26 @@ void Client::setDisconnectedFromCore()
 
     if (_bufferSyncer) {
         _bufferSyncer->deleteLater();
-        _bufferSyncer = 0;
+        _bufferSyncer = nullptr;
     }
 
     _coreInfo->reset();
 
     if (_bufferViewManager) {
         _bufferViewManager->deleteLater();
-        _bufferViewManager = 0;
+        _bufferViewManager = nullptr;
     }
 
     _bufferViewOverlay->reset();
 
     if (_aliasManager) {
         _aliasManager->deleteLater();
-        _aliasManager = 0;
+        _aliasManager = nullptr;
     }
 
     if (_ignoreListManager) {
         _ignoreListManager->deleteLater();
-        _ignoreListManager = 0;
+        _ignoreListManager = nullptr;
     }
 
     if (_highlightRuleManager) {
@@ -540,7 +540,7 @@ void Client::setDisconnectedFromCore()
     while (netIter != _networks.end()) {
         Network *net = netIter.value();
         emit networkRemoved(net->networkId());
-        disconnect(net, SIGNAL(destroyed()), this, 0);
+        disconnect(net, SIGNAL(destroyed()), this, nullptr);
         netIter = _networks.erase(netIter);
         net->deleteLater();
     }
@@ -557,7 +557,7 @@ void Client::setDisconnectedFromCore()
 
     if (_networkConfig) {
         _networkConfig->deleteLater();
-        _networkConfig = 0;
+        _networkConfig = nullptr;
     }
 }
 

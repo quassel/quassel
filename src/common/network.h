@@ -145,7 +145,7 @@ public :
     };
     typedef QList<Server> ServerList;
 
-    Network(const NetworkId &networkid, QObject *parent = 0);
+    Network(const NetworkId &networkid, QObject *parent = nullptr);
     ~Network();
 
     inline NetworkId networkId() const { return _networkId; }

@@ -39,7 +39,7 @@ class NickListWidget : public AbstractItemView
     Q_OBJECT
 
 public:
-    NickListWidget(QWidget *parent = 0);
+    NickListWidget(QWidget *parent = nullptr);
 
 public slots:
     void showWidget(bool visible);
@@ -77,7 +77,7 @@ class NickListDock : public QDockWidget
     Q_OBJECT
 
 public:
-    NickListDock(const QString &title, QWidget *parent = 0);
+    NickListDock(const QString &title, QWidget *parent = nullptr);
     // ~NickListDock();
 
     void setLocked(bool locked);

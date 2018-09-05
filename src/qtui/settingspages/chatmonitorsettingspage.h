@@ -33,7 +33,7 @@ class ChatMonitorSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    ChatMonitorSettingsPage(QWidget *parent = 0);
+    ChatMonitorSettingsPage(QWidget *parent = nullptr);
     bool hasDefaults() const;
 
 public slots:

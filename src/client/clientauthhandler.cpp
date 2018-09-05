@@ -411,10 +411,10 @@ void ClientAuthHandler::handle(const LoginSuccess &msg)
 
 void ClientAuthHandler::handle(const SessionState &msg)
 {
-    disconnect(socket(), 0, this, 0); // this is the last message we shall ever get
+    disconnect(socket(), nullptr, this, nullptr); // this is the last message we shall ever get
 
     // give up ownership of the peer; CoreSession takes responsibility now
-    _peer->setParent(0);
+    _peer->setParent(nullptr);
     emit handshakeComplete(_peer, msg);
 }
 

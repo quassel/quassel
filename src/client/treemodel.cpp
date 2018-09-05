@@ -41,7 +41,7 @@ private:
 AbstractTreeItem::AbstractTreeItem(AbstractTreeItem *parent)
     : QObject(parent),
     _flags(Qt::ItemIsSelectable | Qt::ItemIsEnabled),
-    _treeItemFlags(0)
+    _treeItemFlags(nullptr)
 {
 }
 
@@ -103,7 +103,7 @@ void AbstractTreeItem::removeAllChilds()
     childIter = _childItems.begin();
     while (childIter != _childItems.end()) {
         child = *childIter;
-        child->setTreeItemFlags(0); // disable self deletion, as this would only fuck up consitency and the child gets deleted anyways
+        child->setTreeItemFlags(nullptr); // disable self deletion, as this would only fuck up consitency and the child gets deleted anyways
         child->removeAllChilds();
         ++childIter;
     }
@@ -182,7 +182,7 @@ bool AbstractTreeItem::reParent(AbstractTreeItem *newParent)
 AbstractTreeItem *AbstractTreeItem::child(int row) const
 {
     if (childCount() <= row)
-        return 0;
+        return nullptr;
     else
         return _childItems[row];
 }
@@ -323,7 +323,7 @@ TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
     _childStatus(QModelIndex(), 0, 0, 0),
     _aboutToRemoveOrInsert(false)
 {
-    rootItem = new SimpleTreeItem(data, 0);
+    rootItem = new SimpleTreeItem(data, nullptr);
     connectItem(rootItem);
 
     if (Quassel::isOptionSet("debugmodel")) {
@@ -376,7 +376,7 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
 
 QModelIndex TreeModel::indexByItem(AbstractTreeItem *item) const
 {
-    if (item == 0) {
+    if (item == nullptr) {
         qWarning() << "TreeModel::indexByItem(AbstractTreeItem *item) received NULL-Pointer";
         return QModelIndex();
     }
@@ -564,7 +564,7 @@ void TreeModel::beginRemoveChilds(int firstRow, int lastRow)
     }
 
     for (int i = firstRow; i <= lastRow; i++) {
-        disconnect(parentItem->child(i), 0, this, 0);
+        disconnect(parentItem->child(i), nullptr, this, nullptr);
     }
 
     // consitency checks

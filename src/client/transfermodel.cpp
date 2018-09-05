@@ -106,7 +106,7 @@ QVariant TransferModel::data(const QModelIndex& index, int role) const
 void TransferModel::setManager(const TransferManager *manager)
 {
     if (_manager) {
-        disconnect(_manager, 0, this, 0);
+        disconnect(_manager, nullptr, this, nullptr);
         beginResetModel();
         _transferIds.clear();
         endResetModel();
@@ -152,7 +152,7 @@ void TransferModel::onTransferRemoved(const QUuid &transferId)
     // Check if the transfer object still exists, which means we still should disconnect
     auto transfer = _manager->transfer(transferId);
     if (transfer)
-        disconnect(transfer, 0, this, 0);
+        disconnect(transfer, nullptr, this, nullptr);
 
     for (auto row = 0; row < _transferIds.size(); ++row) {
         if (_transferIds[row] == transferId) {

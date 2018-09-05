@@ -61,8 +61,8 @@ public:
     };
     Q_ENUMS(Direction)
 
-    Transfer(const QUuid &uuid, QObject *parent = 0); // for creating a syncable object client-side
-    Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = 0);
+    Transfer(const QUuid &uuid, QObject *parent = nullptr); // for creating a syncable object client-side
+    Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = nullptr);
 
     QUuid uuid() const;
     Status status() const;
@@ -97,8 +97,8 @@ signals:
 
     void error(const QString &errorString);
 
-    void accepted(PeerPtr peer = 0) const;
-    void rejected(PeerPtr peer = 0) const;
+    void accepted(PeerPtr peer = nullptr) const;
+    void rejected(PeerPtr peer = nullptr) const;
 
 protected slots:
     void setStatus(Transfer::Status status);

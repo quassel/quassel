@@ -29,7 +29,7 @@ class InputWidgetSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    InputWidgetSettingsPage(QWidget *parent = 0);
+    InputWidgetSettingsPage(QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return true; }
 

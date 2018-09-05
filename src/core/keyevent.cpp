@@ -25,7 +25,7 @@ Event *KeyEvent::create(EventManager::EventType type, QVariantMap &map, Network 
     if (type == EventManager::KeyEvent)
         return new KeyEvent(type, map, network);
 
-    return 0;
+    return nullptr;
 }
 
 

@@ -26,7 +26,7 @@
 CertIdentity::CertIdentity(IdentityId id, QObject *parent)
     : Identity(id, parent)
 #ifdef HAVE_SSL
-    ,  _certManager(0),
+    ,  _certManager(nullptr),
     _isDirty(false)
 #endif
 {
@@ -36,7 +36,7 @@ CertIdentity::CertIdentity(IdentityId id, QObject *parent)
 CertIdentity::CertIdentity(const Identity &other, QObject *parent)
     : Identity(other, parent)
 #ifdef HAVE_SSL
-    , _certManager(0),
+    , _certManager(nullptr),
     _isDirty(false)
 #endif
 {
@@ -46,7 +46,7 @@ CertIdentity::CertIdentity(const Identity &other, QObject *parent)
 CertIdentity::CertIdentity(const CertIdentity &other, QObject *parent)
     : Identity(other, parent)
 #ifdef HAVE_SSL
-    , _certManager(0),
+    , _certManager(nullptr),
     _isDirty(other._isDirty),
     _sslKey(other._sslKey),
     _sslCert(other._sslCert)

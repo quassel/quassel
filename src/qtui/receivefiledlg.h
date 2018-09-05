@@ -30,7 +30,7 @@ class ReceiveFileDlg : public QDialog
     Q_OBJECT
 
 public:
-    ReceiveFileDlg(const Transfer *transfer, QWidget *parent = 0);
+    ReceiveFileDlg(const Transfer *transfer, QWidget *parent = nullptr);
 
 private slots:
     void on_buttonBox_clicked(QAbstractButton *button);

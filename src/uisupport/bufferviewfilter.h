@@ -52,7 +52,7 @@ public:
     };
     Q_DECLARE_FLAGS(Modes, Mode)
 
-    BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = 0);
+    BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = nullptr);
 
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
     virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);

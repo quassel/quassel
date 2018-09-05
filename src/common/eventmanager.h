@@ -122,7 +122,7 @@ public :
         KeyEvent                    = 0x00060000
     };
 
-    EventManager(QObject *parent = 0);
+    EventManager(QObject *parent = nullptr);
 
     static EventType eventTypeByName(const QString &name);
     static EventType eventGroupByName(const QString &name);
@@ -160,7 +160,7 @@ private:
         int methodIndex;
         Priority priority;
 
-        explicit Handler(QObject *obj = 0, int method = 0, Priority prio = NormalPriority)
+        explicit Handler(QObject *obj = nullptr, int method = 0, Priority prio = NormalPriority)
         {
             object = obj;
             methodIndex = method;

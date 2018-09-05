@@ -30,7 +30,7 @@ class CLIENT_EXPORT ClientIgnoreListManager : public IgnoreListManager
     Q_OBJECT
 
 public:
-    explicit ClientIgnoreListManager(QObject *parent = 0);
+    explicit ClientIgnoreListManager(QObject *parent = nullptr);
 
     //! Fetch all matching ignore rules for a given hostmask
     /** \param hostmask The hostmask of the user

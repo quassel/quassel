@@ -29,7 +29,7 @@ class TopicWidgetSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    TopicWidgetSettingsPage(QWidget *parent = 0);
+    TopicWidgetSettingsPage(QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return true; }
 

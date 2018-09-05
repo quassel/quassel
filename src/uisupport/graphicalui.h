@@ -77,7 +77,7 @@ public:
     static bool isMainWidgetVisible();
 
 protected:
-    GraphicalUi(QObject *parent = 0);
+    GraphicalUi(QObject *parent = nullptr);
     virtual void init();
 
     //! This is the widget we associate global actions with, typically the main window

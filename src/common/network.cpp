@@ -25,9 +25,9 @@
 #include "network.h"
 #include "peer.h"
 
-QTextCodec *Network::_defaultCodecForServer = 0;
-QTextCodec *Network::_defaultCodecForEncoding = 0;
-QTextCodec *Network::_defaultCodecForDecoding = 0;
+QTextCodec *Network::_defaultCodecForServer = nullptr;
+QTextCodec *Network::_defaultCodecForEncoding = nullptr;
+QTextCodec *Network::_defaultCodecForDecoding = nullptr;
 
 // ====================
 //  Public:
@@ -35,7 +35,7 @@ QTextCodec *Network::_defaultCodecForDecoding = 0;
 
 Network::Network(const NetworkId &networkid, QObject *parent)
     : SyncableObject(parent),
-    _proxy(0),
+    _proxy(nullptr),
     _networkId(networkid),
     _identity(0),
     _myNick(QString()),
@@ -57,9 +57,9 @@ Network::Network(const NetworkId &networkid, QObject *parent)
     _messageRateBurstSize(5),
     _messageRateDelay(2200),
     _unlimitedMessageRate(false),
-    _codecForServer(0),
-    _codecForEncoding(0),
-    _codecForDecoding(0),
+    _codecForServer(nullptr),
+    _codecForEncoding(nullptr),
+    _codecForDecoding(nullptr),
     _autoAwayActive(false)
 {
     setObjectName(QString::number(networkid.toInt()));
@@ -340,7 +340,7 @@ IrcUser *Network::ircUser(QString nickname) const
     if (_ircUsers.contains(nickname))
         return _ircUsers[nickname];
     else
-        return 0;
+        return nullptr;
 }
 
 
@@ -351,7 +351,7 @@ void Network::removeIrcUser(IrcUser *ircuser)
         return;
 
     _ircUsers.remove(nick);
-    disconnect(ircuser, 0, this, 0);
+    disconnect(ircuser, nullptr, this, nullptr);
     ircuser->deleteLater();
 }
 
@@ -363,7 +363,7 @@ void Network::removeIrcChannel(IrcChannel *channel)
         return;
 
     _ircChannels.remove(chanName);
-    disconnect(channel, 0, this, 0);
+    disconnect(channel, nullptr, this, nullptr);
     channel->deleteLater();
 }
 
@@ -410,7 +410,7 @@ IrcChannel *Network::ircChannel(QString channelname) const
     if (_ircChannels.contains(channelname))
         return _ircChannels[channelname];
     else
-        return 0;
+        return nullptr;
 }
 
 

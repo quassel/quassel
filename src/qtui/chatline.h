@@ -34,7 +34,7 @@ public:
         const qreal &width,
         const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
         const QPointF &senderPos, const QPointF &contentsPos,
-        QGraphicsItem *parent = 0);
+        QGraphicsItem *parent = nullptr);
 
     virtual ~ChatLine();
 
@@ -49,7 +49,7 @@ public:
 
     inline const QAbstractItemModel *model() const { return _model; }
     inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
-    inline ChatView *chatView() const { return chatScene() ? chatScene()->chatView() : 0; }
+    inline ChatView *chatView() const { return chatScene() ? chatScene()->chatView() : nullptr; }
 
     inline qreal width() const { return _width; }
     inline qreal height() const { return _height; }
@@ -60,7 +60,7 @@ public:
     inline ChatItem *senderItem() { return &_senderItem; }
     inline ContentsChatItem *contentsItem() { return &_contentsItem; }
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
     enum { Type = ChatScene::ChatLineType };
     virtual inline int type() const { return Type; }
 

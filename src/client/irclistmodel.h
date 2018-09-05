@@ -31,7 +31,7 @@ class CLIENT_EXPORT IrcListModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    IrcListModel(QObject *parent = 0);
+    IrcListModel(QObject *parent = nullptr);
 
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;

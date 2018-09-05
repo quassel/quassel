@@ -26,7 +26,7 @@ CoreIrcChannel::CoreIrcChannel(const QString &channelname, Network *network)
     _receivedWelcomeMsg(false)
 {
 #ifdef HAVE_QCA2
-    _cipher = 0;
+    _cipher = nullptr;
 
     // Get the cipher key from CoreNetwork if present
     CoreNetwork *coreNetwork = qobject_cast<CoreNetwork *>(network);

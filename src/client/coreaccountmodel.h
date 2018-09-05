@@ -37,8 +37,8 @@ public:
         UuidRole
     };
 
-    CoreAccountModel(QObject *parent = 0);
-    CoreAccountModel(const CoreAccountModel *other, QObject *parent = 0);
+    CoreAccountModel(QObject *parent = nullptr);
+    CoreAccountModel(const CoreAccountModel *other, QObject *parent = nullptr);
 
     inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

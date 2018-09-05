@@ -46,7 +46,7 @@ bool DccSettingsPage::isClientConfigValid() const
 void DccSettingsPage::setClientConfig(DccConfig *config)
 {
     if (_clientConfig) {
-        disconnect(_clientConfig, 0, this, 0);
+        disconnect(_clientConfig, nullptr, this, nullptr);
     }
     if (config && !isClientConfigValid()) {
         qWarning() << "Client DCC config is not valid/synchronized!";

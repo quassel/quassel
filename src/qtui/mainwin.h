@@ -65,7 +65,7 @@ class MainWin
     Q_OBJECT
 
 public:
-    MainWin(QWidget *parent = 0);
+    MainWin(QWidget *parent = nullptr);
 
     void init();
 

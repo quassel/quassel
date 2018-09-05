@@ -284,7 +284,7 @@ BufferViewConfig *BufferViewSettingsPage::bufferView(int listPos)
         return qobject_cast<BufferViewConfig *>(obj);
     }
     else {
-        return 0;
+        return nullptr;
     }
 }
 

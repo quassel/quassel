@@ -30,7 +30,7 @@ class SonnetSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    SonnetSettingsPage(QWidget *parent = 0);
+    SonnetSettingsPage(QWidget *parent = nullptr);
 
     bool hasDefaults() const;
 

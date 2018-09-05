@@ -28,7 +28,7 @@
 
 SettingsDlg::SettingsDlg(QWidget *parent)
     : QDialog(parent),
-    _currentPage(0)
+    _currentPage(nullptr)
 {
     ui.setupUi(this);
     setModal(true);
@@ -107,7 +107,7 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp)
 void SettingsDlg::selectPage(SettingsPage *sp)
 {
     if (!sp) {
-        _currentPage = 0;
+        _currentPage = nullptr;
         ui.settingsStack->setCurrentIndex(0);
         ui.pageTitle->setText(tr("Settings"));
         return;
@@ -118,7 +118,7 @@ void SettingsDlg::selectPage(SettingsPage *sp)
         pageIsLoaded[sp] = true;
     }
 
-    if (sp != currentPage() && currentPage() != 0 && currentPage()->hasChanged()) {
+    if (sp != currentPage() && currentPage() != nullptr && currentPage()->hasChanged()) {
         int ret = QMessageBox::warning(this, tr("Save changes"),
             tr("There are unsaved changes on the current configuration page. Would you like to apply your changes now?"),
             QMessageBox::Discard|QMessageBox::Save|QMessageBox::Cancel, QMessageBox::Cancel);
@@ -151,7 +151,7 @@ void SettingsDlg::selectPage(SettingsPage *sp)
 void SettingsDlg::itemSelected()
 {
     QList<QTreeWidgetItem *> items = ui.settingsTree->selectedItems();
-    SettingsPage *sp = 0;
+    SettingsPage *sp = nullptr;
     if (!items.isEmpty()) {
         sp = qobject_cast<SettingsPage *>(items[0]->data(0, SettingsPageRole).value<QObject *>());
     }

@@ -137,7 +137,7 @@ void ActionCollection::removeAction(QAction *action)
 QAction *ActionCollection::takeAction(QAction *action)
 {
     if (!unlistAction(action))
-        return 0;
+        return nullptr;
 
     foreach(QWidget *widget, _associatedWidgets) {
         widget->removeAction(action);

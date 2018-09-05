@@ -31,7 +31,7 @@ class UISUPPORT_EXPORT FontSelector : public QWidget
     Q_PROPERTY(QFont selectedFont READ selectedFont WRITE setSelectedFont)
 
 public :
-        FontSelector(QWidget *parent = 0);
+        FontSelector(QWidget *parent = nullptr);
 
     inline const QFont &selectedFont() const { return _font; }
 

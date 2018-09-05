@@ -177,8 +177,8 @@ private:
     template<class T>
     void handle(Peer *, T) { Q_ASSERT(0); }
 
-    bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue, Peer *peer = 0);
-    bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList(), Peer *peer = 0);
+    bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue, Peer *peer = nullptr);
+    bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList(), Peer *peer = nullptr);
 
     void requestInit(SyncableObject *obj);
     QVariantMap initData(SyncableObject *obj) const;

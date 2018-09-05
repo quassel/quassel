@@ -31,7 +31,7 @@ class UISUPPORT_EXPORT ToolBarActionProvider : public NetworkModelController
     Q_OBJECT
 
 public:
-    ToolBarActionProvider(QObject *parent = 0);
+    ToolBarActionProvider(QObject *parent = nullptr);
     virtual ~ToolBarActionProvider();
 
     enum ToolBarType {
@@ -54,7 +54,7 @@ protected:
 private slots:
     void networkCreated(NetworkId id);
     void networkRemoved(NetworkId id);
-    void networkUpdated(const Network *net = 0);
+    void networkUpdated(const Network *net = nullptr);
     void connectOrDisconnectNet();
 
     void currentBufferChanged(const QModelIndex &);

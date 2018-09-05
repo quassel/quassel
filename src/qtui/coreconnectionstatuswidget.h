@@ -32,7 +32,7 @@ class CoreConnectionStatusWidget : public QWidget
     Q_OBJECT
 
 public:
-    CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent = 0);
+    CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent = nullptr);
 
     inline CoreConnection *coreConnection() const { return _coreConnection; }
 

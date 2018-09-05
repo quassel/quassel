@@ -37,7 +37,7 @@ public:
         HeartBeatReply
     };
 
-    LegacyPeer(AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = 0);
+    LegacyPeer(AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = nullptr);
 
     Protocol::Type protocol() const { return Protocol::LegacyProtocol; }
     QString protocolName() const { return "the legacy protocol"; }

@@ -42,7 +42,7 @@ class NetworkItem : public PropertyMapItem
     Q_PROPERTY(int nickCount READ nickCount)
 
 public :
-    NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
+    NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = nullptr);
 
     virtual QStringList propertyOrder() const;
 
@@ -109,7 +109,7 @@ class BufferItem : public PropertyMapItem
     Q_PROPERTY(int nickCount READ nickCount)
 
 public :
-    BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent = 0);
+    BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent = nullptr);
 
     virtual QStringList propertyOrder() const;
 
@@ -345,7 +345,7 @@ public:
     };
     Q_DECLARE_FLAGS(ItemTypes, ItemType)
 
-    NetworkModel(QObject *parent = 0);
+    NetworkModel(QObject *parent = nullptr);
     static QList<QVariant> defaultHeader();
 
     static bool mimeContainsBufferList(const QMimeData *mimeData);

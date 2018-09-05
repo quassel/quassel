@@ -57,8 +57,8 @@ class COMMON_EXPORT Identity : public SyncableObject
     Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason)
 
 public :
-    Identity(IdentityId id = 0, QObject *parent = 0);
-    Identity(const Identity &other, QObject *parent = 0);
+    Identity(IdentityId id = 0, QObject *parent = nullptr);
+    Identity(const Identity &other, QObject *parent = nullptr);
 
     void setToDefaults();
 
@@ -174,7 +174,7 @@ class COMMON_EXPORT CertManager : public SyncableObject
     Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert)
 
 public :
-    CertManager(IdentityId id, QObject *parent = 0) : SyncableObject(QString::number(id.toInt()), parent) {}
+    CertManager(IdentityId id, QObject *parent = nullptr) : SyncableObject(QString::number(id.toInt()), parent) {}
 
     virtual const QSslKey &sslKey() const = 0;
     inline QByteArray sslKeyPem() const { return sslKey().toPem(); }

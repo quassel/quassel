@@ -34,7 +34,7 @@ class NotificationsSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    NotificationsSettingsPage(QWidget *parent = 0);
+    NotificationsSettingsPage(QWidget *parent = nullptr);
 
     bool hasDefaults() const;
 

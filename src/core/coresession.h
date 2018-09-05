@@ -63,7 +63,7 @@ class CoreSession : public QObject
     Q_OBJECT
 
 public:
-    CoreSession(UserId, bool restoreState, bool strictIdentEnabled, QObject *parent = 0);
+    CoreSession(UserId, bool restoreState, bool strictIdentEnabled, QObject *parent = nullptr);
 
     QList<BufferInfo> buffers() const;
     inline UserId user() const { return _user; }

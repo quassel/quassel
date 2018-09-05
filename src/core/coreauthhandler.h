@@ -31,7 +31,7 @@ class CoreAuthHandler : public AuthHandler
     Q_OBJECT
 
 public:
-    CoreAuthHandler(QTcpSocket *socket, QObject *parent = 0);
+    CoreAuthHandler(QTcpSocket *socket, QObject *parent = nullptr);
 
 signals:
     void handshakeComplete(RemotePeer *peer, UserId uid);

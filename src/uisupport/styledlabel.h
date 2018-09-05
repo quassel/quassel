@@ -38,7 +38,7 @@ public:
         ResizeOnHover
     };
 
-    StyledLabel(QWidget *parent = 0);
+    StyledLabel(QWidget *parent = nullptr);
 
     void setText(const QString &text);
     void setCustomFont(const QFont &font);

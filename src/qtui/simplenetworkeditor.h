@@ -30,7 +30,7 @@ class SimpleNetworkEditor : public QWidget
     Q_OBJECT
 
 public:
-    SimpleNetworkEditor(QWidget *parent = 0);
+    SimpleNetworkEditor(QWidget *parent = nullptr);
 
     void displayNetworkInfo(const NetworkInfo &networkInfo);
     void saveToNetworkInfo(NetworkInfo &networkInfo);

@@ -61,7 +61,7 @@ class UISUPPORT_EXPORT SettingsPage : public QWidget
     Q_OBJECT
 
 public:
-    SettingsPage(const QString &category, const QString &name, QWidget *parent = 0);
+    SettingsPage(const QString &category, const QString &name, QWidget *parent = nullptr);
     virtual ~SettingsPage() {};
 
     //! The category of this settings page.

@@ -32,7 +32,7 @@ class CLIENT_EXPORT ClientBufferViewManager : public BufferViewManager
     Q_OBJECT
 
 public:
-    ClientBufferViewManager(SignalProxy *proxy, QObject *parent = 0);
+    ClientBufferViewManager(SignalProxy *proxy, QObject *parent = nullptr);
 
     QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
     ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;

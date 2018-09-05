@@ -36,7 +36,7 @@ class COMMON_EXPORT Peer : public QObject
     Q_OBJECT
 
 public:
-    explicit Peer(AuthHandler *authHandler, QObject *parent = 0);
+    explicit Peer(AuthHandler *authHandler, QObject *parent = nullptr);
 
     virtual Protocol::Type protocol() const = 0;
     virtual QString description() const = 0;

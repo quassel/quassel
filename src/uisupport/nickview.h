@@ -32,7 +32,7 @@ class UISUPPORT_EXPORT NickView : public TreeViewTouch
     Q_OBJECT
 
 public:
-    NickView(QWidget *parent = 0);
+    NickView(QWidget *parent = nullptr);
 
 protected:
     virtual void rowsInserted(const QModelIndex &parent, int start, int end);

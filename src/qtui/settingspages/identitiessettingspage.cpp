@@ -303,13 +303,13 @@ void IdentitiesSettingsPage::removeIdentity(Identity *id)
 
 void IdentitiesSettingsPage::on_identityList_currentIndexChanged(int index)
 {
-    CertIdentity *previousIdentity = 0;
+    CertIdentity *previousIdentity = nullptr;
     if (currentId != 0 && identities.contains(currentId))
         previousIdentity = identities[currentId];
 
     if (index < 0) {
         //ui.identityList->setEditable(false);
-        ui.identityEditor->displayIdentity(0, previousIdentity);
+        ui.identityEditor->displayIdentity(nullptr, previousIdentity);
         currentId = 0;
     }
     else {

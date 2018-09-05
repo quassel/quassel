@@ -301,7 +301,7 @@ void EventManager::dispatchEvent(Event *event)
         }
 
         // finally, deliverance!
-        void *param[] = { 0, Q_ARG(Event *, event).data() };
+        void *param[] = { nullptr, Q_ARG(Event *, event).data() };
         obj->qt_metacall(QMetaObject::InvokeMetaMethod, it->methodIndex, param);
     }
 

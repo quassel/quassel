@@ -36,7 +36,7 @@
 
 CoreConnection::CoreConnection(QObject *parent)
     : QObject(parent),
-    _authHandler(0),
+    _authHandler(nullptr),
     _state(Disconnected),
     _wantReconnect(false),
     _wasReconnect(false),
@@ -286,17 +286,17 @@ void CoreConnection::resetConnection(bool wantReconnect)
     _wantReconnect = wantReconnect;
 
     if (_authHandler) {
-        disconnect(_authHandler, 0, this, 0);
+        disconnect(_authHandler, nullptr, this, nullptr);
         _authHandler->close();
         _authHandler->deleteLater();
-        _authHandler = 0;
+        _authHandler = nullptr;
     }
 
     if (_peer) {
-        disconnect(_peer, 0, this, 0);
+        disconnect(_peer, nullptr, this, nullptr);
         // peer belongs to the sigproxy and thus gets deleted by it
         _peer->close();
-        _peer = 0;
+        _peer = nullptr;
     }
 
     _netsToSync.clear();
@@ -453,9 +453,9 @@ void CoreConnection::onHandshakeComplete(RemotePeer *peer, const Protocol::Sessi
 {
     updateProgress(100, 100);
 
-    disconnect(_authHandler, 0, this, 0);
+    disconnect(_authHandler, nullptr, this, nullptr);
     _authHandler->deleteLater();
-    _authHandler = 0;
+    _authHandler = nullptr;
 
     _peer = peer;
     connect(peer, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
@@ -518,7 +518,7 @@ void CoreConnection::networkInitDone()
 {
     QObject *net = sender();
     Q_ASSERT(net);
-    disconnect(net, 0, this, 0);
+    disconnect(net, nullptr, this, nullptr);
     _netsToSync.remove(net);
     updateProgress(_numNetsToSync - _netsToSync.count(), _numNetsToSync);
     checkSyncState();

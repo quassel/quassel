@@ -30,8 +30,8 @@ Compressor::Compressor(QTcpSocket *socket, Compressor::CompressionLevel level, Q
     : QObject(parent),
     _socket(socket),
     _level(level),
-    _inflater(0),
-    _deflater(0)
+    _inflater(nullptr),
+    _deflater(nullptr)
 {
     connect(socket, SIGNAL(readyRead()), SLOT(readData()));
 

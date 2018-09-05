@@ -28,7 +28,7 @@ class DebugConsole : public QDialog
     Q_OBJECT
 
 public:
-    DebugConsole(QWidget *parent = 0);
+    DebugConsole(QWidget *parent = nullptr);
     virtual ~DebugConsole();
 
 public slots:

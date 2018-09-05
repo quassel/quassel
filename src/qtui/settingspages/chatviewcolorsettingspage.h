@@ -35,7 +35,7 @@ public:
      *
      * @param parent Parent QWidget object, such as the settings dialog
      */
-    explicit ChatViewColorSettingsPage(QWidget *parent = 0);
+    explicit ChatViewColorSettingsPage(QWidget *parent = nullptr);
 
     /**
      * Gets whether or not this settings page has defaults

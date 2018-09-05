@@ -34,7 +34,7 @@ class ShortcutsFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    ShortcutsFilter(QObject *parent = 0);
+    ShortcutsFilter(QObject *parent = nullptr);
 
 public slots:
     void setFilterString(const QString &filterString);
@@ -51,7 +51,7 @@ class ShortcutsSettingsPage : public SettingsPage
 {
     Q_OBJECT
 public:
-    ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = 0);
+    ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return true; }
 

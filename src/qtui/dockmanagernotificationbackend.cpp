@@ -30,7 +30,7 @@
 #include "clientbacklogmanager.h"
 
 DockManagerNotificationBackend::DockManagerNotificationBackend(QObject *parent)
-    : AbstractNotificationBackend(parent), _bus(QDBusConnection::sessionBus()), _dock(0), _item(0), _count(0)
+    : AbstractNotificationBackend(parent), _bus(QDBusConnection::sessionBus()), _dock(nullptr), _item(nullptr), _count(0)
 {
     NotificationSettings notificationSettings;
     _enabled = notificationSettings.value("DockManager/Enabled", false).toBool();
@@ -110,7 +110,7 @@ void DockManagerNotificationBackend::updateProgress(int done, int total)
 
     int perc = 0;
     if (done == total) {
-        disconnect(Client::backlogManager(), 0, this, 0);
+        disconnect(Client::backlogManager(), nullptr, this, nullptr);
         perc = -1;
     } else
         perc = (done * 100) / total;

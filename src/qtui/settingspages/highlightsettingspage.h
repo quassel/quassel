@@ -32,7 +32,7 @@ class HighlightSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    HighlightSettingsPage(QWidget *parent = 0);
+    HighlightSettingsPage(QWidget *parent = nullptr);
 
     bool hasDefaults() const;
 

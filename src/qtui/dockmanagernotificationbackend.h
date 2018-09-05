@@ -34,7 +34,7 @@ class DockManagerNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    DockManagerNotificationBackend(QObject *parent = 0);
+    DockManagerNotificationBackend(QObject *parent = nullptr);
 
     void notify(const Notification &);
     void close(uint notificationId);
@@ -63,7 +63,7 @@ class DockManagerNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(bool enabled, QWidget *parent = 0);
+    ConfigWidget(bool enabled, QWidget *parent = nullptr);
 
     void save();
     void load();

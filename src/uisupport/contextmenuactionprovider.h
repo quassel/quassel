@@ -29,7 +29,7 @@ class UISUPPORT_EXPORT ContextMenuActionProvider : public NetworkModelController
     Q_OBJECT
 
 public:
-    ContextMenuActionProvider(QObject *parent = 0);
+    ContextMenuActionProvider(QObject *parent = nullptr);
     virtual ~ContextMenuActionProvider();
 
     //! Provide a list of actions applying to the given item
@@ -44,11 +44,11 @@ public:
      * @param slot     The receiving slot name; should be "mySlot" rather than SLOT(mySlot(QAction *))
      * @return A list of actions applying to the given item
      */
-    void addActions(QMenu *, const QModelIndex &index, QObject *receiver = 0, const char *slot = 0, bool allowBufferHide = false);
-    void addActions(QMenu *, const QList<QModelIndex> &indexList, QObject *receiver = 0, const char *slot = 0, bool allowBufferHide = false);
-    void addActions(QMenu *, BufferId id, QObject *receiver = 0, const char *slot = 0);
-    void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, QObject *receiver = 0, const char *slot = 0);
-    void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver = 0, const char *slot = 0);
+    void addActions(QMenu *, const QModelIndex &index, QObject *receiver = nullptr, const char *slot = nullptr, bool allowBufferHide = false);
+    void addActions(QMenu *, const QList<QModelIndex> &indexList, QObject *receiver = nullptr, const char *slot = nullptr, bool allowBufferHide = false);
+    void addActions(QMenu *, BufferId id, QObject *receiver = nullptr, const char *slot = nullptr);
+    void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, QObject *receiver = nullptr, const char *slot = nullptr);
+    void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver = nullptr, const char *slot = nullptr);
 
 private:
 
