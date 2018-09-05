@@ -54,10 +54,11 @@ QGroupBox *createFieldBox(const QString &title, const std::vector<FieldInfo> &fi
     // provide specialized config widgets for those (which may be a good idea anyway, e.g. if we
     // think about client-side translations...)
 
-    QGroupBox *fieldBox = new QGroupBox;
+    auto *fieldBox = new QGroupBox;
     fieldBox->setTitle(title);
+    auto *formLayout = new QFormLayout;
+    fieldBox->setLayout(formLayout);
 
-    QFormLayout *formLayout = new QFormLayout(fieldBox);
     for (auto &&fieldInfo : fieldInfos) {
         QWidget *widget {nullptr};
         switch (std::get<2>(fieldInfo).type()) {
