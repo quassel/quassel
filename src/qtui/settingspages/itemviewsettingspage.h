@@ -33,7 +33,7 @@ class ItemViewSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    ItemViewSettingsPage(QWidget *parent = 0);
+    ItemViewSettingsPage(QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return true; }
 

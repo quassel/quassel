@@ -30,7 +30,7 @@ class UISUPPORT_EXPORT BufferHotListFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    BufferHotListFilter(QAbstractItemModel *source, QObject *parent = 0);
+    BufferHotListFilter(QAbstractItemModel *source, QObject *parent = nullptr);
 
     virtual inline int columnCount(const QModelIndex &) const { return 1; }
     BufferId hottestBuffer();

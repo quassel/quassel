@@ -39,7 +39,7 @@ class COMMON_EXPORT NetworkConfig : public SyncableObject
     Q_PROPERTY(bool standardCtcp READ standardCtcp WRITE setStandardCtcp)
 
 public :
-    NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = 0);
+    NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = nullptr);
 
 public slots:
     inline bool pingTimeoutEnabled() const { return _pingTimeoutEnabled; }

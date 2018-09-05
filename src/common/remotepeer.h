@@ -42,7 +42,7 @@ public:
     using Peer::handle;
     using Peer::dispatch;
 
-    RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = 0);
+    RemotePeer(AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = nullptr);
 
     void setSignalProxy(SignalProxy *proxy);
 

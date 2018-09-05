@@ -31,7 +31,7 @@ class AliasesModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    AliasesModel(QObject *parent = 0);
+    AliasesModel(QObject *parent = nullptr);
 
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);

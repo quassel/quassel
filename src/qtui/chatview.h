@@ -39,8 +39,8 @@ class ChatView : public QGraphicsView, public AbstractChatView
     Q_OBJECT
 
 public:
-    ChatView(MessageFilter *, QWidget *parent = 0);
-    ChatView(BufferId bufferId, QWidget *parent = 0);
+    ChatView(MessageFilter *, QWidget *parent = nullptr);
+    ChatView(BufferId bufferId, QWidget *parent = nullptr);
 
     virtual MsgId lastMsgId() const;
     virtual MsgId lastVisibleMsgId() const;

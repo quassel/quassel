@@ -33,7 +33,7 @@ class SslServer : public QTcpServer
     Q_OBJECT
 
 public:
-    SslServer(QObject *parent = 0);
+    SslServer(QObject *parent = nullptr);
 
     bool hasPendingConnections() const override { return !_pendingConnections.isEmpty(); }
     QTcpSocket *nextPendingConnection() override;

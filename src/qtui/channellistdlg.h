@@ -36,7 +36,7 @@ class ChannelListDlg : public QDialog
     Q_OBJECT
 
 public:
-    ChannelListDlg(QWidget *parent = 0);
+    ChannelListDlg(QWidget *parent = nullptr);
 
     void setNetwork(NetworkId netId);
 

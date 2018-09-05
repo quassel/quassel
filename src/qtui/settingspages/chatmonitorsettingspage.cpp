@@ -238,8 +238,8 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView *inView, BufferViewConfig
       This can probably be removed whenever BufferViewConfig::bulkAdd or something
       like that is available.
     */
-    qobject_cast<BufferViewFilter *>(outView->model())->setConfig(0);
-    qobject_cast<BufferViewFilter *>(inView->model())->setConfig(0);
+    qobject_cast<BufferViewFilter *>(outView->model())->setConfig(nullptr);
+    qobject_cast<BufferViewFilter *>(inView->model())->setConfig(nullptr);
 
     // actually move the ids
     foreach(QList<BufferId> list, selectedBuffers) {

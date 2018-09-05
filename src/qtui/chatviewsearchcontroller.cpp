@@ -31,7 +31,7 @@
 
 ChatViewSearchController::ChatViewSearchController(QObject *parent)
     : QObject(parent),
-    _scene(0),
+    _scene(nullptr),
     _currentHighlight(0),
     _caseSensitive(false),
     _searchSenders(false),
@@ -65,8 +65,8 @@ void ChatViewSearchController::setScene(ChatScene *scene)
         return;
 
     if (_scene) {
-        disconnect(_scene, 0, this, 0);
-        disconnect(Client::messageModel(), 0, this, 0);
+        disconnect(_scene, nullptr, this, nullptr);
+        disconnect(Client::messageModel(), nullptr, this, nullptr);
         qDeleteAll(_highlightItems);
         _highlightItems.clear();
     }
@@ -357,7 +357,7 @@ void ChatViewSearchController::repositionHighlights(ChatLine *line)
 void ChatViewSearchController::sceneDestroyed()
 {
     // WARNING: don't call any methods on scene!
-    _scene = 0;
+    _scene = nullptr;
     // the items will be automatically deleted when the scene is destroyed
     // so we just have to clear the list;
     _highlightItems.clear();

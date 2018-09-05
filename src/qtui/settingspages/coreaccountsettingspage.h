@@ -39,7 +39,7 @@ class CoreAccountSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    CoreAccountSettingsPage(QWidget *parent = 0);
+    CoreAccountSettingsPage(QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return false; }
     inline bool isStandAlone() const { return _standalone; }
@@ -95,7 +95,7 @@ class CoreAccountEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    CoreAccountEditDlg(const CoreAccount &account, QWidget *parent = 0);
+    CoreAccountEditDlg(const CoreAccount &account, QWidget *parent = nullptr);
 
     CoreAccount account();
 
@@ -124,7 +124,7 @@ class FilteredCoreAccountModel : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent = 0);
+    FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent = nullptr);
 
 protected:
     virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;

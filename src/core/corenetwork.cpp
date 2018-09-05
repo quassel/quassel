@@ -438,10 +438,10 @@ void CoreNetwork::removeChannelKey(const QString &channel)
 Cipher *CoreNetwork::cipher(const QString &target)
 {
     if (target.isEmpty())
-        return 0;
+        return nullptr;
 
     if (!Cipher::neededFeaturesAvailable())
-        return 0;
+        return nullptr;
 
     CoreIrcChannel *channel = qobject_cast<CoreIrcChannel *>(ircChannel(target));
     if (channel) {
@@ -453,7 +453,7 @@ Cipher *CoreNetwork::cipher(const QString &target)
     } else if (!isChannelName(target)) {
         return qobject_cast<CoreIrcUser*>(newIrcUser(target))->cipher();
     }
-    return 0;
+    return nullptr;
 }
 
 

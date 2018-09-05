@@ -33,7 +33,7 @@ class ColumnHandleItem : public QGraphicsObject
     Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
 public :
-        ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
+        ColumnHandleItem(qreal width, QGraphicsItem *parent = nullptr);
     virtual inline int type() const { return ChatScene::ColumnHandleType; }
 
     inline qreal width() const { return _width; }
@@ -46,7 +46,7 @@ public :
     void setXPos(qreal xpos);
     void setXLimits(qreal min, qreal max);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 
 public slots:
     void sceneRectChanged(const QRectF &);

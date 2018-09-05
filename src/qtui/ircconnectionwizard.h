@@ -30,9 +30,9 @@ class IrcConnectionWizard : public QWizard
     Q_OBJECT
 
 public:
-    IrcConnectionWizard(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    IrcConnectionWizard(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
 
-    static QWizardPage *createIntroductionPage(QWidget *parent = 0);
+    static QWizardPage *createIntroductionPage(QWidget *parent = nullptr);
 
 private slots:
     void finishClicked();
@@ -60,7 +60,7 @@ class IdentityPage : public QWizardPage
     Q_OBJECT
 
 public:
-    IdentityPage(QWidget *parent = 0);
+    IdentityPage(QWidget *parent = nullptr);
 
     CertIdentity *identity();
 
@@ -80,7 +80,7 @@ class NetworkPage : public QWizardPage
     Q_OBJECT
 
 public:
-    NetworkPage(QWidget *parent = 0);
+    NetworkPage(QWidget *parent = nullptr);
 
     NetworkInfo networkInfo();
     QStringList channelList();

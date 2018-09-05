@@ -37,7 +37,7 @@ class UISUPPORT_EXPORT NetworkModelController : public QObject
     Q_OBJECT
 
 public:
-    NetworkModelController(QObject *parent = 0);
+    NetworkModelController(QObject *parent = nullptr);
     virtual ~NetworkModelController();
 
     // don't change enums without doublechecking masks etc. in code
@@ -198,7 +198,7 @@ class NetworkModelController::JoinDlg : public QDialog
     Q_OBJECT
 
 public:
-    JoinDlg(const QModelIndex &index, QWidget *parent = 0);
+    JoinDlg(const QModelIndex &index, QWidget *parent = nullptr);
 
     QString channelName() const;
     QString channelPassword() const;

@@ -30,7 +30,7 @@ class TopicWidget : public AbstractItemView
     Q_OBJECT
 
 public:
-    TopicWidget(QWidget *parent = 0);
+    TopicWidget(QWidget *parent = nullptr);
 
     void setTopic(const QModelIndex &index);
     void setCustomFont(const QFont &);

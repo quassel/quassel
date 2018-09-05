@@ -32,7 +32,7 @@ class CoreUserInputHandler : public CoreBasicHandler
     Q_OBJECT
 
 public:
-    CoreUserInputHandler(CoreNetwork *parent = 0);
+    CoreUserInputHandler(CoreNetwork *parent = nullptr);
     inline CoreNetwork *coreNetwork() const { return qobject_cast<CoreNetwork *>(parent()); }
 
     void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
@@ -112,10 +112,10 @@ protected:
 private:
     void doMode(const BufferInfo& bufferInfo, const QChar &addOrRemove, const QChar &mode, const QString &nickList);
     void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
-    void putPrivmsg(const QString &target, const QString &message, std::function<QByteArray(const QString &, const QString &)> encodeFunc, Cipher *cipher = 0);
+    void putPrivmsg(const QString &target, const QString &message, std::function<QByteArray(const QString &, const QString &)> encodeFunc, Cipher *cipher = nullptr);
 
 #ifdef HAVE_QCA2
-    QByteArray encrypt(const QString &target, const QByteArray &message, bool *didEncrypt = 0) const;
+    QByteArray encrypt(const QString &target, const QByteArray &message, bool *didEncrypt = nullptr) const;
 #endif
 
     struct Command {

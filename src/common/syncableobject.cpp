@@ -117,7 +117,7 @@ QVariantMap SyncableObject::toVariantMap()
             continue;
         }
 
-        QVariant value(variantType, (const void *)0);
+        QVariant value(variantType, (const void *)nullptr);
         QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
         QMetaObject::invokeMethod(this, methodname.toLatin1(), genericvalue);
 

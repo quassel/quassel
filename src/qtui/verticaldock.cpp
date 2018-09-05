@@ -95,7 +95,7 @@ void VerticalDock::setDefaultTitleWidget()
 void VerticalDock::showTitle(bool show)
 {
     QWidget *oldDockTitle = titleBarWidget();
-    QWidget *newDockTitle = 0;
+    QWidget *newDockTitle = nullptr;
 
     if (show)
         newDockTitle = new VerticalDockTitle(this);

@@ -33,7 +33,7 @@ class TaskbarNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    TaskbarNotificationBackend(QObject *parent = 0);
+    TaskbarNotificationBackend(QObject *parent = nullptr);
 
     void notify(const Notification &);
     void close(uint notificationId);
@@ -56,7 +56,7 @@ class TaskbarNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(QWidget *parent = nullptr);
     void save();
     void load();
     bool hasDefaults() const;

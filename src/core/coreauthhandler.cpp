@@ -31,7 +31,7 @@ using namespace Protocol;
 
 CoreAuthHandler::CoreAuthHandler(QTcpSocket *socket, QObject *parent)
     : AuthHandler(parent),
-    _peer(0),
+    _peer(nullptr),
     _magicReceived(false),
     _legacy(false),
     _clientRegistered(false),
@@ -256,9 +256,9 @@ void CoreAuthHandler::handle(const Login &msg)
         quInfo() << qPrintable(tr("Client supports unknown features: %1").arg(clientFeatures.unknownFeatures().join(", ")));
     }
 
-    disconnect(socket(), 0, this, 0);
-    disconnect(_peer, 0, this, 0);
-    _peer->setParent(0); // Core needs to take care of this one now!
+    disconnect(socket(), nullptr, this, nullptr);
+    disconnect(_peer, nullptr, this, nullptr);
+    _peer->setParent(nullptr); // Core needs to take care of this one now!
 
     socket()->flush(); // Make sure all data is sent before handing over the peer (and socket) to the session thread (bug 682)
     emit handshakeComplete(_peer, uid);

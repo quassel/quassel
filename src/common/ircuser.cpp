@@ -43,8 +43,8 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     _whoisServiceReply(),
     _encrypted(false),
     _network(network),
-    _codecForEncoding(0),
-    _codecForDecoding(0)
+    _codecForEncoding(nullptr),
+    _codecForDecoding(nullptr)
 {
     updateObjectName();
     _lastAwayMessageTime.setTimeSpec(Qt::UTC);
@@ -328,7 +328,7 @@ void IrcUser::partChannel(IrcChannel *channel)
 {
     if (_channels.contains(channel)) {
         _channels.remove(channel);
-        disconnect(channel, 0, this, 0);
+        disconnect(channel, nullptr, this, nullptr);
         channel->part(this);
         QString channelName = channel->name();
         SYNC_OTHER(partChannel, ARG(channelName))
@@ -341,7 +341,7 @@ void IrcUser::partChannel(IrcChannel *channel)
 void IrcUser::partChannel(const QString &channelname)
 {
     IrcChannel *channel = network()->ircChannel(channelname);
-    if (channel == 0) {
+    if (channel == nullptr) {
         qWarning() << "IrcUser::partChannel(): received part for unknown Channel" << channelname;
     }
     else {
@@ -355,7 +355,7 @@ void IrcUser::quit()
     QList<IrcChannel *> channels = _channels.toList();
     _channels.clear();
     foreach(IrcChannel *channel, channels) {
-        disconnect(channel, 0, this, 0);
+        disconnect(channel, nullptr, this, nullptr);
         channel->part(this);
     }
     network()->removeIrcUser(this);

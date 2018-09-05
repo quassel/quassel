@@ -36,7 +36,7 @@ class CoreBasicHandler : public BasicHandler
     Q_OBJECT
 
 public:
-    CoreBasicHandler(CoreNetwork *parent = 0);
+    CoreBasicHandler(CoreNetwork *parent = nullptr);
 
     QString serverDecode(const QByteArray &string);
     QStringList serverDecode(const QList<QByteArray> &stringlist);

@@ -32,7 +32,7 @@ CoreBufferViewManager::CoreBufferViewManager(SignalProxy *proxy, CoreSession *pa
     QVariantMap views = Core::getUserSetting(_coreSession->user(), "BufferViews").toMap();
     QVariantMap::iterator iter = views.begin();
     QVariantMap::iterator iterEnd = views.end();
-    CoreBufferViewConfig *config = 0;
+    CoreBufferViewConfig *config = nullptr;
     while (iter != iterEnd) {
         config = new CoreBufferViewConfig(iter.key().toInt(), iter.value().toMap(), this);
         addBufferViewConfig(config);

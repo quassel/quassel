@@ -38,7 +38,7 @@ class CLIENT_EXPORT AbstractUi : public QObject
     Q_OBJECT
 
 public:
-    AbstractUi(QObject *parent = 0) : QObject(parent) {}
+    AbstractUi(QObject *parent = nullptr) : QObject(parent) {}
     virtual ~AbstractUi() {}
     virtual void init() = 0; // called after the client is initialized
     virtual MessageModel *createMessageModel(QObject *parent) = 0;

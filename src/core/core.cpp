@@ -783,7 +783,7 @@ void Core::setupClientSession(RemotePeer *peer, UserId uid)
     Q_ASSERT(handler);
 
     // From now on everything is handled by the client session
-    disconnect(handler, 0, this, 0);
+    disconnect(handler, nullptr, this, nullptr);
     _connectingClients.remove(handler);
     handler->deleteLater();
 

@@ -25,7 +25,7 @@ Event *CtcpEvent::create(EventManager::EventType type, QVariantMap &map, Network
     if (type == EventManager::CtcpEvent || type == EventManager::CtcpEventFlush)
         return new CtcpEvent(type, map, network);
 
-    return 0;
+    return nullptr;
 }
 
 

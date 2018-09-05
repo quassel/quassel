@@ -34,7 +34,7 @@ class KNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    KNotificationBackend(QObject *parent = 0);
+    KNotificationBackend(QObject *parent = nullptr);
 
     void notify(const Notification &);
     void close(uint notificationId);
@@ -60,7 +60,7 @@ class KNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(QWidget *parent = nullptr);
 
     void save();
     void load();

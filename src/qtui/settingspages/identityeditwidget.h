@@ -36,7 +36,7 @@ class IdentityEditWidget : public QWidget
     Q_OBJECT
 
 public:
-    IdentityEditWidget(QWidget *parent = 0);
+    IdentityEditWidget(QWidget *parent = nullptr);
 
     enum SslState {
         NoSsl,
@@ -44,7 +44,7 @@ public:
         AllowSsl
     };
 
-    void displayIdentity(CertIdentity *id, CertIdentity *saveId = 0);
+    void displayIdentity(CertIdentity *id, CertIdentity *saveId = nullptr);
     void saveToIdentity(CertIdentity *id);
 
 public slots:
@@ -98,7 +98,7 @@ class NickEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = nullptr);
 
     QString nick() const;
 

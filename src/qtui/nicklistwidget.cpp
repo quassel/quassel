@@ -45,7 +45,7 @@ QDockWidget *NickListWidget::dock() const
     if (dock)
         return dock;
     else
-        return 0;
+        return nullptr;
 }
 
 
@@ -174,9 +174,9 @@ void NickListWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, 
             iter = nickViews.erase(iter);
             ui.stackedWidget->removeWidget(nickView);
             QAbstractItemModel *model = nickView->model();
-            nickView->setModel(0);
+            nickView->setModel(nullptr);
             if (QSortFilterProxyModel *filter = qobject_cast<QSortFilterProxyModel *>(model))
-                filter->setSourceModel(0);
+                filter->setSourceModel(nullptr);
             model->deleteLater();
             nickView->deleteLater();
         }
@@ -203,9 +203,9 @@ void NickListWidget::removeBuffer(BufferId bufferId)
     NickView *view = nickViews.take(bufferId);
     ui.stackedWidget->removeWidget(view);
     QAbstractItemModel *model = view->model();
-    view->setModel(0);
+    view->setModel(nullptr);
     if (QSortFilterProxyModel *filter = qobject_cast<QSortFilterProxyModel *>(model))
-        filter->setSourceModel(0);
+        filter->setSourceModel(nullptr);
     model->deleteLater();
     view->deleteLater();
 }
@@ -243,7 +243,7 @@ NickListDock::NickListDock(const QString &title, QWidget *parent)
 
 void NickListDock::setLocked(bool locked) {
     if (locked) {
-        setFeatures(0);
+        setFeatures(nullptr);
     }
     else {
         setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);

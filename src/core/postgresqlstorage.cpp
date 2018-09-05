@@ -1496,7 +1496,7 @@ Message::Types PostgreSqlStorage::bufferActivity(BufferId bufferId, MsgId lastSe
     query.bindValue(":lastseenmsgid", lastSeenMsgId.toQint64());
     safeExec(query);
     watchQuery(query);
-    Message::Types result = Message::Types(0);
+    Message::Types result = Message::Types(nullptr);
     if (query.first())
         result = Message::Types(query.value(0).toInt());
     return result;

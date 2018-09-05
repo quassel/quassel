@@ -26,7 +26,7 @@
 
 BufferViewOverlayFilter::BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay)
     : QSortFilterProxyModel(model),
-    _overlay(0)
+    _overlay(nullptr)
 {
     setOverlay(overlay);
     setSourceModel(model);
@@ -41,7 +41,7 @@ void BufferViewOverlayFilter::setOverlay(BufferViewOverlay *overlay)
         return;
 
     if (_overlay) {
-        disconnect(_overlay, 0, this, 0);
+        disconnect(_overlay, nullptr, this, nullptr);
     }
 
     _overlay = overlay;
@@ -59,7 +59,7 @@ void BufferViewOverlayFilter::setOverlay(BufferViewOverlay *overlay)
 
 void BufferViewOverlayFilter::overlayDestroyed()
 {
-    setOverlay(0);
+    setOverlay(nullptr);
 }
 
 

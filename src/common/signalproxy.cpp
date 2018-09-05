@@ -70,7 +70,7 @@ private:
         int signalId;
         QByteArray signature;
         Signal(QObject *sender, int sigId, const QByteArray &signature) : sender(sender), signalId(sigId), signature(signature) {}
-        Signal() : sender(0), signalId(-1) {}
+        Signal() : sender(nullptr), signalId(-1) {}
     };
 
     SignalProxy *_proxy;
@@ -340,8 +340,8 @@ void SignalProxy::removePeer(Peer *peer)
         return;
     }
 
-    disconnect(peer, 0, this, 0);
-    peer->setSignalProxy(0);
+    disconnect(peer, nullptr, this, nullptr);
+    peer->setSignalProxy(nullptr);
 
     _peerMap.remove(peer->id());
     emit peerRemoved(peer);
@@ -398,7 +398,7 @@ SignalProxy::ExtendedMetaObject *SignalProxy::extendedMetaObject(const QMetaObje
     if (_extendedMetaObjects.contains(meta))
         return _extendedMetaObjects[meta];
     else
-        return 0;
+        return nullptr;
 }
 
 
@@ -662,9 +662,9 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
         return false;
     }
 
-    void *_a[] = { 0,           // return type...
-                   0, 0, 0, 0, 0, // and 10 args - that's the max size qt can handle with signals and slots
-                   0, 0, 0, 0, 0 };
+    void *_a[] = { nullptr,           // return type...
+                   nullptr, nullptr, nullptr, nullptr, nullptr, // and 10 args - that's the max size qt can handle with signals and slots
+                   nullptr, nullptr, nullptr, nullptr, nullptr };
 
     // check for argument compatibility and build params array
     for (int i = 0; i < numArgs; i++) {

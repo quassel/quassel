@@ -31,7 +31,7 @@ class ClientUserInputHandler : public BasicHandler
     Q_OBJECT
 
 public:
-    ClientUserInputHandler(QObject *parent = 0);
+    ClientUserInputHandler(QObject *parent = nullptr);
 
 public slots:
     void handleUserInput(const BufferInfo &bufferInfo, const QString &msg);

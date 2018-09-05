@@ -31,9 +31,9 @@ class CLIENT_EXPORT CertIdentity : public Identity
     Q_OBJECT
 
 public:
-    CertIdentity(IdentityId id = 0, QObject *parent = 0);
-    CertIdentity(const Identity &other, QObject *parent = 0);
-    CertIdentity(const CertIdentity &other, QObject *parent = 0);
+    CertIdentity(IdentityId id = 0, QObject *parent = nullptr);
+    CertIdentity(const Identity &other, QObject *parent = nullptr);
+    CertIdentity(const CertIdentity &other, QObject *parent = nullptr);
 
 #ifdef HAVE_SSL
     inline bool isDirty() const { return _isDirty; }

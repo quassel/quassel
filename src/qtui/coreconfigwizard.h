@@ -57,7 +57,7 @@ public:
         ConclusionPage
     };
 
-    CoreConfigWizard(CoreConnection *connection, const QVariantList &backendInfos, const QVariantList &authInfos, QWidget *parent = 0);
+    CoreConfigWizard(CoreConnection *connection, const QVariantList &backendInfos, const QVariantList &authInfos, QWidget *parent = nullptr);
 
     inline CoreConnection *coreConnection() const { return _connection; }
 
@@ -89,7 +89,7 @@ class IntroPage : public QWizardPage
     Q_OBJECT
 
 public:
-    IntroPage(QWidget *parent = 0);
+    IntroPage(QWidget *parent = nullptr);
     int nextId() const;
 private:
     Ui::CoreConfigWizardIntroPage ui;
@@ -101,7 +101,7 @@ class AdminUserPage : public QWizardPage
     Q_OBJECT
 
 public:
-    AdminUserPage(QWidget *parent = 0);
+    AdminUserPage(QWidget *parent = nullptr);
     int nextId() const;
     bool isComplete() const;
 private:
@@ -115,7 +115,7 @@ class AuthenticationSelectionPage : public QWizardPage
     using FieldInfo = std::tuple<QString, QString, QVariant>;
 
 public:
-    AuthenticationSelectionPage(const QVariantList &authInfos, QWidget *parent = 0);
+    AuthenticationSelectionPage(const QVariantList &authInfos, QWidget *parent = nullptr);
     int nextId() const;
     QString displayName() const;
     QString authenticator() const;
@@ -137,7 +137,7 @@ class StorageSelectionPage : public QWizardPage
     using FieldInfo = std::tuple<QString, QString, QVariant>;
 
 public:
-    StorageSelectionPage(const QVariantList &backendInfos, QWidget *parent = 0);
+    StorageSelectionPage(const QVariantList &backendInfos, QWidget *parent = nullptr);
     int nextId() const;
     QString displayName() const;
     QString backend() const;
@@ -158,7 +158,7 @@ class SyncPage : public QWizardPage
     Q_OBJECT
 
 public:
-    SyncPage(QWidget *parent = 0);
+    SyncPage(QWidget *parent = nullptr);
     void initializePage();
     int nextId() const;
     bool isComplete() const;
@@ -183,7 +183,7 @@ class SyncRelayPage : public QWizardPage
     Q_OBJECT
 
 public:
-    SyncRelayPage(QWidget *parent = 0);
+    SyncRelayPage(QWidget *parent = nullptr);
     int nextId() const;
     enum Mode { Success, Error };
 

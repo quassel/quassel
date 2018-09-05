@@ -25,7 +25,7 @@ Event *MessageEvent::create(EventManager::EventType type, QVariantMap &map, Netw
     if (type == EventManager::MessageEvent)
         return new MessageEvent(type, map, network);
 
-    return 0;
+    return nullptr;
 }
 
 

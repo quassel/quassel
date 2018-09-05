@@ -31,7 +31,7 @@ class UISUPPORT_EXPORT ClearableLineEdit : public QLineEdit
     Q_OBJECT
 
 public:
-    ClearableLineEdit(QWidget *parent = 0);
+    ClearableLineEdit(QWidget *parent = nullptr);
 
 protected:
     void resizeEvent(QResizeEvent *event);

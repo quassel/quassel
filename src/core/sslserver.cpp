@@ -66,7 +66,7 @@ SslServer::SslServer(QObject *parent)
 QTcpSocket *SslServer::nextPendingConnection()
 {
     if (_pendingConnections.isEmpty())
-        return 0;
+        return nullptr;
     else
         return _pendingConnections.takeFirst();
 }

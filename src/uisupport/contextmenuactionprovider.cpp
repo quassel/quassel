@@ -105,7 +105,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     hideEventsMenu->addSeparator();
     hideEventsMenu->addAction(action(HideApplyToAll));
     hideEventsMenu->addAction(action(HideUseDefaults));
-    _hideEventsMenuAction = new Action(tr("Hide Events"), 0);
+    _hideEventsMenuAction = new Action(tr("Hide Events"), nullptr);
     _hideEventsMenuAction->setMenu(hideEventsMenu);
 
     QMenu *nickCtcpMenu = new QMenu();
@@ -113,7 +113,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     nickCtcpMenu->addAction(action(NickCtcpVersion));
     nickCtcpMenu->addAction(action(NickCtcpTime));
     nickCtcpMenu->addAction(action(NickCtcpClientinfo));
-    _nickCtcpMenuAction = new Action(tr("CTCP"), 0);
+    _nickCtcpMenuAction = new Action(tr("CTCP"), nullptr);
     _nickCtcpMenuAction->setMenu(nickCtcpMenu);
 
     QMenu *nickModeMenu = new QMenu();
@@ -128,11 +128,11 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     nickModeMenu->addAction(action(NickKick));
     nickModeMenu->addAction(action(NickBan));
     nickModeMenu->addAction(action(NickKickBan));
-    _nickModeMenuAction = new Action(tr("Actions"), 0);
+    _nickModeMenuAction = new Action(tr("Actions"), nullptr);
     _nickModeMenuAction->setMenu(nickModeMenu);
 
     QMenu *ignoreMenu = new QMenu();
-    _nickIgnoreMenuAction = new Action(tr("Ignore"), 0);
+    _nickIgnoreMenuAction = new Action(tr("Ignore"), nullptr);
     _nickIgnoreMenuAction->setMenu(ignoreMenu);
 
     // These are disabled actions used as descriptions
@@ -171,7 +171,7 @@ void ContextMenuActionProvider::addActions(QMenu *menu, const QModelIndex &index
 {
     if (!index.isValid())
         return;
-    addActions(menu, QList<QModelIndex>() << index, 0, QString(), receiver, method, isCustomBufferView);
+    addActions(menu, QList<QModelIndex>() << index, nullptr, QString(), receiver, method, isCustomBufferView);
 }
 
 
@@ -191,7 +191,7 @@ void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, B
 
 void ContextMenuActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, QObject *receiver,  const char *method, bool isCustomBufferView)
 {
-    addActions(menu, indexList, 0, QString(), receiver, method, isCustomBufferView);
+    addActions(menu, indexList, nullptr, QString(), receiver, method, isCustomBufferView);
 }
 
 

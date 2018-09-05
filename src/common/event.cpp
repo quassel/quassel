@@ -86,16 +86,16 @@ Event *Event::fromVariantMap(QVariantMap &map, Network *network)
     // sanity check if we have a valid enum value
     if (EventManager::enumName(inttype).isEmpty()) {
         qWarning() << "Received a serialized event with unknown type" << inttype;
-        return 0;
+        return nullptr;
     }
 
     EventManager::EventType type = static_cast<EventManager::EventType>(inttype);
     if (type == EventManager::Invalid || type == EventManager::GenericEvent)
-        return 0;
+        return nullptr;
 
     EventManager::EventType group = static_cast<EventManager::EventType>(type & EventManager::EventGroupMask);
 
-    Event *e = 0;
+    Event *e = nullptr;
 
     // we use static create() functions to keep group-specific special cases in the files they belong
     // e.g. IrcEventRawMessage
@@ -121,7 +121,7 @@ Event *Event::fromVariantMap(QVariantMap &map, Network *network)
 
     if (!e) {
         qWarning() << "Can't create event of type" << type;
-        return 0;
+        return nullptr;
     }
 
     if (!map.isEmpty()) {

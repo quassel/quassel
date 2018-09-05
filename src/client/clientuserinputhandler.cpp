@@ -64,7 +64,7 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const
     if (!msg.startsWith('/')) {
         if (_nickRx.indexIn(msg) == 0) {
             const Network *net = Client::network(bufferInfo.networkId());
-            IrcUser *user = net ? net->ircUser(_nickRx.cap(1)) : 0;
+            IrcUser *user = net ? net->ircUser(_nickRx.cap(1)) : nullptr;
             if (user)
                 user->setLastSpokenTo(bufferInfo.bufferId(), QDateTime::currentDateTime().toUTC());
         }

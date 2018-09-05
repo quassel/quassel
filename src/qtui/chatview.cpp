@@ -55,7 +55,7 @@ ChatView::ChatView(MessageFilter *filter, QWidget *parent)
 
 void ChatView::init(MessageFilter *filter)
 {
-    _bufferContainer = 0;
+    _bufferContainer = nullptr;
     _currentScaleFactor = 1;
     _invalidateFilter = false;
 
@@ -313,11 +313,11 @@ QList<ChatLine *> ChatView::visibleChatLinesSorted(Qt::ItemSelectionMode mode) c
 ChatLine *ChatView::lastVisibleChatLine(bool ignoreDayChange) const
 {
     if (!scene())
-        return 0;
+        return nullptr;
 
     QAbstractItemModel *model = scene()->model();
     if (!model || model->rowCount() == 0)
-        return 0;
+        return nullptr;
 
     int row = -1;
 
@@ -330,7 +330,7 @@ ChatLine *ChatView::lastVisibleChatLine(bool ignoreDayChange) const
     if (row >= 0)
         return scene()->chatLine(row);
 
-    return 0;
+    return nullptr;
 }
 
 

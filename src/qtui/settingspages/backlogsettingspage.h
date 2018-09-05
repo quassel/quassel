@@ -31,7 +31,7 @@ class BacklogSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    BacklogSettingsPage(QWidget *parent = 0);
+    BacklogSettingsPage(QWidget *parent = nullptr);
 
     inline QString settingsKey() const { return "Backlog"; }
     bool hasDefaults() const;

@@ -43,7 +43,7 @@ AbstractSqlStorage::~AbstractSqlStorage()
     QHash<QThread *, Connection *>::iterator conIter;
     for (conIter = _connectionPool.begin(); conIter != _connectionPool.end(); ++conIter) {
         QSqlDatabase::removeDatabase(conIter.value()->name());
-        disconnect(conIter.value(), 0, this, 0);
+        disconnect(conIter.value(), nullptr, this, nullptr);
     }
 }
 
@@ -402,7 +402,7 @@ AbstractSqlStorage::Connection::~Connection()
 //  AbstractSqlMigrator
 // ========================================
 AbstractSqlMigrator::AbstractSqlMigrator()
-    : _query(0)
+    : _query(nullptr)
 {
 }
 
@@ -418,7 +418,7 @@ void AbstractSqlMigrator::newQuery(const QString &query, QSqlDatabase db)
 void AbstractSqlMigrator::resetQuery()
 {
     delete _query;
-    _query = 0;
+    _query = nullptr;
 }
 
 
@@ -490,7 +490,7 @@ void AbstractSqlMigrator::dumpStatus()
 // ========================================
 AbstractSqlMigrationReader::AbstractSqlMigrationReader()
     : AbstractSqlMigrator(),
-    _writer(0)
+    _writer(nullptr)
 {
 }
 
@@ -574,7 +574,7 @@ void AbstractSqlMigrationReader::abortMigration(const QString &errorMsg)
 
     rollback();
     _writer->rollback();
-    _writer = 0;
+    _writer = nullptr;
 }
 
 
@@ -585,10 +585,10 @@ bool AbstractSqlMigrationReader::finalizeMigration()
 
     commit();
     if (!_writer->commit()) {
-        _writer = 0;
+        _writer = nullptr;
         return false;
     }
-    _writer = 0;
+    _writer = nullptr;
     return true;
 }
 

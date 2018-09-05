@@ -40,7 +40,7 @@ class IgnoreListDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    IgnoreListDelegate(QWidget *parent = 0) : QStyledItemDelegate(parent) {}
+    IgnoreListDelegate(QWidget *parent = nullptr) : QStyledItemDelegate(parent) {}
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
         const QModelIndex &index) const;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
@@ -53,7 +53,7 @@ class IgnoreListEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent = 0, bool enabled = false);
+    IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent = nullptr, bool enabled = false);
     inline IgnoreListManager::IgnoreListItem ignoreListItem() { return _ignoreListItem; }
     void enableOkButton(bool state);
 
@@ -77,7 +77,7 @@ class IgnoreListSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    IgnoreListSettingsPage(QWidget *parent = 0);
+    IgnoreListSettingsPage(QWidget *parent = nullptr);
     ~IgnoreListSettingsPage();
     virtual inline bool hasDefaults() const { return false; }
     virtual inline bool needsCoreConnection() const { return true; }

@@ -39,7 +39,7 @@ class ChatViewSearchController : public QObject
     Q_OBJECT
 
 public:
-    ChatViewSearchController(QObject *parent = 0);
+    ChatViewSearchController(QObject *parent = nullptr);
 
     inline const QString &searchString() const { return _searchString; }
 
@@ -93,10 +93,10 @@ class SearchHighlightItem : public QObject, public QGraphicsItem
     Q_INTERFACES(QGraphicsItem)
 
 public:
-    SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = 0);
+    SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = nullptr);
     virtual inline QRectF boundingRect() const { return _boundingRect; }
     void updateGeometry(qreal width, qreal height);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
     enum { Type = ChatScene::SearchHighlightType };
     virtual inline int type() const { return Type; }
 

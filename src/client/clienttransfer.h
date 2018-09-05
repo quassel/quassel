@@ -31,7 +31,7 @@ class ClientTransfer : public Transfer
     Q_OBJECT
 
 public:
-    ClientTransfer(const QUuid &uuid, QObject *parent = 0);
+    ClientTransfer(const QUuid &uuid, QObject *parent = nullptr);
 
     QString savePath() const;
 

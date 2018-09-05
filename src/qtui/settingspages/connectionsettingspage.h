@@ -31,7 +31,7 @@ class ConnectionSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    ConnectionSettingsPage(QWidget *parent = 0);
+    ConnectionSettingsPage(QWidget *parent = nullptr);
 
     bool hasDefaults() const;
     bool needsCoreConnection() const { return true; }

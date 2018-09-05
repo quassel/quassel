@@ -33,7 +33,7 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
     _listFinished(true),
     _ircListModel(this),
     _sortFilter(this),
-    _simpleModeSpacer(0),
+    _simpleModeSpacer(nullptr),
     _advancedMode(false)
 {
     _sortFilter.setSourceModel(&_ircListModel);
@@ -151,7 +151,7 @@ void ChannelListDlg::setAdvancedMode(bool advanced)
         if (_simpleModeSpacer) {
             ui.searchLayout->removeItem(_simpleModeSpacer);
             delete _simpleModeSpacer;
-            _simpleModeSpacer = 0;
+            _simpleModeSpacer = nullptr;
         }
         ui.advancedModeLabel->setPixmap(icon::get("edit-clear-locationbar-rtl").pixmap(16));
     }

@@ -33,7 +33,7 @@ class COMMON_EXPORT AuthHandler : public QObject
     Q_OBJECT
 
 public:
-    AuthHandler(QObject *parent = 0);
+    AuthHandler(QObject *parent = nullptr);
 
     QTcpSocket *socket() const;
 

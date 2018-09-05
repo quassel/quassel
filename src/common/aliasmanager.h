@@ -35,7 +35,7 @@ class COMMON_EXPORT AliasManager : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    inline AliasManager(QObject *parent = 0) : SyncableObject(parent) { setAllowClientUpdates(true); }
+    inline AliasManager(QObject *parent = nullptr) : SyncableObject(parent) { setAllowClientUpdates(true); }
     AliasManager &operator=(const AliasManager &other);
 
     struct Alias {

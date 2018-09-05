@@ -28,7 +28,7 @@ class DebugMessageModelFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    DebugMessageModelFilter(QObject *parent = 0);
+    DebugMessageModelFilter(QObject *parent = nullptr);
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
 };

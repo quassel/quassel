@@ -39,7 +39,7 @@ class COMMON_EXPORT IrcListHelper : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    inline IrcListHelper(QObject *parent = 0) : SyncableObject(parent) { setInitialized(); };
+    inline IrcListHelper(QObject *parent = nullptr) : SyncableObject(parent) { setInitialized(); };
 
     struct ChannelDescription {
         QString channelName;

@@ -38,7 +38,7 @@ class CLIENT_EXPORT BufferModel : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    BufferModel(NetworkModel *parent = 0);
+    BufferModel(NetworkModel *parent = nullptr);
 
     bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
 

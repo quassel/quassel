@@ -33,7 +33,7 @@ class UISUPPORT_EXPORT BufferViewOverlayFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = 0);
+    BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = nullptr);
 
     void setOverlay(BufferViewOverlay *overlay);
 

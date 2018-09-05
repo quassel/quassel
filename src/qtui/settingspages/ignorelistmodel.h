@@ -31,7 +31,7 @@ class IgnoreListModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    IgnoreListModel(QObject *parent = 0);
+    IgnoreListModel(QObject *parent = nullptr);
 
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);

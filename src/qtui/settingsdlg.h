@@ -32,7 +32,7 @@ class SettingsDlg : public QDialog
     Q_OBJECT
 
 public:
-    SettingsDlg(QWidget *parent = 0);
+    SettingsDlg(QWidget *parent = nullptr);
     void registerSettingsPage(SettingsPage *);
     void unregisterSettingsPage(SettingsPage *);
 

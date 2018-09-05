@@ -31,7 +31,7 @@ class COMMON_EXPORT BacklogManager : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    BacklogManager(QObject *parent = 0) : SyncableObject(parent) {}
+    BacklogManager(QObject *parent = nullptr) : SyncableObject(parent) {}
 
 public slots:
     virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);

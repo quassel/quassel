@@ -59,8 +59,8 @@ class VerticalDock : public QDockWidget
     Q_OBJECT
 
 public:
-    VerticalDock(const QString &title, QWidget *parent = 0, Qt::WindowFlags flags = 0);
-    VerticalDock(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    VerticalDock(const QString &title, QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
+    VerticalDock(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
 
     void showTitle(bool show);
     void setDefaultTitleWidget();

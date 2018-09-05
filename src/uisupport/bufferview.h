@@ -48,7 +48,7 @@ public:
         Backward = -1
     };
 
-    BufferView(QWidget *parent = 0);
+    BufferView(QWidget *parent = nullptr);
     void init();
 
     void setModel(QAbstractItemModel *model);
@@ -145,7 +145,7 @@ class BufferViewDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    BufferViewDelegate(QObject *parent = 0);
+    BufferViewDelegate(QObject *parent = nullptr);
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;

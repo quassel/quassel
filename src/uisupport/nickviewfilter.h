@@ -34,7 +34,7 @@ class UISUPPORT_EXPORT NickViewFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    NickViewFilter(const BufferId &bufferId, NetworkModel *parent = 0);
+    NickViewFilter(const BufferId &bufferId, NetworkModel *parent = nullptr);
 
     virtual QVariant data(const QModelIndex &index, int role) const;
     QVariant icon(const QModelIndex &index) const;

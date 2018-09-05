@@ -30,7 +30,7 @@ class MainPage : public QWidget
     Q_OBJECT
 
 public:
-    MainPage(QWidget *parent = 0);
+    MainPage(QWidget *parent = nullptr);
 
 private slots:
     void showCoreConnectionDlg();

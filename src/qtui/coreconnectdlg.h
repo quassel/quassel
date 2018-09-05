@@ -34,7 +34,7 @@ class CoreConnectDlg : public QDialog
     Q_OBJECT
 
 public:
-    CoreConnectDlg(QWidget *parent = 0);
+    CoreConnectDlg(QWidget *parent = nullptr);
     AccountId selectedAccount() const;
 
     void accept();
@@ -49,7 +49,7 @@ class CoreConnectAuthDlg : public QDialog
     Q_OBJECT
 
 public:
-    CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = 0);
+    CoreConnectAuthDlg(CoreAccount *account, QWidget *parent = nullptr);
 
     void accept();
 

@@ -45,8 +45,8 @@ bool SelectionModelSynchronizer::checkBaseModel(QItemSelectionModel *selectionMo
         return false;
 
     const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = 0;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    const QAbstractProxyModel *proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
         baseModel = proxyModel->sourceModel();
         if (baseModel == model())
             break;
@@ -81,8 +81,8 @@ void SelectionModelSynchronizer::synchronizeSelectionModel(QItemSelectionModel *
 
 void SelectionModelSynchronizer::removeSelectionModel(QItemSelectionModel *model)
 {
-    disconnect(model, 0, this, 0);
-    disconnect(this, 0, model, 0);
+    disconnect(model, nullptr, this, nullptr);
+    disconnect(this, nullptr, model, nullptr);
     selectionModelDestroyed(model);
 }
 
@@ -156,8 +156,8 @@ QModelIndex SelectionModelSynchronizer::mapFromSource(const QModelIndex &sourceI
     // make a list of all involved proxies, wie have to traverse backwards
     QList<const QAbstractProxyModel *> proxyModels;
     const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = 0;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    const QAbstractProxyModel *proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
         if (baseModel == model())
             break;
         proxyModels << proxyModel;
@@ -182,8 +182,8 @@ QItemSelection SelectionModelSynchronizer::mapSelectionFromSource(const QItemSel
     // make a list of all involved proxies, wie have to traverse backwards
     QList<const QAbstractProxyModel *> proxyModels;
     const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = 0;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    const QAbstractProxyModel *proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
         if (baseModel == model())
             break;
         proxyModels << proxyModel;
@@ -204,8 +204,8 @@ QModelIndex SelectionModelSynchronizer::mapToSource(const QModelIndex &index, QI
 
     QModelIndex sourceIndex = index;
     const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = 0;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    const QAbstractProxyModel *proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
         sourceIndex = proxyModel->mapToSource(sourceIndex);
         baseModel = proxyModel->sourceModel();
         if (baseModel == model())
@@ -221,8 +221,8 @@ QItemSelection SelectionModelSynchronizer::mapSelectionToSource(const QItemSelec
 
     QItemSelection sourceSelection = selection;
     const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = 0;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    const QAbstractProxyModel *proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
         sourceSelection = proxyModel->mapSelectionToSource(sourceSelection);
         baseModel = proxyModel->sourceModel();
         if (baseModel == model())

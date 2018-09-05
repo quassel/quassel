@@ -427,9 +427,9 @@ void InputWidget::setNetwork(NetworkId networkId)
 
     const Network *previousNet = Client::network(_networkId);
     if (previousNet) {
-        disconnect(previousNet, 0, this, 0);
+        disconnect(previousNet, nullptr, this, nullptr);
         if (previousNet->me())
-            disconnect(previousNet->me(), 0, this, 0);
+            disconnect(previousNet->me(), nullptr, this, nullptr);
     }
 
     _networkId = networkId;
@@ -472,7 +472,7 @@ void InputWidget::setIdentity(IdentityId identityId)
 
     const Identity *previousIdentity = Client::identity(_identityId);
     if (previousIdentity)
-        disconnect(previousIdentity, 0, this, 0);
+        disconnect(previousIdentity, nullptr, this, nullptr);
 
     _identityId = identityId;
 

@@ -36,7 +36,7 @@ class CtcpParser : public QObject
     Q_OBJECT
 
 public:
-    CtcpParser(CoreSession *coreSession, QObject *parent = 0);
+    CtcpParser(CoreSession *coreSession, QObject *parent = nullptr);
 
     inline CoreSession *coreSession() const { return _coreSession; }
 
@@ -88,7 +88,7 @@ private:
         QString bufferName;
         QList<QByteArray> replies;
 
-        CtcpReply() : network(0) {}
+        CtcpReply() : network(nullptr) {}
         CtcpReply(CoreNetwork *net, const QString &buf) : network(net), bufferName(buf) {}
     };
 

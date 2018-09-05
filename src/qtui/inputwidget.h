@@ -41,7 +41,7 @@ class InputWidget : public AbstractItemView
     Q_OBJECT
 
 public:
-    InputWidget(QWidget *parent = 0);
+    InputWidget(QWidget *parent = nullptr);
     virtual ~InputWidget();
 
     const Network *currentNetwork() const;
@@ -197,6 +197,6 @@ class MouseWheelFilter : public QObject
     Q_OBJECT
 
 public:
-    MouseWheelFilter(QObject *parent = 0);
+    MouseWheelFilter(QObject *parent = nullptr);
     virtual bool eventFilter(QObject *obj, QEvent *event);
 };

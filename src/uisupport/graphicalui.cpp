@@ -32,11 +32,11 @@
 #  include <QX11Info>
 #endif
 
-QWidget *GraphicalUi::_mainWidget = 0;
+QWidget *GraphicalUi::_mainWidget = nullptr;
 QHash<QString, ActionCollection *> GraphicalUi::_actionCollections;
-ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = 0;
-ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
-UiStyle *GraphicalUi::_uiStyle = 0;
+ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = nullptr;
+ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = nullptr;
+UiStyle *GraphicalUi::_uiStyle = nullptr;
 
 
 GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent), Singleton<GraphicalUi>(this)

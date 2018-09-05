@@ -67,9 +67,9 @@ class CoreIdentity : public Identity
     Q_OBJECT
 
 public:
-    CoreIdentity(IdentityId id, QObject *parent = 0);
-    CoreIdentity(const Identity &other, QObject *parent = 0);
-    CoreIdentity(const CoreIdentity &other, QObject *parent = 0);
+    CoreIdentity(IdentityId id, QObject *parent = nullptr);
+    CoreIdentity(const Identity &other, QObject *parent = nullptr);
+    CoreIdentity(const CoreIdentity &other, QObject *parent = nullptr);
 
     void synchronize(SignalProxy *proxy);
 

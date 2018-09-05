@@ -26,7 +26,7 @@ Event *IrcEvent::create(EventManager::EventType type, QVariantMap &map, Network 
         return new IrcEventNumeric(type, map, network);
 
     if ((type & EventManager::EventGroupMask) != EventManager::IrcEvent)
-        return 0;
+        return nullptr;
 
     switch (type) {
     case EventManager::IrcEventRawPrivmsg:

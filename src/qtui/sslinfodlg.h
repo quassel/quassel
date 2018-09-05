@@ -37,7 +37,7 @@ class SslInfoDlg : public QDialog
     Q_OBJECT
 
 public:
-    SslInfoDlg(const QSslSocket *socket, QWidget *parent = 0);
+    SslInfoDlg(const QSslSocket *socket, QWidget *parent = nullptr);
     inline const QSslSocket *socket() const { return _socket; }
 
 private slots:

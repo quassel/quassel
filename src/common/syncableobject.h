@@ -57,9 +57,9 @@ class COMMON_EXPORT SyncableObject : public QObject
     Q_OBJECT
 
 public:
-    SyncableObject(QObject *parent = 0);
-    SyncableObject(const QString &objectName, QObject *parent = 0);
-    SyncableObject(const SyncableObject &other, QObject *parent = 0);
+    SyncableObject(QObject *parent = nullptr);
+    SyncableObject(const QString &objectName, QObject *parent = nullptr);
+    SyncableObject(const SyncableObject &other, QObject *parent = nullptr);
     ~SyncableObject() override;
 
     //! Stores the object's state into a QVariantMap.

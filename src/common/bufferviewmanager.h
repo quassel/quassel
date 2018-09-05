@@ -36,7 +36,7 @@ class COMMON_EXPORT BufferViewManager : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    BufferViewManager(SignalProxy *proxy, QObject *parent = 0);
+    BufferViewManager(SignalProxy *proxy, QObject *parent = nullptr);
 
     inline QList<BufferViewConfig *> bufferViewConfigs() const { return _bufferViewConfigs.values(); }
     BufferViewConfig *bufferViewConfig(int bufferViewId) const;

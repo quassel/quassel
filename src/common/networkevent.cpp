@@ -39,7 +39,7 @@ Event *NetworkEvent::create(EventManager::EventType type, QVariantMap &map, Netw
         return new NetworkSplitEvent(type, map, network);
 
     default:
-        return 0;
+        return nullptr;
     }
 }
 

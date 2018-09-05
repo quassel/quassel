@@ -32,7 +32,7 @@ class CLIENT_EXPORT SelectionModelSynchronizer : public QObject
     Q_OBJECT
 
 public:
-    SelectionModelSynchronizer(QAbstractItemModel *parent = 0);
+    SelectionModelSynchronizer(QAbstractItemModel *parent = nullptr);
 
     void synchronizeSelectionModel(QItemSelectionModel *selectionModel);
     void removeSelectionModel(QItemSelectionModel *selectionModel);

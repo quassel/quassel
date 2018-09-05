@@ -147,8 +147,8 @@ void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *
     }
 
     if (model()) {
-        disconnect(this, 0, model(), 0);
-        disconnect(model(), 0, this, 0);
+        disconnect(this, nullptr, model(), nullptr);
+        disconnect(model(), nullptr, this, nullptr);
     }
 
     if (!model_) {
@@ -169,7 +169,7 @@ void BufferView::setConfig(BufferViewConfig *config)
         return;
 
     if (_config) {
-        disconnect(_config, 0, this, 0);
+        disconnect(_config, nullptr, this, nullptr);
     }
 
     _config = config;
@@ -262,7 +262,7 @@ void BufferView::dropEvent(QDropEvent *event)
         return TreeViewTouch::dropEvent(event);
 
     // Confirm that the user really wants to merge the buffers before doing so
-    int res = QMessageBox::question(0, tr("Merge buffers permanently?"),
+    int res = QMessageBox::question(nullptr, tr("Merge buffers permanently?"),
         tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
         QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
     if (res == QMessageBox::Yes) {
@@ -734,7 +734,7 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
 // ==============================
 BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     : QDockWidget(parent),
-    _childWidget(0),
+    _childWidget(nullptr),
     _widget(new QWidget(parent)),
     _filterEdit(new QLineEdit(parent)),
     _active(false),
@@ -764,7 +764,7 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
 
 void BufferViewDock::setLocked(bool locked) {
     if (locked) {
-        setFeatures(0);
+        setFeatures(nullptr);
     }
     else {
         setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
@@ -791,7 +791,7 @@ void BufferViewDock::onFilterReturnPressed()
 {
     if (_oldFocusItem) {
         _oldFocusItem->setFocus();
-        _oldFocusItem = 0;
+        _oldFocusItem = nullptr;
     }
 
     if (!config()->showSearch()) {
@@ -894,7 +894,7 @@ BufferViewConfig *BufferViewDock::config() const
 {
     BufferView *view = bufferView();
     if (!view)
-        return 0;
+        return nullptr;
     else
         return view->config();
 }

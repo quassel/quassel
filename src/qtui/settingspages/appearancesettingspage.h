@@ -35,7 +35,7 @@ class AppearanceSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    AppearanceSettingsPage(QWidget *parent = 0);
+    AppearanceSettingsPage(QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return true; }
 

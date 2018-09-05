@@ -88,14 +88,14 @@ void BasicHandler::handle(const QString &member, QGenericArgument val0,
             return;
         }
         else {
-            void *param[] = { 0, Q_ARG(QString, member).data(), val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
+            void *param[] = { nullptr, Q_ARG(QString, member).data(), val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
                               val5.data(), val6.data(), val7.data(), val8.data(), val8.data() };
             qt_metacall(QMetaObject::InvokeMetaMethod, _defaultHandler, param);
             return;
         }
     }
 
-    void *param[] = { 0, val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
-                      val5.data(), val6.data(), val7.data(), val8.data(), val8.data(), 0 };
+    void *param[] = { nullptr, val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
+                      val5.data(), val6.data(), val7.data(), val8.data(), val8.data(), nullptr };
     qt_metacall(QMetaObject::InvokeMetaMethod, handlerHash()[handler], param);
 }

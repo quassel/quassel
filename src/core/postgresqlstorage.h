@@ -30,7 +30,7 @@ class PostgreSqlStorage : public AbstractSqlStorage
     Q_OBJECT
 
 public:
-    PostgreSqlStorage(QObject *parent = 0);
+    PostgreSqlStorage(QObject *parent = nullptr);
     ~PostgreSqlStorage() override;
 
     std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter() override;

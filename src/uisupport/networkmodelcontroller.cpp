@@ -42,8 +42,8 @@
 NetworkModelController::NetworkModelController(QObject *parent)
     : QObject(parent),
     _actionCollection(new ActionCollection(this)),
-    _messageFilter(0),
-    _receiver(0)
+    _messageFilter(nullptr),
+    _receiver(nullptr)
 {
     connect(_actionCollection, SIGNAL(actionTriggered(QAction *)), SLOT(actionTriggered(QAction *)));
 }
@@ -175,7 +175,7 @@ void NetworkModelController::removeBuffers(const QModelIndexList &indexList)
     }
     QString msg;
     if (inactive.count()) {
-        msg = tr("Do you want to delete the following buffer(s) permanently?", 0, inactive.count());
+        msg = tr("Do you want to delete the following buffer(s) permanently?", "", inactive.count());
         msg += "<ul>";
         int count = 0;
         foreach(BufferInfo info, inactive) {
@@ -193,7 +193,7 @@ void NetworkModelController::removeBuffers(const QModelIndexList &indexList)
         if (inactive.count() != indexList.count())
             msg += tr("<br>Active channel buffers cannot be deleted, please part the channel first.");
 
-        if (QMessageBox::question(0, tr("Remove buffers permanently?"), msg, QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes) {
+        if (QMessageBox::question(nullptr, tr("Remove buffers permanently?"), msg, QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes) {
             foreach(BufferInfo info, inactive)
             Client::removeBuffer(info.bufferId());
         }
@@ -238,9 +238,9 @@ void NetworkModelController::actionTriggered(QAction *action)
 void NetworkModelController::handleNetworkAction(ActionType type, QAction *)
 {
     if (type == NetworkConnectAllWithDropdown || type == NetworkDisconnectAllWithDropdown || type == NetworkConnectAll || type == NetworkDisconnectAll) {
-        if (type == NetworkConnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really Connect to all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
+        if (type == NetworkConnectAllWithDropdown && QMessageBox::question(nullptr, tr("Question"), tr("Really Connect to all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
             return;
-        if (type == NetworkDisconnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really disconnect from all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
+        if (type == NetworkDisconnectAllWithDropdown && QMessageBox::question(nullptr, tr("Question"), tr("Really disconnect from all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
             return;
         foreach(NetworkId id, Client::networkIds()) {
             const Network *net = Client::network(id);

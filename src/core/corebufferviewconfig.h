@@ -27,8 +27,8 @@ class CoreBufferViewConfig : public BufferViewConfig
     Q_OBJECT
 
 public:
-    CoreBufferViewConfig(int bufferViewId, QObject *parent = 0);
-    CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
+    CoreBufferViewConfig(int bufferViewId, QObject *parent = nullptr);
+    CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = nullptr);
 
 public slots:
     virtual inline void requestSetBufferViewName(const QString &bufferViewName) { setBufferViewName(bufferViewName); }

@@ -36,7 +36,7 @@ class AbstractSqlStorage : public Storage
     Q_OBJECT
 
 public:
-    AbstractSqlStorage(QObject *parent = 0);
+    AbstractSqlStorage(QObject *parent = nullptr);
     virtual ~AbstractSqlStorage();
 
     virtual std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() { return {}; }
@@ -141,7 +141,7 @@ class AbstractSqlStorage::Connection : public QObject
     Q_OBJECT
 
 public:
-    Connection(const QString &name, QObject *parent = 0);
+    Connection(const QString &name, QObject *parent = nullptr);
     ~Connection();
 
     inline QLatin1String name() const { return QLatin1String(_name); }

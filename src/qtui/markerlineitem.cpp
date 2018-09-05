@@ -26,7 +26,7 @@
 MarkerLineItem::MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent)
     : QGraphicsObject(parent),
     _boundingRect(0, 0, sceneWidth, 1),
-    _chatLine(0)
+    _chatLine(nullptr)
 {
     setVisible(false);
     setZValue(8);

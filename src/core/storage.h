@@ -33,7 +33,7 @@ class Storage : public QObject
     Q_OBJECT
 
 public:
-    Storage(QObject *parent = 0);
+    Storage(QObject *parent = nullptr);
     virtual ~Storage() {};
 
     enum State {

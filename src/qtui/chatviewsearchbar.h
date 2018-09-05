@@ -33,7 +33,7 @@ class ChatViewSearchBar : public QWidget
     Q_OBJECT
 
 public:
-    ChatViewSearchBar(QWidget *parent = 0);
+    ChatViewSearchBar(QWidget *parent = nullptr);
 
     inline QLineEdit *searchEditLine() const { return ui.searchEditLine; }
     inline QCheckBox *caseSensitiveBox() const { return ui.caseSensitiveBox; }

@@ -39,7 +39,7 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, Compresso
     : Peer(authHandler, parent),
     _socket(socket),
     _compressor(new Compressor(socket, level, this)),
-    _signalProxy(0),
+    _signalProxy(nullptr),
     _heartBeatTimer(new QTimer(this)),
     _heartBeatCount(0),
     _lag(0),
@@ -121,8 +121,8 @@ void RemotePeer::setSignalProxy(::SignalProxy *proxy)
 
     if (!proxy) {
         _heartBeatTimer->stop();
-        disconnect(signalProxy(), 0, this, 0);
-        _signalProxy = 0;
+        disconnect(signalProxy(), nullptr, this, nullptr);
+        _signalProxy = nullptr;
         if (isOpen())
             close();
     }

@@ -62,7 +62,7 @@ void Quassel::logBacktrace(const QString &filename)
 
         QString funcName;
         if (info.dli_sname) {
-            char *func = abi::__cxa_demangle(info.dli_sname, 0, 0, 0);
+            char *func = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, nullptr);
             if (func) {
                 funcName = QString(func);
                 free(func);

@@ -31,7 +31,7 @@ class ChatViewSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    ChatViewSettingsPage(QWidget *parent = 0);
+    ChatViewSettingsPage(QWidget *parent = nullptr);
 
     inline bool hasDefaults() const { return true; }
 

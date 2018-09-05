@@ -130,7 +130,7 @@ void BufferViewOverlay::removeView(int viewId)
     _bufferViewIds.remove(viewId);
     BufferViewConfig *config = Client::bufferViewManager()->bufferViewConfig(viewId);
     if (config)
-        disconnect(config, 0, this, 0);
+        disconnect(config, nullptr, this, nullptr);
 
     // update initialized State:
     bool wasInitialized = isInitialized();
@@ -209,7 +209,7 @@ void BufferViewOverlay::updateHelper()
     QSet<BufferId> tempRemovedBuffers;
 
     if (Client::bufferViewManager()) {
-        BufferViewConfig *config = 0;
+        BufferViewConfig *config = nullptr;
         QSet<int>::const_iterator viewIter;
         for (viewIter = _bufferViewIds.constBegin(); viewIter != _bufferViewIds.constEnd(); ++viewIter) {
             config = Client::bufferViewManager()->bufferViewConfig(*viewIter);

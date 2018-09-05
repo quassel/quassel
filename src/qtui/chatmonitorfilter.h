@@ -37,7 +37,7 @@ public:
         AllFields = 0xff
     };
 
-    ChatMonitorFilter(MessageModel *model, QObject *parent = 0);
+    ChatMonitorFilter(MessageModel *model, QObject *parent = nullptr);
 
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     virtual QString idString() const { return "ChatMonitor"; }

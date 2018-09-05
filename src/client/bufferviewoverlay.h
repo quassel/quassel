@@ -34,7 +34,7 @@ class CLIENT_EXPORT BufferViewOverlay : public QObject
     Q_OBJECT
 
 public:
-    BufferViewOverlay(QObject *parent = 0);
+    BufferViewOverlay(QObject *parent = nullptr);
 
     inline const QSet<int> &bufferViewIds() { return _bufferViewIds; }
     bool allNetworks();

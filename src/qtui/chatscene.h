@@ -168,7 +168,7 @@ public slots:
 
 #if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     void loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect);
-    void clearWebPreview(ChatItem *parentItem = 0);
+    void clearWebPreview(ChatItem *parentItem = nullptr);
 #endif
 
 signals:
@@ -292,7 +292,7 @@ private:
         QRectF urlRect;
         PreviewState previewState;
         QTimer timer;
-        WebPreview() : parentItem(0), previewItem(0), previewState(NoPreview) {}
+        WebPreview() : parentItem(nullptr), previewItem(nullptr), previewState(NoPreview) {}
     };
     WebPreview webPreview;
 #endif // HAVE_WEBKIT || HAVE_WEBENGINE

@@ -34,7 +34,7 @@ class QtMultimediaNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    QtMultimediaNotificationBackend(QObject *parent = 0);
+    QtMultimediaNotificationBackend(QObject *parent = nullptr);
 
     void notify(const Notification &) override;
     void close(uint notificationId) override;
@@ -58,7 +58,7 @@ class QtMultimediaNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(QWidget *parent = nullptr);
 
     void save() override;
     void load() override;

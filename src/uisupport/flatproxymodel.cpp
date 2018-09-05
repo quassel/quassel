@@ -25,7 +25,7 @@
 
 FlatProxyModel::FlatProxyModel(QObject *parent)
     : QAbstractProxyModel(parent),
-    _rootSourceItem(0)
+    _rootSourceItem(nullptr)
 {
 }
 
@@ -96,7 +96,7 @@ QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection &sour
         QModelIndex currentParent = currentRange.topLeft().parent();
         Q_ASSERT(currentParent == currentRange.bottomRight().parent());
 
-        SourceItem *parentItem = 0;
+        SourceItem *parentItem = nullptr;
         if (!itemLookup.contains(currentParent)) {
             parentItem = sourceToInternal(currentParent);
             itemLookup[currentParent] = parentItem;
@@ -178,8 +178,8 @@ QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxyS
     for (int i = 0; i < proxySelection.count(); i++) {
         const QItemSelectionRange &range = proxySelection[i];
 
-        SourceItem *topLeftItem = 0;
-        SourceItem *bottomRightItem = 0;
+        SourceItem *topLeftItem = nullptr;
+        SourceItem *bottomRightItem = nullptr;
         SourceItem *currentItem = static_cast<SourceItem *>(range.topLeft().internalPointer());
         int row = range.topLeft().row();
         int left = range.topLeft().column();
@@ -195,8 +195,8 @@ QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxyS
             else {
                 Q_ASSERT(topLeftItem && bottomRightItem);
                 sourceSelection << QItemSelectionRange(mapToSource(createIndex(topLeftItem->pos(), left, topLeftItem)), mapToSource(createIndex(bottomRightItem->pos(), right, bottomRightItem)));
-                topLeftItem = 0;
-                bottomRightItem = 0;
+                topLeftItem = nullptr;
+                bottomRightItem = nullptr;
             }
 
             // update loop vars
@@ -216,7 +216,7 @@ QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxyS
 void FlatProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
     if (QAbstractProxyModel::sourceModel()) {
-        disconnect(QAbstractProxyModel::sourceModel(), 0, this, 0);
+        disconnect(QAbstractProxyModel::sourceModel(), nullptr, this, nullptr);
     }
 
     QAbstractProxyModel::setSourceModel(sourceModel);
@@ -271,7 +271,7 @@ void FlatProxyModel::insertSubTree(const QModelIndex &source_idx, bool emitInser
     SourceItem *lastItem = insertSubTreeHelper(newSubTree, newSubTree, source_idx);
 
     Q_ASSERT(lastItem);
-    Q_ASSERT(lastItem->next() == 0);
+    Q_ASSERT(lastItem->next() == nullptr);
 
     if (emitInsert)
         beginInsertRows(QModelIndex(), newSubTree->pos(), lastItem->pos());
@@ -310,7 +310,7 @@ void FlatProxyModel::insertSubTree(const QModelIndex &source_idx, bool emitInser
 FlatProxyModel::SourceItem *FlatProxyModel::insertSubTreeHelper(SourceItem *parentItem, SourceItem *lastItem_, const QModelIndex &source_idx)
 {
     SourceItem *lastItem = lastItem_;
-    SourceItem *newItem = 0;
+    SourceItem *newItem = nullptr;
     for (int row = 0; row < sourceModel()->rowCount(source_idx); row++) {
         newItem = new SourceItem(row, parentItem);
         newItem->setPos(lastItem->pos() + 1);
@@ -525,7 +525,7 @@ void FlatProxyModel::on_rowsAboutToBeInserted(const QModelIndex &parent, int sta
 
     SourceItem *nextItem = prevItem->next();
 
-    SourceItem *newItem = 0;
+    SourceItem *newItem = nullptr;
     int newPos = prevItem->pos() + 1;
     for (int row = start; row <= end; row++) {
         newItem = new SourceItem(row, sourceItem);
@@ -685,7 +685,7 @@ void FlatProxyModel::checkChildCount(const QModelIndex &index, const SourceItem 
 FlatProxyModel::SourceItem::SourceItem(int row, SourceItem *parent)
     : _parent(parent),
     _pos(-1),
-    _next(0)
+    _next(nullptr)
 {
     if (parent) {
         parent->_childs.insert(row, this);

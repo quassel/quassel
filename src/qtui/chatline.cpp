@@ -50,8 +50,8 @@ ChatLine::ChatLine(int row, QAbstractItemModel *model,
     _width(width),
     _height(_contentsItem.height()),
     _selection(0),
-    _mouseGrabberItem(0),
-    _hoverItem(0)
+    _mouseGrabberItem(nullptr),
+    _hoverItem(nullptr)
 {
     Q_ASSERT(model);
     QModelIndex index = model->index(row, ChatLineModel::ContentsColumn);
@@ -78,7 +78,7 @@ ChatItem *ChatLine::item(ChatLineModel::ColumnType column)
     case ChatLineModel::ContentsColumn:
         return &_contentsItem;
     default:
-        return 0;
+        return nullptr;
     }
 }
 
@@ -91,7 +91,7 @@ ChatItem *ChatLine::itemAt(const QPointF &pos)
         return &_senderItem;
     if (_timestampItem.boundingRect().contains(pos))
         return &_timestampItem;
-    return 0;
+    return nullptr;
 }
 
 
@@ -118,7 +118,7 @@ bool ChatLine::sceneEvent(QEvent *event)
         setMouseGrabberItem(itemAt(linePos));
     }
     else if (event->type() == QEvent::UngrabMouse) {
-        setMouseGrabberItem(0);
+        setMouseGrabberItem(nullptr);
     }
     return QGraphicsItem::sceneEvent(event);
 }
@@ -287,7 +287,7 @@ void ChatLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     if (_hoverItem) {
         _hoverItem->hoverLeaveEvent(event);
-        _hoverItem = 0;
+        _hoverItem = nullptr;
     }
 }
 

@@ -31,7 +31,7 @@ class SqliteStorage : public AbstractSqlStorage
     Q_OBJECT
 
 public:
-    SqliteStorage(QObject *parent = 0);
+    SqliteStorage(QObject *parent = nullptr);
     ~SqliteStorage() override;
 
     std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() override;

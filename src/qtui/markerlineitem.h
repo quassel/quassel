@@ -32,11 +32,11 @@ class MarkerLineItem : public QGraphicsObject
     Q_OBJECT
 
 public:
-    MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent = 0);
+    MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent = nullptr);
     virtual inline int type() const { return ChatScene::MarkerLineType; }
 
     inline QRectF boundingRect() const { return _boundingRect; }
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 
     inline ChatLine *chatLine() const { return _chatLine; }
 

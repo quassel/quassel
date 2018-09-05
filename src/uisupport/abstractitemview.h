@@ -35,7 +35,7 @@ class UISUPPORT_EXPORT AbstractItemView : public QWidget
     Q_OBJECT
 
 public:
-    AbstractItemView(QWidget *parent = 0);
+    AbstractItemView(QWidget *parent = nullptr);
 
     inline QAbstractItemModel *model() { return _model; }
     void setModel(QAbstractItemModel *model);

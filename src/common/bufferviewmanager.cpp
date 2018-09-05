@@ -36,7 +36,7 @@ BufferViewConfig *BufferViewManager::bufferViewConfig(int bufferViewId) const
     if (_bufferViewConfigs.contains(bufferViewId))
         return _bufferViewConfigs[bufferViewId];
     else
-        return 0;
+        return nullptr;
 }
 
 

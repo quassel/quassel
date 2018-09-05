@@ -28,7 +28,7 @@ class AwayLogFilter : public ChatMonitorFilter
     Q_OBJECT
 
 public:
-    AwayLogFilter(MessageModel *model, QObject *parent = 0);
+    AwayLogFilter(MessageModel *model, QObject *parent = nullptr);
 
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     virtual QString idString() const { return "AwayLog"; }

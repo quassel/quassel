@@ -44,8 +44,8 @@ public:
     virtual inline bool autoMarkerLineOnLostFocus() const { return _autoMarkerLineOnLostFocus; }
 
 public slots:
-    virtual void setMarkerLine(ChatView *view = 0, bool allowGoingBack = true);
-    virtual void jumpToMarkerLine(ChatView *view = 0, bool requestBacklog = true);
+    virtual void setMarkerLine(ChatView *view = nullptr, bool allowGoingBack = true);
+    virtual void jumpToMarkerLine(ChatView *view = nullptr, bool requestBacklog = true);
 
 protected:
     virtual AbstractChatView *createChatView(BufferId);

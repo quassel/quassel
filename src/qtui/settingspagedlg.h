@@ -31,7 +31,7 @@ class SettingsPageDlg : public QDialog
 {
     Q_OBJECT
 public:
-    SettingsPageDlg(SettingsPage *page, QWidget *parent = 0);
+    SettingsPageDlg(SettingsPage *page, QWidget *parent = nullptr);
 
     SettingsPage *currentPage() const;
 

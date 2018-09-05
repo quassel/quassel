@@ -162,7 +162,7 @@ MainWin::MainWin(QWidget *parent)
     _msgProcessorStatusWidget(new MsgProcessorStatusWidget(this)),
     _coreConnectionStatusWidget(new CoreConnectionStatusWidget(Client::coreConnection(), this)),
     _titleSetter(this),
-    _awayLog(0),
+    _awayLog(nullptr),
     _layoutLoaded(false),
     _activeBufferViewIndex(-1),
     _aboutToQuit(false)
@@ -401,14 +401,14 @@ void MainWin::setupActions()
     connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockLayout_toggled(bool)));
 
     coll->addAction("ToggleSearchBar", new Action(icon::get("edit-find"), tr("Show &Search Bar"), coll,
-            0, 0, QKeySequence::Find))->setCheckable(true);
+            nullptr, nullptr, QKeySequence::Find))->setCheckable(true);
     coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
             this, SLOT(showAwayLog())));
     coll->addAction("ToggleMenuBar", new Action(icon::get("show-menu"), tr("Show &Menubar"), coll,
-            0, 0))->setCheckable(true);
+            nullptr, nullptr))->setCheckable(true);
 
     coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
-            0, 0))->setCheckable(true);
+            nullptr, nullptr))->setCheckable(true);
 
 #ifdef HAVE_KDE
     _fullScreenAction = KStandardAction::fullScreen(this, SLOT(onFullScreenToggled()), this, coll);
@@ -761,16 +761,16 @@ BufferView *MainWin::allBuffersView() const
     // "All Buffers" is always the first dock created
     if (_bufferViews.count() > 0)
         return _bufferViews[0]->bufferView();
-    return 0;
+    return nullptr;
 }
 
 
 BufferView *MainWin::activeBufferView() const
 {
     if (_activeBufferViewIndex < 0 || _activeBufferViewIndex >= _bufferViews.count())
-        return 0;
+        return nullptr;
     BufferViewDock *dock = _bufferViews.at(_activeBufferViewIndex);
-    return dock->isActive() ? dock->bufferView() : 0;
+    return dock->isActive() ? dock->bufferView() : nullptr;
 }
 
 
@@ -1521,7 +1521,7 @@ void MainWin::showAwayLog()
     if (_awayLog)
         return;
     AwayLogFilter *filter = new AwayLogFilter(Client::messageModel());
-    _awayLog = new AwayLogView(filter, 0);
+    _awayLog = new AwayLogView(filter, nullptr);
     filter->setParent(_awayLog);
     connect(_awayLog, SIGNAL(destroyed()), this, SLOT(awayLogDestroyed()));
     _awayLog->setAttribute(Qt::WA_DeleteOnClose);
@@ -1531,7 +1531,7 @@ void MainWin::showAwayLog()
 
 void MainWin::awayLogDestroyed()
 {
-    _awayLog = 0;
+    _awayLog = nullptr;
 }
 
 
@@ -1691,7 +1691,7 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end)
 {
     Q_UNUSED(parent);
 
-    bool hasFocus = QApplication::activeWindow() != 0;
+    bool hasFocus = QApplication::activeWindow() != nullptr;
 
     for (int i = start; i <= end; i++) {
         QModelIndex idx = Client::messageModel()->index(i, ChatLineModel::ContentsColumn);
@@ -1759,7 +1759,7 @@ void MainWin::clientNetworkCreated(NetworkId id)
     connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
     connect(act, SIGNAL(triggered()), this, SLOT(connectOrDisconnectFromNet()));
 
-    QAction *beforeAction = 0;
+    QAction *beforeAction = nullptr;
     foreach(QAction *action, _networksMenu->actions()) {
         if (!action->data().isValid()) // ignore stock actions
             continue;
@@ -1958,7 +1958,7 @@ void MainWin::on_actionDebugHotList_triggered()
 
 void MainWin::on_actionDebugBufferViewOverlay_triggered()
 {
-    DebugBufferViewOverlay *overlay = new DebugBufferViewOverlay(0);
+    DebugBufferViewOverlay *overlay = new DebugBufferViewOverlay(nullptr);
     overlay->setAttribute(Qt::WA_DeleteOnClose);
     overlay->show();
 }
@@ -1966,7 +1966,7 @@ void MainWin::on_actionDebugBufferViewOverlay_triggered()
 
 void MainWin::on_actionDebugMessageModel_triggered()
 {
-    QTableView *view = new QTableView(0);
+    QTableView *view = new QTableView(nullptr);
     DebugMessageModelFilter *filter = new DebugMessageModelFilter(view);
     filter->setSourceModel(Client::messageModel());
     view->setModel(filter);

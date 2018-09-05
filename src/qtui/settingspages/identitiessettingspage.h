@@ -36,7 +36,7 @@ class IdentitiesSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    IdentitiesSettingsPage(QWidget *parent = 0);
+    IdentitiesSettingsPage(QWidget *parent = nullptr);
 
     virtual inline bool needsCoreConnection() const { return true; }
 
@@ -98,7 +98,7 @@ class CreateIdentityDlg : public QDialog
     Q_OBJECT
 
 public:
-    CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent = 0);
+    CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent = nullptr);
 
     QString identityName() const;
     IdentityId duplicateId() const;
@@ -116,7 +116,7 @@ class SaveIdentitiesDlg : public QDialog
     Q_OBJECT
 
 public:
-    SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, const QList<CertIdentity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent = 0);
+    SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, const QList<CertIdentity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent = nullptr);
 
 private slots:
     void clientEvent();

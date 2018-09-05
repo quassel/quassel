@@ -39,7 +39,7 @@
 *****************************************/
 BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config)
     : QSortFilterProxyModel(model),
-    _config(0),
+    _config(nullptr),
     _sortOrder(Qt::AscendingOrder),
     _showServerQueries(false),
     _editMode(false),
@@ -68,7 +68,7 @@ void BufferViewFilter::setConfig(BufferViewConfig *config)
         return;
 
     if (_config) {
-        disconnect(_config, 0, this, 0);
+        disconnect(_config, nullptr, this, nullptr);
     }
 
     _config = config;

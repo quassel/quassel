@@ -29,7 +29,7 @@ class CLIENT_EXPORT ClientBufferViewConfig : public BufferViewConfig
     Q_OBJECT
 
 public:
-    ClientBufferViewConfig(int bufferViewId, QObject *parent = 0);
+    ClientBufferViewConfig(int bufferViewId, QObject *parent = nullptr);
 
     inline bool isLocked() { return _locked || sortAlphabetically(); }
     inline void setLocked(bool locked) { _locked = locked; }

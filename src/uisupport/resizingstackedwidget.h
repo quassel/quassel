@@ -29,7 +29,7 @@ class UISUPPORT_EXPORT ResizingStackedWidget : public QStackedWidget
     Q_OBJECT
 
 public:
-    ResizingStackedWidget(QWidget *parent = 0);
+    ResizingStackedWidget(QWidget *parent = nullptr);
 
     virtual QSize sizeHint() const;
 

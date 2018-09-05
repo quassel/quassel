@@ -29,7 +29,7 @@ class UISUPPORT_EXPORT FlatProxyModel : public QAbstractProxyModel
     Q_OBJECT
 
 public:
-    FlatProxyModel(QObject *parent = 0);
+    FlatProxyModel(QObject *parent = nullptr);
 
     virtual QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
     virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
@@ -97,7 +97,7 @@ public:
 class FlatProxyModel::SourceItem
 {
 public:
-    SourceItem(int row = 0, SourceItem *parent = 0);
+    SourceItem(int row = 0, SourceItem *parent = nullptr);
     ~SourceItem();
 
     inline SourceItem *parent() const { return _parent; }
