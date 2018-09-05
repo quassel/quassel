@@ -1489,8 +1489,6 @@ void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantL
 
 void MainWin::showChannelList(NetworkId netId, const QString &channelFilters, bool listImmediately)
 {
-    ChannelListDlg *channelListDlg = new ChannelListDlg();
-
     if (!netId.isValid()) {
         QAction *action = qobject_cast<QAction *>(sender());
         if (action)
@@ -1507,7 +1505,7 @@ void MainWin::showChannelList(NetworkId netId, const QString &channelFilters, bo
         }
     }
 
-
+    ChannelListDlg *channelListDlg = new ChannelListDlg(this);
     channelListDlg->setAttribute(Qt::WA_DeleteOnClose);
     channelListDlg->setNetwork(netId);
     if (!channelFilters.isEmpty()) {
