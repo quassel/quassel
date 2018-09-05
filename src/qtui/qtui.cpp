@@ -40,21 +40,30 @@
 #include "types.h"
 #include "util.h"
 
-QtUi *QtUi::_instance = nullptr;
 MainWin *QtUi::_mainWin = nullptr;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
 QList<AbstractNotificationBackend::Notification> QtUi::_notifications;
+
+namespace {
+
+QtUi *_instance{nullptr};
+
+}
+
+
+QtUi *QtUi::instance()
+{
+    if (!_instance) {
+        _instance = new QtUi();
+    }
+    return _instance;
+}
+
 
 QtUi::QtUi()
     : GraphicalUi()
     , _systemIconTheme{QIcon::themeName()}
 {
-    if (_instance != nullptr) {
-        qWarning() << "QtUi has been instantiated again!";
-        return;
-    }
-    _instance = this;
-
     if (Quassel::isOptionSet("icontheme")) {
         _systemIconTheme = Quassel::optionValue("icontheme");
         QIcon::setThemeName(_systemIconTheme);

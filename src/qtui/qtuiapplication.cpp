@@ -110,7 +110,7 @@ void QtUiApplication::init()
         throw ExitException{EXIT_FAILURE, tr("Could not load or upgrade client settings!")};
     }
 
-    Client::init(new QtUi());
+    Client::init(QtUi::instance());
 
     // Init UI only after the event loop has started
     // TODO Qt5: Make this a lambda

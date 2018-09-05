@@ -49,13 +49,12 @@ class QtUi : public GraphicalUi
     Q_OBJECT
 
 public:
-    QtUi();
     ~QtUi();
 
     MessageModel *createMessageModel(QObject *parent) override;
     AbstractMessageProcessor *createMessageProcessor(QObject *parent) override;
 
-    inline static QtUi *instance();
+    static QtUi *instance();
     inline static QtUiStyle *style();
     inline static MainWin *mainWindow();
 
@@ -123,13 +122,14 @@ private slots:
     void useSystemTrayChanged(const QVariant &);
 
 private:
+    QtUi();
+
     /**
      * Sets up icon theme handling.
      */
     void setupIconTheme();
 
 private:
-    static QtUi *_instance;
     static MainWin *_mainWin;
     static QList<AbstractNotificationBackend *> _notificationBackends;
     static QList<AbstractNotificationBackend::Notification> _notifications;
@@ -143,7 +143,5 @@ private:
     bool _useSystemTray;
 };
 
-
-QtUi *QtUi::instance() { return _instance ? _instance : new QtUi(); }
 QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle *>(uiStyle()); }
 MainWin *QtUi::mainWindow() { return _mainWin; }
