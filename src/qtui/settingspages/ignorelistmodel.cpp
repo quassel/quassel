@@ -92,6 +92,7 @@ QVariant IgnoreListModel::data(const QModelIndex &index, int role) const
             else
                 return tr("By Message");
         }
+        // Intentional fallthrough
     case Qt::EditRole:
         switch (index.column()) {
         case 0:
