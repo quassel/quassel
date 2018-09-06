@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <utility>
+
 #include <QStringList>
 
 #include "clientsettings.h"
@@ -25,7 +27,6 @@
 #include <QHostAddress>
 #ifdef HAVE_SSL
 #include <QSslSocket>
-#include <utility>
 #endif
 
 #include "client.h"

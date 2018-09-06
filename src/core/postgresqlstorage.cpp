@@ -27,8 +27,7 @@
 #include "quassel.h"
 
 PostgreSqlStorage::PostgreSqlStorage(QObject *parent)
-    : AbstractSqlStorage(parent),
-    _port(-1)
+    : AbstractSqlStorage(parent)
 {
 }
 

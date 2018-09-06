@@ -28,9 +28,7 @@
 SelectionModelSynchronizer::SelectionModelSynchronizer(QAbstractItemModel *parent)
     : QObject(parent),
     _model(parent),
-    _selectionModel(parent),
-    _changeCurrentEnabled(true),
-    _changeSelectionEnabled(true)
+    _selectionModel(parent)
 {
     connect(&_selectionModel, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
         this, SLOT(currentChanged(const QModelIndex &, const QModelIndex &)));

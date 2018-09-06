@@ -29,8 +29,7 @@
 #include "signalproxy.h"
 
 IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
-    : SettingsPage(tr("IRC"), tr("Identities"), parent),
-    _editSsl(false)
+    : SettingsPage(tr("IRC"), tr("Identities"), parent)
 {
     ui.setupUi(this);
     ui.renameIdentity->setIcon(icon::get("edit-rename"));

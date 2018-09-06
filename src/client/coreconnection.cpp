@@ -36,14 +36,7 @@
 
 CoreConnection::CoreConnection(QObject *parent)
     : QObject(parent),
-    _authHandler(nullptr),
-    _state(Disconnected),
-    _wantReconnect(false),
-    _wasReconnect(false),
-    _progressMinimum(0),
-    _progressMaximum(-1),
-    _progressValue(-1),
-    _resetting(false)
+    _authHandler(nullptr)
 {
     qRegisterMetaType<ConnectionState>("CoreConnection::ConnectionState");
 }

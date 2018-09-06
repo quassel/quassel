@@ -52,9 +52,9 @@ private:
     bool _enabled;
     bool _available;
     QDBusConnection _bus;
-    QDBusInterface *_dock;
-    QDBusInterface *_item;
-    int _count;
+    QDBusInterface *_dock{nullptr};
+    QDBusInterface *_item{nullptr};
+    int _count{0};
 };
 
 

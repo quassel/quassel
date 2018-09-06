@@ -31,11 +31,7 @@
 const int BufferViewOverlay::_updateEventId = QEvent::registerEventType();
 
 BufferViewOverlay::BufferViewOverlay(QObject *parent)
-    : QObject(parent),
-    _aboutToUpdate(false),
-    _uninitializedViewCount(0),
-    _allowedBufferTypes(0),
-    _minimumActivity(0)
+    : QObject(parent)
 {
 }
 

@@ -232,7 +232,7 @@ class SignalProxy::ExtendedMetaObject
     {
     public:
         MethodDescriptor(const QMetaMethod &method);
-        MethodDescriptor() : _returnType(-1), _minArgCount(-1), _receiverMode(SignalProxy::Client) {}
+        MethodDescriptor()  {}
 
         inline const QByteArray &methodName() const { return _methodName; }
         inline const QList<int> &argTypes() const { return _argTypes; }
@@ -243,9 +243,9 @@ class SignalProxy::ExtendedMetaObject
     private:
         QByteArray _methodName;
         QList<int> _argTypes;
-        int _returnType;
-        int _minArgCount;
-        SignalProxy::ProxyMode _receiverMode; // Only acceptable as a Sync Call if the receiving SignalProxy is in this mode.
+        int _returnType{-1};
+        int _minArgCount{-1};
+        SignalProxy::ProxyMode _receiverMode{SignalProxy::Client}; // Only acceptable as a Sync Call if the receiving SignalProxy is in this mode.
     };
 
 

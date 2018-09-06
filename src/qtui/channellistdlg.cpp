@@ -30,11 +30,8 @@
 
 ChannelListDlg::ChannelListDlg(QWidget *parent)
     : QDialog(parent),
-    _listFinished(true),
     _ircListModel(this),
-    _sortFilter(this),
-    _simpleModeSpacer(nullptr),
-    _advancedMode(false)
+    _sortFilter(this)
 {
     _sortFilter.setSourceModel(&_ircListModel);
     _sortFilter.setFilterCaseSensitivity(Qt::CaseInsensitive);

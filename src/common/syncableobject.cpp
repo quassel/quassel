@@ -28,17 +28,13 @@
 #include "util.h"
 
 SyncableObject::SyncableObject(QObject *parent)
-    : QObject(parent),
-    _initialized(false),
-    _allowClientUpdates(false)
+    : QObject(parent)
 {
 }
 
 
 SyncableObject::SyncableObject(const QString &objectName, QObject *parent)
-    : QObject(parent),
-    _initialized(false),
-    _allowClientUpdates(false)
+    : QObject(parent)
 {
     setObjectName(objectName);
 }

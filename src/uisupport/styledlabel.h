@@ -73,12 +73,12 @@ protected:
 
 private:
     QSize _sizeHint;
-    QTextOption::WrapMode _wrapMode;
+    QTextOption::WrapMode _wrapMode{QTextOption::NoWrap};
     Qt::Alignment _alignment;
     QTextLayout _layout;
     ClickableList _clickables;
-    bool _toolTipEnabled;
-    ResizeMode _resizeMode;
+    bool _toolTipEnabled{true};
+    ResizeMode _resizeMode{NoResize};
 
     QList<QTextLayout::FormatRange> _layoutList;
     QVector<QTextLayout::FormatRange> _extraLayoutList;

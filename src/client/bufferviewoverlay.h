@@ -75,14 +75,14 @@ private:
     void updateHelper();
     QSet<BufferId> filterBuffersByConfig(const QList<BufferId> &buffers, const BufferViewConfig *config);
 
-    bool _aboutToUpdate;
+    bool _aboutToUpdate{false};
 
     QSet<int> _bufferViewIds;
-    int _uninitializedViewCount;
+    int _uninitializedViewCount{0};
 
     QSet<NetworkId> _networkIds;
-    int _allowedBufferTypes;
-    int _minimumActivity;
+    int _allowedBufferTypes{0};
+    int _minimumActivity{0};
 
     QSet<BufferId> _buffers;
     QSet<BufferId> _removedBuffers;

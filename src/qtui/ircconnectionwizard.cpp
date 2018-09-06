@@ -28,10 +28,7 @@
 #include <QVBoxLayout>
 
 IrcConnectionWizard::IrcConnectionWizard(QWidget *parent, Qt::WindowFlags flags)
-    : QWizard(parent, flags),
-    _introductionPage(nullptr),
-    _identityPage(nullptr),
-    _networkPage(nullptr)
+    : QWizard(parent, flags)
 {
     _introductionPage = createIntroductionPage(this);
     _identityPage = new IdentityPage(this);
@@ -110,8 +107,7 @@ void IrcConnectionWizard::networkReady(NetworkId id)
 // Identity Page
 IdentityPage::IdentityPage(QWidget *parent)
     : QWizardPage(parent),
-    _identityEditWidget(new IdentityEditWidget(this)),
-    _identity(nullptr)
+    _identityEditWidget(new IdentityEditWidget(this))
 {
     setTitle(tr("Setup Identity"));
 

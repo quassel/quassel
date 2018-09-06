@@ -67,8 +67,8 @@ signals:
 
 private:
     ClientIgnoreListManager _clonedIgnoreListManager;
-    bool _configChanged;
-    bool _modelReady;
+    bool _configChanged{false};
+    bool _modelReady{false};
 
     const IgnoreListManager &ignoreListManager() const;
     IgnoreListManager &ignoreListManager();

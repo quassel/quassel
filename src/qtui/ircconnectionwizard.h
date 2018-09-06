@@ -40,9 +40,9 @@ private slots:
     void networkReady(NetworkId id);
 
 private:
-    QWizardPage *_introductionPage;
-    QWizardPage *_identityPage;
-    QWizardPage *_networkPage;
+    QWizardPage *_introductionPage{nullptr};
+    QWizardPage *_identityPage{nullptr};
+    QWizardPage *_networkPage{nullptr};
 };
 
 
@@ -66,7 +66,7 @@ public:
 
 private:
     IdentityEditWidget *_identityEditWidget;
-    CertIdentity *_identity;
+    CertIdentity *_identity{nullptr};
 };
 
 

@@ -30,13 +30,7 @@
 #include "messagemodel.h"
 
 ChatViewSearchController::ChatViewSearchController(QObject *parent)
-    : QObject(parent),
-    _scene(nullptr),
-    _currentHighlight(0),
-    _caseSensitive(false),
-    _searchSenders(false),
-    _searchMsgs(true),
-    _searchOnlyRegularMsgs(true)
+    : QObject(parent)
 {
 }
 

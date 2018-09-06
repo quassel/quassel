@@ -73,7 +73,7 @@ private:
     QSslCertificate _cert;
     QSslKey _key;
     QList<QSslCertificate> _ca;
-    bool _isCertValid;
+    bool _isCertValid{false};
 
     // Used when reloading certificates later
     QString _sslCertPath; /// Path to the certificate file

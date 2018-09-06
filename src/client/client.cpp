@@ -61,25 +61,16 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     _mainUi(std::move(ui)),
     _networkModel(new NetworkModel(this)),
     _bufferModel(new BufferModel(_networkModel)),
-    _bufferSyncer(nullptr),
-    _aliasManager(nullptr),
     _backlogManager(new ClientBacklogManager(this)),
-    _bufferViewManager(nullptr),
     _bufferViewOverlay(new BufferViewOverlay(this)),
     _coreInfo(new CoreInfo(this)),
-    _dccConfig(nullptr),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(new ClientUserInputHandler(this)),
-    _networkConfig(nullptr),
-    _ignoreListManager(nullptr),
-    _highlightRuleManager(nullptr),
-    _transferManager(nullptr),
     _transferModel(new TransferModel(this)),
     _messageModel(_mainUi->createMessageModel(this)),
     _messageProcessor(_mainUi->createMessageProcessor(this)),
     _coreAccountModel(new CoreAccountModel(this)),
-    _coreConnection(new CoreConnection(this)),
-    _connected(false)
+    _coreConnection(new CoreConnection(this))
 {
 #ifdef EMBED_DATA
     Q_INIT_RESOURCE(data);

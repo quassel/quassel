@@ -85,11 +85,11 @@ private:
     CoreSession *_coreSession;
 
     struct CtcpReply {
-        CoreNetwork *network;
+        CoreNetwork *network{nullptr};
         QString bufferName;
         QList<QByteArray> replies;
 
-        CtcpReply() : network(nullptr) {}
+        CtcpReply()  {}
         CtcpReply(CoreNetwork *net, QString buf) : network(net), bufferName(std::move(buf)) {}
     };
 

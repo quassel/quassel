@@ -57,8 +57,8 @@ private slots:
 private:
     QAbstractItemModel *_model;
     QItemSelectionModel _selectionModel;
-    bool _changeCurrentEnabled;
-    bool _changeSelectionEnabled;
+    bool _changeCurrentEnabled{true};
+    bool _changeSelectionEnabled{true};
 
     bool checkBaseModel(QItemSelectionModel *model);
     QModelIndex mapFromSource(const QModelIndex &sourceIndex, const QItemSelectionModel *selectionModel);

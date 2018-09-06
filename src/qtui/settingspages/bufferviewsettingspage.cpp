@@ -34,10 +34,7 @@
 #include "util.h"
 
 BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Custom Chat Lists"), parent),
-    _ignoreWidgetChanges(false),
-    _useBufferViewHint(false),
-    _bufferViewHint(0)
+    : SettingsPage(tr("Interface"), tr("Custom Chat Lists"), parent)
 {
     ui.setupUi(this);
     //Hide the hide inactive networks feature on older cores (which won't save the setting)

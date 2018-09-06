@@ -30,9 +30,7 @@
 #include <QDebug>
 
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
-    : BacklogManager(parent),
-    _requester(nullptr),
-    _initBacklogRequested(false)
+    : BacklogManager(parent)
 {
 }
 

@@ -286,13 +286,13 @@ private:
             ShowPreview,
             HidePreview
         };
-        ChatItem *parentItem;
-        QGraphicsItem *previewItem;
+        ChatItem *parentItem{nullptr};
+        QGraphicsItem *previewItem{nullptr};
         QUrl url;
         QRectF urlRect;
-        PreviewState previewState;
+        PreviewState previewState{NoPreview};
         QTimer timer;
-        WebPreview() : parentItem(nullptr), previewItem(nullptr), previewState(NoPreview) {}
+        WebPreview()  {}
     };
     WebPreview webPreview;
 #endif // HAVE_WEBKIT || HAVE_WEBENGINE

@@ -77,7 +77,7 @@ private:
     inline FilteredCoreAccountModel *filteredModel() const { return _filteredModel; }
 
     AccountId _lastAccountId, _lastAutoConnectId;
-    bool _standalone;
+    bool _standalone{false};
 
     void editAccount(const QModelIndex &);
 

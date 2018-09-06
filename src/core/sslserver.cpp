@@ -32,8 +32,7 @@
 #ifdef HAVE_SSL
 
 SslServer::SslServer(QObject *parent)
-    : QTcpServer(parent),
-    _isCertValid(false)
+    : QTcpServer(parent)
 {
     // Keep track if the SSL warning has been mentioned at least once before
     static bool sslWarningShown = false;

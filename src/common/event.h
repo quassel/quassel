@@ -72,7 +72,7 @@ private:
     EventManager::EventType _type;
     EventManager::EventFlags _flags;
     QDateTime _timestamp;
-    bool _valid;
+    bool _valid{true};
 
     friend COMMON_EXPORT QDebug operator<<(QDebug dbg, Event *e);
 };

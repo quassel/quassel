@@ -161,11 +161,7 @@ MainWin::MainWin(QWidget *parent)
 #endif
     _msgProcessorStatusWidget(new MsgProcessorStatusWidget(this)),
     _coreConnectionStatusWidget(new CoreConnectionStatusWidget(Client::coreConnection(), this)),
-    _titleSetter(this),
-    _awayLog(nullptr),
-    _layoutLoaded(false),
-    _activeBufferViewIndex(-1),
-    _aboutToQuit(false)
+    _titleSetter(this)
 {
     setAttribute(Qt::WA_DeleteOnClose, false); // we delete the mainwin manually
 

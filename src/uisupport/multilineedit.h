@@ -128,18 +128,18 @@ private:
 private:
     QStringList _history;
     QHash<int, QString> _tempHistory;
-    qint32 _idx;
-    Mode _mode;
-    bool _singleLine;
-    int _minHeight;
-    int _maxHeight;
-    bool _scrollBarsEnabled;
-    bool _pasteProtectionEnabled;
-    bool _emacsMode;
-    int _completionSpace;
+    qint32 _idx{0};
+    Mode _mode{SingleLine};
+    bool _singleLine{true};
+    int _minHeight{1};
+    int _maxHeight{5};
+    bool _scrollBarsEnabled{true};
+    bool _pasteProtectionEnabled{true};
+    bool _emacsMode{false};
+    int _completionSpace{0};
 
     QSize _sizeHint;
-    qreal _lastDocumentHeight;
+    qreal _lastDocumentHeight{-1};
 
     QMap<QString, QString> _mircColorMap;
 

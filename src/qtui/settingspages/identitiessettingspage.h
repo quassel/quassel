@@ -73,7 +73,7 @@ private:
     QList<IdentityId> changedIdentities; // for setting the widget changed state
     QList<IdentityId> deletedIdentities;
 
-    bool _editSsl;
+    bool _editSsl{false};
 
     void insertIdentity(CertIdentity *identity);
     void removeIdentity(Identity *identity);

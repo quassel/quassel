@@ -55,7 +55,7 @@ private slots:
 private:
     Ui::SettingsDlg ui;
 
-    SettingsPage *_currentPage;
+    SettingsPage *_currentPage{nullptr};
     QHash<SettingsPage *, bool> pageIsLoaded;
 
     enum {

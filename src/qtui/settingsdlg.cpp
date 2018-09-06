@@ -27,8 +27,7 @@
 #include "icon.h"
 
 SettingsDlg::SettingsDlg(QWidget *parent)
-    : QDialog(parent),
-    _currentPage(nullptr)
+    : QDialog(parent)
 {
     ui.setupUi(this);
     setModal(true);

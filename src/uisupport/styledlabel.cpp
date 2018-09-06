@@ -28,10 +28,7 @@
 
 StyledLabel::StyledLabel(QWidget *parent)
     : QFrame(parent),
-    _wrapMode(QTextOption::NoWrap),
-    _alignment(Qt::AlignVCenter|Qt::AlignLeft),
-    _toolTipEnabled(true),
-    _resizeMode(NoResize)
+    _alignment(Qt::AlignVCenter|Qt::AlignLeft)
 {
     setMouseTracking(true);
 

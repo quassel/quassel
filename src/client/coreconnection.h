@@ -152,18 +152,18 @@ private slots:
 private:
     QPointer<ClientAuthHandler> _authHandler;
     QPointer<Peer> _peer;
-    ConnectionState _state;
+    ConnectionState _state{Disconnected};
 
     QTimer _reconnectTimer;
-    bool _wantReconnect;
-    bool _wasReconnect;
+    bool _wantReconnect{false};
+    bool _wasReconnect{false};
 
     QSet<QObject *> _netsToSync;
     int _numNetsToSync;
-    int _progressMinimum, _progressMaximum, _progressValue;
+    int _progressMinimum{0}, _progressMaximum{-1}, _progressValue{-1};
     QString _progressText;
 
-    bool _resetting;
+    bool _resetting{false};
 
     CoreAccount _account;
     CoreAccountModel *accountModel() const;

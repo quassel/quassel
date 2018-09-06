@@ -30,7 +30,7 @@
 #include "clientbacklogmanager.h"
 
 DockManagerNotificationBackend::DockManagerNotificationBackend(QObject *parent)
-    : AbstractNotificationBackend(parent), _bus(QDBusConnection::sessionBus()), _dock(nullptr), _item(nullptr), _count(0)
+    : AbstractNotificationBackend(parent), _bus(QDBusConnection::sessionBus())
 {
     NotificationSettings notificationSettings;
     _enabled = notificationSettings.value("DockManager/Enabled", false).toBool();

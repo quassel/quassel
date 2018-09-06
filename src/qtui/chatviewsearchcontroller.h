@@ -67,14 +67,14 @@ signals:
 
 private:
     QString _searchString;
-    ChatScene *_scene;
+    ChatScene *_scene{nullptr};
     QList<SearchHighlightItem *> _highlightItems;
-    int _currentHighlight;
+    int _currentHighlight{0};
 
-    bool _caseSensitive;
-    bool _searchSenders;
-    bool _searchMsgs;
-    bool _searchOnlyRegularMsgs;
+    bool _caseSensitive{false};
+    bool _searchSenders{false};
+    bool _searchMsgs{true};
+    bool _searchOnlyRegularMsgs{true};
 
     inline Qt::CaseSensitivity caseSensitive() const { return _caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive; }
 

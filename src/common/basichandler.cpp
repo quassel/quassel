@@ -26,8 +26,6 @@
 
 BasicHandler::BasicHandler(QObject *parent)
     : QObject(parent),
-    _defaultHandler(-1),
-    _initDone(false),
     _methodPrefix("handle")
 {
 }
@@ -35,8 +33,6 @@ BasicHandler::BasicHandler(QObject *parent)
 
 BasicHandler::BasicHandler(QString methodPrefix, QObject *parent)
     : QObject(parent),
-    _defaultHandler(-1),
-    _initDone(false),
     _methodPrefix(std::move(methodPrefix))
 {
 }

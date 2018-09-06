@@ -21,15 +21,7 @@
 #include "networkconfig.h"
 
 NetworkConfig::NetworkConfig(const QString &objectName, QObject *parent)
-    : SyncableObject(objectName, parent),
-    _pingTimeoutEnabled(true),
-    _pingInterval(30),
-    _maxPingCount(6),
-    _autoWhoEnabled(true),
-    _autoWhoInterval(90),
-    _autoWhoNickLimit(200),
-    _autoWhoDelay(5),
-    _standardCtcp(false)
+    : SyncableObject(objectName, parent)
 {
 }
 

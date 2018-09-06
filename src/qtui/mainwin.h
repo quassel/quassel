@@ -271,20 +271,20 @@ private:
     QMenu *_toolbarMenu;
     QToolBar *_mainToolBar, *_chatViewToolBar, *_nickToolBar;
 
-    QWidget *_awayLog;
+    QWidget *_awayLog{nullptr};
 
     QMessageBox* _migrationWarning{nullptr};
 
-    bool _layoutLoaded;
+    bool _layoutLoaded{false};
 
     QSize _normalSize; //!< Size of the non-maximized window
     QPoint _normalPos; //!< Position of the non-maximized window
 
     BufferHotListFilter *_bufferHotList;
     QHash<int, BufferId> _jumpKeyMap;
-    int _activeBufferViewIndex;
+    int _activeBufferViewIndex{-1};
 
-    bool _aboutToQuit; //closeEvent can occur multiple times on OSX
+    bool _aboutToQuit{false}; //closeEvent can occur multiple times on OSX
 
     friend class QtUi;
 };
