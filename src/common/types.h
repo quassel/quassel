@@ -137,8 +137,8 @@ Q_DECLARE_METATYPE(AccountId)
 Q_DECLARE_METATYPE(QHostAddress)
 
 // a few typedefs
-typedef QList<MsgId> MsgIdList;
-typedef QList<BufferId> BufferIdList;
+using MsgIdList = QList<MsgId>;
+using BufferIdList = QList<BufferId>;
 
 /**
  * Catch-all stream serialization operator for enum types.

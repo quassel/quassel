@@ -168,7 +168,7 @@ private:
         }
     };
 
-    typedef QHash<uint, QList<Handler> > HandlerHash;
+    using HandlerHash = QHash<uint, QList<Handler>>;
 
     inline const HandlerHash &registeredHandlers() const { return _registeredHandlers; }
     inline HandlerHash &registeredHandlers() { return _registeredHandlers; }

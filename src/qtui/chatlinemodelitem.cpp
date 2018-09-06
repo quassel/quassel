@@ -28,14 +28,14 @@
 
 // This Struct is taken from Harfbuzz. We use it only to calc it's size.
 // we use a shared memory region so we do not have to malloc a buffer area for every line
-typedef struct {
+using HB_CharAttributes_Dummy = struct {
     /*HB_LineBreakType*/ unsigned lineBreakType  : 2;
     /*HB_Bool*/ unsigned whiteSpace              : 1;     /* A unicode whitespace character, except NBSP, ZWNBSP */
     /*HB_Bool*/ unsigned charStop                : 1;     /* Valid cursor position (for left/right arrow) */
     /*HB_Bool*/ unsigned wordBoundary            : 1;
     /*HB_Bool*/ unsigned sentenceBoundary        : 1;
     unsigned unused                  : 2;
-} HB_CharAttributes_Dummy;
+};
 
 unsigned char *ChatLineModelItem::TextBoundaryFinderBuffer = (unsigned char *)malloc(512 * sizeof(HB_CharAttributes_Dummy));
 int ChatLineModelItem::TextBoundaryFinderBufferSize = 512 * (sizeof(HB_CharAttributes_Dummy) / sizeof(unsigned char));

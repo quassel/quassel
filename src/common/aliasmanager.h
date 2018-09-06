@@ -43,7 +43,7 @@ public:
         QString expansion;
         Alias(const QString &name_, const QString &expansion_) : name(name_), expansion(expansion_) {}
     };
-    typedef QList<Alias> AliasList;
+    using AliasList = QList<Alias>;
 
     int indexOf(const QString &name) const;
     inline bool contains(const QString &name) const { return indexOf(name) != -1; }
@@ -56,7 +56,7 @@ public:
 
     static AliasList defaults();
 
-    typedef QList<QPair<BufferInfo, QString> > CommandList;
+    using CommandList = QList<QPair<BufferInfo, QString>>;
 
     CommandList processInput(const BufferInfo &info, const QString &message);
 

@@ -62,7 +62,7 @@ signals:
 //   void deleteBufferViewsRequested(const QVariantList &bufferViews);
 
 protected:
-    typedef QHash<int, BufferViewConfig *> BufferViewConfigHash;
+    using  BufferViewConfigHash = QHash<int, BufferViewConfig *>;
     inline const BufferViewConfigHash &bufferViewConfigHash() { return _bufferViewConfigs; }
     virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
 

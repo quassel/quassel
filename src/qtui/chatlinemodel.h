@@ -39,8 +39,8 @@ public:
 
     ChatLineModel(QObject *parent = nullptr);
 
-    typedef ChatLineModelItem::Word Word;
-    typedef ChatLineModelItem::WrapList WrapList;
+    using Word = ChatLineModelItem::Word;
+    using WrapList = ChatLineModelItem::WrapList;
     inline const MessageModelItem *messageItemAt(int i) const override { return &_messageList[i]; }
 protected:
 //   virtual MessageModelItem *createMessageModelItem(const Message &);

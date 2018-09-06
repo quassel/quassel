@@ -49,7 +49,7 @@ public:
         qreal width;
         qreal trailing;
     };
-    typedef QVector<Word> WrapList;
+    using WrapList = QVector<Word>;
 
 private:
     QVariant timestampData(int role) const;

@@ -333,7 +333,7 @@ public:
         mutable ExpressionMatch _ctcpSenderMatch = {};    ///< Expression match cache for CTCP nick
     };
 
-    typedef QList<IgnoreListItem> IgnoreList;
+    using IgnoreList = QList<IgnoreListItem>;
 
     int indexOf(const QString &ignore) const;
     inline bool contains(const QString &ignore) const { return indexOf(ignore) != -1; }

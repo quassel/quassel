@@ -143,7 +143,7 @@ public :
         bool operator==(const Server &other) const;
         bool operator!=(const Server &other) const;
     };
-    typedef QList<Server> ServerList;
+    using ServerList = QList<Server>;
 
     Network(const NetworkId &networkid, QObject *parent = nullptr);
     ~Network() override;
