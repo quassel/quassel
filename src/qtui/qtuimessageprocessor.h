@@ -77,7 +77,7 @@ private:
         /**
          * Construct an empty highlight rule
          */
-        LegacyHighlightRule() {}
+        LegacyHighlightRule() = default;
 
         /**
          * Construct a highlight rule with the given parameters

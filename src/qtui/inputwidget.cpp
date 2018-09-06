@@ -154,11 +154,6 @@ InputWidget::InputWidget(QWidget *parent)
 }
 
 
-InputWidget::~InputWidget()
-{
-}
-
-
 void InputWidget::setUseCustomFont(const QVariant &v)
 {
     if (v.toBool()) {

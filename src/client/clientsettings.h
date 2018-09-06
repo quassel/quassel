@@ -31,8 +31,6 @@ class QSslSocket;
 
 class CLIENT_EXPORT ClientSettings : public Settings
 {
-public:
-    ~ClientSettings() override;
 
 protected:
     ClientSettings(QString group = "General");

@@ -257,7 +257,6 @@ class ContentsChatItem::WrapColumnFinder
 {
 public:
     WrapColumnFinder(const ChatItem *parent);
-    ~WrapColumnFinder();
 
     qint16 nextWrapColumn(qreal width);
 

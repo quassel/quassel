@@ -41,7 +41,7 @@ public:
     };
 
     BacklogRequester(bool buffering, RequesterType requesterType, ClientBacklogManager *backlogManger);
-    virtual inline ~BacklogRequester() {}
+    virtual ~BacklogRequester() = default;
 
     inline bool isBuffering() { return _isBuffering; }
     inline RequesterType type() { return _requesterType; }

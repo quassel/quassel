@@ -30,9 +30,6 @@ Cipher::Cipher(QByteArray key, QString cipherType)
 }
 
 
-Cipher::~Cipher()
-{}
-
 bool Cipher::setKey(QByteArray key)
 {
     if (key.isEmpty()) {

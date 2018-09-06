@@ -32,11 +32,6 @@ SqlAuthenticator::SqlAuthenticator(QObject *parent)
 }
 
 
-SqlAuthenticator::~SqlAuthenticator()
-{
-}
-
-
 bool SqlAuthenticator::isAvailable() const
 {
     // FIXME: probably this should query the current storage (see the ::init routine too).

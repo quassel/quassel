@@ -45,7 +45,7 @@ public:
     /**
      * Construct an empty ExpressionMatch
      */
-    ExpressionMatch() {}
+    ExpressionMatch() = default;
 
     /**
      * Construct an Expression match with the given parameters

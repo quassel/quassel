@@ -232,7 +232,7 @@ class SignalProxy::ExtendedMetaObject
     {
     public:
         MethodDescriptor(const QMetaMethod &method);
-        MethodDescriptor()  {}
+        MethodDescriptor() = default;
 
         inline const QByteArray &methodName() const { return _methodName; }
         inline const QList<int> &argTypes() const { return _argTypes; }

@@ -44,11 +44,6 @@ IrcChannel::IrcChannel(const QString &channelname, Network *network)
 }
 
 
-IrcChannel::~IrcChannel()
-{
-}
-
-
 // ====================
 //  PUBLIC:
 // ====================

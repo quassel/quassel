@@ -42,8 +42,6 @@ QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent)
 }
 
 
-QtUiStyle::~QtUiStyle() {}
-
 void QtUiStyle::updateUseCustomTimestampFormat()
 {
     ChatViewSettings s;

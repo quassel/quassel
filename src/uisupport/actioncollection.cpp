@@ -37,11 +37,6 @@ ActionCollection::ActionCollection(QObject *parent) : QObject(parent)
 }
 
 
-ActionCollection::~ActionCollection()
-{
-}
-
-
 void ActionCollection::clear()
 {
     _actionByName.clear();

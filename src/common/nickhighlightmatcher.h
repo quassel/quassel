@@ -47,7 +47,7 @@ public:
     /**
      * Construct an empty NicknameMatcher
      */
-    NickHighlightMatcher() {}
+    NickHighlightMatcher() = default;
 
     /**
      * Construct a configured NicknameMatcher

@@ -73,7 +73,6 @@ public:
     };
 
     ChatScene(QAbstractItemModel *model, QString idString, qreal width, ChatView *parent);
-    ~ChatScene() override;
 
     inline QAbstractItemModel *model() const { return _model; }
     inline MessageFilter *filter() const { return qobject_cast<MessageFilter *>(_model); }
@@ -292,7 +291,6 @@ private:
         QRectF urlRect;
         PreviewState previewState{NoPreview};
         QTimer timer;
-        WebPreview()  {}
     };
     WebPreview webPreview;
 #endif // HAVE_WEBKIT || HAVE_WEBENGINE

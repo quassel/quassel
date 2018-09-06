@@ -68,11 +68,6 @@ ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
 }
 
 
-ToolBarActionProvider::~ToolBarActionProvider()
-{
-}
-
-
 void ToolBarActionProvider::disconnectedFromCore()
 {
     _currentBuffer = QModelIndex();

@@ -101,7 +101,7 @@ public:
 
 protected:
     inline Settings(QString group_, QString appName_) : group(std::move(group_)), appName(std::move(appName_)) {}
-    inline virtual ~Settings() {}
+    inline virtual ~Settings() = default;
 
     inline void setGroup(const QString &group_) { group = group_; }
 

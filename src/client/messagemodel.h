@@ -135,16 +135,15 @@ QModelIndex MessageModel::index(int row, int column, const QModelIndex &parent) 
 // **************************************************
 //  MessageModelItem
 // **************************************************
+//! Creates a MessageModelItem from a Message object.
+/** This baseclass implementation takes care of all Message data *except* the stylable strings.
+ *  Subclasses need to provide Qt::DisplayRole at least, which should describe the plaintext
+ *  strings without formattings (e.g. for searching purposes).
+ */
 class CLIENT_EXPORT MessageModelItem
 {
 public:
-    //! Creates a MessageModelItem from a Message object.
-    /** This baseclass implementation takes care of all Message data *except* the stylable strings.
-     *  Subclasses need to provide Qt::DisplayRole at least, which should describe the plaintext
-     *  strings without formattings (e.g. for searching purposes).
-     */
-    MessageModelItem() {}
-    inline virtual ~MessageModelItem() {}
+    inline virtual ~MessageModelItem() = default;
 
     virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role);

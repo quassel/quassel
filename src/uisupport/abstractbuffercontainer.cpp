@@ -30,11 +30,6 @@ AbstractBufferContainer::AbstractBufferContainer(QWidget *parent)
 }
 
 
-AbstractBufferContainer::~AbstractBufferContainer()
-{
-}
-
-
 void AbstractBufferContainer::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
     Q_ASSERT(model());

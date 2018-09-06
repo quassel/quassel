@@ -107,7 +107,6 @@ class CLIENT_EXPORT SimpleTreeItem : public AbstractTreeItem
 
 public:
     SimpleTreeItem(QList<QVariant> data, AbstractTreeItem *parent = nullptr);
-    ~SimpleTreeItem() override;
 
     QVariant data(int column, int role) const override;
     bool setData(int column, const QVariant &value, int role) override;

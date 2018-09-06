@@ -73,10 +73,6 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
 }
 
 
-MultiLineEdit::~MultiLineEdit()
-{
-}
-
 #if defined HAVE_SONNET && !defined HAVE_KDE
 Sonnet::Highlighter *MultiLineEdit::highlighter() const
 {

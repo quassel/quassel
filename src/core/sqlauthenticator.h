@@ -28,7 +28,6 @@ class SqlAuthenticator : public Authenticator
 
 public:
     SqlAuthenticator(QObject *parent = nullptr);
-    ~SqlAuthenticator() override;
 
 public slots:
     /* General */

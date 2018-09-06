@@ -124,7 +124,7 @@ private:
         BufferInfo bufferInfo;
         QString command;
         Command(BufferInfo info, QString command) : bufferInfo(std::move(info)), command(std::move(command)) {}
-        Command() {}
+        Command() = default;
     };
 
     QHash<int, Command> _delayedCommands;

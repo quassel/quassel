@@ -147,11 +147,6 @@ ChatScene::ChatScene(QAbstractItemModel *model, QString idString, qreal width, C
 }
 
 
-ChatScene::~ChatScene()
-{
-}
-
-
 ChatView *ChatScene::chatView() const
 {
     return _chatView;

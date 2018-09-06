@@ -42,7 +42,6 @@ class InputWidget : public AbstractItemView
 
 public:
     InputWidget(QWidget *parent = nullptr);
-    ~InputWidget() override;
 
     const Network *currentNetwork() const;
 
@@ -185,7 +184,6 @@ private:
         QHash<int, QString> tempHistory;
         qint32 idx{0};
         QString inputLine;
-        inline HistoryState()  {};
     };
 
     QMap<BufferId, HistoryState> historyMap;

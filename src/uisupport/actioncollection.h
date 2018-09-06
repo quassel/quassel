@@ -43,7 +43,6 @@ class UISUPPORT_EXPORT ActionCollection : public QObject
 
 public:
     explicit ActionCollection(QObject *parent);
-    ~ActionCollection() override;
 
     /// Clears the entire action collection, deleting all actions.
     void clear();

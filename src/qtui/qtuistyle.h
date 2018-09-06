@@ -30,7 +30,6 @@ class QtUiStyle : public UiStyle
 
 public:
     QtUiStyle(QObject *parent = nullptr);
-    ~QtUiStyle() override;
 
     virtual inline qreal firstColumnSeparator() const { return 6; }
     virtual inline qreal secondColumnSeparator() const { return 6; }
@@ -59,7 +58,7 @@ private slots:
      * Updates knowledge of the current timestamp format
      */
     void updateTimestampFormatString();
-    
+
     /**
      * Updates knowledge of how to display sender prefix modes
      */

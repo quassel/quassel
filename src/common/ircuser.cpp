@@ -52,11 +52,6 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
 }
 
 
-IrcUser::~IrcUser()
-{
-}
-
-
 // ====================
 //  PUBLIC:
 // ====================
