@@ -61,7 +61,7 @@ public:
         /**
          * Construct an empty highlight rule
          */
-        HighlightRule() {}
+        HighlightRule() = default;
 
         /**
          * Construct a highlight rule with the given parameters

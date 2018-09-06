@@ -27,11 +27,6 @@ CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::build
 }
 
 
-CoreSettings::~CoreSettings()
-{
-}
-
-
 void CoreSettings::setStorageSettings(const QVariant &data)
 {
     setLocalValue("StorageSettings", data);

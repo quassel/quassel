@@ -139,7 +139,6 @@ struct SetupFailed : public HandshakeMessage
 
 struct SetupDone : public HandshakeMessage
 {
-    inline SetupDone() {}
 };
 
 
@@ -164,14 +163,13 @@ struct LoginFailed : public HandshakeMessage
 
 struct LoginSuccess : public HandshakeMessage
 {
-    inline LoginSuccess() {}
 };
 
 
 // TODO: more generic format
 struct SessionState : public HandshakeMessage
 {
-    inline SessionState() {} // needed for QMetaType (for the mono client)
+    inline SessionState() = default; // needed for QMetaType (for the mono client)
     inline SessionState(QVariantList identities, QVariantList bufferInfos, QVariantList networkIds)
     : identities(std::move(identities)), bufferInfos(std::move(bufferInfos)), networkIds(std::move(networkIds)) {}
 

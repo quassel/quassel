@@ -33,7 +33,7 @@ class COMMON_EXPORT Event
 {
 public:
     explicit Event(EventManager::EventType type = EventManager::Invalid);
-    virtual ~Event() {}
+    virtual ~Event() = default;
 
     inline EventManager::EventType type() const { return _type; }
 

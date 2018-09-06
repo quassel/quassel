@@ -47,11 +47,6 @@ NetworkModelController::NetworkModelController(QObject *parent)
 }
 
 
-NetworkModelController::~NetworkModelController()
-{
-}
-
-
 Action *NetworkModelController::registerAction(ActionType type, const QString &text, bool checkable)
 {
     return registerAction(type, QPixmap(), text, checkable);

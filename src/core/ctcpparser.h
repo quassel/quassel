@@ -89,7 +89,7 @@ private:
         QString bufferName;
         QList<QByteArray> replies;
 
-        CtcpReply()  {}
+        CtcpReply() = default;
         CtcpReply(CoreNetwork *net, QString buf) : network(net), bufferName(std::move(buf)) {}
     };
 

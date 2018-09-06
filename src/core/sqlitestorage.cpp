@@ -34,11 +34,6 @@ SqliteStorage::SqliteStorage(QObject *parent)
 }
 
 
-SqliteStorage::~SqliteStorage()
-{
-}
-
-
 bool SqliteStorage::isAvailable() const
 {
     if (!QSqlDatabase::isDriverAvailable("QSQLITE")) return false;

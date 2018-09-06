@@ -32,11 +32,6 @@ DebugConsole::DebugConsole(QWidget *parent)
 }
 
 
-DebugConsole::~DebugConsole()
-{
-}
-
-
 void DebugConsole::on_evalButton_clicked()
 {
     if (ui.selectCore->isChecked()) {

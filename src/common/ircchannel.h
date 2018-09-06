@@ -45,7 +45,6 @@ class COMMON_EXPORT IrcChannel : public SyncableObject
 
 public :
     IrcChannel(const QString &channelname, Network *network);
-    ~IrcChannel() override;
 
     bool isKnownUser(IrcUser *ircuser) const;
     bool isValidChannelUserMode(const QString &mode) const;

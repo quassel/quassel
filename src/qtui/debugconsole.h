@@ -29,7 +29,6 @@ class DebugConsole : public QDialog
 
 public:
     DebugConsole(QWidget *parent = nullptr);
-    ~DebugConsole() override;
 
 public slots:
     void scriptResult(QString result);

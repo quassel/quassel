@@ -37,11 +37,6 @@ ClientSettings::ClientSettings(QString g) : Settings(g, Quassel::buildInfo().cli
 }
 
 
-ClientSettings::~ClientSettings()
-{
-}
-
-
 /***********************************************************************************************/
 
 CoreAccountSettings::CoreAccountSettings(QString subgroup)

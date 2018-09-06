@@ -66,7 +66,7 @@ public:
         /**
          * Construct an empty ignore rule
          */
-        IgnoreListItem() {}
+        IgnoreListItem() = default;
 
         /**
          * Construct an ignore rule with the given parameters

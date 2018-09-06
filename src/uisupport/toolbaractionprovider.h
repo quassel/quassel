@@ -32,7 +32,6 @@ class UISUPPORT_EXPORT ToolBarActionProvider : public NetworkModelController
 
 public:
     ToolBarActionProvider(QObject *parent = nullptr);
-    ~ToolBarActionProvider() override;
 
     enum ToolBarType {
         MainToolBar,

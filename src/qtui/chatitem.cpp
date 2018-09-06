@@ -949,11 +949,6 @@ ContentsChatItem::WrapColumnFinder::WrapColumnFinder(const ChatItem *_item)
 }
 
 
-ContentsChatItem::WrapColumnFinder::~WrapColumnFinder()
-{
-}
-
-
 qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn(qreal width)
 {
     if (wordidx >= wrapList.count())

@@ -32,11 +32,6 @@ PostgreSqlStorage::PostgreSqlStorage(QObject *parent)
 }
 
 
-PostgreSqlStorage::~PostgreSqlStorage()
-{
-}
-
-
 std::unique_ptr<AbstractSqlMigrationWriter> PostgreSqlStorage::createMigrationWriter()
 {
     auto writer = new PostgreSqlMigrationWriter();

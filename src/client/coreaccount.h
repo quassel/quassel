@@ -36,7 +36,7 @@ class CLIENT_EXPORT CoreAccount
 
 public:
     CoreAccount(AccountId accountId = 0);
-    virtual ~CoreAccount() {};
+    virtual ~CoreAccount() = default;
 
     inline bool isValid() const { return accountId().isValid(); }
     inline AccountId accountId() const { return _accountId; }

@@ -54,7 +54,6 @@ public:
     };
 
     inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};
-    ~AbstractNotificationBackend() override {};
 
     virtual void notify(const Notification &) = 0;
     virtual void close(uint notificationId) { Q_UNUSED(notificationId); }

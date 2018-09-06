@@ -35,7 +35,6 @@ class UISUPPORT_EXPORT AbstractBufferContainer : public AbstractItemView
 
 public:
     AbstractBufferContainer(QWidget *parent);
-    ~AbstractBufferContainer() override;
 
     inline BufferId currentBuffer() const { return _currentBuffer; }
 
@@ -83,6 +82,6 @@ private:
 class AbstractChatView
 {
 public:
-    virtual ~AbstractChatView() {};
+    virtual ~AbstractChatView() = default;
     virtual MsgId lastMsgId() const = 0;
 };

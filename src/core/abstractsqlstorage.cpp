@@ -400,10 +400,6 @@ AbstractSqlStorage::Connection::~Connection()
 // ========================================
 //  AbstractSqlMigrator
 // ========================================
-AbstractSqlMigrator::AbstractSqlMigrator()
-{
-}
-
 
 void AbstractSqlMigrator::newQuery(const QString &query, QSqlDatabase db)
 {

@@ -238,11 +238,6 @@ SimpleTreeItem::SimpleTreeItem(QList<QVariant> data, AbstractTreeItem *parent)
 }
 
 
-SimpleTreeItem::~SimpleTreeItem()
-{
-}
-
-
 QVariant SimpleTreeItem::data(int column, int role) const
 {
     if (column >= columnCount() || role != Qt::DisplayRole)

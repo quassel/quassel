@@ -62,7 +62,6 @@ class UISUPPORT_EXPORT SettingsPage : public QWidget
 
 public:
     SettingsPage(QString category, QString name, QWidget *parent = nullptr);
-    ~SettingsPage() override {};
 
     //! The category of this settings page.
     inline virtual QString category() const { return _category; }

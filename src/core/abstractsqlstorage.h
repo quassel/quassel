@@ -171,7 +171,6 @@ public:
         QString sender;
         QString realname;
         QString avatarurl;
-        SenderMO()  {}
     };
 
     struct IdentityMO {
@@ -307,8 +306,7 @@ public:
         CoreState
     };
 
-    AbstractSqlMigrator();
-    virtual ~AbstractSqlMigrator() {}
+    virtual ~AbstractSqlMigrator() = default;
 
     static QString migrationObject(MigrationObject moType);
 
