@@ -25,6 +25,7 @@
 #include "ircevent.h"
 
 #include <QUuid>
+#include <utility>
 
 class COMMON_EXPORT CtcpEvent : public IrcEvent
 {
@@ -34,14 +35,14 @@ public:
         Reply
     };
 
-    explicit CtcpEvent(EventManager::EventType type, Network *network, const QString &prefix, const QString &target,
-        CtcpType ctcpType, const QString &ctcpCmd, const QString &param,
+    explicit CtcpEvent(EventManager::EventType type, Network *network, const QString &prefix, QString target,
+        CtcpType ctcpType, QString ctcpCmd, QString param,
         const QDateTime &timestamp = QDateTime(), const QUuid &uuid = QUuid())
         : IrcEvent(type, network, prefix),
         _ctcpType(ctcpType),
-        _ctcpCmd(ctcpCmd),
-        _target(target),
-        _param(param),
+        _ctcpCmd(std::move(ctcpCmd)),
+        _target(std::move(target)),
+        _param(std::move(param)),
         _uuid(uuid)
     {
         setTimestamp(timestamp);

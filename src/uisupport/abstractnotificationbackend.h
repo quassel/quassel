@@ -24,6 +24,7 @@
 
 #include <QObject>
 #include <QString>
+#include <utility>
 
 #include "bufferinfo.h"
 
@@ -48,8 +49,8 @@ public:
         QString sender;
         QString message;
 
-        Notification(uint id_, BufferId buf_, NotificationType type_, const QString &sender_, const QString &msg_)
-            : notificationId(id_), bufferId(buf_), type(type_), sender(sender_), message(msg_) {};
+        Notification(uint id_, BufferId buf_, NotificationType type_, QString sender_, QString msg_)
+            : notificationId(id_), bufferId(buf_), type(type_), sender(std::move(sender_)), message(std::move(msg_)) {};
     };
 
     inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};

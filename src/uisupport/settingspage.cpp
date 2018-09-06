@@ -24,15 +24,16 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QVariant>
+#include <utility>
 
 #include "fontselector.h"
 
 #include "uisettings.h"
 
-SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent)
+SettingsPage::SettingsPage(QString category, QString title, QWidget *parent)
     : QWidget(parent),
-    _category(category),
-    _title(title),
+    _category(std::move(category)),
+    _title(std::move(title)),
     _changed(false),
     _autoWidgetsChanged(false)
 {

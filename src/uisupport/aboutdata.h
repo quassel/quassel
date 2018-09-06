@@ -48,7 +48,7 @@ public:
      * @param[in] emailAddress The person's email address, if applicable
      * @param[in] translatedLanguage The language the person helped translate (only applicable for translators)
      */
-    AboutPerson(const QString &name, const QString &nick, const QString &task, const QString &emailAddress = QString(), QLocale::Language translatedLanguage = QLocale::C);
+    AboutPerson(QString name, QString nick, QString task, QString emailAddress = QString(), QLocale::Language translatedLanguage = QLocale::C);
 
     /**
      * Gets the person's name.

@@ -22,6 +22,7 @@
 #define QTUIMESSAGEPROCESSOR_H_
 
 #include <QTimer>
+#include <utility>
 
 #include "abstractmessageprocessor.h"
 #include "expressionmatch.h"
@@ -89,8 +90,8 @@ private:
          */
         LegacyHighlightRule(QString contents, bool isRegEx, bool isCaseSensitive, bool isEnabled,
                       QString chanName)
-            : _contents(contents), _isRegEx(isRegEx), _isCaseSensitive(isCaseSensitive),
-              _isEnabled(isEnabled), _chanName(chanName)
+            : _contents(std::move(contents)), _isRegEx(isRegEx), _isCaseSensitive(isCaseSensitive),
+              _isEnabled(isEnabled), _chanName(std::move(chanName))
         {
             _cacheInvalid = true;
             // Cache expression matches on construction

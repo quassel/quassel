@@ -34,7 +34,7 @@ class COMMON_EXPORT BasicHandler : public QObject
 
 public:
     BasicHandler(QObject *parent = nullptr);
-    BasicHandler(const QString &methodPrefix, QObject *parent = nullptr);
+    BasicHandler(QString methodPrefix, QObject *parent = nullptr);
 
     QStringList providesHandlers();
 

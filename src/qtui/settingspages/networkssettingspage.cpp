@@ -21,6 +21,7 @@
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QTextCodec>
+#include <utility>
 
 #include "networkssettingspage.h"
 
@@ -1029,7 +1030,7 @@ IdentityId NetworksSettingsPage::defaultIdentity() const
 * NetworkAddDlg
 *************************************************************************/
 
-NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialog(parent), existing(exist)
+NetworkAddDlg::NetworkAddDlg(QStringList exist, QWidget *parent) : QDialog(parent), existing(std::move(exist))
 {
     ui.setupUi(this);
     ui.useSSL->setIcon(icon::get("document-encrypt"));
@@ -1121,7 +1122,7 @@ void NetworkAddDlg::updateSslPort(bool isChecked)
  * NetworkEditDlg
  *************************************************************************/
 
-NetworkEditDlg::NetworkEditDlg(const QString &old, const QStringList &exist, QWidget *parent) : QDialog(parent), existing(exist)
+NetworkEditDlg::NetworkEditDlg(const QString &old, QStringList exist, QWidget *parent) : QDialog(parent), existing(std::move(exist))
 {
     ui.setupUi(this);
 

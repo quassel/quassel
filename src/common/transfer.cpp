@@ -20,6 +20,8 @@
 
 #include "transfer.h"
 
+#include <utility>
+
 Transfer::Transfer(const QUuid &uuid, QObject *parent)
     : SyncableObject(parent),
     _status(Status::New),
@@ -31,15 +33,15 @@ Transfer::Transfer(const QUuid &uuid, QObject *parent)
     init();
 }
 
-Transfer::Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
+Transfer::Transfer(Direction direction, QString nick, QString fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
     : SyncableObject(parent),
     _status(Status::New),
     _direction(direction),
-    _fileName(fileName),
+    _fileName(std::move(fileName)),
     _address(address),
     _port(port),
     _fileSize(fileSize),
-    _nick(nick),
+    _nick(std::move(nick)),
     _uuid(QUuid::createUuid())
 {
     init();

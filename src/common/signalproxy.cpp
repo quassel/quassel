@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <utility>
+
 #include <QCoreApplication>
 #include <QHostAddress>
 #include <QMetaMethod>
@@ -69,7 +71,7 @@ private:
         QObject *sender;
         int signalId;
         QByteArray signature;
-        Signal(QObject *sender, int sigId, const QByteArray &signature) : sender(sender), signalId(sigId), signature(signature) {}
+        Signal(QObject *sender, int sigId, QByteArray signature) : sender(sender), signalId(sigId), signature(std::move(signature)) {}
         Signal() : sender(nullptr), signalId(-1) {}
     };
 

@@ -22,6 +22,7 @@
 
 #include <QDebug>
 #include <QMetaMethod>
+#include <utility>
 
 BasicHandler::BasicHandler(QObject *parent)
     : QObject(parent),
@@ -32,11 +33,11 @@ BasicHandler::BasicHandler(QObject *parent)
 }
 
 
-BasicHandler::BasicHandler(const QString &methodPrefix, QObject *parent)
+BasicHandler::BasicHandler(QString methodPrefix, QObject *parent)
     : QObject(parent),
     _defaultHandler(-1),
     _initDone(false),
-    _methodPrefix(methodPrefix)
+    _methodPrefix(std::move(methodPrefix))
 {
 }
 

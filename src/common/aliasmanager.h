@@ -23,6 +23,7 @@
 #include "common-export.h"
 
 #include <QVariantMap>
+#include <utility>
 
 #include "bufferinfo.h"
 #include "syncableobject.h"
@@ -41,7 +42,7 @@ public:
     struct Alias {
         QString name;
         QString expansion;
-        Alias(const QString &name_, const QString &expansion_) : name(name_), expansion(expansion_) {}
+        Alias(QString name_, QString expansion_) : name(std::move(name_)), expansion(std::move(expansion_)) {}
     };
     using AliasList = QList<Alias>;
 

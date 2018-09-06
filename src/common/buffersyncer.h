@@ -33,7 +33,7 @@ class COMMON_EXPORT BufferSyncer : public SyncableObject
 
 public:
     explicit BufferSyncer(QObject *parent);
-    explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, const QHash<BufferId, MsgId> &markerLines, const QHash<BufferId, Message::Types> &activities, const QHash<BufferId, int> &highlightCounts, QObject *parent);
+    explicit BufferSyncer(QHash<BufferId, MsgId> lastSeenMsg, QHash<BufferId, MsgId> markerLines, QHash<BufferId, Message::Types> activities, QHash<BufferId, int> highlightCounts, QObject *parent);
 
     MsgId lastSeenMsg(BufferId buffer) const;
     MsgId markerLine(BufferId buffer) const;

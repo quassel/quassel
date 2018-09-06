@@ -22,6 +22,7 @@
 
 #include <QAbstractItemView>
 #include <QMimeData>
+#include <utility>
 
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -282,9 +283,9 @@ void NetworkItem::onNetworkDestroyed()
 /*****************************************
 *  Fancy Buffer Items
 *****************************************/
-BufferItem::BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent)
+BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
     : PropertyMapItem(parent),
-    _bufferInfo(bufferInfo),
+    _bufferInfo(std::move(bufferInfo)),
     _activity(BufferInfo::NoActivity)
 {
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);

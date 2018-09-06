@@ -25,6 +25,7 @@
 #include <QString>
 #include <QStringList>
 #include <QRegExp>
+#include <utility>
 
 #include "expressionmatch.h"
 #include "message.h"
@@ -81,11 +82,11 @@ public:
          * @param scopeRule        String representing a scope rule expression to match
          * @param isEnabled        True if enabled, otherwise false
          */
-        IgnoreListItem(IgnoreType type, const QString &contents, bool isRegEx,
-                       StrictnessType strictness, ScopeType scope, const QString &scopeRule,
+        IgnoreListItem(IgnoreType type, QString contents, bool isRegEx,
+                       StrictnessType strictness, ScopeType scope, QString scopeRule,
                        bool isEnabled)
-            : _contents(contents), _isRegEx(isRegEx), _strictness(strictness),
-              _scope(scope), _scopeRule(scopeRule), _isEnabled(isEnabled)
+            : _contents(std::move(contents)), _isRegEx(isRegEx), _strictness(strictness),
+              _scope(scope), _scopeRule(std::move(scopeRule)), _isEnabled(isEnabled)
         {
             // Allow passing empty "contents" as they can happen when editing an ignore rule
 

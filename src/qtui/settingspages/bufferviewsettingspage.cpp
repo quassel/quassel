@@ -21,6 +21,7 @@
 #include "bufferviewsettingspage.h"
 
 #include <QMessageBox>
+#include <utility>
 
 #include "buffermodel.h"
 #include "bufferviewconfig.h"
@@ -576,7 +577,7 @@ BufferViewConfig *BufferViewSettingsPage::configForDisplay(BufferViewConfig *con
 /**************************************************************************
  * BufferViewEditDlg
  *************************************************************************/
-BufferViewEditDlg::BufferViewEditDlg(const QString &old, const QStringList &exist, QWidget *parent) : QDialog(parent), existing(exist)
+BufferViewEditDlg::BufferViewEditDlg(const QString &old, QStringList exist, QWidget *parent) : QDialog(parent), existing(std::move(exist))
 {
     ui.setupUi(this);
 

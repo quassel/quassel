@@ -22,6 +22,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <utility>
 
 #include "quassel.h"
 
@@ -230,9 +231,9 @@ void AbstractTreeItem::dumpChildList()
 /*****************************************
  * SimpleTreeItem
  *****************************************/
-SimpleTreeItem::SimpleTreeItem(const QList<QVariant> &data, AbstractTreeItem *parent)
+SimpleTreeItem::SimpleTreeItem(QList<QVariant> data, AbstractTreeItem *parent)
     : AbstractTreeItem(parent),
-    _itemData(data)
+    _itemData(std::move(data))
 {
 }
 

@@ -61,7 +61,7 @@ class UISUPPORT_EXPORT SettingsPage : public QWidget
     Q_OBJECT
 
 public:
-    SettingsPage(const QString &category, const QString &name, QWidget *parent = nullptr);
+    SettingsPage(QString category, QString name, QWidget *parent = nullptr);
     ~SettingsPage() override {};
 
     //! The category of this settings page.

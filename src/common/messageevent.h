@@ -33,9 +33,9 @@ class COMMON_EXPORT MessageEvent : public NetworkEvent
 public:
     explicit MessageEvent(Message::Type msgType,
         Network *network,
-        const QString &msg,
+        QString msg,
         const QString &sender = QString(),
-        const QString &target = QString(),
+        QString target = QString(),
         Message::Flags msgFlags = Message::None,
         const QDateTime &timestamp = QDateTime()
         );

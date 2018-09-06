@@ -20,6 +20,8 @@
 
 #include "chatscene.h"
 
+#include <utility>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
@@ -56,10 +58,10 @@
 
 const qreal minContentsWidth = 200;
 
-ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent)
+ChatScene::ChatScene(QAbstractItemModel *model, QString idString, qreal width, ChatView *parent)
     : QGraphicsScene(0, 0, width, 0, (QObject *)parent),
     _chatView(parent),
-    _idString(idString),
+    _idString(std::move(idString)),
     _model(model),
     _singleBufferId(BufferId()),
     _sceneRect(0, 0, width, 0),

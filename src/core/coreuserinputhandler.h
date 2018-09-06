@@ -21,6 +21,8 @@
 #ifndef COREUSERINPUTHANDLER_H
 #define COREUSERINPUTHANDLER_H
 
+#include <utility>
+
 #include "corebasichandler.h"
 #include "corenetwork.h"
 
@@ -121,7 +123,7 @@ private:
     struct Command {
         BufferInfo bufferInfo;
         QString command;
-        Command(const BufferInfo &info, const QString &command) : bufferInfo(info), command(command) {}
+        Command(BufferInfo info, QString command) : bufferInfo(std::move(info)), command(std::move(command)) {}
         Command() {}
     };
 

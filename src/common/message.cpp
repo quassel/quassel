@@ -25,32 +25,33 @@
 #include "signalproxy.h"
 
 #include <QDataStream>
+#include <utility>
 
-Message::Message(const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender,
-                 const QString &senderPrefixes, const QString &realName, const QString &avatarUrl, Flags flags)
+Message::Message(BufferInfo bufferInfo, Type type, QString contents, QString sender,
+                 QString senderPrefixes, QString realName, QString avatarUrl, Flags flags)
     : _timestamp(QDateTime::currentDateTime().toUTC()),
-    _bufferInfo(bufferInfo),
-    _contents(contents),
-    _sender(sender),
-    _senderPrefixes(senderPrefixes),
-    _realName(realName),
-    _avatarUrl(avatarUrl),
+    _bufferInfo(std::move(bufferInfo)),
+    _contents(std::move(contents)),
+    _sender(std::move(sender)),
+    _senderPrefixes(std::move(senderPrefixes)),
+    _realName(std::move(realName)),
+    _avatarUrl(std::move(avatarUrl)),
     _type(type),
     _flags(flags)
 {
 }
 
 
-Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, const QString &contents,
-                 const QString &sender, const QString &senderPrefixes, const QString &realName,
-                 const QString &avatarUrl, Flags flags)
-    : _timestamp(ts),
-    _bufferInfo(bufferInfo),
-    _contents(contents),
-    _sender(sender),
-    _senderPrefixes(senderPrefixes),
-    _realName(realName),
-    _avatarUrl(avatarUrl),
+Message::Message(QDateTime ts, BufferInfo bufferInfo, Type type, QString contents,
+                 QString sender, QString senderPrefixes, QString realName,
+                 QString avatarUrl, Flags flags)
+    : _timestamp(std::move(ts)),
+    _bufferInfo(std::move(bufferInfo)),
+    _contents(std::move(contents)),
+    _sender(std::move(sender)),
+    _senderPrefixes(std::move(senderPrefixes)),
+    _realName(std::move(realName)),
+    _avatarUrl(std::move(avatarUrl)),
     _type(type),
     _flags(flags)
 {

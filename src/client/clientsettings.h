@@ -54,7 +54,7 @@ class CLIENT_EXPORT CoreAccountSettings : public ClientSettings
 {
 public:
     // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
-    CoreAccountSettings(const QString &subgroup = "General");
+    CoreAccountSettings(QString subgroup = "General");
 
     void notify(const QString &key, QObject *receiver, const char *slot) override;
 

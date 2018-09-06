@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include "common-export.h"
 
 #include "networkevent.h"
@@ -28,10 +30,10 @@
 class COMMON_EXPORT IrcEvent : public NetworkEvent
 {
 public:
-    explicit IrcEvent(EventManager::EventType type, Network *network, const QString &prefix, const QStringList &params = QStringList())
+    explicit IrcEvent(EventManager::EventType type, Network *network, QString prefix, QStringList params = QStringList())
         : NetworkEvent(type, network),
-        _prefix(prefix),
-        _params(params)
+        _prefix(std::move(prefix)),
+        _params(std::move(params))
     {}
 
     inline QString prefix() const { return _prefix; }
@@ -66,10 +68,10 @@ private:
 class COMMON_EXPORT IrcEventNumeric : public IrcEvent
 {
 public:
-    explicit IrcEventNumeric(uint number, Network *network, const QString &prefix, const QString &target, const QStringList &params = QStringList())
+    explicit IrcEventNumeric(uint number, Network *network, const QString &prefix, QString target, const QStringList &params = QStringList())
         : IrcEvent(EventManager::IrcEventNumeric, network, prefix, params),
         _number(number),
-        _target(target)
+        _target(std::move(target))
     {}
 
     inline uint number() const { return _number; }
@@ -104,10 +106,10 @@ class COMMON_EXPORT IrcEventRawMessage : public IrcEvent
 {
 public:
     explicit inline IrcEventRawMessage(EventManager::EventType type, Network *network,
-        const QByteArray &rawMessage, const QString &prefix, const QString &target,
+        QByteArray rawMessage, const QString &prefix, const QString &target,
         const QDateTime &timestamp = QDateTime())
         : IrcEvent(type, network, prefix, QStringList() << target),
-        _rawMessage(rawMessage)
+        _rawMessage(std::move(rawMessage))
     {
         setTimestamp(timestamp);
     }

@@ -23,6 +23,7 @@
 #include <QByteArray>
 #include <QDateTime>
 #include <QVariantList>
+#include <utility>
 
 #include "quassel.h"
 
@@ -58,10 +59,10 @@ struct HandshakeMessage {
 
 struct RegisterClient : public HandshakeMessage
 {
-    inline RegisterClient(Quassel::Features clientFeatures, const QString &clientVersion, const QString &buildDate, bool sslSupported = false)
+    inline RegisterClient(Quassel::Features clientFeatures, QString clientVersion, QString buildDate, bool sslSupported = false)
         : features(std::move(clientFeatures))
-        , clientVersion(clientVersion)
-        , buildDate(buildDate)
+        , clientVersion(std::move(clientVersion))
+        , buildDate(std::move(buildDate))
         , sslSupported(sslSupported)
     {}
 
@@ -76,8 +77,8 @@ struct RegisterClient : public HandshakeMessage
 
 struct ClientDenied : public HandshakeMessage
 {
-    inline ClientDenied(const QString &errorString)
-    : errorString(errorString) {}
+    inline ClientDenied(QString errorString)
+    : errorString(std::move(errorString)) {}
 
     QString errorString;
 };
@@ -85,11 +86,11 @@ struct ClientDenied : public HandshakeMessage
 
 struct ClientRegistered : public HandshakeMessage
 {
-    inline ClientRegistered(Quassel::Features coreFeatures, bool coreConfigured, const QVariantList &backendInfo, const QVariantList &authenticatorInfo, bool sslSupported)
+    inline ClientRegistered(Quassel::Features coreFeatures, bool coreConfigured, QVariantList backendInfo, QVariantList authenticatorInfo, bool sslSupported)
         : features(std::move(coreFeatures))
         , coreConfigured(coreConfigured)
-        , backendInfo(backendInfo)
-        , authenticatorInfo(authenticatorInfo)
+        , backendInfo(std::move(backendInfo))
+        , authenticatorInfo(std::move(authenticatorInfo))
         , sslSupported(sslSupported)
     {}
 
@@ -107,15 +108,15 @@ struct ClientRegistered : public HandshakeMessage
 
 struct SetupData : public HandshakeMessage
 {
-    inline SetupData(const QString &adminUser, const QString &adminPassword, const QString &backend,
-                     const QVariantMap &setupData, const QString &authenticator = QString(),
-                     const QVariantMap &authSetupData = QVariantMap())
-    : adminUser(adminUser)
-    , adminPassword(adminPassword)
-    , backend(backend)
-    , setupData(setupData)
-    , authenticator(authenticator)
-    , authSetupData(authSetupData)
+    inline SetupData(QString adminUser, QString adminPassword, QString backend,
+                     QVariantMap setupData, QString authenticator = QString(),
+                     QVariantMap authSetupData = QVariantMap())
+    : adminUser(std::move(adminUser))
+    , adminPassword(std::move(adminPassword))
+    , backend(std::move(backend))
+    , setupData(std::move(setupData))
+    , authenticator(std::move(authenticator))
+    , authSetupData(std::move(authSetupData))
     {}
 
     QString adminUser;
@@ -129,8 +130,8 @@ struct SetupData : public HandshakeMessage
 
 struct SetupFailed : public HandshakeMessage
 {
-    inline SetupFailed(const QString &errorString)
-    : errorString(errorString) {}
+    inline SetupFailed(QString errorString)
+    : errorString(std::move(errorString)) {}
 
     QString errorString;
 };
@@ -144,8 +145,8 @@ struct SetupDone : public HandshakeMessage
 
 struct Login : public HandshakeMessage
 {
-    inline Login(const QString &user, const QString &password)
-    : user(user), password(password) {}
+    inline Login(QString user, QString password)
+    : user(std::move(user)), password(std::move(password)) {}
 
     QString user;
     QString password;
@@ -154,8 +155,8 @@ struct Login : public HandshakeMessage
 
 struct LoginFailed : public HandshakeMessage
 {
-    inline LoginFailed(const QString &errorString)
-    : errorString(errorString) {}
+    inline LoginFailed(QString errorString)
+    : errorString(std::move(errorString)) {}
 
     QString errorString;
 };
@@ -171,8 +172,8 @@ struct LoginSuccess : public HandshakeMessage
 struct SessionState : public HandshakeMessage
 {
     inline SessionState() {} // needed for QMetaType (for the mono client)
-    inline SessionState(const QVariantList &identities, const QVariantList &bufferInfos, const QVariantList &networkIds)
-    : identities(identities), bufferInfos(bufferInfos), networkIds(networkIds) {}
+    inline SessionState(QVariantList identities, QVariantList bufferInfos, QVariantList networkIds)
+    : identities(std::move(identities)), bufferInfos(std::move(bufferInfos)), networkIds(std::move(networkIds)) {}
 
     QVariantList identities;
     QVariantList bufferInfos;
@@ -190,8 +191,8 @@ struct SignalProxyMessage
 struct SyncMessage : public SignalProxyMessage
 {
     SyncMessage() = default;
-    SyncMessage(const QByteArray &className, const QString &objectName, const QByteArray &slotName, const QVariantList &params)
-        : className(className), objectName(objectName), slotName(slotName), params(params) {}
+    SyncMessage(QByteArray className, QString objectName, QByteArray slotName, QVariantList params)
+        : className(std::move(className)), objectName(std::move(objectName)), slotName(std::move(slotName)), params(std::move(params)) {}
 
     QByteArray className;
     QString objectName;
@@ -203,8 +204,8 @@ struct SyncMessage : public SignalProxyMessage
 struct RpcCall : public SignalProxyMessage
 {
     RpcCall() = default;
-    RpcCall(const QByteArray &slotName, const QVariantList &params)
-        : slotName(slotName), params(params) {}
+    RpcCall(QByteArray slotName, QVariantList params)
+        : slotName(std::move(slotName)), params(std::move(params)) {}
 
     QByteArray slotName;
     QVariantList params;
@@ -214,8 +215,8 @@ struct RpcCall : public SignalProxyMessage
 struct InitRequest : public SignalProxyMessage
 {
     InitRequest() = default;
-    InitRequest(const QByteArray &className, const QString &objectName)
-        : className(className), objectName(objectName) {}
+    InitRequest(QByteArray className, QString objectName)
+        : className(std::move(className)), objectName(std::move(objectName)) {}
 
     QByteArray className;
     QString objectName;
@@ -225,8 +226,8 @@ struct InitRequest : public SignalProxyMessage
 struct InitData : public SignalProxyMessage
 {
     InitData() = default;
-    InitData(const QByteArray &className, const QString &objectName, const QVariantMap &initData)
-        : className(className), objectName(objectName), initData(initData) {}
+    InitData(QByteArray className, QString objectName, QVariantMap initData)
+        : className(std::move(className)), objectName(std::move(objectName)), initData(std::move(initData)) {}
 
     QByteArray className;
     QString objectName;
@@ -238,7 +239,7 @@ struct InitData : public SignalProxyMessage
 
 struct HeartBeat
 {
-    inline HeartBeat(const QDateTime &timestamp) : timestamp(timestamp) {}
+    inline HeartBeat(QDateTime timestamp) : timestamp(std::move(timestamp)) {}
 
     QDateTime timestamp;
 };
@@ -246,7 +247,7 @@ struct HeartBeat
 
 struct HeartBeatReply
 {
-    inline HeartBeatReply(const QDateTime &timestamp) : timestamp(timestamp) {}
+    inline HeartBeatReply(QDateTime timestamp) : timestamp(std::move(timestamp)) {}
 
     QDateTime timestamp;
 };

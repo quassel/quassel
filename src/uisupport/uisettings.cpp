@@ -20,6 +20,8 @@
 
 #include "uisettings.h"
 
+#include <utility>
+
 #include "action.h"
 #include "actioncollection.h"
 
@@ -70,8 +72,8 @@ QList<UiStyle::FormatType> UiStyleSettings::availableFormats()
  * SessionSettings
  **************************************************************************/
 
-SessionSettings::SessionSettings(const QString &sessionId, const QString &group)
-    : UiSettings(group), _sessionId(sessionId)
+SessionSettings::SessionSettings(QString sessionId, const QString &group)
+    : UiSettings(group), _sessionId(std::move(sessionId))
 {
 }
 
