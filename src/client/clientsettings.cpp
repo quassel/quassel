@@ -25,6 +25,7 @@
 #include <QHostAddress>
 #ifdef HAVE_SSL
 #include <QSslSocket>
+#include <utility>
 #endif
 
 #include "client.h"
@@ -42,9 +43,9 @@ ClientSettings::~ClientSettings()
 
 /***********************************************************************************************/
 
-CoreAccountSettings::CoreAccountSettings(const QString &subgroup)
+CoreAccountSettings::CoreAccountSettings(QString subgroup)
     : ClientSettings("CoreAccounts"),
-    _subgroup(subgroup)
+    _subgroup(std::move(subgroup))
 {
 }
 

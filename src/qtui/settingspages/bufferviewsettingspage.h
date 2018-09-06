@@ -94,7 +94,7 @@ class BufferViewEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    BufferViewEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = nullptr);
+    BufferViewEditDlg(const QString &old, QStringList existing = QStringList(), QWidget *parent = nullptr);
 
     inline QString bufferViewName() const { return ui.bufferViewEdit->text(); }
 

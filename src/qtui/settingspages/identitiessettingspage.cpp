@@ -22,6 +22,7 @@
 
 #include <QInputDialog>
 #include <QMessageBox>
+#include <utility>
 
 #include "client.h"
 #include "icon.h"
@@ -464,8 +465,8 @@ void SaveIdentitiesDlg::clientEvent()
 
 /*************************************************************************************************/
 
-NickEditDlg::NickEditDlg(const QString &old, const QStringList &exist, QWidget *parent)
-    : QDialog(parent), oldNick(old), existing(exist)
+NickEditDlg::NickEditDlg(const QString &old, QStringList exist, QWidget *parent)
+    : QDialog(parent), oldNick(old), existing(std::move(exist))
 {
     ui.setupUi(this);
 

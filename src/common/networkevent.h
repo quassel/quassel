@@ -22,6 +22,7 @@
 
 #include <QStringList>
 #include <QVariantList>
+#include <utility>
 
 #include "event.h"
 #include "network.h"
@@ -86,9 +87,9 @@ private:
 class COMMON_EXPORT NetworkDataEvent : public NetworkEvent
 {
 public:
-    explicit NetworkDataEvent(EventManager::EventType type, Network *network, const QByteArray &data)
+    explicit NetworkDataEvent(EventManager::EventType type, Network *network, QByteArray data)
         : NetworkEvent(type, network),
-        _data(data)
+        _data(std::move(data))
     {}
 
     inline QByteArray data() const { return _data; }
@@ -118,13 +119,13 @@ class COMMON_EXPORT NetworkSplitEvent : public NetworkEvent
 public:
     explicit NetworkSplitEvent(EventManager::EventType type,
         Network *network,
-        const QString &channel,
-        const QStringList &users,
-        const QString &quitMsg)
+        QString channel,
+        QStringList users,
+        QString quitMsg)
         : NetworkEvent(type, network),
-        _channel(channel),
-        _users(users),
-        _quitMsg(quitMsg)
+        _channel(std::move(channel)),
+        _users(std::move(users)),
+        _quitMsg(std::move(quitMsg))
     {}
 
     inline QString channel() const { return _channel; }

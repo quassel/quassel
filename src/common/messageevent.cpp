@@ -20,6 +20,8 @@
 
 #include "messageevent.h"
 
+#include <utility>
+
 Event *MessageEvent::create(EventManager::EventType type, QVariantMap &map, Network *network)
 {
     if (type == EventManager::MessageEvent)
@@ -29,13 +31,13 @@ Event *MessageEvent::create(EventManager::EventType type, QVariantMap &map, Netw
 }
 
 
-MessageEvent::MessageEvent(Message::Type msgType, Network *net, const QString &msg, const QString &sender, const QString &target,
+MessageEvent::MessageEvent(Message::Type msgType, Network *net, QString msg, const QString &sender, QString target,
     Message::Flags flags, const QDateTime &timestamp)
     : NetworkEvent(EventManager::MessageEvent, net),
     _msgType(msgType),
-    _text(msg),
+    _text(std::move(msg)),
     _sender(sender),
-    _target(target),
+    _target(std::move(target)),
     _msgFlags(flags)
 {
     IrcChannel *channel = network()->ircChannel(_target);

@@ -21,6 +21,8 @@
 #ifndef KEYEVENT_H
 #define KEYEVENT_H
 
+#include <utility>
+
 #include "ircevent.h"
 
 class KeyEvent : public IrcEvent
@@ -31,13 +33,13 @@ public:
         Finish
     };
 
-    explicit KeyEvent(EventManager::EventType type, Network *network, const QString &prefix, const QString &target,
-        ExchangeType exchangeType, const QByteArray &key,
+    explicit KeyEvent(EventManager::EventType type, Network *network, const QString &prefix, QString target,
+        ExchangeType exchangeType, QByteArray key,
         const QDateTime &timestamp = QDateTime())
         : IrcEvent(type, network, prefix),
         _exchangeType(exchangeType),
-        _target(target),
-        _key(key)
+        _target(std::move(target)),
+        _key(std::move(key))
     {
         setTimestamp(timestamp);
     }

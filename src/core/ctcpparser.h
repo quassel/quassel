@@ -22,6 +22,7 @@
 #define CTCPPARSER_H
 
 #include <QUuid>
+#include <utility>
 
 #include "corenetwork.h"
 #include "eventmanager.h"
@@ -89,7 +90,7 @@ private:
         QList<QByteArray> replies;
 
         CtcpReply() : network(nullptr) {}
-        CtcpReply(CoreNetwork *net, const QString &buf) : network(net), bufferName(buf) {}
+        CtcpReply(CoreNetwork *net, QString buf) : network(net), bufferName(std::move(buf)) {}
     };
 
     QHash<QUuid, CtcpReply> _replies;

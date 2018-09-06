@@ -109,7 +109,7 @@ class BufferItem : public PropertyMapItem
     Q_PROPERTY(int nickCount READ nickCount)
 
 public :
-    BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent = nullptr);
+    BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent = nullptr);
 
     QStringList propertyOrder() const override;
 

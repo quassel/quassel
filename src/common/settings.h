@@ -27,6 +27,7 @@
 #include <QSettings>
 #include <QString>
 #include <QVariant>
+#include <utility>
 
 #include "quassel.h"
 
@@ -99,7 +100,7 @@ public:
     bool isWritable();
 
 protected:
-    inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}
+    inline Settings(QString group_, QString appName_) : group(std::move(group_)), appName(std::move(appName_)) {}
     inline virtual ~Settings() {}
 
     inline void setGroup(const QString &group_) { group = group_; }

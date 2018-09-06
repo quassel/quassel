@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include "common-export.h"
 
 #include "syncableobject.h"
@@ -45,7 +47,7 @@ public:
         QString channelName;
         quint32 userCount;
         QString topic;
-        ChannelDescription(const QString &channelName_, quint32 userCount_, const QString &topic_) : channelName(channelName_), userCount(userCount_), topic(topic_) {};
+        ChannelDescription(QString channelName_, quint32 userCount_, QString topic_) : channelName(std::move(channelName_)), userCount(userCount_), topic(std::move(topic_)) {};
     };
 
 public slots:

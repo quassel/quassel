@@ -31,6 +31,7 @@
 #include <QPointer>
 #include <QMutex>
 #include <QByteArray>
+#include <utility>
 
 #include "types.h"
 #include "util.h"
@@ -134,9 +135,9 @@ public :
         Server() : port(6667), useSsl(false), sslVerify(true), sslVersion(0), useProxy(false),
             proxyType(QNetworkProxy::Socks5Proxy), proxyHost("localhost"), proxyPort(8080) {}
 
-        Server(const QString &host, uint port, const QString &password, bool useSsl,
+        Server(QString host, uint port, QString password, bool useSsl,
                bool sslVerify)
-            : host(host), port(port), password(password), useSsl(useSsl), sslVerify(sslVerify),
+            : host(std::move(host)), port(port), password(std::move(password)), useSsl(useSsl), sslVerify(sslVerify),
               sslVersion(0), useProxy(false), proxyType(QNetworkProxy::Socks5Proxy),
               proxyHost("localhost"), proxyPort(8080) {}
 

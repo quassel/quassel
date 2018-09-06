@@ -62,7 +62,7 @@ public:
     Q_ENUMS(Direction)
 
     Transfer(const QUuid &uuid, QObject *parent = nullptr); // for creating a syncable object client-side
-    Transfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = nullptr);
+    Transfer(Direction direction, QString nick, QString fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = nullptr);
 
     QUuid uuid() const;
     Status status() const;

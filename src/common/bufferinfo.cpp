@@ -22,6 +22,7 @@
 #include <QDataStream>
 #include <QDebug>
 #include <QByteArray>
+#include <utility>
 
 #include "bufferinfo.h"
 
@@ -42,7 +43,7 @@ BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, Type type, uint gid, Q
     _netid(networkid),
     _type(type),
     _groupId(gid),
-    _bufferName(buf)
+    _bufferName(std::move(buf))
 {
 }
 

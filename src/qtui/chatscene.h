@@ -72,7 +72,7 @@ public:
         TripleClick
     };
 
-    ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent);
+    ChatScene(QAbstractItemModel *model, QString idString, qreal width, ChatView *parent);
     ~ChatScene() override;
 
     inline QAbstractItemModel *model() const { return _model; }

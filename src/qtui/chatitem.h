@@ -31,6 +31,7 @@
 #include "qtui.h"
 
 #include <QTextLayout>
+#include <utility>
 
 class ChatLine;
 class ChatView;
@@ -249,7 +250,7 @@ struct ContentsChatItemPrivate {
     Clickable currentClickable;
     Clickable activeClickable;
 
-    ContentsChatItemPrivate(const ClickableList &c, ContentsChatItem *parent) : contentsItem(parent), clickables(c) {}
+    ContentsChatItemPrivate(ClickableList c, ContentsChatItem *parent) : contentsItem(parent), clickables(std::move(c)) {}
 };
 
 class ContentsChatItem::WrapColumnFinder

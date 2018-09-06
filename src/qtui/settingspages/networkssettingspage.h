@@ -166,7 +166,7 @@ class NetworkAddDlg : public QDialog
     Q_OBJECT
 
 public:
-    NetworkAddDlg(const QStringList &existing = QStringList(), QWidget *parent = nullptr);
+    NetworkAddDlg(QStringList existing = QStringList(), QWidget *parent = nullptr);
 
     NetworkInfo networkInfo() const;
 
@@ -195,7 +195,7 @@ class NetworkEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    NetworkEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = nullptr);
+    NetworkEditDlg(const QString &old, QStringList existing = QStringList(), QWidget *parent = nullptr);
 
     QString networkName() const;
 

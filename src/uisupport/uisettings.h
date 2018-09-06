@@ -62,7 +62,7 @@ public:
 class UISUPPORT_EXPORT SessionSettings : public UiSettings
 {
 public:
-    SessionSettings(const QString &sessionId, const QString &group = "Session");
+    SessionSettings(QString sessionId, const QString &group = "Session");
 
     void setValue(const QString &key, const QVariant &data) override;
     QVariant value(const QString &key, const QVariant &def = QVariant()) override;

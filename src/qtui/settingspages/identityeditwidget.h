@@ -98,7 +98,7 @@ class NickEditDlg : public QDialog
     Q_OBJECT
 
 public:
-    NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = nullptr);
+    NickEditDlg(const QString &oldnick, QStringList existing = QStringList(), QWidget *parent = nullptr);
 
     QString nick() const;
 

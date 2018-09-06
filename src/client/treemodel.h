@@ -106,7 +106,7 @@ class CLIENT_EXPORT SimpleTreeItem : public AbstractTreeItem
     Q_OBJECT
 
 public:
-    SimpleTreeItem(const QList<QVariant> &data, AbstractTreeItem *parent = nullptr);
+    SimpleTreeItem(QList<QVariant> data, AbstractTreeItem *parent = nullptr);
     ~SimpleTreeItem() override;
 
     QVariant data(int column, int role) const override;

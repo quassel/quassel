@@ -21,15 +21,16 @@
 #include "aboutdata.h"
 
 #include <QImage>
+#include <utility>
 
 #include "quassel.h"
 
 
-AboutPerson::AboutPerson(const QString &name, const QString &nick, const QString &task, const QString &emailAddress, QLocale::Language translatedLanguage)
-    : _name(name)
-    , _nick(nick)
-    , _task(task)
-    , _emailAddress(emailAddress)
+AboutPerson::AboutPerson(QString name, QString nick, QString task, QString emailAddress, QLocale::Language translatedLanguage)
+    : _name(std::move(name))
+    , _nick(std::move(nick))
+    , _task(std::move(task))
+    , _emailAddress(std::move(emailAddress))
     , _language(translatedLanguage)
 {
 

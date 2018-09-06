@@ -20,6 +20,8 @@
 
 #include "buffersyncer.h"
 
+#include <utility>
+
 BufferSyncer::BufferSyncer(QObject *parent)
     : SyncableObject(parent)
 {
@@ -27,16 +29,16 @@ BufferSyncer::BufferSyncer(QObject *parent)
 
 
 BufferSyncer::BufferSyncer(
-        const QHash<BufferId, MsgId> &lastSeenMsg,
-        const QHash<BufferId, MsgId> &markerLines,
-        const QHash<BufferId, Message::Types> &activities,
-        const QHash<BufferId, int> &highlightCounts,
+        QHash<BufferId, MsgId> lastSeenMsg,
+        QHash<BufferId, MsgId> markerLines,
+        QHash<BufferId, Message::Types> activities,
+        QHash<BufferId, int> highlightCounts,
         QObject *parent
 ) : SyncableObject(parent),
-    _lastSeenMsg(lastSeenMsg),
-    _markerLines(markerLines),
-    _bufferActivities(activities),
-    _highlightCounts(highlightCounts)
+    _lastSeenMsg(std::move(lastSeenMsg)),
+    _markerLines(std::move(markerLines)),
+    _bufferActivities(std::move(activities)),
+    _highlightCounts(std::move(highlightCounts))
 {
 }
 

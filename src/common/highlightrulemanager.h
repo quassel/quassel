@@ -77,8 +77,8 @@ public:
          */
         HighlightRule(int id, QString contents, bool isRegEx, bool isCaseSensitive, bool isEnabled,
                       bool isInverse, QString sender, QString chanName)
-            : _id(id), _contents(contents), _isRegEx(isRegEx), _isCaseSensitive(isCaseSensitive),
-              _isEnabled(isEnabled), _isInverse(isInverse), _sender(sender), _chanName(chanName)
+            : _id(id), _contents(std::move(contents)), _isRegEx(isRegEx), _isCaseSensitive(isCaseSensitive),
+              _isEnabled(isEnabled), _isInverse(isInverse), _sender(std::move(sender)), _chanName(std::move(chanName))
         {
             _cacheInvalid = true;
             // Cache expression matches on construction
