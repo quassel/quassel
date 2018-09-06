@@ -112,7 +112,7 @@ private:
 };
 
 
-typedef QList<Message> MessageList;
+using MessageList = QList<Message>;
 
 QDataStream &operator<<(QDataStream &out, const Message &msg);
 QDataStream &operator>>(QDataStream &in, Message &msg);

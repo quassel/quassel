@@ -35,7 +35,7 @@ struct DBusImageStruct {
     QByteArray data;
 };
 
-typedef QVector<DBusImageStruct> DBusImageVector;
+using DBusImageVector = QVector<DBusImageStruct>;
 
 struct DBusToolTipStruct {
     QString icon;

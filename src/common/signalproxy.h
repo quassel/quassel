@@ -195,12 +195,12 @@ private:
     SignalRelay *_signalRelay;
 
     // RPC function -> (object, slot ID)
-    typedef QPair<QObject *, int> MethodId;
-    typedef QMultiHash<QByteArray, MethodId> SlotHash;
+    using MethodId = QPair<QObject *, int>;
+    using SlotHash = QMultiHash<QByteArray, MethodId>;
     SlotHash _attachedSlots;
 
     // slaves for sync
-    typedef QHash<QString, SyncableObject *> ObjectId;
+    using ObjectId = QHash<QString, SyncableObject *>;
     QHash<QByteArray, ObjectId> _syncSlave;
 
     ProxyMode _proxyMode;

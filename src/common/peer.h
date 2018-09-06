@@ -114,7 +114,7 @@ private:
 };
 
 // We need to special-case Peer* in attached signals/slots, so typedef it for the meta type system
-typedef Peer * PeerPtr;
+using PeerPtr = Peer *;
 Q_DECLARE_METATYPE(PeerPtr)
 
 QDataStream &operator<<(QDataStream &out, PeerPtr ptr);

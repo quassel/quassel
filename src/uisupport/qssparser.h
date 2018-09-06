@@ -39,7 +39,7 @@ public:
     inline const QHash<UiStyle::ItemFormatType, QTextCharFormat> &listItemFormats() const { return _listItemFormats; }
 
 protected:
-    typedef QList<qreal> ColorTuple;
+    using ColorTuple = QList<qreal>;
 
     void parseChatLineBlock(const QString &decl, const QString &contents);
     void parsePaletteBlock(const QString &decl, const QString &contents);
