@@ -31,8 +31,6 @@
 BufferInfo::BufferInfo()
     : _bufferId(0),
     _netid(0),
-    _type(InvalidBuffer),
-    _groupId(0),
     _bufferName(QString())
 {
 }

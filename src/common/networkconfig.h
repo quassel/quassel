@@ -93,14 +93,14 @@ signals:
 //   void setAutoWhoDelayRequested(int);
 
 private:
-    bool _pingTimeoutEnabled;
-    int _pingInterval;
-    int _maxPingCount;
+    bool _pingTimeoutEnabled{true};
+    int _pingInterval{30};
+    int _maxPingCount{6};
 
-    bool _autoWhoEnabled;
-    int _autoWhoInterval;
-    int _autoWhoNickLimit;
-    int _autoWhoDelay;
+    bool _autoWhoEnabled{true};
+    int _autoWhoInterval{90};
+    int _autoWhoNickLimit{200};
+    int _autoWhoDelay{5};
 
-    bool _standardCtcp;
+    bool _standardCtcp{false};
 };

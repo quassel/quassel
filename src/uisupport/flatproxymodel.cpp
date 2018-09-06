@@ -24,8 +24,7 @@
 #include <QDebug>
 
 FlatProxyModel::FlatProxyModel(QObject *parent)
-    : QAbstractProxyModel(parent),
-    _rootSourceItem(nullptr)
+    : QAbstractProxyModel(parent)
 {
 }
 
@@ -683,9 +682,7 @@ void FlatProxyModel::checkChildCount(const QModelIndex &index, const SourceItem 
 //  SourceItem
 // ========================================
 FlatProxyModel::SourceItem::SourceItem(int row, SourceItem *parent)
-    : _parent(parent),
-    _pos(-1),
-    _next(nullptr)
+    : _parent(parent)
 {
     if (parent) {
         parent->_childs.insert(row, this);

@@ -183,9 +183,9 @@ private:
     struct HistoryState {
         QStringList history;
         QHash<int, QString> tempHistory;
-        qint32 idx;
+        qint32 idx{0};
         QString inputLine;
-        inline HistoryState() : idx(0) {};
+        inline HistoryState()  {};
     };
 
     QMap<BufferId, HistoryState> historyMap;

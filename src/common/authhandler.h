@@ -71,6 +71,6 @@ protected slots:
 private:
     void invalidMessage();
 
-    QTcpSocket *_socket; // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
-    bool _disconnectedSent;
+    QTcpSocket *_socket{nullptr}; // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
+    bool _disconnectedSent{false};
 };

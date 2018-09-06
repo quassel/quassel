@@ -134,7 +134,7 @@ private:
     QHash<NetworkId, NetworkInfo> networkInfos;
     bool _ignoreWidgetChanges;
 #ifdef HAVE_SSL
-    CertIdentity *_cid;
+    CertIdentity *_cid{nullptr};
 #endif
 
     QIcon connectedIcon, connectingIcon, disconnectedIcon;

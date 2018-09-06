@@ -73,7 +73,7 @@ private:
     QList<int> _childCount;
 
     class SourceItem;
-    SourceItem *_rootSourceItem;
+    SourceItem *_rootSourceItem{nullptr};
 
     void insertSubTree(const QModelIndex &source_idx, bool emitInsert = true);
     SourceItem *insertSubTreeHelper(SourceItem *parentItem, SourceItem *lastItem_, const QModelIndex &source_idx);
@@ -117,8 +117,8 @@ private:
 
     SourceItem *_parent;
     QList<SourceItem *> _childs;
-    int _pos;
-    SourceItem *_next;
+    int _pos{-1};
+    SourceItem *_next{nullptr};
 
     friend class FlatProxyModel;
 };

@@ -48,7 +48,7 @@ protected:
 private:
     const QHash<QString, int> &handlerHash();
     QHash<QString, int> _handlerHash;
-    int _defaultHandler;
-    bool _initDone;
+    int _defaultHandler{-1};
+    bool _initDone{false};
     QString _methodPrefix;
 };

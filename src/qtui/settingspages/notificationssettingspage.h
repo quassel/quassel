@@ -48,5 +48,5 @@ private slots:
 
 private:
     QList<SettingsPage *> _configWidgets;
-    bool _hasDefaults;
+    bool _hasDefaults{false};
 };

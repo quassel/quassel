@@ -23,9 +23,7 @@
 #include "authhandler.h"
 
 AuthHandler::AuthHandler(QObject *parent)
-    : QObject(parent),
-    _socket(nullptr),
-    _disconnectedSent(false)
+    : QObject(parent)
 {
 
 }

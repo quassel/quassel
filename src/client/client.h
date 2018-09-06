@@ -311,37 +311,37 @@ private:
 
     static void addNetwork(Network *);
 
-    SignalProxy *_signalProxy;
+    SignalProxy *_signalProxy{nullptr};
     std::unique_ptr<AbstractUi> _mainUi;
-    NetworkModel *_networkModel;
-    BufferModel *_bufferModel;
-    BufferSyncer *_bufferSyncer;
-    ClientAliasManager *_aliasManager;
-    ClientBacklogManager *_backlogManager;
-    ClientBufferViewManager *_bufferViewManager;
-    BufferViewOverlay *_bufferViewOverlay;
-    CoreInfo *_coreInfo;
-    DccConfig *_dccConfig;
-    ClientIrcListHelper *_ircListHelper;
-    ClientUserInputHandler *_inputHandler;
-    NetworkConfig *_networkConfig;
-    ClientIgnoreListManager *_ignoreListManager;
-    HighlightRuleManager *_highlightRuleManager;
-    ClientTransferManager *_transferManager;
-    TransferModel *_transferModel;
+    NetworkModel *_networkModel{nullptr};
+    BufferModel *_bufferModel{nullptr};
+    BufferSyncer *_bufferSyncer{nullptr};
+    ClientAliasManager *_aliasManager{nullptr};
+    ClientBacklogManager *_backlogManager{nullptr};
+    ClientBufferViewManager *_bufferViewManager{nullptr};
+    BufferViewOverlay *_bufferViewOverlay{nullptr};
+    CoreInfo *_coreInfo{nullptr};
+    DccConfig *_dccConfig{nullptr};
+    ClientIrcListHelper *_ircListHelper{nullptr};
+    ClientUserInputHandler *_inputHandler{nullptr};
+    NetworkConfig *_networkConfig{nullptr};
+    ClientIgnoreListManager *_ignoreListManager{nullptr};
+    HighlightRuleManager *_highlightRuleManager{nullptr};
+    ClientTransferManager *_transferManager{nullptr};
+    TransferModel *_transferModel{nullptr};
 
-    MessageModel *_messageModel;
-    AbstractMessageProcessor *_messageProcessor;
+    MessageModel *_messageModel{nullptr};
+    AbstractMessageProcessor *_messageProcessor{nullptr};
 
-    CoreAccountModel *_coreAccountModel;
-    CoreConnection *_coreConnection;
+    CoreAccountModel *_coreAccountModel{nullptr};
+    CoreConnection *_coreConnection{nullptr};
 
-    ClientMode clientMode;
+    ClientMode clientMode{};
 
     QHash<NetworkId, Network *> _networks;
     QHash<IdentityId, Identity *> _identities;
 
-    bool _connected;
+    bool _connected{false};
 
     QList<QPair<BufferInfo, QString> > _userInputBuffer;
 

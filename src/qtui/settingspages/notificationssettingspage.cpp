@@ -25,8 +25,7 @@
 #include "qtui.h"
 
 NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Notifications"), parent),
-    _hasDefaults(false)
+    : SettingsPage(tr("Interface"), tr("Notifications"), parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     foreach(AbstractNotificationBackend *backend, QtUi::notificationBackends()) {

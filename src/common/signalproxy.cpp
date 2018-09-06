@@ -68,11 +68,11 @@ public:
 
 private:
     struct Signal {
-        QObject *sender;
-        int signalId;
+        QObject *sender{nullptr};
+        int signalId{-1};
         QByteArray signature;
         Signal(QObject *sender, int sigId, QByteArray signature) : sender(sender), signalId(sigId), signature(std::move(signature)) {}
-        Signal() : sender(nullptr), signalId(-1) {}
+        Signal()  {}
     };
 
     SignalProxy *_proxy;

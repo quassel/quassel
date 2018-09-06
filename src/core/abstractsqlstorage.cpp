@@ -31,8 +31,7 @@
 
 int AbstractSqlStorage::_nextConnectionId = 0;
 AbstractSqlStorage::AbstractSqlStorage(QObject *parent)
-    : Storage(parent),
-    _schemaVersion(0)
+    : Storage(parent)
 {
 }
 
@@ -402,7 +401,6 @@ AbstractSqlStorage::Connection::~Connection()
 //  AbstractSqlMigrator
 // ========================================
 AbstractSqlMigrator::AbstractSqlMigrator()
-    : _query(nullptr)
 {
 }
 
@@ -489,8 +487,7 @@ void AbstractSqlMigrator::dumpStatus()
 //  AbstractSqlMigrationReader
 // ========================================
 AbstractSqlMigrationReader::AbstractSqlMigrationReader()
-    : AbstractSqlMigrator(),
-    _writer(nullptr)
+    : AbstractSqlMigrator()
 {
 }
 

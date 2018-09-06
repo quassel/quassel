@@ -31,17 +31,7 @@
 const int leftMargin = 3;
 
 MultiLineEdit::MultiLineEdit(QWidget *parent)
-    : MultiLineEditParent(parent),
-    _idx(0),
-    _mode(SingleLine),
-    _singleLine(true),
-    _minHeight(1),
-    _maxHeight(5),
-    _scrollBarsEnabled(true),
-    _pasteProtectionEnabled(true),
-    _emacsMode(false),
-    _completionSpace(0),
-    _lastDocumentHeight(-1)
+    : MultiLineEditParent(parent)
 {
     document()->setDocumentMargin(0);
 

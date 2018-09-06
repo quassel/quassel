@@ -155,7 +155,7 @@ private:
     QSqlQuery prepareAndExecuteQuery(const QString &queryname, QSqlDatabase &db) { return prepareAndExecuteQuery(queryname, QString(), db); }
 
     QString _hostName;
-    int _port;
+    int _port{-1};
     QString _databaseName;
     QString _userName;
     QString _password;

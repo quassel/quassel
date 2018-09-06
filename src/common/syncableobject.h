@@ -109,8 +109,8 @@ private:
 
     bool setInitValue(const QString &property, const QVariant &value);
 
-    bool _initialized;
-    bool _allowClientUpdates;
+    bool _initialized{false};
+    bool _allowClientUpdates{false};
 
     QList<SignalProxy *> _signalProxies;
 

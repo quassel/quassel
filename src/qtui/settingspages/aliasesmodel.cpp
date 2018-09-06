@@ -27,9 +27,7 @@
 #include "signalproxy.h"
 
 AliasesModel::AliasesModel(QObject *parent)
-    : QAbstractItemModel(parent),
-    _configChanged(false),
-    _modelReady(false)
+    : QAbstractItemModel(parent)
 {
     // we need this signal for future connects to reset the data;
     connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));

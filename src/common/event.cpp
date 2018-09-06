@@ -27,14 +27,12 @@
 
 Event::Event(EventManager::EventType type)
     : _type(type)
-    , _valid(true)
 {
 }
 
 
 Event::Event(EventManager::EventType type, QVariantMap &map)
     : _type(type)
-    , _valid(true)
 {
     if (!map.contains("flags") || !map.contains("timestamp")) {
         qWarning() << "Received invalid serialized event:" << map;

@@ -76,10 +76,10 @@ private:
     bool isShiftAsModifierAllowed(int keyQt) const;
     bool isKeySequenceAvailable(const QKeySequence &seq);
 
-    ShortcutsModel *_shortcutsModel;
-    bool _isRecording;
+    ShortcutsModel *_shortcutsModel{nullptr};
+    bool _isRecording{false};
     QKeySequence _keySequence, _oldKeySequence;
-    uint _modifierKeys;
+    uint _modifierKeys{0};
     QModelIndex _conflictingIndex;
 
     KeySequenceButton *_keyButton;

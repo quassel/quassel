@@ -185,9 +185,9 @@ private:
     QHash<ActionType, Action *> _actionByType;
 
     QList<QModelIndex> _indexList;
-    MessageFilter *_messageFilter;
+    MessageFilter *_messageFilter{nullptr};
     QString _contextItem; ///< Channel name or nick to provide context menu for
-    QObject *_receiver;
+    QObject *_receiver{nullptr};
     const char *_method;
 };
 

@@ -34,8 +34,7 @@
 #include "systemtray.h"
 
 SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
-    : AbstractNotificationBackend(parent),
-    _blockActivation(false)
+    : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
     notificationSettings.initAndNotify("Systray/ShowBubble", this, SLOT(showBubbleChanged(QVariant)), true);

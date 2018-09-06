@@ -29,8 +29,7 @@
 #include "oidentdconfiggenerator.h"
 
 OidentdConfigGenerator::OidentdConfigGenerator(QObject *parent) :
-    QObject(parent),
-    _initialized(false)
+    QObject(parent)
 {
     if (!_initialized)
         init();

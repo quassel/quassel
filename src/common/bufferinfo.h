@@ -67,8 +67,8 @@ public:
 private:
     BufferId _bufferId;
     NetworkId _netid;
-    Type _type;
-    uint _groupId;
+    Type _type{InvalidBuffer};
+    uint _groupId{0};
     QString _bufferName;
 
     friend uint qHash(const BufferInfo &);

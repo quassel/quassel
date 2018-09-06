@@ -59,8 +59,8 @@ private slots:
     void markClean();
 
 private:
-    ClientCertManager *_certManager;
-    bool _isDirty;
+    ClientCertManager *_certManager{nullptr};
+    bool _isDirty{false};
     QSslKey _sslKey;
     QSslCertificate _sslCert;
 #endif //HAVE_SSL

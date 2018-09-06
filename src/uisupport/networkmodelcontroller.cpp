@@ -41,9 +41,7 @@
 
 NetworkModelController::NetworkModelController(QObject *parent)
     : QObject(parent),
-    _actionCollection(new ActionCollection(this)),
-    _messageFilter(nullptr),
-    _receiver(nullptr)
+    _actionCollection(new ActionCollection(this))
 {
     connect(_actionCollection, SIGNAL(actionTriggered(QAction *)), SLOT(actionTriggered(QAction *)));
 }

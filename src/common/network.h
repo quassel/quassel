@@ -117,28 +117,27 @@ public :
 
     struct Server {
         QString host;
-        uint port;
+        uint port{6667};
         QString password;
-        bool useSsl;
-        bool sslVerify;     /// If true, validate SSL certificates
-        int sslVersion;
+        bool useSsl{false};
+        bool sslVerify{true};     /// If true, validate SSL certificates
+        int sslVersion{0};
 
-        bool useProxy;
-        int proxyType;
+        bool useProxy{false};
+        int proxyType{QNetworkProxy::Socks5Proxy};
         QString proxyHost;
-        uint proxyPort;
+        uint proxyPort{8080};
         QString proxyUser;
         QString proxyPass;
 
         // sslVerify only applies when useSsl is true.  sslVerify should be enabled by default,
         // so enabling useSsl offers a more secure default.
-        Server() : port(6667), useSsl(false), sslVerify(true), sslVersion(0), useProxy(false),
-            proxyType(QNetworkProxy::Socks5Proxy), proxyHost("localhost"), proxyPort(8080) {}
+        Server() :  proxyHost("localhost") {}
 
         Server(QString host, uint port, QString password, bool useSsl,
                bool sslVerify)
             : host(std::move(host)), port(port), password(std::move(password)), useSsl(useSsl), sslVerify(sslVerify),
-              sslVersion(0), useProxy(false), proxyType(QNetworkProxy::Socks5Proxy),
+               proxyType(QNetworkProxy::Socks5Proxy),
               proxyHost("localhost"), proxyPort(8080) {}
 
         bool operator==(const Server &other) const;

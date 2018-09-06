@@ -72,7 +72,7 @@ private:
     bool parseConfig(bool readQuasselStanzas = false);
     bool lineByUs(const QByteArray &line);
 
-    bool _initialized;
+    bool _initialized{false};
     bool _strict;
     QDateTime _lastSync;
     QFile *_configFile;

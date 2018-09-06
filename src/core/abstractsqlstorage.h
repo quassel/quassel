@@ -112,7 +112,7 @@ private:
     void addConnectionToPool();
     void dbConnect(QSqlDatabase &db);
 
-    int _schemaVersion;
+    int _schemaVersion{0};
     bool _debug;
 
     static int _nextConnectionId;
@@ -167,11 +167,11 @@ public:
     };
 
     struct SenderMO {
-        qint64 senderId;
+        qint64 senderId{0};
         QString sender;
         QString realname;
         QString avatarurl;
-        SenderMO() : senderId(0) {}
+        SenderMO()  {}
     };
 
     struct IdentityMO {
@@ -332,7 +332,7 @@ protected:
     virtual bool commit() = 0;
 
 private:
-    QSqlQuery *_query;
+    QSqlQuery *_query{nullptr};
 };
 
 
@@ -360,7 +360,7 @@ private:
 
     template<typename T> bool transferMo(MigrationObject moType, T &mo);
 
-    AbstractSqlMigrationWriter *_writer;
+    AbstractSqlMigrationWriter *_writer{nullptr};
 };
 
 

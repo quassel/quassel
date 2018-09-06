@@ -2209,8 +2209,7 @@ bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount)
 //  SqliteMigration
 // ========================================
 SqliteMigrationReader::SqliteMigrationReader()
-    : SqliteStorage(),
-    _maxId(0)
+    : SqliteStorage()
 {
 }
 

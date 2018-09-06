@@ -40,9 +40,6 @@
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("Networks"), parent)
-#ifdef HAVE_SSL
-      , _cid(nullptr)
-#endif
 {
     ui.setupUi(this);
 

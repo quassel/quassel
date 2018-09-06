@@ -52,7 +52,7 @@ private:
 
     bool _showBubble;
     QList<Notification> _notifications;
-    bool _blockActivation;
+    bool _blockActivation{false};
 };
 
 

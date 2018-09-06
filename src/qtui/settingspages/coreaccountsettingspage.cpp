@@ -28,8 +28,7 @@
 CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
     : SettingsPage(tr("Remote Cores"), QString(), parent),
     _lastAccountId(0),
-    _lastAutoConnectId(0),
-    _standalone(false)
+    _lastAutoConnectId(0)
 {
     ui.setupUi(this);
     initAutoWidgets();

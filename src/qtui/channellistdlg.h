@@ -78,12 +78,12 @@ private:
 
     Ui::ChannelListDlg ui;
 
-    bool _listFinished;
+    bool _listFinished{true};
     NetworkId _netId;
     IrcListModel _ircListModel;
     QSortFilterProxyModel _sortFilter;
-    QSpacerItem *_simpleModeSpacer;
-    bool _advancedMode;
+    QSpacerItem *_simpleModeSpacer{nullptr};
+    bool _advancedMode{false};
 };
 
 
