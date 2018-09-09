@@ -255,7 +255,7 @@ QModelIndex AliasesModel::index(int row, int column, const QModelIndex &parent) 
 {
     Q_UNUSED(parent);
     if (row >= rowCount() || column >= columnCount())
-        return QModelIndex();
+        return {};
 
     return createIndex(row, column);
 }

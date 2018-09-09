@@ -131,7 +131,7 @@ UserId LdapAuthenticator::validateUser(const QString &username, const QString &p
 {
     bool result = ldapAuth(username, password);
     if (!result) {
-        return UserId();
+        return {};
     }
 
     // LDAP is case-insensitive, thus we will lowercase the username, in spite of

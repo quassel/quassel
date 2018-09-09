@@ -30,7 +30,7 @@ QSize ResizingStackedWidget::sizeHint() const
 {
     QWidget *widget = currentWidget();
     if (!widget)
-        return QSize();
+        return {};
     return widget->sizeHint();
 }
 

@@ -352,7 +352,7 @@ AbstractTreeItem *TreeModel::root() const
 QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (row < 0 || row >= rowCount(parent) || column < 0 || column >= columnCount(parent))
-        return QModelIndex();
+        return {};
 
     AbstractTreeItem *parentItem;
 
@@ -366,7 +366,7 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
     if (childItem)
         return createIndex(row, column, childItem);
     else
-        return QModelIndex();
+        return {};
 }
 
 
@@ -374,11 +374,11 @@ QModelIndex TreeModel::indexByItem(AbstractTreeItem *item) const
 {
     if (item == nullptr) {
         qWarning() << "TreeModel::indexByItem(AbstractTreeItem *item) received NULL-Pointer";
-        return QModelIndex();
+        return {};
     }
 
     if (item == rootItem)
-        return QModelIndex();
+        return {};
     else
         return createIndex(item->row(), 0, item);
 }
@@ -389,7 +389,7 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
     if (!index.isValid()) {
         // ModelTest does this
         // qWarning() << "TreeModel::parent(): has been asked for the rootItems Parent!";
-        return QModelIndex();
+        return {};
     }
 
     auto *childItem = static_cast<AbstractTreeItem *>(index.internalPointer());
@@ -397,7 +397,7 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
 
     Q_ASSERT(parentItem);
     if (parentItem == rootItem)
-        return QModelIndex();
+        return {};
 
     return createIndex(parentItem->row(), 0, parentItem);
 }

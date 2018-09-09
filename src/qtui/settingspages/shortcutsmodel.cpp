@@ -59,13 +59,13 @@ ShortcutsModel::~ShortcutsModel()
 QModelIndex ShortcutsModel::parent(const QModelIndex &child) const
 {
     if (!child.isValid())
-        return QModelIndex();
+        return {};
 
     auto *item = static_cast<Item *>(child.internalPointer());
     Q_ASSERT(item);
 
     if (!item->parentItem)
-        return QModelIndex();
+        return {};
 
     return createIndex(item->parentItem->row, 0, item->parentItem);
 }

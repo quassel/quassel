@@ -139,11 +139,11 @@ BufferId NetworkModelController::findQueryBuffer(const QModelIndex &index, const
 {
     NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
     if (!networkId.isValid())
-        return BufferId();
+        return {};
 
     QString nick = predefinedNick.isEmpty() ? nickName(index) : predefinedNick;
     if (nick.isEmpty())
-        return BufferId();
+        return {};
 
     return findQueryBuffer(networkId, nick);
 }

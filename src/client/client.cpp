@@ -603,7 +603,7 @@ MsgId Client::markerLine(BufferId id)
 {
     if (id.isValid() && networkModel())
         return networkModel()->markerLineMsgId(id);
-    return MsgId();
+    return {};
 }
 
 

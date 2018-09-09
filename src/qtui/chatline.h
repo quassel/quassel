@@ -38,7 +38,7 @@ public:
 
     ~ChatLine() override;
 
-    inline QRectF boundingRect() const override { return QRectF(0, 0, _width, _height); }
+    inline QRectF boundingRect() const override { return {0, 0, _width, _height}; }
 
     inline QModelIndex index() const { return model()->index(row(), 0); }
     inline MsgId msgId() const { return index().data(MessageModel::MsgIdRole).value<MsgId>(); }

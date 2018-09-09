@@ -60,7 +60,7 @@ public:
     MessageModel(QObject *parent);
 
     inline QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-    inline QModelIndex parent(const QModelIndex &) const override { return QModelIndex(); }
+    inline QModelIndex parent(const QModelIndex &) const override { return {}; }
     inline int rowCount(const QModelIndex &parent = QModelIndex()) const override { return parent.isValid() ? 0 : messageCount(); }
     inline int columnCount(const QModelIndex & /*parent*/ = QModelIndex()) const override { return 3; }
 
@@ -126,7 +126,7 @@ private:
 QModelIndex MessageModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (row < 0 || row >= rowCount(parent) || column < 0 || column >= columnCount(parent))
-        return QModelIndex();
+        return {};
 
     return createIndex(row, column);
 }

@@ -605,14 +605,14 @@ QSize BufferView::sizeHint() const
         return TreeViewTouch::sizeHint();
 
     if (model()->rowCount() == 0)
-        return QSize(120, 50);
+        return {120, 50};
 
     int columnSize = 0;
     for (int i = 0; i < model()->columnCount(); i++) {
         if (!isColumnHidden(i))
             columnSize += sizeHintForColumn(i);
     }
-    return QSize(columnSize, 50);
+    return {columnSize, 50};
 }
 
 

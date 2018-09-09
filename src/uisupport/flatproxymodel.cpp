@@ -32,7 +32,7 @@ FlatProxyModel::FlatProxyModel(QObject *parent)
 QModelIndex FlatProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
     if (!sourceIndex.isValid())
-        return QModelIndex();
+        return {};
 
     SourceItem *sourceItem = sourceToInternal(sourceIndex);
     Q_ASSERT(sourceItem);
@@ -43,7 +43,7 @@ QModelIndex FlatProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 QModelIndex FlatProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 {
     if (!proxyIndex.isValid())
-        return QModelIndex();
+        return {};
 
     Q_ASSERT(proxyIndex.model() == this);
     Q_ASSERT(_rootSourceItem);
@@ -63,7 +63,7 @@ QModelIndex FlatProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 
     qWarning() << "FlatProxyModel::mapToSource(): couldn't find source index for" << proxyIndex;
     Q_ASSERT(false);
-    return QModelIndex(); // make compilers happy :)
+    return {}; // make compilers happy :)
 }
 
 
@@ -367,12 +367,12 @@ QModelIndex FlatProxyModel::index(int row, int column, const QModelIndex &parent
 {
     if (parent.isValid()) {
         qWarning() << "FlatProxyModel::index() called with valid parent:" << parent;
-        return QModelIndex();
+        return {};
     }
 
     if (!_rootSourceItem) {
         qWarning() << "FlatProxyModel::index() while model has no root Item";
-        return QModelIndex();
+        return {};
     }
 
     SourceItem *item = _rootSourceItem;
@@ -380,7 +380,7 @@ QModelIndex FlatProxyModel::index(int row, int column, const QModelIndex &parent
         item = item->findChild(row);
         if (!item) {
             qWarning() << "FlatProxyModel::index() no such row:" << row;
-            return QModelIndex();
+            return {};
         }
     }
 
@@ -393,7 +393,7 @@ QModelIndex FlatProxyModel::parent(const QModelIndex &index) const
 {
     Q_UNUSED(index)
     // this is a flat model
-    return QModelIndex();
+    return {};
 }
 
 
