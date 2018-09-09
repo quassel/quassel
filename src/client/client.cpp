@@ -52,8 +52,8 @@
 #include "util.h"
 #include "clientauthhandler.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     : QObject(parent), Singleton<Client>(this),
