@@ -44,7 +44,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command)
     _bufferInfo = info;
     QString params;
 
-    QRegExp rx("^\\s*(\\S+)(\\s+(.*))?$");
+    QRegExp rx(R"(^\s*(\S+)(\s+(.*))?$)");
     if (!rx.exactMatch(command)) {
         emit error(tr("Invalid command string for /exec: %1").arg(command));
     }
@@ -55,7 +55,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command)
 
     // Make sure we don't execute something outside a script dir
     if (_scriptName.contains("../") || _scriptName.contains("..\\"))
-        emit error(tr("Name \"%1\" is invalid: ../ or ..\\ are not allowed!").arg(_scriptName));
+        emit error(tr(R"(Name "%1" is invalid: ../ or ..\ are not allowed!)").arg(_scriptName));
 
     else {
         foreach(QString scriptDir, Quassel::scriptDirPaths()) {

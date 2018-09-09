@@ -609,7 +609,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
     id = info.networkId.toInt();
     if (!_networks.contains(id)) {
         // create persistent chans
-        QRegExp rx("\\s*(\\S+)(?:\\s*(\\S+))?\\s*");
+        QRegExp rx(R"(\s*(\S+)(?:\s*(\S+))?\s*)");
         foreach(QString channel, persistentChans) {
             if (!rx.exactMatch(channel)) {
                 qWarning() << QString("Invalid persistent channel declaration: %1").arg(channel);

@@ -144,7 +144,7 @@ void CoreUserInputHandler::banOrUnban(const BufferInfo &bufferInfo, const QStrin
             return;
         }
 
-        static QRegExp ipAddress("\\d+\\.\\d+\\.\\d+\\.\\d+");
+        static QRegExp ipAddress(R"(\d+\.\d+\.\d+\.\d+)");
         if (ipAddress.exactMatch(generalizedHost))    {
             int lastDotPos = generalizedHost.lastIndexOf('.') + 1;
             generalizedHost.replace(lastDotPos, generalizedHost.length() - lastDotPos, '*');

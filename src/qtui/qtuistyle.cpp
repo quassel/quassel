@@ -198,7 +198,7 @@ void QtUiStyle::generateSettingsQss() const
         out << "\n// NickView Colors\n"
             << "NickListItem[type=\"category\"] { foreground: " << color("DefaultBuffer", uiColors) << "; }\n"
             << "NickListItem[type=\"user\"] { foreground: " << color("OnlineNick", uiColors) << "; }\n"
-            << "NickListItem[type=\"user\", state=\"away\"] { foreground: " << color("AwayNick", uiColors) << "; }\n";
+            << R"(NickListItem[type="user", state="away"] { foreground: )" << color("AwayNick", uiColors) << "; }\n";
     }
 
     settingsQss.close();
