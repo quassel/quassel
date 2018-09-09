@@ -180,7 +180,9 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
     IrcUser *ircuser;
     for (int i = 0; i < users.count(); i++) {
         ircuser = users[i];
-        if (!ircuser || _userModes.contains(ircuser)) {
+        if (!ircuser)
+            continue;
+        if (_userModes.contains(ircuser)) {
             if (sortedModes[i].count() > 1) {
                 // Multiple modes received, do it one at a time
                 // TODO Better way of syncing this without breaking protocol?
