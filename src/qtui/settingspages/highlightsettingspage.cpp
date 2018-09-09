@@ -141,7 +141,7 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
         enableItem->setCheckState(Qt::Unchecked);
     enableItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
 
-    QTableWidgetItem *nameItem = new QTableWidgetItem(name);
+    auto *nameItem = new QTableWidgetItem(name);
 
     QTableWidgetItem *regexItem = new QTableWidgetItem("");
     if (regex)
@@ -157,7 +157,7 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
         csItem->setCheckState(Qt::Unchecked);
     csItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
 
-    QTableWidgetItem *chanNameItem = new QTableWidgetItem(chanName);
+    auto *chanNameItem = new QTableWidgetItem(chanName);
 
     enableItem->setToolTip(tr("Enable/disable this rule"));
     nameItem->setToolTip(tr("Phrase to match"));

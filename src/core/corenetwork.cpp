@@ -443,11 +443,11 @@ Cipher *CoreNetwork::cipher(const QString &target)
     if (!Cipher::neededFeaturesAvailable())
         return nullptr;
 
-    CoreIrcChannel *channel = qobject_cast<CoreIrcChannel *>(ircChannel(target));
+    auto *channel = qobject_cast<CoreIrcChannel *>(ircChannel(target));
     if (channel) {
         return channel->cipher();
     }
-    CoreIrcUser *user = qobject_cast<CoreIrcUser *>(ircUser(target));
+    auto *user = qobject_cast<CoreIrcUser *>(ircUser(target));
     if (user) {
         return user->cipher();
     } else if (!isChannelName(target)) {
@@ -459,11 +459,11 @@ Cipher *CoreNetwork::cipher(const QString &target)
 
 QByteArray CoreNetwork::cipherKey(const QString &target) const
 {
-    CoreIrcChannel *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    auto *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (c)
         return c->cipher()->key();
 
-    CoreIrcUser *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    auto *u = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (u)
         return u->cipher()->key();
 
@@ -473,14 +473,14 @@ QByteArray CoreNetwork::cipherKey(const QString &target) const
 
 void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
 {
-    CoreIrcChannel *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    auto *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (c) {
         c->setEncrypted(c->cipher()->setKey(key));
         coreSession()->setBufferCipher(networkId(), target, key);
         return;
     }
 
-    CoreIrcUser *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    auto *u = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (!u && !isChannelName(target))
         u = qobject_cast<CoreIrcUser*>(newIrcUser(target));
 
@@ -494,10 +494,10 @@ void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
 
 bool CoreNetwork::cipherUsesCBC(const QString &target)
 {
-    CoreIrcChannel *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    auto *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (c)
         return c->cipher()->usesCBC();
-    CoreIrcUser *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    auto *u = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (u)
         return u->cipher()->usesCBC();
 

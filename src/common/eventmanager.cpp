@@ -207,7 +207,7 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject *object
 void EventManager::postEvent(Event *event)
 {
     if (sender() && sender()->thread() != this->thread()) {
-        QueuedQuasselEvent *queuedEvent = new QueuedQuasselEvent(event);
+        auto *queuedEvent = new QueuedQuasselEvent(event);
         QCoreApplication::postEvent(this, queuedEvent);
     }
     else {
@@ -223,7 +223,7 @@ void EventManager::postEvent(Event *event)
 void EventManager::customEvent(QEvent *event)
 {
     if (event->type() == QEvent::User) {
-        QueuedQuasselEvent *queuedEvent = static_cast<QueuedQuasselEvent *>(event);
+        auto *queuedEvent = static_cast<QueuedQuasselEvent *>(event);
         processEvent(queuedEvent->event);
         event->accept();
     }
@@ -258,7 +258,7 @@ void EventManager::dispatchEvent(Event *event)
 
     // special handling for numeric IrcEvents
     if ((type & ~IrcEventNumericMask) == IrcEventNumeric) {
-        ::IrcEventNumeric *numEvent = static_cast< ::IrcEventNumeric *>(event);
+        auto *numEvent = static_cast< ::IrcEventNumeric *>(event);
         if (!numEvent)
             qWarning() << "Invalid event type for IrcEventNumeric!";
         else {

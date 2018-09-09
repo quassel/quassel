@@ -215,7 +215,7 @@ bool IdentitiesSettingsPage::aboutToSave()
 
 void IdentitiesSettingsPage::clientIdentityCreated(IdentityId id)
 {
-    CertIdentity *identity = new CertIdentity(*Client::identity(id), this);
+    auto *identity = new CertIdentity(*Client::identity(id), this);
 #ifdef HAVE_SSL
     identity->enableEditSsl(_editSsl);
 #endif
@@ -332,7 +332,7 @@ void IdentitiesSettingsPage::on_addIdentity_clicked()
             if (!identities.keys().contains(-id.toInt())) break;
         }
         id = -id.toInt();
-        CertIdentity *newId = new CertIdentity(id, this);
+        auto *newId = new CertIdentity(id, this);
 #ifdef HAVE_SSL
         newId->enableEditSsl(_editSsl);
 #endif

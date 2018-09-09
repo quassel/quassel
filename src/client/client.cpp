@@ -222,7 +222,7 @@ void Client::coreNetworkCreated(NetworkId id)
         qWarning() << "Creation of already existing network requested!";
         return;
     }
-    Network *net = new Network(id, this);
+    auto *net = new Network(id, this);
     addNetwork(net);
 }
 
@@ -283,7 +283,7 @@ void Client::removeIdentity(IdentityId id)
 void Client::coreIdentityCreated(const Identity &other)
 {
     if (!_identities.contains(other.id())) {
-        Identity *identity = new Identity(other, this);
+        auto *identity = new Identity(other, this);
         _identities[other.id()] = identity;
         identity->setInitialized();
         signalProxy()->synchronize(identity);
@@ -557,7 +557,7 @@ void Client::setDisconnectedFromCore()
 
 void Client::networkDestroyed()
 {
-    Network *net = static_cast<Network *>(sender());
+    auto *net = static_cast<Network *>(sender());
     QHash<NetworkId, Network *>::iterator netIter = _networks.begin();
     while (netIter != _networks.end()) {
         if (*netIter == net) {

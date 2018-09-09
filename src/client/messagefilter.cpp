@@ -245,7 +245,7 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
         }
 
         // Mark query as having a quit message inserted
-        MessageFilter *that = const_cast<MessageFilter *>(this);
+        auto *that = const_cast<MessageFilter *>(this);
         that->_filteredQuitMsgTime.insert(messageTimestamp);
         return true;
     }

@@ -27,7 +27,7 @@
 CoreAliasManager::CoreAliasManager(CoreSession *parent)
     : AliasManager(parent)
 {
-    CoreSession *session = qobject_cast<CoreSession *>(parent);
+    auto *session = qobject_cast<CoreSession *>(parent);
     if (!session) {
         qWarning() << "CoreAliasManager: unable to load Aliases. Parent is not a Coresession!";
         loadDefaults();
@@ -45,7 +45,7 @@ CoreAliasManager::CoreAliasManager(CoreSession *parent)
 
 void CoreAliasManager::save() const
 {
-    CoreSession *session = qobject_cast<CoreSession *>(parent());
+    auto *session = qobject_cast<CoreSession *>(parent());
     if (!session) {
         qWarning() << "CoreAliasManager: unable to save Aliases. Parent is not a Coresession!";
         return;

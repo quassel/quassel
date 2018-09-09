@@ -424,7 +424,7 @@ void IrcChannel::initSetChanModes(const QVariantMap &channelModes)
 
 void IrcChannel::ircUserDestroyed()
 {
-    IrcUser *ircUser = static_cast<IrcUser *>(sender());
+    auto *ircUser = static_cast<IrcUser *>(sender());
     Q_ASSERT(ircUser);
     _userModes.remove(ircUser);
     // no further propagation.
@@ -434,7 +434,7 @@ void IrcChannel::ircUserDestroyed()
 
 void IrcChannel::ircUserNickSet(QString nick)
 {
-    IrcUser *ircUser = qobject_cast<IrcUser *>(sender());
+    auto *ircUser = qobject_cast<IrcUser *>(sender());
     Q_ASSERT(ircUser);
     emit ircUserNickSet(ircUser, nick);
 }

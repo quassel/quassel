@@ -68,7 +68,7 @@ Action *ActionCollection::addAction(const QString &name, Action *action)
 
 Action *ActionCollection::addAction(const QString &name, const QObject *receiver, const char *member)
 {
-    Action *a = new Action(this);
+    auto *a = new Action(this);
     if (receiver && member)
         connect(a, SIGNAL(triggered(bool)), receiver, member);
     return addAction(name, a);
@@ -151,7 +151,7 @@ void ActionCollection::readSettings()
     foreach(const QString &name, _actionByName.keys()) {
         if (!savedShortcuts.contains(name))
             continue;
-        Action *action = qobject_cast<Action *>(_actionByName.value(name));
+        auto *action = qobject_cast<Action *>(_actionByName.value(name));
         if (action)
             action->setShortcut(s.loadShortcut(name), Action::ActiveShortcut);
     }
@@ -162,7 +162,7 @@ void ActionCollection::writeSettings() const
 {
     ShortcutSettings s;
     foreach(const QString &name, _actionByName.keys()) {
-        Action *action = qobject_cast<Action *>(_actionByName.value(name));
+        auto *action = qobject_cast<Action *>(_actionByName.value(name));
         if (!action)
             continue;
         if (!action->isShortcutConfigurable())
@@ -176,7 +176,7 @@ void ActionCollection::writeSettings() const
 
 void ActionCollection::slotActionTriggered()
 {
-    QAction *action = qobject_cast<QAction *>(sender());
+    auto *action = qobject_cast<QAction *>(sender());
     if (action)
         emit actionTriggered(action);
 }
@@ -184,7 +184,7 @@ void ActionCollection::slotActionTriggered()
 
 void ActionCollection::slotActionHovered()
 {
-    QAction *action = qobject_cast<QAction *>(sender());
+    auto *action = qobject_cast<QAction *>(sender());
     if (action)
         emit actionHovered(action);
 }
@@ -193,7 +193,7 @@ void ActionCollection::slotActionHovered()
 void ActionCollection::actionDestroyed(QObject *obj)
 {
     // remember that this is not an QAction anymore at this point
-    QAction *action = static_cast<QAction *>(obj);
+    auto *action = static_cast<QAction *>(obj);
 
     unlistAction(action);
 }

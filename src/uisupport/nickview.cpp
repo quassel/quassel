@@ -141,7 +141,7 @@ void NickView::startQuery(const QModelIndex &index)
     if (index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType)
         return;
 
-    IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+    auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
     NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
     if (!ircUser || !networkId.isValid())
         return;

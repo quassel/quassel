@@ -164,7 +164,7 @@ void KeySequenceButton::keyReleaseEvent(QKeyEvent *e)
 KeySequenceWidget::KeySequenceWidget(QWidget *parent)
     : QWidget(parent)
 {
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    auto *layout = new QHBoxLayout(this);
     layout->setMargin(0);
 
     _keyButton = new KeySequenceButton(this, this);

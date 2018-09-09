@@ -87,7 +87,7 @@ void SelectionModelSynchronizer::removeSelectionModel(QItemSelectionModel *model
 
 void SelectionModelSynchronizer::selectionModelDestroyed(QObject *object)
 {
-    QItemSelectionModel *model = static_cast<QItemSelectionModel *>(object);
+    auto *model = static_cast<QItemSelectionModel *>(object);
     QSet<QItemSelectionModel *>::iterator iter = _selectionModels.begin();
     while (iter != _selectionModels.end()) {
         if (*iter == model) {
@@ -107,7 +107,7 @@ void SelectionModelSynchronizer::syncedCurrentChanged(const QModelIndex &current
     if (!_changeCurrentEnabled)
         return;
 
-    QItemSelectionModel *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
+    auto *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
     Q_ASSERT(selectionModel);
     QModelIndex newSourceCurrent = mapToSource(current, selectionModel);
     if (newSourceCurrent.isValid() && newSourceCurrent != currentIndex())
@@ -123,7 +123,7 @@ void SelectionModelSynchronizer::syncedSelectionChanged(const QItemSelection &se
     if (!_changeSelectionEnabled)
         return;
 
-    QItemSelectionModel *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
+    auto *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
     Q_ASSERT(selectionModel);
 
     QItemSelection mappedSelection = selectionModel->selection();

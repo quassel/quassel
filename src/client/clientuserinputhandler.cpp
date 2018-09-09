@@ -89,7 +89,7 @@ void ClientUserInputHandler::defaultHandler(const QString &cmd, const BufferInfo
 
 void ClientUserInputHandler::handleExec(const BufferInfo &bufferInfo, const QString &execString)
 {
-    ExecWrapper *exec = new ExecWrapper(this); // gets suicidal when it's done
+    auto *exec = new ExecWrapper(this); // gets suicidal when it's done
     exec->start(bufferInfo, execString);
 }
 

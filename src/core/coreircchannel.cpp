@@ -29,7 +29,7 @@ CoreIrcChannel::CoreIrcChannel(const QString &channelname, Network *network)
     _cipher = nullptr;
 
     // Get the cipher key from CoreNetwork if present
-    CoreNetwork *coreNetwork = qobject_cast<CoreNetwork *>(network);
+    auto *coreNetwork = qobject_cast<CoreNetwork *>(network);
     if (coreNetwork) {
         QByteArray key = coreNetwork->readChannelCipherKey(channelname);
         if (!key.isEmpty()) {
@@ -47,7 +47,7 @@ CoreIrcChannel::~CoreIrcChannel()
     // exists. There is no need to store the empty key if no cipher exists; no
     // key was present when instantiating and no key was set during the
     // channel's lifetime.
-    CoreNetwork *coreNetwork = qobject_cast<CoreNetwork *>(network());
+    auto *coreNetwork = qobject_cast<CoreNetwork *>(network());
     if (coreNetwork && _cipher) {
         coreNetwork->storeChannelCipherKey(name(), _cipher->key());
     }

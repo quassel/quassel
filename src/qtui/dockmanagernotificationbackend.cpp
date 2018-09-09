@@ -180,7 +180,7 @@ SettingsPage *DockManagerNotificationBackend::createConfigWidget() const
 DockManagerNotificationBackend::ConfigWidget::ConfigWidget(bool enabled, QWidget *parent)
     : SettingsPage("Internal", "DockManagerNotification", parent)
 {
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    auto *layout = new QHBoxLayout(this);
     layout->addWidget(enabledBox = new QCheckBox(tr("Mark dockmanager entry"), this));
     enabledBox->setVisible(enabled);
 

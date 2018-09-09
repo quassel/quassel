@@ -58,7 +58,7 @@ void ClientAuthHandler::connectToCore()
     CoreAccountSettings s;
 
 #ifdef HAVE_SSL
-    QSslSocket *socket = new QSslSocket(this);
+    auto *socket = new QSslSocket(this);
     // make sure the warning is shown if we happen to connect without SSL support later
     s.setAccountValue("ShowNoClientSslWarning", true);
 #else
@@ -237,8 +237,8 @@ void ClientAuthHandler::onReadyRead()
     socket()->read((char *)&reply, 4);
     reply = qFromBigEndian<quint32>(reply);
 
-    Protocol::Type type = static_cast<Protocol::Type>(reply & 0xff);
-    quint16 protoFeatures = static_cast<quint16>(reply>>8 & 0xffff);
+    auto type = static_cast<Protocol::Type>(reply & 0xff);
+    auto protoFeatures = static_cast<quint16>(reply>>8 & 0xffff);
     _connectionFeatures = static_cast<quint8>(reply>>24);
 
     Compressor::CompressionLevel level;
@@ -431,7 +431,7 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
         // Make sure the warning is shown next time we don't have SSL in the core
         s.setAccountValue("ShowNoCoreSslWarning", true);
 
-        QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
+        auto *sslSocket = qobject_cast<QSslSocket *>(socket());
         Q_ASSERT(sslSocket);
         connect(sslSocket, SIGNAL(encrypted()), SLOT(onSslSocketEncrypted()));
         connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)), SLOT(onSslErrors()));
@@ -463,7 +463,7 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
 
 void ClientAuthHandler::onSslSocketEncrypted()
 {
-    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+    auto *socket = qobject_cast<QSslSocket *>(sender());
     Q_ASSERT(socket);
 
     if (!socket->sslErrors().count()) {
@@ -485,7 +485,7 @@ void ClientAuthHandler::onSslSocketEncrypted()
 
 void ClientAuthHandler::onSslErrors()
 {
-    QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+    auto *socket = qobject_cast<QSslSocket *>(sender());
     Q_ASSERT(socket);
 
     CoreAccountSettings s;

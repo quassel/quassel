@@ -709,7 +709,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
         }
         else if (s[pos+1] == 'R') { // Reverse colors
             fgChar = (fgChar == 'f' ? 'b' : 'f');
-            quint32 orig = static_cast<quint32>(curfmt.type & 0xffc00000);
+            auto orig = static_cast<quint32>(curfmt.type & 0xffc00000);
             curfmt.type &= 0x003fffff;
             curfmt.type |= (orig & 0x00400000) <<1;
             curfmt.type |= (orig & 0x0f000000) <<4;
@@ -1264,8 +1264,8 @@ UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType &lhs, UiStyle::ItemF
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList)
 {
     out << static_cast<quint16>(formatList.size());
-    UiStyle::FormatList::const_iterator it = formatList.begin();
-    while (it != formatList.end()) {
+    auto it = formatList.cbegin();
+    while (it != formatList.cend()) {
         out << it->first
             << static_cast<quint32>(it->second.type)
             << it->second.foreground

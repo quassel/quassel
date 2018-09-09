@@ -589,8 +589,8 @@ QString Quassel::translationDirPath()
 
 void Quassel::loadTranslation(const QLocale &locale)
 {
-    QTranslator *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
-    QTranslator *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
+    auto *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
+    auto *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
 
     if (qtTranslator)
         qApp->removeTranslator(qtTranslator);
@@ -669,7 +669,7 @@ Quassel::Features::Features(const QStringList &features, LegacyFeatures legacyFe
 
 bool Quassel::Features::isEnabled(Feature feature) const
 {
-    size_t i = static_cast<size_t>(feature);
+    auto i = static_cast<size_t>(feature);
     return i < _features.size() ? _features[i] : false;
 }
 

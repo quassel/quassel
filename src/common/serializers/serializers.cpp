@@ -490,7 +490,7 @@ bool Serializers::deserialize(QDataStream &stream, const Quassel::Features &feat
         allocated += blockSize;
     }
     if ((stream.byteOrder() == QDataStream::BigEndian) != (QSysInfo::ByteOrder == QSysInfo::BigEndian)) {
-        uint16_t *rawData = reinterpret_cast<uint16_t *>(data.data());
+        auto *rawData = reinterpret_cast<uint16_t *>(data.data());
         while (length--) {
             *rawData = qbswap(*rawData);
             ++rawData;

@@ -362,7 +362,7 @@ void IrcUser::quit()
 void IrcUser::channelDestroyed()
 {
     // private slot!
-    IrcChannel *channel = static_cast<IrcChannel *>(sender());
+    auto *channel = static_cast<IrcChannel *>(sender());
     if (_channels.contains(channel)) {
         _channels.remove(channel);
         if (_channels.isEmpty() && !network()->isMe(this))

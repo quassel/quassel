@@ -215,7 +215,7 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     const QAbstractItemModel *model_ = model();
     QModelIndex myIdx = model_->index(row(), 0);
     Message::Type type = (Message::Type)myIdx.data(MessageModel::TypeRole).toInt();
-    UiStyle::MessageLabel label = myIdx.data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>();
+    auto label = myIdx.data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>();
 
     QTextCharFormat msgFmt = QtUi::style()->format({UiStyle::formatType(type), {}, {}}, label);
     if (msgFmt.hasProperty(QTextFormat::BackgroundBrush)) {

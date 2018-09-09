@@ -101,7 +101,7 @@ void IdentServer::incomingConnection()
 
 void IdentServer::respond()
 {
-    QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
+    auto *socket = qobject_cast<QTcpSocket *>(sender());
     Q_ASSERT(socket);
 
     qint64 transactionId = _socketId;

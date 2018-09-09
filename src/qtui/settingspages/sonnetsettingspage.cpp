@@ -27,7 +27,7 @@
 SonnetSettingsPage::SonnetSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Spell Checking"), parent)
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout(this);
     _configWidget = new Sonnet::ConfigWidget(this);
     layout->addWidget(_configWidget);
     connect(_configWidget, SIGNAL(configChanged()), SLOT(widgetHasChanged()));

@@ -204,7 +204,7 @@ void BufferViewSettingsPage::coreConnectionStateChanged(bool state)
 
 void BufferViewSettingsPage::addBufferView(BufferViewConfig *config)
 {
-    QListWidgetItem *item = new QListWidgetItem(config->bufferViewName(), ui.bufferViewList);
+    auto *item = new QListWidgetItem(config->bufferViewName(), ui.bufferViewList);
     item->setData(Qt::UserRole, qVariantFromValue<QObject *>(qobject_cast<QObject *>(config)));
     connect(config, SIGNAL(updatedRemotely()), this, SLOT(updateBufferView()));
     connect(config, SIGNAL(destroyed()), this, SLOT(bufferViewDeleted()));
@@ -223,7 +223,7 @@ void BufferViewSettingsPage::addBufferView(int bufferViewId)
 
 void BufferViewSettingsPage::bufferViewDeleted()
 {
-    BufferViewConfig *config = static_cast<BufferViewConfig *>(sender());
+    auto *config = static_cast<BufferViewConfig *>(sender());
     QObject *obj;
     for (int i = 0; i < ui.bufferViewList->count(); i++) {
         obj = ui.bufferViewList->item(i)->data(Qt::UserRole).value<QObject *>();
@@ -241,7 +241,7 @@ void BufferViewSettingsPage::newBufferView(const QString &bufferViewName)
 {
     // id's of newly created bufferviews are negative (-1, -2... -n)
     int fakeId = -1 * (_newBufferViews.count() + 1);
-    BufferViewConfig *config = new BufferViewConfig(fakeId);
+    auto *config = new BufferViewConfig(fakeId);
     config->setBufferViewName(bufferViewName);
     config->setInitialized();
     QList<BufferId> bufferIds;
@@ -278,7 +278,7 @@ int BufferViewSettingsPage::listPos(BufferViewConfig *config)
 BufferViewConfig *BufferViewSettingsPage::bufferView(int listPos)
 {
     if (listPos < ui.bufferViewList->count() && listPos >= 0) {
-        QObject *obj = ui.bufferViewList->item(listPos)->data(Qt::UserRole).value<QObject *>();
+        auto *obj = ui.bufferViewList->item(listPos)->data(Qt::UserRole).value<QObject *>();
         return qobject_cast<BufferViewConfig *>(obj);
     }
     else {
@@ -303,7 +303,7 @@ bool BufferViewSettingsPage::selectBufferViewById(int bufferViewId)
 
 void BufferViewSettingsPage::updateBufferView()
 {
-    BufferViewConfig *config = qobject_cast<BufferViewConfig *>(sender());
+    auto *config = qobject_cast<BufferViewConfig *>(sender());
     if (!config)
         return;
 
@@ -385,7 +385,7 @@ void BufferViewSettingsPage::on_deleteBufferView_clicked()
 
     if (ret == QMessageBox::Yes) {
         ui.bufferViewList->removeItemWidget(currentItem);
-        BufferViewConfig *config = qobject_cast<BufferViewConfig *>(currentItem->data(Qt::UserRole).value<QObject *>());
+        auto *config = qobject_cast<BufferViewConfig *>(currentItem->data(Qt::UserRole).value<QObject *>());
         delete currentItem;
         if (viewId >= 0) {
             _deleteBufferViews << viewId;
@@ -540,7 +540,7 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config)
     if (_changedBufferViews.contains(config))
         return _changedBufferViews[config];
 
-    BufferViewConfig *changedConfig = new BufferViewConfig(-1, this);
+    auto *changedConfig = new BufferViewConfig(-1, this);
     changedConfig->fromVariantMap(config->toVariantMap());
     changedConfig->setInitialized();
     _changedBufferViews[config] = changedConfig;
@@ -553,7 +553,7 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config)
 
     changedConfig->setProperty("OriginalBufferList", toVariantList<BufferId>(config->bufferList()));
     // if this is the currently displayed view we have to change the config of the preview filter
-    BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(ui.bufferViewPreview->model());
+    auto *filter = qobject_cast<BufferViewFilter *>(ui.bufferViewPreview->model());
     if (filter && filter->config() == config)
         filter->setConfig(changedConfig);
     ui.bufferViewPreview->setConfig(changedConfig);

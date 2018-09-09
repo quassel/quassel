@@ -26,7 +26,7 @@
 CoreIgnoreListManager::CoreIgnoreListManager(CoreSession *parent)
     : IgnoreListManager(parent)
 {
-    CoreSession *session = qobject_cast<CoreSession *>(parent);
+    auto *session = qobject_cast<CoreSession *>(parent);
     if (!session) {
         qWarning() << "CoreIgnoreListManager: unable to load IgnoreList. Parent is not a Coresession!";
         //loadDefaults();
@@ -52,7 +52,7 @@ IgnoreListManager::StrictnessType CoreIgnoreListManager::match(const RawMessage 
 
 void CoreIgnoreListManager::save() const
 {
-    CoreSession *session = qobject_cast<CoreSession *>(parent());
+    auto *session = qobject_cast<CoreSession *>(parent());
     if (!session) {
         qWarning() << "CoreIgnoreListManager: unable to save IgnoreList. Parent is not a Coresession!";
         return;

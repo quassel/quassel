@@ -388,7 +388,7 @@ void SignalProxy::objectRenamed(const QByteArray &classname, const QString &newn
 
 const QMetaObject *SignalProxy::metaObject(const QObject *obj)
 {
-    if (const SyncableObject *syncObject = qobject_cast<const SyncableObject *>(obj))
+    if (const auto *syncObject = qobject_cast<const SyncableObject *>(obj))
         return syncObject->syncMetaObject();
     else
         return obj->metaObject();
@@ -740,7 +740,7 @@ void SignalProxy::customEvent(QEvent *event)
 {
     switch ((int)event->type()) {
     case RemovePeerEvent: {
-        ::RemovePeerEvent *e = static_cast< ::RemovePeerEvent *>(event);
+        auto *e = static_cast< ::RemovePeerEvent *>(event);
         removePeer(e->peer);
         event->accept();
         break;
@@ -788,7 +788,7 @@ void SignalProxy::disconnectDevice(QIODevice *dev, const QString &reason)
 {
     if (!reason.isEmpty())
         qWarning() << qPrintable(reason);
-    QAbstractSocket *sock  = qobject_cast<QAbstractSocket *>(dev);
+    auto *sock  = qobject_cast<QAbstractSocket *>(dev);
     if (sock)
         qWarning() << qPrintable(tr("Disconnecting")) << qPrintable(sock->peerAddress().toString());
     dev->close();

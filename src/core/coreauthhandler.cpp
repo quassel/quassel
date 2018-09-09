@@ -86,8 +86,8 @@ void CoreAuthHandler::onReadyRead()
         socket()->read((char*)&data, 4);
         data = qFromBigEndian<quint32>(data);
 
-        Protocol::Type type = static_cast<Protocol::Type>(data & 0xff);
-        quint16 protoFeatures = static_cast<quint16>(data>>8 & 0xffff);
+        auto type = static_cast<Protocol::Type>(data & 0xff);
+        auto protoFeatures = static_cast<quint16>(data>>8 & 0xffff);
         _supportedProtos.append(PeerFactory::ProtoDescriptor(type, protoFeatures));
 
         if (data >= 0x80000000) { // last protocol
@@ -270,7 +270,7 @@ void CoreAuthHandler::handle(const Login &msg)
 void CoreAuthHandler::startSsl()
 {
     #ifdef HAVE_SSL
-    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
+    auto *sslSocket = qobject_cast<QSslSocket *>(socket());
     Q_ASSERT(sslSocket);
 
     qDebug() << qPrintable(tr("Starting encryption for Client:"))  << _peer->description();
@@ -284,7 +284,7 @@ void CoreAuthHandler::startSsl()
 #ifdef HAVE_SSL
 void CoreAuthHandler::onSslErrors()
 {
-    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
+    auto *sslSocket = qobject_cast<QSslSocket *>(socket());
     Q_ASSERT(sslSocket);
     sslSocket->ignoreSslErrors();
 }

@@ -432,7 +432,7 @@ void NetworksSettingsPage::clientIdentityAdded(IdentityId id)
 
 void NetworksSettingsPage::clientIdentityUpdated()
 {
-    const Identity *identity = qobject_cast<const Identity *>(sender());
+    const auto *identity = qobject_cast<const Identity *>(sender());
     if (!identity) {
         qWarning() << "NetworksSettingsPage: Invalid identity to update!";
         return;
@@ -493,7 +493,7 @@ void NetworksSettingsPage::clientNetworkAdded(NetworkId id)
 
 void NetworksSettingsPage::clientNetworkUpdated()
 {
-    const Network *net = qobject_cast<const Network *>(sender());
+    const auto *net = qobject_cast<const Network *>(sender());
     if (!net) {
         qWarning() << "Update request for unknown network received!";
         return;
@@ -524,7 +524,7 @@ void NetworksSettingsPage::clientNetworkRemoved(NetworkId id)
 void NetworksSettingsPage::networkConnectionStateChanged(Network::ConnectionState state)
 {
     Q_UNUSED(state);
-    const Network *net = qobject_cast<const Network *>(sender());
+    const auto *net = qobject_cast<const Network *>(sender());
     if (!net) return;
     /*
     if(net->networkId() == currentId) {
@@ -707,7 +707,7 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info)
 void NetworksSettingsPage::clientNetworkCapsUpdated()
 {
     // Grab the updated network
-    const Network *net = qobject_cast<const Network *>(sender());
+    const auto *net = qobject_cast<const Network *>(sender());
     if (!net) {
         qWarning() << "Update request for unknown network received!";
         return;

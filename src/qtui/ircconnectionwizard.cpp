@@ -50,14 +50,14 @@ IrcConnectionWizard::IrcConnectionWizard(QWidget *parent, Qt::WindowFlags flags)
 
 QWizardPage *IrcConnectionWizard::createIntroductionPage(QWidget *parent)
 {
-    QWizardPage *page = new QWizardPage(parent);
+    auto *page = new QWizardPage(parent);
     page->setTitle(QObject::tr("Welcome to Quassel IRC"));
 
     QLabel *label = new QLabel(QObject::tr("This wizard will help you to set up your default identity and your IRC network connection.<br>"
                                            "This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."), page);
     label->setWordWrap(true);
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    auto *layout = new QVBoxLayout;
     layout->addWidget(label);
     page->setLayout(layout);
     return page;
@@ -81,7 +81,7 @@ void IrcConnectionWizard::finishClicked()
 void IrcConnectionWizard::identityReady(IdentityId id)
 {
     disconnect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(identityReady(IdentityId)));
-    NetworkPage *networkPage = static_cast<NetworkPage *>(_networkPage);
+    auto *networkPage = static_cast<NetworkPage *>(_networkPage);
     NetworkInfo networkInfo = networkPage->networkInfo();
     QStringList channels = networkPage->channelList();
     networkInfo.identity = id;
@@ -122,7 +122,7 @@ IdentityPage::IdentityPage(QWidget *parent)
 
     _identityEditWidget->displayIdentity(_identity);
     _identityEditWidget->showAdvanced(false);
-    QVBoxLayout *layout = new QVBoxLayout;
+    auto *layout = new QVBoxLayout;
     layout->addWidget(_identityEditWidget);
     setLayout(layout);
 }
@@ -154,7 +154,7 @@ NetworkPage::NetworkPage(QWidget *parent)
 
     setTitle(tr("Setup Network Connection"));
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    auto *layout = new QVBoxLayout;
     layout->addWidget(_networkEditor);
     setLayout(layout);
 }

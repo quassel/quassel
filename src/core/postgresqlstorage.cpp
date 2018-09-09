@@ -1583,7 +1583,7 @@ int PostgreSqlStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
     query.bindValue(":lastseenmsgid", lastSeenMsgId.toQint64());
     safeExec(query);
     watchQuery(query);
-    int result = int(0);
+    auto result = int(0);
     if (query.first())
         result = query.value(0).toInt();
     return result;

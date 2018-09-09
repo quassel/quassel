@@ -145,7 +145,7 @@ SystrayNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : Settin
     _showBubbleBox = new QCheckBox(tr("Show a message in a popup"));
     _showBubbleBox->setIcon(icon::get("dialog-information"));
     connect(_showBubbleBox, SIGNAL(toggled(bool)), this, SLOT(widgetChanged()));
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    auto *layout = new QHBoxLayout(this);
     layout->addWidget(_showBubbleBox);
 }
 

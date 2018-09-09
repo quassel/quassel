@@ -27,7 +27,7 @@ CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(ho
     _cipher = nullptr;
 
     // Get the cipher key from CoreNetwork if present
-    CoreNetwork *coreNetwork = qobject_cast<CoreNetwork *>(network);
+    auto *coreNetwork = qobject_cast<CoreNetwork *>(network);
     if (coreNetwork) {
         QByteArray key = coreNetwork->readChannelCipherKey(nick().toLower());
         if (!key.isEmpty()) {
@@ -48,7 +48,7 @@ CoreIrcUser::~CoreIrcUser()
     // exists. There is no need to store the empty key if no cipher exists; no
     // key was present when instantiating and no key was set during the
     // channel's lifetime.
-    CoreNetwork *coreNetwork = qobject_cast<CoreNetwork *>(network());
+    auto *coreNetwork = qobject_cast<CoreNetwork *>(network());
     if (coreNetwork && _cipher) {
         coreNetwork->storeChannelCipherKey(nick().toLower(), _cipher->key());
     }

@@ -121,7 +121,7 @@ bool NetworkModelController::checkRequirements(const QModelIndex &index, ItemAct
 
 QString NetworkModelController::nickName(const QModelIndex &index) const
 {
-    IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+    auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
     if (ircUser)
         return ircUser->nick();
 
@@ -487,7 +487,7 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action)
             break;
         case NickIgnoreUser:
         {
-            IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+            auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
             if (!ircUser)
                 break;
             Client::ignoreListManager()->requestAddIgnoreListItem(IgnoreListManager::SenderIgnore,
@@ -499,7 +499,7 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action)
         }
         case NickIgnoreHost:
         {
-            IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+            auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
             if (!ircUser)
                 break;
             Client::ignoreListManager()->requestAddIgnoreListItem(IgnoreListManager::SenderIgnore,
@@ -511,7 +511,7 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *action)
         }
         case NickIgnoreDomain:
         {
-            IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+            auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
             if (!ircUser)
                 break;
             Client::ignoreListManager()->requestAddIgnoreListItem(IgnoreListManager::SenderIgnore,
@@ -548,7 +548,7 @@ NetworkModelController::JoinDlg::JoinDlg(const QModelIndex &index, QWidget *pare
     setWindowIcon(icon::get("irc-join-channel"));
     setWindowTitle(tr("Join Channel"));
 
-    QGridLayout *layout = new QGridLayout(this);
+    auto *layout = new QGridLayout(this);
     layout->addWidget(new QLabel(tr("Network:")), 0, 0);
     layout->addWidget(networks = new QComboBox, 0, 1);
     layout->addWidget(new QLabel(tr("Channel:")), 1, 0);

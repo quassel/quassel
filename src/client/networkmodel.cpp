@@ -135,7 +135,7 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo)
     switch (bufferInfo.type()) {
     case BufferInfo::ChannelBuffer:
     {
-        ChannelBufferItem *channelBufferItem = static_cast<ChannelBufferItem *>(bufferItem);
+        auto *channelBufferItem = static_cast<ChannelBufferItem *>(bufferItem);
         if (_network) {
             IrcChannel *ircChannel = _network->ircChannel(bufferInfo.bufferName());
             if (ircChannel)
@@ -263,7 +263,7 @@ QString NetworkItem::toolTip(int column) const
 void NetworkItem::onBeginRemoveChilds(int start, int end)
 {
     for (int i = start; i <= end; i++) {
-        StatusBufferItem *statusBufferItem = qobject_cast<StatusBufferItem *>(child(i));
+        auto *statusBufferItem = qobject_cast<StatusBufferItem *>(child(i));
         if (statusBufferItem) {
             _statusBufferItem = nullptr;
             break;
@@ -486,7 +486,7 @@ StatusBufferItem::StatusBufferItem(const BufferInfo &bufferInfo, NetworkItem *pa
 
 QString StatusBufferItem::toolTip(int column) const
 {
-    NetworkItem *networkItem = qobject_cast<NetworkItem *>(parent());
+    auto *networkItem = qobject_cast<NetworkItem *>(parent());
     if (networkItem)
         return networkItem->toolTip(column);
     else
@@ -975,7 +975,7 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser)
     // find the item that needs reparenting
     IrcUserItem *ircUserItem = nullptr;
     for (int i = 0; i < childCount(); i++) {
-        UserCategoryItem *oldCategoryItem = qobject_cast<UserCategoryItem *>(child(i));
+        auto *oldCategoryItem = qobject_cast<UserCategoryItem *>(child(i));
         Q_ASSERT(oldCategoryItem);
         IrcUserItem *userItem = oldCategoryItem->findIrcUser(ircUser);
         if (userItem) {
@@ -1065,7 +1065,7 @@ void UserCategoryItem::addUsers(const QList<IrcUser *> &ircUsers)
 bool UserCategoryItem::removeUser(IrcUser *ircUser)
 {
     IrcUserItem *userItem = findIrcUser(ircUser);
-    bool success = (bool)userItem;
+    auto success = (bool)userItem;
     if (success) {
         removeChild(userItem);
         emit dataChanged(0);
@@ -1271,11 +1271,11 @@ QString IrcUserItem::channelModes() const
 {
     // IrcUserItems are parented to UserCategoryItem, which are parented to ChannelBufferItem.
     // We want the channel buffer item in order to get the channel-specific user modes.
-    UserCategoryItem *category = qobject_cast<UserCategoryItem *>(parent());
+    auto *category = qobject_cast<UserCategoryItem *>(parent());
     if (!category)
         return QString();
 
-    ChannelBufferItem *channel = qobject_cast<ChannelBufferItem *>(category->parent());
+    auto *channel = qobject_cast<ChannelBufferItem *>(category->parent());
     if (!channel)
         return QString();
 
@@ -1439,7 +1439,7 @@ QList<QPair<NetworkId, BufferId> > NetworkModel::mimeDataToBufferList(const QMim
 
 QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData = new QMimeData();
+    auto *mimeData = new QMimeData();
 
     QStringList bufferlist;
     QString netid, uid, bufferid;
@@ -1690,7 +1690,7 @@ NetworkId NetworkModel::networkId(BufferId bufferId) const
     if (!_bufferItemCache.contains(bufferId))
         return NetworkId();
 
-    NetworkItem *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
+    auto *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
     if (netItem)
         return netItem->networkId();
     else
@@ -1703,7 +1703,7 @@ QString NetworkModel::networkName(BufferId bufferId) const
     if (!_bufferItemCache.contains(bufferId))
         return QString();
 
-    NetworkItem *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
+    auto *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
     if (netItem)
         return netItem->networkName();
     else
@@ -1718,7 +1718,7 @@ BufferId NetworkModel::bufferId(NetworkId networkId, const QString &bufferName, 
         return BufferId();
 
     for (int i = 0; i < netItem->childCount(); i++) {
-        BufferItem *bufferItem = qobject_cast<BufferItem *>(netItem->child(i));
+        auto *bufferItem = qobject_cast<BufferItem *>(netItem->child(i));
         if (bufferItem && !bufferItem->bufferName().compare(bufferName, cs))
             return bufferItem->bufferId();
     }
