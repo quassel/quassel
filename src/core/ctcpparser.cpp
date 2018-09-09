@@ -47,7 +47,7 @@ CtcpParser::CtcpParser(CoreSession *coreSession, QObject *parent)
 
 void CtcpParser::setStandardCtcp(bool enabled)
 {
-    QByteArray XQUOTE = QByteArray("\134");
+    QByteArray XQUOTE = QByteArray(R"(\)");
     if (enabled)
         _ctcpXDelimDequoteHash[XQUOTE + XQUOTE] = XQUOTE;
     else

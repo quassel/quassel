@@ -458,7 +458,7 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
     QString ident = userFromMask(hostmask);
     QString host = hostFromMask(hostmask);
     QString domain = host;
-    QRegExp domainRx = QRegExp("(\\.[^.]+\\.\\w+\\D)$");
+    QRegExp domainRx = QRegExp(R"((\.[^.]+\.\w+\D)$)");
     if (domainRx.indexIn(host) != -1)
         domain = domainRx.cap(1);
     // we can't rely on who-data
