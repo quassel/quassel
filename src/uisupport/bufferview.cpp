@@ -56,7 +56,7 @@ BufferView::BufferView(QWidget *parent)
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     QAbstractItemDelegate *oldDelegate = itemDelegate();
-    BufferViewDelegate *tristateDelegate = new BufferViewDelegate(this);
+    auto *tristateDelegate = new BufferViewDelegate(this);
     setItemDelegate(tristateDelegate);
     delete oldDelegate;
 }
@@ -139,7 +139,7 @@ void BufferView::setModel(QAbstractItemModel *model)
 
 void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *config)
 {
-    BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+    auto *filter = qobject_cast<BufferViewFilter *>(model());
     if (filter) {
         filter->setConfig(config);
         setConfig(config);
@@ -155,7 +155,7 @@ void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *
         setModel(model_);
     }
     else {
-        BufferViewFilter *filter = new BufferViewFilter(model_, config);
+        auto *filter = new BufferViewFilter(model_, config);
         setModel(filter);
         connect(filter, SIGNAL(configChanged()), this, SLOT(on_configChanged()));
     }
@@ -410,7 +410,7 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
 
 void BufferView::toggleHeader(bool checked)
 {
-    QAction *action = qobject_cast<QAction *>(sender());
+    auto *action = qobject_cast<QAction *>(sender());
     header()->setSectionHidden((action->property("column")).toInt(), !checked);
 }
 
@@ -447,7 +447,7 @@ void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index)
 
 void BufferView::addFilterActions(QMenu *contextMenu, const QModelIndex &index)
 {
-    BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+    auto *filter = qobject_cast<BufferViewFilter *>(model());
     if (filter) {
         QList<QAction *> filterActions = filter->actions(index);
         if (!filterActions.isEmpty()) {
@@ -588,7 +588,7 @@ void BufferView::hideCurrentBuffer()
 
 void BufferView::filterTextChanged(const QString& filterString)
 {
-    BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+    auto *filter = qobject_cast<BufferViewFilter *>(model());
     if (!filter) {
         return;
     }
@@ -619,7 +619,7 @@ QSize BufferView::sizeHint() const
 void BufferView::changeHighlight(BufferView::Direction direction)
 {
     // If for some weird reason we get a new delegate
-    BufferViewDelegate *delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }
@@ -663,7 +663,7 @@ void BufferView::selectHighlighted()
 void BufferView::clearHighlight()
 {
     // If for some weird reason we get a new delegate
-    BufferViewDelegate *delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }
@@ -712,12 +712,12 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
     initStyleOption(&viewOpt, index);
 
     QRect checkRect = viewOpt.widget->style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &viewOpt, viewOpt.widget);
-    QMouseEvent *me = static_cast<QMouseEvent *>(event);
+    auto *me = static_cast<QMouseEvent *>(event);
 
     if (me->button() != Qt::LeftButton || !checkRect.contains(me->pos()))
         return QStyledItemDelegate::editorEvent(event, model, option, index);
 
-    Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
+    auto state = static_cast<Qt::CheckState>(value.toInt());
     if (state == Qt::Unchecked)
         state = Qt::PartiallyChecked;
     else if (state == Qt::PartiallyChecked)
@@ -834,7 +834,7 @@ bool BufferViewDock::eventFilter(QObject *object, QEvent *event)
            return true;
        }
    } else if (event->type() == QEvent::KeyRelease) {
-       QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+       auto keyEvent = static_cast<QKeyEvent*>(event);
 
        BufferView *view = bufferView();
        if (!view) {

@@ -801,7 +801,7 @@ void CoreSessionEventProcessor::processKeyEvent(KeyEvent *e)
         emit newEvent(new MessageEvent(Message::Error, e->network(), tr("Unable to perform key exchange, missing qca-ossl plugin."), e->prefix(), e->target(), Message::None, e->timestamp()));
         return;
     }
-    CoreNetwork *net = qobject_cast<CoreNetwork*>(e->network());
+    auto *net = qobject_cast<CoreNetwork*>(e->network());
     Cipher *c = net->cipher(e->target());
     if (!c) // happens when there is no CoreIrcChannel for the target (i.e. never?)
         return;
@@ -1478,7 +1478,7 @@ void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network *net, const QStr
 
 void CoreSessionEventProcessor::handleNetsplitFinished()
 {
-    Netsplit *n = qobject_cast<Netsplit *>(sender());
+    auto *n = qobject_cast<Netsplit *>(sender());
     Q_ASSERT(n);
     QHash<QString, Netsplit *> splithash  = _netsplits.take(n->network());
     splithash.remove(splithash.key(n));

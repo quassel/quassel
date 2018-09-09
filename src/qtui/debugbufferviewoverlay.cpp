@@ -35,7 +35,7 @@ DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget *parent)
 {
     ui.setupUi(this);
 
-    BufferViewOverlayFilter *filter = new BufferViewOverlayFilter(Client::bufferModel(), Client::bufferViewOverlay());
+    auto *filter = new BufferViewOverlayFilter(Client::bufferModel(), Client::bufferViewOverlay());
 
     filter->setParent(ui.bufferView);
 
@@ -46,7 +46,7 @@ DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget *parent)
     ui.bufferView->resize(610, 300);
     ui.bufferView->show();
 
-    QFormLayout *layout = new QFormLayout(ui.overlayProperties);
+    auto *layout = new QFormLayout(ui.overlayProperties);
     layout->addRow(tr("BufferViews:"), _bufferViews = new QLineEdit(this));
     layout->addRow(tr("All Networks:"), _allNetworks = new QLabel(this));
     layout->addRow(tr("Networks:"), _networks = new QLineEdit(this));

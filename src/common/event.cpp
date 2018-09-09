@@ -87,11 +87,11 @@ Event *Event::fromVariantMap(QVariantMap &map, Network *network)
         return nullptr;
     }
 
-    EventManager::EventType type = static_cast<EventManager::EventType>(inttype);
+    auto type = static_cast<EventManager::EventType>(inttype);
     if (type == EventManager::Invalid || type == EventManager::GenericEvent)
         return nullptr;
 
-    EventManager::EventType group = static_cast<EventManager::EventType>(type & EventManager::EventGroupMask);
+    auto group = static_cast<EventManager::EventType>(type & EventManager::EventGroupMask);
 
     Event *e = nullptr;
 

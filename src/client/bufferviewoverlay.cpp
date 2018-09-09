@@ -173,7 +173,7 @@ void BufferViewOverlay::viewInitialized(BufferViewConfig *config)
 
 void BufferViewOverlay::viewInitialized()
 {
-    BufferViewConfig *config = qobject_cast<BufferViewConfig *>(sender());
+    auto *config = qobject_cast<BufferViewConfig *>(sender());
     Q_ASSERT(config);
 
     viewInitialized(config);

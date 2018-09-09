@@ -80,7 +80,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, QString idString, qreal width, C
     _clickHandled(true),
     _leftButtonPressed(false)
 {
-    MessageFilter *filter = qobject_cast<MessageFilter *>(model);
+    auto *filter = qobject_cast<MessageFilter *>(model);
     if (filter && filter->isSingleBufferFilter()) {
         _singleBufferId = filter->singleBufferId();
     }
@@ -185,7 +185,7 @@ ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange
     QList<ChatLine *>::ConstIterator end = _lines.end();
     QList<ChatLine *>::ConstIterator middle;
 
-    int n = int(end - start);
+    auto n = int(end - start);
     int half;
 
     while (n > 0) {
@@ -238,7 +238,7 @@ ChatLine *ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange
 ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const
 {
     foreach(QGraphicsItem *item, items(scenePos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder)) {
-        ChatLine *line = qgraphicsitem_cast<ChatLine *>(item);
+        auto *line = qgraphicsitem_cast<ChatLine *>(item);
         if (line)
             return line->itemAt(line->mapFromScene(scenePos));
     }
@@ -248,7 +248,7 @@ ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const
 
 bool ChatScene::containsBuffer(const BufferId &id) const
 {
-    MessageFilter *filter = qobject_cast<MessageFilter *>(model());
+    auto *filter = qobject_cast<MessageFilter *>(model());
     if (filter)
         return filter->containsBuffer(id);
     else
@@ -370,7 +370,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end)
 
     if (atTop) {
         for (int i = end; i >= start; i--) {
-            ChatLine *line = new ChatLine(i, model(),
+            auto *line = new ChatLine(i, model(),
                 width,
                 timestampWidth, senderWidth, contentsWidth,
                 senderPos, contentsPos);
@@ -382,7 +382,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end)
     }
     else {
         for (int i = start; i <= end; i++) {
-            ChatLine *line = new ChatLine(i, model(),
+            auto *line = new ChatLine(i, model(),
                 width,
                 timestampWidth, senderWidth, contentsWidth,
                 senderPos, contentsPos);
@@ -735,8 +735,8 @@ void ChatScene::updateSelection(const QPointF &pos)
 {
     int curRow = rowByScenePos(pos);
     if (curRow < 0) return;
-    int curColumn = (int)columnByScenePos(pos);
-    ChatLineModel::ColumnType minColumn = (ChatLineModel::ColumnType)qMin(curColumn, _selectionStartCol);
+    auto curColumn = (int)columnByScenePos(pos);
+    auto minColumn = (ChatLineModel::ColumnType)qMin(curColumn, _selectionStartCol);
     if (minColumn != _selectionMinCol) {
         _selectionMinCol = minColumn;
         for (int l = qMin(_selectionStart, _selectionEnd); l <= qMax(_selectionStart, _selectionEnd); l++) {
@@ -973,8 +973,8 @@ void ChatScene::handleClick(Qt::MouseButton button, const QPointF &scenePos)
 
 void ChatScene::initiateDrag(QWidget *source)
 {
-    QDrag *drag = new QDrag(source);
-    QMimeData *mimeData = new QMimeData;
+    auto *drag = new QDrag(source);
+    auto *mimeData = new QMimeData;
     mimeData->setText(selection());
     drag->setMimeData(mimeData);
 
@@ -1124,7 +1124,7 @@ void ChatScene::webSearchOnSelection()
 
 void ChatScene::requestBacklog()
 {
-    MessageFilter *filter = qobject_cast<MessageFilter *>(model());
+    auto *filter = qobject_cast<MessageFilter *>(model());
     if (filter)
         return filter->requestBacklog();
     return;
@@ -1148,7 +1148,7 @@ int ChatScene::rowByScenePos(qreal y) const
 
     // ChatLine should be at the bottom of the list
     for (int i = itemList.count()-1; i >= 0; i--) {
-        ChatLine *line = qgraphicsitem_cast<ChatLine *>(itemList.at(i));
+        auto *line = qgraphicsitem_cast<ChatLine *>(itemList.at(i));
         if (line)
             return line->row();
     }

@@ -118,7 +118,7 @@ void ChatViewSearchController::updateHighlights(bool reuse)
     if (reuse) {
         QSet<ChatLine *> chatLines;
         foreach(SearchHighlightItem *highlightItem, _highlightItems) {
-            ChatLine *line = qgraphicsitem_cast<ChatLine *>(highlightItem->parentItem());
+            auto *line = qgraphicsitem_cast<ChatLine *>(highlightItem->parentItem());
             if (line)
                 chatLines << line;
         }
@@ -259,7 +259,7 @@ void ChatViewSearchController::updateHighlights(ChatLine *line)
     }
 
     foreach(QGraphicsItem *child, line->childItems()) {
-        SearchHighlightItem *highlightItem = qgraphicsitem_cast<SearchHighlightItem *>(child);
+        auto *highlightItem = qgraphicsitem_cast<SearchHighlightItem *>(child);
         if (!highlightItem)
             continue;
 
@@ -304,7 +304,7 @@ void ChatViewSearchController::repositionHighlights()
 {
     QSet<ChatLine *> chatLines;
     foreach(SearchHighlightItem *item, _highlightItems) {
-        ChatLine *line = qgraphicsitem_cast<ChatLine *>(item->parentItem());
+        auto *line = qgraphicsitem_cast<ChatLine *>(item->parentItem());
         if (line)
             chatLines << line;
     }
@@ -319,7 +319,7 @@ void ChatViewSearchController::repositionHighlights(ChatLine *line)
 {
     QList<SearchHighlightItem *> searchHighlights;
     foreach(QGraphicsItem *child, line->childItems()) {
-        SearchHighlightItem *highlightItem = qgraphicsitem_cast<SearchHighlightItem *>(child);
+        auto *highlightItem = qgraphicsitem_cast<SearchHighlightItem *>(child);
         if (highlightItem)
             searchHighlights << highlightItem;
     }

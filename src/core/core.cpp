@@ -577,7 +577,7 @@ bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings
 bool Core::sslSupported()
 {
 #ifdef HAVE_SSL
-    SslServer *sslServer = qobject_cast<SslServer *>(&instance()->_server);
+    auto *sslServer = qobject_cast<SslServer *>(&instance()->_server);
     return sslServer && sslServer->isCertValid();
 #else
     return false;
@@ -588,10 +588,10 @@ bool Core::sslSupported()
 bool Core::reloadCerts()
 {
 #ifdef HAVE_SSL
-    SslServer *sslServerv4 = qobject_cast<SslServer *>(&_server);
+    auto *sslServerv4 = qobject_cast<SslServer *>(&_server);
     bool retv4 = sslServerv4->reloadCerts();
 
-    SslServer *sslServerv6 = qobject_cast<SslServer *>(&_v6server);
+    auto *sslServerv6 = qobject_cast<SslServer *>(&_v6server);
     bool retv6 = sslServerv6->reloadCerts();
 
     return retv4 && retv6;
@@ -736,12 +736,12 @@ void Core::stopListening(const QString &reason)
 
 void Core::incomingConnection()
 {
-    QTcpServer *server = qobject_cast<QTcpServer *>(sender());
+    auto *server = qobject_cast<QTcpServer *>(sender());
     Q_ASSERT(server);
     while (server->hasPendingConnections()) {
         QTcpSocket *socket = server->nextPendingConnection();
 
-        CoreAuthHandler *handler = new CoreAuthHandler(socket, this);
+        auto *handler = new CoreAuthHandler(socket, this);
         _connectingClients.insert(handler);
 
         connect(handler, SIGNAL(disconnected()), SLOT(clientDisconnected()));
@@ -760,7 +760,7 @@ void Core::incomingConnection()
 // Potentially called during the initialization phase (before handing the connection off to the session)
 void Core::clientDisconnected()
 {
-    CoreAuthHandler *handler = qobject_cast<CoreAuthHandler *>(sender());
+    auto *handler = qobject_cast<CoreAuthHandler *>(sender());
     Q_ASSERT(handler);
 
     quInfo() << qPrintable(tr("Non-authed client disconnected:")) << qPrintable(handler->socket()->peerAddress().toString());
@@ -779,7 +779,7 @@ void Core::clientDisconnected()
 
 void Core::setupClientSession(RemotePeer *peer, UserId uid)
 {
-    CoreAuthHandler *handler = qobject_cast<CoreAuthHandler *>(sender());
+    auto *handler = qobject_cast<CoreAuthHandler *>(sender());
     Q_ASSERT(handler);
 
     // From now on everything is handled by the client session
@@ -799,7 +799,7 @@ void Core::setupClientSession(RemotePeer *peer, UserId uid)
 void Core::customEvent(QEvent *event)
 {
     if (event->type() == AddClientEventId) {
-        AddClientEvent *addClientEvent = static_cast<AddClientEvent *>(event);
+        auto *addClientEvent = static_cast<AddClientEvent *>(event);
         addClientHelper(addClientEvent->peer, addClientEvent->userId);
         return;
     }
@@ -851,7 +851,7 @@ void Core::setupInternalClientSession(QPointer<InternalPeer> clientPeer)
         return;
     }
 
-    InternalPeer *corePeer = new InternalPeer(this);
+    auto *corePeer = new InternalPeer(this);
     corePeer->setPeer(clientPeer);
     clientPeer->setPeer(corePeer);
 
@@ -1181,7 +1181,7 @@ std::unique_ptr<AbstractSqlMigrationReader> Core::getMigrationReader(Storage *st
     if (!storage)
         return nullptr;
 
-    AbstractSqlStorage *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
+    auto *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
     if (!sqlStorage) {
         qDebug() << "Core::migrateDb(): only SQL based backends can be migrated!";
         return nullptr;
@@ -1196,7 +1196,7 @@ std::unique_ptr<AbstractSqlMigrationWriter> Core::getMigrationWriter(Storage *st
     if (!storage)
         return nullptr;
 
-    AbstractSqlStorage *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
+    auto *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
     if (!sqlStorage) {
         qDebug() << "Core::migrateDb(): only SQL based backends can be migrated!";
         return nullptr;

@@ -144,7 +144,7 @@ InputWidget::InputWidget(QWidget *parent)
 
     ActionCollection *coll = QtUi::actionCollection();
 
-    Action *activateInputline = coll->add<Action>("FocusInputLine");
+    auto *activateInputline = coll->add<Action>("FocusInputLine");
     connect(activateInputline, SIGNAL(triggered()), SLOT(setFocus()));
     activateInputline->setText(tr("Focus Input Line"));
     activateInputline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
@@ -232,10 +232,10 @@ bool InputWidget::eventFilter(QObject *watched, QEvent *event)
     if (event->type() != QEvent::KeyPress)
         return false;
 
-    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    auto *keyEvent = static_cast<QKeyEvent *>(event);
 
     // keys from BufferView should be sent to (and focus) the input line
-    BufferView *view = qobject_cast<BufferView *>(watched);
+    auto *view = qobject_cast<BufferView *>(watched);
     if (view) {
         if (keyEvent->text().length() == 1 && !(keyEvent->modifiers() & (Qt::ControlModifier ^ Qt::AltModifier))) { // normal key press
             QChar c = keyEvent->text().at(0);
@@ -304,11 +304,11 @@ void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
 
         bool encrypted = false;
 
-        IrcChannel *chan = qobject_cast<IrcChannel *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcChannelRole).value<QObject *>());
+        auto *chan = qobject_cast<IrcChannel *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcChannelRole).value<QObject *>());
         if (chan)
             encrypted = chan->encrypted();
 
-        IrcUser *user = qobject_cast<IrcUser *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcUserRole).value<QObject *>());
+        auto *user = qobject_cast<IrcUser *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcUserRole).value<QObject *>());
         if (user)
             encrypted = user->encrypted();
 

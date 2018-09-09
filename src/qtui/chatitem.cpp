@@ -297,7 +297,7 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
     using Label = UiStyle::MessageLabel;
     using Format = UiStyle::Format;
 
-    Label itemLabel = data(ChatLineModel::MsgLabelRole).value<Label>();
+    auto itemLabel = data(ChatLineModel::MsgLabelRole).value<Label>();
     const auto &fmtList = formatList();
 
     struct LabelFormat {
@@ -660,7 +660,7 @@ void ContentsChatItem::clearCache()
 ContentsChatItemPrivate *ContentsChatItem::privateData() const
 {
     if (!_data) {
-        ContentsChatItem *that = const_cast<ContentsChatItem *>(this);
+        auto *that = const_cast<ContentsChatItem *>(this);
         that->_data = new ContentsChatItemPrivate(ClickableList::fromString(data(ChatLineModel::DisplayRole).toString()), that);
     }
     return _data;

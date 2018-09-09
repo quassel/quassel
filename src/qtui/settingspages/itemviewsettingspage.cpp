@@ -62,7 +62,7 @@ void ItemViewSettingsPage::save()
 
 void ItemViewSettingsPage::updateBufferViewPreview(QWidget *widget)
 {
-    ColorButton *button = qobject_cast<ColorButton *>(widget);
+    auto *button = qobject_cast<ColorButton *>(widget);
     if (!button)
         return;
 

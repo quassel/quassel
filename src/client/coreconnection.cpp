@@ -133,7 +133,7 @@ void CoreConnection::reconnectTimeout()
 void CoreConnection::networkDetectionModeChanged(const QVariant &vmode)
 {
     CoreConnectionSettings s;
-    CoreConnectionSettings::NetworkDetectionMode mode = (CoreConnectionSettings::NetworkDetectionMode)vmode.toInt();
+    auto mode = (CoreConnectionSettings::NetworkDetectionMode)vmode.toInt();
     if (mode == CoreConnectionSettings::UsePingTimeout)
         Client::signalProxy()->setMaxHeartBeatCount(s.pingTimeoutInterval() / 30);
     else {
@@ -375,7 +375,7 @@ void CoreConnection::connectToCurrentAccount()
             return;
         }
 
-        InternalPeer *peer = new InternalPeer();
+        auto *peer = new InternalPeer();
         _peer = peer;
         Client::instance()->signalProxy()->addPeer(peer); // sigproxy will take ownership
         emit connectionMsg(tr("Initializing..."));
@@ -496,7 +496,7 @@ void CoreConnection::syncToCore(const Protocol::SessionState &sessionState)
         NetworkId netid = networkid.value<NetworkId>();
         if (Client::network(netid))
             continue;
-        Network *net = new Network(netid, Client::instance());
+        auto *net = new Network(netid, Client::instance());
         _netsToSync.insert(net);
         connect(net, SIGNAL(initDone()), SLOT(networkInitDone()));
         connect(net, SIGNAL(destroyed()), SLOT(networkInitDone()));

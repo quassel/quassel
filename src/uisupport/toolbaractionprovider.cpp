@@ -210,7 +210,7 @@ void ToolBarActionProvider::networkUpdated(const Network *net)
 
 void ToolBarActionProvider::connectOrDisconnectNet()
 {
-    QAction *act = qobject_cast<QAction *>(sender());
+    auto *act = qobject_cast<QAction *>(sender());
     if (!act)
         return;
     const Network *net = Client::network(act->data().value<NetworkId>());

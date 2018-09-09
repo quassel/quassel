@@ -82,7 +82,7 @@ QByteArray IrcParser::decrypt(Network *network, const QString &bufferName, const
 /* used to be handleServerMsg()                                  */
 void IrcParser::processNetworkIncoming(NetworkDataEvent *e)
 {
-    CoreNetwork *net = qobject_cast<CoreNetwork *>(e->network());
+    auto *net = qobject_cast<CoreNetwork *>(e->network());
     if (!net) {
         qWarning() << "Received network event without valid network pointer!";
         return;

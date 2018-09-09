@@ -40,7 +40,7 @@ ChatView::ChatView(BufferId bufferId, QWidget *parent)
 {
     QList<BufferId> filterList;
     filterList.append(bufferId);
-    MessageFilter *filter = new MessageFilter(Client::messageModel(), filterList, this);
+    auto *filter = new MessageFilter(Client::messageModel(), filterList, this);
     init(filter);
 }
 
@@ -94,7 +94,7 @@ void ChatView::init(MessageFilter *filter)
 bool ChatView::event(QEvent *event)
 {
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        auto *keyEvent = static_cast<QKeyEvent *>(event);
         switch (keyEvent->key()) {
         case Qt::Key_Up:
         case Qt::Key_Down:
@@ -294,7 +294,7 @@ QSet<ChatLine *> ChatView::visibleChatLines(Qt::ItemSelectionMode mode) const
 {
     QSet<ChatLine *> result;
     foreach(QGraphicsItem *item, items(viewport()->rect().adjusted(-1, -1, 1, 1), mode)) {
-        ChatLine *line = qgraphicsitem_cast<ChatLine *>(item);
+        auto *line = qgraphicsitem_cast<ChatLine *>(item);
         if (line)
             result.insert(line);
     }
@@ -369,7 +369,7 @@ void ChatView::jumpToMarkerLine(bool requestBacklog)
 void ChatView::addActionsToMenu(QMenu *menu, const QPointF &pos)
 {
     // zoom actions
-    BufferWidget *bw = qobject_cast<BufferWidget *>(bufferContainer());
+    auto *bw = qobject_cast<BufferWidget *>(bufferContainer());
     if (bw) {
         bw->addActionsToMenu(menu, pos);
         menu->addSeparator();

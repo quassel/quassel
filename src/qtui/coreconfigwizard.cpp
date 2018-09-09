@@ -99,7 +99,7 @@ QVariantMap propertiesFromFieldWidgets(QGroupBox *fieldBox, const std::vector<Fi
         QVariant value;
         switch (std::get<2>(fieldInfo).type()) {
             case QVariant::Int: {
-                QSpinBox *spinBox = fieldBox->findChild<QSpinBox *>(key);
+                auto *spinBox = fieldBox->findChild<QSpinBox *>(key);
                 if (spinBox)
                     value = spinBox->value();
                 else
@@ -107,7 +107,7 @@ QVariantMap propertiesFromFieldWidgets(QGroupBox *fieldBox, const std::vector<Fi
                 break;
             }
             case QVariant::String: {
-                QLineEdit *lineEdit = fieldBox->findChild<QLineEdit *>(key);
+                auto *lineEdit = fieldBox->findChild<QLineEdit *>(key);
                 if (lineEdit)
                     value = lineEdit->text();
                 else
@@ -477,13 +477,13 @@ void SyncPage::initializePage()
     emit completeChanged();
 
     // Fill in sync info about the storage layer.
-    StorageSelectionPage *storagePage = qobject_cast<StorageSelectionPage *>(wizard()->page(CoreConfigWizard::StorageSelectionPage));
+    auto *storagePage = qobject_cast<StorageSelectionPage *>(wizard()->page(CoreConfigWizard::StorageSelectionPage));
     QString backend = storagePage->backend();
     QVariantMap backendProperties = storagePage->backendProperties();
     ui.backend->setText(storagePage->displayName());
 
     // Fill in sync info about the authentication layer.
-    AuthenticationSelectionPage *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
+    auto *authPage = qobject_cast<AuthenticationSelectionPage *>(wizard()->page(CoreConfigWizard::AuthenticationSelectionPage));
     QString authenticator = authPage->authenticator();
     QVariantMap authProperties = authPage->authProperties();
     ui.authenticator->setText(authPage->displayName());

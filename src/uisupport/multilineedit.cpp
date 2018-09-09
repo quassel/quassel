@@ -213,7 +213,7 @@ void MultiLineEdit::updateSizeHint()
 QSize MultiLineEdit::sizeHint() const
 {
     if (!_sizeHint.isValid()) {
-        MultiLineEdit *that = const_cast<MultiLineEdit *>(this);
+        auto *that = const_cast<MultiLineEdit *>(this);
         that->updateSizeHint();
     }
     return _sizeHint;
@@ -298,7 +298,7 @@ bool MultiLineEdit::event(QEvent *e)
 {
     // We need to make sure that global shortcuts aren't eaten
     if (e->type() == QEvent::ShortcutOverride) {
-        QKeyEvent *event = static_cast<QKeyEvent *>(e);
+        auto *event = static_cast<QKeyEvent *>(e);
         QKeySequence key = QKeySequence(event->key() | event->modifiers());
         foreach(QAction *action, GraphicalUi::actionCollection()->actions()) {
             if (action->shortcuts().contains(key)) {

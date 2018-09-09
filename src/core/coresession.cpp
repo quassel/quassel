@@ -275,7 +275,7 @@ void CoreSession::addClient(InternalPeer *peer)
 
 void CoreSession::removeClient(Peer *peer)
 {
-    RemotePeer *p = qobject_cast<RemotePeer *>(peer);
+    auto *p = qobject_cast<RemotePeer *>(peer);
     if (p)
         quInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
     _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
@@ -344,7 +344,7 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
 
 void CoreSession::recvStatusMsgFromServer(QString msg)
 {
-    CoreNetwork *net = qobject_cast<CoreNetwork *>(sender());
+    auto *net = qobject_cast<CoreNetwork *>(sender());
     Q_ASSERT(net);
     emit displayStatusMsg(net->networkName(), msg);
 }
@@ -562,7 +562,7 @@ const QString CoreSession::strictCompliantIdent(const CoreIdentity *identity) {
 
 void CoreSession::createIdentity(const CoreIdentity &identity)
 {
-    CoreIdentity *coreIdentity = new CoreIdentity(identity, this);
+    auto *coreIdentity = new CoreIdentity(identity, this);
     _identities[identity.id()] = coreIdentity;
     // CoreIdentity has its own synchronize method since its "private" sslManager needs to be synced as well
     coreIdentity->synchronize(signalProxy());
@@ -573,7 +573,7 @@ void CoreSession::createIdentity(const CoreIdentity &identity)
 
 void CoreSession::updateIdentityBySender()
 {
-    CoreIdentity *identity = qobject_cast<CoreIdentity *>(sender());
+    auto *identity = qobject_cast<CoreIdentity *>(sender());
     if (!identity)
         return;
     Core::updateIdentity(user(), *identity);

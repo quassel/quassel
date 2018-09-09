@@ -79,7 +79,7 @@ QVariant ChatLineModelItem::data(int column, int role) const
         return QVariant::fromValue<UiStyle::MessageLabel>(messageLabel());
 
     QVariant variant;
-    MessageModel::ColumnType col = (MessageModel::ColumnType)column;
+    auto col = (MessageModel::ColumnType)column;
     switch (col) {
     case ChatLineModel::TimestampColumn:
         variant = timestampData(role);
@@ -160,7 +160,7 @@ UiStyle::MessageLabel ChatLineModelItem::messageLabel() const
 {
     using MessageLabel = UiStyle::MessageLabel;
 
-    MessageLabel label = static_cast<MessageLabel>(_styledMsg.senderHash() << 16);
+    auto label = static_cast<MessageLabel>(_styledMsg.senderHash() << 16);
     if (_styledMsg.flags() & Message::Self)
         label |= MessageLabel::OwnMsg;
     if (_styledMsg.flags() & Message::Highlight)

@@ -280,7 +280,7 @@ void ChatMonitorSettingsPage::on_deactivateBuffer_clicked()
 */
 void ChatMonitorSettingsPage::switchOperationMode(int idx)
 {
-    ChatViewSettings::OperationMode mode = (ChatViewSettings::OperationMode)(idx + 1);
+    auto mode = (ChatViewSettings::OperationMode)(idx + 1);
     if (mode == ChatViewSettings::OptIn) {
         ui.labelActiveBuffers->setText(tr("Show:"));
     }

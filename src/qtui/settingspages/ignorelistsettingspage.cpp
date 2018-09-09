@@ -139,7 +139,7 @@ void IgnoreListSettingsPage::newIgnoreRule(QString rule)
         enableOkButton = true;
     }
 
-    IgnoreListEditDlg *dlg = new IgnoreListEditDlg(newItem, this, enableOkButton);
+    auto *dlg = new IgnoreListEditDlg(newItem, this, enableOkButton);
     dlg->enableOkButton(enableOkButton);
     while (dlg->exec() == QDialog::Accepted) {
         if (!_ignoreListModel.newIgnoreRule(dlg->ignoreListItem())) {

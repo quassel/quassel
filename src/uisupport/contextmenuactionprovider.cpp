@@ -92,7 +92,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     registerAction(ShowNetworkConfig, tr("Configure"));
     registerAction(ShowIgnoreList, tr("Show Ignore List"));
 
-    QMenu *hideEventsMenu = new QMenu();
+    auto *hideEventsMenu = new QMenu();
     hideEventsMenu->addAction(action(HideJoinPartQuit));
     hideEventsMenu->addSeparator();
     hideEventsMenu->addAction(action(HideJoin));
@@ -108,7 +108,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     _hideEventsMenuAction = new Action(tr("Hide Events"), nullptr);
     _hideEventsMenuAction->setMenu(hideEventsMenu);
 
-    QMenu *nickCtcpMenu = new QMenu();
+    auto *nickCtcpMenu = new QMenu();
     nickCtcpMenu->addAction(action(NickCtcpPing));
     nickCtcpMenu->addAction(action(NickCtcpVersion));
     nickCtcpMenu->addAction(action(NickCtcpTime));
@@ -116,7 +116,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     _nickCtcpMenuAction = new Action(tr("CTCP"), nullptr);
     _nickCtcpMenuAction->setMenu(nickCtcpMenu);
 
-    QMenu *nickModeMenu = new QMenu();
+    auto *nickModeMenu = new QMenu();
     nickModeMenu->addAction(action(NickOp));
     nickModeMenu->addAction(action(NickDeop));
     // this is where the halfops will be placed if available
@@ -131,7 +131,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     _nickModeMenuAction = new Action(tr("Actions"), nullptr);
     _nickModeMenuAction->setMenu(nickModeMenu);
 
-    QMenu *ignoreMenu = new QMenu();
+    auto *ignoreMenu = new QMenu();
     _nickIgnoreMenuAction = new Action(tr("Ignore"), nullptr);
     _nickIgnoreMenuAction->setMenu(ignoreMenu);
 
@@ -348,7 +348,7 @@ void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex
         addAction(_nickModeMenuAction, menu, itemType == NetworkModel::IrcUserItemType);
         addAction(_nickCtcpMenuAction, menu);
 
-        IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+        auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
         if (ircUser) {
             Network *network = ircUser->network();
             // only show entries for usermode +h if server supports it
@@ -508,7 +508,7 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
             ignoreMenu->addAction(_ignoreDescriptions.at(1));
         while (ruleIter != ignoreMap.constEnd()) {
             if (counter < 5) {
-                ActionType type = static_cast<ActionType>(NickIgnoreToggleEnabled0 + counter*0x100000);
+                auto type = static_cast<ActionType>(NickIgnoreToggleEnabled0 + counter*0x100000);
                 Action *act = action(type);
                 act->setText(ruleIter.key());
                 act->setProperty("ignoreRule", ruleIter.key());

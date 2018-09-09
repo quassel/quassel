@@ -73,7 +73,7 @@ QTcpSocket *SslServer::nextPendingConnection()
 
 void SslServer::incomingConnection(qintptr socketDescriptor)
 {
-    QSslSocket *serverSocket = new QSslSocket(this);
+    auto *serverSocket = new QSslSocket(this);
     if (serverSocket->setSocketDescriptor(socketDescriptor)) {
         if (isCertValid()) {
             serverSocket->setLocalCertificate(_cert);

@@ -82,7 +82,7 @@ public:
     template<class ActionType>
     ActionType *add(const QString &name, const QObject *receiver = nullptr, const char *member = nullptr)
     {
-        ActionType *a = new ActionType(this);
+        auto *a = new ActionType(this);
         if (receiver && member)
             connect(a, SIGNAL(triggered(bool)), receiver, member);
         addAction(name, a);

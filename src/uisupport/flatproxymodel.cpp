@@ -179,7 +179,7 @@ QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxyS
 
         SourceItem *topLeftItem = nullptr;
         SourceItem *bottomRightItem = nullptr;
-        SourceItem *currentItem = static_cast<SourceItem *>(range.topLeft().internalPointer());
+        auto *currentItem = static_cast<SourceItem *>(range.topLeft().internalPointer());
         int row = range.topLeft().row();
         int left = range.topLeft().column();
         int right = range.bottomRight().column();

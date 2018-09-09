@@ -69,7 +69,7 @@ ActionCollection *GraphicalUi::actionCollection(const QString &category, const Q
 {
     if (_actionCollections.contains(category))
         return _actionCollections.value(category);
-    ActionCollection *coll = new ActionCollection(_mainWidget);
+    auto *coll = new ActionCollection(_mainWidget);
 
     if (!translatedCategory.isEmpty())
         coll->setProperty("Category", translatedCategory);

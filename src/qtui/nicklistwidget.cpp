@@ -41,7 +41,7 @@ NickListWidget::NickListWidget(QWidget *parent)
 
 QDockWidget *NickListWidget::dock() const
 {
-    QDockWidget *dock = qobject_cast<QDockWidget *>(parent());
+    auto *dock = qobject_cast<QDockWidget *>(parent());
     if (dock)
         return dock;
     else
@@ -58,7 +58,7 @@ void NickListWidget::hideEvent(QHideEvent *event)
 
 void NickListWidget::showEvent(QShowEvent *event)
 {
-    NickView *view = qobject_cast<NickView *>(ui.stackedWidget->currentWidget());
+    auto *view = qobject_cast<NickView *>(ui.stackedWidget->currentWidget());
     if (view)
         emit nickSelectionChanged(view->selectedIndexes());
 
@@ -135,7 +135,7 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
     }
     else {
         view = new NickView(this);
-        NickViewFilter *filter = new NickViewFilter(newBufferId, Client::networkModel());
+        auto *filter = new NickViewFilter(newBufferId, Client::networkModel());
         view->setModel(filter);
         QModelIndex source_current = Client::bufferModel()->mapToSource(current);
         view->setRootIndex(filter->mapFromSource(source_current));
@@ -150,7 +150,7 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
 
 void NickListWidget::nickSelectionChanged()
 {
-    NickView *view = qobject_cast<NickView *>(sender());
+    auto *view = qobject_cast<NickView *>(sender());
     Q_ASSERT(view);
     if (view != ui.stackedWidget->currentWidget()) {
         qDebug() << "Nick selection of hidden view changed!";
@@ -175,7 +175,7 @@ void NickListWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, 
             ui.stackedWidget->removeWidget(nickView);
             QAbstractItemModel *model = nickView->model();
             nickView->setModel(nullptr);
-            if (QSortFilterProxyModel *filter = qobject_cast<QSortFilterProxyModel *>(model))
+            if (auto *filter = qobject_cast<QSortFilterProxyModel *>(model))
                 filter->setSourceModel(nullptr);
             model->deleteLater();
             nickView->deleteLater();
@@ -204,7 +204,7 @@ void NickListWidget::removeBuffer(BufferId bufferId)
     ui.stackedWidget->removeWidget(view);
     QAbstractItemModel *model = view->model();
     view->setModel(nullptr);
-    if (QSortFilterProxyModel *filter = qobject_cast<QSortFilterProxyModel *>(model))
+    if (auto *filter = qobject_cast<QSortFilterProxyModel *>(model))
         filter->setSourceModel(nullptr);
     model->deleteLater();
     view->deleteLater();

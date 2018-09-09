@@ -179,7 +179,7 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event)
     if (obj != _lineEdit || event->type() != QEvent::KeyPress)
         return QObject::eventFilter(obj, event);
 
-    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    auto *keyEvent = static_cast<QKeyEvent *>(event);
 
     if (keyEvent->key() == GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut()[0])
         complete();

@@ -46,7 +46,7 @@ void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
 
 void ClientTransferManager::onTransferInitDone()
 {
-    Transfer *transfer = qobject_cast<Transfer *>(sender());
+    auto *transfer = qobject_cast<Transfer *>(sender());
     Q_ASSERT(transfer);
     addTransfer(transfer);
 }

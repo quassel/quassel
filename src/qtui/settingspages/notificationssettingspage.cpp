@@ -27,7 +27,7 @@
 NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Notifications"), parent)
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout(this);
     foreach(AbstractNotificationBackend *backend, QtUi::notificationBackends()) {
         SettingsPage *cw = backend->createConfigWidget();
         if (cw) {

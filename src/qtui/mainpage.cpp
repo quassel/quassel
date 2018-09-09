@@ -32,7 +32,7 @@
 
 MainPage::MainPage(QWidget *parent) : QWidget(parent)
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignCenter);
     QLabel *label = new QLabel(this);
     label->setPixmap(QPixmap(":/pics/quassel-logo.png"));

@@ -666,10 +666,10 @@ void MainWin::addBufferView(ClientBufferViewConfig *config)
         return;
 
     config->setLocked(QtUiSettings().value("LockLayout", false).toBool());
-    BufferViewDock *dock = new BufferViewDock(config, this);
+    auto *dock = new BufferViewDock(config, this);
 
     //create the view and initialize it's filter
-    BufferView *view = new BufferView(dock);
+    auto *view = new BufferView(dock);
     view->setFilteredModel(Client::bufferModel(), config);
     view->installEventFilter(_inputWidget); // for key presses
 
@@ -726,9 +726,9 @@ void MainWin::bufferViewToggled(bool enabled)
         // since this isn't our fault and we can't do anything about it, we suppress the resulting calls
         return;
     }
-    QAction *action = qobject_cast<QAction *>(sender());
+    auto *action = qobject_cast<QAction *>(sender());
     Q_ASSERT(action);
-    BufferViewDock *dock = qobject_cast<BufferViewDock *>(action->parent());
+    auto *dock = qobject_cast<BufferViewDock *>(action->parent());
     Q_ASSERT(dock);
 
     // Make sure we don't toggle backlog fetch for a view we've already removed
@@ -745,7 +745,7 @@ void MainWin::bufferViewToggled(bool enabled)
 void MainWin::bufferViewVisibilityChanged(bool visible)
 {
     Q_UNUSED(visible);
-    BufferViewDock *dock = qobject_cast<BufferViewDock *>(sender());
+    auto *dock = qobject_cast<BufferViewDock *>(sender());
     Q_ASSERT(dock);
     if ((!dock->isHidden() && !activeBufferView()) || (dock->isHidden() && dock->isActive()))
         nextBufferView();
@@ -991,7 +991,7 @@ void MainWin::setupChatMonitor()
     VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
     dock->setObjectName("ChatMonitorDock");
 
-    ChatMonitorFilter *filter = new ChatMonitorFilter(Client::messageModel(), this);
+    auto *filter = new ChatMonitorFilter(Client::messageModel(), this);
     _chatMonitorView = new ChatMonitorView(filter, this);
     _chatMonitorView->show();
     dock->setWidget(_chatMonitorView);
@@ -1104,7 +1104,7 @@ void MainWin::setupStatusBar()
 
 void MainWin::setupHotList()
 {
-    FlatProxyModel *flatProxy = new FlatProxyModel(this);
+    auto *flatProxy = new FlatProxyModel(this);
     flatProxy->setSourceModel(Client::bufferModel());
     _bufferHotList = new BufferHotListFilter(flatProxy);
 }
@@ -1450,7 +1450,7 @@ void MainWin::showCoreConnectionDlg()
 
 void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantList &authenticators)
 {
-    CoreConfigWizard *wizard = new CoreConfigWizard(Client::coreConnection(), backends, authenticators, this);
+    auto *wizard = new CoreConfigWizard(Client::coreConnection(), backends, authenticators, this);
 
     wizard->show();
 }
@@ -1459,7 +1459,7 @@ void MainWin::showCoreConfigWizard(const QVariantList &backends, const QVariantL
 void MainWin::showChannelList(NetworkId netId, const QString &channelFilters, bool listImmediately)
 {
     if (!netId.isValid()) {
-        QAction *action = qobject_cast<QAction *>(sender());
+        auto *action = qobject_cast<QAction *>(sender());
         if (action)
             netId = action->data().value<NetworkId>();
         if (!netId.isValid()) {
@@ -1474,7 +1474,7 @@ void MainWin::showChannelList(NetworkId netId, const QString &channelFilters, bo
         }
     }
 
-    ChannelListDlg *channelListDlg = new ChannelListDlg(this);
+    auto *channelListDlg = new ChannelListDlg(this);
     channelListDlg->setAttribute(Qt::WA_DeleteOnClose);
     channelListDlg->setNetwork(netId);
     if (!channelFilters.isEmpty()) {
@@ -1516,7 +1516,7 @@ void MainWin::showAwayLog()
 {
     if (_awayLog)
         return;
-    AwayLogFilter *filter = new AwayLogFilter(Client::messageModel());
+    auto *filter = new AwayLogFilter(Client::messageModel());
     _awayLog = new AwayLogView(filter, nullptr);
     filter->setParent(_awayLog);
     connect(_awayLog, SIGNAL(destroyed()), this, SLOT(awayLogDestroyed()));
@@ -1533,7 +1533,7 @@ void MainWin::awayLogDestroyed()
 
 void MainWin::showSettingsDlg()
 {
-    SettingsDlg *dlg = new SettingsDlg(this);
+    auto *dlg = new SettingsDlg();
 
     //Category: Interface
     dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
@@ -1594,7 +1594,7 @@ void MainWin::showNewTransferDlg(const QUuid &transferId)
     auto transfer = Client::transferManager()->transfer(transferId);
     if (transfer) {
         if (transfer->status() == Transfer::Status::New) {
-            ReceiveFileDlg *dlg = new ReceiveFileDlg(transfer, this);
+            auto *dlg = new ReceiveFileDlg(transfer, this);
             dlg->show();
         }
     }
@@ -1663,7 +1663,7 @@ void MainWin::resizeEvent(QResizeEvent *event)
 void MainWin::closeEvent(QCloseEvent *event)
 {
     QtUiSettings s;
-    QtUiApplication *app = qobject_cast<QtUiApplication *> qApp;
+    auto *app = qobject_cast<QtUiApplication *> qApp;
     Q_ASSERT(app);
     // On OSX it can happen that the closeEvent occurs twice. (Especially if packaged with Frameworks)
     // This messes up MainWinState/MainWinHidden save/restore.
@@ -1749,7 +1749,7 @@ void MainWin::currentBufferChanged(BufferId buffer)
 void MainWin::clientNetworkCreated(NetworkId id)
 {
     const Network *net = Client::network(id);
-    QAction *act = new QAction(net->networkName(), this);
+    auto *act = new QAction(net->networkName(), this);
     act->setObjectName(QString("NetworkAction-%1").arg(id.toInt()));
     act->setData(QVariant::fromValue<NetworkId>(id));
     connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
@@ -1770,11 +1770,11 @@ void MainWin::clientNetworkCreated(NetworkId id)
 
 void MainWin::clientNetworkUpdated()
 {
-    const Network *net = qobject_cast<const Network *>(sender());
+    const auto *net = qobject_cast<const Network *>(sender());
     if (!net)
         return;
 
-    QAction *action = findChild<QAction *>(QString("NetworkAction-%1").arg(net->networkId().toInt()));
+    auto *action = findChild<QAction *>(QString("NetworkAction-%1").arg(net->networkId().toInt()));
     if (!action)
         return;
 
@@ -1803,7 +1803,7 @@ void MainWin::clientNetworkUpdated()
 
 void MainWin::clientNetworkRemoved(NetworkId id)
 {
-    QAction *action = findChild<QAction *>(QString("NetworkAction-%1").arg(id.toInt()));
+    auto *action = findChild<QAction *>(QString("NetworkAction-%1").arg(id.toInt()));
     if (!action)
         return;
 
@@ -1813,7 +1813,7 @@ void MainWin::clientNetworkRemoved(NetworkId id)
 
 void MainWin::connectOrDisconnectFromNet()
 {
-    QAction *act = qobject_cast<QAction *>(sender());
+    auto *act = qobject_cast<QAction *>(sender());
     if (!act) return;
     const Network *net = Client::network(act->data().value<NetworkId>());
     if (!net) return;
@@ -1897,7 +1897,7 @@ void MainWin::on_bufferSearch_triggered()
 
 void MainWin::onJumpKey()
 {
-    QAction *action = qobject_cast<QAction *>(sender());
+    auto *action = qobject_cast<QAction *>(sender());
     if (!action || !Client::bufferModel())
         return;
     int idx = action->property("Index").toInt();
@@ -1916,7 +1916,7 @@ void MainWin::onJumpKey()
 
 void MainWin::bindJumpKey()
 {
-    QAction *action = qobject_cast<QAction *>(sender());
+    auto *action = qobject_cast<QAction *>(sender());
     if (!action || !Client::bufferModel())
         return;
     int idx = action->property("Index").toInt();
@@ -1928,7 +1928,7 @@ void MainWin::bindJumpKey()
 
 void MainWin::on_actionDebugNetworkModel_triggered()
 {
-    QTreeView *view = new QTreeView;
+    auto *view = new QTreeView;
     view->setAttribute(Qt::WA_DeleteOnClose);
     view->setWindowTitle("Debug NetworkModel View");
     view->setModel(Client::networkModel());
@@ -1945,7 +1945,7 @@ void MainWin::on_actionDebugHotList_triggered()
     _bufferHotList->invalidate();
     _bufferHotList->sort(0, Qt::DescendingOrder);
 
-    QTreeView *view = new QTreeView;
+    auto *view = new QTreeView;
     view->setAttribute(Qt::WA_DeleteOnClose);
     view->setModel(_bufferHotList);
     view->show();
@@ -1954,7 +1954,7 @@ void MainWin::on_actionDebugHotList_triggered()
 
 void MainWin::on_actionDebugBufferViewOverlay_triggered()
 {
-    DebugBufferViewOverlay *overlay = new DebugBufferViewOverlay(nullptr);
+    auto *overlay = new DebugBufferViewOverlay(nullptr);
     overlay->setAttribute(Qt::WA_DeleteOnClose);
     overlay->show();
 }
@@ -1962,8 +1962,8 @@ void MainWin::on_actionDebugBufferViewOverlay_triggered()
 
 void MainWin::on_actionDebugMessageModel_triggered()
 {
-    QTableView *view = new QTableView(nullptr);
-    DebugMessageModelFilter *filter = new DebugMessageModelFilter(view);
+    auto *view = new QTableView(nullptr);
+    auto *filter = new DebugMessageModelFilter(view);
     filter->setSourceModel(Client::messageModel());
     view->setModel(filter);
     view->setAttribute(Qt::WA_DeleteOnClose, true);

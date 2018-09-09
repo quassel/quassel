@@ -192,7 +192,7 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const
         // This DOES mean that it looks like you can merge a buffer into the Status buffer, but that is restricted in BufferView::dropEvent().
         if (bufferType == BufferInfo::StatusBuffer) {
             // But only if the layout isn't locked!
-            ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+            auto *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
             if (clientConf && !clientConf->isLocked()) {
                 flags |= Qt::ItemIsDropEnabled;
             }
@@ -245,7 +245,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
             if (config()->bufferList().contains(bufferId) && !config()->sortAlphabetically()) {
                 if (config()->bufferList().indexOf(bufferId) < pos)
                     pos--;
-                ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+                auto *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
                 if (!clientConf || !clientConf->isLocked())
                     config()->requestMoveBuffer(bufferId, pos);
             }

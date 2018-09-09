@@ -255,7 +255,7 @@ bool TopicWidget::eventFilter(QObject *obj, QEvent *event)
     if (event->type() != QEvent::KeyRelease)
         return QObject::eventFilter(obj, event);
 
-    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    auto *keyEvent = static_cast<QKeyEvent *>(event);
 
     if (keyEvent->key() == Qt::Key_Escape) {
         switchPlain();

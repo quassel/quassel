@@ -136,7 +136,7 @@ void AbstractTreeItem::customEvent(QEvent *event)
 
     event->accept();
 
-    RemoveChildLaterEvent *removeEvent = static_cast<RemoveChildLaterEvent *>(event);
+    auto *removeEvent = static_cast<RemoveChildLaterEvent *>(event);
     int childRow = _childItems.indexOf(removeEvent->child());
     if (childRow == -1)
         return;
@@ -392,7 +392,7 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
         return QModelIndex();
     }
 
-    AbstractTreeItem *childItem = static_cast<AbstractTreeItem *>(index.internalPointer());
+    auto *childItem = static_cast<AbstractTreeItem *>(index.internalPointer());
     AbstractTreeItem *parentItem = childItem->parent();
 
     Q_ASSERT(parentItem);
@@ -438,7 +438,7 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
+    auto *item = static_cast<AbstractTreeItem *>(index.internalPointer());
     return item->data(index.column(), role);
 }
 
@@ -448,7 +448,7 @@ bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int rol
     if (!index.isValid())
         return false;
 
-    AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
+    auto *item = static_cast<AbstractTreeItem *>(index.internalPointer());
     return item->setData(index.column(), value, role);
 }
 
@@ -459,7 +459,7 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
         return rootItem->flags() & Qt::ItemIsDropEnabled;
     }
     else {
-        AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
+        auto *item = static_cast<AbstractTreeItem *>(index.internalPointer());
         return item->flags();
     }
 }
@@ -476,7 +476,7 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 
 void TreeModel::itemDataChanged(int column)
 {
-    AbstractTreeItem *item = qobject_cast<AbstractTreeItem *>(sender());
+    auto *item = qobject_cast<AbstractTreeItem *>(sender());
     QModelIndex leftIndex, rightIndex;
 
     if (item == rootItem)
@@ -514,7 +514,7 @@ void TreeModel::connectItem(AbstractTreeItem *item)
 
 void TreeModel::beginAppendChilds(int firstRow, int lastRow)
 {
-    AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
+    auto *parentItem = qobject_cast<AbstractTreeItem *>(sender());
     if (!parentItem) {
         qWarning() << "TreeModel::beginAppendChilds(): cannot append Children to unknown parent";
         return;
@@ -531,7 +531,7 @@ void TreeModel::beginAppendChilds(int firstRow, int lastRow)
 
 void TreeModel::endAppendChilds()
 {
-    AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
+    auto *parentItem = qobject_cast<AbstractTreeItem *>(sender());
     if (!parentItem) {
         qWarning() << "TreeModel::endAppendChilds(): cannot append Children to unknown parent";
         return;
@@ -553,7 +553,7 @@ void TreeModel::endAppendChilds()
 
 void TreeModel::beginRemoveChilds(int firstRow, int lastRow)
 {
-    AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
+    auto *parentItem = qobject_cast<AbstractTreeItem *>(sender());
     if (!parentItem) {
         qWarning() << "TreeModel::beginRemoveChilds(): cannot append Children to unknown parent";
         return;
@@ -577,7 +577,7 @@ void TreeModel::beginRemoveChilds(int firstRow, int lastRow)
 
 void TreeModel::endRemoveChilds()
 {
-    AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
+    auto *parentItem = qobject_cast<AbstractTreeItem *>(sender());
     if (!parentItem) {
         qWarning() << "TreeModel::endRemoveChilds(): cannot remove Children from unknown parent";
         return;

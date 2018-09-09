@@ -38,7 +38,7 @@ CoreNetworkConfig::CoreNetworkConfig(const QString &objectName, CoreSession *ses
 
 void CoreNetworkConfig::save()
 {
-    CoreSession *session = qobject_cast<CoreSession *>(parent());
+    auto *session = qobject_cast<CoreSession *>(parent());
     if (!session) {
         qWarning() << Q_FUNC_INFO << "No CoreSession set, cannot save network configuration!";
         return;

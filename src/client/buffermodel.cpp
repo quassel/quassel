@@ -70,7 +70,7 @@ void BufferModel::networkConnectionChanged(Network::ConnectionState state)
         if (currentIndex().isValid())
             return;
         {
-            Network *net = qobject_cast<Network *>(sender());
+            auto *net = qobject_cast<Network *>(sender());
             Q_ASSERT(net);
             setCurrentIndex(mapFromSource(Client::networkModel()->networkIndex(net->networkId())));
         }

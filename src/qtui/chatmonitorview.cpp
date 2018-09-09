@@ -101,7 +101,7 @@ void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event)
 
 void ChatMonitorView::showFieldsChanged(bool checked)
 {
-    QAction *showAction = qobject_cast<QAction *>(sender());
+    auto *showAction = qobject_cast<QAction *>(sender());
     if (!showAction)
         return;
 

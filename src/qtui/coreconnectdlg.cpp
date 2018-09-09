@@ -41,10 +41,10 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
     setWindowTitle(tr("Connect to Core"));
     setWindowIcon(icon::get("network-disconnect"));
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout(this);
     layout->addWidget(_settingsPage);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
+    auto *buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
     layout->addWidget(buttonBox);
 

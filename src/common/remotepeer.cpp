@@ -51,7 +51,7 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, Compresso
     connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
 
 #ifdef HAVE_SSL
-    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
+    auto *sslSocket = qobject_cast<QSslSocket *>(socket);
     if (sslSocket)
         connect(sslSocket, SIGNAL(encrypted()), SIGNAL(secureStateChanged()));
 #endif
@@ -168,7 +168,7 @@ bool RemotePeer::isSecure() const
         if (isLocal())
             return true;
 #ifdef HAVE_SSL
-        QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket());
+        auto *sslSocket = qobject_cast<QSslSocket *>(socket());
         if (sslSocket && sslSocket->isEncrypted())
             return true;
 #endif
@@ -260,7 +260,7 @@ bool RemotePeer::readMessage(QByteArray &msg)
 
 void RemotePeer::writeMessage(const QByteArray &msg)
 {
-    quint32 size = qToBigEndian<quint32>(msg.size());
+    auto size = qToBigEndian<quint32>(msg.size());
     _compressor->write((const char*)&size, 4, Compressor::NoFlush);
     _compressor->write(msg.constData(), msg.size());
 }
