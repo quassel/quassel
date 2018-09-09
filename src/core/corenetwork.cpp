@@ -814,20 +814,20 @@ void CoreNetwork::updateIssuedModes(const QString &requestedModes)
     QString removeModes;
     bool addMode = true;
 
-    for (int i = 0; i < requestedModes.length(); i++) {
-        if (requestedModes[i] == '+') {
+    for (auto requestedMode : requestedModes) {
+        if (requestedMode == '+') {
             addMode = true;
             continue;
         }
-        if (requestedModes[i] == '-') {
+        if (requestedMode == '-') {
             addMode = false;
             continue;
         }
         if (addMode) {
-            addModes += requestedModes[i];
+            addModes += requestedMode;
         }
         else {
-            removeModes += requestedModes[i];
+            removeModes += requestedMode;
         }
     }
 
