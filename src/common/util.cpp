@@ -107,17 +107,17 @@ QString decodeString(const QByteArray &input, QTextCodec *codec)
     // Q_ASSERT(sizeof(const char) == sizeof(quint8));  // In God we trust...
     bool isUtf8 = true;
     int cnt = 0;
-    for (int i = 0; i < input.size(); i++) {
+    for (uchar c : input) {
         if (cnt) {
             // We check a part of a multibyte char. These need to be of the form 10yyyyyy.
-            if ((input[i] & 0xc0) != 0x80) { isUtf8 = false; break; }
+            if ((c & 0xc0) != 0x80) { isUtf8 = false; break; }
             cnt--;
             continue;
         }
-        if ((input[i] & 0x80) == 0x00) continue;  // 7 bit is always ok
-        if ((input[i] & 0xf8) == 0xf0) { cnt = 3; continue; } // 4-byte char 11110xxx 10yyyyyy 10zzzzzz 10vvvvvv
-        if ((input[i] & 0xf0) == 0xe0) { cnt = 2; continue; } // 3-byte char 1110xxxx 10yyyyyy 10zzzzzz
-        if ((input[i] & 0xe0) == 0xc0) { cnt = 1; continue; } // 2-byte char 110xxxxx 10yyyyyy
+        if ((c & 0x80) == 0x00) continue;  // 7 bit is always ok
+        if ((c & 0xf8) == 0xf0) { cnt = 3; continue; } // 4-byte char 11110xxx 10yyyyyy 10zzzzzz 10vvvvvv
+        if ((c & 0xf0) == 0xe0) { cnt = 2; continue; } // 3-byte char 1110xxxx 10yyyyyy 10zzzzzz
+        if ((c & 0xe0) == 0xc0) { cnt = 1; continue; } // 2-byte char 110xxxxx 10yyyyyy
         isUtf8 = false; break; // 8 bit char, but not utf8!
     }
     if (isUtf8 && cnt == 0) {
@@ -179,18 +179,17 @@ QString secondsToString(int timeInSeconds)
 
     if (timeInSeconds != 0) {
         QStringList returnString;
-        for (int i = 0; i < timeUnit.size(); i++) {
-            int n = timeInSeconds / timeUnit[i].first;
+        for (const auto &tu : timeUnit) {
+            int n = timeInSeconds / tu.first;
             if (n > 0) {
-                returnString += QString("%1 %2").arg(QString::number(n), timeUnit[i].second);
+                returnString += QString("%1 %2").arg(QString::number(n), tu.second);
             }
-            timeInSeconds = timeInSeconds % timeUnit[i].first;
+            timeInSeconds = timeInSeconds % tu.first;
         }
         return returnString.join(", ");
     }
-    else {
-        return QString("%1 %2").arg(QString::number(timeInSeconds), timeUnit.last().second);
-    }
+
+    return QString("%1 %2").arg(QString::number(timeInSeconds), timeUnit.last().second);
 }
 
 

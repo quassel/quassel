@@ -85,8 +85,8 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, DBusImageStruct &
 const QDBusArgument &operator<<(QDBusArgument &argument, const DBusImageVector &iconVector)
 {
     argument.beginArray(qMetaTypeId<DBusImageStruct>());
-    for (int i = 0; i < iconVector.size(); ++i) {
-        argument << iconVector[i];
+    for (const auto &i : iconVector) {
+        argument << i;
     }
     argument.endArray();
     return argument;

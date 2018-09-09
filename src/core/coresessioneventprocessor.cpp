@@ -459,17 +459,17 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
         QString modes = e->params()[1];
         bool add = true;
         int paramOffset = 2;
-        for (int c = 0; c < modes.length(); c++) {
-            if (modes[c] == '+') {
+        for (auto mode : modes) {
+            if (mode == '+') {
                 add = true;
                 continue;
             }
-            if (modes[c] == '-') {
+            if (mode == '-') {
                 add = false;
                 continue;
             }
 
-            if (e->network()->prefixModes().contains(modes[c])) {
+            if (e->network()->prefixModes().contains(mode)) {
                 // user channel modes (op, voice, etc...)
                 if (paramOffset < e->params().count()) {
                     IrcUser *ircUser = e->network()->ircUser(e->params()[paramOffset]);
@@ -483,15 +483,15 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
                             foreach(Netsplit* n, _netsplits.value(e->network())) {
                                 handledByNetsplit = n->userAlreadyJoined(ircUser->hostmask(), channel->name());
                                 if (handledByNetsplit) {
-                                    n->addMode(ircUser->hostmask(), channel->name(), QString(modes[c]));
+                                    n->addMode(ircUser->hostmask(), channel->name(), QString(mode));
                                     break;
                                 }
                             }
                             if (!handledByNetsplit)
-                                channel->addUserMode(ircUser, QString(modes[c]));
+                                channel->addUserMode(ircUser, QString(mode));
                         }
                         else
-                            channel->removeUserMode(ircUser, QString(modes[c]));
+                            channel->removeUserMode(ircUser, QString(mode));
                     }
                 }
                 else {
@@ -502,7 +502,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
             else {
                 // regular channel modes
                 QString value;
-                Network::ChannelModeType modeType = e->network()->channelModeType(modes[c]);
+                Network::ChannelModeType modeType = e->network()->channelModeType(mode);
                 if (modeType == Network::A_CHANMODE || modeType == Network::B_CHANMODE || (modeType == Network::C_CHANMODE && add)) {
                     if (paramOffset < e->params().count()) {
                         value = e->params()[paramOffset];
@@ -514,9 +514,9 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
                 }
 
                 if (add)
-                    channel->addChannelMode(modes[c], value);
+                    channel->addChannelMode(mode, value);
                 else
-                    channel->removeChannelMode(modes[c], value);
+                    channel->removeChannelMode(mode, value);
             }
         }
     }
