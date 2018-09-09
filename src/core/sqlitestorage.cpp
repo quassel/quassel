@@ -687,7 +687,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info)
     }
     if (error) {
         unlock();
-        return NetworkId();
+        return {};
     }
 
     {
@@ -709,7 +709,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info)
     }
     unlock();
     if (error)
-        return NetworkId();
+        return {};
     else
         return networkId;
 }

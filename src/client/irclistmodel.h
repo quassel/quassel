@@ -40,7 +40,7 @@ public:
 
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
-    inline QModelIndex parent(const QModelIndex &) const override { return QModelIndex(); }
+    inline QModelIndex parent(const QModelIndex &) const override { return {}; }
 
     inline int rowCount(const QModelIndex &parent = QModelIndex()) const override { Q_UNUSED(parent) return _channelList.count(); }
     inline int columnCount(const QModelIndex &parent = QModelIndex()) const override { Q_UNUSED(parent) return 3; }

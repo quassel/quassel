@@ -1334,7 +1334,7 @@ QModelIndex NetworkModel::networkIndex(NetworkId networkId)
 {
     int netRow = networkRow(networkId);
     if (netRow == -1)
-        return QModelIndex();
+        return {};
     else
         return indexByItem(qobject_cast<NetworkItem *>(rootItem->child(netRow)));
 }
@@ -1374,7 +1374,7 @@ void NetworkModel::networkRemoved(const NetworkId &networkId)
 QModelIndex NetworkModel::bufferIndex(BufferId bufferId)
 {
     if (!_bufferItemCache.contains(bufferId))
-        return QModelIndex();
+        return {};
 
     return indexByItem(_bufferItemCache[bufferId]);
 }
@@ -1485,7 +1485,7 @@ void NetworkModel::removeBuffer(BufferId bufferId)
 MsgId NetworkModel::lastSeenMsgId(BufferId bufferId) const
 {
     if (!_bufferItemCache.contains(bufferId))
-        return MsgId();
+        return {};
 
     return _bufferItemCache[bufferId]->lastSeenMsgId();
 }
@@ -1494,7 +1494,7 @@ MsgId NetworkModel::lastSeenMsgId(BufferId bufferId) const
 MsgId NetworkModel::markerLineMsgId(BufferId bufferId) const
 {
     if (!_bufferItemCache.contains(bufferId))
-        return MsgId();
+        return {};
 
     return _bufferItemCache[bufferId]->markerLineMsgId();
 }
@@ -1507,7 +1507,7 @@ MsgId NetworkModel::lastSeenMsgId(const BufferId &bufferId)
     if (!bufferItem) {
         qDebug() << "NetworkModel::lastSeenMsgId(): buffer is unknown:" << bufferId;
         Client::purgeKnownBufferIds();
-        return MsgId();
+        return {};
     }
     return bufferItem->lastSeenMsgId();
 }
@@ -1688,13 +1688,13 @@ BufferInfo NetworkModel::bufferInfo(BufferId bufferId) const
 NetworkId NetworkModel::networkId(BufferId bufferId) const
 {
     if (!_bufferItemCache.contains(bufferId))
-        return NetworkId();
+        return {};
 
     auto *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
     if (netItem)
         return netItem->networkId();
     else
-        return NetworkId();
+        return {};
 }
 
 
@@ -1715,14 +1715,14 @@ BufferId NetworkModel::bufferId(NetworkId networkId, const QString &bufferName, 
 {
     const NetworkItem *netItem = findNetworkItem(networkId);
     if (!netItem)
-        return BufferId();
+        return {};
 
     for (int i = 0; i < netItem->childCount(); i++) {
         auto *bufferItem = qobject_cast<BufferItem *>(netItem->child(i));
         if (bufferItem && !bufferItem->bufferName().compare(bufferName, cs))
             return bufferItem->bufferId();
     }
-    return BufferId();
+    return {};
 }
 
 

@@ -34,13 +34,13 @@ VerticalDockTitle::VerticalDockTitle(QDockWidget *parent)
 
 QSize VerticalDockTitle::sizeHint() const
 {
-    return QSize(8, 15);
+    return {8, 15};
 }
 
 
 QSize VerticalDockTitle::minimumSizeHint() const
 {
-    return QSize(8, 10);
+    return {8, 10};
 }
 
 

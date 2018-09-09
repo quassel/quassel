@@ -262,11 +262,11 @@ void ChatView::verticalScrollbarChanged(int newPos)
 MsgId ChatView::lastMsgId() const
 {
     if (!scene())
-        return MsgId();
+        return {};
 
     QAbstractItemModel *model = scene()->model();
     if (!model || model->rowCount() == 0)
-        return MsgId();
+        return {};
 
     return model->index(model->rowCount() - 1, 0).data(MessageModel::MsgIdRole).value<MsgId>();
 }
@@ -279,7 +279,7 @@ MsgId ChatView::lastVisibleMsgId() const
     if (line)
         return line->msgId();
 
-    return MsgId();
+    return {};
 }
 
 

@@ -250,7 +250,7 @@ QModelIndex CoreAccountModel::accountIndex(AccountId accId) const
         if (_accounts.at(i).accountId() == accId)
             return index(i, 0);
     }
-    return QModelIndex();
+    return {};
 }
 
 

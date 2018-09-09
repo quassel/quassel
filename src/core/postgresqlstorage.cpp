@@ -494,7 +494,7 @@ IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity &identity
     safeExec(query);
     if (!watchQuery(query)) {
         db.rollback();
-        return IdentityId();
+        return {};
     }
 
     query.first();
@@ -503,7 +503,7 @@ IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity &identity
 
     if (!identityId.isValid()) {
         db.rollback();
-        return IdentityId();
+        return {};
     }
 
     QSqlQuery insertNickQuery(db);
@@ -514,14 +514,14 @@ IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity &identity
         safeExec(insertNickQuery);
         if (!watchQuery(insertNickQuery)) {
             db.rollback();
-            return IdentityId();
+            return {};
         }
     }
 
     if (!db.commit()) {
         qWarning() << "PostgreSqlStorage::createIdentity(): committing data failed!";
         qWarning() << " -" << qPrintable(db.lastError().text());
-        return IdentityId();
+        return {};
     }
     return identityId;
 }
@@ -715,7 +715,7 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo &info)
     safeExec(query);
     if (!watchQuery(query)) {
         db.rollback();
-        return NetworkId();
+        return {};
     }
 
     query.first();
@@ -723,7 +723,7 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo &info)
 
     if (!networkId.isValid()) {
         db.rollback();
-        return NetworkId();
+        return {};
     }
 
     QSqlQuery insertServersQuery(db);
@@ -735,14 +735,14 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo &info)
         safeExec(insertServersQuery);
         if (!watchQuery(insertServersQuery)) {
             db.rollback();
-            return NetworkId();
+            return {};
         }
     }
 
     if (!db.commit()) {
         qWarning() << "PostgreSqlStorage::createNetwork(): committing data failed!";
         qWarning() << " -" << qPrintable(db.lastError().text());
-        return NetworkId();
+        return {};
     }
     return networkId;
 }
@@ -1108,7 +1108,7 @@ BufferInfo PostgreSqlStorage::bufferInfo(UserId user, const NetworkId &networkId
     if (!beginTransaction(db)) {
         qWarning() << "PostgreSqlStorage::bufferInfo(): cannot start read only transaction!";
         qWarning() << " -" << qPrintable(db.lastError().text());
-        return BufferInfo();
+        return {};
     }
 
     QSqlQuery query(db);
@@ -1136,7 +1136,7 @@ BufferInfo PostgreSqlStorage::bufferInfo(UserId user, const NetworkId &networkId
 
     if (!create) {
         db.rollback();
-        return BufferInfo();
+        return {};
     }
 
     QSqlQuery createQuery(db);
@@ -1172,10 +1172,10 @@ BufferInfo PostgreSqlStorage::getBufferInfo(UserId user, const BufferId &bufferI
     query.bindValue(":bufferid", bufferId.toInt());
     safeExec(query);
     if (!watchQuery(query))
-        return BufferInfo();
+        return {};
 
     if (!query.first())
-        return BufferInfo();
+        return {};
 
     BufferInfo bufferInfo(query.value(0).toInt(), query.value(1).toInt(), (BufferInfo::Type)query.value(2).toInt(), 0, query.value(4).toString());
     Q_ASSERT(!query.next());

@@ -630,7 +630,7 @@ QColor QssParser::parseColor(const QString &str)
     if (str.startsWith("rgba")) {
         ColorTuple tuple = parseColorTuple(str.mid(4));
         if (tuple.count() == 4)
-            return QColor(tuple.at(0), tuple.at(1), tuple.at(2), tuple.at(3));
+            return QColor(tuple.at(0), tuple.at(1), tuple.at(2), tuple.at(3));  // NOLINT(modernize-return-braced-init-list)
     }
     else if (str.startsWith("rgb")) {
         ColorTuple tuple = parseColorTuple(str.mid(3));
