@@ -349,7 +349,7 @@ int MessageModel::indexForId(MsgId id)
 
     // binary search
     int start = 0; int end = messageCount() - 1;
-    while (1) {
+    while (true) {
         if (end - start == 1)
             return end;
         int pivot = (end + start) / 2;

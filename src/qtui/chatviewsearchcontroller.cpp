@@ -145,7 +145,7 @@ void ChatViewSearchController::updateHighlights(bool reuse)
                 int start = 0; int end = _highlightItems.count() - 1;
                 QPointF startPos;
                 QPointF endPos;
-                while (1) {
+                while (true) {
                     startPos = _highlightItems[start]->scenePos();
                     endPos = _highlightItems[end]->scenePos();
                     if (startPos == oldHighlightPos) {
