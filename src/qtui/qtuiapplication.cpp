@@ -50,7 +50,7 @@ void QtUiApplication::init()
         throw ExitException{EXIT_FAILURE, tr("Could not load or upgrade client settings!")};
     }
 
-    _client.reset(new Client(std::unique_ptr<QtUi>(new QtUi())));  // TODO C++14: std::make_unique
+    _client = std::make_unique<Client>(std::make_unique<QtUi>());
 
     // Init UI only after the event loop has started
     // TODO Qt5: Make this a lambda

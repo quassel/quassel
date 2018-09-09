@@ -25,6 +25,7 @@
 #include <QFileInfo>
 #include <QIcon>
 #include <QStringList>
+#include <memory>
 
 #include "abstractnotificationbackend.h"
 #include "buffermodel.h"
@@ -79,7 +80,7 @@ void QtUi::init()
     setContextMenuActionProvider(new ContextMenuActionProvider(this));
     setToolBarActionProvider(new ToolBarActionProvider(this));
 
-    _mainWin.reset(new MainWin());  // TODO C++14: std::make_unique
+    _mainWin = std::make_unique<MainWin>();
     setMainWidget(_mainWin.get());
 
     connect(_mainWin.get(), SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
@@ -355,7 +356,7 @@ void QtUi::refreshIconTheme()
     // Since we can't get notified when the system theme changes, this means that a restart may be required
     // to apply a theme change... but you can't have everything, I guess.
     if (!_dummyThemeDir) {
-        _dummyThemeDir.reset(new QTemporaryDir{});
+        _dummyThemeDir = std::make_unique<QTemporaryDir>();
         if (!_dummyThemeDir->isValid() || !QDir{_dummyThemeDir->path()}.mkpath("icons/quassel-icon-proxy/apps/32")) {
             qWarning() << "Could not create temporary directory for proxying the system icon theme, using fallback";
             QIcon::setThemeName(fallbackTheme);

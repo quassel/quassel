@@ -32,7 +32,7 @@ CoreApplication::CoreApplication(int &argc, char **argv)
 
 void CoreApplication::init()
 {
-    _core.reset(new Core{}); // FIXME C++14: std::make_unique
+    _core = std::make_unique<Core>();
     _core->init();
 }
 
