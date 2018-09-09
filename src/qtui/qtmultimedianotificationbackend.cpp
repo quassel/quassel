@@ -22,6 +22,7 @@
 
 #include <QFileDialog>
 #include <QUrl>
+#include <memory>
 
 #include "clientsettings.h"
 #include "icon.h"
@@ -85,7 +86,7 @@ void QtMultimediaNotificationBackend::createMediaObject(const QString &file)
         return;
     }
 
-    _media.reset(new QMediaPlayer);
+    _media = std::make_unique<QMediaPlayer>();
     _media->setMedia(QUrl::fromLocalFile(file));
 }
 
@@ -177,7 +178,7 @@ void QtMultimediaNotificationBackend::ConfigWidget::on_play_clicked()
 {
     if (_audioAvailable) {
         if (!ui.filename->text().isEmpty()) {
-            _audioPreview.reset(new QMediaPlayer);
+            _audioPreview = std::make_unique<QMediaPlayer>();
             _audioPreview->setMedia(QUrl::fromLocalFile(ui.filename->text()));
             _audioPreview->play();
         }
