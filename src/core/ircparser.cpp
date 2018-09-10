@@ -41,7 +41,7 @@ IrcParser::IrcParser(CoreSession *session) :
     _debugLogRawIrc = (Quassel::isOptionSet("debug-irc") || Quassel::isOptionSet("debug-irc-id"));
     _debugLogRawNetId = Quassel::optionValue("debug-irc-id").toInt();
 
-    connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
+    connect(this, &IrcParser::newEvent, coreSession()->eventManager(), &EventManager::postEvent);
 }
 
 

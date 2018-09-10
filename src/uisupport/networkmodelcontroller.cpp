@@ -43,7 +43,7 @@ NetworkModelController::NetworkModelController(QObject *parent)
     : QObject(parent),
     _actionCollection(new ActionCollection(this))
 {
-    connect(_actionCollection, SIGNAL(actionTriggered(QAction *)), SLOT(actionTriggered(QAction *)));
+    connect(_actionCollection, &ActionCollection::actionTriggered, this, &NetworkModelController::actionTriggered);
 }
 
 
@@ -563,9 +563,9 @@ NetworkModelController::JoinDlg::JoinDlg(const QModelIndex &index, QWidget *pare
     networks->setInsertPolicy(QComboBox::InsertAlphabetically);
     password->setEchoMode(QLineEdit::Password);
 
-    connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), SLOT(reject()));
-    connect(channel, SIGNAL(textChanged(QString)), SLOT(on_channel_textChanged(QString)));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(channel, &QLineEdit::textChanged, this, &JoinDlg::on_channel_textChanged);
 
     foreach(NetworkId id, Client::networkIds()) {
         const Network *net = Client::network(id);

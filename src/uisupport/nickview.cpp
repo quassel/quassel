@@ -49,13 +49,13 @@ NickView::NickView(QWidget *parent)
 
     setAnimated(true);
 
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showContextMenu(const QPoint &)));
+    connect(this, &QWidget::customContextMenuRequested, this, &NickView::showContextMenu);
 
 #if defined Q_OS_MACOS || defined Q_OS_WIN
     // afaik this is better on Mac and Windows
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(startQuery(QModelIndex)));
 #else
-    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(startQuery(QModelIndex)));
+    connect(this, &QAbstractItemView::doubleClicked, this, &NickView::startQuery);
 #endif
 }
 
@@ -68,8 +68,8 @@ void NickView::init()
     for (int i = 1; i < model()->columnCount(); i++)
         setColumnHidden(i, true);
 
-    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), SIGNAL(selectionUpdated()));
-    connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SIGNAL(selectionUpdated()));
+    connect(selectionModel(), &QItemSelectionModel::currentChanged, this, &NickView::selectionUpdated);
+    connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &NickView::selectionUpdated);
 }
 
 

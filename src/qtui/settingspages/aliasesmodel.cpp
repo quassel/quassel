@@ -30,8 +30,8 @@ AliasesModel::AliasesModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
     // we need this signal for future connects to reset the data;
-    connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
-    connect(Client::instance(), SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
+    connect(Client::instance(), &Client::connected, this, &AliasesModel::clientConnected);
+    connect(Client::instance(), &Client::disconnected, this, &AliasesModel::clientDisconnected);
 
     if (Client::isConnected())
         clientConnected();
@@ -327,7 +327,7 @@ void AliasesModel::clientConnected()
     if (Client::aliasManager()->isInitialized())
         initDone();
     else
-        connect(Client::aliasManager(), SIGNAL(initDone()), SLOT(initDone()));
+        connect(Client::aliasManager(), &SyncableObject::initDone, this, &AliasesModel::initDone);
 }
 
 

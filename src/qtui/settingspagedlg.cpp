@@ -46,7 +46,7 @@ SettingsPageDlg::SettingsPageDlg(SettingsPage *page, QWidget *parent)
     updateGeometry();
 
     connect(page, SIGNAL(changed(bool)), this, SLOT(setButtonStates()));
-    connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+    connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &SettingsPageDlg::buttonClicked);
     page->load();
     setButtonStates();
 }

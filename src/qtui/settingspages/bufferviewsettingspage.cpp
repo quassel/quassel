@@ -52,20 +52,20 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
     ui.bufferViewPreview->setEnabled(false);
 
     coreConnectionStateChanged(Client::isConnected()); // need a core connection!
-    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
-    connect(ui.bufferViewList->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-        this, SLOT(bufferViewSelectionChanged(const QItemSelection &, const QItemSelection &)));
+    connect(Client::instance(), &Client::coreConnectionStateChanged, this, &BufferViewSettingsPage::coreConnectionStateChanged);
+    connect(ui.bufferViewList->selectionModel(), &QItemSelectionModel::selectionChanged,
+        this, &BufferViewSettingsPage::bufferViewSelectionChanged);
 
-    connect(ui.onlyStatusBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.onlyChannelBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.onlyQueryBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.addNewBuffersAutomatically, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.sortAlphabetically, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.hideInactiveBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.hideInactiveNetworks, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.onlyStatusBuffers, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
+    connect(ui.onlyChannelBuffers, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
+    connect(ui.onlyQueryBuffers, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
+    connect(ui.addNewBuffersAutomatically, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
+    connect(ui.sortAlphabetically, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
+    connect(ui.hideInactiveBuffers, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
+    connect(ui.hideInactiveNetworks, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
     connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.minimumActivitySelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.showSearch, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.showSearch, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
 
     connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(enableStatusBuffers(int)));
 }
@@ -206,8 +206,8 @@ void BufferViewSettingsPage::addBufferView(BufferViewConfig *config)
 {
     auto *item = new QListWidgetItem(config->bufferViewName(), ui.bufferViewList);
     item->setData(Qt::UserRole, qVariantFromValue<QObject *>(qobject_cast<QObject *>(config)));
-    connect(config, SIGNAL(updatedRemotely()), this, SLOT(updateBufferView()));
-    connect(config, SIGNAL(destroyed()), this, SLOT(bufferViewDeleted()));
+    connect(config, &SyncableObject::updatedRemotely, this, &BufferViewSettingsPage::updateBufferView);
+    connect(config, &QObject::destroyed, this, &BufferViewSettingsPage::bufferViewDeleted);
     ui.deleteBufferView->setEnabled(ui.bufferViewList->count() > 1);
 }
 
@@ -544,9 +544,9 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config)
     changedConfig->fromVariantMap(config->toVariantMap());
     changedConfig->setInitialized();
     _changedBufferViews[config] = changedConfig;
-    connect(config, SIGNAL(bufferAdded(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
-    connect(config, SIGNAL(bufferMoved(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
-    connect(config, SIGNAL(bufferRemoved(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
+    connect(config, &BufferViewConfig::bufferAdded, changedConfig, &BufferViewConfig::addBuffer);
+    connect(config, &BufferViewConfig::bufferMoved, changedConfig, &BufferViewConfig::moveBuffer);
+    connect(config, &BufferViewConfig::bufferRemoved, changedConfig, &BufferViewConfig::removeBuffer);
 //   connect(config, SIGNAL(addBufferRequested(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
 //   connect(config, SIGNAL(moveBufferRequested(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
 //   connect(config, SIGNAL(removeBufferRequested(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));

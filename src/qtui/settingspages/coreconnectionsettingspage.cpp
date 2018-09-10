@@ -27,9 +27,9 @@ CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget *parent)
 
     initAutoWidgets();
 
-    connect(ui.useQNetworkConfigurationManager, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-    connect(ui.usePingTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-    connect(ui.useNoTimeout, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+    connect(ui.useQNetworkConfigurationManager, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
+    connect(ui.usePingTimeout, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
+    connect(ui.useNoTimeout, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
 }
 
 

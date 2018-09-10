@@ -77,9 +77,9 @@ void AbstractSqlStorage::addConnectionToPool()
 
     Connection *connection = new Connection(QLatin1String(QString("quassel_%1_con_%2").arg(driverName()).arg(connectionId).toLatin1()));
     connection->moveToThread(currentThread);
-    connect(this, SIGNAL(destroyed()), connection, SLOT(deleteLater()));
-    connect(currentThread, SIGNAL(destroyed()), connection, SLOT(deleteLater()));
-    connect(connection, SIGNAL(destroyed()), this, SLOT(connectionDestroyed()));
+    connect(this, &QObject::destroyed, connection, &QObject::deleteLater);
+    connect(currentThread, &QObject::destroyed, connection, &QObject::deleteLater);
+    connect(connection, &QObject::destroyed, this, &AbstractSqlStorage::connectionDestroyed);
     _connectionPool[currentThread] = connection;
 
     QSqlDatabase db = QSqlDatabase::addDatabase(driverName(), connection->name());

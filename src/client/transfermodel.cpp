@@ -114,8 +114,8 @@ void TransferModel::setManager(const TransferManager *manager)
 
     _manager = manager;
     if (_manager) {
-        connect(manager, SIGNAL(transferAdded(QUuid)), SLOT(onTransferAdded(QUuid)));
-        connect(manager, SIGNAL(transferRemoved(QUuid)), SLOT(onTransferRemoved(QUuid)));
+        connect(manager, &TransferManager::transferAdded, this, &TransferModel::onTransferAdded);
+        connect(manager, &TransferManager::transferRemoved, this, &TransferModel::onTransferRemoved);
         for (auto &&transferId : _manager->transferIds()) {
             onTransferAdded(transferId);
         }
@@ -132,14 +132,14 @@ void TransferModel::onTransferAdded(const QUuid &transferId)
     }
 
     // TODO Qt5: use new connection syntax to make things much less complicated
-    connect(transfer, SIGNAL(statusChanged(Transfer::Status)), SLOT(onTransferDataChanged()));
-    connect(transfer, SIGNAL(directionChanged(Transfer::Direction)), SLOT(onTransferDataChanged()));
-    connect(transfer, SIGNAL(addressChanged(QHostAddress)), SLOT(onTransferDataChanged()));
-    connect(transfer, SIGNAL(portChanged(quint16)), SLOT(onTransferDataChanged()));
-    connect(transfer, SIGNAL(fileNameChanged(QString)), SLOT(onTransferDataChanged()));
-    connect(transfer, SIGNAL(fileSizeChanged(quint64)), SLOT(onTransferDataChanged()));
-    connect(transfer, SIGNAL(transferredChanged(quint64)), SLOT(onTransferDataChanged()));
-    connect(transfer, SIGNAL(nickChanged(QString)), SLOT(onTransferDataChanged()));
+    connect(transfer, &Transfer::statusChanged, this, &TransferModel::onTransferDataChanged);
+    connect(transfer, &Transfer::directionChanged, this, &TransferModel::onTransferDataChanged);
+    connect(transfer, &Transfer::addressChanged, this, &TransferModel::onTransferDataChanged);
+    connect(transfer, &Transfer::portChanged, this, &TransferModel::onTransferDataChanged);
+    connect(transfer, &Transfer::fileNameChanged, this, &TransferModel::onTransferDataChanged);
+    connect(transfer, &Transfer::fileSizeChanged, this, &TransferModel::onTransferDataChanged);
+    connect(transfer, &Transfer::transferredChanged, this, &TransferModel::onTransferDataChanged);
+    connect(transfer, &Transfer::nickChanged, this, &TransferModel::onTransferDataChanged);
 
     beginInsertRows({}, rowCount(), rowCount());
     _transferIds.append(transferId);

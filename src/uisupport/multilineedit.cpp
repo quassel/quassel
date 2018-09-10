@@ -52,7 +52,7 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
     // Prevent QTextHtmlImporter::appendNodeText from eating whitespace
     document()->setDefaultStyleSheet("span { white-space: pre-wrap; }");
 
-    connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
+    connect(this, &QTextEdit::textChanged, this, &MultiLineEdit::on_textChanged);
 
     _mircColorMap["00"] = "#ffffff";
     _mircColorMap["01"] = "#000000";
@@ -96,7 +96,7 @@ void MultiLineEdit::contextMenuEvent(QContextMenuEvent *event)
     auto action = menu->addAction(tr("Auto Spell Check"));
     action->setCheckable(true);
     action->setChecked(highlighter()->isActive());
-    connect(action, SIGNAL(toggled(bool)), this, SLOT(setSpellCheckEnabled(bool)));
+    connect(action, &QAction::toggled, this, &MultiLineEdit::setSpellCheckEnabled);
 
     menu->exec(event->globalPos());
     delete menu;

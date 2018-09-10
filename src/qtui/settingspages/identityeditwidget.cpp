@@ -43,25 +43,25 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     ui.nickDown->setIcon(icon::get("go-down"));
 
     // We need to know whenever the state of input widgets changes...
-    connect(ui.realName, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.nicknameList, SIGNAL(itemChanged(QListWidgetItem *)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.awayNick, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.awayReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.autoAwayEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
+    connect(ui.realName, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.nicknameList, &QListWidget::itemChanged, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.awayNick, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.awayReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.autoAwayEnabled, &QGroupBox::clicked, this, &IdentityEditWidget::widgetHasChanged);
     connect(ui.autoAwayTime, SIGNAL(valueChanged(int)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.autoAwayReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.autoAwayReasonEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.detachAwayEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.detachAwayReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.ident, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.kickReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.partReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.quitReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
+    connect(ui.autoAwayReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.autoAwayReasonEnabled, &QAbstractButton::clicked, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.detachAwayEnabled, &QGroupBox::clicked, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.detachAwayReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.ident, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.kickReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.partReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
+    connect(ui.quitReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
 
     setWidgetStates();
-    connect(ui.nicknameList, SIGNAL(itemSelectionChanged()), this, SLOT(setWidgetStates()));
+    connect(ui.nicknameList, &QListWidget::itemSelectionChanged, this, &IdentityEditWidget::setWidgetStates);
 
-    connect(ui.continueUnsecured, SIGNAL(clicked()), this, SIGNAL(requestEditSsl()));
+    connect(ui.continueUnsecured, &QAbstractButton::clicked, this, &IdentityEditWidget::requestEditSsl);
 
     // we would need this if we enabled drag and drop in the nicklist...
     //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));

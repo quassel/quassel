@@ -30,7 +30,7 @@ FontSelector::FontSelector(QWidget *parent) : QWidget(parent)
 {
     auto *layout = new QHBoxLayout(this);
     QPushButton *chooseButton = new QPushButton(tr("Choose..."), this);
-    connect(chooseButton, SIGNAL(clicked()), SLOT(chooseFont()));
+    connect(chooseButton, &QAbstractButton::clicked, this, &FontSelector::chooseFont);
 
     layout->addWidget(_demo = new QLabel("Font"));
     layout->addWidget(chooseButton);

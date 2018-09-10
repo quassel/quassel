@@ -51,10 +51,10 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _debugLogRawNetId = Quassel::optionValue("debug-irc-id").toInt();
 
     _autoReconnectTimer.setSingleShot(true);
-    connect(&_socketCloseTimer, SIGNAL(timeout()), this, SLOT(socketCloseTimeout()));
+    connect(&_socketCloseTimer, &QTimer::timeout, this, &CoreNetwork::socketCloseTimeout);
 
     setPingInterval(networkConfig()->pingInterval());
-    connect(&_pingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
+    connect(&_pingTimer, &QTimer::timeout, this, &CoreNetwork::sendPing);
 
     setAutoWhoDelay(networkConfig()->autoWhoDelay());
     setAutoWhoInterval(networkConfig()->autoWhoInterval());
@@ -69,39 +69,39 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
         storeChannelCipherKey(buffer.toLower(), bufferCiphers[buffer]);
     }
 
-    connect(networkConfig(), SIGNAL(pingTimeoutEnabledSet(bool)), SLOT(enablePingTimeout(bool)));
-    connect(networkConfig(), SIGNAL(pingIntervalSet(int)), SLOT(setPingInterval(int)));
-    connect(networkConfig(), SIGNAL(autoWhoEnabledSet(bool)), SLOT(setAutoWhoEnabled(bool)));
-    connect(networkConfig(), SIGNAL(autoWhoIntervalSet(int)), SLOT(setAutoWhoInterval(int)));
-    connect(networkConfig(), SIGNAL(autoWhoDelaySet(int)), SLOT(setAutoWhoDelay(int)));
+    connect(networkConfig(), &NetworkConfig::pingTimeoutEnabledSet, this, &CoreNetwork::enablePingTimeout);
+    connect(networkConfig(), &NetworkConfig::pingIntervalSet, this, &CoreNetwork::setPingInterval);
+    connect(networkConfig(), &NetworkConfig::autoWhoEnabledSet, this, &CoreNetwork::setAutoWhoEnabled);
+    connect(networkConfig(), &NetworkConfig::autoWhoIntervalSet, this, &CoreNetwork::setAutoWhoInterval);
+    connect(networkConfig(), &NetworkConfig::autoWhoDelaySet, this, &CoreNetwork::setAutoWhoDelay);
 
-    connect(&_autoReconnectTimer, SIGNAL(timeout()), this, SLOT(doAutoReconnect()));
-    connect(&_autoWhoTimer, SIGNAL(timeout()), this, SLOT(sendAutoWho()));
-    connect(&_autoWhoCycleTimer, SIGNAL(timeout()), this, SLOT(startAutoWhoCycle()));
-    connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(checkTokenBucket()));
+    connect(&_autoReconnectTimer, &QTimer::timeout, this, &CoreNetwork::doAutoReconnect);
+    connect(&_autoWhoTimer, &QTimer::timeout, this, &CoreNetwork::sendAutoWho);
+    connect(&_autoWhoCycleTimer, &QTimer::timeout, this, &CoreNetwork::startAutoWhoCycle);
+    connect(&_tokenBucketTimer, &QTimer::timeout, this, &CoreNetwork::checkTokenBucket);
 
     connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
     connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-    connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-    connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
+    connect(&socket, &QAbstractSocket::stateChanged, this, &CoreNetwork::socketStateChanged);
+    connect(&socket, &QIODevice::readyRead, this, &CoreNetwork::socketHasData);
 #ifdef HAVE_SSL
     connect(&socket, SIGNAL(encrypted()), this, SLOT(socketInitialized()));
     connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
-    connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
+    connect(this, &CoreNetwork::newEvent, coreSession()->eventManager(), &EventManager::postEvent);
 
     // Custom rate limiting
     // These react to the user changing settings in the client
-    connect(this, SIGNAL(useCustomMessageRateSet(bool)), SLOT(updateRateLimiting()));
-    connect(this, SIGNAL(messageRateBurstSizeSet(quint32)), SLOT(updateRateLimiting()));
-    connect(this, SIGNAL(messageRateDelaySet(quint32)), SLOT(updateRateLimiting()));
-    connect(this, SIGNAL(unlimitedMessageRateSet(bool)), SLOT(updateRateLimiting()));
+    connect(this, &Network::useCustomMessageRateSet, this, &CoreNetwork::updateRateLimiting);
+    connect(this, &Network::messageRateBurstSizeSet, this, &CoreNetwork::updateRateLimiting);
+    connect(this, &Network::messageRateDelaySet, this, &CoreNetwork::updateRateLimiting);
+    connect(this, &Network::unlimitedMessageRateSet, this, &CoreNetwork::updateRateLimiting);
 
     // IRCv3 capability handling
     // These react to CAP messages from the server
-    connect(this, SIGNAL(capAdded(QString)), this, SLOT(serverCapAdded(QString)));
-    connect(this, SIGNAL(capAcknowledged(QString)), this, SLOT(serverCapAcknowledged(QString)));
-    connect(this, SIGNAL(capRemoved(QString)), this, SLOT(serverCapRemoved(QString)));
+    connect(this, &Network::capAdded, this, &CoreNetwork::serverCapAdded);
+    connect(this, &Network::capAcknowledged, this, &CoreNetwork::serverCapAcknowledged);
+    connect(this, &Network::capRemoved, this, &CoreNetwork::serverCapRemoved);
 
     if (Quassel::isOptionSet("oidentd")) {
         connect(this, SIGNAL(socketInitialized(const CoreIdentity*, QHostAddress, quint16, QHostAddress, quint16, qint64)),
@@ -739,8 +739,8 @@ void CoreNetwork::sendPerform()
             restoreUserModes();
         }
         else {
-            connect(me_, SIGNAL(userModesSet(QString)), this, SLOT(restoreUserModes()));
-            connect(me_, SIGNAL(userModesAdded(QString)), this, SLOT(restoreUserModes()));
+            connect(me_, &IrcUser::userModesSet, this, &CoreNetwork::restoreUserModes);
+            connect(me_, &IrcUser::userModesAdded, this, &CoreNetwork::restoreUserModes);
         }
     }
 
@@ -774,8 +774,8 @@ void CoreNetwork::restoreUserModes()
     IrcUser *me_ = me();
     Q_ASSERT(me_);
 
-    disconnect(me_, SIGNAL(userModesSet(QString)), this, SLOT(restoreUserModes()));
-    disconnect(me_, SIGNAL(userModesAdded(QString)), this, SLOT(restoreUserModes()));
+    disconnect(me_, &IrcUser::userModesSet, this, &CoreNetwork::restoreUserModes);
+    disconnect(me_, &IrcUser::userModesAdded, this, &CoreNetwork::restoreUserModes);
 
     QString modesDelta = Core::userModes(userId(), networkId());
     QString currentModes = me_->userModes();

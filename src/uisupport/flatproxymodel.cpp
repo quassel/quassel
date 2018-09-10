@@ -226,36 +226,36 @@ void FlatProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     emit layoutChanged();
 
     if (sourceModel) {
-        connect(sourceModel, SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
-            this, SLOT(on_columnsAboutToBeInserted(const QModelIndex &, int, int)));
-        connect(sourceModel, SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
-            this, SLOT(on_columnsAboutToBeRemoved(const QModelIndex &, int, int)));
-        connect(sourceModel, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-            this, SLOT(on_columnsInserted(const QModelIndex &, int, int)));
-        connect(sourceModel, SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-            this, SLOT(on_columnsRemoved(const QModelIndex &, int, int)));
+        connect(sourceModel, &QAbstractItemModel::columnsAboutToBeInserted,
+            this, &FlatProxyModel::on_columnsAboutToBeInserted);
+        connect(sourceModel, &QAbstractItemModel::columnsAboutToBeRemoved,
+            this, &FlatProxyModel::on_columnsAboutToBeRemoved);
+        connect(sourceModel, &QAbstractItemModel::columnsInserted,
+            this, &FlatProxyModel::on_columnsInserted);
+        connect(sourceModel, &QAbstractItemModel::columnsRemoved,
+            this, &FlatProxyModel::on_columnsRemoved);
 
-        connect(sourceModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-            this, SLOT(on_dataChanged(const QModelIndex &, const QModelIndex &)));
+        connect(sourceModel, &QAbstractItemModel::dataChanged,
+            this, &FlatProxyModel::on_dataChanged);
         // on_headerDataChanged(Qt::Orientation orientation, int first, int last)
 
-        connect(sourceModel, SIGNAL(layoutAboutToBeChanged()),
-            this, SLOT(on_layoutAboutToBeChanged()));
-        connect(sourceModel, SIGNAL(layoutChanged()),
-            this, SLOT(on_layoutChanged()));
+        connect(sourceModel, &QAbstractItemModel::layoutAboutToBeChanged,
+            this, &FlatProxyModel::on_layoutAboutToBeChanged);
+        connect(sourceModel, &QAbstractItemModel::layoutChanged,
+            this, &FlatProxyModel::on_layoutChanged);
 
-        connect(sourceModel, SIGNAL(modelAboutToBeReset()),
-            this, SLOT(on_modelAboutToBeReset()));
+        connect(sourceModel, &QAbstractItemModel::modelAboutToBeReset,
+            this, &FlatProxyModel::on_modelAboutToBeReset);
         // void on_modelReset()
 
-        connect(sourceModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-            this, SLOT(on_rowsAboutToBeInserted(const QModelIndex &, int, int)));
-        connect(sourceModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-            this, SLOT(on_rowsAboutToBeRemoved(const QModelIndex &, int, int)));
-        connect(sourceModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-            this, SLOT(on_rowsInserted(const QModelIndex &, int, int)));
-        connect(sourceModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-            this, SLOT(on_rowsRemoved(const QModelIndex &, int, int)));
+        connect(sourceModel, &QAbstractItemModel::rowsAboutToBeInserted,
+            this, &FlatProxyModel::on_rowsAboutToBeInserted);
+        connect(sourceModel, &QAbstractItemModel::rowsAboutToBeRemoved,
+            this, &FlatProxyModel::on_rowsAboutToBeRemoved);
+        connect(sourceModel, &QAbstractItemModel::rowsInserted,
+            this, &FlatProxyModel::on_rowsInserted);
+        connect(sourceModel, &QAbstractItemModel::rowsRemoved,
+            this, &FlatProxyModel::on_rowsRemoved);
     }
 }
 

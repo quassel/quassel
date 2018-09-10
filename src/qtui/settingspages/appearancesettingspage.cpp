@@ -57,22 +57,22 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
         connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
     }
     foreach(QCheckBox *checkBox, findChildren<QCheckBox *>()) {
-        connect(checkBox, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+        connect(checkBox, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
     }
 
-    connect(ui.chooseStyleSheet, SIGNAL(clicked()), SLOT(chooseStyleSheet()));
+    connect(ui.chooseStyleSheet, &QAbstractButton::clicked, this, &AppearanceSettingsPage::chooseStyleSheet);
 
-    connect(ui.userNoticesInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.userNoticesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.userNoticesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.userNoticesInDefaultBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
+    connect(ui.userNoticesInStatusBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
+    connect(ui.userNoticesInCurrentBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
 
-    connect(ui.serverNoticesInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.serverNoticesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.serverNoticesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.serverNoticesInDefaultBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
+    connect(ui.serverNoticesInStatusBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
+    connect(ui.serverNoticesInCurrentBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
 
-    connect(ui.errorMsgsInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.errorMsgsInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.errorMsgsInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.errorMsgsInDefaultBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
+    connect(ui.errorMsgsInStatusBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
+    connect(ui.errorMsgsInCurrentBuffer, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
 }
 
 

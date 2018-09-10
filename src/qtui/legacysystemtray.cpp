@@ -32,22 +32,22 @@ LegacySystemTray::LegacySystemTray(QWidget *parent)
 {
 
 #ifndef Q_OS_MAC
-    connect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-        SLOT(onActivated(QSystemTrayIcon::ActivationReason)));
+    connect(_trayIcon, &QSystemTrayIcon::activated,
+        this, &LegacySystemTray::onActivated);
 #endif
-    connect(_trayIcon, SIGNAL(messageClicked()),
-        SLOT(onMessageClicked()));
+    connect(_trayIcon, &QSystemTrayIcon::messageClicked,
+        this, &LegacySystemTray::onMessageClicked);
 
     _trayIcon->setContextMenu(trayMenu());
     _trayIcon->setVisible(false);
 
     setMode(Mode::Legacy);
 
-    connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));
-    connect(this, SIGNAL(modeChanged(Mode)), this, SLOT(onModeChanged(Mode)));
-    connect(this, SIGNAL(toolTipChanged(QString, QString)), SLOT(updateToolTip()));
-    connect(this, SIGNAL(iconsChanged()), this, SLOT(updateIcon()));
-    connect(this, SIGNAL(currentIconNameChanged()), this, SLOT(updateIcon()));
+    connect(this, &SystemTray::visibilityChanged, this, &LegacySystemTray::onVisibilityChanged);
+    connect(this, &SystemTray::modeChanged, this, &LegacySystemTray::onModeChanged);
+    connect(this, &SystemTray::toolTipChanged, this, &LegacySystemTray::updateToolTip);
+    connect(this, &SystemTray::iconsChanged, this, &LegacySystemTray::updateIcon);
+    connect(this, &SystemTray::currentIconNameChanged, this, &LegacySystemTray::updateIcon);
 
     updateIcon();
     updateToolTip();

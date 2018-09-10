@@ -55,15 +55,15 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
 
     setWindowIcon(icon::get("format-list-unordered"));
 
-    connect(ui.advancedModeLabel, SIGNAL(clicked()), this, SLOT(toggleMode()));
-    connect(ui.searchChannelsButton, SIGNAL(clicked()), this, SLOT(requestSearch()));
-    connect(ui.channelNameLineEdit, SIGNAL(returnPressed()), this, SLOT(requestSearch()));
-    connect(ui.filterLineEdit, SIGNAL(textChanged(QString)), &_sortFilter, SLOT(setFilterFixedString(QString)));
-    connect(Client::ircListHelper(), SIGNAL(channelListReceived(const NetworkId &, const QStringList &, QList<IrcListHelper::ChannelDescription> )),
-        this, SLOT(receiveChannelList(NetworkId, QStringList, QList<IrcListHelper::ChannelDescription> )));
-    connect(Client::ircListHelper(), SIGNAL(finishedListReported(const NetworkId &)), this, SLOT(reportFinishedList()));
-    connect(Client::ircListHelper(), SIGNAL(errorReported(const QString &)), this, SLOT(showError(const QString &)));
-    connect(ui.channelListView, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
+    connect(ui.advancedModeLabel, &ClickableLabel::clicked, this, &ChannelListDlg::toggleMode);
+    connect(ui.searchChannelsButton, &QAbstractButton::clicked, this, &ChannelListDlg::requestSearch);
+    connect(ui.channelNameLineEdit, &QLineEdit::returnPressed, this, &ChannelListDlg::requestSearch);
+    connect(ui.filterLineEdit, &QLineEdit::textChanged, &_sortFilter, &QSortFilterProxyModel::setFilterFixedString);
+    connect(Client::ircListHelper(), &ClientIrcListHelper::channelListReceived,
+        this, &ChannelListDlg::receiveChannelList);
+    connect(Client::ircListHelper(), &ClientIrcListHelper::finishedListReported, this, &ChannelListDlg::reportFinishedList);
+    connect(Client::ircListHelper(), &ClientIrcListHelper::errorReported, this, &ChannelListDlg::showError);
+    connect(ui.channelListView, &QAbstractItemView::activated, this, &ChannelListDlg::joinChannel);
 
     setAdvancedMode(false);
     enableQuery(true);

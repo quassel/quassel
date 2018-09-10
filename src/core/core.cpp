@@ -221,12 +221,12 @@ void Core::init()
             return false;
         });
 
-        connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
+        connect(&_storageSyncTimer, &QTimer::timeout, this, &Core::syncStorage);
         _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
     }
 
-    connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-    connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
+    connect(&_server, &QTcpServer::newConnection, this, &Core::incomingConnection);
+    connect(&_v6server, &QTcpServer::newConnection, this, &Core::incomingConnection);
 
     if (!startListening()) {
         throw ExitException{EXIT_FAILURE, tr("Cannot open port for listening!")};
@@ -443,7 +443,7 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings,
         return false;
     }
 
-    connect(storage.get(), SIGNAL(dbUpgradeInProgress(bool)), this, SIGNAL(dbUpgradeInProgress(bool)));
+    connect(storage.get(), &Storage::dbUpgradeInProgress, this, &Core::dbUpgradeInProgress);
 
     Storage::State storageState = storage->init(settings, environment, loadFromEnvironment);
     switch (storageState) {
@@ -465,8 +465,8 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings,
     case Storage::IsReady:
         // delete all other backends
         _registeredStorageBackends.clear();
-        connect(storage.get(), SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)),
-                this, SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)));
+        connect(storage.get(), &Storage::bufferInfoUpdated,
+                this, &Core::bufferInfoUpdated);
         break;
     }
     _storage = std::move(storage);
@@ -744,9 +744,9 @@ void Core::incomingConnection()
         auto *handler = new CoreAuthHandler(socket, this);
         _connectingClients.insert(handler);
 
-        connect(handler, SIGNAL(disconnected()), SLOT(clientDisconnected()));
-        connect(handler, SIGNAL(socketError(QAbstractSocket::SocketError,QString)), SLOT(socketError(QAbstractSocket::SocketError,QString)));
-        connect(handler, SIGNAL(handshakeComplete(RemotePeer*,UserId)), SLOT(setupClientSession(RemotePeer*,UserId)));
+        connect(handler, &AuthHandler::disconnected, this, &Core::clientDisconnected);
+        connect(handler, &AuthHandler::socketError, this, &Core::socketError);
+        connect(handler, &CoreAuthHandler::handshakeComplete, this, &Core::setupClientSession);
 
         quInfo() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
 

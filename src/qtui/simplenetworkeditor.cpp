@@ -34,8 +34,8 @@ SimpleNetworkEditor::SimpleNetworkEditor(QWidget *parent)
     ui.upServer->setIcon(icon::get("go-up"));
     ui.downServer->setIcon(icon::get("go-down"));
 
-    connect(ui.networkNameEdit, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-    connect(ui.channelList, SIGNAL(textChanged()), this, SIGNAL(widgetHasChanged()));
+    connect(ui.networkNameEdit, &QLineEdit::textEdited, this, &SimpleNetworkEditor::widgetHasChanged);
+    connect(ui.channelList, &QTextEdit::textChanged, this, &SimpleNetworkEditor::widgetHasChanged);
 }
 
 

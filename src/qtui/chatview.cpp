@@ -72,22 +72,22 @@ void ChatView::init(MessageFilter *filter)
 
     _scrollTimer.setInterval(100);
     _scrollTimer.setSingleShot(true);
-    connect(&_scrollTimer, SIGNAL(timeout()), SLOT(scrollTimerTimeout()));
+    connect(&_scrollTimer, &QTimer::timeout, this, &ChatView::scrollTimerTimeout);
 
     _scene = new ChatScene(filter, filter->idString(), viewport()->width(), this);
-    connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(adjustSceneRect()));
-    connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *, qreal)), this, SLOT(lastLineChanged(QGraphicsItem *, qreal)));
-    connect(_scene, SIGNAL(mouseMoveWhileSelecting(const QPointF &)), this, SLOT(mouseMoveWhileSelecting(const QPointF &)));
+    connect(_scene, &QGraphicsScene::sceneRectChanged, this, &ChatView::adjustSceneRect);
+    connect(_scene, &ChatScene::lastLineChanged, this, &ChatView::lastLineChanged);
+    connect(_scene, &ChatScene::mouseMoveWhileSelecting, this, &ChatView::mouseMoveWhileSelecting);
     setScene(_scene);
 
-    connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
+    connect(verticalScrollBar(), &QAbstractSlider::valueChanged, this, &ChatView::verticalScrollbarChanged);
     _lastScrollbarPos = verticalScrollBar()->maximum();
 
-    connect(Client::networkModel(), SIGNAL(markerLineSet(BufferId, MsgId)), SLOT(markerLineSet(BufferId, MsgId)));
+    connect(Client::networkModel(), &NetworkModel::markerLineSet, this, &ChatView::markerLineSet);
 
     // only connect if client is synched with a core
     if (Client::isConnected())
-        connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), this, SLOT(invalidateFilter()));
+        connect(Client::ignoreListManager(), &ClientIgnoreListManager::ignoreListChanged, this, &ChatView::invalidateFilter);
 }
 
 

@@ -96,9 +96,9 @@ void ClientAuthHandler::connectToCore()
 #endif
 
     setSocket(socket);
-    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
-    connect(socket, SIGNAL(readyRead()), SLOT(onReadyRead()));
-    connect(socket, SIGNAL(connected()), SLOT(onSocketConnected()));
+    connect(socket, &QAbstractSocket::stateChanged, this, &ClientAuthHandler::onSocketStateChanged);
+    connect(socket, &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
+    connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onSocketConnected);
 
     emit statusMessage(tr("Connecting to %1...").arg(_account.accountName()));
     socket->connectToHost(_account.hostName(), _account.port());
@@ -161,7 +161,7 @@ void ClientAuthHandler::onSocketDisconnected()
     if (_probing && _legacy) {
         // Remote host has closed the connection while probing
         _probing = false;
-        disconnect(socket(), SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+        disconnect(socket(), &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
         emit statusMessage(tr("Reconnecting in compatibility mode..."));
         socket()->connectToHost(_account.hostName(), _account.port());
         return;
@@ -231,7 +231,7 @@ void ClientAuthHandler::onReadyRead()
         return; // make sure to not read more data than needed
 
     _probing = false;
-    disconnect(socket(), SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    disconnect(socket(), &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
 
     quint32 reply;
     socket()->read((char *)&reply, 4);
@@ -279,7 +279,7 @@ void ClientAuthHandler::setPeer(RemotePeer *peer)
     qDebug().nospace() << "Using " << qPrintable(peer->protocolName()) << "...";
 
     _peer = peer;
-    connect(_peer, SIGNAL(transferProgress(int,int)), SIGNAL(transferProgress(int,int)));
+    connect(_peer, &RemotePeer::transferProgress, this, &ClientAuthHandler::transferProgress);
 
     // The legacy protocol enables SSL later, after registration
     if (!_account.useSsl() || _legacy)
@@ -433,7 +433,7 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
 
         auto *sslSocket = qobject_cast<QSslSocket *>(socket());
         Q_ASSERT(sslSocket);
-        connect(sslSocket, SIGNAL(encrypted()), SLOT(onSslSocketEncrypted()));
+        connect(sslSocket, &QSslSocket::encrypted, this, &ClientAuthHandler::onSslSocketEncrypted);
         connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)), SLOT(onSslErrors()));
         qDebug() << "Starting encryption...";
         sslSocket->flush();

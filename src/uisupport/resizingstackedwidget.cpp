@@ -22,7 +22,7 @@
 
 ResizingStackedWidget::ResizingStackedWidget(QWidget *parent) : QStackedWidget(parent)
 {
-    connect(this, SIGNAL(currentChanged(int)), SLOT(indexChanged(int)));
+    connect(this, &QStackedWidget::currentChanged, this, &ResizingStackedWidget::indexChanged);
 }
 
 

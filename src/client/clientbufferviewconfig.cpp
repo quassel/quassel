@@ -24,7 +24,7 @@ ClientBufferViewConfig::ClientBufferViewConfig(int bufferViewId, QObject *parent
     : BufferViewConfig(bufferViewId, parent),
     _locked(false)
 {
-    connect(this, SIGNAL(initDone()), this, SLOT(ensureDecoration()));
+    connect(this, &SyncableObject::initDone, this, &ClientBufferViewConfig::ensureDecoration);
 }
 
 

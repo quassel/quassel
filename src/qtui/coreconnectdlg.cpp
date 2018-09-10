@@ -50,7 +50,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
 
     connect(_settingsPage, SIGNAL(connectToCore(AccountId)), SLOT(accept()));
     connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 
@@ -75,8 +75,8 @@ CoreConnectAuthDlg::CoreConnectAuthDlg(CoreAccount *account, QWidget *parent)
 {
     ui.setupUi(this);
 
-    connect(ui.user, SIGNAL(textChanged(QString)), SLOT(setButtonStates()));
-    connect(ui.password, SIGNAL(textChanged(QString)), SLOT(setButtonStates()));
+    connect(ui.user, &QLineEdit::textChanged, this, &CoreConnectAuthDlg::setButtonStates);
+    connect(ui.password, &QLineEdit::textChanged, this, &CoreConnectAuthDlg::setButtonStates);
 
     ui.label->setText(tr("Please enter your credentials for %1:").arg(account->accountName()));
     ui.user->setText(account->user());

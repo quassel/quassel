@@ -76,16 +76,15 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     Q_INIT_RESOURCE(data);
 #endif
 
-    //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
-    connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
-    connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
-    connect(this, SIGNAL(disconnected()), mainUi(), SLOT(disconnectedFromCore()));
+    connect(mainUi(), &AbstractUi::disconnectFromCore, this, &Client::disconnectFromCore);
+    connect(this, &Client::connected, mainUi(), &AbstractUi::connectedToCore);
+    connect(this, &Client::disconnected, mainUi(), &AbstractUi::disconnectedFromCore);
 
-    connect(this, SIGNAL(networkRemoved(NetworkId)), _networkModel, SLOT(networkRemoved(NetworkId)));
+    connect(this, &Client::networkRemoved, _networkModel, &NetworkModel::networkRemoved);
     connect(this, SIGNAL(networkRemoved(NetworkId)), _messageProcessor, SLOT(networkRemoved(NetworkId)));
 
-    connect(backlogManager(), SIGNAL(messagesReceived(BufferId, int)), _messageModel, SLOT(messagesReceived(BufferId, int)));
-    connect(coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), SLOT(connectionStateChanged(CoreConnection::ConnectionState)));
+    connect(backlogManager(), &ClientBacklogManager::messagesReceived, _messageModel, &MessageModel::messagesReceived);
+    connect(coreConnection(), &CoreConnection::stateChanged, this, &Client::connectionStateChanged);
 
     SignalProxy *p = signalProxy();
 
@@ -210,7 +209,7 @@ void Client::addNetwork(Network *net)
     net->setProxy(signalProxy());
     signalProxy()->synchronize(net);
     networkModel()->attachNetwork(net);
-    connect(net, SIGNAL(destroyed()), instance(), SLOT(networkDestroyed()));
+    connect(net, &QObject::destroyed, instance(), &Client::networkDestroyed);
     instance()->_networks[net->networkId()] = net;
     emit instance()->networkCreated(net->networkId());
 }
@@ -348,16 +347,16 @@ void Client::setSyncedToCore()
     // create buffersyncer
     Q_ASSERT(!_bufferSyncer);
     _bufferSyncer = new BufferSyncer(this);
-    connect(bufferSyncer(), SIGNAL(lastSeenMsgSet(BufferId, MsgId)), _networkModel, SLOT(setLastSeenMsgId(BufferId, MsgId)));
-    connect(bufferSyncer(), SIGNAL(markerLineSet(BufferId, MsgId)), _networkModel, SLOT(setMarkerLineMsgId(BufferId, MsgId)));
-    connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
-    connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
-    connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), this, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
-    connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), _messageModel, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
-    connect(bufferSyncer(), SIGNAL(bufferMarkedAsRead(BufferId)), SIGNAL(bufferMarkedAsRead(BufferId)));
-    connect(bufferSyncer(), SIGNAL(bufferActivityChanged(BufferId, const Message::Types)), _networkModel, SLOT(bufferActivityChanged(BufferId, const Message::Types)));
-    connect(bufferSyncer(), SIGNAL(highlightCountChanged(BufferId, int)), _networkModel, SLOT(highlightCountChanged(BufferId, int)));
-    connect(networkModel(), SIGNAL(requestSetLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
+    connect(bufferSyncer(), &BufferSyncer::lastSeenMsgSet, _networkModel, &NetworkModel::setLastSeenMsgId);
+    connect(bufferSyncer(), &BufferSyncer::markerLineSet, _networkModel, &NetworkModel::setMarkerLineMsgId);
+    connect(bufferSyncer(), &BufferSyncer::bufferRemoved, this, &Client::bufferRemoved);
+    connect(bufferSyncer(), &BufferSyncer::bufferRenamed, this, &Client::bufferRenamed);
+    connect(bufferSyncer(), &BufferSyncer::buffersPermanentlyMerged, this, &Client::buffersPermanentlyMerged);
+    connect(bufferSyncer(), &BufferSyncer::buffersPermanentlyMerged, _messageModel, &MessageModel::buffersPermanentlyMerged);
+    connect(bufferSyncer(), &BufferSyncer::bufferMarkedAsRead, this, &Client::bufferMarkedAsRead);
+    connect(bufferSyncer(), &BufferSyncer::bufferActivityChanged, _networkModel, &NetworkModel::bufferActivityChanged);
+    connect(bufferSyncer(), &BufferSyncer::highlightCountChanged, _networkModel, &NetworkModel::highlightCountChanged);
+    connect(networkModel(), &NetworkModel::requestSetLastSeenMsg, bufferSyncer(), &BufferSyncer::requestSetLastSeenMsg);
 
     SignalProxy *p = signalProxy();
     p->synchronize(bufferSyncer());
@@ -365,12 +364,12 @@ void Client::setSyncedToCore()
     // create a new BufferViewManager
     Q_ASSERT(!_bufferViewManager);
     _bufferViewManager = new ClientBufferViewManager(p, this);
-    connect(_bufferViewManager, SIGNAL(initDone()), _bufferViewOverlay, SLOT(restore()));
+    connect(_bufferViewManager, &SyncableObject::initDone, _bufferViewOverlay, &BufferViewOverlay::restore);
 
     // create AliasManager
     Q_ASSERT(!_aliasManager);
     _aliasManager = new ClientAliasManager(this);
-    connect(aliasManager(), SIGNAL(initDone()), SLOT(sendBufferedUserInput()));
+    connect(aliasManager(), &SyncableObject::initDone, this, &Client::sendBufferedUserInput);
     p->synchronize(aliasManager());
 
     // create NetworkConfig
@@ -388,8 +387,8 @@ void Client::setSyncedToCore()
     _highlightRuleManager = new HighlightRuleManager(this);
     p->synchronize(highlightRuleManager());
     // Listen to network removed events
-    connect(this, SIGNAL(networkRemoved(NetworkId)),
-        _highlightRuleManager, SLOT(networkRemoved(NetworkId)));
+    connect(this, &Client::networkRemoved,
+        _highlightRuleManager, &HighlightRuleManager::networkRemoved);
 
 /*  not ready yet
     // create TransferManager and DccConfig if core supports them
@@ -405,7 +404,7 @@ void Client::setSyncedToCore()
 */
 
     // trigger backlog request once all active bufferviews are initialized
-    connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));
+    connect(bufferViewOverlay(), &BufferViewOverlay::initDone, this, &Client::finishConnectionInitialization);
 
     _connected = true;
     emit connected();
@@ -418,12 +417,12 @@ void Client::finishConnectionInitialization()
     // triggers this slot. But we have to make sure that we know all buffers yet.
     // so we check the BufferSyncer and in case it wasn't initialized we wait for that instead
     if (!bufferSyncer()->isInitialized()) {
-        disconnect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));
-        connect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));
+        disconnect(bufferViewOverlay(), &BufferViewOverlay::initDone, this, &Client::finishConnectionInitialization);
+        connect(bufferSyncer(), &SyncableObject::initDone, this, &Client::finishConnectionInitialization);
         return;
     }
-    disconnect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));
-    disconnect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(finishConnectionInitialization()));
+    disconnect(bufferViewOverlay(), &BufferViewOverlay::initDone, this, &Client::finishConnectionInitialization);
+    disconnect(bufferSyncer(), &SyncableObject::initDone, this, &Client::finishConnectionInitialization);
 
     requestInitialBacklog();
     if (isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync)) {

@@ -29,7 +29,7 @@
 ColorButton::ColorButton(QWidget *parent) : QToolButton(parent)
 {
     setText("");
-    connect(this, SIGNAL(clicked()), SLOT(chooseColor()));
+    connect(this, &QAbstractButton::clicked, this, &ColorButton::chooseColor);
 }
 
 

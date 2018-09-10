@@ -39,7 +39,7 @@ void AuthHandler::setSocket(QTcpSocket *socket)
 {
     _socket = socket;
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
-    connect(socket, SIGNAL(disconnected()), SLOT(onSocketDisconnected()));
+    connect(socket, &QAbstractSocket::disconnected, this, &AuthHandler::onSocketDisconnected);
 }
 
 

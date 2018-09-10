@@ -30,7 +30,7 @@ SonnetSettingsPage::SonnetSettingsPage(QWidget *parent)
     auto *layout = new QVBoxLayout(this);
     _configWidget = new Sonnet::ConfigWidget(this);
     layout->addWidget(_configWidget);
-    connect(_configWidget, SIGNAL(configChanged()), SLOT(widgetHasChanged()));
+    connect(_configWidget, &Sonnet::ConfigWidget::configChanged, this, &SonnetSettingsPage::widgetHasChanged);
 }
 
 

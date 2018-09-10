@@ -42,10 +42,10 @@ CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
     ui.accountView->setModel(filteredModel());
     ui.autoConnectAccount->setModel(filteredModel());
 
-    connect(filteredModel(), SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
-    connect(filteredModel(), SIGNAL(rowsInserted(QModelIndex, int, int)), SLOT(rowsInserted(QModelIndex, int, int)));
+    connect(filteredModel(), &QAbstractItemModel::rowsAboutToBeRemoved, this, &CoreAccountSettingsPage::rowsAboutToBeRemoved);
+    connect(filteredModel(), &QAbstractItemModel::rowsInserted, this, &CoreAccountSettingsPage::rowsInserted);
 
-    connect(ui.accountView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(setWidgetStates()));
+    connect(ui.accountView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &CoreAccountSettingsPage::setWidgetStates);
     connect(ui.autoConnectAccount, SIGNAL(currentIndexChanged(int)), SLOT(widgetHasChanged()));
     setWidgetStates();
 }

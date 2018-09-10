@@ -33,14 +33,14 @@ CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connectio
     ui.sslLabel->hide();
     update();
 
-    connect(coreConnection(), SIGNAL(progressTextChanged(QString)), ui.messageLabel, SLOT(setText(QString)));
-    connect(coreConnection(), SIGNAL(progressValueChanged(int)), ui.progressBar, SLOT(setValue(int)));
-    connect(coreConnection(), SIGNAL(progressRangeChanged(int, int)), ui.progressBar, SLOT(setRange(int, int)));
-    connect(coreConnection(), SIGNAL(progressRangeChanged(int, int)), this, SLOT(progressRangeChanged(int, int)));
+    connect(coreConnection(), &CoreConnection::progressTextChanged, ui.messageLabel, &QLabel::setText);
+    connect(coreConnection(), &CoreConnection::progressValueChanged, ui.progressBar, &QProgressBar::setValue);
+    connect(coreConnection(), &CoreConnection::progressRangeChanged, ui.progressBar, &QProgressBar::setRange);
+    connect(coreConnection(), &CoreConnection::progressRangeChanged, this, &CoreConnectionStatusWidget::progressRangeChanged);
 
-    connect(coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), SLOT(connectionStateChanged(CoreConnection::ConnectionState)));
-    connect(coreConnection(), SIGNAL(connectionError(QString)), ui.messageLabel, SLOT(setText(QString)));
-    connect(coreConnection(), SIGNAL(lagUpdated(int)), SLOT(updateLag(int)));
+    connect(coreConnection(), &CoreConnection::stateChanged, this, &CoreConnectionStatusWidget::connectionStateChanged);
+    connect(coreConnection(), &CoreConnection::connectionError, ui.messageLabel, &QLabel::setText);
+    connect(coreConnection(), &CoreConnection::lagUpdated, this, &CoreConnectionStatusWidget::updateLag);
 }
 
 

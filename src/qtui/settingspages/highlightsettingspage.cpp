@@ -100,17 +100,17 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
     }
 
     connect(ui.add, SIGNAL(clicked(bool)), this, SLOT(addNewRow()));
-    connect(ui.remove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedRows()));
+    connect(ui.remove, &QAbstractButton::clicked, this, &HighlightSettingsPage::removeSelectedRows);
     //TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
-    connect(ui.highlightTable, SIGNAL(itemClicked(QTableWidgetItem *)), this, SLOT(selectRow(QTableWidgetItem *)));
+    connect(ui.highlightTable, &QTableWidget::itemClicked, this, &HighlightSettingsPage::selectRow);
 
-    connect(ui.highlightAllNicks, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.highlightCurrentNick, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.highlightNoNick, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.nicksCaseSensitive, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.add, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-    connect(ui.remove, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-    connect(ui.highlightTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(tableChanged(QTableWidgetItem *)));
+    connect(ui.highlightAllNicks, &QAbstractButton::clicked, this, &HighlightSettingsPage::widgetHasChanged);
+    connect(ui.highlightCurrentNick, &QAbstractButton::clicked, this, &HighlightSettingsPage::widgetHasChanged);
+    connect(ui.highlightNoNick, &QAbstractButton::clicked, this, &HighlightSettingsPage::widgetHasChanged);
+    connect(ui.nicksCaseSensitive, &QAbstractButton::clicked, this, &HighlightSettingsPage::widgetHasChanged);
+    connect(ui.add, &QAbstractButton::clicked, this, &HighlightSettingsPage::widgetHasChanged);
+    connect(ui.remove, &QAbstractButton::clicked, this, &HighlightSettingsPage::widgetHasChanged);
+    connect(ui.highlightTable, &QTableWidget::itemChanged, this, &HighlightSettingsPage::tableChanged);
 }
 
 

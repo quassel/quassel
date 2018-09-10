@@ -32,7 +32,7 @@ DccSettingsPage::DccSettingsPage(QWidget *parent)
     connect(ui.portSelectionMode, SIGNAL(currentIndexChanged(int)), SLOT(updateWidgetStates()));
     updateWidgetStates();
 
-    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), SLOT(onClientConfigChanged()));
+    connect(Client::instance(), &Client::coreConnectionStateChanged, this, &DccSettingsPage::onClientConfigChanged);
     setClientConfig(Client::dccConfig());
 }
 
@@ -69,7 +69,7 @@ void DccSettingsPage::setClientConfig(DccConfig *config)
 void DccSettingsPage::onClientConfigChanged()
 {
     if (Client::isConnected() && Client::dccConfig() && !Client::dccConfig()->isInitialized()) {
-        connect(Client::dccConfig(), SIGNAL(initDone()), SLOT(onClientConfigChanged()));
+        connect(Client::dccConfig(), &SyncableObject::initDone, this, &DccSettingsPage::onClientConfigChanged);
     }
     else {
         setClientConfig(Client::isConnected() ? Client::dccConfig() : nullptr);

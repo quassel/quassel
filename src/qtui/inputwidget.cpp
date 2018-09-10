@@ -91,22 +91,22 @@ InputWidget::InputWidget(QWidget *parent)
     ui.textcolorButton->setMenu(_colorMenu);
     // Set the default action to clear color (last added action)
     ui.textcolorButton->setDefaultAction(_colorMenu->actions().last());
-    connect(_colorMenu, SIGNAL(triggered(QAction *)), this, SLOT(colorChosen(QAction *)));
+    connect(_colorMenu, &QMenu::triggered, this, &InputWidget::colorChosen);
 
     ui.highlightcolorButton->setMenu(_colorFillMenu);
     // Set the default action to clear fill color (last added action)
     ui.highlightcolorButton->setDefaultAction(_colorFillMenu->actions().last());
-    connect(_colorFillMenu, SIGNAL(triggered(QAction *)), this, SLOT(colorHighlightChosen(QAction *)));
+    connect(_colorFillMenu, &QMenu::triggered, this, &InputWidget::colorHighlightChosen);
 
     // Needs to be done after adding the menu, otherwise the icon mysteriously vanishes until clicked
     ui.textcolorButton->setIcon(icon::get("format-text-color"));
     ui.highlightcolorButton->setIcon(icon::get("format-fill-color"));
 
     // Show/hide style button
-    connect(ui.showStyleButton, SIGNAL(toggled(bool)), this, SLOT(setStyleOptionsExpanded(bool)));
+    connect(ui.showStyleButton, &QAbstractButton::toggled, this, &InputWidget::setStyleOptionsExpanded);
 
     // Clear formatting button
-    connect(ui.clearButton, SIGNAL(clicked()), this, SLOT(clearFormat()));
+    connect(ui.clearButton, &QAbstractButton::clicked, this, &InputWidget::clearFormat);
 
     new TabCompleter(ui.inputEdit);
 
@@ -149,8 +149,8 @@ InputWidget::InputWidget(QWidget *parent)
     activateInputline->setText(tr("Focus Input Line"));
     activateInputline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 
-    connect(inputLine(), SIGNAL(textEntered(QString)), SLOT(onTextEntered(QString)), Qt::QueuedConnection); // make sure the line is already reset, bug #984
-    connect(inputLine(), SIGNAL(currentCharFormatChanged(QTextCharFormat)), this, SLOT(currentCharFormatChanged(QTextCharFormat)));
+    connect(inputLine(), &MultiLineEdit::textEntered, this, &InputWidget::onTextEntered, Qt::QueuedConnection); // make sure the line is already reset, bug #984
+    connect(inputLine(), &QTextEdit::currentCharFormatChanged, this, &InputWidget::currentCharFormatChanged);
 }
 
 
@@ -431,7 +431,7 @@ void InputWidget::setNetwork(NetworkId networkId)
 
     const Network *network = Client::network(networkId);
     if (network) {
-        connect(network, SIGNAL(identitySet(IdentityId)), this, SLOT(setIdentity(IdentityId)));
+        connect(network, &Network::identitySet, this, &InputWidget::setIdentity);
         connectMyIrcUser();
         setIdentity(network->identity());
     }
@@ -446,16 +446,16 @@ void InputWidget::connectMyIrcUser()
 {
     const Network *network = currentNetwork();
     if (network->me()) {
-        connect(network->me(), SIGNAL(nickSet(const QString &)), this, SLOT(updateNickSelector()));
-        connect(network->me(), SIGNAL(userModesSet(QString)), this, SLOT(updateNickSelector()));
-        connect(network->me(), SIGNAL(userModesAdded(QString)), this, SLOT(updateNickSelector()));
-        connect(network->me(), SIGNAL(userModesRemoved(QString)), this, SLOT(updateNickSelector()));
-        connect(network->me(), SIGNAL(awaySet(bool)), this, SLOT(updateNickSelector()));
-        disconnect(network, SIGNAL(myNickSet(const QString &)), this, SLOT(connectMyIrcUser()));
+        connect(network->me(), &IrcUser::nickSet, this, &InputWidget::updateNickSelector);
+        connect(network->me(), &IrcUser::userModesSet, this, &InputWidget::updateNickSelector);
+        connect(network->me(), &IrcUser::userModesAdded, this, &InputWidget::updateNickSelector);
+        connect(network->me(), &IrcUser::userModesRemoved, this, &InputWidget::updateNickSelector);
+        connect(network->me(), &IrcUser::awaySet, this, &InputWidget::updateNickSelector);
+        disconnect(network, &Network::myNickSet, this, &InputWidget::connectMyIrcUser);
         updateNickSelector();
     }
     else {
-        connect(network, SIGNAL(myNickSet(const QString &)), this, SLOT(connectMyIrcUser()));
+        connect(network, &Network::myNickSet, this, &InputWidget::connectMyIrcUser);
     }
 }
 
@@ -473,7 +473,7 @@ void InputWidget::setIdentity(IdentityId identityId)
 
     const Identity *identity = Client::identity(identityId);
     if (identity) {
-        connect(identity, SIGNAL(nicksSet(QStringList)), this, SLOT(updateNickSelector()));
+        connect(identity, &Identity::nicksSet, this, &InputWidget::updateNickSelector);
     }
     else {
         _identityId = 0;

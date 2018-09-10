@@ -31,8 +31,8 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
     ui.setupUi(this);
 
     // Listen for resynchronization events (pre-0.13 cores only)
-    connect(Client::instance(), SIGNAL(coreInfoResynchronized()),
-            this, SLOT(coreInfoResynchronized()));
+    connect(Client::instance(), &Client::coreInfoResynchronized,
+            this, &CoreInfoDlg::coreInfoResynchronized);
 
     // Update legacy core info for Quassel cores earlier than 0.13.  This does nothing on modern
     // cores.
@@ -60,7 +60,7 @@ void CoreInfoDlg::refreshLegacyCoreInfo() {
 
     // On legacy cores, CoreInfo data does not send signals.  Periodically poll for information.
     // 15 seconds seems like a reasonable trade-off as this only happens while the dialog is open.
-    QTimer::singleShot(15 * 1000, this, SLOT(refreshLegacyCoreInfo()));
+    QTimer::singleShot(15 * 1000, this, &CoreInfoDlg::refreshLegacyCoreInfo);
 }
 
 
@@ -69,8 +69,8 @@ void CoreInfoDlg::coreInfoResynchronized() {
 
     CoreInfo *coreInfo = Client::coreInfo();
     // Listen for changes to core information
-    connect(coreInfo, SIGNAL(coreDataChanged(const QVariantMap &)),
-            this, SLOT(coreInfoChanged(const QVariantMap &)));
+    connect(coreInfo, &CoreInfo::coreDataChanged,
+            this, &CoreInfoDlg::coreInfoChanged);
 
     // Update with any known core information set before connecting the signal.  This is needed for
     // both modern (0.13+) and legacy cores.

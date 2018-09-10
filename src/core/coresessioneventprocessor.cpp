@@ -44,8 +44,8 @@ CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
     : BasicHandler("handleCtcp", session),
     _coreSession(session)
 {
-    connect(coreSession(), SIGNAL(networkDisconnected(NetworkId)), this, SLOT(destroyNetsplits(NetworkId)));
-    connect(this, SIGNAL(newEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
+    connect(coreSession(), &CoreSession::networkDisconnected, this, &CoreSessionEventProcessor::destroyNetsplits);
+    connect(this, &CoreSessionEventProcessor::newEvent, coreSession()->eventManager(), &EventManager::postEvent);
 }
 
 
@@ -729,13 +729,13 @@ void CoreSessionEventProcessor::processIrcEventQuit(IrcEvent *e)
         Netsplit *n;
         if (!_netsplits[e->network()].contains(msg)) {
             n = new Netsplit(e->network(), this);
-            connect(n, SIGNAL(finished()), this, SLOT(handleNetsplitFinished()));
-            connect(n, SIGNAL(netsplitJoin(Network*, QString, QStringList, QStringList, QString)),
-                this, SLOT(handleNetsplitJoin(Network*, QString, QStringList, QStringList, QString)));
-            connect(n, SIGNAL(netsplitQuit(Network*, QString, QStringList, QString)),
-                this, SLOT(handleNetsplitQuit(Network*, QString, QStringList, QString)));
-            connect(n, SIGNAL(earlyJoin(Network*, QString, QStringList, QStringList)),
-                this, SLOT(handleEarlyNetsplitJoin(Network*, QString, QStringList, QStringList)));
+            connect(n, &Netsplit::finished, this, &CoreSessionEventProcessor::handleNetsplitFinished);
+            connect(n, &Netsplit::netsplitJoin,
+                this, &CoreSessionEventProcessor::handleNetsplitJoin);
+            connect(n, &Netsplit::netsplitQuit,
+                this, &CoreSessionEventProcessor::handleNetsplitQuit);
+            connect(n, &Netsplit::earlyJoin,
+                this, &CoreSessionEventProcessor::handleEarlyNetsplitJoin);
             _netsplits[e->network()].insert(msg, n);
         }
         else {

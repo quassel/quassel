@@ -52,7 +52,7 @@ Logger::Logger(QObject *parent)
     }();
     Q_UNUSED(registered)
 
-    connect(this, SIGNAL(messageLogged(Logger::LogEntry)), this, SLOT(onMessageLogged(Logger::LogEntry)));
+    connect(this, &Logger::messageLogged, this, &Logger::onMessageLogged);
 
     qInstallMessageHandler(Logger::messageHandler);
 }

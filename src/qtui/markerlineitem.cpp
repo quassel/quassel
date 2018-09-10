@@ -31,7 +31,7 @@ MarkerLineItem::MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent)
     setVisible(false);
     setZValue(8);
     styleChanged(); // init brush and height
-    connect(QtUi::style(), SIGNAL(changed()), SLOT(styleChanged()));
+    connect(QtUi::style(), &UiStyle::changed, this, &MarkerLineItem::styleChanged);
 }
 
 

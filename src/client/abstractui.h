@@ -43,7 +43,7 @@ public:
     virtual MessageModel *createMessageModel(QObject *parent) = 0;
     virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
 
-protected slots:
+public slots:
     virtual void connectedToCore() {}
     virtual void disconnectedFromCore() {}
 

@@ -103,8 +103,8 @@ QtMultimediaNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
 
     _audioAvailable = (QMediaPlayer().availability() == QMultimedia::Available);
 
-    connect(ui.enabled, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
-    connect(ui.filename, SIGNAL(textChanged(const QString &)), SLOT(widgetChanged()));
+    connect(ui.enabled, &QAbstractButton::toggled, this, &ConfigWidget::widgetChanged);
+    connect(ui.filename, &QLineEdit::textChanged, this, &ConfigWidget::widgetChanged);
 }
 
 

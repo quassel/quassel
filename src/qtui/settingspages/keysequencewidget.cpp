@@ -183,10 +183,10 @@ KeySequenceWidget::KeySequenceWidget(QWidget *parent)
 
     setLayout(layout);
 
-    connect(_keyButton, SIGNAL(clicked()), SLOT(startRecording()));
-    connect(_keyButton, SIGNAL(clicked()), SIGNAL(clicked()));
-    connect(_clearButton, SIGNAL(clicked()), SLOT(clear()));
-    connect(_clearButton, SIGNAL(clicked()), SIGNAL(clicked()));
+    connect(_keyButton, &QAbstractButton::clicked, this, &KeySequenceWidget::startRecording);
+    connect(_keyButton, &QAbstractButton::clicked, this, &KeySequenceWidget::clicked);
+    connect(_clearButton, &QAbstractButton::clicked, this, &KeySequenceWidget::clear);
+    connect(_clearButton, &QAbstractButton::clicked, this, &KeySequenceWidget::clicked);
 }
 
 
