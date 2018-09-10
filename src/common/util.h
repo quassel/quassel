@@ -105,3 +105,27 @@ COMMON_EXPORT QString tryFormatUnixEpoch(const QString &possibleEpochDate,
  * @return Date/time in ISO 8601 format with timezone offset
  */
 COMMON_EXPORT QString formatDateTimeToOffsetISO(const QDateTime &dateTime);
+
+namespace detail {
+
+template<typename ...Args>
+struct SelectOverloadHelper
+{
+    template <typename R, typename C>
+    constexpr auto operator()(R(C::*func)(Args...)) const noexcept -> decltype(func) { return func; }
+};
+
+}  // detail
+
+/**
+ * Helper for resolving ambiguous overloads when using the member function-based connect syntax.
+ *
+ * Example usage:
+ * @code
+ * connect(this, selectOverload<int, QString>(&MyClass::mySignal), other, &Other::mySlot);
+ * @endcode
+ *
+ * @tparam Args Argument types of the desired signature
+ */
+template<typename ...Args>
+constexpr Q_DECL_UNUSED detail::SelectOverloadHelper<Args...> selectOverload = {};
