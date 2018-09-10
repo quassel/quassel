@@ -195,7 +195,7 @@ void Settings::setLocalValue(const QString &key, const QVariant &data)
 }
 
 
-const QVariant &Settings::localValue(const QString &key, const QVariant &def)
+QVariant Settings::localValue(const QString &key, const QVariant &def)
 {
     QString normKey = normalizedKey(group, key);
     if (!isCached(normKey)) {
