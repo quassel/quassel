@@ -108,7 +108,7 @@ protected:
     virtual QStringList localChildGroups(const QString &rootkey = QString());
 
     virtual void setLocalValue(const QString &key, const QVariant &data);
-    virtual const QVariant &localValue(const QString &key, const QVariant &def = QVariant());
+    virtual QVariant localValue(const QString &key, const QVariant &def = QVariant());
 
     /**
      * Gets if a key exists in settings
