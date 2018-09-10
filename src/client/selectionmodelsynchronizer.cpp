@@ -30,10 +30,10 @@ SelectionModelSynchronizer::SelectionModelSynchronizer(QAbstractItemModel *paren
     _model(parent),
     _selectionModel(parent)
 {
-    connect(&_selectionModel, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
-        this, SLOT(currentChanged(const QModelIndex &, const QModelIndex &)));
-    connect(&_selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-        this, SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
+    connect(&_selectionModel, &QItemSelectionModel::currentChanged,
+        this, &SelectionModelSynchronizer::currentChanged);
+    connect(&_selectionModel, &QItemSelectionModel::selectionChanged,
+        this, &SelectionModelSynchronizer::selectionChanged);
 }
 
 
@@ -66,12 +66,12 @@ void SelectionModelSynchronizer::synchronizeSelectionModel(QItemSelectionModel *
         return;
     }
 
-    connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-        this, SLOT(syncedCurrentChanged(QModelIndex, QModelIndex)));
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-        this, SLOT(syncedSelectionChanged(QItemSelection, QItemSelection)));
+    connect(selectionModel, &QItemSelectionModel::currentChanged,
+        this, &SelectionModelSynchronizer::syncedCurrentChanged);
+    connect(selectionModel, &QItemSelectionModel::selectionChanged,
+        this, &SelectionModelSynchronizer::syncedSelectionChanged);
 
-    connect(selectionModel, SIGNAL(destroyed(QObject *)), this, SLOT(selectionModelDestroyed(QObject *)));
+    connect(selectionModel, &QObject::destroyed, this, &SelectionModelSynchronizer::selectionModelDestroyed);
 
     _selectionModels << selectionModel;
 }

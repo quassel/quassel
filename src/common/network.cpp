@@ -317,7 +317,7 @@ IrcUser *Network::newIrcUser(const QString &hostmask, const QVariantMap &initDat
         else
             qWarning() << "unable to synchronize new IrcUser" << hostmask << "forgot to call Network::setProxy(SignalProxy *)?";
 
-        connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
+        connect(ircuser, &IrcUser::nickSet, this, &Network::ircUserNickChanged);
 
         _ircUsers[nick] = ircuser;
 

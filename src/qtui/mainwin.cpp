@@ -183,29 +183,29 @@ MainWin::MainWin(QWidget *parent)
 
 void MainWin::init()
 {
-    connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(clientNetworkCreated(NetworkId)));
-    connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(clientNetworkRemoved(NetworkId)));
-    connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-        SLOT(messagesInserted(const QModelIndex &, int, int)));
+    connect(Client::instance(), &Client::networkCreated, this, &MainWin::clientNetworkCreated);
+    connect(Client::instance(), &Client::networkRemoved, this, &MainWin::clientNetworkRemoved);
+    connect(Client::messageModel(), &QAbstractItemModel::rowsInserted,
+        this, &MainWin::messagesInserted);
     connect(GraphicalUi::contextMenuActionProvider(),
-            SIGNAL(showChannelList(NetworkId,QString,bool)),
-            SLOT(showChannelList(NetworkId,QString,bool)));
+            &NetworkModelController::showChannelList,
+            this, &MainWin::showChannelList);
     connect(Client::instance(),
-            SIGNAL(showChannelList(NetworkId,QString,bool)),
-            SLOT(showChannelList(NetworkId,QString,bool)));
-    connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showNetworkConfig(NetworkId)), SLOT(showNetworkConfig(NetworkId)));
-    connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
-    connect(Client::instance(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
-    connect(Client::instance(), SIGNAL(dbUpgradeInProgress(bool)), SLOT(showMigrationWarning(bool)));
-    connect(Client::instance(), SIGNAL(exitRequested(QString)), SLOT(onExitRequested(QString)));
+            &Client::showChannelList,
+            this, &MainWin::showChannelList);
+    connect(GraphicalUi::contextMenuActionProvider(), &NetworkModelController::showNetworkConfig, this, &MainWin::showNetworkConfig);
+    connect(GraphicalUi::contextMenuActionProvider(), &NetworkModelController::showIgnoreList, this, &MainWin::showIgnoreList);
+    connect(Client::instance(), &Client::showIgnoreList, this, &MainWin::showIgnoreList);
+    connect(Client::instance(), &Client::dbUpgradeInProgress, this, &MainWin::showMigrationWarning);
+    connect(Client::instance(), &Client::exitRequested, this, &MainWin::onExitRequested);
 
-    connect(Client::coreConnection(), SIGNAL(startCoreSetup(QVariantList, QVariantList)), SLOT(showCoreConfigWizard(QVariantList, QVariantList)));
-    connect(Client::coreConnection(), SIGNAL(connectionErrorPopup(QString)), SLOT(handleCoreConnectionError(QString)));
-    connect(Client::coreConnection(), SIGNAL(userAuthenticationRequired(CoreAccount *, bool *, QString)), SLOT(userAuthenticationRequired(CoreAccount *, bool *, QString)));
-    connect(Client::coreConnection(), SIGNAL(handleNoSslInClient(bool *)), SLOT(handleNoSslInClient(bool *)));
-    connect(Client::coreConnection(), SIGNAL(handleNoSslInCore(bool *)), SLOT(handleNoSslInCore(bool *)));
+    connect(Client::coreConnection(), &CoreConnection::startCoreSetup, this, &MainWin::showCoreConfigWizard);
+    connect(Client::coreConnection(), &CoreConnection::connectionErrorPopup, this, &MainWin::handleCoreConnectionError);
+    connect(Client::coreConnection(), &CoreConnection::userAuthenticationRequired, this, &MainWin::userAuthenticationRequired);
+    connect(Client::coreConnection(), &CoreConnection::handleNoSslInClient, this, &MainWin::handleNoSslInClient);
+    connect(Client::coreConnection(), &CoreConnection::handleNoSslInCore, this, &MainWin::handleNoSslInCore);
 #ifdef HAVE_SSL
-    connect(Client::coreConnection(), SIGNAL(handleSslErrors(const QSslSocket *, bool *, bool *)), SLOT(handleSslErrors(const QSslSocket *, bool *, bool *)));
+    connect(Client::coreConnection(), &CoreConnection::handleSslErrors, this, &MainWin::handleSslErrors);
 #endif
 
     // Setup Dock Areas
@@ -289,7 +289,7 @@ void MainWin::init()
         qApp->closeAllWindows();
     });
 
-    QTimer::singleShot(0, this, SLOT(doAutoConnect()));
+    QTimer::singleShot(0, this, &MainWin::doAutoConnect);
 }
 
 
@@ -394,7 +394,7 @@ void MainWin::setupActions()
 
     QAction *lockAct = coll->addAction("LockLayout", new Action(tr("&Lock Layout"), coll));
     lockAct->setCheckable(true);
-    connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockLayout_toggled(bool)));
+    connect(lockAct, &QAction::toggled, this, &MainWin::on_actionLockLayout_toggled);
 
     coll->addAction("ToggleSearchBar", new Action(icon::get("edit-find"), tr("Show &Search Bar"), coll,
             nullptr, nullptr, QKeySequence::Find))->setCheckable(true);
@@ -641,7 +641,7 @@ void MainWin::setupMenus()
     enabled ? menuBar()->show() : menuBar()->hide();
 
     connect(showMenuBar, SIGNAL(toggled(bool)), menuBar(), SLOT(setVisible(bool)));
-    connect(showMenuBar, SIGNAL(toggled(bool)), this, SLOT(saveMenuBarStatus(bool)));
+    connect(showMenuBar, &QAction::toggled, this, &MainWin::saveMenuBarStatus);
 }
 
 
@@ -683,8 +683,8 @@ void MainWin::addBufferView(ClientBufferViewConfig *config)
     addDockWidget(Qt::LeftDockWidgetArea, dock);
     _bufferViewsMenu->addAction(dock->toggleViewAction());
 
-    connect(dock->toggleViewAction(), SIGNAL(toggled(bool)), this, SLOT(bufferViewToggled(bool)));
-    connect(dock, SIGNAL(visibilityChanged(bool)), SLOT(bufferViewVisibilityChanged(bool)));
+    connect(dock->toggleViewAction(), &QAction::toggled, this, &MainWin::bufferViewToggled);
+    connect(dock, &QDockWidget::visibilityChanged, this, &MainWin::bufferViewVisibilityChanged);
     _bufferViews.append(dock);
 
     if (!activeBufferView())
@@ -1095,8 +1095,8 @@ void MainWin::setupStatusBar()
     showStatusbar->setChecked(enabled);
     enabled ? statusBar()->show() : statusBar()->hide();
 
-    connect(showStatusbar, SIGNAL(toggled(bool)), statusBar(), SLOT(setVisible(bool)));
-    connect(showStatusbar, SIGNAL(toggled(bool)), this, SLOT(saveStatusBarStatus(bool)));
+    connect(showStatusbar, &QAction::toggled, statusBar(), &QWidget::setVisible);
+    connect(showStatusbar, &QAction::toggled, this, &MainWin::saveStatusBarStatus);
 
     connect(Client::coreConnection(), SIGNAL(connectionMsg(QString)), statusBar(), SLOT(showMessage(QString)));
 }
@@ -1214,11 +1214,11 @@ void MainWin::connectedToCore()
 {
     Q_CHECK_PTR(Client::bufferViewManager());
     connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigAdded(int)), this, SLOT(addBufferView(int)));
-    connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
-    connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
+    connect(Client::bufferViewManager(), &BufferViewManager::bufferViewConfigDeleted, this, &MainWin::removeBufferView);
+    connect(Client::bufferViewManager(), &SyncableObject::initDone, this, &MainWin::loadLayout);
 
     if (Client::transferManager()) {
-        connect(Client::transferManager(), SIGNAL(transferAdded(QUuid)), SLOT(showNewTransferDlg(QUuid)));
+        connect(Client::transferManager(), &TransferManager::transferAdded, this, &MainWin::showNewTransferDlg);
     }
 
     setConnectedState();
@@ -1239,13 +1239,13 @@ void MainWin::setConnectedState()
             action->setVisible(!Client::internalCore());
     }
 
-    disconnect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), _msgProcessorStatusWidget, SLOT(setProgress(int, int)));
-    disconnect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
-    disconnect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
+    disconnect(Client::backlogManager(), &ClientBacklogManager::updateProgress, _msgProcessorStatusWidget, &MsgProcessorStatusWidget::setProgress);
+    disconnect(Client::backlogManager(), &ClientBacklogManager::messagesRequested, this, &MainWin::showStatusBarMessage);
+    disconnect(Client::backlogManager(), &ClientBacklogManager::messagesProcessed, this, &MainWin::showStatusBarMessage);
     if (!Client::internalCore()) {
-        connect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), _msgProcessorStatusWidget, SLOT(setProgress(int, int)));
-        connect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
-        connect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
+        connect(Client::backlogManager(), &ClientBacklogManager::updateProgress, _msgProcessorStatusWidget, &MsgProcessorStatusWidget::setProgress);
+        connect(Client::backlogManager(), &ClientBacklogManager::messagesRequested, this, &MainWin::showStatusBarMessage);
+        connect(Client::backlogManager(), &ClientBacklogManager::messagesProcessed, this, &MainWin::showStatusBarMessage);
     }
 
     // _viewMenu->setEnabled(true);
@@ -1519,7 +1519,7 @@ void MainWin::showAwayLog()
     auto *filter = new AwayLogFilter(Client::messageModel());
     _awayLog = new AwayLogView(filter, nullptr);
     filter->setParent(_awayLog);
-    connect(_awayLog, SIGNAL(destroyed()), this, SLOT(awayLogDestroyed()));
+    connect(_awayLog, &QObject::destroyed, this, &MainWin::awayLogDestroyed);
     _awayLog->setAttribute(Qt::WA_DeleteOnClose);
     _awayLog->show();
 }
@@ -1752,8 +1752,8 @@ void MainWin::clientNetworkCreated(NetworkId id)
     auto *act = new QAction(net->networkName(), this);
     act->setObjectName(QString("NetworkAction-%1").arg(id.toInt()));
     act->setData(QVariant::fromValue<NetworkId>(id));
-    connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
-    connect(act, SIGNAL(triggered()), this, SLOT(connectOrDisconnectFromNet()));
+    connect(net, &SyncableObject::updatedRemotely, this, &MainWin::clientNetworkUpdated);
+    connect(act, &QAction::triggered, this, &MainWin::connectOrDisconnectFromNet);
 
     QAction *beforeAction = nullptr;
     foreach(QAction *action, _networksMenu->actions()) {

@@ -52,13 +52,13 @@ SystemTray::SystemTray(QWidget *parent)
     _trayMenu->addSeparator();
     _trayMenu->addAction(_minimizeRestoreAction);
     _trayMenu->addAction(coll->action("Quit"));
-    connect(_trayMenu, SIGNAL(aboutToShow()), SLOT(trayMenuAboutToShow()));
+    connect(_trayMenu, &QMenu::aboutToShow, this, &SystemTray::trayMenuAboutToShow);
 
-    connect(QtUi::instance(), SIGNAL(iconThemeRefreshed()), this, SIGNAL(iconsChanged()));
+    connect(QtUi::instance(), &QtUi::iconThemeRefreshed, this, &SystemTray::iconsChanged);
 
     _blinkTimer.setInterval(1000);
     _blinkTimer.setSingleShot(false);
-    connect(&_blinkTimer, SIGNAL(timeout()), SLOT(onBlinkTimeout()));
+    connect(&_blinkTimer, &QTimer::timeout, this, &SystemTray::onBlinkTimeout);
 }
 
 

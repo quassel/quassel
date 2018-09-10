@@ -20,9 +20,11 @@
 
 #pragma once
 
+#include "client-export.h"
+
 #include "irclisthelper.h"
 
-class ClientIrcListHelper : public IrcListHelper
+class CLIENT_EXPORT ClientIrcListHelper : public IrcListHelper
 {
     Q_OBJECT
 

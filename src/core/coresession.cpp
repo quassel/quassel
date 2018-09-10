@@ -86,10 +86,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     p->setHeartBeatInterval(30);
     p->setMaxHeartBeatCount(60); // 30 mins until we throw a dead socket out
 
-    connect(p, SIGNAL(peerRemoved(Peer*)), SLOT(removeClient(Peer*)));
+    connect(p, &SignalProxy::peerRemoved, this, &CoreSession::removeClient);
 
-    connect(p, SIGNAL(connected()), SLOT(clientsConnected()));
-    connect(p, SIGNAL(disconnected()), SLOT(clientsDisconnected()));
+    connect(p, &SignalProxy::connected, this, &CoreSession::clientsConnected);
+    connect(p, &SignalProxy::disconnected, this, &CoreSession::clientsDisconnected);
 
     p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
     p->attachSignal(this, SIGNAL(displayMsg(Message)));
@@ -131,7 +131,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     eventManager()->registerObject(ctcpParser(), EventManager::LowPriority, "send");
 
     // periodically save our session state
-    connect(Core::instance()->syncTimer(), SIGNAL(timeout()), this, SLOT(saveSessionState()));
+    connect(Core::instance()->syncTimer(), &QTimer::timeout, this, &CoreSession::saveSessionState);
 
     p->synchronize(_bufferSyncer);
     p->synchronize(&aliasManager());
@@ -143,8 +143,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     p->synchronize(&_ignoreListManager);
     p->synchronize(&_highlightRuleManager);
     // Listen to network removed events
-    connect(this, SIGNAL(networkRemoved(NetworkId)),
-        &_highlightRuleManager, SLOT(networkRemoved(NetworkId)));
+    connect(this, &CoreSession::networkRemoved,
+        &_highlightRuleManager, &HighlightRuleManager::networkRemoved);
     p->synchronize(transferManager());
     // Restore session state
     if (restoreState)
@@ -566,7 +566,7 @@ void CoreSession::createIdentity(const CoreIdentity &identity)
     _identities[identity.id()] = coreIdentity;
     // CoreIdentity has its own synchronize method since its "private" sslManager needs to be synced as well
     coreIdentity->synchronize(signalProxy());
-    connect(coreIdentity, SIGNAL(updated()), this, SLOT(updateIdentityBySender()));
+    connect(coreIdentity, &SyncableObject::updated, this, &CoreSession::updateIdentityBySender);
     emit identityCreated(*coreIdentity);
 }
 
@@ -624,8 +624,8 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
         CoreNetwork *net = new CoreNetwork(id, this);
         connect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
             SLOT(recvMessageFromServer(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
-        connect(net, SIGNAL(displayStatusMsg(QString)), SLOT(recvStatusMsgFromServer(QString)));
-        connect(net, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
+        connect(net, &CoreNetwork::displayStatusMsg, this, &CoreSession::recvStatusMsgFromServer);
+        connect(net, &CoreNetwork::disconnected, this, &CoreSession::networkDisconnected);
 
         net->setNetworkInfo(info);
         net->setProxy(signalProxy());
@@ -651,7 +651,7 @@ void CoreSession::removeNetwork(NetworkId id)
         // make sure we no longer receive data from the tcp buffer
         disconnect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)), this, nullptr);
         disconnect(net, SIGNAL(displayStatusMsg(QString)), this, nullptr);
-        connect(net, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetwork(NetworkId)));
+        connect(net, &CoreNetwork::disconnected, this, &CoreSession::destroyNetwork);
         net->disconnectFromIrc();
     }
     else {

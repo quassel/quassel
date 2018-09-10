@@ -159,7 +159,7 @@ void BufferViewOverlay::viewInitialized(BufferViewConfig *config)
     }
     disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
 
-    connect(config, SIGNAL(configChanged()), this, SLOT(update()));
+    connect(config, &BufferViewConfig::configChanged, this, &BufferViewOverlay::update);
 
     // check if the view was removed in the meantime...
     if (_bufferViewIds.contains(config->bufferViewId()))

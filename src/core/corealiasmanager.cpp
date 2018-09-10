@@ -39,7 +39,7 @@ CoreAliasManager::CoreAliasManager(CoreSession *parent)
         loadDefaults();
 
     // we store our settings whenever they change
-    connect(this, SIGNAL(updatedRemotely()), SLOT(save()));
+    connect(this, &SyncableObject::updatedRemotely, this, &CoreAliasManager::save);
 }
 
 

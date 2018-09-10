@@ -23,7 +23,7 @@
 ClientIgnoreListManager::ClientIgnoreListManager(QObject *parent)
     : IgnoreListManager(parent)
 {
-    connect(this, SIGNAL(updatedRemotely()), SIGNAL(ignoreListChanged()));
+    connect(this, &SyncableObject::updatedRemotely, this, &ClientIgnoreListManager::ignoreListChanged);
 }
 
 

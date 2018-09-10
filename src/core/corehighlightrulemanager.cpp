@@ -36,7 +36,7 @@ CoreHighlightRuleManager::CoreHighlightRuleManager(CoreSession *session)
     // Otherwise, we just use the defaults initialized in the base class
 
     // We store our settings whenever they change
-    connect(this, SIGNAL(updatedRemotely()), SLOT(save()));
+    connect(this, &SyncableObject::updatedRemotely, this, &CoreHighlightRuleManager::save);
 }
 
 void CoreHighlightRuleManager::save()

@@ -33,7 +33,7 @@ Compressor::Compressor(QTcpSocket *socket, Compressor::CompressionLevel level, Q
     _inflater(nullptr),
     _deflater(nullptr)
 {
-    connect(socket, SIGNAL(readyRead()), SLOT(readData()));
+    connect(socket, &QIODevice::readyRead, this, &Compressor::readData);
 
     bool ok = true;
     if (level != NoCompression)
@@ -48,7 +48,7 @@ Compressor::Compressor(QTcpSocket *socket, Compressor::CompressionLevel level, Q
     // It's possible that more data has already arrived during the handshake, so readyRead() wouldn't be triggered.
     // However, we want to give RemotePeer a chance to connect to our signals, so trigger this asynchronously.
     if (socket->bytesAvailable())
-        QTimer::singleShot(0, this, SLOT(readData()));
+        QTimer::singleShot(0, this, &Compressor::readData);
 }
 
 
@@ -126,7 +126,7 @@ qint64 Compressor::read(char *data, qint64 maxSize)
 
     // If there's still data left in the socket buffer, make sure to schedule a read
     if (_socket->bytesAvailable())
-        QTimer::singleShot(0, this, SLOT(readData()));
+        QTimer::singleShot(0, this, &Compressor::readData);
 
     return n;
 }

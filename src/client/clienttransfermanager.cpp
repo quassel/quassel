@@ -39,7 +39,7 @@ void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
     }
 
     auto transfer = new ClientTransfer(uuid, this);
-    connect(transfer, SIGNAL(initDone()), SLOT(onTransferInitDone())); // we only want to add initialized transfers
+    connect(transfer, &SyncableObject::initDone, this, &ClientTransferManager::onTransferInitDone); // we only want to add initialized transfers
     Client::signalProxy()->synchronize(transfer);
 }
 

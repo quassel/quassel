@@ -54,7 +54,7 @@ void QtUiApplication::init()
 
     // Init UI only after the event loop has started
     // TODO Qt5: Make this a lambda
-    QTimer::singleShot(0, this, SLOT(initUi()));
+    QTimer::singleShot(0, this, &QtUiApplication::initUi);
 }
 
 

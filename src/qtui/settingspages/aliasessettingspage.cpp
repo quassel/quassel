@@ -41,10 +41,10 @@ AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
     ui.aliasesView->verticalHeader()->hide();
     ui.aliasesView->horizontalHeader()->setStretchLastSection(true);
 
-    connect(ui.newAliasButton, SIGNAL(clicked()), &_aliasesModel, SLOT(newAlias()));
-    connect(ui.deleteAliasButton, SIGNAL(clicked()), this, SLOT(deleteSelectedAlias()));
+    connect(ui.newAliasButton, &QAbstractButton::clicked, &_aliasesModel, &AliasesModel::newAlias);
+    connect(ui.deleteAliasButton, &QAbstractButton::clicked, this, &AliasesSettingsPage::deleteSelectedAlias);
     connect(&_aliasesModel, SIGNAL(configChanged(bool)), this, SLOT(setChangedState(bool)));
-    connect(&_aliasesModel, SIGNAL(modelReady(bool)), this, SLOT(enableDialog(bool)));
+    connect(&_aliasesModel, &AliasesModel::modelReady, this, &AliasesSettingsPage::enableDialog);
 
     enableDialog(_aliasesModel.isReady());
 }

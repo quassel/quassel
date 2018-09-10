@@ -34,12 +34,12 @@ PasswordChangeDlg::PasswordChangeDlg(QWidget *parent) : QDialog(parent)
                              "on the Quassel Core running at <b>%2</b>.")
                           .arg(account.user(), account.hostName()));
 
-    connect(ui.oldPasswordEdit, SIGNAL(textChanged(QString)), SLOT(inputChanged()));
-    connect(ui.newPasswordEdit, SIGNAL(textChanged(QString)), SLOT(inputChanged()));
-    connect(ui.confirmPasswordEdit, SIGNAL(textChanged(QString)), SLOT(inputChanged()));
-    connect(ui.buttonBox, SIGNAL(accepted()), SLOT(changePassword()));
+    connect(ui.oldPasswordEdit, &QLineEdit::textChanged, this, &PasswordChangeDlg::inputChanged);
+    connect(ui.newPasswordEdit, &QLineEdit::textChanged, this, &PasswordChangeDlg::inputChanged);
+    connect(ui.confirmPasswordEdit, &QLineEdit::textChanged, this, &PasswordChangeDlg::inputChanged);
+    connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &PasswordChangeDlg::changePassword);
 
-    connect(Client::instance(), SIGNAL(passwordChanged(bool)), SLOT(passwordChanged(bool)));
+    connect(Client::instance(), &Client::passwordChanged, this, &PasswordChangeDlg::passwordChanged);
 
     ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }

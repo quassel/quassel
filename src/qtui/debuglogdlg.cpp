@@ -30,7 +30,7 @@ DebugLogDlg::DebugLogDlg(QWidget *parent)
 
     ui.textEdit->setReadOnly(true);
 
-    connect(Quassel::instance()->logger(), SIGNAL(messageLogged(Logger::LogEntry)), SLOT(logUpdated(Logger::LogEntry)));
+    connect(Quassel::instance()->logger(), &Logger::messageLogged, this, &DebugLogDlg::logUpdated);
 
     QString content;
     for (auto &&message : Quassel::instance()->logger()->messages()) {

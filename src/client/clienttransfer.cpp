@@ -26,7 +26,7 @@ ClientTransfer::ClientTransfer(const QUuid &uuid, QObject *parent)
     : Transfer(uuid, parent),
     _file(nullptr)
 {
-    connect(this, SIGNAL(statusChanged(Transfer::Status)), SLOT(onStatusChanged(Transfer::Status)));
+    connect(this, &Transfer::statusChanged, this, &ClientTransfer::onStatusChanged);
 }
 
 

@@ -27,8 +27,8 @@
 IdentServer::IdentServer(QObject *parent)
     : QObject(parent)
 {
-    connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-    connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
+    connect(&_server, &QTcpServer::newConnection, this, &IdentServer::incomingConnection);
+    connect(&_v6server, &QTcpServer::newConnection, this, &IdentServer::incomingConnection);
 }
 
 
@@ -93,8 +93,8 @@ void IdentServer::incomingConnection()
     Q_ASSERT(server);
     while (server->hasPendingConnections()) {
         QTcpSocket *socket = server->nextPendingConnection();
-        connect(socket, SIGNAL(readyRead()), this, SLOT(respond()));
-        connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
+        connect(socket, &QIODevice::readyRead, this, &IdentServer::respond);
+        connect(socket, &QAbstractSocket::disconnected, socket, &QObject::deleteLater);
     }
 }
 

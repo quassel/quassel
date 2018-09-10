@@ -29,8 +29,8 @@ ConnectionSettingsPage::ConnectionSettingsPage(QWidget *parent)
     ui.setupUi(this);
     initAutoWidgets();
 
-    connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
-    connect(Client::instance(), SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
+    connect(Client::instance(), &Client::connected, this, &ConnectionSettingsPage::clientConnected);
+    connect(Client::instance(), &Client::disconnected, this, &ConnectionSettingsPage::clientDisconnected);
 
     setEnabled(false);
     if (Client::isConnected())
@@ -43,7 +43,7 @@ void ConnectionSettingsPage::clientConnected()
     if (Client::networkConfig()->isInitialized())
         initDone();
     else
-        connect(Client::networkConfig(), SIGNAL(initDone()), SLOT(initDone()));
+        connect(Client::networkConfig(), &SyncableObject::initDone, this, &ConnectionSettingsPage::initDone);
 }
 
 

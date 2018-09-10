@@ -53,25 +53,25 @@ BufferWidget::BufferWidget(QWidget *parent)
     _chatViewSearchController->setSearchMsgs(ui.searchBar->searchMsgsBox()->isChecked());
     _chatViewSearchController->setSearchOnlyRegularMsgs(ui.searchBar->searchOnlyRegularMsgsBox()->isChecked());
 
-    connect(ui.searchBar, SIGNAL(searchChanged(const QString &)),
-        _chatViewSearchController, SLOT(setSearchString(const QString &)));
-    connect(ui.searchBar->caseSensitiveBox(), SIGNAL(toggled(bool)),
-        _chatViewSearchController, SLOT(setCaseSensitive(bool)));
-    connect(ui.searchBar->searchSendersBox(), SIGNAL(toggled(bool)),
-        _chatViewSearchController, SLOT(setSearchSenders(bool)));
-    connect(ui.searchBar->searchMsgsBox(), SIGNAL(toggled(bool)),
-        _chatViewSearchController, SLOT(setSearchMsgs(bool)));
-    connect(ui.searchBar->searchOnlyRegularMsgsBox(), SIGNAL(toggled(bool)),
-        _chatViewSearchController, SLOT(setSearchOnlyRegularMsgs(bool)));
-    connect(ui.searchBar->searchUpButton(), SIGNAL(clicked()),
-        _chatViewSearchController, SLOT(highlightPrev()));
-    connect(ui.searchBar->searchDownButton(), SIGNAL(clicked()),
-        _chatViewSearchController, SLOT(highlightNext()));
+    connect(ui.searchBar, &ChatViewSearchBar::searchChanged,
+        _chatViewSearchController, &ChatViewSearchController::setSearchString);
+    connect(ui.searchBar->caseSensitiveBox(), &QAbstractButton::toggled,
+        _chatViewSearchController, &ChatViewSearchController::setCaseSensitive);
+    connect(ui.searchBar->searchSendersBox(), &QAbstractButton::toggled,
+        _chatViewSearchController, &ChatViewSearchController::setSearchSenders);
+    connect(ui.searchBar->searchMsgsBox(), &QAbstractButton::toggled,
+        _chatViewSearchController, &ChatViewSearchController::setSearchMsgs);
+    connect(ui.searchBar->searchOnlyRegularMsgsBox(), &QAbstractButton::toggled,
+        _chatViewSearchController, &ChatViewSearchController::setSearchOnlyRegularMsgs);
+    connect(ui.searchBar->searchUpButton(), &QAbstractButton::clicked,
+        _chatViewSearchController, &ChatViewSearchController::highlightPrev);
+    connect(ui.searchBar->searchDownButton(), &QAbstractButton::clicked,
+        _chatViewSearchController, &ChatViewSearchController::highlightNext);
 
     connect(ui.searchBar, SIGNAL(hidden()), this, SLOT(setFocus()));
 
-    connect(_chatViewSearchController, SIGNAL(newCurrentHighlight(QGraphicsItem *)),
-        this, SLOT(scrollToHighlight(QGraphicsItem *)));
+    connect(_chatViewSearchController, &ChatViewSearchController::newCurrentHighlight,
+        this, &BufferWidget::scrollToHighlight);
 
     ActionCollection *coll = QtUi::actionCollection();
 

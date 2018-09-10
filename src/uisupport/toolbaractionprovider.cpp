@@ -61,8 +61,8 @@ ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
     action(NetworkDisconnectAllWithDropdown)->setMenu(_networksDisconnectMenu);
     action(NetworkDisconnectAllWithDropdown)->setEnabled(false);
 
-    connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(networkCreated(NetworkId)));
-    connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(networkRemoved(NetworkId)));
+    connect(Client::instance(), &Client::networkCreated, this, &ToolBarActionProvider::networkCreated);
+    connect(Client::instance(), &Client::networkRemoved, this, &ToolBarActionProvider::networkRemoved);
 
     updateStates();
 }

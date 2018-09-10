@@ -86,7 +86,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, QString idString, qreal width, C
     }
 
     addItem(_markerLine);
-    connect(this, SIGNAL(sceneRectChanged(const QRectF &)), _markerLine, SLOT(sceneRectChanged(const QRectF &)));
+    connect(this, &QGraphicsScene::sceneRectChanged, _markerLine, &MarkerLineItem::sceneRectChanged);
 
     ChatViewSettings defaultSettings;
     _defaultFirstColHandlePos = defaultSettings.value("FirstColumnHandlePos", 80).toInt();
@@ -99,32 +99,32 @@ ChatScene::ChatScene(QAbstractItemModel *model, QString idString, qreal width, C
     _firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator());
     addItem(_firstColHandle);
     _firstColHandle->setXPos(_firstColHandlePos);
-    connect(_firstColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(firstHandlePositionChanged(qreal)));
-    connect(this, SIGNAL(sceneRectChanged(const QRectF &)), _firstColHandle, SLOT(sceneRectChanged(const QRectF &)));
+    connect(_firstColHandle, &ColumnHandleItem::positionChanged, this, &ChatScene::firstHandlePositionChanged);
+    connect(this, &QGraphicsScene::sceneRectChanged, _firstColHandle, &ColumnHandleItem::sceneRectChanged);
 
     _secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator());
     addItem(_secondColHandle);
     _secondColHandle->setXPos(_secondColHandlePos);
-    connect(_secondColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(secondHandlePositionChanged(qreal)));
+    connect(_secondColHandle, &ColumnHandleItem::positionChanged, this, &ChatScene::secondHandlePositionChanged);
 
-    connect(this, SIGNAL(sceneRectChanged(const QRectF &)), _secondColHandle, SLOT(sceneRectChanged(const QRectF &)));
+    connect(this, &QGraphicsScene::sceneRectChanged, _secondColHandle, &ColumnHandleItem::sceneRectChanged);
 
     setHandleXLimits();
 
     if (model->rowCount() > 0)
         rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
 
-    connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-        this, SLOT(rowsInserted(const QModelIndex &, int, int)));
-    connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-        this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
-    connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)),
-        this, SLOT(rowsRemoved()));
-    connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
+    connect(model, &QAbstractItemModel::rowsInserted,
+        this, &ChatScene::rowsInserted);
+    connect(model, &QAbstractItemModel::rowsAboutToBeRemoved,
+        this, &ChatScene::rowsAboutToBeRemoved);
+    connect(model, &QAbstractItemModel::rowsRemoved,
+        this, &ChatScene::rowsRemoved);
+    connect(model, &QAbstractItemModel::dataChanged, this, &ChatScene::dataChanged);
 
 #if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     webPreview.timer.setSingleShot(true);
-    connect(&webPreview.timer, SIGNAL(timeout()), this, SLOT(webPreviewNextStep()));
+    connect(&webPreview.timer, &QTimer::timeout, this, &ChatScene::webPreviewNextStep);
 #endif
     _showWebPreview = defaultSettings.showWebPreview();
     defaultSettings.notify("ShowWebPreview", this, SLOT(showWebPreviewChanged()));
@@ -141,7 +141,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, QString idString, qreal width, C
 
     _clickTimer.setInterval(QApplication::doubleClickInterval());
     _clickTimer.setSingleShot(true);
-    connect(&_clickTimer, SIGNAL(timeout()), SLOT(clickTimeout()));
+    connect(&_clickTimer, &QTimer::timeout, this, &ChatScene::clickTimeout);
 
     setItemIndexMethod(QGraphicsScene::NoIndex);
 }

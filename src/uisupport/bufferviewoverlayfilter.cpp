@@ -51,8 +51,8 @@ void BufferViewOverlayFilter::setOverlay(BufferViewOverlay *overlay)
         return;
     }
 
-    connect(overlay, SIGNAL(destroyed()), this, SLOT(overlayDestroyed()));
-    connect(overlay, SIGNAL(hasChanged()), this, SLOT(invalidate()));
+    connect(overlay, &QObject::destroyed, this, &BufferViewOverlayFilter::overlayDestroyed);
+    connect(overlay, &BufferViewOverlay::hasChanged, this, &QSortFilterProxyModel::invalidate);
     invalidate();
 }
 

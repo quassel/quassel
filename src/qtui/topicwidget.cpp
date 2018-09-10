@@ -35,8 +35,8 @@ TopicWidget::TopicWidget(QWidget *parent)
     ui.topicLineEdit->setLineWrapEnabled(true);
     ui.topicLineEdit->installEventFilter(this);
 
-    connect(ui.topicLabel, SIGNAL(clickableActivated(Clickable)), SLOT(clickableActivated(Clickable)));
-    connect(ui.topicLineEdit, SIGNAL(noTextEntered()), SLOT(on_topicLineEdit_textEntered()));
+    connect(ui.topicLabel, &StyledLabel::clickableActivated, this, &TopicWidget::clickableActivated);
+    connect(ui.topicLineEdit, &MultiLineEdit::noTextEntered, this, &TopicWidget::on_topicLineEdit_textEntered);
 
     UiSettings s("TopicWidget");
     s.notify("DynamicResize", this, SLOT(updateResizeMode()));

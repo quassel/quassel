@@ -38,10 +38,10 @@ SettingsDlg::SettingsDlg(QWidget *parent)
 
     ui.settingsTree->setRootIsDecorated(false);
 
-    connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelected()));
-    connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+    connect(ui.settingsTree, &QTreeWidget::itemSelectionChanged, this, &SettingsDlg::itemSelected);
+    connect(ui.buttonBox, &QDialogButtonBox::clicked, this, &SettingsDlg::buttonClicked);
 
-    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), SLOT(coreConnectionStateChanged()));
+    connect(Client::instance(), &Client::coreConnectionStateChanged, this, &SettingsDlg::coreConnectionStateChanged);
 
     setButtonStates();
 }

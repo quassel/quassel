@@ -323,16 +323,16 @@ TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
     connectItem(rootItem);
 
     if (Quassel::isOptionSet("debugmodel")) {
-        connect(this, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-            this, SLOT(debug_rowsAboutToBeInserted(const QModelIndex &, int, int)));
-        connect(this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-            this, SLOT(debug_rowsAboutToBeRemoved(const QModelIndex &, int, int)));
-        connect(this, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-            this, SLOT(debug_rowsInserted(const QModelIndex &, int, int)));
-        connect(this, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-            this, SLOT(debug_rowsRemoved(const QModelIndex &, int, int)));
-        connect(this, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-            this, SLOT(debug_dataChanged(const QModelIndex &, const QModelIndex &)));
+        connect(this, &QAbstractItemModel::rowsAboutToBeInserted,
+            this, &TreeModel::debug_rowsAboutToBeInserted);
+        connect(this, &QAbstractItemModel::rowsAboutToBeRemoved,
+            this, &TreeModel::debug_rowsAboutToBeRemoved);
+        connect(this, &QAbstractItemModel::rowsInserted,
+            this, &TreeModel::debug_rowsInserted);
+        connect(this, &QAbstractItemModel::rowsRemoved,
+            this, &TreeModel::debug_rowsRemoved);
+        connect(this, &QAbstractItemModel::dataChanged,
+            this, &TreeModel::debug_dataChanged);
     }
 }
 
@@ -497,18 +497,18 @@ void TreeModel::itemDataChanged(int column)
 
 void TreeModel::connectItem(AbstractTreeItem *item)
 {
-    connect(item, SIGNAL(dataChanged(int)),
-        this, SLOT(itemDataChanged(int)));
+    connect(item, &AbstractTreeItem::dataChanged,
+        this, &TreeModel::itemDataChanged);
 
-    connect(item, SIGNAL(beginAppendChilds(int, int)),
-        this, SLOT(beginAppendChilds(int, int)));
-    connect(item, SIGNAL(endAppendChilds()),
-        this, SLOT(endAppendChilds()));
+    connect(item, &AbstractTreeItem::beginAppendChilds,
+        this, &TreeModel::beginAppendChilds);
+    connect(item, &AbstractTreeItem::endAppendChilds,
+        this, &TreeModel::endAppendChilds);
 
-    connect(item, SIGNAL(beginRemoveChilds(int, int)),
-        this, SLOT(beginRemoveChilds(int, int)));
-    connect(item, SIGNAL(endRemoveChilds()),
-        this, SLOT(endRemoveChilds()));
+    connect(item, &AbstractTreeItem::beginRemoveChilds,
+        this, &TreeModel::beginRemoveChilds);
+    connect(item, &AbstractTreeItem::endRemoveChilds,
+        this, &TreeModel::endRemoveChilds);
 }
 
 

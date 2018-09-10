@@ -32,11 +32,11 @@ BufferModel::BufferModel(NetworkModel *parent)
 {
     setSourceModel(parent);
     if (Quassel::isOptionSet("debugbufferswitches")) {
-        connect(_selectionModelSynchronizer.selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
-            this, SLOT(debug_currentChanged(const QModelIndex &, const QModelIndex &)));
+        connect(_selectionModelSynchronizer.selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &BufferModel::debug_currentChanged);
     }
-    connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(newNetwork(NetworkId)));
-    connect(this, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(newBuffers(const QModelIndex &, int, int)));
+    connect(Client::instance(), &Client::networkCreated, this, &BufferModel::newNetwork);
+    connect(this, &QAbstractItemModel::rowsInserted, this, &BufferModel::newBuffers);
 }
 
 
@@ -57,8 +57,8 @@ void BufferModel::newNetwork(NetworkId id)
 {
     const Network *net = Client::network(id);
     Q_ASSERT(net);
-    connect(net, SIGNAL(connectionStateSet(Network::ConnectionState)),
-        this, SLOT(networkConnectionChanged(Network::ConnectionState)));
+    connect(net, &Network::connectionStateSet,
+        this, &BufferModel::networkConnectionChanged);
 }
 
 

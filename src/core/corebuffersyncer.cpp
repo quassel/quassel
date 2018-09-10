@@ -36,8 +36,8 @@ CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
     _coreSession(parent),
     _purgeBuffers(false)
 {
-    connect(parent, SIGNAL(displayMsg(Message)), SLOT(addBufferActivity(Message)));
-    connect(parent, SIGNAL(displayMsg(Message)), SLOT(addCoreHighlight(Message)));
+    connect(parent, &CoreSession::displayMsg, this, &CoreBufferSyncer::addBufferActivity);
+    connect(parent, &CoreSession::displayMsg, this, &CoreBufferSyncer::addCoreHighlight);
 }
 
 

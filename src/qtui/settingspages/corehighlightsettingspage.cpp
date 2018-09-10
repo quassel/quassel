@@ -44,24 +44,24 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     ui.highlightNicksComboBox->addItem(tr("None"), QVariant(HighlightRuleManager::NoNick));
 
     coreConnectionStateChanged(Client::isConnected()); // need a core connection!
-    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
+    connect(Client::instance(), &Client::coreConnectionStateChanged, this, &CoreHighlightSettingsPage::coreConnectionStateChanged);
 
     connect(ui.highlightAdd, SIGNAL(clicked(bool)), this, SLOT(addNewHighlightRow()));
-    connect(ui.highlightRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedHighlightRows()));
-    connect(ui.highlightImport, SIGNAL(clicked(bool)), this, SLOT(importRules()));
+    connect(ui.highlightRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::removeSelectedHighlightRows);
+    connect(ui.highlightImport, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::importRules);
 
     connect(ui.ignoredAdd, SIGNAL(clicked(bool)), this, SLOT(addNewIgnoredRow()));
-    connect(ui.ignoredRemove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedIgnoredRows()));
+    connect(ui.ignoredRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::removeSelectedIgnoredRows);
 
     // TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
     connect(ui.highlightTable,
-            SIGNAL(itemClicked(QTableWidgetItem * )),
+            &QTableWidget::itemClicked,
             this,
-            SLOT(selectHighlightRow(QTableWidgetItem * )));
+            &CoreHighlightSettingsPage::selectHighlightRow);
     connect(ui.ignoredTable,
-            SIGNAL(itemClicked(QTableWidgetItem * )),
+            &QTableWidget::itemClicked,
             this,
-            SLOT(selectIgnoredRow(QTableWidgetItem * )));
+            &CoreHighlightSettingsPage::selectIgnoredRow);
 
     // Update the "Case sensitive" checkbox
     connect(ui.highlightNicksComboBox,
@@ -70,25 +70,25 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
             SLOT(highlightNicksChanged(int)));
 
     connect(ui.highlightNicksComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.nicksCaseSensitive, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.nicksCaseSensitive, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
 
-    connect(ui.highlightAdd, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-    connect(ui.highlightRemove, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+    connect(ui.highlightAdd, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
+    connect(ui.highlightRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
 
-    connect(ui.ignoredAdd, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-    connect(ui.ignoredRemove, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+    connect(ui.ignoredAdd, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
+    connect(ui.ignoredRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
 
     connect(ui.highlightTable,
-            SIGNAL(itemChanged(QTableWidgetItem * )),
+            &QTableWidget::itemChanged,
             this,
-            SLOT(highlightTableChanged(QTableWidgetItem * )));
+            &CoreHighlightSettingsPage::highlightTableChanged);
 
     connect(ui.ignoredTable,
-            SIGNAL(itemChanged(QTableWidgetItem * )),
+            &QTableWidget::itemChanged,
             this,
-            SLOT(ignoredTableChanged(QTableWidgetItem * )));
+            &CoreHighlightSettingsPage::ignoredTableChanged);
 
-    connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
+    connect(Client::instance(), &Client::connected, this, &CoreHighlightSettingsPage::clientConnected);
 
     // Warning icon
     ui.coreUnsupportedIcon->setPixmap(icon::get("dialog-warning").pixmap(16));
@@ -297,7 +297,7 @@ void CoreHighlightSettingsPage::updateCoreSupportStatus(bool state)
 
 void CoreHighlightSettingsPage::clientConnected()
 {
-    connect(Client::highlightRuleManager(), SIGNAL(updated()), SLOT(revert()));
+    connect(Client::highlightRuleManager(), &SyncableObject::updated, this, &CoreHighlightSettingsPage::revert);
 }
 
 

@@ -31,8 +31,8 @@ IgnoreListModel::IgnoreListModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
     // we need this signal for future connects to reset the data;
-    connect(Client::instance(), SIGNAL(connected()), this, SLOT(clientConnected()));
-    connect(Client::instance(), SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
+    connect(Client::instance(), &Client::connected, this, &IgnoreListModel::clientConnected);
+    connect(Client::instance(), &Client::disconnected, this, &IgnoreListModel::clientDisconnected);
 
     if (Client::isConnected())
         clientConnected();
@@ -293,7 +293,7 @@ void IgnoreListModel::clientConnected()
     if (Client::ignoreListManager()->isInitialized())
         initDone();
     else
-        connect(Client::ignoreListManager(), SIGNAL(initDone()), SLOT(initDone()));
+        connect(Client::ignoreListManager(), &SyncableObject::initDone, this, &IgnoreListModel::initDone);
 }
 
 

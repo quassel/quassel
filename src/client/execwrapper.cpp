@@ -29,13 +29,13 @@
 
 ExecWrapper::ExecWrapper(QObject *parent) : QObject(parent)
 {
-    connect(&_process, SIGNAL(readyReadStandardOutput()), SLOT(processReadStdout()));
-    connect(&_process, SIGNAL(readyReadStandardError()), SLOT(processReadStderr()));
+    connect(&_process, &QProcess::readyReadStandardOutput, this, &ExecWrapper::processReadStdout);
+    connect(&_process, &QProcess::readyReadStandardError, this, &ExecWrapper::processReadStderr);
     connect(&_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processFinished(int, QProcess::ExitStatus)));
     connect(&_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
 
-    connect(this, SIGNAL(output(QString)), SLOT(postStdout(QString)));
-    connect(this, SIGNAL(error(QString)), SLOT(postStderr(QString)));
+    connect(this, &ExecWrapper::output, this, &ExecWrapper::postStdout);
+    connect(this, &ExecWrapper::error, this, &ExecWrapper::postStderr);
 }
 
 

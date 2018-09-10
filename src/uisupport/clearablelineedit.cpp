@@ -34,8 +34,8 @@ ClearableLineEdit::ClearableLineEdit(QWidget *parent)
     clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
     clearButton->hide();
 
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
-    connect(this, SIGNAL(textChanged(const QString &)), this, SLOT(updateClearButton(const QString &)));
+    connect(clearButton, &QAbstractButton::clicked, this, &QLineEdit::clear);
+    connect(this, &QLineEdit::textChanged, this, &ClearableLineEdit::updateClearButton);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     setStyleSheet(QString("QLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() + frameWidth + 1));

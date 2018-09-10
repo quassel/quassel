@@ -55,7 +55,7 @@ DockManagerNotificationBackend::DockManagerNotificationBackend(QObject *parent)
     itemAdded(QDBusObjectPath());
 
     connect(Client::coreConnection(), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgress(int)));
-    connect(Client::coreConnection(), SIGNAL(synchronized()), this, SLOT(synchronized()));
+    connect(Client::coreConnection(), &CoreConnection::synchronized, this, &DockManagerNotificationBackend::synchronized);
 }
 
 
@@ -184,7 +184,7 @@ DockManagerNotificationBackend::ConfigWidget::ConfigWidget(bool enabled, QWidget
     layout->addWidget(enabledBox = new QCheckBox(tr("Mark dockmanager entry"), this));
     enabledBox->setVisible(enabled);
 
-    connect(enabledBox, SIGNAL(toggled(bool)), SLOT(widgetChanged()));
+    connect(enabledBox, &QAbstractButton::toggled, this, &ConfigWidget::widgetChanged);
 }
 
 

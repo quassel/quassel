@@ -58,12 +58,12 @@ IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
     ui.ignoreListView->viewport()->setAttribute(Qt::WA_Hover);
     ui.ignoreListView->viewport()->setMouseTracking(true);
 
-    connect(ui.ignoreListView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
+    connect(ui.ignoreListView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &IgnoreListSettingsPage::selectionChanged);
     connect(ui.newIgnoreRuleButton, SIGNAL(clicked()), this, SLOT(newIgnoreRule()));
-    connect(ui.deleteIgnoreRuleButton, SIGNAL(clicked()), this, SLOT(deleteSelectedIgnoreRule()));
-    connect(ui.editIgnoreRuleButton, SIGNAL(clicked()), this, SLOT(editSelectedIgnoreRule()));
+    connect(ui.deleteIgnoreRuleButton, &QAbstractButton::clicked, this, &IgnoreListSettingsPage::deleteSelectedIgnoreRule);
+    connect(ui.editIgnoreRuleButton, &QAbstractButton::clicked, this, &IgnoreListSettingsPage::editSelectedIgnoreRule);
     connect(&_ignoreListModel, SIGNAL(configChanged(bool)), this, SLOT(setChangedState(bool)));
-    connect(&_ignoreListModel, SIGNAL(modelReady(bool)), this, SLOT(enableDialog(bool)));
+    connect(&_ignoreListModel, &IgnoreListModel::modelReady, this, &IgnoreListSettingsPage::enableDialog);
 
     enableDialog(_ignoreListModel.isReady());
 }
@@ -288,15 +288,15 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
     else
         ui.scopeRuleTextEdit->setPlainText(item.scopeRule());
 
-    connect(ui.ignoreRuleLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(widgetHasChanged()));
-    connect(ui.scopeRuleTextEdit, SIGNAL(textChanged()), this, SLOT(widgetHasChanged()));
+    connect(ui.ignoreRuleLineEdit, &QLineEdit::textChanged, this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(ui.scopeRuleTextEdit, &QPlainTextEdit::textChanged, this, &IgnoreListEditDlg::widgetHasChanged);
     connect(&_typeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
     connect(&_strictnessButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
     connect(&_scopeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.isRegExCheckBox, SIGNAL(stateChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.isActiveCheckBox, SIGNAL(stateChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.isRegExCheckBox, &QCheckBox::stateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(ui.isActiveCheckBox, &QCheckBox::stateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
 
-    connect(ui.buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(aboutToAccept()));
+    connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QAbstractButton::clicked, this, &IgnoreListEditDlg::aboutToAccept);
     widgetHasChanged();
 }
 

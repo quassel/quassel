@@ -47,9 +47,9 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
     hideSearchBar->setShortcutConfigurable(false);
     hideSearchBar->setShortcut(Qt::Key_Escape);
 
-    connect(ui.hideButton, SIGNAL(clicked()), toggleSearchBar, SLOT(toggle()));
-    connect(ui.searchEditLine, SIGNAL(textChanged(const QString &)), this, SLOT(delaySearch()));
-    connect(&_searchDelayTimer, SIGNAL(timeout()), this, SLOT(search()));
+    connect(ui.hideButton, &QAbstractButton::clicked, toggleSearchBar, &QAction::toggle);
+    connect(ui.searchEditLine, &QLineEdit::textChanged, this, &ChatViewSearchBar::delaySearch);
+    connect(&_searchDelayTimer, &QTimer::timeout, this, &ChatViewSearchBar::search);
 }
 
 

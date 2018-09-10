@@ -46,7 +46,7 @@ ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
     // The normal message prefixes get replaced by the network and buffer name.  Re-add brackets for
     // all message types.
     scene()->setAlwaysBracketSender(true);
-    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
+    connect(Client::instance(), &Client::coreConnectionStateChanged, this, &ChatMonitorView::coreConnectionStateChanged);
 }
 
 

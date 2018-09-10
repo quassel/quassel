@@ -40,8 +40,8 @@ CtcpParser::CtcpParser(CoreSession *coreSession, QObject *parent)
 
     setStandardCtcp(_coreSession->networkConfig()->standardCtcp());
 
-    connect(_coreSession->networkConfig(), SIGNAL(standardCtcpSet(bool)), this, SLOT(setStandardCtcp(bool)));
-    connect(this, SIGNAL(newEvent(Event *)), _coreSession->eventManager(), SLOT(postEvent(Event *)));
+    connect(_coreSession->networkConfig(), &NetworkConfig::standardCtcpSet, this, &CtcpParser::setStandardCtcp);
+    connect(this, &CtcpParser::newEvent, _coreSession->eventManager(), &EventManager::postEvent);
 }
 
 

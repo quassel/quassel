@@ -61,11 +61,11 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
 
     // connect slots
     connect(ui.operationMode, SIGNAL(currentIndexChanged(int)), SLOT(switchOperationMode(int)));
-    connect(ui.showHighlights, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-    connect(ui.showOwnMessages, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-    connect(ui.alwaysOwn, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-    connect(ui.showBacklog, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
-    connect(ui.includeRead, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+    connect(ui.showHighlights, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
+    connect(ui.showOwnMessages, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
+    connect(ui.alwaysOwn, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
+    connect(ui.showBacklog, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
+    connect(ui.includeRead, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
 }
 
 

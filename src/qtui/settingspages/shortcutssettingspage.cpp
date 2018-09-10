@@ -75,14 +75,14 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollecti
     ui.shortcutsView->sortByColumn(0, Qt::AscendingOrder);
 
     ui.keySequenceWidget->setModel(_shortcutsModel);
-    connect(ui.keySequenceWidget, SIGNAL(keySequenceChanged(QKeySequence, QModelIndex)), SLOT(keySequenceChanged(QKeySequence, QModelIndex)));
+    connect(ui.keySequenceWidget, &KeySequenceWidget::keySequenceChanged, this, &ShortcutsSettingsPage::keySequenceChanged);
 
-    connect(ui.shortcutsView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), SLOT(setWidgetStates()));
+    connect(ui.shortcutsView->selectionModel(), &QItemSelectionModel::currentChanged, this, &ShortcutsSettingsPage::setWidgetStates);
 
     setWidgetStates();
 
-    connect(ui.useDefault, SIGNAL(clicked(bool)), SLOT(toggledCustomOrDefault()));
-    connect(ui.useCustom, SIGNAL(clicked(bool)), SLOT(toggledCustomOrDefault()));
+    connect(ui.useDefault, &QAbstractButton::clicked, this, &ShortcutsSettingsPage::toggledCustomOrDefault);
+    connect(ui.useCustom, &QAbstractButton::clicked, this, &ShortcutsSettingsPage::toggledCustomOrDefault);
 
     connect(_shortcutsModel, SIGNAL(hasChanged(bool)), SLOT(setChangedState(bool)));
 

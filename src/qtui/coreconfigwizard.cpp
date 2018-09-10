@@ -137,11 +137,11 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QVariantLis
     setPage(AuthenticationSelectionPage, new CoreConfigWizardPages::AuthenticationSelectionPage(authInfos, this));
     setPage(StorageSelectionPage, new CoreConfigWizardPages::StorageSelectionPage(backendInfos, this));
     syncPage = new CoreConfigWizardPages::SyncPage(this);
-    connect(syncPage, SIGNAL(setupCore(const QString &, const QVariantMap &, const QString &, const QVariantMap &)),
-            SLOT(prepareCoreSetup(const QString &, const QVariantMap &, const QString &, const QVariantMap &)));
+    connect(syncPage, &CoreConfigWizardPages::SyncPage::setupCore,
+            this, &CoreConfigWizard::prepareCoreSetup);
     setPage(SyncPage, syncPage);
     syncRelayPage = new CoreConfigWizardPages::SyncRelayPage(this);
-    connect(syncRelayPage, SIGNAL(startOver()), this, SLOT(startOver()));
+    connect(syncRelayPage, &CoreConfigWizardPages::SyncRelayPage::startOver, this, &CoreConfigWizard::startOver);
     setPage(SyncRelayPage, syncRelayPage);
 
     setStartId(IntroPage);
@@ -162,9 +162,9 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QVariantLis
     setWindowTitle(CoreConfigWizard::tr("Core Configuration Wizard"));
     setPixmap(QWizard::LogoPixmap, icon::get("quassel").pixmap(48));
 
-    connect(connection, SIGNAL(coreSetupSuccess()), SLOT(coreSetupSuccess()));
-    connect(connection, SIGNAL(coreSetupFailed(QString)), SLOT(coreSetupFailed(QString)));
-    connect(connection, SIGNAL(synchronized()), SLOT(syncFinished()));
+    connect(connection, &CoreConnection::coreSetupSuccess, this, &CoreConfigWizard::coreSetupSuccess);
+    connect(connection, &CoreConnection::coreSetupFailed, this, &CoreConfigWizard::coreSetupFailed);
+    connect(connection, &CoreConnection::synchronized, this, &CoreConfigWizard::syncFinished);
     connect(this, SIGNAL(rejected()), connection, SLOT(disconnectFromCore()));
 
 

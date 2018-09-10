@@ -112,11 +112,11 @@ QAction *ActionCollection::addAction(const QString &name, QAction *action)
         widget->addAction(action);
     }
 
-    connect(action, SIGNAL(destroyed(QObject *)), SLOT(actionDestroyed(QObject *)));
+    connect(action, &QObject::destroyed, this, &ActionCollection::actionDestroyed);
     if (_connectHovered)
-        connect(action, SIGNAL(hovered()), SLOT(slotActionHovered()));
+        connect(action, &QAction::hovered, this, &ActionCollection::slotActionHovered);
     if (_connectTriggered)
-        connect(action, SIGNAL(triggered(bool)), SLOT(slotActionTriggered()));
+        connect(action, &QAction::triggered, this, &ActionCollection::slotActionTriggered);
 
     emit inserted(action);
     return action;
@@ -207,14 +207,14 @@ void ActionCollection::connectNotify(const QMetaMethod &signal)
         if (!_connectHovered) {
             _connectHovered = true;
             foreach(QAction* action, actions())
-            connect(action, SIGNAL(hovered()), SLOT(slotActionHovered()));
+            connect(action, &QAction::hovered, this, &ActionCollection::slotActionHovered);
         }
     }
     else if (QMetaMethod::fromSignal(&ActionCollection::actionTriggered) == signal) {
         if (!_connectTriggered) {
             _connectTriggered = true;
             foreach(QAction* action, actions())
-            connect(action, SIGNAL(triggered(bool)), SLOT(slotActionTriggered()));
+            connect(action, &QAction::triggered, this, &ActionCollection::slotActionTriggered);
         }
     }
 
@@ -236,7 +236,7 @@ void ActionCollection::addAssociatedWidget(QWidget *widget)
     if (!_associatedWidgets.contains(widget)) {
         widget->addActions(actions());
         _associatedWidgets.append(widget);
-        connect(widget, SIGNAL(destroyed(QObject *)), SLOT(associatedWidgetDestroyed(QObject *)));
+        connect(widget, &QObject::destroyed, this, &ActionCollection::associatedWidgetDestroyed);
     }
 }
 
@@ -246,7 +246,7 @@ void ActionCollection::removeAssociatedWidget(QWidget *widget)
     foreach(QAction *action, actions())
     widget->removeAction(action);
     _associatedWidgets.removeAll(widget);
-    disconnect(widget, SIGNAL(destroyed(QObject *)), this, SLOT(associatedWidgetDestroyed(QObject *)));
+    disconnect(widget, &QObject::destroyed, this, &ActionCollection::associatedWidgetDestroyed);
 }
 
 

@@ -43,7 +43,7 @@ IrcConnectionWizard::IrcConnectionWizard(QWidget *parent, Qt::WindowFlags flags)
     setOptions(options() | (QWizard::WizardOptions)(QWizard::NoDefaultButton | QWizard::CancelButtonOnLeft));
     setOption(QWizard::NoCancelButton, false);
 
-    connect(button(QWizard::FinishButton), SIGNAL(clicked()), this, SLOT(finishClicked()));
+    connect(button(QWizard::FinishButton), &QAbstractButton::clicked, this, &IrcConnectionWizard::finishClicked);
     setButtonText(QWizard::FinishButton, tr("Save && Connect"));
 }
 
@@ -72,7 +72,7 @@ void IrcConnectionWizard::finishClicked()
         identityReady(identity->id());
     }
     else {
-        connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(identityReady(IdentityId)));
+        connect(Client::instance(), &Client::identityCreated, this, &IrcConnectionWizard::identityReady);
         Client::createIdentity(*identity);
     }
 }
@@ -80,19 +80,19 @@ void IrcConnectionWizard::finishClicked()
 
 void IrcConnectionWizard::identityReady(IdentityId id)
 {
-    disconnect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(identityReady(IdentityId)));
+    disconnect(Client::instance(), &Client::identityCreated, this, &IrcConnectionWizard::identityReady);
     auto *networkPage = static_cast<NetworkPage *>(_networkPage);
     NetworkInfo networkInfo = networkPage->networkInfo();
     QStringList channels = networkPage->channelList();
     networkInfo.identity = id;
-    connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(networkReady(NetworkId)));
+    connect(Client::instance(), &Client::networkCreated, this, &IrcConnectionWizard::networkReady);
     Client::createNetwork(networkInfo, channels);
 }
 
 
 void IrcConnectionWizard::networkReady(NetworkId id)
 {
-    disconnect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(networkReady(NetworkId)));
+    disconnect(Client::instance(), &Client::networkCreated, this, &IrcConnectionWizard::networkReady);
     const Network *net = Client::network(id);
     Q_ASSERT(net);
     net->requestConnect();

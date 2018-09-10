@@ -43,7 +43,7 @@ QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
     notificationSettings.notify("Highlights/HighlightNick", this, SLOT(highlightNickChanged(const QVariant &)));
 
     _processTimer.setInterval(0);
-    connect(&_processTimer, SIGNAL(timeout()), this, SLOT(processNextMessage()));
+    connect(&_processTimer, &QTimer::timeout, this, &QtUiMessageProcessor::processNextMessage);
 }
 
 

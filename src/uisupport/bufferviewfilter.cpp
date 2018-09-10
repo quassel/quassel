@@ -54,7 +54,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
 
     _enableEditMode.setCheckable(true);
     _enableEditMode.setChecked(_editMode);
-    connect(&_enableEditMode, SIGNAL(toggled(bool)), this, SLOT(enableEditMode(bool)));
+    connect(&_enableEditMode, &QAction::toggled, this, &BufferViewFilter::enableEditMode);
 
     BufferSettings defaultSettings;
     defaultSettings.notify("ServerNoticesTarget", this, SLOT(showServerQueriesChanged()));
@@ -85,7 +85,7 @@ void BufferViewFilter::setConfig(BufferViewConfig *config)
     else {
         // we use a queued connection here since manipulating the connection list of a sending object
         // doesn't seem to be such a good idea while executing a connected slots.
-        connect(config, SIGNAL(initDone()), this, SLOT(configInitialized()), Qt::QueuedConnection);
+        connect(config, &SyncableObject::initDone, this, &BufferViewFilter::configInitialized, Qt::QueuedConnection);
         invalidate();
     }
 }
@@ -97,7 +97,7 @@ void BufferViewFilter::configInitialized()
         return;
 
 //   connect(config(), SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(invalidate()));
-    connect(config(), SIGNAL(configChanged()), this, SLOT(invalidate()));
+    connect(config(), &BufferViewConfig::configChanged, this, &QSortFilterProxyModel::invalidate);
 //   connect(config(), SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(invalidate()));
 //   connect(config(), SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(invalidate()));
 //   connect(config(), SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(invalidate()));
@@ -110,7 +110,7 @@ void BufferViewFilter::configInitialized()
 //   connect(config(), SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(invalidate()));
 //   connect(config(), SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(invalidate()));
 
-    disconnect(config(), SIGNAL(initDone()), this, SLOT(configInitialized()));
+    disconnect(config(), &SyncableObject::initDone, this, &BufferViewFilter::configInitialized);
 
     setObjectName(config()->bufferViewName());
 

@@ -29,8 +29,8 @@ CoreIdentity::CoreIdentity(IdentityId id, QObject *parent)
 #endif
 {
 #ifdef HAVE_SSL
-    connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
-    connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
+    connect(this, &Identity::idSet, &_certManager, &CoreCertManager::setId);
+    connect(&_certManager, &SyncableObject::updated, this, &SyncableObject::updated);
 #endif
 }
 
@@ -42,8 +42,8 @@ CoreIdentity::CoreIdentity(const Identity &other, QObject *parent)
 #endif
 {
 #ifdef HAVE_SSL
-    connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
-    connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
+    connect(this, &Identity::idSet, &_certManager, &CoreCertManager::setId);
+    connect(&_certManager, &SyncableObject::updated, this, &SyncableObject::updated);
 #endif
 }
 
@@ -57,8 +57,8 @@ CoreIdentity::CoreIdentity(const CoreIdentity &other, QObject *parent)
 #endif
 {
 #ifdef HAVE_SSL
-    connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
-    connect(&_certManager, SIGNAL(updated()), this, SIGNAL(updated()));
+    connect(this, &Identity::idSet, &_certManager, &CoreCertManager::setId);
+    connect(&_certManager, &SyncableObject::updated, this, &SyncableObject::updated);
 #endif
 }
 

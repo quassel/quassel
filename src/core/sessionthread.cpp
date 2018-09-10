@@ -46,7 +46,7 @@ public slots:
     void initialize()
     {
         _session = new CoreSession{_userId, _restoreState, _strictIdentEnabled, this};
-        connect(_session, SIGNAL(destroyed()), QThread::currentThread(), SLOT(quit()));
+        connect(_session, &QObject::destroyed, QThread::currentThread(), &QThread::quit);
         connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));
         emit initialized();
     }
@@ -96,13 +96,13 @@ SessionThread::SessionThread(UserId uid, bool restoreState, bool strictIdentEnab
 {
     auto worker = new Worker(uid, restoreState, strictIdentEnabled);
     worker->moveToThread(&_sessionThread);
-    connect(&_sessionThread, SIGNAL(started()), worker, SLOT(initialize()));
-    connect(&_sessionThread, SIGNAL(finished()), worker, SLOT(deleteLater()));
-    connect(worker, SIGNAL(initialized()), this, SLOT(onSessionInitialized()));
-    connect(worker, SIGNAL(destroyed()), this, SLOT(onSessionDestroyed()));
+    connect(&_sessionThread, &QThread::started, worker, &Worker::initialize);
+    connect(&_sessionThread, &QThread::finished, worker, &QObject::deleteLater);
+    connect(worker, &Worker::initialized, this, &SessionThread::onSessionInitialized);
+    connect(worker, &QObject::destroyed, this, &SessionThread::onSessionDestroyed);
 
-    connect(this, SIGNAL(addClientToWorker(Peer*)), worker, SLOT(addClient(Peer*)));
-    connect(this, SIGNAL(shutdownSession()), worker, SLOT(shutdown()));
+    connect(this, &SessionThread::addClientToWorker, worker, &Worker::addClient);
+    connect(this, &SessionThread::shutdownSession, worker, &Worker::shutdown);
 
     // Defer thread start through the event loop, so the SessionThread instance is fully constructed before
     QTimer::singleShot(0, &_sessionThread, SLOT(start()));

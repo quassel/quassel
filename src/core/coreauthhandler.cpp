@@ -38,7 +38,7 @@ CoreAuthHandler::CoreAuthHandler(QTcpSocket *socket, QObject *parent)
     _connectionFeatures(0)
 {
     setSocket(socket);
-    connect(socket, SIGNAL(readyRead()), SLOT(onReadyRead()));
+    connect(socket, &QIODevice::readyRead, this, &CoreAuthHandler::onReadyRead);
 
     // TODO: Timeout for the handshake phase
 
@@ -129,7 +129,7 @@ void CoreAuthHandler::setPeer(RemotePeer *peer)
     qDebug().nospace() << "Using " << qPrintable(peer->protocolName()) << "...";
 
     _peer = peer;
-    disconnect(socket(), SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    disconnect(socket(), &QIODevice::readyRead, this, &CoreAuthHandler::onReadyRead);
 }
 
 // only in compat mode

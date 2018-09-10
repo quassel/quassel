@@ -42,8 +42,8 @@ MainPage::MainPage(QWidget *parent) : QWidget(parent)
         _connectButton = new QPushButton(icon::get("network-connect"), tr("Connect to Core..."));
         _connectButton->setEnabled(Client::coreConnection()->state() == CoreConnection::Disconnected);
 
-        connect(Client::coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), this, SLOT(coreConnectionStateChanged()));
-        connect(_connectButton, SIGNAL(clicked(bool)), this, SLOT(showCoreConnectionDlg()));
+        connect(Client::coreConnection(), &CoreConnection::stateChanged, this, &MainPage::coreConnectionStateChanged);
+        connect(_connectButton, &QAbstractButton::clicked, this, &MainPage::showCoreConnectionDlg);
         layout->addWidget(_connectButton);
     }
 }

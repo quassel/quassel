@@ -85,37 +85,37 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     currentId = 0;
     setEnabled(Client::isConnected()); // need a core connection!
     setWidgetStates();
-    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
-    connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkAdded(NetworkId)));
-    connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
-    connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientIdentityAdded(IdentityId)));
-    connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientIdentityRemoved(IdentityId)));
+    connect(Client::instance(), &Client::coreConnectionStateChanged, this, &NetworksSettingsPage::coreConnectionStateChanged);
+    connect(Client::instance(), &Client::networkCreated, this, &NetworksSettingsPage::clientNetworkAdded);
+    connect(Client::instance(), &Client::networkRemoved, this, &NetworksSettingsPage::clientNetworkRemoved);
+    connect(Client::instance(), &Client::identityCreated, this, &NetworksSettingsPage::clientIdentityAdded);
+    connect(Client::instance(), &Client::identityRemoved, this, &NetworksSettingsPage::clientIdentityRemoved);
 
     connect(ui.identityList, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     //connect(ui.randomServer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.performEdit, SIGNAL(textChanged()), this, SLOT(widgetHasChanged()));
-    connect(ui.sasl, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.saslAccount, SIGNAL(textEdited(QString)), this, SLOT(widgetHasChanged()));
-    connect(ui.saslPassword, SIGNAL(textEdited(QString)), this, SLOT(widgetHasChanged()));
-    connect(ui.autoIdentify, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.autoIdentifyService, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
-    connect(ui.autoIdentifyPassword, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
-    connect(ui.useCustomEncodings, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.performEdit, &QTextEdit::textChanged, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.sasl, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.saslAccount, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.saslPassword, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.autoIdentify, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.autoIdentifyService, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.autoIdentifyPassword, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.useCustomEncodings, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.sendEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.recvEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.serverEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.autoReconnect, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.autoReconnect, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.reconnectInterval, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.reconnectRetries, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.unlimitedRetries, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-    connect(ui.rejoinOnReconnect, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.unlimitedRetries, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.rejoinOnReconnect, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
 
     // Core features can change during a reconnect.  Always connect these here, delaying testing for
     // the core feature flag in load().
-    connect(ui.useCustomMessageRate, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.useCustomMessageRate, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.messageRateBurstSize, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.messageRateDelay, SIGNAL(valueChanged(double)), this, SLOT(widgetHasChanged()));
-    connect(ui.unlimitedMessageRate, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.unlimitedMessageRate, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
 
     // Add additional widgets here
     //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
@@ -414,7 +414,7 @@ void NetworksSettingsPage::coreConnectionStateChanged(bool state)
 void NetworksSettingsPage::clientIdentityAdded(IdentityId id)
 {
     const Identity *identity = Client::identity(id);
-    connect(identity, SIGNAL(updatedRemotely()), this, SLOT(clientIdentityUpdated()));
+    connect(identity, &SyncableObject::updatedRemotely, this, &NetworksSettingsPage::clientIdentityUpdated);
 
     QString name = identity->identityName();
     for (int j = 0; j < ui.identityList->count(); j++) {
@@ -480,14 +480,14 @@ void NetworksSettingsPage::clientNetworkAdded(NetworkId id)
 {
     insertNetwork(id);
     //connect(Client::network(id), SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
-    connect(Client::network(id), SIGNAL(configChanged()), this, SLOT(clientNetworkUpdated()));
+    connect(Client::network(id), &Network::configChanged, this, &NetworksSettingsPage::clientNetworkUpdated);
 
-    connect(Client::network(id), SIGNAL(connectionStateSet(Network::ConnectionState)), this, SLOT(networkConnectionStateChanged(Network::ConnectionState)));
-    connect(Client::network(id), SIGNAL(connectionError(const QString &)), this, SLOT(networkConnectionError(const QString &)));
+    connect(Client::network(id), &Network::connectionStateSet, this, &NetworksSettingsPage::networkConnectionStateChanged);
+    connect(Client::network(id), &Network::connectionError, this, &NetworksSettingsPage::networkConnectionError);
 
     // Handle capability changes in case a server dis/connects with the settings window open.
-    connect(Client::network(id), SIGNAL(capAdded(const QString &)), this, SLOT(clientNetworkCapsUpdated()));
-    connect(Client::network(id), SIGNAL(capRemoved(const QString &)), this, SLOT(clientNetworkCapsUpdated()));
+    connect(Client::network(id), &Network::capAdded, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
+    connect(Client::network(id), &Network::capRemoved, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
 }
 
 
@@ -593,12 +593,12 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         // this is only needed when the core supports SASL EXTERNAL
         if (Client::isCoreFeatureEnabled(Quassel::Feature::SaslExternal)) {
             if (_cid) {
-                disconnect(_cid, SIGNAL(sslSettingsUpdated()), this, SLOT(sslUpdated()));
+                disconnect(_cid, &CertIdentity::sslSettingsUpdated, this, &NetworksSettingsPage::sslUpdated);
                 delete _cid;
             }
             _cid = new CertIdentity(*Client::identity(info.identity), this);
             _cid->enableEditSsl(true);
-            connect(_cid, SIGNAL(sslSettingsUpdated()), this, SLOT(sslUpdated()));
+            connect(_cid, &CertIdentity::sslSettingsUpdated, this, &NetworksSettingsPage::sslUpdated);
         }
 #endif
 
@@ -651,7 +651,7 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         // just clear widgets
 #ifdef HAVE_SSL
         if (_cid) {
-            disconnect(_cid, SIGNAL(sslSettingsUpdated()), this, SLOT(sslUpdated()));
+            disconnect(_cid, &CertIdentity::sslSettingsUpdated, this, &NetworksSettingsPage::sslUpdated);
             delete _cid;
         }
 #endif
@@ -1033,14 +1033,14 @@ NetworkAddDlg::NetworkAddDlg(QStringList exist, QWidget *parent) : QDialog(paren
     ui.useSSL->setIcon(icon::get("document-encrypt"));
 
     // Whenever useSSL is toggled, update the port number if not changed from the default
-    connect(ui.useSSL, SIGNAL(toggled(bool)), SLOT(updateSslPort(bool)));
+    connect(ui.useSSL, &QAbstractButton::toggled, this, &NetworkAddDlg::updateSslPort);
     // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
     // If useSSL is later changed to be checked by default, change port's default value, too.
 
     if (Client::isCoreFeatureEnabled(Quassel::Feature::VerifyServerSSL)) {
         // Synchronize requiring SSL with the use SSL checkbox
         ui.sslVerify->setEnabled(ui.useSSL->isChecked());
-        connect(ui.useSSL, SIGNAL(toggled(bool)), ui.sslVerify, SLOT(setEnabled(bool)));
+        connect(ui.useSSL, &QAbstractButton::toggled, ui.sslVerify, &QWidget::setEnabled);
     } else {
         // Core isn't new enough to allow requiring SSL; disable checkbox and uncheck
         ui.sslVerify->setEnabled(false);
@@ -1066,10 +1066,10 @@ NetworkAddDlg::NetworkAddDlg(QStringList exist, QWidget *parent) : QDialog(paren
         ui.useManual->setChecked(true);
         ui.usePreset->setEnabled(false);
     }
-    connect(ui.networkName, SIGNAL(textChanged(const QString &)), SLOT(setButtonStates()));
-    connect(ui.serverAddress, SIGNAL(textChanged(const QString &)), SLOT(setButtonStates()));
-    connect(ui.usePreset, SIGNAL(toggled(bool)), SLOT(setButtonStates()));
-    connect(ui.useManual, SIGNAL(toggled(bool)), SLOT(setButtonStates()));
+    connect(ui.networkName, &QLineEdit::textChanged, this, &NetworkAddDlg::setButtonStates);
+    connect(ui.serverAddress, &QLineEdit::textChanged, this, &NetworkAddDlg::setButtonStates);
+    connect(ui.usePreset, &QRadioButton::toggled, this, &NetworkAddDlg::setButtonStates);
+    connect(ui.useManual, &QRadioButton::toggled, this, &NetworkAddDlg::setButtonStates);
     setButtonStates();
 }
 
@@ -1182,14 +1182,14 @@ ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : Q
     }
 
     // Whenever useSSL is toggled, update the port number if not changed from the default
-    connect(ui.useSSL, SIGNAL(toggled(bool)), SLOT(updateSslPort(bool)));
+    connect(ui.useSSL, &QAbstractButton::toggled, this, &ServerEditDlg::updateSslPort);
     // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
     // If useSSL is later changed to be checked by default, change port's default value, too.
 
     if (Client::isCoreFeatureEnabled(Quassel::Feature::VerifyServerSSL)) {
         // Synchronize requiring SSL with the use SSL checkbox
         ui.sslVerify->setEnabled(ui.useSSL->isChecked());
-        connect(ui.useSSL, SIGNAL(toggled(bool)), ui.sslVerify, SLOT(setEnabled(bool)));
+        connect(ui.useSSL, &QAbstractButton::toggled, ui.sslVerify, &QWidget::setEnabled);
     } else {
         // Core isn't new enough to allow requiring SSL; disable checkbox and uncheck
         ui.sslVerify->setEnabled(false);
@@ -1257,8 +1257,8 @@ SaveNetworksDlg::SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList
         ui.progressBar->setMaximum(numevents);
         ui.progressBar->setValue(0);
 
-        connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientEvent()));
-        connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientEvent()));
+        connect(Client::instance(), &Client::networkCreated, this, &SaveNetworksDlg::clientEvent);
+        connect(Client::instance(), &Client::networkRemoved, this, &SaveNetworksDlg::clientEvent);
 
         foreach(NetworkId id, toRemove) {
             Client::removeNetwork(id);
@@ -1274,7 +1274,7 @@ SaveNetworksDlg::SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList
                 continue;
             }
             // FIXME this only checks for one changed item rather than all!
-            connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
+            connect(net, &SyncableObject::updatedRemotely, this, &SaveNetworksDlg::clientEvent);
             Client::updateNetwork(info);
         }
     }

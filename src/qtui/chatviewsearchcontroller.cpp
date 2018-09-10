@@ -69,7 +69,7 @@ void ChatViewSearchController::setScene(ChatScene *scene)
     if (!scene)
         return;
 
-    connect(_scene, SIGNAL(destroyed()), this, SLOT(sceneDestroyed()));
+    connect(_scene, &QObject::destroyed, this, &ChatViewSearchController::sceneDestroyed);
     connect(_scene, SIGNAL(layoutChanged()), this, SLOT(repositionHighlights()));
     connect(Client::messageModel(), SIGNAL(finishedBacklogFetch(BufferId)), this, SLOT(updateHighlights()));
     updateHighlights();
@@ -422,7 +422,7 @@ SearchHighlightItem::SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent)
     setPos(wordRect.x(), wordRect.y());
     updateGeometry(wordRect.width(), wordRect.height());
 
-    connect(&_timeLine, SIGNAL(valueChanged(qreal)), this, SLOT(updateHighlight(qreal)));
+    connect(&_timeLine, &QTimeLine::valueChanged, this, &SearchHighlightItem::updateHighlight);
 }
 
 

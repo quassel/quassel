@@ -288,11 +288,11 @@ bool SignalProxy::addPeer(Peer *peer)
             qWarning("SignalProxy: only one peer allowed in client mode!");
             return false;
         }
-        connect(peer, SIGNAL(lagUpdated(int)), SIGNAL(lagUpdated(int)));
+        connect(peer, &Peer::lagUpdated, this, &SignalProxy::lagUpdated);
     }
 
-    connect(peer, SIGNAL(disconnected()), SLOT(removePeerBySender()));
-    connect(peer, SIGNAL(secureStateChanged(bool)), SLOT(updateSecureState()));
+    connect(peer, &Peer::disconnected, this, &SignalProxy::removePeerBySender);
+    connect(peer, &Peer::secureStateChanged, this, &SignalProxy::updateSecureState);
 
     if (!peer->parent())
         peer->setParent(this);
@@ -426,8 +426,8 @@ bool SignalProxy::attachSignal(QObject *sender, const char *signal, const QByteA
     createExtendedMetaObject(meta);
     _signalRelay->attachSignal(sender, methodId, sigName);
 
-    disconnect(sender, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
-    connect(sender, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
+    disconnect(sender, &QObject::destroyed, this, &SignalProxy::detachObject);
+    connect(sender, &QObject::destroyed, this, &SignalProxy::detachObject);
     return true;
 }
 
@@ -446,8 +446,8 @@ bool SignalProxy::attachSlot(const QByteArray &sigName, QObject *recv, const cha
     QByteArray funcName = QMetaObject::normalizedSignature(sigName.constData());
     _attachedSlots.insert(funcName, qMakePair(recv, methodId));
 
-    disconnect(recv, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
-    connect(recv, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
+    disconnect(recv, &QObject::destroyed, this, &SignalProxy::detachObject);
+    connect(recv, &QObject::destroyed, this, &SignalProxy::detachObject);
     return true;
 }
 

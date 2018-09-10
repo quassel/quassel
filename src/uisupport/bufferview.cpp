@@ -50,8 +50,8 @@
 BufferView::BufferView(QWidget *parent)
     : TreeViewTouch(parent)
 {
-    connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(storeExpandedState(const QModelIndex &)));
-    connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(storeExpandedState(const QModelIndex &)));
+    connect(this, &QTreeView::collapsed, this, &BufferView::storeExpandedState);
+    connect(this, &QTreeView::expanded, this, &BufferView::storeExpandedState);
 
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -94,8 +94,8 @@ void BufferView::init()
     disconnect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(joinChannel(QModelIndex)));
 #else
-    disconnect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
-    connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(joinChannel(QModelIndex)));
+    disconnect(this, &QAbstractItemView::doubleClicked, this, &BufferView::joinChannel);
+    connect(this, &QAbstractItemView::doubleClicked, this, &BufferView::joinChannel);
 #endif
 }
 
@@ -124,11 +124,11 @@ void BufferView::setModel(QAbstractItemModel *model)
         showSection->setCheckable(true);
         showSection->setChecked(!isColumnHidden(i));
         showSection->setProperty("column", i);
-        connect(showSection, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
+        connect(showSection, &QAction::toggled, this, &BufferView::toggleHeader);
         header()->addAction(showSection);
     }
 
-    connect(model, SIGNAL(layoutChanged()), this, SLOT(on_layoutChanged()));
+    connect(model, &QAbstractItemModel::layoutChanged, this, &BufferView::on_layoutChanged);
 
     // Make sure collapsation is correct after setting a model
     // This might not be needed here, only in BufferView::setFilteredModel().  If issues arise, just
@@ -157,7 +157,7 @@ void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *
     else {
         auto *filter = new BufferViewFilter(model_, config);
         setModel(filter);
-        connect(filter, SIGNAL(configChanged()), this, SLOT(on_configChanged()));
+        connect(filter, &BufferViewFilter::configChanged, this, &BufferView::on_configChanged);
     }
     setConfig(config);
 }
@@ -174,7 +174,7 @@ void BufferView::setConfig(BufferViewConfig *config)
 
     _config = config;
     if (config) {
-        connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(setRootIndexForNetworkId(const NetworkId &)));
+        connect(config, &BufferViewConfig::networkIdSet, this, &BufferView::setRootIndexForNetworkId);
         setRootIndexForNetworkId(config->networkId());
     }
     else {
@@ -743,8 +743,8 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     setObjectName("BufferViewDock-" + QString::number(config->bufferViewId()));
     toggleViewAction()->setData(config->bufferViewId());
     setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
-    connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(bufferViewRenamed(const QString &)));
-    connect(config, SIGNAL(configChanged()), SLOT(configChanged()));
+    connect(config, &BufferViewConfig::bufferViewNameSet, this, &BufferViewDock::bufferViewRenamed);
+    connect(config, &BufferViewConfig::configChanged, this, &BufferViewDock::configChanged);
     updateTitle();
 
     _widget->setLayout(new QVBoxLayout);
@@ -756,7 +756,7 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
     _filterEdit->setFocusPolicy(Qt::ClickFocus);
     _filterEdit->installEventFilter(this);
     _filterEdit->setPlaceholderText(tr("Search..."));
-    connect(_filterEdit, SIGNAL(returnPressed()), SLOT(onFilterReturnPressed()));
+    connect(_filterEdit, &QLineEdit::returnPressed, this, &BufferViewDock::onFilterReturnPressed);
 
     _widget->layout()->addWidget(_filterEdit);
     QDockWidget::setWidget(_widget);
@@ -904,7 +904,7 @@ void BufferViewDock::setWidget(QWidget *newWidget)
     _widget->layout()->addWidget(newWidget);
     _childWidget = newWidget;
 
-    connect(_filterEdit, SIGNAL(textChanged(QString)), bufferView(), SLOT(filterTextChanged(QString)));
+    connect(_filterEdit, &QLineEdit::textChanged, bufferView(), &BufferView::filterTextChanged);
 }
 
 void BufferViewDock::activateFilter()

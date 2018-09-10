@@ -86,7 +86,7 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
 
     connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));
     connect(this, SIGNAL(modeChanged(Mode)), this, SLOT(onModeChanged(Mode)));
-    connect(this, SIGNAL(stateChanged(State)), this, SLOT(onStateChanged(State)));
+    connect(this, &SystemTray::stateChanged, this, &StatusNotifierItem::onStateChanged);
 
     trayMenu()->installEventFilter(this);
 
@@ -98,37 +98,37 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
         qWarning() << "Could not create temporary directory for themed tray icons!";
     }
 
-    connect(this, SIGNAL(iconsChanged()), this, SLOT(refreshIcons()));
+    connect(this, &SystemTray::iconsChanged, this, &StatusNotifierItem::refreshIcons);
     refreshIcons();
 
     // Our own SNI service
     _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
-    connect(this, SIGNAL(currentIconNameChanged()), _statusNotifierItemDBus, SIGNAL(NewIcon()));
-    connect(this, SIGNAL(currentIconNameChanged()), _statusNotifierItemDBus, SIGNAL(NewAttentionIcon()));
-    connect(this, SIGNAL(toolTipChanged(QString, QString)), _statusNotifierItemDBus, SIGNAL(NewToolTip()));
+    connect(this, &SystemTray::currentIconNameChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewIcon);
+    connect(this, &SystemTray::currentIconNameChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewAttentionIcon);
+    connect(this, &SystemTray::toolTipChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewToolTip);
 
     // Service watcher to keep track of the StatusNotifierWatcher service
     _serviceWatcher = new QDBusServiceWatcher(kSniWatcherService,
                                               QDBusConnection::sessionBus(),
                                               QDBusServiceWatcher::WatchForOwnerChange,
                                               this);
-    connect(_serviceWatcher, SIGNAL(serviceOwnerChanged(QString, QString, QString)), SLOT(serviceChange(QString, QString, QString)));
+    connect(_serviceWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &StatusNotifierItem::serviceChange);
 
     // Client instance for StatusNotifierWatcher
     _statusNotifierWatcher = new org::kde::StatusNotifierWatcher(kSniWatcherService,
                                                                  kSniWatcherPath,
                                                                  QDBusConnection::sessionBus(),
                                                                  this);
-    connect(_statusNotifierWatcher, SIGNAL(StatusNotifierHostRegistered()), SLOT(checkForRegisteredHosts()));
-    connect(_statusNotifierWatcher, SIGNAL(StatusNotifierHostUnregistered()), SLOT(checkForRegisteredHosts()));
+    connect(_statusNotifierWatcher, &OrgKdeStatusNotifierWatcherInterface::StatusNotifierHostRegistered, this, &StatusNotifierItem::checkForRegisteredHosts);
+    connect(_statusNotifierWatcher, &OrgKdeStatusNotifierWatcherInterface::StatusNotifierHostUnregistered, this, &StatusNotifierItem::checkForRegisteredHosts);
 
     // Client instance for notifications
     _notificationsClient = new org::freedesktop::Notifications(kXdgNotificationsService,
                                                                kXdgNotificationsPath,
                                                                QDBusConnection::sessionBus(),
                                                                this);
-    connect(_notificationsClient, SIGNAL(NotificationClosed(uint, uint)), SLOT(notificationClosed(uint, uint)));
-    connect(_notificationsClient, SIGNAL(ActionInvoked(uint, QString)), SLOT(notificationInvoked(uint, QString)));
+    connect(_notificationsClient, &OrgFreedesktopNotificationsInterface::NotificationClosed, this, &StatusNotifierItem::notificationClosed);
+    connect(_notificationsClient, &OrgFreedesktopNotificationsInterface::ActionInvoked, this, &StatusNotifierItem::notificationInvoked);
 
     if (_notificationsClient->isValid()) {
         QStringList desktopCapabilities = _notificationsClient->GetCapabilities();

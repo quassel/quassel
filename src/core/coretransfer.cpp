@@ -122,10 +122,10 @@ void CoreTransfer::setupConnectionForReceive()
     setStatus(Status::Connecting);
 
     _socket = new QTcpSocket(this);
-    connect(_socket, SIGNAL(connected()), SLOT(startReceiving()));
-    connect(_socket, SIGNAL(disconnected()), SLOT(onSocketDisconnected()));
+    connect(_socket, &QAbstractSocket::connected, this, &CoreTransfer::startReceiving);
+    connect(_socket, &QAbstractSocket::disconnected, this, &CoreTransfer::onSocketDisconnected);
     connect(_socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
-    connect(_socket, SIGNAL(readyRead()), SLOT(onDataReceived()));
+    connect(_socket, &QIODevice::readyRead, this, &CoreTransfer::onDataReceived);
 
     _socket->connectToHost(address(), port());
 }

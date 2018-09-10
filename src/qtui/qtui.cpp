@@ -83,9 +83,9 @@ void QtUi::init()
     _mainWin = std::make_unique<MainWin>();
     setMainWidget(_mainWin.get());
 
-    connect(_mainWin.get(), SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
-    connect(_mainWin.get(), SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
-    connect(Client::instance(), SIGNAL(bufferMarkedAsRead(BufferId)), SLOT(closeNotifications(BufferId)));
+    connect(_mainWin.get(), &MainWin::connectToCore, this, &QtUi::connectToCore);
+    connect(_mainWin.get(), &MainWin::disconnectFromCore, this, &QtUi::disconnectFromCore);
+    connect(Client::instance(), &Client::bufferMarkedAsRead, this, &QtUi::closeNotifications);
 
     _mainWin->init();
 

@@ -45,13 +45,13 @@ CoreConnection::CoreConnection(QObject *parent)
 void CoreConnection::init()
 {
     Client::signalProxy()->setHeartBeatInterval(30);
-    connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), SIGNAL(lagUpdated(int)));
+    connect(Client::signalProxy(), &SignalProxy::lagUpdated, this, &CoreConnection::lagUpdated);
 
     _reconnectTimer.setSingleShot(true);
-    connect(&_reconnectTimer, SIGNAL(timeout()), SLOT(reconnectTimeout()));
+    connect(&_reconnectTimer, &QTimer::timeout, this, &CoreConnection::reconnectTimeout);
 
     _qNetworkConfigurationManager = new QNetworkConfigurationManager(this);
-    connect(_qNetworkConfigurationManager, SIGNAL(onlineStateChanged(bool)), SLOT(onlineStateChanged(bool)));
+    connect(_qNetworkConfigurationManager.data(), &QNetworkConfigurationManager::onlineStateChanged, this, &CoreConnection::onlineStateChanged);
 
     CoreConnectionSettings s;
     s.initAndNotify("PingTimeoutInterval", this, SLOT(pingTimeoutIntervalChanged(QVariant)), 60);
@@ -386,28 +386,28 @@ void CoreConnection::connectToCurrentAccount()
 
     _authHandler = new ClientAuthHandler(currentAccount(), this);
 
-    connect(_authHandler, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
-    connect(_authHandler, SIGNAL(connectionReady()), SLOT(onConnectionReady()));
-    connect(_authHandler, SIGNAL(socketError(QAbstractSocket::SocketError,QString)), SLOT(coreSocketError(QAbstractSocket::SocketError,QString)));
-    connect(_authHandler, SIGNAL(transferProgress(int,int)), SLOT(updateProgress(int,int)));
+    connect(_authHandler.data(), &AuthHandler::disconnected, this, &CoreConnection::coreSocketDisconnected);
+    connect(_authHandler.data(), &ClientAuthHandler::connectionReady, this, &CoreConnection::onConnectionReady);
+    connect(_authHandler.data(), &AuthHandler::socketError, this, &CoreConnection::coreSocketError);
+    connect(_authHandler.data(), &ClientAuthHandler::transferProgress, this, &CoreConnection::updateProgress);
     connect(_authHandler, SIGNAL(requestDisconnect(QString,bool)), SLOT(disconnectFromCore(QString,bool)));
 
-    connect(_authHandler, SIGNAL(errorMessage(QString)), SIGNAL(connectionError(QString)));
-    connect(_authHandler, SIGNAL(errorPopup(QString)), SIGNAL(connectionErrorPopup(QString)), Qt::QueuedConnection);
-    connect(_authHandler, SIGNAL(statusMessage(QString)), SIGNAL(connectionMsg(QString)));
-    connect(_authHandler, SIGNAL(encrypted(bool)), SIGNAL(encrypted(bool)));
-    connect(_authHandler, SIGNAL(startCoreSetup(QVariantList, QVariantList)), SIGNAL(startCoreSetup(QVariantList, QVariantList)));
-    connect(_authHandler, SIGNAL(coreSetupFailed(QString)), SIGNAL(coreSetupFailed(QString)));
-    connect(_authHandler, SIGNAL(coreSetupSuccessful()), SIGNAL(coreSetupSuccess()));
-    connect(_authHandler, SIGNAL(userAuthenticationRequired(CoreAccount*,bool*,QString)), SIGNAL(userAuthenticationRequired(CoreAccount*,bool*,QString)));
-    connect(_authHandler, SIGNAL(handleNoSslInClient(bool*)), SIGNAL(handleNoSslInClient(bool*)));
-    connect(_authHandler, SIGNAL(handleNoSslInCore(bool*)), SIGNAL(handleNoSslInCore(bool*)));
+    connect(_authHandler.data(), &ClientAuthHandler::errorMessage, this, &CoreConnection::connectionError);
+    connect(_authHandler.data(), &ClientAuthHandler::errorPopup, this, &CoreConnection::connectionErrorPopup, Qt::QueuedConnection);
+    connect(_authHandler.data(), &ClientAuthHandler::statusMessage, this, &CoreConnection::connectionMsg);
+    connect(_authHandler.data(), &ClientAuthHandler::encrypted, this, &CoreConnection::encrypted);
+    connect(_authHandler.data(), &ClientAuthHandler::startCoreSetup, this, &CoreConnection::startCoreSetup);
+    connect(_authHandler.data(), &ClientAuthHandler::coreSetupFailed, this, &CoreConnection::coreSetupFailed);
+    connect(_authHandler.data(), &ClientAuthHandler::coreSetupSuccessful, this, &CoreConnection::coreSetupSuccess);
+    connect(_authHandler.data(), &ClientAuthHandler::userAuthenticationRequired, this, &CoreConnection::userAuthenticationRequired);
+    connect(_authHandler.data(), &ClientAuthHandler::handleNoSslInClient, this, &CoreConnection::handleNoSslInClient);
+    connect(_authHandler.data(), &ClientAuthHandler::handleNoSslInCore, this, &CoreConnection::handleNoSslInCore);
 #ifdef HAVE_SSL
-    connect(_authHandler, SIGNAL(handleSslErrors(const QSslSocket*,bool*,bool*)), SIGNAL(handleSslErrors(const QSslSocket*,bool*,bool*)));
+    connect(_authHandler.data(), &ClientAuthHandler::handleSslErrors, this, &CoreConnection::handleSslErrors);
 #endif
 
-    connect(_authHandler, SIGNAL(loginSuccessful(CoreAccount)), SLOT(onLoginSuccessful(CoreAccount)));
-    connect(_authHandler, SIGNAL(handshakeComplete(RemotePeer*,Protocol::SessionState)), SLOT(onHandshakeComplete(RemotePeer*,Protocol::SessionState)));
+    connect(_authHandler.data(), &ClientAuthHandler::loginSuccessful, this, &CoreConnection::onLoginSuccessful);
+    connect(_authHandler.data(), &ClientAuthHandler::handshakeComplete, this, &CoreConnection::onHandshakeComplete);
 
     setState(Connecting);
     _authHandler->connectToCore();
@@ -451,9 +451,9 @@ void CoreConnection::onHandshakeComplete(RemotePeer *peer, const Protocol::Sessi
     _authHandler = nullptr;
 
     _peer = peer;
-    connect(peer, SIGNAL(disconnected()), SLOT(coreSocketDisconnected()));
-    connect(peer, SIGNAL(statusMessage(QString)), SIGNAL(connectionMsg(QString)));
-    connect(peer, SIGNAL(socketError(QAbstractSocket::SocketError,QString)), SLOT(coreSocketError(QAbstractSocket::SocketError,QString)));
+    connect(peer, &Peer::disconnected, this, &CoreConnection::coreSocketDisconnected);
+    connect(peer, &RemotePeer::statusMessage, this, &CoreConnection::connectionMsg);
+    connect(peer, &RemotePeer::socketError, this, &CoreConnection::coreSocketError);
 
     Client::signalProxy()->addPeer(_peer);  // sigproxy takes ownership of the peer!
 
@@ -498,8 +498,8 @@ void CoreConnection::syncToCore(const Protocol::SessionState &sessionState)
             continue;
         auto *net = new Network(netid, Client::instance());
         _netsToSync.insert(net);
-        connect(net, SIGNAL(initDone()), SLOT(networkInitDone()));
-        connect(net, SIGNAL(destroyed()), SLOT(networkInitDone()));
+        connect(net, &SyncableObject::initDone, this, &CoreConnection::networkInitDone);
+        connect(net, &QObject::destroyed, this, &CoreConnection::networkInitDone);
         Client::addNetwork(net);
     }
     checkSyncState();

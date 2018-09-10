@@ -37,14 +37,14 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
     ui.deleteIdentity->setIcon(icon::get("list-remove-user"));
 
     coreConnectionStateChanged(Client::isConnected()); // need a core connection!
-    connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
+    connect(Client::instance(), &Client::coreConnectionStateChanged, this, &IdentitiesSettingsPage::coreConnectionStateChanged);
 
-    connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientIdentityCreated(IdentityId)));
-    connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientIdentityRemoved(IdentityId)));
+    connect(Client::instance(), &Client::identityCreated, this, &IdentitiesSettingsPage::clientIdentityCreated);
+    connect(Client::instance(), &Client::identityRemoved, this, &IdentitiesSettingsPage::clientIdentityRemoved);
 
-    connect(ui.identityEditor, SIGNAL(widgetHasChanged()), this, SLOT(widgetHasChanged()));
+    connect(ui.identityEditor, &IdentityEditWidget::widgetHasChanged, this, &IdentitiesSettingsPage::widgetHasChanged);
 #ifdef HAVE_SSL
-    connect(ui.identityEditor, SIGNAL(requestEditSsl()), this, SLOT(continueUnsecured()));
+    connect(ui.identityEditor, &IdentityEditWidget::requestEditSsl, this, &IdentitiesSettingsPage::continueUnsecured);
 #endif
 
     currentId = 0;
@@ -221,9 +221,9 @@ void IdentitiesSettingsPage::clientIdentityCreated(IdentityId id)
 #endif
     insertIdentity(identity);
 #ifdef HAVE_SSL
-    connect(identity, SIGNAL(sslSettingsUpdated()), this, SLOT(clientIdentityUpdated()));
+    connect(identity, &CertIdentity::sslSettingsUpdated, this, &IdentitiesSettingsPage::clientIdentityUpdated);
 #endif
-    connect(Client::identity(id), SIGNAL(updatedRemotely()), this, SLOT(clientIdentityUpdated()));
+    connect(Client::identity(id), &SyncableObject::updatedRemotely, this, &IdentitiesSettingsPage::clientIdentityUpdated);
 }
 
 
@@ -425,8 +425,8 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, cons
         ui.progressBar->setMaximum(numevents);
         ui.progressBar->setValue(0);
 
-        connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientEvent()));
-        connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientEvent()));
+        connect(Client::instance(), &Client::identityCreated, this, &SaveIdentitiesDlg::clientEvent);
+        connect(Client::instance(), &Client::identityRemoved, this, &SaveIdentitiesDlg::clientEvent);
 
         foreach(CertIdentity *id, toCreate) {
             Client::createIdentity(*id);
@@ -438,7 +438,7 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, cons
                 numevents--;
                 continue;
             }
-            connect(cid, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
+            connect(cid, &SyncableObject::updatedRemotely, this, &SaveIdentitiesDlg::clientEvent);
             Client::updateIdentity(id->id(), id->toVariantMap());
 #ifdef HAVE_SSL
             id->requestUpdateSslSettings();

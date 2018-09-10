@@ -46,9 +46,9 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, Compresso
     _msgSize(0)
 {
     socket->setParent(this);
-    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), SLOT(onSocketStateChanged(QAbstractSocket::SocketState)));
+    connect(socket, &QAbstractSocket::stateChanged, this, &RemotePeer::onSocketStateChanged);
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
-    connect(socket, SIGNAL(disconnected()), SIGNAL(disconnected()));
+    connect(socket, &QAbstractSocket::disconnected, this, &Peer::disconnected);
 
 #ifdef HAVE_SSL
     auto *sslSocket = qobject_cast<QSslSocket *>(socket);
@@ -56,10 +56,10 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, Compresso
         connect(sslSocket, SIGNAL(encrypted()), SIGNAL(secureStateChanged()));
 #endif
 
-    connect(_compressor, SIGNAL(readyRead()), SLOT(onReadyRead()));
-    connect(_compressor, SIGNAL(error(Compressor::Error)), SLOT(onCompressionError(Compressor::Error)));
+    connect(_compressor, &Compressor::readyRead, this, &RemotePeer::onReadyRead);
+    connect(_compressor, &Compressor::error, this, &RemotePeer::onCompressionError);
 
-    connect(_heartBeatTimer, SIGNAL(timeout()), SLOT(sendHeartBeat()));
+    connect(_heartBeatTimer, &QTimer::timeout, this, &RemotePeer::sendHeartBeat);
 }
 
 
@@ -132,7 +132,7 @@ void RemotePeer::setSignalProxy(::SignalProxy *proxy)
             return;
         }
         _signalProxy = proxy;
-        connect(proxy, SIGNAL(heartBeatIntervalChanged(int)), SLOT(changeHeartBeatInterval(int)));
+        connect(proxy, &SignalProxy::heartBeatIntervalChanged, this, &RemotePeer::changeHeartBeatInterval);
         _heartBeatTimer->setInterval(proxy->heartBeatInterval() * 1000);
         _heartBeatTimer->start();
     }

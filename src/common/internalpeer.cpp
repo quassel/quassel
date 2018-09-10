@@ -130,7 +130,7 @@ void InternalPeer::setPeer(InternalPeer *peer)
     connect(peer, SIGNAL(dispatchMessage(Protocol::InitRequest)), SLOT(handleMessage(Protocol::InitRequest)));
     connect(peer, SIGNAL(dispatchMessage(Protocol::InitData))   , SLOT(handleMessage(Protocol::InitData)));
 
-    connect(peer, SIGNAL(disconnected()), SLOT(peerDisconnected()));
+    connect(peer, &Peer::disconnected, this, &InternalPeer::peerDisconnected);
 
     _isOpen = true;
 }

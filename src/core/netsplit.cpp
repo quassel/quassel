@@ -32,10 +32,10 @@ Netsplit::Netsplit(Network *network, QObject *parent)
     _joinTimer.setSingleShot(true);
     _quitTimer.setSingleShot(true);
 
-    connect(&_discardTimer, SIGNAL(timeout()), this, SIGNAL(finished()));
+    connect(&_discardTimer, &QTimer::timeout, this, &Netsplit::finished);
 
-    connect(&_joinTimer, SIGNAL(timeout()), this, SLOT(joinTimeout()));
-    connect(&_quitTimer, SIGNAL(timeout()), this, SLOT(quitTimeout()));
+    connect(&_joinTimer, &QTimer::timeout, this, &Netsplit::joinTimeout);
+    connect(&_quitTimer, &QTimer::timeout, this, &Netsplit::quitTimeout);
 
     // wait for a maximum of 1 hour until we discard the netsplit
     _discardTimer.start(3600000);

@@ -28,7 +28,7 @@ EventStringifier::EventStringifier(CoreSession *parent) : BasicHandler("handleCt
     _coreSession(parent),
     _whois(false)
 {
-    connect(this, SIGNAL(newMessageEvent(Event *)), coreSession()->eventManager(), SLOT(postEvent(Event *)));
+    connect(this, &EventStringifier::newMessageEvent, coreSession()->eventManager(), &EventManager::postEvent);
 }
 
 
