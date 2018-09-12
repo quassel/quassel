@@ -30,6 +30,7 @@
 
 #include "client.h"
 #include "icon.h"
+#include "util.h"
 
 IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     : QWidget(parent)
@@ -48,7 +49,7 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     connect(ui.awayNick, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
     connect(ui.awayReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
     connect(ui.autoAwayEnabled, &QGroupBox::clicked, this, &IdentityEditWidget::widgetHasChanged);
-    connect(ui.autoAwayTime, SIGNAL(valueChanged(int)), this, SIGNAL(widgetHasChanged()));
+    connect(ui.autoAwayTime, selectOverload<int>(&QSpinBox::valueChanged), this, &IdentityEditWidget::widgetHasChanged);
     connect(ui.autoAwayReason, &QLineEdit::textEdited, this, &IdentityEditWidget::widgetHasChanged);
     connect(ui.autoAwayReasonEnabled, &QAbstractButton::clicked, this, &IdentityEditWidget::widgetHasChanged);
     connect(ui.detachAwayEnabled, &QGroupBox::clicked, this, &IdentityEditWidget::widgetHasChanged);
@@ -64,8 +65,8 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     connect(ui.continueUnsecured, &QAbstractButton::clicked, this, &IdentityEditWidget::requestEditSsl);
 
     // we would need this if we enabled drag and drop in the nicklist...
-    //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));
-    //connect(ui.nicknameList->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(nicklistHasChanged()));
+    //connect(ui.nicknameList, &QListWidget::rowsInserted, this, &IdentityEditWidget::setWidgetStates);
+    //connect(ui.nicknameList->model(), &NickListModel::rowsInserted, this, IdentityEditWidget::nicklistHasChanged);
 
     // disabling unused stuff
     ui.autoAwayEnabled->hide();

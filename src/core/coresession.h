@@ -167,7 +167,7 @@ public slots:
 
 signals:
     void initialized();
-    void sessionState(const Protocol::SessionState &sessionState);
+    void sessionStateReceived(const Protocol::SessionState &sessionState);
 
     //void msgFromGui(uint netid, QString buf, QString message);
     void displayMsg(Message message);

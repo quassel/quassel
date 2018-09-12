@@ -43,10 +43,10 @@ ItemViewSettingsPage::ItemViewSettingsPage(QWidget *parent)
     ui.bufferViewPreview->expandAll();
 
     foreach(ColorButton *button, findChildren<ColorButton *>()) {
-        connect(button, SIGNAL(colorChanged(QColor)), _mapper, SLOT(map()));
+        connect(button, &ColorButton::colorChanged, _mapper, selectOverload<>(&QSignalMapper::map));
         _mapper->setMapping(button, button);
     }
-    connect(_mapper, SIGNAL(mapped(QWidget *)), SLOT(updateBufferViewPreview(QWidget *)));
+    connect(_mapper, selectOverload<QWidget*>(&QSignalMapper::mapped), this, &ItemViewSettingsPage::updateBufferViewPreview);
 
     initAutoWidgets();
 }

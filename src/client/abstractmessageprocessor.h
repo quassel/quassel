@@ -37,6 +37,7 @@ public:
 public slots:
     virtual void process(Message &msg) = 0;
     virtual void process(QList<Message> &msgs) = 0;
+    virtual void networkRemoved(NetworkId id) = 0;
 
 protected:
     // updateBufferActivity also sets the Message::Redirected flag which is later used

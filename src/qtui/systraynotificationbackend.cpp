@@ -39,9 +39,10 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
     NotificationSettings notificationSettings;
     notificationSettings.initAndNotify("Systray/ShowBubble", this, SLOT(showBubbleChanged(QVariant)), true);
 
-    connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked(uint)), SLOT(notificationActivated(uint)));
-    connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
-        SLOT(notificationActivated(SystemTray::ActivationReason)));
+    connect(QtUi::mainWindow()->systemTray(), &SystemTray::messageClicked,
+            this, selectOverload<uint>(&SystrayNotificationBackend::onNotificationActivated));
+    connect(QtUi::mainWindow()->systemTray(), &SystemTray::activated,
+            this, selectOverload<SystemTray::ActivationReason>(&SystrayNotificationBackend::onNotificationActivated));
 
     QApplication::instance()->installEventFilter(this);
 
@@ -81,7 +82,7 @@ void SystrayNotificationBackend::close(uint notificationId)
 }
 
 
-void SystrayNotificationBackend::notificationActivated(uint notificationId)
+void SystrayNotificationBackend::onNotificationActivated(uint notificationId)
 {
     if (!_blockActivation) {
         QList<Notification>::iterator i = _notifications.begin();
@@ -98,13 +99,15 @@ void SystrayNotificationBackend::notificationActivated(uint notificationId)
 }
 
 
-void SystrayNotificationBackend::notificationActivated(SystemTray::ActivationReason reason)
+void SystrayNotificationBackend::onNotificationActivated(SystemTray::ActivationReason reason)
 {
     if (reason == SystemTray::Trigger) {
-        if (_notifications.count())
-            notificationActivated(_notifications.last().notificationId);
-        else
+        if (_notifications.count()) {
+            onNotificationActivated(_notifications.last().notificationId);
+        }
+        else {
             GraphicalUi::toggleMainWidget();
+        }
     }
 }
 

@@ -54,7 +54,7 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
     initIconThemeComboBox();
 
     foreach(QComboBox *comboBox, findChildren<QComboBox *>()) {
-        connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
+        connect(comboBox, selectOverload<const QString&>(&QComboBox::currentIndexChanged), this, &AppearanceSettingsPage::widgetHasChanged);
     }
     foreach(QCheckBox *checkBox, findChildren<QCheckBox *>()) {
         connect(checkBox, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);

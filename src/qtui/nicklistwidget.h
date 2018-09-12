@@ -57,9 +57,9 @@ protected slots:
     void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
     void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) override;
 
-private slots:
+private:
     void removeBuffer(BufferId bufferId);
-    void nickSelectionChanged();
+    void onNickSelectionChanged();
 
 private:
     Ui::NickListWidget ui;

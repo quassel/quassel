@@ -53,7 +53,7 @@ NickView::NickView(QWidget *parent)
 
 #if defined Q_OS_MACOS || defined Q_OS_WIN
     // afaik this is better on Mac and Windows
-    connect(this, SIGNAL(activated(QModelIndex)), SLOT(startQuery(QModelIndex)));
+    connect(this, &QAbstractItemView::activated, this, &NickView::startQuery);
 #else
     connect(this, &QAbstractItemView::doubleClicked, this, &NickView::startQuery);
 #endif

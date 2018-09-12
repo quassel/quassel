@@ -91,11 +91,9 @@ void BufferView::init()
 
 #if defined Q_OS_MACOS || defined Q_OS_WIN
     // afaik this is better on Mac and Windows
-    disconnect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
-    connect(this, SIGNAL(activated(QModelIndex)), SLOT(joinChannel(QModelIndex)));
+    connect(this, &QAbstractItemView::activated, this, &BufferView::joinChannel, Qt::UniqueConnection);
 #else
-    disconnect(this, &QAbstractItemView::doubleClicked, this, &BufferView::joinChannel);
-    connect(this, &QAbstractItemView::doubleClicked, this, &BufferView::joinChannel);
+    connect(this, &QAbstractItemView::doubleClicked, this, &BufferView::joinChannel, Qt::UniqueConnection);
 #endif
 }
 

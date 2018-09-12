@@ -191,7 +191,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
 
         _userModes[ircuser] = sortedModes[i];
         ircuser->joinChannel(this, true);
-        connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
+        connect(ircuser, &IrcUser::nickSet, this, selectOverload<QString>(&IrcChannel::ircUserNickSet));
 
         // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
         // If you wonder why there is no counterpart to ircUserJoined:

@@ -45,7 +45,7 @@ PosixSignalWatcher::PosixSignalWatcher(QObject *parent)
     }
 
     _notifier = new QSocketNotifier(_sockpair[1], QSocketNotifier::Read, this);
-    connect(_notifier, SIGNAL(activated(int)), this, SLOT(onNotify(int)));
+    connect(_notifier, &QSocketNotifier::activated, this, &PosixSignalWatcher::onNotify);
     _notifier->setEnabled(true);
 
     registerSignal(SIGINT);

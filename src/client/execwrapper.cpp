@@ -26,13 +26,14 @@
 #include "client.h"
 #include "messagemodel.h"
 #include "quassel.h"
+#include "util.h"
 
 ExecWrapper::ExecWrapper(QObject *parent) : QObject(parent)
 {
     connect(&_process, &QProcess::readyReadStandardOutput, this, &ExecWrapper::processReadStdout);
     connect(&_process, &QProcess::readyReadStandardError, this, &ExecWrapper::processReadStderr);
-    connect(&_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processFinished(int, QProcess::ExitStatus)));
-    connect(&_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
+    connect(&_process, selectOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &ExecWrapper::processFinished);
+    connect(&_process, selectOverload<QProcess::ProcessError>(&QProcess::error), this, &ExecWrapper::processError);
 
     connect(this, &ExecWrapper::output, this, &ExecWrapper::postStdout);
     connect(this, &ExecWrapper::error, this, &ExecWrapper::postStderr);

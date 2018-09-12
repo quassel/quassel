@@ -96,19 +96,7 @@ void BufferViewFilter::configInitialized()
     if (!config())
         return;
 
-//   connect(config(), SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(invalidate()));
     connect(config(), &BufferViewConfig::configChanged, this, &QSortFilterProxyModel::invalidate);
-//   connect(config(), SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(hideInactiveBuffersSet(bool)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(allowedBufferTypesSet(int)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(minimumActivitySet(int)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(bufferListSet()), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(bufferMoved(const BufferId &, int)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(invalidate()));
-//   connect(config(), SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(invalidate()));
 
     disconnect(config(), &SyncableObject::initDone, this, &BufferViewFilter::configInitialized);
 

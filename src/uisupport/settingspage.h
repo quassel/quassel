@@ -139,9 +139,6 @@ public slots:
     virtual void defaults();
 
 protected slots:
-    //! Calling this slot is equivalent to calling setChangedState(true).
-    inline void changed() { setChangedState(true); }
-
     //! This should be called whenever the widget state changes from unchanged to change or the other way round.
     void setChangedState(bool hasChanged = true);
 

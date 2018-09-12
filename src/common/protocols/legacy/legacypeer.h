@@ -66,9 +66,6 @@ public:
 signals:
     void protocolError(const QString &errorString);
 
-    // only used in compat mode
-    void protocolVersionMismatch(int actual, int expected);
-
 private:
     using RemotePeer::writeMessage;
     void writeMessage(const QVariant &item);

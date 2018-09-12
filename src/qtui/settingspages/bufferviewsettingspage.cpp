@@ -63,11 +63,11 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
     connect(ui.sortAlphabetically, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
     connect(ui.hideInactiveBuffers, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
     connect(ui.hideInactiveNetworks, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
-    connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.minimumActivitySelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.networkSelector, selectOverload<int>(&QComboBox::currentIndexChanged), this, &BufferViewSettingsPage::widgetHasChanged);
+    connect(ui.minimumActivitySelector, selectOverload<int>(&QComboBox::currentIndexChanged), this, &BufferViewSettingsPage::widgetHasChanged);
     connect(ui.showSearch, &QAbstractButton::clicked, this, &BufferViewSettingsPage::widgetHasChanged);
 
-    connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(enableStatusBuffers(int)));
+    connect(ui.networkSelector, selectOverload<int>(&QComboBox::currentIndexChanged), this, &BufferViewSettingsPage::enableStatusBuffers);
 }
 
 
@@ -194,7 +194,8 @@ void BufferViewSettingsPage::coreConnectionStateChanged(bool state)
     setEnabled(state);
     if (state) {
         load();
-        connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigAdded(int)), this, SLOT(addBufferView(int)));
+        connect(Client::bufferViewManager(), selectOverload<int>(&BufferViewManager::bufferViewConfigAdded),
+                this, selectOverload<int>(&BufferViewSettingsPage::addBufferView));
     }
     else {
         reset();
@@ -339,7 +340,7 @@ void BufferViewSettingsPage::on_addBufferView_clicked()
     BufferViewEditDlg dlg(QString(), existing, this);
     if (dlg.exec() == QDialog::Accepted) {
         newBufferView(dlg.bufferViewName());
-        changed();
+        setChangedState(true);
     }
 }
 
@@ -366,7 +367,7 @@ void BufferViewSettingsPage::on_renameBufferView_clicked()
         BufferViewConfig *changedConfig = cloneConfig(config);
         changedConfig->setBufferViewName(dlg.bufferViewName());
         ui.bufferViewList->item(listPos(config))->setText(dlg.bufferViewName());
-        changed();
+        setChangedState(true);
     }
 }
 
@@ -389,7 +390,7 @@ void BufferViewSettingsPage::on_deleteBufferView_clicked()
         delete currentItem;
         if (viewId >= 0) {
             _deleteBufferViews << viewId;
-            changed();
+            setChangedState(true);
         }
         else if (config) {
             QList<BufferViewConfig *>::iterator iter = _newBufferViews.begin();
@@ -547,9 +548,9 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config)
     connect(config, &BufferViewConfig::bufferAdded, changedConfig, &BufferViewConfig::addBuffer);
     connect(config, &BufferViewConfig::bufferMoved, changedConfig, &BufferViewConfig::moveBuffer);
     connect(config, &BufferViewConfig::bufferRemoved, changedConfig, &BufferViewConfig::removeBuffer);
-//   connect(config, SIGNAL(addBufferRequested(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
-//   connect(config, SIGNAL(moveBufferRequested(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
-//   connect(config, SIGNAL(removeBufferRequested(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
+    // connect(config, &BufferViewConfig::addBufferRequested, changedConfig, &BufferViewConfig::addBuffer);
+    // connect(config, &BufferViewConfig::moveBufferRequested, changedConfig, &BufferViewConfig::moveBuffer);
+    // connect(config, &BufferViewconfig::removeBufferRequested, changedConfig, &BufferViewConfig::removeBuffer);
 
     changedConfig->setProperty("OriginalBufferList", toVariantList<BufferId>(config->bufferList()));
     // if this is the currently displayed view we have to change the config of the preview filter

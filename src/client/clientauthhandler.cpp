@@ -32,6 +32,7 @@
 #include "clientsettings.h"
 #include "logmessage.h"
 #include "peerfactory.h"
+#include "util.h"
 
 using namespace Protocol;
 
@@ -132,7 +133,7 @@ void ClientAuthHandler::onSocketStateChanged(QAbstractSocket::SocketState socket
                 // The baseclass implementation will make sure to only send the signal once.
                 // However, we do want to prefer a potential socket error signal that may be on route already, so
                 // give this a chance to overtake us by spinning the loop...
-                QTimer::singleShot(0, this, SLOT(onSocketDisconnected()));
+                QTimer::singleShot(0, this, &ClientAuthHandler::onSocketDisconnected);
             }
             break;
         default:
@@ -214,9 +215,9 @@ void ClientAuthHandler::onSocketConnected()
 
     qDebug() << "Legacy core detected, switching to compatibility mode";
 
-    RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), Compressor::NoCompression, this);
+    auto *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), Compressor::NoCompression, this);
     // Only needed for the legacy peer, as all others check the protocol version before instantiation
-    connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+    connect(peer, &RemotePeer::protocolVersionMismatch, this, &ClientAuthHandler::onProtocolVersionMismatch);
 
     setPeer(peer);
 }
@@ -258,7 +259,7 @@ void ClientAuthHandler::onReadyRead()
     }
 
     if (peer->protocol() == Protocol::LegacyProtocol) {
-        connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+        connect(peer, &RemotePeer::protocolVersionMismatch, this, &ClientAuthHandler::onProtocolVersionMismatch);
         _legacy = true;
     }
 
@@ -434,7 +435,7 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
         auto *sslSocket = qobject_cast<QSslSocket *>(socket());
         Q_ASSERT(sslSocket);
         connect(sslSocket, &QSslSocket::encrypted, this, &ClientAuthHandler::onSslSocketEncrypted);
-        connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)), SLOT(onSslErrors()));
+        connect(sslSocket, selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &ClientAuthHandler::onSslErrors);
         qDebug() << "Starting encryption...";
         sslSocket->flush();
         sslSocket->startClientEncryption();

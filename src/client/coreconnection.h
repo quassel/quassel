@@ -81,6 +81,7 @@ public slots:
     bool connectToCore(AccountId = 0);
     void reconnectToCore();
     void disconnectFromCore();
+    void internalSessionStateReceived(const Protocol::SessionState &sessionState);
 
     void setupCore(const Protocol::SetupData &setupData);
 
@@ -126,7 +127,6 @@ private slots:
 
     void loginToCore(const QString &user, const QString &password, bool remember); // for config wizard
     void syncToCore(const Protocol::SessionState &sessionState);
-    void internalSessionStateReceived(const Protocol::SessionState &sessionState);
 
     void resetConnection(bool wantReconnect = false);
 

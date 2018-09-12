@@ -386,28 +386,27 @@ void CoreConnection::connectToCurrentAccount()
 
     _authHandler = new ClientAuthHandler(currentAccount(), this);
 
-    connect(_authHandler.data(), &AuthHandler::disconnected, this, &CoreConnection::coreSocketDisconnected);
-    connect(_authHandler.data(), &ClientAuthHandler::connectionReady, this, &CoreConnection::onConnectionReady);
-    connect(_authHandler.data(), &AuthHandler::socketError, this, &CoreConnection::coreSocketError);
-    connect(_authHandler.data(), &ClientAuthHandler::transferProgress, this, &CoreConnection::updateProgress);
-    connect(_authHandler, SIGNAL(requestDisconnect(QString,bool)), SLOT(disconnectFromCore(QString,bool)));
+    connect(_authHandler, &ClientAuthHandler::disconnected, this, &CoreConnection::coreSocketDisconnected);
+    connect(_authHandler, &ClientAuthHandler::connectionReady, this, &CoreConnection::onConnectionReady);
+    connect(_authHandler, &ClientAuthHandler::socketError, this, &CoreConnection::coreSocketError);
+    connect(_authHandler, &ClientAuthHandler::transferProgress, this, &CoreConnection::updateProgress);
+    connect(_authHandler, &ClientAuthHandler::requestDisconnect, this, selectOverload<const QString&, bool>(&CoreConnection::disconnectFromCore));
 
-    connect(_authHandler.data(), &ClientAuthHandler::errorMessage, this, &CoreConnection::connectionError);
-    connect(_authHandler.data(), &ClientAuthHandler::errorPopup, this, &CoreConnection::connectionErrorPopup, Qt::QueuedConnection);
-    connect(_authHandler.data(), &ClientAuthHandler::statusMessage, this, &CoreConnection::connectionMsg);
-    connect(_authHandler.data(), &ClientAuthHandler::encrypted, this, &CoreConnection::encrypted);
-    connect(_authHandler.data(), &ClientAuthHandler::startCoreSetup, this, &CoreConnection::startCoreSetup);
-    connect(_authHandler.data(), &ClientAuthHandler::coreSetupFailed, this, &CoreConnection::coreSetupFailed);
-    connect(_authHandler.data(), &ClientAuthHandler::coreSetupSuccessful, this, &CoreConnection::coreSetupSuccess);
-    connect(_authHandler.data(), &ClientAuthHandler::userAuthenticationRequired, this, &CoreConnection::userAuthenticationRequired);
-    connect(_authHandler.data(), &ClientAuthHandler::handleNoSslInClient, this, &CoreConnection::handleNoSslInClient);
-    connect(_authHandler.data(), &ClientAuthHandler::handleNoSslInCore, this, &CoreConnection::handleNoSslInCore);
+    connect(_authHandler, &ClientAuthHandler::errorMessage, this, &CoreConnection::connectionError);
+    connect(_authHandler, &ClientAuthHandler::errorPopup, this, &CoreConnection::connectionErrorPopup, Qt::QueuedConnection);
+    connect(_authHandler, &ClientAuthHandler::statusMessage, this, &CoreConnection::connectionMsg);
+    connect(_authHandler, &ClientAuthHandler::encrypted, this, &CoreConnection::encrypted);
+    connect(_authHandler, &ClientAuthHandler::startCoreSetup, this, &CoreConnection::startCoreSetup);
+    connect(_authHandler, &ClientAuthHandler::coreSetupFailed, this, &CoreConnection::coreSetupFailed);
+    connect(_authHandler, &ClientAuthHandler::coreSetupSuccessful, this, &CoreConnection::coreSetupSuccess);
+    connect(_authHandler, &ClientAuthHandler::userAuthenticationRequired, this, &CoreConnection::userAuthenticationRequired);
+    connect(_authHandler, &ClientAuthHandler::handleNoSslInClient, this, &CoreConnection::handleNoSslInClient);
+    connect(_authHandler, &ClientAuthHandler::handleNoSslInCore, this, &CoreConnection::handleNoSslInCore);
 #ifdef HAVE_SSL
-    connect(_authHandler.data(), &ClientAuthHandler::handleSslErrors, this, &CoreConnection::handleSslErrors);
+    connect(_authHandler, &ClientAuthHandler::handleSslErrors, this, &CoreConnection::handleSslErrors);
 #endif
-
-    connect(_authHandler.data(), &ClientAuthHandler::loginSuccessful, this, &CoreConnection::onLoginSuccessful);
-    connect(_authHandler.data(), &ClientAuthHandler::handshakeComplete, this, &CoreConnection::onHandshakeComplete);
+    connect(_authHandler, &ClientAuthHandler::loginSuccessful, this, &CoreConnection::onLoginSuccessful);
+    connect(_authHandler, &ClientAuthHandler::handshakeComplete, this, &CoreConnection::onHandshakeComplete);
 
     setState(Connecting);
     _authHandler->connectToCore();

@@ -81,7 +81,7 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     connect(this, &Client::disconnected, mainUi(), &AbstractUi::disconnectedFromCore);
 
     connect(this, &Client::networkRemoved, _networkModel, &NetworkModel::networkRemoved);
-    connect(this, SIGNAL(networkRemoved(NetworkId)), _messageProcessor, SLOT(networkRemoved(NetworkId)));
+    connect(this, &Client::networkRemoved, _messageProcessor, &AbstractMessageProcessor::networkRemoved);
 
     connect(backlogManager(), &ClientBacklogManager::messagesReceived, _messageModel, &MessageModel::messagesReceived);
     connect(coreConnection(), &CoreConnection::stateChanged, this, &Client::connectionStateChanged);
@@ -530,7 +530,7 @@ void Client::setDisconnectedFromCore()
     while (netIter != _networks.end()) {
         Network *net = netIter.value();
         emit networkRemoved(net->networkId());
-        disconnect(net, SIGNAL(destroyed()), this, nullptr);
+        disconnect(net, &Network::destroyed, this, nullptr);
         netIter = _networks.erase(netIter);
         net->deleteLater();
     }

@@ -163,7 +163,7 @@ void CoreSession::shutdown()
     for (CoreNetwork *net : _networks.values()) {
         if (net->socketState() != QAbstractSocket::UnconnectedState) {
             _networksPendingDisconnect.insert(net->networkId());
-            connect(net, SIGNAL(disconnected(NetworkId)), this, SLOT(onNetworkDisconnected(NetworkId)));
+            connect(net, &CoreNetwork::disconnected, this, &CoreSession::onNetworkDisconnected);
             net->shutdown();
         }
     }
@@ -269,7 +269,7 @@ void CoreSession::addClient(RemotePeer *peer)
 void CoreSession::addClient(InternalPeer *peer)
 {
     signalProxy()->addPeer(peer);
-    emit sessionState(sessionState());
+    emit sessionStateReceived(sessionState());
 }
 
 
@@ -622,8 +622,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
         }
 
         CoreNetwork *net = new CoreNetwork(id, this);
-        connect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
-            SLOT(recvMessageFromServer(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
+        connect(net, &CoreNetwork::displayMsg, this, &CoreSession::recvMessageFromServer);
         connect(net, &CoreNetwork::displayStatusMsg, this, &CoreSession::recvStatusMsgFromServer);
         connect(net, &CoreNetwork::disconnected, this, &CoreSession::networkDisconnected);
 
@@ -649,8 +648,8 @@ void CoreSession::removeNetwork(NetworkId id)
 
     if (net->connectionState() != Network::Disconnected) {
         // make sure we no longer receive data from the tcp buffer
-        disconnect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)), this, nullptr);
-        disconnect(net, SIGNAL(displayStatusMsg(QString)), this, nullptr);
+        disconnect(net, &CoreNetwork::displayMsg, this, nullptr);
+        disconnect(net, &CoreNetwork::displayStatusMsg, this, nullptr);
         connect(net, &CoreNetwork::disconnected, this, &CoreSession::destroyNetwork);
         net->disconnectFromIrc();
     }

@@ -264,7 +264,7 @@ void MainWin::init()
     // we assume that at this point, all configurable actions are defined!
     QtUi::loadShortcuts();
 
-    connect(bufferWidget(), SIGNAL(currentChanged(BufferId)), SLOT(currentBufferChanged(BufferId)));
+    connect(bufferWidget(), selectOverload<BufferId>(&AbstractBufferContainer::currentChanged), this, &MainWin::currentBufferChanged);
 
     setDisconnectedState(); // Disable menus and stuff
 
@@ -640,7 +640,7 @@ void MainWin::setupMenus()
     showMenuBar->setChecked(enabled);
     enabled ? menuBar()->show() : menuBar()->hide();
 
-    connect(showMenuBar, SIGNAL(toggled(bool)), menuBar(), SLOT(setVisible(bool)));
+    connect(showMenuBar, &QAction::toggled, menuBar(), &QMenuBar::setVisible);
     connect(showMenuBar, &QAction::toggled, this, &MainWin::saveMenuBarStatus);
 }
 
@@ -976,7 +976,7 @@ void MainWin::setupNickWidget()
     nickDock->toggleViewAction()->setText(tr("Show Nick List"));
 
     // See NickListDock::NickListDock();
-    // connect(nickDock->toggleViewAction(), SIGNAL(triggered(bool)), nickListWidget, SLOT(showWidget(bool)));
+    // connect(nickDock->toggleViewAction(), &NickListDock::triggered, nickListWidget, &QWidget::showWidget);
 
     // attach the NickListWidget to the BufferModel and the default selection
     _nickListWidget->setModel(Client::bufferModel());
@@ -1020,8 +1020,6 @@ void MainWin::setupInputWidget()
     _inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
     _inputWidget->inputLine()->installEventFilter(_bufferWidget);
-
-    connect(_topicWidget, SIGNAL(switchedPlain()), _bufferWidget, SLOT(setFocus()));
 }
 
 
@@ -1035,6 +1033,8 @@ void MainWin::setupTopicWidget()
 
     _topicWidget->setModel(Client::bufferModel());
     _topicWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
+
+    connect(_topicWidget, &TopicWidget::switchedPlain, _bufferWidget, selectOverload<>(&QWidget::setFocus));
 
     addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
 
@@ -1098,7 +1098,9 @@ void MainWin::setupStatusBar()
     connect(showStatusbar, &QAction::toggled, statusBar(), &QWidget::setVisible);
     connect(showStatusbar, &QAction::toggled, this, &MainWin::saveStatusBarStatus);
 
-    connect(Client::coreConnection(), SIGNAL(connectionMsg(QString)), statusBar(), SLOT(showMessage(QString)));
+    connect(Client::coreConnection(), &CoreConnection::connectionMsg, statusBar(), [statusBar = statusBar()](auto &&message) {
+        statusBar->showMessage(message);
+    });
 }
 
 
@@ -1138,10 +1140,10 @@ void MainWin::setupSystray()
 
 void MainWin::setupToolBars()
 {
-    connect(_bufferWidget, SIGNAL(currentChanged(QModelIndex)),
-        QtUi::toolBarActionProvider(), SLOT(currentBufferChanged(QModelIndex)));
-    connect(_nickListWidget, SIGNAL(nickSelectionChanged(QModelIndexList)),
-        QtUi::toolBarActionProvider(), SLOT(nickSelectionChanged(QModelIndexList)));
+    connect(_bufferWidget, selectOverload<const QModelIndex&>(&AbstractBufferContainer::currentChanged),
+        QtUi::toolBarActionProvider(), &ToolBarActionProvider::onCurrentBufferChanged);
+    connect(_nickListWidget, &NickListWidget::nickSelectionChanged,
+        QtUi::toolBarActionProvider(), &ToolBarActionProvider::onNickSelectionChanged);
 
 #ifdef Q_OS_MAC
     setUnifiedTitleAndToolBarOnMac(true);
@@ -1186,7 +1188,7 @@ void MainWin::setupToolBars()
 
     bool visible = uiSettings.value("ShowMainToolBar", QVariant(true)).toBool();
     _mainToolBar->setVisible(visible);
-    connect(_mainToolBar, SIGNAL(visibilityChanged(bool)), this, SLOT(saveMainToolBarStatus(bool)));
+    connect(_mainToolBar, &QToolBar::visibilityChanged, this, &MainWin::saveMainToolBarStatus);
 #endif
 }
 
@@ -1213,7 +1215,7 @@ void MainWin::doAutoConnect()
 void MainWin::connectedToCore()
 {
     Q_CHECK_PTR(Client::bufferViewManager());
-    connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigAdded(int)), this, SLOT(addBufferView(int)));
+    connect(Client::bufferViewManager(), &BufferViewManager::bufferViewConfigAdded, this, selectOverload<int>(&MainWin::addBufferView));
     connect(Client::bufferViewManager(), &BufferViewManager::bufferViewConfigDeleted, this, &MainWin::removeBufferView);
     connect(Client::bufferViewManager(), &SyncableObject::initDone, this, &MainWin::loadLayout);
 

@@ -30,6 +30,7 @@
 #endif
 
 #include "remotepeer.h"
+#include "util.h"
 
 using namespace Protocol;
 
@@ -47,13 +48,14 @@ RemotePeer::RemotePeer(::AuthHandler *authHandler, QTcpSocket *socket, Compresso
 {
     socket->setParent(this);
     connect(socket, &QAbstractSocket::stateChanged, this, &RemotePeer::onSocketStateChanged);
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
+    connect(socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::error), this, &RemotePeer::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &Peer::disconnected);
 
 #ifdef HAVE_SSL
     auto *sslSocket = qobject_cast<QSslSocket *>(socket);
-    if (sslSocket)
-        connect(sslSocket, SIGNAL(encrypted()), SIGNAL(secureStateChanged()));
+    if (sslSocket) {
+        connect(sslSocket, &QSslSocket::encrypted, this, [this]() { emit secureStateChanged(true); });
+    }
 #endif
 
     connect(_compressor, &Compressor::readyRead, this, &RemotePeer::onReadyRead);

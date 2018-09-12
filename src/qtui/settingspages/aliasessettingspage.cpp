@@ -43,7 +43,7 @@ AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
 
     connect(ui.newAliasButton, &QAbstractButton::clicked, &_aliasesModel, &AliasesModel::newAlias);
     connect(ui.deleteAliasButton, &QAbstractButton::clicked, this, &AliasesSettingsPage::deleteSelectedAlias);
-    connect(&_aliasesModel, SIGNAL(configChanged(bool)), this, SLOT(setChangedState(bool)));
+    connect(&_aliasesModel, &AliasesModel::configChanged, this, &AliasesSettingsPage::setChangedState);
     connect(&_aliasesModel, &AliasesModel::modelReady, this, &AliasesSettingsPage::enableDialog);
 
     enableDialog(_aliasesModel.isReady());
@@ -52,7 +52,7 @@ AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
 
 void AliasesSettingsPage::load()
 {
-    if (_aliasesModel.configChanged())
+    if (_aliasesModel.hasConfigChanged())
         _aliasesModel.revert();
 }
 
@@ -65,7 +65,7 @@ void AliasesSettingsPage::defaults()
 
 void AliasesSettingsPage::save()
 {
-    if (_aliasesModel.configChanged())
+    if (_aliasesModel.hasConfigChanged())
         _aliasesModel.commit();
 }
 

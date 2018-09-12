@@ -50,10 +50,10 @@ public:
         QString message;
 
         Notification(uint id_, BufferId buf_, NotificationType type_, QString sender_, QString msg_)
-            : notificationId(id_), bufferId(buf_), type(type_), sender(std::move(sender_)), message(std::move(msg_)) {};
+            : notificationId(id_), bufferId(buf_), type(type_), sender(std::move(sender_)), message(std::move(msg_)) {}
     };
 
-    inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};
+    using QObject::QObject;
 
     virtual void notify(const Notification &) = 0;
     virtual void close(uint notificationId) { Q_UNUSED(notificationId); }

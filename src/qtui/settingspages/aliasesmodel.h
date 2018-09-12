@@ -47,7 +47,7 @@ public:
     inline int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     inline int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    inline bool configChanged() const { return _configChanged; }
+    inline bool hasConfigChanged() const { return _configChanged; }
     inline bool isReady() const { return _modelReady; }
 
 public slots:

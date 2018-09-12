@@ -37,7 +37,7 @@ signals:
     void disconnectClicked(int);
 
 private slots:
-    void disconnectClicked();
+    void onDisconnectClicked();
 
 private:
     Ui::CoreSessionWidget ui;

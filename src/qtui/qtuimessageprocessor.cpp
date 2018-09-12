@@ -219,6 +219,13 @@ void QtUiMessageProcessor::highlightNickChanged(const QVariant &variant)
 }
 
 
+void QtUiMessageProcessor::networkRemoved(NetworkId id)
+{
+    // Clean up nickname matching cache
+    _nickMatcher.removeNetwork(id);
+}
+
+
 /**************************************************************************
  * LegacyHighlightRule
  *************************************************************************/

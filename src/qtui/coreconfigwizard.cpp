@@ -29,6 +29,7 @@
 #include "client.h"
 #include "coreconnection.h"
 #include "icon.h"
+#include "util.h"
 
 namespace {
 
@@ -165,7 +166,7 @@ CoreConfigWizard::CoreConfigWizard(CoreConnection *connection, const QVariantLis
     connect(connection, &CoreConnection::coreSetupSuccess, this, &CoreConfigWizard::coreSetupSuccess);
     connect(connection, &CoreConnection::coreSetupFailed, this, &CoreConfigWizard::coreSetupFailed);
     connect(connection, &CoreConnection::synchronized, this, &CoreConfigWizard::syncFinished);
-    connect(this, SIGNAL(rejected()), connection, SLOT(disconnectFromCore()));
+    connect(this, &QDialog::rejected, connection, selectOverload<>(&CoreConnection::disconnectFromCore));
 
 
     // Resize all pages to the size hint of the largest one, so the wizard is large enough

@@ -38,7 +38,7 @@ void MonolithicApplication::init()
 {
     QtUiApplication::init();
 
-    connect(Client::coreConnection(), SIGNAL(connectToInternalCore(QPointer<InternalPeer>)), this, SLOT(onConnectionRequest(QPointer<InternalPeer>)));
+    connect(Client::coreConnection(), &CoreConnection::connectToInternalCore, this, &MonolithicApplication::onConnectionRequest);
 
     // If port is set, start internal core directly so external clients can connect
     // This is useful in case the mono client re-gains remote connection capability,
@@ -53,7 +53,7 @@ Quassel::QuitHandler MonolithicApplication::quitHandler()
 {
     return [this]() {
         quInfo() << "Client shutting down...";
-        connect(_client.get(), SIGNAL(destroyed()), this, SLOT(onClientDestroyed()));
+        connect(_client.get(), &QObject::destroyed, this, &MonolithicApplication::onClientDestroyed);
         _client.release()->deleteLater();
     };
 }
@@ -62,7 +62,7 @@ Quassel::QuitHandler MonolithicApplication::quitHandler()
 void MonolithicApplication::onClientDestroyed()
 {
     if (_core) {
-        connect(_core, SIGNAL(shutdownComplete()), this, SLOT(onCoreShutdown()));
+        connect(_core, &Core::shutdownComplete, this, &MonolithicApplication::onCoreShutdown);
         _core->shutdown();
     }
     else {
@@ -74,7 +74,7 @@ void MonolithicApplication::onClientDestroyed()
 void MonolithicApplication::onCoreShutdown()
 {
     if (_core) {
-        connect(_core, SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
+        connect(_core, &QObject::destroyed, QCoreApplication::instance(), &QCoreApplication::quit);
         _coreThread.quit();
         _coreThread.wait();
     }
@@ -97,8 +97,8 @@ void MonolithicApplication::startInternalCore()
     connect(&_coreThread, &QThread::started, _core.data(), &Core::initAsync);
     connect(&_coreThread, &QThread::finished, _core.data(), &QObject::deleteLater);
 
-    connect(this, SIGNAL(connectInternalPeer(QPointer<InternalPeer>)), _core, SLOT(connectInternalPeer(QPointer<InternalPeer>)));
-    connect(_core, SIGNAL(sessionState(Protocol::SessionState)), Client::coreConnection(), SLOT(internalSessionStateReceived(Protocol::SessionState)));
+    connect(this, &MonolithicApplication::connectInternalPeer, _core, &Core::connectInternalPeer);
+    connect(_core, &Core::sessionStateReceived, Client::coreConnection(), &CoreConnection::internalSessionStateReceived);
 
     connect(_core.data(), &Core::dbUpgradeInProgress, Client::instance(), &Client::onDbUpgradeInProgress);
     connect(_core.data(), &Core::exitRequested, Client::instance(), &Client::onExitRequested);

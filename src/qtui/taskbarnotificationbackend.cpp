@@ -97,7 +97,7 @@ TaskbarNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : Settin
 
     connect(enabledBox, &QAbstractButton::toggled, this, &ConfigWidget::widgetChanged);
     connect(enabledBox, &QAbstractButton::toggled, timeoutBox, &QWidget::setEnabled);
-    connect(timeoutBox, SIGNAL(valueChanged(int)), SLOT(widgetChanged()));
+    connect(timeoutBox, selectOverload<int>(&QSpinBox::valueChanged), this, &ConfigWidget::widgetChanged);
 }
 
 

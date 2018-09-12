@@ -41,7 +41,7 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
     ActionCollection *coll = QtUi::actionCollection("General");
 
     QAction *toggleSearchBar = coll->action("ToggleSearchBar");
-    connect(toggleSearchBar, SIGNAL(toggled(bool)), SLOT(setVisible(bool)));
+    connect(toggleSearchBar, &QAction::toggled, this, &QWidget::setVisible);
 
     auto *hideSearchBar = coll->add<Action>("HideSearchBar", toggleSearchBar, SLOT(setChecked(bool)));
     hideSearchBar->setShortcutConfigurable(false);

@@ -293,7 +293,7 @@ void Quassel::setupSignalHandling()
 #else
     _signalWatcher = new WindowsSignalWatcher(this);
 #endif
-    connect(_signalWatcher, SIGNAL(handleSignal(AbstractSignalWatcher::Action)), this, SLOT(handleSignal(AbstractSignalWatcher::Action)));
+    connect(_signalWatcher, &AbstractSignalWatcher::handleSignal, this, &Quassel::handleSignal);
 }
 
 
