@@ -1070,6 +1070,8 @@ NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialo
     }
     connect(ui.networkName, SIGNAL(textChanged(const QString &)), SLOT(setButtonStates()));
     connect(ui.serverAddress, SIGNAL(textChanged(const QString &)), SLOT(setButtonStates()));
+    connect(ui.usePreset, SIGNAL(toggled(bool)), SLOT(setButtonStates()));
+    connect(ui.useManual, SIGNAL(toggled(bool)), SLOT(setButtonStates()));
     setButtonStates();
 }
 
