@@ -142,13 +142,13 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
         nickViews[newBufferId] = view;
         ui.stackedWidget->addWidget(view);
         ui.stackedWidget->setCurrentWidget(view);
-        connect(view, SIGNAL(selectionUpdated()), SLOT(nickSelectionChanged()));
+        connect(view, &NickView::selectionUpdated, this, &NickListWidget::onNickSelectionChanged);
     }
     emit nickSelectionChanged(view->selectedIndexes());
 }
 
 
-void NickListWidget::nickSelectionChanged()
+void NickListWidget::onNickSelectionChanged()
 {
     auto *view = qobject_cast<NickView *>(sender());
     Q_ASSERT(view);

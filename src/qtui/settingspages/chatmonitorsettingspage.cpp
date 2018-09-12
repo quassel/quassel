@@ -60,7 +60,7 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
     ui.operationMode->addItem(tr("Opt Out"), ChatViewSettings::OptOut);
 
     // connect slots
-    connect(ui.operationMode, SIGNAL(currentIndexChanged(int)), SLOT(switchOperationMode(int)));
+    connect(ui.operationMode, selectOverload<int>(&QComboBox::currentIndexChanged), this, &ChatMonitorSettingsPage::switchOperationMode);
     connect(ui.showHighlights, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
     connect(ui.showOwnMessages, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
     connect(ui.alwaysOwn, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);

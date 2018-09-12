@@ -43,7 +43,7 @@ SslInfoDlg::SslInfoDlg(const QSslSocket *socket, QWidget *parent)
     ui.encryption->setText(cipher.name());
     ui.protocol->setText(cipher.protocolString());
 
-    connect(ui.certificateChain, SIGNAL(currentIndexChanged(int)), SLOT(setCurrentCert(int)));
+    connect(ui.certificateChain, selectOverload<int>(&QComboBox::currentIndexChanged), this, &SslInfoDlg::setCurrentCert);
     foreach(const QSslCertificate &cert, socket->peerCertificateChain()) {
         ui.certificateChain->addItem(subjectInfo(cert, QSslCertificate::CommonName));
     }

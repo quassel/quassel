@@ -129,7 +129,7 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
             // The layout stretch item should never be removed, so count should always be >= 1.
             ui.coreSessionContainer->insertWidget(ui.coreSessionContainer->count() - 1,
                                                   coreSessionWidget, 0, Qt::AlignTop);
-            connect(coreSessionWidget, SIGNAL(disconnectClicked(int)), this, SLOT(disconnectClicked(int)));
+            connect(coreSessionWidget, &CoreSessionWidget::disconnectClicked, this, &CoreInfoDlg::disconnectClicked);
         }
     }
 

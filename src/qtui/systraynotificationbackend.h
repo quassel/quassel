@@ -41,8 +41,8 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 private slots:
-    void notificationActivated(uint notificationId);
-    void notificationActivated(SystemTray::ActivationReason);
+    void onNotificationActivated(uint notificationId);
+    void onNotificationActivated(SystemTray::ActivationReason);
 
     void showBubbleChanged(const QVariant &);
     void updateToolTip();

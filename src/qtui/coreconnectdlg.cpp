@@ -48,8 +48,8 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
     buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
     layout->addWidget(buttonBox);
 
-    connect(_settingsPage, SIGNAL(connectToCore(AccountId)), SLOT(accept()));
-    connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
+    connect(_settingsPage, &CoreAccountSettingsPage::connectToCore, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 

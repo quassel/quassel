@@ -76,7 +76,7 @@ public slots:
 
 signals:
     //! Reflects the difference between model contents and the ActionCollections we loaded this from
-    void hasChanged(bool changed);
+    void changed(bool changed);
 
 private:
     struct Item {

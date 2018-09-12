@@ -35,6 +35,7 @@
 #include "qtui.h"
 #include "qtuisettings.h"
 #include "tabcompleter.h"
+#include "util.h"
 
 const int leftMargin = 3;
 
@@ -43,7 +44,7 @@ InputWidget::InputWidget(QWidget *parent)
     _networkId(0)
 {
     ui.setupUi(this);
-    connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
+    connect(ui.ownNick, selectOverload<const QString&>(&QComboBox::activated), this, &InputWidget::changeNick);
 
     layout()->setAlignment(ui.ownNick, Qt::AlignBottom);
     layout()->setAlignment(ui.inputEdit, Qt::AlignBottom);
@@ -145,7 +146,7 @@ InputWidget::InputWidget(QWidget *parent)
     ActionCollection *coll = QtUi::actionCollection();
 
     auto *activateInputline = coll->add<Action>("FocusInputLine");
-    connect(activateInputline, SIGNAL(triggered()), SLOT(setFocus()));
+    connect(activateInputline, &QAction::triggered, this, selectOverload<>(&QWidget::setFocus));
     activateInputline->setText(tr("Focus Input Line"));
     activateInputline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
 

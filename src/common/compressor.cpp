@@ -41,7 +41,7 @@ Compressor::Compressor(QTcpSocket *socket, Compressor::CompressionLevel level, Q
 
     if (!ok) {
         // something went wrong during initialization... but we can only emit an error after RemotePeer has connected its signal
-        QTimer::singleShot(0, this, SIGNAL(error()));
+        QTimer::singleShot(0, this, [this]() { emit error(); });
         return;
     }
 

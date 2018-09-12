@@ -111,14 +111,14 @@ void ToolBarActionProvider::addActions(QToolBar *bar, ToolBarType type)
 }
 
 
-void ToolBarActionProvider::currentBufferChanged(const QModelIndex &index)
+void ToolBarActionProvider::onCurrentBufferChanged(const QModelIndex &index)
 {
     _currentBuffer = index;
     updateStates();
 }
 
 
-void ToolBarActionProvider::nickSelectionChanged(const QModelIndexList &indexList)
+void ToolBarActionProvider::onNickSelectionChanged(const QModelIndexList &indexList)
 {
     _selectedNicks = indexList;
     updateStates();
@@ -161,8 +161,8 @@ void ToolBarActionProvider::networkCreated(NetworkId id)
     _networkActions[id] = act;
     act->setObjectName(QString("NetworkAction-%1").arg(id.toInt()));
     act->setData(QVariant::fromValue<NetworkId>(id));
-    connect(net, SIGNAL(updatedRemotely()), SLOT(networkUpdated()));
-    connect(act, SIGNAL(triggered()), SLOT(connectOrDisconnectNet()));
+    connect(net, &Network::updatedRemotely, this, [this]() { networkUpdated(); });
+    connect(act, &QAction::triggered, this, &ToolBarActionProvider::connectOrDisconnectNet);
     networkUpdated(net);
 }
 

@@ -24,6 +24,7 @@
 #include "clientsettings.h"
 #include "coreaccountmodel.h"
 #include "icon.h"
+#include "util.h"
 
 CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
     : SettingsPage(tr("Remote Cores"), QString(), parent),
@@ -46,7 +47,7 @@ CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
     connect(filteredModel(), &QAbstractItemModel::rowsInserted, this, &CoreAccountSettingsPage::rowsInserted);
 
     connect(ui.accountView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &CoreAccountSettingsPage::setWidgetStates);
-    connect(ui.autoConnectAccount, SIGNAL(currentIndexChanged(int)), SLOT(widgetHasChanged()));
+    connect(ui.autoConnectAccount, selectOverload<int>(&QComboBox::currentIndexChanged), this, &CoreAccountSettingsPage::widgetHasChanged);
     setWidgetStates();
 }
 

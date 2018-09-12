@@ -84,9 +84,9 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
 
     setMode(Mode::StatusNotifier);
 
-    connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));
-    connect(this, SIGNAL(modeChanged(Mode)), this, SLOT(onModeChanged(Mode)));
-    connect(this, &SystemTray::stateChanged, this, &StatusNotifierItem::onStateChanged);
+    connect(this, &StatusNotifierItem::visibilityChanged, this, &StatusNotifierItem::onVisibilityChanged);
+    connect(this, &StatusNotifierItem::modeChanged, this, &StatusNotifierItem::onModeChanged);
+    connect(this, &StatusNotifierItem::stateChanged, this, &StatusNotifierItem::onStateChanged);
 
     trayMenu()->installEventFilter(this);
 
@@ -103,9 +103,9 @@ StatusNotifierItem::StatusNotifierItem(QWidget *parent)
 
     // Our own SNI service
     _statusNotifierItemDBus = new StatusNotifierItemDBus(this);
-    connect(this, &SystemTray::currentIconNameChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewIcon);
-    connect(this, &SystemTray::currentIconNameChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewAttentionIcon);
-    connect(this, &SystemTray::toolTipChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewToolTip);
+    connect(this, &StatusNotifierItem::currentIconNameChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewIcon);
+    connect(this, &StatusNotifierItem::currentIconNameChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewAttentionIcon);
+    connect(this, &StatusNotifierItem::toolTipChanged, _statusNotifierItemDBus, &StatusNotifierItemDBus::NewToolTip);
 
     // Service watcher to keep track of the StatusNotifierWatcher service
     _serviceWatcher = new QDBusServiceWatcher(kSniWatcherService,

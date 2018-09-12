@@ -47,7 +47,7 @@ public slots:
     {
         _session = new CoreSession{_userId, _restoreState, _strictIdentEnabled, this};
         connect(_session, &QObject::destroyed, QThread::currentThread(), &QThread::quit);
-        connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));
+        connect(_session, &CoreSession::sessionStateReceived, Core::instance(), &Core::sessionStateReceived);
         emit initialized();
     }
 

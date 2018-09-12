@@ -75,7 +75,7 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp)
     sp->setParent(ui.settingsStack);
     ui.settingsStack->addWidget(sp);
 
-    connect(sp, SIGNAL(changed(bool)), this, SLOT(setButtonStates()));
+    connect(sp, &SettingsPage::changed, this, &SettingsDlg::setButtonStates);
 
     QTreeWidgetItem *cat;
     QList<QTreeWidgetItem *> cats = ui.settingsTree->findItems(sp->category(), Qt::MatchExactly);

@@ -43,6 +43,8 @@ public:
 
 public slots:
     void disconnectedFromCore() override;
+    void onCurrentBufferChanged(const QModelIndex &);
+    void onNickSelectionChanged(const QModelIndexList &);
 
 protected:
     void handleNetworkAction(ActionType, QAction *) override;
@@ -55,9 +57,6 @@ private slots:
     void networkRemoved(NetworkId id);
     void networkUpdated(const Network *net = nullptr);
     void connectOrDisconnectNet();
-
-    void currentBufferChanged(const QModelIndex &);
-    void nickSelectionChanged(const QModelIndexList &);
 
     void updateStates();
 

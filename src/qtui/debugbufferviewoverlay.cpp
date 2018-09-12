@@ -60,7 +60,7 @@ DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget *parent)
     layout->addRow(tr("Is initialized:"), _isInitialized = new QLabel(this));
 
     update();
-    connect(Client::bufferViewOverlay(), SIGNAL(hasChanged()), this, SLOT(update()));
+    connect(Client::bufferViewOverlay(), &BufferViewOverlay::hasChanged, this, &DebugBufferViewOverlay::update);
 }
 
 

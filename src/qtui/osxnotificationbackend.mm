@@ -86,7 +86,7 @@ OSXNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
     : SettingsPage("Internal", "OSXNotification", parent)
 {
     _enabledBox = new QCheckBox(tr("Show OS X notifications"));
-    connect(_enabledBox, SIGNAL(toggled(bool)), this, SLOT(widgetChanged()));
+    connect(_enabledBox, &QCheckBox::toggled, this, &ConfigWidget::widgetChanged);
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(_enabledBox);
 }

@@ -47,8 +47,6 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
     _animation->setDirection(QPropertyAnimation::Forward);
     _animation->setDuration(350);
     _animation->setEasingCurve(QEasingCurve::InOutSine);
-
-    //connect(&_timeLine, SIGNAL(valueChanged(qreal)), this, SLOT(hoverChanged(qreal)));
 }
 
 

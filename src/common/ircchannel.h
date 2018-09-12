@@ -117,7 +117,7 @@ signals:
 //   void channelModeAdded(const QChar &mode, const QString &value);
 //   void channelModeRemoved(const QChar &mode, const QString &value);
 
-    void ircUsersJoined(QList<IrcUser *> ircusers);
+    void ircUsersJoined(const QList<IrcUser *> &ircusers);
 //   void ircUsersJoined(QStringList nicks, QStringList modes);
     void ircUserParted(IrcUser *ircuser);
     void ircUserNickSet(IrcUser *ircuser, QString nick);

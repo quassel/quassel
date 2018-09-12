@@ -48,8 +48,6 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
 #endif
 
     currentId = 0;
-
-    //connect(ui.identityList, SIGNAL(editTextChanged(const QString &)), this, SLOT(widgetHasChanged()));
 }
 
 

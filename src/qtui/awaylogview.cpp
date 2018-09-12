@@ -23,6 +23,7 @@
 #include <QAction>
 #include <QMenu>
 
+#include "action.h"
 #include "awaylogfilter.h"
 #include "chatlinemodel.h"
 #include "chatscene.h"
@@ -43,14 +44,16 @@ void AwayLogView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     if (scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
         menu->addSeparator();
 
-        QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
+        auto *showNetworkAction = new Action(tr("Show Network Name"), menu, this, SLOT(showFieldsChanged(bool)));
         showNetworkAction->setCheckable(true);
         showNetworkAction->setChecked(filter()->showFields() & ChatMonitorFilter::NetworkField);
         showNetworkAction->setData(ChatMonitorFilter::NetworkField);
+        menu->addAction(showNetworkAction);
 
-        QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
+        auto *showBufferAction = new Action(tr("Show Buffer Name"), menu, this, SLOT(showFieldsChanged(bool)));
         showBufferAction->setCheckable(true);
         showBufferAction->setChecked(filter()->showFields() & ChatMonitorFilter::BufferField);
         showBufferAction->setData(ChatMonitorFilter::BufferField);
+        menu->addAction(showBufferAction);
     }
 }

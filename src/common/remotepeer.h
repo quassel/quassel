@@ -72,6 +72,9 @@ signals:
     void socketError(QAbstractSocket::SocketError error, const QString &errorString);
     void statusMessage(const QString &msg);
 
+    // Only used by LegacyPeer
+    void protocolVersionMismatch(int actual, int expected);
+
 protected:
     SignalProxy *signalProxy() const override;
 

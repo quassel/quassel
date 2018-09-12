@@ -22,14 +22,15 @@
 
 #include "client.h"
 #include "clienttransfermanager.h"
+#include "util.h"
 
 DccSettingsPage::DccSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("DCC"), parent)
 {
     ui.setupUi(this);
     initAutoWidgets();
-    connect(ui.ipDetectionMode, SIGNAL(currentIndexChanged(int)), SLOT(updateWidgetStates()));
-    connect(ui.portSelectionMode, SIGNAL(currentIndexChanged(int)), SLOT(updateWidgetStates()));
+    connect(ui.ipDetectionMode, selectOverload<int>(&QComboBox::currentIndexChanged), this, &DccSettingsPage::updateWidgetStates);
+    connect(ui.portSelectionMode, selectOverload<int>(&QComboBox::currentIndexChanged), this, &DccSettingsPage::updateWidgetStates);
     updateWidgetStates();
 
     connect(Client::instance(), &Client::coreConnectionStateChanged, this, &DccSettingsPage::onClientConfigChanged);
@@ -56,7 +57,7 @@ void DccSettingsPage::setClientConfig(DccConfig *config)
     }
     _clientConfig = config;
     if (_clientConfig) {
-        connect(_clientConfig, SIGNAL(updated()), SLOT(load()));
+        connect(_clientConfig, &DccConfig::updated, this, &DccSettingsPage::load);
         load();
         ui.dccEnabled->setEnabled(true);
     }

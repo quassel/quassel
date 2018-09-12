@@ -34,7 +34,7 @@ NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
             cw->setParent(this);
             _configWidgets.append(cw);
             layout->addWidget(cw);
-            connect(cw, SIGNAL(changed(bool)), SLOT(widgetHasChanged()));
+            connect(cw, &SettingsPage::changed, this, &NotificationsSettingsPage::widgetHasChanged);
             _hasDefaults |= cw->hasDefaults();
         }
     }

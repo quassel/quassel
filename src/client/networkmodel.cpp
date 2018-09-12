@@ -46,8 +46,8 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
     // use networkDataChanged() instead. Otherwise you will end up in a infinite loop
     // as we "sync" the dataChanged() signals of NetworkItem and StatusBufferItem
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-    connect(this, &NetworkItem::networkDataChanged, this, &AbstractTreeItem::dataChanged);
-    connect(this, &AbstractTreeItem::beginRemoveChilds, this, &NetworkItem::onBeginRemoveChilds);
+    connect(this, &NetworkItem::networkDataChanged, this, &NetworkItem::dataChanged);
+    connect(this, &NetworkItem::beginRemoveChilds, this, &NetworkItem::onBeginRemoveChilds);
 }
 
 
@@ -115,9 +115,9 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo)
     case BufferInfo::StatusBuffer:
         _statusBufferItem = new StatusBufferItem(bufferInfo, this);
         bufferItem = _statusBufferItem;
-        disconnect(this, &NetworkItem::networkDataChanged, this, &AbstractTreeItem::dataChanged);
-        connect(this, &NetworkItem::networkDataChanged, bufferItem, &AbstractTreeItem::dataChanged);
-        connect(bufferItem, &AbstractTreeItem::dataChanged, this, &AbstractTreeItem::dataChanged);
+        disconnect(this, &NetworkItem::networkDataChanged, this, &NetworkItem::dataChanged);
+        connect(this, &NetworkItem::networkDataChanged, bufferItem, &BufferItem::dataChanged);
+        connect(bufferItem, &BufferItem::dataChanged, this, &NetworkItem::dataChanged);
         break;
     case BufferInfo::ChannelBuffer:
         bufferItem = new ChannelBufferItem(bufferInfo, this);
@@ -175,7 +175,7 @@ void NetworkItem::attachNetwork(Network *network)
     connect(network, &Network::ircUserAdded,
         this, &NetworkItem::attachIrcUser);
     connect(network, &Network::connectedSet,
-        this, &NetworkItem::networkDataChanged);
+        this, [this]() { emit networkDataChanged(); });
     connect(network, &QObject::destroyed,
         this, &NetworkItem::onNetworkDestroyed);
 
@@ -698,9 +698,9 @@ void QueryBufferItem::setIrcUser(IrcUser *ircUser)
     }
 
     if (ircUser) {
-        connect(ircUser, &QObject::destroyed, this, &QueryBufferItem::removeIrcUser);
+        connect(ircUser, &IrcUser::destroyed, this, &QueryBufferItem::removeIrcUser);
         connect(ircUser, &IrcUser::quited, this, &QueryBufferItem::removeIrcUser);
-        connect(ircUser, &IrcUser::awaySet, this, &AbstractTreeItem::dataChanged);
+        connect(ircUser, &IrcUser::awaySet, this, [this]() { emit dataChanged(); });
         connect(ircUser, &IrcUser::encryptedSet, this, &BufferItem::setEncrypted);
     }
 
@@ -809,24 +809,15 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel)
 
     _ircChannel = ircChannel;
 
-    connect(ircChannel, &QObject::destroyed,
-        this, &ChannelBufferItem::ircChannelDestroyed);
-    connect(ircChannel, &IrcChannel::topicSet,
-        this, &BufferItem::setTopic);
-    connect(ircChannel, &IrcChannel::encryptedSet,
-        this, &BufferItem::setEncrypted);
-    connect(ircChannel, SIGNAL(ircUsersJoined(QList<IrcUser *> )),
-        this, SLOT(join(QList<IrcUser *> )));
-    connect(ircChannel, &IrcChannel::ircUserParted,
-        this, &ChannelBufferItem::part);
-    connect(ircChannel, &IrcChannel::parted,
-        this, &ChannelBufferItem::ircChannelParted);
-    connect(ircChannel, &IrcChannel::ircUserModesSet,
-        this, &ChannelBufferItem::userModeChanged);
-    connect(ircChannel, &IrcChannel::ircUserModeAdded,
-        this, &ChannelBufferItem::userModeChanged);
-    connect(ircChannel, &IrcChannel::ircUserModeRemoved,
-        this, &ChannelBufferItem::userModeChanged);
+    connect(ircChannel, &QObject::destroyed, this, &ChannelBufferItem::ircChannelDestroyed);
+    connect(ircChannel, &IrcChannel::topicSet, this, &ChannelBufferItem::setTopic);
+    connect(ircChannel, &IrcChannel::encryptedSet, this, &ChannelBufferItem::setEncrypted);
+    connect(ircChannel, &IrcChannel::ircUsersJoined, this, &ChannelBufferItem::join);
+    connect(ircChannel, &IrcChannel::ircUserParted, this, &ChannelBufferItem::part);
+    connect(ircChannel, &IrcChannel::parted, this, &ChannelBufferItem::ircChannelParted);
+    connect(ircChannel, &IrcChannel::ircUserModesSet, this, &ChannelBufferItem::userModeChanged);
+    connect(ircChannel, &IrcChannel::ircUserModeAdded, this, &ChannelBufferItem::userModeChanged);
+    connect(ircChannel, &IrcChannel::ircUserModeRemoved, this, &ChannelBufferItem::userModeChanged);
 
     if (!ircChannel->ircUsers().isEmpty())
         join(ircChannel->ircUsers());
@@ -1114,8 +1105,8 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
 {
     setObjectName(ircUser->nick());
     connect(ircUser, &IrcUser::quited, this, &IrcUserItem::ircUserQuited);
-    connect(ircUser, SIGNAL(nickSet(QString)), this, SIGNAL(dataChanged()));
-    connect(ircUser, &IrcUser::awaySet, this, &AbstractTreeItem::dataChanged);
+    connect(ircUser, &IrcUser::nickSet, this, [this]() { emit dataChanged(); });
+    connect(ircUser, &IrcUser::awaySet, this, [this]() { emit dataChanged(); });
 }
 
 
@@ -1289,10 +1280,8 @@ QString IrcUserItem::channelModes() const
 NetworkModel::NetworkModel(QObject *parent)
     : TreeModel(NetworkModel::defaultHeader(), parent)
 {
-    connect(this, &QAbstractItemModel::rowsInserted,
-        this, &NetworkModel::checkForNewBuffers);
-    connect(this, &QAbstractItemModel::rowsAboutToBeRemoved,
-        this, &NetworkModel::checkForRemovedBuffers);
+    connect(this, &NetworkModel::rowsInserted, this, &NetworkModel::checkForNewBuffers);
+    connect(this, &NetworkModel::rowsAboutToBeRemoved, this, &NetworkModel::checkForRemovedBuffers);
 
     BufferSettings defaultSettings;
     defaultSettings.notify("UserNoticesTarget", this, SLOT(messageRedirectionSettingsChanged()));

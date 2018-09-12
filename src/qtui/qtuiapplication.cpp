@@ -68,7 +68,7 @@ Quassel::QuitHandler QtUiApplication::quitHandler()
     // Wait until the Client instance is destroyed before quitting the event loop
     return [this]() {
         quInfo() << "Client shutting down...";
-        connect(_client.get(), SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
+        connect(_client.get(), &QObject::destroyed, QCoreApplication::instance(), &QCoreApplication::quit);
         _client.release()->deleteLater();
     };
 }

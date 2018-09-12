@@ -56,10 +56,7 @@ public slots:
      *
      * @param id Network ID of removed network
      */
-    inline void networkRemoved(NetworkId id) {
-        // Clean up nickname matching cache
-        _nickMatcher.removeNetwork(id);
-    }
+    void networkRemoved(NetworkId id) override;
 
 private slots:
     void processNextMessage();

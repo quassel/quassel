@@ -28,6 +28,7 @@
 #include "clientsettings.h"
 #include "coreconnection.h"
 #include "clientbacklogmanager.h"
+#include "util.h"
 
 DockManagerNotificationBackend::DockManagerNotificationBackend(QObject *parent)
     : AbstractNotificationBackend(parent), _bus(QDBusConnection::sessionBus())
@@ -54,7 +55,7 @@ DockManagerNotificationBackend::DockManagerNotificationBackend(QObject *parent)
 
     itemAdded(QDBusObjectPath());
 
-    connect(Client::coreConnection(), SIGNAL(progressValueChanged(int)), this, SLOT(updateProgress(int)));
+    connect(Client::coreConnection(), &CoreConnection::progressValueChanged, this, selectOverload<int>(&DockManagerNotificationBackend::updateProgress));
     connect(Client::coreConnection(), &CoreConnection::synchronized, this, &DockManagerNotificationBackend::synchronized);
 }
 
@@ -123,7 +124,7 @@ void DockManagerNotificationBackend::updateProgress(int done, int total)
 
 void DockManagerNotificationBackend::synchronized()
 {
-    connect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), this, SLOT(updateProgress(int, int)));
+    connect(Client::backlogManager(), &ClientBacklogManager::updateProgress, this, selectOverload<int, int>(&DockManagerNotificationBackend::updateProgress));
 }
 
 

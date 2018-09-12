@@ -72,7 +72,7 @@ public:
     void load();
     void save();
 private slots:
-    void useSnnoreChanged(bool);
+    void useSnoreChanged(bool);
 
 private:
     Ui::SnoreNotificationConfigWidget ui;

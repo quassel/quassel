@@ -172,7 +172,7 @@ public:
      */
     QDBusObjectPath Menu() const;
 
-public Q_SLOTS:
+public slots:
     //interaction
     /**
      * Shows the context menu associated to this item
@@ -196,7 +196,7 @@ public Q_SLOTS:
      */
     void Scroll(int delta, const QString &orientation);
 
-Q_SIGNALS:
+signals:
     /**
      * Inform the systemtray that the own main icon has been changed,
      * so should be reloaded

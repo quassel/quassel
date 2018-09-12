@@ -135,7 +135,7 @@ public:
      */
     inline bool isPongReplyPending() const { return _pongReplyPending; }
 
-    QList<QList<QByteArray>> splitMessage(const QString &cmd, const QString &message, std::function<QList<QByteArray>(QString &)> cmdGenerator);
+    QList<QList<QByteArray>> splitMessage(const QString &cmd, const QString &message, const std::function<QList<QByteArray>(QString &)> &cmdGenerator);
 
     // IRCv3 capability negotiation
 
@@ -144,8 +144,7 @@ public:
      *
      * @returns True if in progress, otherwise false
      */
-    inline bool capNegotiationInProgress() const { return (!_capsQueuedIndividual.empty() ||
-                                                           !_capsQueuedBundled.empty()); }
+    inline bool capNegotiationInProgress() const { return (!_capsQueuedIndividual.empty() || !_capsQueuedBundled.empty()); }
 
     /**
      * Queues a capability to be requested.
@@ -256,7 +255,7 @@ public slots:
      */
     bool forceDisconnect(int msecs = 1000);
 
-    void userInput(BufferInfo bufferInfo, QString msg);
+    void userInput(const BufferInfo &bufferInfo, QString msg);
 
     /**
      * Sends the raw (encoded) line, adding to the queue if needed, optionally with higher priority.
@@ -269,7 +268,7 @@ public slots:
      * PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putRawLine(const QByteArray input, const bool prepend = false);
+    void putRawLine(const QByteArray &input, bool prepend = false);
 
     /**
      * Sends the command with encoded parameters, with optional prefix or high priority.
@@ -284,7 +283,7 @@ public slots:
      * maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray(), const bool prepend = false);
+    void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = {}, bool prepend = false);
 
     /**
      * Sends the command for each set of encoded parameters, with optional prefix or high priority.
@@ -303,7 +302,7 @@ public slots:
      * cannot maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray(), const bool prependAll = false);
+    void putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = {}, bool prependAll = false);
 
     void setChannelJoined(const QString &channel);
     void setChannelParted(const QString &channel);
@@ -424,7 +423,7 @@ public slots:
      */
     inline void resetPongReplyPending() { _pongReplyPending = false; }
 
-    inline void displayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None)
+    void onDisplayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender, Message::Flags flags)
     {
         emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
     }
@@ -433,7 +432,7 @@ public slots:
 signals:
     void recvRawServerMsg(QString);
     void displayStatusMsg(QString);
-    void displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
+    void displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender, Message::Flags flags);
     void disconnected(NetworkId networkId);
     void connectionError(const QString &errorMsg);
 
@@ -455,12 +454,13 @@ protected slots:
     //virtual void removeChansAndUsers();
 
 private slots:
-    void socketHasData();
-    void socketError(QAbstractSocket::SocketError);
-    void socketInitialized();
-    void socketCloseTimeout();
-    void socketDisconnected();
-    void socketStateChanged(QAbstractSocket::SocketState);
+    void onSocketHasData();
+    void onSocketError(QAbstractSocket::SocketError);
+    void onSocketInitialized();
+    void onSocketCloseTimeout();
+    void onSocketDisconnected();
+    void onSocketStateChanged(QAbstractSocket::SocketState);
+
     void networkInitialized();
 
     void sendPerform();
@@ -473,7 +473,7 @@ private slots:
     void startAutoWhoCycle();
 
 #ifdef HAVE_SSL
-    void sslErrors(const QList<QSslError> &errors);
+    void onSslErrors(const QList<QSslError> &errors);
 #endif
 
     /**
@@ -496,6 +496,17 @@ private slots:
     void fillBucketAndProcessQueue();
 
     void writeToSocket(const QByteArray &data);
+
+private:
+    void showMessage(Message::Type msgType,
+                     BufferInfo::Type bufferType,
+                     const QString &target,
+                     const QString &text,
+                     const QString &sender = "",
+                     Message::Flags flags = Message::None)
+    {
+        emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
+    }
 
 private:
     CoreSession *_coreSession;

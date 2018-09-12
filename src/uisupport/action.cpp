@@ -56,7 +56,7 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
 
 void Action::init()
 {
-    connect(this, SIGNAL(triggered(bool)), this, SLOT(slotTriggered()));
+    connect(this, &QAction::triggered, this, &Action::slotTriggered);
 
     setProperty("isShortcutConfigurable", true);
 }

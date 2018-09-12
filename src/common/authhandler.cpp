@@ -21,6 +21,7 @@
 #include <QHostAddress>
 
 #include "authhandler.h"
+#include "util.h"
 
 AuthHandler::AuthHandler(QObject *parent)
     : QObject(parent)
@@ -38,7 +39,7 @@ QTcpSocket *AuthHandler::socket() const
 void AuthHandler::setSocket(QTcpSocket *socket)
 {
     _socket = socket;
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
+    connect(socket, selectOverload<QAbstractSocket::SocketError>(&QTcpSocket::error), this, &AuthHandler::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &AuthHandler::onSocketDisconnected);
 }
 

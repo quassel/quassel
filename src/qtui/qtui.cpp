@@ -167,7 +167,7 @@ void QtUi::registerNotificationBackend(AbstractNotificationBackend *backend)
 {
     if (!_notificationBackends.contains(backend)) {
         _notificationBackends.append(backend);
-        instance()->connect(backend, SIGNAL(activated(uint)), SLOT(notificationActivated(uint)));
+        connect(backend, &AbstractNotificationBackend::activated, instance(), &QtUi::notificationActivated);
     }
 }
 

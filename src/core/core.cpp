@@ -273,7 +273,7 @@ void Core::shutdown()
     }
 
     for (auto &&session : _sessions) {
-        connect(session, SIGNAL(shutdownComplete(SessionThread*)), this, SLOT(onSessionShutdown(SessionThread*)));
+        connect(session, &SessionThread::shutdownComplete, this, &Core::onSessionShutdown);
         session->shutdown();
     }
 }

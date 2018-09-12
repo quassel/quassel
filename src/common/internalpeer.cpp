@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "internalpeer.h"
+#include "util.h"
 
 using namespace Protocol;
 
@@ -125,10 +126,14 @@ void InternalPeer::setSignalProxy(::SignalProxy *proxy)
 
 void InternalPeer::setPeer(InternalPeer *peer)
 {
-    connect(peer, SIGNAL(dispatchMessage(Protocol::SyncMessage)), SLOT(handleMessage(Protocol::SyncMessage)));
-    connect(peer, SIGNAL(dispatchMessage(Protocol::RpcCall))    , SLOT(handleMessage(Protocol::RpcCall)));
-    connect(peer, SIGNAL(dispatchMessage(Protocol::InitRequest)), SLOT(handleMessage(Protocol::InitRequest)));
-    connect(peer, SIGNAL(dispatchMessage(Protocol::InitData))   , SLOT(handleMessage(Protocol::InitData)));
+    connect(peer, selectOverload<const Protocol::SyncMessage&>(&InternalPeer::dispatchMessage),
+            this, selectOverload<const Protocol::SyncMessage&>(&InternalPeer::handleMessage));
+    connect(peer, selectOverload<const Protocol::RpcCall&>(&InternalPeer::dispatchMessage),
+            this, selectOverload<const Protocol::RpcCall&>(&InternalPeer::handleMessage));
+    connect(peer, selectOverload<const Protocol::InitRequest&>(&InternalPeer::dispatchMessage),
+            this, selectOverload<const Protocol::InitRequest&>(&InternalPeer::handleMessage));
+    connect(peer, selectOverload<const Protocol::InitData&>(&InternalPeer::dispatchMessage),
+            this, selectOverload<const Protocol::InitData&>(&InternalPeer::handleMessage));
 
     connect(peer, &Peer::disconnected, this, &InternalPeer::peerDisconnected);
 

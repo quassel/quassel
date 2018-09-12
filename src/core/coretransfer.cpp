@@ -24,6 +24,7 @@
 #include <QTcpSocket>
 
 #include "coretransfer.h"
+#include "util.h"
 
 const qint64 chunkSize = 16 * 1024;
 
@@ -124,7 +125,7 @@ void CoreTransfer::setupConnectionForReceive()
     _socket = new QTcpSocket(this);
     connect(_socket, &QAbstractSocket::connected, this, &CoreTransfer::startReceiving);
     connect(_socket, &QAbstractSocket::disconnected, this, &CoreTransfer::onSocketDisconnected);
-    connect(_socket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onSocketError(QAbstractSocket::SocketError)));
+    connect(_socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::error), this, &CoreTransfer::onSocketError);
     connect(_socket, &QIODevice::readyRead, this, &CoreTransfer::onDataReceived);
 
     _socket->connectToHost(address(), port());

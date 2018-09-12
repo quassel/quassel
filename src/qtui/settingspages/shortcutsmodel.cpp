@@ -202,11 +202,11 @@ bool ShortcutsModel::setData(const QModelIndex &index, const QVariant &value, in
 
     if (oldSeq == storedSeq && newSeq != storedSeq) {
         if (++_changedCount == 1)
-            emit hasChanged(true);
+            emit changed(true);
     }
     else if (oldSeq != storedSeq && newSeq == storedSeq) {
         if (--_changedCount == 0)
-            emit hasChanged(false);
+            emit changed(false);
     }
 
     return true;
@@ -223,7 +223,7 @@ void ShortcutsModel::load()
     emit dataChanged(index(0, 1), index(rowCount()-1, 1));
     if (_changedCount != 0) {
         _changedCount = 0;
-        emit hasChanged(false);
+        emit changed(false);
     }
 }
 
@@ -237,7 +237,7 @@ void ShortcutsModel::commit()
     }
     if (_changedCount != 0) {
         _changedCount = 0;
-        emit hasChanged(false);
+        emit changed(false);
     }
 }
 

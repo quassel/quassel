@@ -323,7 +323,7 @@ void AliasesModel::initDone()
 
 void AliasesModel::clientConnected()
 {
-    connect(Client::aliasManager(), SIGNAL(updated()), SLOT(revert()));
+    connect(Client::aliasManager(), &AliasManager::updated, this, &AliasesModel::revert);
     if (Client::aliasManager()->isInitialized())
         initDone();
     else

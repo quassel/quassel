@@ -70,8 +70,8 @@ void ChatViewSearchController::setScene(ChatScene *scene)
         return;
 
     connect(_scene, &QObject::destroyed, this, &ChatViewSearchController::sceneDestroyed);
-    connect(_scene, SIGNAL(layoutChanged()), this, SLOT(repositionHighlights()));
-    connect(Client::messageModel(), SIGNAL(finishedBacklogFetch(BufferId)), this, SLOT(updateHighlights()));
+    connect(_scene, &ChatScene::layoutChanged, this, [this]() { repositionHighlights(); });
+    connect(Client::messageModel(), &MessageModel::finishedBacklogFetch, this, [this]() { updateHighlights(); });
     updateHighlights();
 }
 

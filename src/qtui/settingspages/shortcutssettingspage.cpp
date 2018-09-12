@@ -84,10 +84,10 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollecti
     connect(ui.useDefault, &QAbstractButton::clicked, this, &ShortcutsSettingsPage::toggledCustomOrDefault);
     connect(ui.useCustom, &QAbstractButton::clicked, this, &ShortcutsSettingsPage::toggledCustomOrDefault);
 
-    connect(_shortcutsModel, SIGNAL(hasChanged(bool)), SLOT(setChangedState(bool)));
+    connect(_shortcutsModel, &ShortcutsModel::changed, this, &ShortcutsSettingsPage::setChangedState);
 
     // fugly, but directly setting it from the ctor doesn't seem to work
-    QTimer::singleShot(0, ui.searchEdit, SLOT(setFocus()));
+    QTimer::singleShot(0, ui.searchEdit, [widget = ui.searchEdit]() { widget->setFocus(); });
 }
 
 

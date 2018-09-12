@@ -50,7 +50,7 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     m_application.hints().setValue("windows-app-id","QuasselProject.QuasselIRC");
     m_application.hints().setValue("pushover-token", "arNtsi983QSZUqU3KAZrFLKHGFPkdL");
 
-    connect(&Snore::SnoreCore::instance(), SIGNAL(actionInvoked(Snore::Notification)), this, SLOT(actionInvoked(Snore::Notification)));
+    connect(&Snore::SnoreCore::instance(), &Snore::SnoreCore::actionInvoked, this, &SnoreNotificationBackend::actionInvoked);
 
 
     m_alert = Snore::Alert(tr("Private Message"), m_icon);
@@ -140,7 +140,7 @@ SnoreNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
     :SettingsPage("Internal", "SnoreNotification", parent)
 {
     ui.setupUi(this);
-    connect(ui.useSnoreCheckBox, SIGNAL(toggled(bool)), this, SLOT(useSnnoreChanged(bool)));
+    connect(ui.useSnoreCheckBox, &QCheckBox::toggled, this, &ConfigWidget::useSnoreChanged);
 }
 
 bool SnoreNotificationBackend::ConfigWidget::hasDefaults() const
@@ -150,7 +150,7 @@ bool SnoreNotificationBackend::ConfigWidget::hasDefaults() const
 
 void SnoreNotificationBackend::ConfigWidget::defaults()
 {
-    useSnnoreChanged(false);
+    useSnoreChanged(false);
     ui.widget->reset();
 }
 
@@ -172,7 +172,7 @@ void SnoreNotificationBackend::ConfigWidget::save()
     load();
 }
 
-void SnoreNotificationBackend::ConfigWidget::useSnnoreChanged(bool b)
+void SnoreNotificationBackend::ConfigWidget::useSnoreChanged(bool b)
 {
     ui.useSnoreCheckBox->setChecked(b);
     ui.widget->setEnabled(b);

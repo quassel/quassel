@@ -91,8 +91,8 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     connect(Client::instance(), &Client::identityCreated, this, &NetworksSettingsPage::clientIdentityAdded);
     connect(Client::instance(), &Client::identityRemoved, this, &NetworksSettingsPage::clientIdentityRemoved);
 
-    connect(ui.identityList, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-    //connect(ui.randomServer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+    connect(ui.identityList, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
+    //connect(ui.randomServer, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.performEdit, &QTextEdit::textChanged, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.sasl, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.saslAccount, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
@@ -101,25 +101,21 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     connect(ui.autoIdentifyService, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.autoIdentifyPassword, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.useCustomEncodings, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.sendEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.recvEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.serverEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.sendEncoding, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.recvEncoding, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.serverEncoding, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.autoReconnect, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.reconnectInterval, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.reconnectRetries, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.reconnectInterval, selectOverload<int>(&QSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.reconnectRetries, selectOverload<int>(&QSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.unlimitedRetries, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.rejoinOnReconnect, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
 
     // Core features can change during a reconnect.  Always connect these here, delaying testing for
     // the core feature flag in load().
     connect(ui.useCustomMessageRate, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.messageRateBurstSize, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-    connect(ui.messageRateDelay, SIGNAL(valueChanged(double)), this, SLOT(widgetHasChanged()));
+    connect(ui.messageRateBurstSize, selectOverload<int>(&QSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
+    connect(ui.messageRateDelay, selectOverload<double>(&QDoubleSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
     connect(ui.unlimitedMessageRate, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-
-    // Add additional widgets here
-    //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
-    //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
 
     foreach(IdentityId id, Client::identityIds()) {
         clientIdentityAdded(id);
@@ -479,7 +475,7 @@ QListWidgetItem *NetworksSettingsPage::networkItem(NetworkId id) const
 void NetworksSettingsPage::clientNetworkAdded(NetworkId id)
 {
     insertNetwork(id);
-    //connect(Client::network(id), SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
+    //connect(Client::network(id), &Network::updatedRemotely, this, &NetworksSettingsPage::clientNetworkUpdated);
     connect(Client::network(id), &Network::configChanged, this, &NetworksSettingsPage::clientNetworkUpdated);
 
     connect(Client::network(id), &Network::connectionStateSet, this, &NetworksSettingsPage::networkConnectionStateChanged);

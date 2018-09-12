@@ -29,7 +29,7 @@ CoreSessionWidget::CoreSessionWidget(QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    connect(ui.disconnectButton, SIGNAL(released()), this, SLOT(disconnectClicked()));
+    connect(ui.disconnectButton, &QPushButton::released, this, &CoreSessionWidget::onDisconnectClicked);
 }
 
 void CoreSessionWidget::setData(QMap<QString, QVariant> map)
@@ -78,7 +78,7 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
     if (!success) _peerId = -1;
 }
 
-void CoreSessionWidget::disconnectClicked()
+void CoreSessionWidget::onDisconnectClicked()
 {
     // Don't allow the End Session button to be spammed; Quassel's protocol isn't lossy and it
     // should reach the destination eventually...

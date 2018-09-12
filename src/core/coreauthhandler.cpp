@@ -64,7 +64,7 @@ void CoreAuthHandler::onReadyRead()
             qDebug() << "Legacy client detected, switching to compatibility mode";
             _legacy = true;
             RemotePeer *peer = PeerFactory::createPeer(PeerFactory::ProtoDescriptor(Protocol::LegacyProtocol, 0), this, socket(), Compressor::NoCompression, this);
-            connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+            connect(peer, &RemotePeer::protocolVersionMismatch, this, &CoreAuthHandler::onProtocolVersionMismatch);
             setPeer(peer);
             return;
         }
@@ -106,7 +106,7 @@ void CoreAuthHandler::onReadyRead()
 
             if (peer->protocol() == Protocol::LegacyProtocol) {
                 _legacy = true;
-                connect(peer, SIGNAL(protocolVersionMismatch(int,int)), SLOT(onProtocolVersionMismatch(int,int)));
+                connect(peer, &RemotePeer::protocolVersionMismatch, this, &CoreAuthHandler::onProtocolVersionMismatch);
             }
             setPeer(peer);
 
@@ -274,7 +274,7 @@ void CoreAuthHandler::startSsl()
     Q_ASSERT(sslSocket);
 
     qDebug() << qPrintable(tr("Starting encryption for Client:"))  << _peer->description();
-    connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), SLOT(onSslErrors()));
+    connect(sslSocket, selectOverload<const QList<QSslError> &>(&QSslSocket::sslErrors), this, &CoreAuthHandler::onSslErrors);
     sslSocket->flush(); // ensure that the write cache is flushed before we switch to ssl (bug 682)
     sslSocket->startServerEncryption();
     #endif /* HAVE_SSL */

@@ -87,7 +87,7 @@ public slots:
     void save() override;
     void load() override;
     void defaults() override;
-    void newIgnoreRule(QString rule = QString());
+    void newIgnoreRule(const QString &rule = {});
 
 private slots:
     void enableDialog(bool);

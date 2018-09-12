@@ -33,6 +33,7 @@
 #include <QTextLayout>
 #include <QMenu>
 
+#include "action.h"
 #include "buffermodel.h"
 #include "bufferview.h"
 #include "chatline.h"
@@ -869,10 +870,13 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos)
         Clickable click = privateData()->currentClickable;
         switch (click.type()) {
         case Clickable::Url:
+        {
             privateData()->activeClickable = click;
-            menu->addAction(icon::get("edit-copy"), tr("Copy Link Address"),
-                &_actionProxy, SLOT(copyLinkToClipboard()))->setData(QVariant::fromValue<void *>(this));
+            auto action = new Action{icon::get("edit-copy"), tr("Copy Link Address"), menu, &_actionProxy, SLOT(copyLinkToClipboard())};
+            action->setData(QVariant::fromValue<void *>(this));
+            menu->addAction(action);
             break;
+        }
         case Clickable::Channel:
         {
             // Remove existing menu actions, they confuse us when right-clicking on a clickable

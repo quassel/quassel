@@ -36,7 +36,7 @@ BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
     // FIXME: global backlog requester disabled until issues ruled out
     ui.requesterType->removeItem(2);
 
-    connect(ui.requesterType, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.requesterType, selectOverload<int>(&QComboBox::currentIndexChanged), this, &BacklogSettingsPage::widgetHasChanged);
 }
 
 

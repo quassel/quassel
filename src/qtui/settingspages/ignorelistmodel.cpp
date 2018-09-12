@@ -289,7 +289,7 @@ void IgnoreListModel::initDone()
 
 void IgnoreListModel::clientConnected()
 {
-    connect(Client::ignoreListManager(), SIGNAL(updated()), SLOT(revert()));
+    connect(Client::ignoreListManager(), &IgnoreListManager::updated, this, &IgnoreListModel::revert);
     if (Client::ignoreListManager()->isInitialized())
         initDone();
     else

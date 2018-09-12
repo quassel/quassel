@@ -27,17 +27,12 @@ CoreBasicHandler::CoreBasicHandler(CoreNetwork *parent)
     : BasicHandler(parent),
     _network(parent)
 {
-    connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
-        network(), SLOT(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
-
-    connect(this, SIGNAL(putCmd(QString, const QList<QByteArray> &, const QByteArray &, const bool)),
-        network(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &, const bool)));
-
-    connect(this, SIGNAL(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &, const bool)),
-        network(), SLOT(putCmd(QString, const QList<QList<QByteArray>> &, const QByteArray &, const bool)));
-
-    connect(this, &CoreBasicHandler::putRawLine,
-        network(), &CoreNetwork::putRawLine);
+    connect(this, &CoreBasicHandler::displayMsg, network(), &CoreNetwork::onDisplayMsg);
+    connect(this, &CoreBasicHandler::putRawLine, network(), &CoreNetwork::putRawLine);
+    connect(this,      selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, bool>(&CoreBasicHandler::putCmd),
+            network(), selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, bool>(&CoreNetwork::putCmd));
+    connect(this,      selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, bool>(&CoreBasicHandler::putCmd),
+            network(), selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, bool>(&CoreNetwork::putCmd));
 }
 
 

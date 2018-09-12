@@ -99,7 +99,7 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
         ui.localHighlightsLabel->setText(tr("Local Highlights apply to this device only"));
     }
 
-    connect(ui.add, SIGNAL(clicked(bool)), this, SLOT(addNewRow()));
+    connect(ui.add, &QAbstractButton::clicked, this, [this]() { addNewRow(); });
     connect(ui.remove, &QAbstractButton::clicked, this, &HighlightSettingsPage::removeSelectedRows);
     //TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
     connect(ui.highlightTable, &QTableWidget::itemClicked, this, &HighlightSettingsPage::selectRow);

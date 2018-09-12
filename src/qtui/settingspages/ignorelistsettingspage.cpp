@@ -30,8 +30,8 @@
 #include <QDebug>
 
 #include "expressionmatch.h"
-
 #include "icon.h"
+#include "util.h"
 
 IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
     : SettingsPage(tr("IRC"), tr("Ignore List"), parent)
@@ -59,10 +59,10 @@ IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
     ui.ignoreListView->viewport()->setMouseTracking(true);
 
     connect(ui.ignoreListView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &IgnoreListSettingsPage::selectionChanged);
-    connect(ui.newIgnoreRuleButton, SIGNAL(clicked()), this, SLOT(newIgnoreRule()));
+    connect(ui.newIgnoreRuleButton, &QAbstractButton::clicked, this, [this]() { newIgnoreRule(); });
     connect(ui.deleteIgnoreRuleButton, &QAbstractButton::clicked, this, &IgnoreListSettingsPage::deleteSelectedIgnoreRule);
     connect(ui.editIgnoreRuleButton, &QAbstractButton::clicked, this, &IgnoreListSettingsPage::editSelectedIgnoreRule);
-    connect(&_ignoreListModel, SIGNAL(configChanged(bool)), this, SLOT(setChangedState(bool)));
+    connect(&_ignoreListModel, &IgnoreListModel::configChanged, this, &IgnoreListSettingsPage::setChangedState);
     connect(&_ignoreListModel, &IgnoreListModel::modelReady, this, &IgnoreListSettingsPage::enableDialog);
 
     enableDialog(_ignoreListModel.isReady());
@@ -77,7 +77,7 @@ IgnoreListSettingsPage::~IgnoreListSettingsPage()
 
 void IgnoreListSettingsPage::load()
 {
-    if (_ignoreListModel.configChanged())
+    if (_ignoreListModel.hasConfigChanged())
         _ignoreListModel.revert();
     ui.ignoreListView->selectionModel()->reset();
     ui.editIgnoreRuleButton->setEnabled(false);
@@ -92,7 +92,7 @@ void IgnoreListSettingsPage::defaults()
 
 void IgnoreListSettingsPage::save()
 {
-    if (_ignoreListModel.configChanged()) {
+    if (_ignoreListModel.hasConfigChanged()) {
         _ignoreListModel.commit();
     }
     ui.ignoreListView->selectionModel()->reset();
@@ -124,7 +124,7 @@ void IgnoreListSettingsPage::deleteSelectedIgnoreRule()
 }
 
 
-void IgnoreListSettingsPage::newIgnoreRule(QString rule)
+void IgnoreListSettingsPage::newIgnoreRule(const QString &rule)
 {
     IgnoreListManager::IgnoreListItem newItem = IgnoreListManager::IgnoreListItem();
     newItem.setStrictness(IgnoreListManager::SoftStrictness);
@@ -290,9 +290,9 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
 
     connect(ui.ignoreRuleLineEdit, &QLineEdit::textChanged, this, &IgnoreListEditDlg::widgetHasChanged);
     connect(ui.scopeRuleTextEdit, &QPlainTextEdit::textChanged, this, &IgnoreListEditDlg::widgetHasChanged);
-    connect(&_typeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
-    connect(&_strictnessButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
-    connect(&_scopeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
+    connect(&_typeButtonGroup, selectOverload<int>(&QButtonGroup::buttonClicked), this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(&_strictnessButtonGroup, selectOverload<int>(&QButtonGroup::buttonClicked), this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(&_scopeButtonGroup, selectOverload<int>(&QButtonGroup::buttonClicked), this, &IgnoreListEditDlg::widgetHasChanged);
     connect(ui.isRegExCheckBox, &QCheckBox::stateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
     connect(ui.isActiveCheckBox, &QCheckBox::stateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
 

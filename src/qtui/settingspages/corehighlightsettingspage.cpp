@@ -26,6 +26,7 @@
 #include "corehighlightsettingspage.h"
 #include "icon.h"
 #include "qtui.h"
+#include "util.h"
 
 CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"),
@@ -46,30 +47,20 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     coreConnectionStateChanged(Client::isConnected()); // need a core connection!
     connect(Client::instance(), &Client::coreConnectionStateChanged, this, &CoreHighlightSettingsPage::coreConnectionStateChanged);
 
-    connect(ui.highlightAdd, SIGNAL(clicked(bool)), this, SLOT(addNewHighlightRow()));
+    connect(ui.highlightAdd, &QAbstractButton::clicked, this, [this]() { addNewHighlightRow(); });
     connect(ui.highlightRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::removeSelectedHighlightRows);
     connect(ui.highlightImport, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::importRules);
 
-    connect(ui.ignoredAdd, SIGNAL(clicked(bool)), this, SLOT(addNewIgnoredRow()));
+    connect(ui.ignoredAdd, &QAbstractButton::clicked, this, [this]() { addNewIgnoredRow(); });
     connect(ui.ignoredRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::removeSelectedIgnoredRows);
 
     // TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
-    connect(ui.highlightTable,
-            &QTableWidget::itemClicked,
-            this,
-            &CoreHighlightSettingsPage::selectHighlightRow);
-    connect(ui.ignoredTable,
-            &QTableWidget::itemClicked,
-            this,
-            &CoreHighlightSettingsPage::selectIgnoredRow);
+    connect(ui.highlightTable, &QTableWidget::itemClicked, this, &CoreHighlightSettingsPage::selectHighlightRow);
+    connect(ui.ignoredTable, &QTableWidget::itemClicked, this, &CoreHighlightSettingsPage::selectIgnoredRow);
 
     // Update the "Case sensitive" checkbox
-    connect(ui.highlightNicksComboBox,
-            SIGNAL(currentIndexChanged(int)),
-            this,
-            SLOT(highlightNicksChanged(int)));
-
-    connect(ui.highlightNicksComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.highlightNicksComboBox, selectOverload<int>(&QComboBox::currentIndexChanged), this, &CoreHighlightSettingsPage::highlightNicksChanged);
+    connect(ui.highlightNicksComboBox, selectOverload<int>(&QComboBox::currentIndexChanged), this, &CoreHighlightSettingsPage::widgetHasChanged);
     connect(ui.nicksCaseSensitive, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
 
     connect(ui.highlightAdd, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);

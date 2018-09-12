@@ -31,12 +31,13 @@
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"
+#include "util.h"
 
 KNotificationBackend::KNotificationBackend(QObject *parent)
     : AbstractNotificationBackend(parent)
 {
-    connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(SystemTray::ActivationReason)),
-        SLOT(notificationActivated(SystemTray::ActivationReason)));
+    connect(QtUi::mainWindow()->systemTray(), &SystemTray::activated,
+            this, selectOverload<SystemTray::ActivationReason>(&KNotificationBackend::notificationActivated));
 
     updateToolTip();
 }
@@ -61,7 +62,7 @@ void KNotificationBackend::notify(const Notification &n)
         KNotification::RaiseWidgetOnActivation
         |KNotification::CloseWhenWidgetActivated
         |KNotification::CloseOnTimeout);
-    connect(notification, SIGNAL(activated(uint)), SLOT(notificationActivated()));
+    connect(notification, selectOverload<uint>(&KNotification::activated), this, selectOverload<>(&KNotificationBackend::notificationActivated));
     notification->setActions(QStringList("View"));
     notification->setProperty("notificationId", n.notificationId);
 
@@ -145,7 +146,7 @@ KNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(_widget);
 
-    connect(_widget, SIGNAL(changed(bool)), SLOT(widgetChanged(bool)));
+    connect(_widget, &KNotifyConfigWidget::changed, this, &ConfigWidget::widgetChanged);
 }
 
 

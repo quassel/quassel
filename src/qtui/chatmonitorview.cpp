@@ -24,6 +24,7 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 
+#include "action.h"
 #include "buffermodel.h"
 #include "chatmonitorfilter.h"
 #include "chatlinemodel.h"
@@ -54,26 +55,29 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
 {
     ChatView::addActionsToMenu(menu, pos);
     menu->addSeparator();
-    QAction *showOwnNicksAction = menu->addAction(tr("Show Own Messages"), _filter, SLOT(setShowOwnMessages(bool)));
+    auto showOwnNicksAction = new Action(tr("Show Own Messages"), menu, _filter, SLOT(setShowOwnMessages(bool)));
     showOwnNicksAction->setCheckable(true);
     showOwnNicksAction->setChecked(_filter->showOwnMessages());
+    menu->addAction(showOwnNicksAction);
 
     if (scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
         menu->addSeparator();
 
-        QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
+        auto showNetworkAction = new Action(tr("Show Network Name"), menu, this, SLOT(showFieldsChanged(bool)));
         showNetworkAction->setCheckable(true);
         showNetworkAction->setChecked(_filter->showFields() & ChatMonitorFilter::NetworkField);
         showNetworkAction->setData(ChatMonitorFilter::NetworkField);
+        menu->addAction(showNetworkAction);
 
-        QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
+        auto showBufferAction = new Action(tr("Show Buffer Name"), menu, this, SLOT(showFieldsChanged(bool)));
         showBufferAction->setCheckable(true);
         showBufferAction->setChecked(_filter->showFields() & ChatMonitorFilter::BufferField);
         showBufferAction->setData(ChatMonitorFilter::BufferField);
+        menu->addAction(showBufferAction);
     }
 
     menu->addSeparator();
-    menu->addAction(icon::get("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
+    menu->addAction(new Action(icon::get("configure"), tr("Configure..."), menu, this, SLOT(showSettingsPage())));
 }
 
 
@@ -124,5 +128,5 @@ void ChatMonitorView::showSettingsPage()
 void ChatMonitorView::coreConnectionStateChanged(bool connected)
 {
     if (connected)
-        connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), _filter, SLOT(invalidateFilter()));
+        connect(Client::ignoreListManager(), &ClientIgnoreListManager::ignoreListChanged, _filter, &ChatMonitorFilter::invalidateFilter);
 }
