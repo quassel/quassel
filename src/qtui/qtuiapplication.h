@@ -75,9 +75,6 @@ private:
      */
     bool applySettingsMigration(QtUiSettings settings, const uint newVersion);
 
-private slots:
-    void initUi();
-
 protected:
     std::unique_ptr<Client> _client;
 
