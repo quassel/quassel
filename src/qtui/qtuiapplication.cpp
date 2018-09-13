@@ -34,9 +34,6 @@
 QtUiApplication::QtUiApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 {
-    connect(this, &QGuiApplication::commitDataRequest, this, &QtUiApplication::commitData, Qt::DirectConnection);
-    connect(this, &QGuiApplication::saveStateRequest, this, &QtUiApplication::saveState, Qt::DirectConnection);
-
 #if QT_VERSION >= 0x050600
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 #endif
@@ -53,19 +50,16 @@ void QtUiApplication::init()
     _client = std::make_unique<Client>(std::make_unique<QtUi>());
 
     // Init UI only after the event loop has started
-    // TODO Qt5: Make this a lambda
-    QTimer::singleShot(0, this, &QtUiApplication::initUi);
-}
+    QTimer::singleShot(0, this, [this]() {
+        QtUi::instance()->init();
+        connect(this, &QGuiApplication::commitDataRequest, this, &QtUiApplication::commitData, Qt::DirectConnection);
+        connect(this, &QGuiApplication::saveStateRequest, this, &QtUiApplication::saveState, Qt::DirectConnection);
 
+        // Needs to happen after UI init, so the MainWin quit handler is registered first
+        Quassel::registerQuitHandler(quitHandler());
 
-void QtUiApplication::initUi()
-{
-    QtUi::instance()->init();
-
-    // Needs to happen after UI init, so the MainWin quit handler is registered first
-    Quassel::registerQuitHandler(quitHandler());
-
-    resumeSessionIfPossible();
+        resumeSessionIfPossible();
+    });
 }
 
 
