@@ -753,6 +753,10 @@ void CoreSessionEventProcessor::lateProcessIrcEventQuit(IrcEvent *e)
     if (!ircuser)
         return;
 
+    // Clear the user from the AutoWho queue if in it
+    // This avoids needlessly checking a user that quickly joins then parts
+    coreNetwork(e)->cancelAutoWhoOneshot(ircuser->nick());
+
     ircuser->quit();
 }
 
