@@ -1375,11 +1375,23 @@ void CoreNetwork::sendAutoWho()
         }
         if (supports("WHOX")) {
             // Use WHO extended to poll away users and/or user accounts
+            // Explicitly only match on nickname ("n"), don't rely on server defaults
+            //
+            // WHO <nickname> n%chtsunfra,<unique_number>
+            //
             // See http://faerion.sourceforge.net/doc/irc/whox.var
-            // And https://github.com/hexchat/hexchat/blob/c874a9525c9b66f1d5ddcf6c4107d046eba7e2c5/src/common/proto-irc.c#L750
-            putRawLine(serverEncode(QString("WHO %1 %%chtsunfra,%2")
-                                    .arg(serverEncode(chanOrNick), QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))));
+            // And https://github.com/quakenet/snircd/blob/master/doc/readme.who
+            // And https://github.com/hexchat/hexchat/blob/57478b65758e6b697b1d82ce21075e74aa475efc/src/common/proto-irc.c#L752
+            putRawLine(serverEncode(QString("WHO %1 n%chtsunfra,%2")
+                                    .arg(serverEncode(chanOrNick),
+                                         QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))));
         } else {
+            // Fall back to normal WHO
+            //
+            // Note: According to RFC 1459, "WHO <phrase>" can fall back to searching realname,
+            // hostmask, etc.  There's nothing we can do about that :(
+            //
+            // See https://tools.ietf.org/html/rfc1459#section-4.5.1
             putRawLine(serverEncode(QString("WHO %1").arg(chanOrNick)));
         }
         break;
