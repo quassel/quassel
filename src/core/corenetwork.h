@@ -392,6 +392,18 @@ public slots:
      */
     void queueAutoWhoOneshot(const QString &channelOrNick);
 
+    /**
+     * Removes the given channel/nick from AutoWho queue for when it stops existing
+     *
+     * If not already in queue, nothing happens.  This should only be used for nicknames and
+     * channels that have suddenly stopped existing (e.g. nick joins then quits).
+     *
+     * For when a periodic channel AutoWho finishes, see CoreNetwork::setAutoWhoDone()
+     *
+     * @param channelOrNick Channel or nickname to WHO
+     */
+    void cancelAutoWhoOneshot(const QString &channelOrNick);
+
     bool setAutoWhoDone(const QString &channel);
 
     void updateIssuedModes(const QString &requestedModes);
