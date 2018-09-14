@@ -402,11 +402,16 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
             break;
     }
 
-    // If using away-notify, check new users.  Works around buggy IRC servers
-    // forgetting to send :away messages for users who join channels when away.
-    if (net->capEnabled(IrcCap::AWAY_NOTIFY)) {
-        net->queueAutoWhoOneshot(ircuser->nick());
-    }
+    // With "away-notify" enabled, some IRC servers forget to send :away messages for users who join
+    // channels while away.  Unfortunately, working around this involves WHO'ng every single user as
+    // they join, which is not very efficient.  If at all possible, it's better to get the issue
+    // fixed in the IRC server instead.
+    //
+    // If pursuing a workaround instead, this is where you'd do it.  Check the version control
+    // history for the commit that added this comment to see how to implement it - there's some
+    // unexpected situations to watch out for!
+    //
+    // See https://ircv3.net/specs/extensions/away-notify-3.1.html
 
     if (!handledByNetsplit)
         ircuser->joinChannel(channel);
@@ -752,10 +757,6 @@ void CoreSessionEventProcessor::lateProcessIrcEventQuit(IrcEvent *e)
     IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
     if (!ircuser)
         return;
-
-    // Clear the user from the AutoWho queue if in it
-    // This avoids needlessly checking a user that quickly joins then parts
-    coreNetwork(e)->cancelAutoWhoOneshot(ircuser->nick());
 
     ircuser->quit();
 }
@@ -1138,9 +1139,7 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
         return;
 
     QString channel = e->params()[0];
-    // Store the nick separate from ircuser for AutoWho check below
-    QString nick = e->params()[4];
-    IrcUser *ircuser = e->network()->ircUser(nick);
+    IrcUser *ircuser = e->network()->ircUser(e->params()[4]);
     if (ircuser) {
         // Only process the WHO information if an IRC user exists.  Don't create an IRC user here;
         // there's no way to track when the user quits, which would leave a phantom IrcUser lying
@@ -1152,10 +1151,7 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
     }
 
     // Check if channel name has a who in progress.
-    // If not, then check if user nickname has a who in progress.  Use nick directly; don't use
-    // ircuser as that may be deleted (e.g. nick joins channel, leaves before WHO reply received).
-    if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
-        (coreNetwork(e)->isAutoWhoInProgress(nick))) {
+    if (coreNetwork(e)->isAutoWhoInProgress(channel)) {
         e->setFlag(EventManager::Silent);
     }
 }
@@ -1242,8 +1238,7 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
         return;
 
     QString channel = e->params()[1];
-    QString nick = e->params()[5];
-    IrcUser *ircuser = e->network()->ircUser(nick);
+    IrcUser *ircuser = e->network()->ircUser(e->params()[5]);
     if (ircuser) {
         // Only process the WHO information if an IRC user exists.  Don't create an IRC user here;
         // there's no way to track when the user quits, which would leave a phantom IrcUser lying
@@ -1267,10 +1262,7 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
     }
 
     // Check if channel name has a who in progress.
-    // If not, then check if user nickname has a who in progress.  Use nick directly; don't use
-    // ircuser as that may be deleted (e.g. nick joins channel, leaves before WHO reply received).
-    if (coreNetwork(e)->isAutoWhoInProgress(channel) ||
-        (coreNetwork(e)->isAutoWhoInProgress(nick))) {
+    if (coreNetwork(e)->isAutoWhoInProgress(channel)) {
         e->setFlag(EventManager::Silent);
     }
 }

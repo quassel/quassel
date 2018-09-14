@@ -1322,16 +1322,6 @@ void CoreNetwork::queueAutoWhoOneshot(const QString &name)
 }
 
 
-void CoreNetwork::cancelAutoWhoOneshot(const QString &name)
-{
-    // Remove channel/nick from queue if it exists
-    _autoWhoQueue.removeAll(name);
-
-    // The AutoWho timer will detect if the queue is empty and automatically stop, no need to
-    // manually control it.
-}
-
-
 void CoreNetwork::setAutoWhoDelay(int delay)
 {
     _autoWhoTimer.setInterval(delay * 1000);
