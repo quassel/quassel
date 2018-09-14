@@ -90,7 +90,16 @@ public:
     inline QByteArray readChannelCipherKey(const QString &channel) const { return _cipherKeys.value(channel.toLower()); }
     inline void storeChannelCipherKey(const QString &channel, const QByteArray &key) { _cipherKeys[channel.toLower()] = key; }
 
-    inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoPending.value(channel.toLower(), 0); }
+    /**
+     * Checks if the given target has an automatic WHO in progress
+     *
+     * @param name Channel or nickname
+     * @return True if an automatic WHO is in progress, otherwise false
+     */
+    inline bool isAutoWhoInProgress(const QString &name) const
+    {
+        return _autoWhoPending.value(name.toLower(), 0);
+    }
 
     inline UserId userId() const { return _coreSession->user(); }
 
@@ -388,23 +397,29 @@ public slots:
      * When 'away-notify' is enabled, this will trigger an immediate AutoWho since regular
      * who-cycles are disabled as per IRCv3 specifications.
      *
-     * @param[in] channelOrNick Channel or nickname to WHO
+     * @param[in] name Channel or nickname
      */
-    void queueAutoWhoOneshot(const QString &channelOrNick);
+    void queueAutoWhoOneshot(const QString &name);
 
     /**
-     * Removes the given channel/nick from AutoWho queue for when it stops existing
+     * Removes the given channel/nick from AutoWho queue
      *
-     * If not already in queue, nothing happens.  This should only be used for nicknames and
-     * channels that have suddenly stopped existing (e.g. nick joins then quits).
+     * This can avoid needlessly WHO'ng nicknames and channels that are no longer of interest, e.g.
+     * if parting a channel right after joining or if a nick joins then quits.
      *
      * For when a periodic channel AutoWho finishes, see CoreNetwork::setAutoWhoDone()
      *
-     * @param channelOrNick Channel or nickname to WHO
+     * @param name Channel or nickname
      */
-    void cancelAutoWhoOneshot(const QString &channelOrNick);
+    void cancelAutoWhoOneshot(const QString &name);
 
-    bool setAutoWhoDone(const QString &channel);
+    /**
+     * Checks if the given target has an automatic WHO in progress, and sets it as done if so
+     *
+     * @param name Channel or nickname
+     * @return True if an automatic WHO is in progress (and should be silenced), otherwise false
+     */
+    bool setAutoWhoDone(const QString &name);
 
     void updateIssuedModes(const QString &requestedModes);
     void updatePersistentModes(QString addModes, QString removeModes);
