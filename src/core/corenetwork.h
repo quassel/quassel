@@ -402,18 +402,6 @@ public slots:
     void queueAutoWhoOneshot(const QString &name);
 
     /**
-     * Removes the given channel/nick from AutoWho queue
-     *
-     * This can avoid needlessly WHO'ng nicknames and channels that are no longer of interest, e.g.
-     * if parting a channel right after joining or if a nick joins then quits.
-     *
-     * For when a periodic channel AutoWho finishes, see CoreNetwork::setAutoWhoDone()
-     *
-     * @param name Channel or nickname
-     */
-    void cancelAutoWhoOneshot(const QString &name);
-
-    /**
      * Checks if the given target has an automatic WHO in progress, and sets it as done if so
      *
      * @param name Channel or nickname
