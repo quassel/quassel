@@ -494,13 +494,13 @@ bool CoreNetwork::cipherUsesCBC(const QString &target)
 }
 #endif /* HAVE_QCA2 */
 
-bool CoreNetwork::setAutoWhoDone(const QString &channel)
+bool CoreNetwork::setAutoWhoDone(const QString &name)
 {
-    QString chan = channel.toLower();
-    if (_autoWhoPending.value(chan, 0) <= 0)
+    QString chanOrNick = name.toLower();
+    if (_autoWhoPending.value(chanOrNick, 0) <= 0)
         return false;
-    if (--_autoWhoPending[chan] <= 0)
-        _autoWhoPending.remove(chan);
+    if (--_autoWhoPending[chanOrNick] <= 0)
+        _autoWhoPending.remove(chanOrNick);
     return true;
 }
 
@@ -1308,12 +1308,12 @@ void CoreNetwork::startAutoWhoCycle()
     _autoWhoQueue = channels();
 }
 
-void CoreNetwork::queueAutoWhoOneshot(const QString &channelOrNick)
+void CoreNetwork::queueAutoWhoOneshot(const QString &name)
 {
     // Prepend so these new channels/nicks are the first to be checked
     // Don't allow duplicates
-    if (!_autoWhoQueue.contains(channelOrNick.toLower())) {
-        _autoWhoQueue.prepend(channelOrNick.toLower());
+    if (!_autoWhoQueue.contains(name.toLower())) {
+        _autoWhoQueue.prepend(name.toLower());
     }
     if (capEnabled(IrcCap::AWAY_NOTIFY)) {
         // When away-notify is active, the timer's stopped.  Start a new cycle to who this channel.
@@ -1322,10 +1322,10 @@ void CoreNetwork::queueAutoWhoOneshot(const QString &channelOrNick)
 }
 
 
-void CoreNetwork::cancelAutoWhoOneshot(const QString &channelOrNick)
+void CoreNetwork::cancelAutoWhoOneshot(const QString &name)
 {
     // Remove channel/nick from queue if it exists
-    _autoWhoQueue.removeAll(channelOrNick);
+    _autoWhoQueue.removeAll(name);
 
     // The AutoWho timer will detect if the queue is empty and automatically stop, no need to
     // manually control it.
