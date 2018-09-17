@@ -20,11 +20,10 @@
 
 #include "backlogsettingspage.h"
 
-#include "qtui.h"
 #include "backlogsettings.h"
-
-// For backlog requester types
 #include "backlogrequester.h"
+#include "qtui.h"
+#include "widgethelpers.h"
 
 BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
     : SettingsPage(tr("Interface"), tr("Backlog Fetching"), parent)
@@ -36,7 +35,7 @@ BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
     // FIXME: global backlog requester disabled until issues ruled out
     ui.requesterType->removeItem(2);
 
-    connect(ui.requesterType, selectOverload<int>(&QComboBox::currentIndexChanged), this, &BacklogSettingsPage::widgetHasChanged);
+    connectToWidgetChangedSignal(ui.requesterType, this, &BacklogSettingsPage::widgetHasChanged);
 }
 
 

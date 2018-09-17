@@ -32,6 +32,7 @@
 #include "presetnetworks.h"
 #include "settingspagedlg.h"
 #include "util.h"
+#include "widgethelpers.h"
 
 // IRCv3 capabilities
 #include "irccap.h"
@@ -63,8 +64,6 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     ui.downServer->setIcon(icon::get("go-down"));
     ui.editIdentities->setIcon(icon::get("configure"));
 
-    _ignoreWidgetChanges = false;
-
     connectedIcon = icon::get("network-connect");
     connectingIcon = icon::get("network-wired"); // FIXME network-connecting
     disconnectedIcon = icon::get("network-disconnect");
@@ -85,37 +84,36 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent)
     currentId = 0;
     setEnabled(Client::isConnected()); // need a core connection!
     setWidgetStates();
+
+    connectToWidgetsChangedSignals({
+            ui.identityList,
+            ui.performEdit,
+            ui.sasl,
+            ui.saslAccount,
+            ui.saslPassword,
+            ui.autoIdentify,
+            ui.autoIdentifyService,
+            ui.autoIdentifyPassword,
+            ui.useCustomEncodings,
+            ui.sendEncoding,
+            ui.recvEncoding,
+            ui.serverEncoding,
+            ui.autoReconnect,
+            ui.reconnectInterval,
+            ui.reconnectRetries,
+            ui.unlimitedRetries,
+            ui.rejoinOnReconnect,
+            ui.useCustomMessageRate,
+            ui.messageRateBurstSize,
+            ui.messageRateDelay,
+            ui.unlimitedMessageRate
+    }, this, &NetworksSettingsPage::widgetHasChanged);
+
     connect(Client::instance(), &Client::coreConnectionStateChanged, this, &NetworksSettingsPage::coreConnectionStateChanged);
     connect(Client::instance(), &Client::networkCreated, this, &NetworksSettingsPage::clientNetworkAdded);
     connect(Client::instance(), &Client::networkRemoved, this, &NetworksSettingsPage::clientNetworkRemoved);
     connect(Client::instance(), &Client::identityCreated, this, &NetworksSettingsPage::clientIdentityAdded);
     connect(Client::instance(), &Client::identityRemoved, this, &NetworksSettingsPage::clientIdentityRemoved);
-
-    connect(ui.identityList, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    //connect(ui.randomServer, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.performEdit, &QTextEdit::textChanged, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.sasl, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.saslAccount, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.saslPassword, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.autoIdentify, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.autoIdentifyService, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.autoIdentifyPassword, &QLineEdit::textEdited, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.useCustomEncodings, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.sendEncoding, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.recvEncoding, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.serverEncoding, selectOverload<int>(&QComboBox::currentIndexChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.autoReconnect, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.reconnectInterval, selectOverload<int>(&QSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.reconnectRetries, selectOverload<int>(&QSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.unlimitedRetries, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.rejoinOnReconnect, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-
-    // Core features can change during a reconnect.  Always connect these here, delaying testing for
-    // the core feature flag in load().
-    connect(ui.useCustomMessageRate, &QGroupBox::clicked, this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.messageRateBurstSize, selectOverload<int>(&QSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.messageRateDelay, selectOverload<double>(&QDoubleSpinBox::valueChanged), this, &NetworksSettingsPage::widgetHasChanged);
-    connect(ui.unlimitedMessageRate, &QAbstractButton::clicked, this, &NetworksSettingsPage::widgetHasChanged);
 
     foreach(IdentityId id, Client::identityIds()) {
         clientIdentityAdded(id);

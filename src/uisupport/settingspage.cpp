@@ -27,8 +27,8 @@
 #include <utility>
 
 #include "fontselector.h"
-
 #include "uisettings.h"
+#include "widgethelpers.h"
 
 SettingsPage::SettingsPage(QString category, QString title, QWidget *parent)
     : QWidget(parent),
@@ -113,21 +113,8 @@ void SettingsPage::initAutoWidgets()
     // we need to climb the QObject tree recursively
     findAutoWidgets(this, &_autoWidgets);
 
-    foreach(QObject *widget, _autoWidgets) {
-        if (widget->inherits("ColorButton"))
-            connect(widget, SIGNAL(colorChanged(QColor)), SLOT(autoWidgetHasChanged()));
-        else if (widget->inherits("QAbstractButton") || widget->inherits("QGroupBox"))
-            connect(widget, SIGNAL(toggled(bool)), SLOT(autoWidgetHasChanged()));
-        else if (widget->inherits("QLineEdit") || widget->inherits("QTextEdit"))
-            connect(widget, SIGNAL(textChanged(const QString &)), SLOT(autoWidgetHasChanged()));
-        else if (widget->inherits("QComboBox"))
-            connect(widget, SIGNAL(currentIndexChanged(int)), SLOT(autoWidgetHasChanged()));
-        else if (widget->inherits("QSpinBox"))
-            connect(widget, SIGNAL(valueChanged(int)), SLOT(autoWidgetHasChanged()));
-        else if (widget->inherits("FontSelector"))
-            connect(widget, SIGNAL(fontChanged(QFont)), SLOT(autoWidgetHasChanged()));
-        else
-            qWarning() << "SettingsPage::init(): Unknown autoWidget type" << widget->metaObject()->className();
+    if (!connectToWidgetsChangedSignals(_autoWidgets, this, &SettingsPage::autoWidgetHasChanged)) {
+        qWarning() << "SettingsPage::initAutoWidgets(): Unsupported auto widget type(s)!";
     }
 }
 

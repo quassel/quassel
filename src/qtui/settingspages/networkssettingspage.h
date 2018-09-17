@@ -132,7 +132,7 @@ private:
 
     NetworkId currentId;
     QHash<NetworkId, NetworkInfo> networkInfos;
-    bool _ignoreWidgetChanges;
+    bool _ignoreWidgetChanges{false};
 #ifdef HAVE_SSL
     CertIdentity *_cid{nullptr};
 #endif
