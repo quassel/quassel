@@ -49,14 +49,14 @@ void SonnetSettingsPage::defaults()
 
 void SonnetSettingsPage::load()
 {
-
+    SettingsPage::load();
 }
 
 
 void SonnetSettingsPage::save()
 {
     _configWidget->save();
-    setChangedState(false);
+    SettingsPage::save();
 }
 
 
