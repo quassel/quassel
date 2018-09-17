@@ -32,6 +32,7 @@ target_sources(${TARGET} PRIVATE
     treeviewtouch.cpp
     uisettings.cpp
     uistyle.cpp
+    widgethelpers.h
 
     # needed for automoc
     abstractnotificationbackend.h
