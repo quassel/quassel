@@ -18,6 +18,7 @@ target_sources(${TARGET} PRIVATE
     eventmanager.cpp
     expressionmatch.cpp
     # expressionmatchtests.cpp
+    funchelpers.h
     highlightrulemanager.cpp
     identity.cpp
     ignorelistmanager.cpp
