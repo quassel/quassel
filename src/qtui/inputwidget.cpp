@@ -144,11 +144,7 @@ InputWidget::InputWidget(QWidget *parent)
     setMultiLineEnabled(s.value("EnableMultiLine", true));
 
     ActionCollection *coll = QtUi::actionCollection();
-
-    auto *activateInputline = coll->add<Action>("FocusInputLine");
-    connect(activateInputline, &QAction::triggered, this, selectOverload<>(&QWidget::setFocus));
-    activateInputline->setText(tr("Focus Input Line"));
-    activateInputline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+    coll->addAction("FocusInputLine", new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL + Qt::Key_L)});
 
     connect(inputLine(), &MultiLineEdit::textEntered, this, &InputWidget::onTextEntered, Qt::QueuedConnection); // make sure the line is already reset, bug #984
     connect(inputLine(), &QTextEdit::currentCharFormatChanged, this, &InputWidget::currentCharFormatChanged);

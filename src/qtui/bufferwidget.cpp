@@ -74,29 +74,14 @@ BufferWidget::BufferWidget(QWidget *parent)
         this, &BufferWidget::scrollToHighlight);
 
     ActionCollection *coll = QtUi::actionCollection();
-
-    auto *zoomInChatview = coll->add<Action>("ZoomInChatView", this, SLOT(zoomIn()));
-    zoomInChatview->setText(tr("Zoom In"));
-    zoomInChatview->setIcon(icon::get("zoom-in"));
-    zoomInChatview->setShortcut(QKeySequence::ZoomIn);
-
-    auto *zoomOutChatview = coll->add<Action>("ZoomOutChatView", this, SLOT(zoomOut()));
-    zoomOutChatview->setIcon(icon::get("zoom-out"));
-    zoomOutChatview->setText(tr("Zoom Out"));
-    zoomOutChatview->setShortcut(QKeySequence::ZoomOut);
-
-    auto *zoomOriginalChatview = coll->add<Action>("ZoomOriginalChatView", this, SLOT(zoomOriginal()));
-    zoomOriginalChatview->setIcon(icon::get("zoom-original"));
-    zoomOriginalChatview->setText(tr("Actual Size"));
-    //zoomOriginalChatview->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0)); // used for RTS switching
-
-    auto *setMarkerLine = coll->add<Action>("SetMarkerLineToBottom", this, SLOT(setMarkerLine()));
-    setMarkerLine->setText(tr("Set Marker Line"));
-    setMarkerLine->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
-
-    auto *jumpToMarkerLine = QtUi::actionCollection("Navigation")->add<Action>("JumpToMarkerLine", this, SLOT(jumpToMarkerLine()));
-    jumpToMarkerLine->setText(tr("Go to Marker Line"));
-    jumpToMarkerLine->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_K));
+    coll->addActions({
+        {"ZoomInChatView", new Action{icon::get("zoom-in"), tr("Zoom In"), coll, this, &BufferWidget::zoomIn, QKeySequence::ZoomIn}},
+        {"ZoomOutChatView", new Action{icon::get("zoom-out"), tr("Zoom Out"), coll, this, &BufferWidget::zoomOut, QKeySequence::ZoomOut}},
+        {"ZoomOriginalChatView", new Action{icon::get("zoom-original"), tr("Actual Size"), coll, this, &BufferWidget::zoomOriginal}},
+        {"SetMarkerLineToBottom", new Action{tr("Set Marker Line"), coll, this, [this]() { setMarkerLine(); }, QKeySequence(Qt::CTRL + Qt::Key_R)}}
+    });
+    coll = QtUi::actionCollection("Navigation");
+    coll->addAction("JumpToMarkerLine", new Action{tr("Go to Marker Line"), coll, this, [this]() { jumpToMarkerLine(); }, QKeySequence(Qt::CTRL + Qt::Key_K)});
 
     ChatViewSettings s;
     s.initAndNotify("AutoMarkerLine", this, SLOT(setAutoMarkerLine(QVariant)), true);
