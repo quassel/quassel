@@ -378,12 +378,12 @@ void MainWin::setupActions()
         {"DisconnectCore", new Action(icon::get("disconnect-quassel"), tr("&Disconnect from Core"), coll, Client::instance(), &Client::disconnectFromCore)},
         {"ChangePassword", new Action(icon::get("dialog-password"), tr("Change &Password..."), coll, this, &MainWin::showPasswordChangeDlg)},
         {"CoreInfo", new Action(icon::get("help-about"), tr("Core &Info..."), coll, this, &MainWin::showCoreInfoDlg)},
-        {"ConfigureNetworks", new Action(icon::get("configure"), tr("Configure &Networks..."), coll, this, &MainWin::on_actionConfigureNetworks_triggered)},
+        {"ConfigureNetworks", new Action(icon::get("configure"), tr("Configure &Networks..."), coll, this, &MainWin::onConfigureNetworksTriggered)},
         {"Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL + Qt::Key_Q)}
     });
 
     // View
-    coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll, this, &MainWin::on_actionConfigureViews_triggered));
+    coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll, this, &MainWin::onConfigureViewsTriggered));
 
     coll->addAction("ToggleSearchBar", new Action(icon::get("edit-find"), tr("Show &Search Bar"), coll, QKeySequence::Find))->setCheckable(true);
     coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll, this, &MainWin::showAwayLog));
@@ -392,7 +392,7 @@ void MainWin::setupActions()
 
     action = coll->addAction("LockLayout", new Action(tr("&Lock Layout"), coll));
     action->setCheckable(true);
-    connect(action, &QAction::toggled, this, &MainWin::on_actionLockLayout_toggled);
+    connect(action, &QAction::toggled, this, &MainWin::onLockLayoutToggled);
 
 #ifdef HAVE_KDE
 #if KCONFIGWIDGETS_VERSION < QT_VERSION_CHECK(5,23,0)
@@ -416,12 +416,12 @@ void MainWin::setupActions()
     coll->addAction("AboutQuassel", new Action(icon::get("quassel"), tr("&About Quassel"), coll, this, &MainWin::showAboutDlg))->setMenuRole(QAction::AboutRole);
     coll->addAction("AboutQt", new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll, qApp, &QApplication::aboutQt))->setMenuRole(QAction::AboutQtRole);
     coll->addActions({
-        {"DebugNetworkModel", new Action(icon::get("tools-report-bug"), tr("Debug &NetworkModel"), coll, this, &MainWin::on_actionDebugNetworkModel_triggered)},
-        {"DebugBufferViewOverlay", new Action(icon::get("tools-report-bug"), tr("Debug &BufferViewOverlay"), coll, this, &MainWin::on_actionDebugBufferViewOverlay_triggered)},
-        {"DebugMessageModel", new Action(icon::get("tools-report-bug"), tr("Debug &MessageModel"), coll, this, &MainWin::on_actionDebugMessageModel_triggered)},
-        {"DebugHotList", new Action(icon::get("tools-report-bug"), tr("Debug &HotList"), coll, this, &MainWin::on_actionDebugHotList_triggered)},
-        {"DebugLog", new Action(icon::get("tools-report-bug"), tr("Debug &Log"), coll, this, &MainWin::on_actionDebugLog_triggered)},
-        {"ShowResourceTree", new Action(icon::get("tools-report-bug"), tr("Show &Resource Tree"), coll, this, &MainWin::on_actionShowResourceTree_triggered)},
+        {"DebugNetworkModel", new Action(icon::get("tools-report-bug"), tr("Debug &NetworkModel"), coll, this, &MainWin::onDebugNetworkModelTriggered)},
+        {"DebugBufferViewOverlay", new Action(icon::get("tools-report-bug"), tr("Debug &BufferViewOverlay"), coll, this, &MainWin::onDebugBufferViewOverlayTriggered)},
+        {"DebugMessageModel", new Action(icon::get("tools-report-bug"), tr("Debug &MessageModel"), coll, this, &MainWin::onDebugMessageModelTriggered)},
+        {"DebugHotList", new Action(icon::get("tools-report-bug"), tr("Debug &HotList"), coll, this, &MainWin::onDebugHotListTriggered)},
+        {"DebugLog", new Action(icon::get("tools-report-bug"), tr("Debug &Log"), coll, this, &MainWin::onDebugLogTriggered)},
+        {"ShowResourceTree", new Action(icon::get("tools-report-bug"), tr("Show &Resource Tree"), coll, this, &MainWin::onShowResourceTreeTriggered)},
         {"ReloadStyle", new Action(icon::get("view-refresh"), tr("Reload Stylesheet"), coll, QtUi::style(), &UiStyle::reload, QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R))}
     });
 
@@ -434,32 +434,32 @@ void MainWin::setupActions()
     coll->addActions({
         {"FormatApplyColor", new Action(
             icon::get("format-text-color"), tr("Apply foreground color"), coll,
-            this, &MainWin::on_inputFormatApplyColor_triggered,
+            this, &MainWin::onFormatApplyColorTriggered,
             QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G))
         },
         {"FormatApplyColorFill", new Action(
             icon::get("format-fill-color"), tr("Apply background color"), coll,
-            this, &MainWin::on_inputFormatApplyColorFill_triggered,
+            this, &MainWin::onFormatApplyColorFillTriggered,
             QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B))
         },
         {"FormatClear", new Action(
             icon::get("edit-clear"), tr("Clear formatting"), coll,
-            this, &MainWin::on_inputFormatClear_triggered,
+            this, &MainWin::onFormatClearTriggered,
             QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C))
         },
         {"FormatBold", new Action(
             icon::get("format-text-bold"), tr("Toggle bold"), coll,
-            this, &MainWin::on_inputFormatBold_triggered,
+            this, &MainWin::onFormatBoldTriggered,
             QKeySequence::Bold)
         },
         {"FormatItalic", new Action(
             icon::get("format-text-italic"), tr("Toggle italics"), coll,
-            this, &MainWin::on_inputFormatItalic_triggered,
+            this, &MainWin::onFormatItalicTriggered,
             QKeySequence::Italic)
         },
         {"FormatUnderline", new Action(
             icon::get("format-text-underline"), tr("Toggle underline"), coll,
-            this, &MainWin::on_inputFormatUnderline_triggered,
+            this, &MainWin::onFormatUnderlineTriggered,
             QKeySequence::Underline)
         }
     });
@@ -468,8 +468,8 @@ void MainWin::setupActions()
     coll = QtUi::actionCollection("Navigation", tr("Navigation"));
 
     coll->addActions({
-        {"JumpHotBuffer", new Action(tr("Jump to hot chat"), coll, this, &MainWin::on_jumpHotBuffer_triggered, QKeySequence(Qt::META + Qt::Key_A))},
-        {"ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll, this, &MainWin::on_bufferSearch_triggered, QKeySequence(Qt::CTRL + Qt::Key_S))}
+        {"JumpHotBuffer", new Action(tr("Jump to hot chat"), coll, this, &MainWin::onJumpHotBufferTriggered, QKeySequence(Qt::META + Qt::Key_A))},
+        {"ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll, this, &MainWin::onBufferSearchTriggered, QKeySequence(Qt::CTRL + Qt::Key_S))}
     });
 
     // Jump keys
@@ -899,19 +899,19 @@ void MainWin::showNotificationsDlg()
 }
 
 
-void MainWin::on_actionConfigureNetworks_triggered()
+void MainWin::onConfigureNetworksTriggered()
 {
     SettingsPageDlg{new NetworksSettingsPage{}}.exec();
 }
 
 
-void MainWin::on_actionConfigureViews_triggered()
+void MainWin::onConfigureViewsTriggered()
 {
     SettingsPageDlg{new BufferViewSettingsPage{}}.exec();
 }
 
 
-void MainWin::on_actionLockLayout_toggled(bool lock)
+void MainWin::onLockLayoutToggled(bool lock)
 {
     QList<VerticalDock *> docks = findChildren<VerticalDock *>();
     foreach(VerticalDock *dock, docks) {
@@ -1805,7 +1805,7 @@ void MainWin::connectOrDisconnectFromNet()
 }
 
 
-void MainWin::on_inputFormatApplyColor_triggered()
+void MainWin::onFormatApplyColorTriggered()
 {
     if (!_inputWidget)
         return;
@@ -1814,7 +1814,7 @@ void MainWin::on_inputFormatApplyColor_triggered()
 }
 
 
-void MainWin::on_inputFormatApplyColorFill_triggered()
+void MainWin::onFormatApplyColorFillTriggered()
 {
     if (!_inputWidget)
         return;
@@ -1823,7 +1823,7 @@ void MainWin::on_inputFormatApplyColorFill_triggered()
 }
 
 
-void MainWin::on_inputFormatClear_triggered()
+void MainWin::onFormatClearTriggered()
 {
     if (!_inputWidget)
         return;
@@ -1832,7 +1832,7 @@ void MainWin::on_inputFormatClear_triggered()
 }
 
 
-void MainWin::on_inputFormatBold_triggered()
+void MainWin::onFormatBoldTriggered()
 {
     if (!_inputWidget)
         return;
@@ -1841,7 +1841,7 @@ void MainWin::on_inputFormatBold_triggered()
 }
 
 
-void MainWin::on_inputFormatItalic_triggered()
+void MainWin::onFormatItalicTriggered()
 {
     if (!_inputWidget)
         return;
@@ -1850,7 +1850,7 @@ void MainWin::on_inputFormatItalic_triggered()
 }
 
 
-void MainWin::on_inputFormatUnderline_triggered()
+void MainWin::onFormatUnderlineTriggered()
 {
     if (!_inputWidget)
         return;
@@ -1859,7 +1859,7 @@ void MainWin::on_inputFormatUnderline_triggered()
 }
 
 
-void MainWin::on_jumpHotBuffer_triggered()
+void MainWin::onJumpHotBufferTriggered()
 {
     if (!_bufferHotList->rowCount())
         return;
@@ -1867,7 +1867,7 @@ void MainWin::on_jumpHotBuffer_triggered()
     Client::bufferModel()->switchToBuffer(_bufferHotList->hottestBuffer());
 }
 
-void MainWin::on_bufferSearch_triggered()
+void MainWin::onBufferSearchTriggered()
 {
     if (_activeBufferViewIndex < 0 || _activeBufferViewIndex >= _bufferViews.count()) {
         qWarning() << "Tried to activate filter on invalid bufferview:" << _activeBufferViewIndex;
@@ -1909,7 +1909,7 @@ void MainWin::bindJumpKey()
 }
 
 
-void MainWin::on_actionDebugNetworkModel_triggered()
+void MainWin::onDebugNetworkModelTriggered()
 {
     auto *view = new QTreeView;
     view->setAttribute(Qt::WA_DeleteOnClose);
@@ -1923,7 +1923,7 @@ void MainWin::on_actionDebugNetworkModel_triggered()
 }
 
 
-void MainWin::on_actionDebugHotList_triggered()
+void MainWin::onDebugHotListTriggered()
 {
     _bufferHotList->invalidate();
     _bufferHotList->sort(0, Qt::DescendingOrder);
@@ -1935,7 +1935,7 @@ void MainWin::on_actionDebugHotList_triggered()
 }
 
 
-void MainWin::on_actionDebugBufferViewOverlay_triggered()
+void MainWin::onDebugBufferViewOverlayTriggered()
 {
     auto *overlay = new DebugBufferViewOverlay(nullptr);
     overlay->setAttribute(Qt::WA_DeleteOnClose);
@@ -1943,7 +1943,7 @@ void MainWin::on_actionDebugBufferViewOverlay_triggered()
 }
 
 
-void MainWin::on_actionDebugMessageModel_triggered()
+void MainWin::onDebugMessageModelTriggered()
 {
     auto *view = new QTableView(nullptr);
     auto *filter = new DebugMessageModelFilter(view);
@@ -1956,13 +1956,13 @@ void MainWin::on_actionDebugMessageModel_triggered()
 }
 
 
-void MainWin::on_actionDebugLog_triggered()
+void MainWin::onDebugLogTriggered()
 {
     auto dlg = new DebugLogDlg(this);  // will be deleted on close
     dlg->show();
 }
 
-void MainWin::on_actionShowResourceTree_triggered()
+void MainWin::onShowResourceTreeTriggered()
 {
     auto dlg = new ResourceTreeDlg(this);  // will be deleted on close
     dlg->show();
