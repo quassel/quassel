@@ -266,7 +266,7 @@ private:
     ChatMonitorView *_chatMonitorView;
     TopicWidget *_topicWidget;
 
-    QAction *_fullScreenAction;
+    QAction *_fullScreenAction{nullptr};
     QMenu *_fileMenu, *_networksMenu, *_viewMenu, *_bufferViewsMenu, *_settingsMenu, *_helpMenu, *_helpDebugMenu;
     QMenu *_toolbarMenu;
     QToolBar *_mainToolBar, *_chatViewToolBar, *_nickToolBar;

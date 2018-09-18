@@ -20,8 +20,6 @@
  * Parts of this implementation are based on KDE's KActionCollection.      *
  ***************************************************************************/
 
-#ifndef HAVE_KDE
-
 #include <QAction>
 #include <QDebug>
 #include <QMetaMethod>
@@ -31,11 +29,26 @@
 #include "action.h"
 #include "uisettings.h"
 
-ActionCollection::ActionCollection(QObject *parent) : QObject(parent)
+void ActionCollection::addActions(const std::vector<std::pair<QString, Action *>> &actions)
 {
-    _connectTriggered = _connectHovered = false;
+    for (auto &&p : actions) {
+        addAction(p.first, p.second);
+    }
 }
 
+
+#ifndef HAVE_KDE
+
+int ActionCollection::count() const
+{
+    return actions().count();
+}
+
+
+bool ActionCollection::isEmpty() const
+{
+    return actions().count();
+}
 
 void ActionCollection::clear()
 {
@@ -55,25 +68,6 @@ QList<QAction *> ActionCollection::actions() const
 {
     return _actions;
 }
-
-
-Action *ActionCollection::addAction(const QString &name, Action *action)
-{
-    QAction *act = addAction(name, static_cast<QAction *>(action));
-    Q_UNUSED(act);
-    Q_ASSERT(act == action);
-    return action;
-}
-
-
-Action *ActionCollection::addAction(const QString &name, const QObject *receiver, const char *member)
-{
-    auto *a = new Action(this);
-    if (receiver && member)
-        connect(a, SIGNAL(triggered(bool)), receiver, member);
-    return addAction(name, a);
-}
-
 
 QAction *ActionCollection::addAction(const QString &name, QAction *action)
 {
@@ -287,6 +281,5 @@ bool ActionCollection::unlistAction(QAction *action)
 
     return true;
 }
-
 
 #endif /* HAVE_KDE */

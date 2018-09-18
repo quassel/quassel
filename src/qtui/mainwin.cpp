@@ -29,6 +29,7 @@
 #include <QInputDialog>
 
 #ifdef HAVE_KF5
+#  include <kconfigwidgets_version.h>
 #  include <KConfigWidgets/KStandardAction>
 #  include <KXmlGui/KHelpMenu>
 #  include <KXmlGui/KShortcutsDialog>
@@ -368,137 +369,108 @@ void MainWin::updateIcon()
 
 void MainWin::setupActions()
 {
+    QAction *action{nullptr};
     ActionCollection *coll = QtUi::actionCollection("General", tr("General"));
+
     // File
-    coll->addAction("ConnectCore", new Action(icon::get("connect-quassel"), tr("&Connect to Core..."), coll,
-            this, SLOT(showCoreConnectionDlg())));
-    coll->addAction("DisconnectCore", new Action(icon::get("disconnect-quassel"), tr("&Disconnect from Core"), coll,
-            Client::instance(), SLOT(disconnectFromCore())));
-    coll->addAction("ChangePassword", new Action(icon::get("dialog-password"), tr("Change &Password..."), coll,
-            this, SLOT(showPasswordChangeDlg())));
-    coll->addAction("CoreInfo", new Action(icon::get("help-about"), tr("Core &Info..."), coll,
-            this, SLOT(showCoreInfoDlg())));
-    coll->addAction("ConfigureNetworks", new Action(icon::get("configure"), tr("Configure &Networks..."), coll,
-            this, SLOT(on_actionConfigureNetworks_triggered())));
-    // QKeySequence::Quit was added in Qt 4.6, and could be used instead.  However, that key
-    // sequence is empty by default on Windows, which would remove Ctrl-Q to quit.  It may be best
-    // to just keep it this way.
-    //
-    // See https://doc.qt.io/qt-5/qkeysequence.html
-    coll->addAction("Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll,
-            Quassel::instance(), SLOT(quit()), Qt::CTRL + Qt::Key_Q));
+    coll->addActions({
+        {"ConnectCore", new Action(icon::get("connect-quassel"), tr("&Connect to Core..."), coll, this, &MainWin::showCoreConnectionDlg)},
+        {"DisconnectCore", new Action(icon::get("disconnect-quassel"), tr("&Disconnect from Core"), coll, Client::instance(), &Client::disconnectFromCore)},
+        {"ChangePassword", new Action(icon::get("dialog-password"), tr("Change &Password..."), coll, this, &MainWin::showPasswordChangeDlg)},
+        {"CoreInfo", new Action(icon::get("help-about"), tr("Core &Info..."), coll, this, &MainWin::showCoreInfoDlg)},
+        {"ConfigureNetworks", new Action(icon::get("configure"), tr("Configure &Networks..."), coll, this, &MainWin::on_actionConfigureNetworks_triggered)},
+        {"Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL + Qt::Key_Q)}
+    });
 
     // View
-    coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll,
-            this, SLOT(on_actionConfigureViews_triggered())));
+    coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll, this, &MainWin::on_actionConfigureViews_triggered));
 
-    QAction *lockAct = coll->addAction("LockLayout", new Action(tr("&Lock Layout"), coll));
-    lockAct->setCheckable(true);
-    connect(lockAct, &QAction::toggled, this, &MainWin::on_actionLockLayout_toggled);
+    coll->addAction("ToggleSearchBar", new Action(icon::get("edit-find"), tr("Show &Search Bar"), coll, QKeySequence::Find))->setCheckable(true);
+    coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll, this, &MainWin::showAwayLog));
+    coll->addAction("ToggleMenuBar", new Action(icon::get("show-menu"), tr("Show &Menubar"), coll))->setCheckable(true);
+    coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll))->setCheckable(true);
 
-    coll->addAction("ToggleSearchBar", new Action(icon::get("edit-find"), tr("Show &Search Bar"), coll,
-            nullptr, nullptr, QKeySequence::Find))->setCheckable(true);
-    coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
-            this, SLOT(showAwayLog())));
-    coll->addAction("ToggleMenuBar", new Action(icon::get("show-menu"), tr("Show &Menubar"), coll,
-            nullptr, nullptr))->setCheckable(true);
-
-    coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
-            nullptr, nullptr))->setCheckable(true);
+    action = coll->addAction("LockLayout", new Action(tr("&Lock Layout"), coll));
+    action->setCheckable(true);
+    connect(action, &QAction::toggled, this, &MainWin::on_actionLockLayout_toggled);
 
 #ifdef HAVE_KDE
+#if KCONFIGWIDGETS_VERSION < QT_VERSION_CHECK(5,23,0)
     _fullScreenAction = KStandardAction::fullScreen(this, SLOT(onFullScreenToggled()), this, coll);
 #else
-    _fullScreenAction = new Action(icon::get("view-fullscreen"), tr("&Full Screen Mode"), coll,
-        this, SLOT(onFullScreenToggled()), QKeySequence(Qt::Key_F11));
+    _fullScreenAction = KStandardAction::fullScreen(this, &MainWin::onFullScreenToggled, this, coll);
+#endif
+#else
+    _fullScreenAction = new Action(icon::get("view-fullscreen"), tr("&Full Screen Mode"), coll, this, &MainWin::onFullScreenToggled, QKeySequence::FullScreen);
     _fullScreenAction->setCheckable(true);
     coll->addAction("ToggleFullScreen", _fullScreenAction);
 #endif
 
     // Settings
-    QAction *configureShortcutsAct = new Action(icon::get("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
-        this, SLOT(showShortcutsDlg()));
-    configureShortcutsAct->setMenuRole(QAction::NoRole);
-    coll->addAction("ConfigureShortcuts", configureShortcutsAct);
-
-#ifdef Q_OS_MAC
-    QAction *configureQuasselAct = new Action(icon::get("configure"), tr("&Configure Quassel..."), coll,
-        this, SLOT(showSettingsDlg()));
-    configureQuasselAct->setMenuRole(QAction::PreferencesRole);
-#else
-    QAction *configureQuasselAct = new Action(icon::get("configure"), tr("&Configure Quassel..."), coll,
-        this, SLOT(showSettingsDlg()), QKeySequence(Qt::Key_F7));
-#endif
-    coll->addAction("ConfigureQuassel", configureQuasselAct);
+    coll->addAction("ConfigureShortcuts", new Action(icon::get("configure-shortcuts"), tr("Configure &Shortcuts..."), coll,
+                                                     this, &MainWin::showShortcutsDlg))->setMenuRole(QAction::NoRole);
+    coll->addAction("ConfigureQuassel", new Action(icon::get("configure"), tr("&Configure Quassel..."), coll,
+                                                   this, &MainWin::showSettingsDlg, QKeySequence(Qt::Key_F7)))->setMenuRole(QAction::PreferencesRole);
 
     // Help
-    QAction *aboutQuasselAct = new Action(icon::get("quassel"), tr("&About Quassel"), coll,
-        this, SLOT(showAboutDlg()));
-    aboutQuasselAct->setMenuRole(QAction::AboutRole);
-    coll->addAction("AboutQuassel", aboutQuasselAct);
+    coll->addAction("AboutQuassel", new Action(icon::get("quassel"), tr("&About Quassel"), coll, this, &MainWin::showAboutDlg))->setMenuRole(QAction::AboutRole);
+    coll->addAction("AboutQt", new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll, qApp, &QApplication::aboutQt))->setMenuRole(QAction::AboutQtRole);
+    coll->addActions({
+        {"DebugNetworkModel", new Action(icon::get("tools-report-bug"), tr("Debug &NetworkModel"), coll, this, &MainWin::on_actionDebugNetworkModel_triggered)},
+        {"DebugBufferViewOverlay", new Action(icon::get("tools-report-bug"), tr("Debug &BufferViewOverlay"), coll, this, &MainWin::on_actionDebugBufferViewOverlay_triggered)},
+        {"DebugMessageModel", new Action(icon::get("tools-report-bug"), tr("Debug &MessageModel"), coll, this, &MainWin::on_actionDebugMessageModel_triggered)},
+        {"DebugHotList", new Action(icon::get("tools-report-bug"), tr("Debug &HotList"), coll, this, &MainWin::on_actionDebugHotList_triggered)},
+        {"DebugLog", new Action(icon::get("tools-report-bug"), tr("Debug &Log"), coll, this, &MainWin::on_actionDebugLog_triggered)},
+        {"ShowResourceTree", new Action(icon::get("tools-report-bug"), tr("Show &Resource Tree"), coll, this, &MainWin::on_actionShowResourceTree_triggered)},
+        {"ReloadStyle", new Action(icon::get("view-refresh"), tr("Reload Stylesheet"), coll, QtUi::style(), &UiStyle::reload, QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R))}
+    });
 
-    QAction *aboutQtAct = new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll,
-        qApp, SLOT(aboutQt()));
-    aboutQtAct->setMenuRole(QAction::AboutQtRole);
-    coll->addAction("AboutQt", aboutQtAct);
-    coll->addAction("DebugNetworkModel", new Action(icon::get("tools-report-bug"), tr("Debug &NetworkModel"), coll,
-            this, SLOT(on_actionDebugNetworkModel_triggered())));
-    coll->addAction("DebugBufferViewOverlay", new Action(icon::get("tools-report-bug"), tr("Debug &BufferViewOverlay"), coll,
-            this, SLOT(on_actionDebugBufferViewOverlay_triggered())));
-    coll->addAction("DebugMessageModel", new Action(icon::get("tools-report-bug"), tr("Debug &MessageModel"), coll,
-            this, SLOT(on_actionDebugMessageModel_triggered())));
-    coll->addAction("DebugHotList", new Action(icon::get("tools-report-bug"), tr("Debug &HotList"), coll,
-            this, SLOT(on_actionDebugHotList_triggered())));
-    coll->addAction("DebugLog", new Action(icon::get("tools-report-bug"), tr("Debug &Log"), coll,
-            this, SLOT(on_actionDebugLog_triggered())));
-    coll->addAction("ShowResourceTree", new Action(icon::get("tools-report-bug"), tr("Show &Resource Tree"), coll,
-            this, SLOT(on_actionShowResourceTree_triggered())));
-    coll->addAction("ReloadStyle", new Action(icon::get("view-refresh"), tr("Reload Stylesheet"), coll,
-            QtUi::style(), SLOT(reload()), QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R)));
-
-    coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll,
-            this, SLOT(hideCurrentBuffer()), QKeySequence::Close));
+    // Other
+    coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll, this, &MainWin::hideCurrentBuffer, QKeySequence::Close));
 
     // Text formatting
     coll = QtUi::actionCollection("TextFormat", tr("Text formatting"));
 
-    coll->addAction("FormatApplyColor", new Action(
-                        icon::get("format-text-color"), tr("Apply foreground color"), coll,
-                        this, SLOT(on_inputFormatApplyColor_triggered()),
-                        QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G)));
-
-    coll->addAction("FormatApplyColorFill", new Action(
-                        icon::get("format-fill-color"), tr("Apply background color"), coll,
-                        this, SLOT(on_inputFormatApplyColorFill_triggered()),
-                        QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B)));
-
-    coll->addAction("FormatClear", new Action(
-                        icon::get("edit-clear"), tr("Clear formatting"), coll,
-                        this, SLOT(on_inputFormatClear_triggered()),
-                        QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C)));
-
-    coll->addAction("FormatBold", new Action(
-                        icon::get("format-text-bold"), tr("Toggle bold"), coll,
-                        this, SLOT(on_inputFormatBold_triggered()),
-                        QKeySequence::Bold));
-
-    coll->addAction("FormatItalic", new Action(
-                        icon::get("format-text-italic"), tr("Toggle italics"), coll,
-                        this, SLOT(on_inputFormatItalic_triggered()),
-                        QKeySequence::Italic));
-
-    coll->addAction("FormatUnderline", new Action(
-                        icon::get("format-text-underline"), tr("Toggle underline"), coll,
-                        this, SLOT(on_inputFormatUnderline_triggered()), QKeySequence::Underline));
+    coll->addActions({
+        {"FormatApplyColor", new Action(
+            icon::get("format-text-color"), tr("Apply foreground color"), coll,
+            this, &MainWin::on_inputFormatApplyColor_triggered,
+            QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G))
+        },
+        {"FormatApplyColorFill", new Action(
+            icon::get("format-fill-color"), tr("Apply background color"), coll,
+            this, &MainWin::on_inputFormatApplyColorFill_triggered,
+            QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B))
+        },
+        {"FormatClear", new Action(
+            icon::get("edit-clear"), tr("Clear formatting"), coll,
+            this, &MainWin::on_inputFormatClear_triggered,
+            QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C))
+        },
+        {"FormatBold", new Action(
+            icon::get("format-text-bold"), tr("Toggle bold"), coll,
+            this, &MainWin::on_inputFormatBold_triggered,
+            QKeySequence::Bold)
+        },
+        {"FormatItalic", new Action(
+            icon::get("format-text-italic"), tr("Toggle italics"), coll,
+            this, &MainWin::on_inputFormatItalic_triggered,
+            QKeySequence::Italic)
+        },
+        {"FormatUnderline", new Action(
+            icon::get("format-text-underline"), tr("Toggle underline"), coll,
+            this, &MainWin::on_inputFormatUnderline_triggered,
+            QKeySequence::Underline)
+        }
+    });
 
     // Navigation
     coll = QtUi::actionCollection("Navigation", tr("Navigation"));
 
-    coll->addAction("JumpHotBuffer", new Action(tr("Jump to hot chat"), coll,
-            this, SLOT(on_jumpHotBuffer_triggered()), QKeySequence(Qt::META + Qt::Key_A)));
-
-    coll->addAction("ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll,
-            this, SLOT(on_bufferSearch_triggered()), QKeySequence(Qt::CTRL + Qt::Key_S)));
+    coll->addActions({
+        {"JumpHotBuffer", new Action(tr("Jump to hot chat"), coll, this, &MainWin::on_jumpHotBuffer_triggered, QKeySequence(Qt::META + Qt::Key_A))},
+        {"ActivateBufferFilter", new Action(tr("Activate the buffer search"), coll, this, &MainWin::on_bufferSearch_triggered, QKeySequence(Qt::CTRL + Qt::Key_S))}
+    });
 
     // Jump keys
 #ifdef Q_OS_MAC
@@ -509,57 +481,57 @@ void MainWin::setupActions()
     const int jumpModifier = Qt::AltModifier;
 #endif
 
-    coll->addAction("BindJumpKey0", new Action(tr("Set Quick Access #0"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey0", new Action(tr("Set Quick Access #0"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_0)))->setProperty("Index", 0);
-    coll->addAction("BindJumpKey1", new Action(tr("Set Quick Access #1"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey1", new Action(tr("Set Quick Access #1"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_1)))->setProperty("Index", 1);
-    coll->addAction("BindJumpKey2", new Action(tr("Set Quick Access #2"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey2", new Action(tr("Set Quick Access #2"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_2)))->setProperty("Index", 2);
-    coll->addAction("BindJumpKey3", new Action(tr("Set Quick Access #3"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey3", new Action(tr("Set Quick Access #3"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_3)))->setProperty("Index", 3);
-    coll->addAction("BindJumpKey4", new Action(tr("Set Quick Access #4"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey4", new Action(tr("Set Quick Access #4"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_4)))->setProperty("Index", 4);
-    coll->addAction("BindJumpKey5", new Action(tr("Set Quick Access #5"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey5", new Action(tr("Set Quick Access #5"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_5)))->setProperty("Index", 5);
-    coll->addAction("BindJumpKey6", new Action(tr("Set Quick Access #6"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey6", new Action(tr("Set Quick Access #6"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_6)))->setProperty("Index", 6);
-    coll->addAction("BindJumpKey7", new Action(tr("Set Quick Access #7"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey7", new Action(tr("Set Quick Access #7"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_7)))->setProperty("Index", 7);
-    coll->addAction("BindJumpKey8", new Action(tr("Set Quick Access #8"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey8", new Action(tr("Set Quick Access #8"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_8)))->setProperty("Index", 8);
-    coll->addAction("BindJumpKey9", new Action(tr("Set Quick Access #9"), coll, this, SLOT(bindJumpKey()),
+    coll->addAction("BindJumpKey9", new Action(tr("Set Quick Access #9"), coll, this, &MainWin::bindJumpKey,
             QKeySequence(bindModifier + Qt::Key_9)))->setProperty("Index", 9);
 
-    coll->addAction("JumpKey0", new Action(tr("Quick Access #0"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey0", new Action(tr("Quick Access #0"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_0)))->setProperty("Index", 0);
-    coll->addAction("JumpKey1", new Action(tr("Quick Access #1"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey1", new Action(tr("Quick Access #1"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_1)))->setProperty("Index", 1);
-    coll->addAction("JumpKey2", new Action(tr("Quick Access #2"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey2", new Action(tr("Quick Access #2"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_2)))->setProperty("Index", 2);
-    coll->addAction("JumpKey3", new Action(tr("Quick Access #3"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey3", new Action(tr("Quick Access #3"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_3)))->setProperty("Index", 3);
-    coll->addAction("JumpKey4", new Action(tr("Quick Access #4"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey4", new Action(tr("Quick Access #4"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_4)))->setProperty("Index", 4);
-    coll->addAction("JumpKey5", new Action(tr("Quick Access #5"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey5", new Action(tr("Quick Access #5"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_5)))->setProperty("Index", 5);
-    coll->addAction("JumpKey6", new Action(tr("Quick Access #6"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey6", new Action(tr("Quick Access #6"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_6)))->setProperty("Index", 6);
-    coll->addAction("JumpKey7", new Action(tr("Quick Access #7"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey7", new Action(tr("Quick Access #7"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_7)))->setProperty("Index", 7);
-    coll->addAction("JumpKey8", new Action(tr("Quick Access #8"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey8", new Action(tr("Quick Access #8"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_8)))->setProperty("Index", 8);
-    coll->addAction("JumpKey9", new Action(tr("Quick Access #9"), coll, this, SLOT(onJumpKey()),
+    coll->addAction("JumpKey9", new Action(tr("Quick Access #9"), coll, this, &MainWin::onJumpKey,
             QKeySequence(jumpModifier + Qt::Key_9)))->setProperty("Index", 9);
 
     // Buffer navigation
     coll->addAction("NextBufferView", new Action(icon::get("go-next-view"), tr("Activate Next Chat List"), coll,
-            this, SLOT(nextBufferView()), QKeySequence(QKeySequence::Forward)));
+            this, &MainWin::nextBufferView, QKeySequence(QKeySequence::Forward)));
     coll->addAction("PreviousBufferView", new Action(icon::get("go-previous-view"), tr("Activate Previous Chat List"), coll,
-            this, SLOT(previousBufferView()), QKeySequence::Back));
+            this, &MainWin::previousBufferView, QKeySequence::Back));
     coll->addAction("NextBuffer", new Action(icon::get("go-down"), tr("Go to Next Chat"), coll,
-            this, SLOT(nextBuffer()), QKeySequence(Qt::ALT + Qt::Key_Down)));
+            this, &MainWin::nextBuffer, QKeySequence(Qt::ALT + Qt::Key_Down)));
     coll->addAction("PreviousBuffer", new Action(icon::get("go-up"), tr("Go to Previous Chat"), coll,
-            this, SLOT(previousBuffer()), QKeySequence(Qt::ALT + Qt::Key_Up)));
+            this, &MainWin::previousBuffer, QKeySequence(Qt::ALT + Qt::Key_Up)));
 }
 
 
@@ -605,8 +577,13 @@ void MainWin::setupMenus()
 
     _settingsMenu = menuBar()->addMenu(tr("&Settings"));
 #ifdef HAVE_KDE
+#if KCONFIGWIDGETS_VERSION < QT_VERSION_CHECK(5,23,0)
     _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
     _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
+#else
+    _settingsMenu->addAction(KStandardAction::configureNotifications(this, &MainWin::showNotificationsDlg, this));
+    _settingsMenu->addAction(KStandardAction::keyBindings(this, &MainWin::showShortcutsDlg, this));
+#endif
 #else
     _settingsMenu->addAction(coll->action("ConfigureShortcuts"));
 #endif
@@ -619,7 +596,11 @@ void MainWin::setupMenus()
 #ifndef HAVE_KDE
     _helpMenu->addAction(coll->action("AboutQt"));
 #else
+#if KCONFIGWIDGETS_VERSION < QT_VERSION_CHECK(5,23,0)
     _helpMenu->addAction(KStandardAction::aboutKDE(_kHelpMenu, SLOT(aboutKDE()), this));
+#else
+    _helpMenu->addAction(KStandardAction::aboutKDE(_kHelpMenu, &KHelpMenu::aboutKDE, this));
+#endif
 #endif
     _helpMenu->addSeparator();
     _helpDebugMenu = _helpMenu->addMenu(icon::get("tools-report-bug"), tr("Debug"));

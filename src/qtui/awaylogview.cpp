@@ -44,13 +44,13 @@ void AwayLogView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     if (scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
         menu->addSeparator();
 
-        auto *showNetworkAction = new Action(tr("Show Network Name"), menu, this, SLOT(showFieldsChanged(bool)));
+        auto *showNetworkAction = new Action(tr("Show Network Name"), menu, this, &AwayLogView::showFieldsChanged);
         showNetworkAction->setCheckable(true);
         showNetworkAction->setChecked(filter()->showFields() & ChatMonitorFilter::NetworkField);
         showNetworkAction->setData(ChatMonitorFilter::NetworkField);
         menu->addAction(showNetworkAction);
 
-        auto *showBufferAction = new Action(tr("Show Buffer Name"), menu, this, SLOT(showFieldsChanged(bool)));
+        auto *showBufferAction = new Action(tr("Show Buffer Name"), menu, this, &AwayLogView::showFieldsChanged);
         showBufferAction->setCheckable(true);
         showBufferAction->setChecked(filter()->showFields() & ChatMonitorFilter::BufferField);
         showBufferAction->setData(ChatMonitorFilter::BufferField);

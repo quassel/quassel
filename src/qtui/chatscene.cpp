@@ -828,8 +828,7 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     // If we have text selected, insert the Copy Selection as first item
     if (isPosOverSelection(pos)) {
         QAction *sep = menu.insertSeparator(menu.actions().first());
-        QAction *act = new Action(icon::get("edit-copy"), tr("Copy Selection"), &menu, this,
-            SLOT(selectionToClipboard()), QKeySequence::Copy);
+        QAction *act = new Action(icon::get("edit-copy"), tr("Copy Selection"), &menu, this, [this]() { selectionToClipboard(); }, QKeySequence::Copy);
         menu.insertAction(sep, act);
 
         QString searchSelectionText = selection();
@@ -837,7 +836,7 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
             searchSelectionText = searchSelectionText.left(_webSearchSelectionTextMaxVisible).append(QString::fromUtf8("…"));
         searchSelectionText = tr("Search '%1'").arg(searchSelectionText);
 
-        QAction *webSearchAction = new Action(icon::get("edit-find"), searchSelectionText, &menu, this, SLOT(webSearchOnSelection()));
+        QAction *webSearchAction = new Action(icon::get("edit-find"), searchSelectionText, &menu, this, &ChatScene::webSearchOnSelection);
         menu.insertAction(sep, webSearchAction);
     }
 
@@ -847,7 +846,7 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     // show column reset action if columns have been resized in this session or there is at least one very narrow column
     if ((_firstColHandlePos != _defaultFirstColHandlePos) || (_secondColHandlePos != _defaultSecondColHandlePos) ||
         (_firstColHandlePos <= 10) || (_secondColHandlePos - _firstColHandlePos <= 10))
-        menu.addAction(new Action(tr("Reset Column Widths"), &menu, this, SLOT(resetColumnWidths()), 0));
+        menu.addAction(new Action(tr("Reset Column Widths"), &menu, this, &ChatScene::resetColumnWidths));
 
     menu.exec(event->screenPos());
 }

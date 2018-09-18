@@ -46,11 +46,10 @@ TabCompleter::TabCompleter(MultiLineEdit *_lineEdit)
     _nickSuffix(": ")
 {
     // This Action just serves as a container for the custom shortcut and isn't actually handled;
-    // apparently, using tab as an Action shortcut  in an input widget is unreliable on some platforms (e.g. OS/2)
+    // apparently, using tab as an Action shortcut in an input widget is unreliable on some platforms (e.g. OS/2)
     _lineEdit->installEventFilter(this);
     ActionCollection *coll = GraphicalUi::actionCollection("General");
-    QAction *a = coll->addAction("TabCompletionKey", new Action(tr("Tab completion"), coll,
-            this, SLOT(onTabCompletionKey()), QKeySequence(Qt::Key_Tab)));
+    QAction *a = coll->addAction("TabCompletionKey", new Action(tr("Tab completion"), coll, this, &TabCompleter::onTabCompletionKey, QKeySequence(Qt::Key_Tab)));
     a->setEnabled(false); // avoid catching the shortcut
 }
 

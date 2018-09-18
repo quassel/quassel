@@ -43,9 +43,10 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
     QAction *toggleSearchBar = coll->action("ToggleSearchBar");
     connect(toggleSearchBar, &QAction::toggled, this, &QWidget::setVisible);
 
-    auto *hideSearchBar = coll->add<Action>("HideSearchBar", toggleSearchBar, SLOT(setChecked(bool)));
-    hideSearchBar->setShortcutConfigurable(false);
+    auto *hideSearchBar = new Action{{}, this, toggleSearchBar, &QAction::setChecked};
     hideSearchBar->setShortcut(Qt::Key_Escape);
+    hideSearchBar->setShortcutConfigurable(false);
+    coll->addAction("HideSearchBar", hideSearchBar);
 
     connect(ui.hideButton, &QAbstractButton::clicked, toggleSearchBar, &QAction::toggle);
     connect(ui.searchEditLine, &QLineEdit::textChanged, this, &ChatViewSearchBar::delaySearch);

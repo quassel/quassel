@@ -55,7 +55,7 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
 {
     ChatView::addActionsToMenu(menu, pos);
     menu->addSeparator();
-    auto showOwnNicksAction = new Action(tr("Show Own Messages"), menu, _filter, SLOT(setShowOwnMessages(bool)));
+    auto showOwnNicksAction = new Action(tr("Show Own Messages"), menu, _filter, &ChatMonitorFilter::setShowOwnMessages);
     showOwnNicksAction->setCheckable(true);
     showOwnNicksAction->setChecked(_filter->showOwnMessages());
     menu->addAction(showOwnNicksAction);
@@ -63,13 +63,13 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     if (scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
         menu->addSeparator();
 
-        auto showNetworkAction = new Action(tr("Show Network Name"), menu, this, SLOT(showFieldsChanged(bool)));
+        auto showNetworkAction = new Action(tr("Show Network Name"), menu, this, &ChatMonitorView::showFieldsChanged);
         showNetworkAction->setCheckable(true);
         showNetworkAction->setChecked(_filter->showFields() & ChatMonitorFilter::NetworkField);
         showNetworkAction->setData(ChatMonitorFilter::NetworkField);
         menu->addAction(showNetworkAction);
 
-        auto showBufferAction = new Action(tr("Show Buffer Name"), menu, this, SLOT(showFieldsChanged(bool)));
+        auto showBufferAction = new Action(tr("Show Buffer Name"), menu, this, &ChatMonitorView::showFieldsChanged);
         showBufferAction->setCheckable(true);
         showBufferAction->setChecked(_filter->showFields() & ChatMonitorFilter::BufferField);
         showBufferAction->setData(ChatMonitorFilter::BufferField);
@@ -77,7 +77,7 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     }
 
     menu->addSeparator();
-    menu->addAction(new Action(icon::get("configure"), tr("Configure..."), menu, this, SLOT(showSettingsPage())));
+    menu->addAction(new Action(icon::get("configure"), tr("Configure..."), menu, this, &ChatMonitorView::showSettingsPage));
 }
 
 

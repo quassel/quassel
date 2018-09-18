@@ -27,38 +27,23 @@
 Action::Action(QObject *parent)
     : QWidgetAction(parent)
 {
-    init();
-}
-
-
-Action::Action(const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-    : QWidgetAction(parent)
-{
-    init();
-    setText(text);
-    setShortcut(shortcut);
-    if (receiver && slot)
-        connect(this, SIGNAL(triggered()), receiver, slot);
-}
-
-
-Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-    : QWidgetAction(parent)
-{
-    init();
-    setIcon(icon);
-    setText(text);
-    setShortcut(shortcut);
-    if (receiver && slot)
-        connect(this, SIGNAL(triggered()), receiver, slot);
-}
-
-
-void Action::init()
-{
-    connect(this, &QAction::triggered, this, &Action::slotTriggered);
-
     setProperty("isShortcutConfigurable", true);
+    connect(this, &QAction::triggered, this, &Action::slotTriggered);
+}
+
+
+Action::Action(const QString &text, QObject *parent, const QKeySequence &shortcut)
+    : Action(parent)
+{
+    setText(text);
+    setShortcut(shortcut);
+}
+
+
+Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QKeySequence &shortcut)
+    : Action(text, parent, shortcut)
+{
+    setIcon(icon);
 }
 
 

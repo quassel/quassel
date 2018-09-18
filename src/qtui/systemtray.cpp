@@ -40,7 +40,7 @@ SystemTray::SystemTray(QWidget *parent)
     UiStyleSettings{}.initAndNotify("Icons/InvertTray", this, SLOT(invertTrayIconChanged(QVariant)), false);
 
     ActionCollection *coll = QtUi::actionCollection("General");
-    _minimizeRestoreAction = new Action(tr("&Minimize"), this, this, SLOT(minimizeRestore()));
+    _minimizeRestoreAction = new Action(tr("&Minimize"), this, this, &SystemTray::minimizeRestore);
 
     _trayMenu = new QMenu(associatedWidget());
     _trayMenu->setTitle("Quassel IRC");

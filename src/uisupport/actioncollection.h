@@ -24,7 +24,12 @@
 
 #include "uisupport-export.h"
 
-#ifndef HAVE_KDE
+#include <utility>
+#include <vector>
+
+#ifdef HAVE_KDE
+#  include <KXmlGui/KActionCollection>
+#endif
 
 #include <QDebug>
 #include <QList>
@@ -37,13 +42,24 @@ class QWidget;
 class Action;
 class QAction;
 
-class UISUPPORT_EXPORT ActionCollection : public QObject
+#ifdef HAVE_KDE
+using ActionCollectionParent = KActionCollection;
+#else
+using ActionCollectionParent = QObject;
+#endif
+
+class UISUPPORT_EXPORT ActionCollection : public ActionCollectionParent
 {
     Q_OBJECT
 
 public:
-    explicit ActionCollection(QObject *parent);
+    using ActionCollectionParent::ActionCollectionParent;
 
+    // Convenience function that takes a list of Actions
+    void addActions(const std::vector<std::pair<QString, Action *>> &actions);
+
+// Everything else is defined in KActionCollection
+#ifndef HAVE_KDE
     /// Clears the entire action collection, deleting all actions.
     void clear();
 
@@ -65,30 +81,16 @@ public:
     void readSettings();
     void writeSettings() const;
 
-    inline int count() const;
-    inline bool isEmpty() const;
+    int count() const;
+    bool isEmpty() const;
 
     QAction *action(int index) const;
     QAction *action(const QString &name) const;
     QList<QAction *> actions() const;
 
     QAction *addAction(const QString &name, QAction *action);
-    Action *addAction(const QString &name, Action *action);
-    Action *addAction(const QString &name, const QObject *receiver = nullptr, const char *member = nullptr);
     void removeAction(QAction *action);
     QAction *takeAction(QAction *action);
-
-    /// Create new action under the given name, add it to the collection and connect its triggered(bool) signal to the specified receiver.
-    template<class ActionType>
-    ActionType *add(const QString &name, const QObject *receiver = nullptr, const char *member = nullptr)
-    {
-        auto *a = new ActionType(this);
-        if (receiver && member)
-            connect(a, SIGNAL(triggered(bool)), receiver, member);
-        addAction(name, a);
-        return a;
-    }
-
 
 signals:
     void inserted(QAction *action);
@@ -111,23 +113,8 @@ private:
     QList<QAction *> _actions;
     QList<QWidget *> _associatedWidgets;
 
-    bool _connectHovered;
-    bool _connectTriggered;
-};
-
-
-int ActionCollection::count() const { return actions().count(); }
-bool ActionCollection::isEmpty() const { return actions().count(); }
-
-#else /* HAVE_KDE */
-#  include <KXmlGui/KActionCollection>
-
-class ActionCollection : public KActionCollection
-{
-    Q_OBJECT
-
-public:
-    explicit ActionCollection(QObject *parent) : KActionCollection(parent) {};
-};
+    bool _connectHovered{false};
+    bool _connectTriggered{false};
 
 #endif /* HAVE_KDE */
+};
