@@ -151,60 +151,60 @@ private slots:
     void handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently);
 #endif
 
-    void on_actionConfigureNetworks_triggered();
-    void on_actionConfigureViews_triggered();
-    void on_actionLockLayout_toggled(bool lock);
+    void onConfigureNetworksTriggered();
+    void onConfigureViewsTriggered();
+    void onLockLayoutToggled(bool lock);
 
     /**
      * Apply the active color to the input widget selected or typed text
      *
      * @seealso InputWidget::applyFormatActiveColor()
      */
-    void on_inputFormatApplyColor_triggered();
+    void onFormatApplyColorTriggered();
 
     /**
      * Apply the active fill color to the input widget selected or typed text background
      *
      * @seealso InputWidget::applyFormatActiveColorFill()
      */
-    void on_inputFormatApplyColorFill_triggered();
+    void onFormatApplyColorFillTriggered();
 
     /**
      * Toggle the boldness of the input widget selected or typed text
      *
      * @seealso InputWidget::toggleFormatBold()
      */
-    void on_inputFormatBold_triggered();
+    void onFormatBoldTriggered();
 
     /**
      * Toggle the italicness of the input widget selected or typed text
      *
      * @seealso InputWidget::toggleFormatItalic()
      */
-    void on_inputFormatItalic_triggered();
+    void onFormatItalicTriggered();
 
     /**
      * Toggle the underlining of the input widget selected or typed text
      *
      * @seealso InputWidget::toggleFormatUnderline()
      */
-    void on_inputFormatUnderline_triggered();
+    void onFormatUnderlineTriggered();
 
     /**
      * Clear the formatting of the input widget selected or typed text
      *
      * @seealso InputWidget::clearFormat()
      */
-    void on_inputFormatClear_triggered();
+    void onFormatClearTriggered();
 
-    void on_jumpHotBuffer_triggered();
-    void on_bufferSearch_triggered();
-    void on_actionDebugNetworkModel_triggered();
-    void on_actionDebugBufferViewOverlay_triggered();
-    void on_actionDebugMessageModel_triggered();
-    void on_actionDebugHotList_triggered();
-    void on_actionDebugLog_triggered();
-    void on_actionShowResourceTree_triggered();
+    void onJumpHotBufferTriggered();
+    void onBufferSearchTriggered();
+    void onDebugNetworkModelTriggered();
+    void onDebugBufferViewOverlayTriggered();
+    void onDebugMessageModelTriggered();
+    void onDebugHotListTriggered();
+    void onDebugLogTriggered();
+    void onShowResourceTreeTriggered();
 
     void bindJumpKey();
     void onJumpKey();
