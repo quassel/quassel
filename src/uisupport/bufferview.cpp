@@ -439,7 +439,7 @@ void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index)
     indexList.removeAll(index);
     indexList.prepend(index);
 
-    GraphicalUi::contextMenuActionProvider()->addActions(contextMenu, indexList, this, "menuActionTriggered", (bool)config());
+    GraphicalUi::contextMenuActionProvider()->addActions(contextMenu, indexList, this, &BufferView::menuActionTriggered, (bool)config());
 }
 
 

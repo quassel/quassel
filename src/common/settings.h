@@ -22,6 +22,8 @@
 
 #include "common-export.h"
 
+#include <memory>
+
 #include <QCoreApplication>
 #include <QHash>
 #include <QSettings>
@@ -50,10 +52,10 @@ public:
 
 public:
     //! Call the given slot on change of the given key
-    virtual void notify(const QString &key, QObject *receiver, const char *slot);
+    void notify(const QString &key, QObject *receiver, const char *slot) const;
 
     //! Sets up notification and calls the given slot to set the initial value
-    void initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue = QVariant());
+    void initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue = QVariant()) const;
 
     /**
      * Get the major configuration version
@@ -62,7 +64,7 @@ public:
      *
      * @return Major configuration version (the X in XX.YY)
      */
-    virtual uint version();
+    virtual uint version() const;
 
     /**
      * Get the minor configuration version
@@ -72,7 +74,7 @@ public:
      * @see Settings::setVersionMinor()
      * @return Minor configuration version (the Y in XX.YY)
      */
-    virtual uint versionMinor();
+    virtual uint versionMinor() const;
 
     /**
      * Set the minor configuration version
@@ -97,20 +99,20 @@ public:
      *
      * @return true if writable, false otherwise
      */
-    bool isWritable();
+    bool isWritable() const;
 
 protected:
-    inline Settings(QString group_, QString appName_) : group(std::move(group_)), appName(std::move(appName_)) {}
-    inline virtual ~Settings() = default;
+    Settings(QString group, QString appName);
+    virtual ~Settings() = default;
 
-    inline void setGroup(const QString &group_) { group = group_; }
+    void setGroup(QString group);
 
-    virtual QStringList allLocalKeys();
-    virtual QStringList localChildKeys(const QString &rootkey = QString());
-    virtual QStringList localChildGroups(const QString &rootkey = QString());
+    virtual QStringList allLocalKeys() const;
+    virtual QStringList localChildKeys(const QString &rootkey = QString()) const;
+    virtual QStringList localChildGroups(const QString &rootkey = QString()) const;
 
     virtual void setLocalValue(const QString &key, const QVariant &data);
-    virtual QVariant localValue(const QString &key, const QVariant &def = QVariant());
+    virtual QVariant localValue(const QString &key, const QVariant &def = QVariant()) const;
 
     /**
      * Gets if a key exists in settings
@@ -118,42 +120,19 @@ protected:
      * @param[in] key ID of local settings key
      * @returns True if key exists in settings, otherwise false
      */
-    virtual bool localKeyExists(const QString &key);
+    virtual bool localKeyExists(const QString &key) const;
 
     virtual void removeLocalKey(const QString &key);
 
-    QString group;
-    QString appName;
+    QString _group;
+    QString _appName;
 
 private:
-    inline QSettings::Format format()
-    {
-#ifdef Q_OS_WIN
-        return QSettings::IniFormat;
-#else
-        return QSettings::NativeFormat;
-#endif
-    }
+    QSettings::Format format() const;
 
+    QString fileName() const;
 
-    inline QString fileName()
-    {
-        return Quassel::configDirPath() + appName
-               + ((format() == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
-    }
-
-
-    static QHash<QString, QVariant> settingsCache;         ///< Cached settings values
-    static QHash<QString, bool> settingsKeyPersistedCache; ///< Cached settings key exists on disk
-    static QHash<QString, SettingsChangeNotifier *> settingsChangeNotifier;
-
-    inline QString normalizedKey(const QString &group, const QString &key)
-    {
-        if (group.isEmpty())
-            return key;
-        return group + '/' + key;
-    }
-
+    QString normalizedKey(const QString &group, const QString &key) const;
 
     /**
      * Update the cache of whether or not a given settings key persists on disk
@@ -161,11 +140,7 @@ private:
      * @param normKey Normalized settings key ID
      * @param exists  True if key exists, otherwise false
      */
-    inline void setCacheKeyPersisted(const QString &normKey, bool exists)
-    {
-        settingsKeyPersistedCache[normKey] = exists;
-    }
-
+    void setCacheKeyPersisted(const QString &normKey, bool exists) const;
 
     /**
      * Check if the given settings key ID persists on disk (rather than being a default value)
@@ -175,11 +150,7 @@ private:
      * @param normKey Normalized settings key ID
      * @return True if key exists and persistence has been cached, otherwise false
      */
-    inline const bool &cacheKeyPersisted(const QString &normKey)
-    {
-        return settingsKeyPersistedCache[normKey];
-    }
-
+    bool cacheKeyPersisted(const QString &normKey) const;
 
     /**
      * Check if the persistence of the given settings key ID has been cached
@@ -187,40 +158,20 @@ private:
      * @param normKey Normalized settings key ID
      * @return True if key persistence has been cached, otherwise false
      */
-    inline bool isKeyPersistedCached(const QString &normKey)
-    {
-        return settingsKeyPersistedCache.contains(normKey);
-    }
+    bool isKeyPersistedCached(const QString &normKey) const;
 
+    void setCacheValue(const QString &normKey, const QVariant &data) const;
 
-    inline void setCacheValue(const QString &normKey, const QVariant &data)
-    {
-        settingsCache[normKey] = data;
-    }
+    QVariant cacheValue(const QString &normKey) const;
 
+    bool isCached(const QString &normKey) const;
 
-    inline const QVariant &cacheValue(const QString &normKey)
-    {
-        return settingsCache[normKey];
-    }
+    SettingsChangeNotifier *notifier(const QString &normKey) const;
 
+    bool hasNotifier(const QString &normKey) const;
 
-    inline bool isCached(const QString &normKey)
-    {
-        return settingsCache.contains(normKey);
-    }
-
-
-    inline SettingsChangeNotifier *notifier(const QString &normKey)
-    {
-        if (!hasNotifier(normKey))
-            settingsChangeNotifier[normKey] = new SettingsChangeNotifier();
-        return settingsChangeNotifier[normKey];
-    }
-
-
-    inline bool hasNotifier(const QString &normKey)
-    {
-        return settingsChangeNotifier.contains(normKey);
-    }
+private:
+    static QHash<QString, QVariant> _settingsCache;         ///< Cached settings values
+    static QHash<QString, bool> _settingsKeyPersistedCache; ///< Cached settings key exists on disk
+    static QHash<QString, std::shared_ptr<SettingsChangeNotifier>> _settingsChangeNotifier;
 };

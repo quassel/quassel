@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CHATVIEWSETTINGS_H
-#define CHATVIEWSETTINGS_H
+#pragma once
 
 #include "qtuisettings.h"
 #include "uistyle.h"
@@ -37,34 +36,34 @@ public:
         OptIn = 1,
         OptOut = 2
     };
-    Q_DECLARE_FLAGS(operationModes, OperationMode)
+    Q_DECLARE_FLAGS(OperationModes, OperationMode)
 
     ChatViewSettings(const QString &id = "__default__");
     ChatViewSettings(ChatScene *scene);
     ChatViewSettings(ChatView *view);
 
-    inline bool showWebPreview() { return localValue("ShowWebPreview", false).toBool(); }
-    inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
+    bool showWebPreview() const;
+    void enableWebPreview(bool enabled);
 
     /**
      * Gets if a custom timestamp format is used.
      *
      * @returns True if custom timestamp format used, otherwise false
      */
-    inline bool useCustomTimestampFormat() { return localValue("UseCustomTimestampFormat", false).toBool(); }
+    bool useCustomTimestampFormat() const;
     /**
      * Sets whether a custom timestamp format is used.
      *
      * @param[in] enabled True if custom timestamp format used, otherwise false
      */
-    inline void setUseCustomTimestampFormat(bool enabled) { setLocalValue("UseCustomTimestampFormat", enabled); }
+    void setUseCustomTimestampFormat(bool enabled);
 
     /**
      * Gets the format string for chat log timestamps.
      *
      * @returns String representing timestamp format, e.g. "[hh:mm:ss]" or " hh:mm:ss"
      */
-    inline QString timestampFormatString() { return localValue("TimestampFormat", " hh:mm:ss").toString(); }
+    QString timestampFormatString() const;
     // Include a space in the default TimestampFormat to give the timestamp a small bit of padding
     // between the border of the chat buffer window and the numbers.  Helps with readability.
     /**
@@ -72,42 +71,30 @@ public:
      *
      * @param[in] format String representing timestamp format, e.g. "[hh:mm:ss]" or " hh:mm:ss"
      */
-    inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
+    void setTimestampFormatString(const QString &format);
 
     /**
      * Gets how prefix modes are shown before sender names
      *
      * @returns SenderPrefixMode of what format to use for showing sender prefix modes
      */
-    inline UiStyle::SenderPrefixMode SenderPrefixDisplay() {
-        return static_cast<UiStyle::SenderPrefixMode>(
-                    localValue("SenderPrefixMode",
-                               QVariant::fromValue<UiStyle::SenderPrefixMode>(
-                                   UiStyle::SenderPrefixMode::HighestMode)).toInt());
-        // Cast the QVariant to an integer, then cast that to the enum class.
-        // .canConvert<UiStyle::SenderPrefixMode>() returned true, but
-        // .value<UiStyle::SenderPrefixMode>(); always gave the default value 0.
-        //
-        // There's probably a cleaner way of doing this.  I couldn't find it within 4 hours, so...
-    }
+    UiStyle::SenderPrefixMode senderPrefixDisplay() const;
 
     /**
      * Gets if brackets are shown around sender names
      *
      * @returns True if sender brackets enabled, otherwise false
      */
-    inline bool showSenderBrackets() { return localValue("ShowSenderBrackets", false).toBool(); }
+    bool showSenderBrackets() const;
     /**
      * Sets whether brackets are shown around around sender names.
      *
      * @param[in] enabled True if enabling sender brackets, otherwise false
      */
-    inline void enableSenderBrackets(bool enabled) { setLocalValue("ShowSenderBrackets", enabled); }
+    void enableSenderBrackets(bool enabled);
 
-    inline QString webSearchUrlFormatString() { return localValue("WebSearchUrlFormat", "https://www.google.com/search?q=%s").toString(); }
-    inline void setWebSearchUrlFormatString(const QString &format) { setLocalValue("WebSearchUrlFormat", format); }
+    QString webSearchUrlFormatString() const;
+    void setWebSearchUrlFormatString(const QString &format);
 };
 
-
 Q_DECLARE_METATYPE(ChatViewSettings::OperationMode)
-#endif //CHATVIEWSETTINGS_H

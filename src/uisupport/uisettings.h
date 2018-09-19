@@ -28,10 +28,10 @@
 class UISUPPORT_EXPORT UiSettings : public ClientSettings
 {
 public:
-    UiSettings(const QString &group = "Ui");
+    UiSettings(QString group = "Ui");
 
-    virtual inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
-    virtual inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
+    virtual void setValue(const QString &key, const QVariant &data);
+    virtual QVariant value(const QString &key, const QVariant &def = {}) const;
 
     /**
      * Gets if a value exists in settings
@@ -39,9 +39,9 @@ public:
      * @param[in] key ID of local settings key
      * @returns True if key exists in settings, otherwise false
      */
-    virtual inline bool valueExists(const QString &key) { return localKeyExists(key); }
+    bool valueExists(const QString &key) const;
 
-    inline void remove(const QString &key) { removeLocalKey(key); }
+    void remove(const QString &key);
 };
 
 
@@ -51,21 +51,21 @@ public:
     UiStyleSettings();
     UiStyleSettings(const QString &subGroup);
 
-    void setCustomFormat(UiStyle::FormatType, QTextCharFormat);
-    QTextCharFormat customFormat(UiStyle::FormatType);
+    void setCustomFormat(UiStyle::FormatType, const QTextCharFormat &format);
+    QTextCharFormat customFormat(UiStyle::FormatType) const;
 
     void removeCustomFormat(UiStyle::FormatType);
-    QList<UiStyle::FormatType> availableFormats();
+    QList<UiStyle::FormatType> availableFormats() const;
 };
 
 
 class UISUPPORT_EXPORT SessionSettings : public UiSettings
 {
 public:
-    SessionSettings(QString sessionId, const QString &group = "Session");
+    SessionSettings(QString sessionId, QString group = "Session");
 
     void setValue(const QString &key, const QVariant &data) override;
-    QVariant value(const QString &key, const QVariant &def = QVariant()) override;
+    QVariant value(const QString &key, const QVariant &def = {}) const override;
 
     void removeKey(const QString &key);
     void removeSession();
@@ -75,8 +75,8 @@ public:
 
     int sessionAge();
     void setSessionAge(int age);
-    inline const QString sessionId() { return _sessionId; };
-    inline void setSessionId(const QString &sessionId) { _sessionId = sessionId; }
+    QString sessionId() const;
+    void setSessionId(QString sessionId);
 
 private:
     QString _sessionId;
@@ -91,8 +91,8 @@ public:
     //! Remove all stored shortcuts
     void clear();
 
-    QStringList savedShortcuts();
+    QStringList savedShortcuts() const;
 
     void saveShortcut(const QString &name, const QKeySequence &shortcut);
-    QKeySequence loadShortcut(const QString &name);
+    QKeySequence loadShortcut(const QString &name) const;
 };

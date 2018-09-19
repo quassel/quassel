@@ -159,50 +159,49 @@ ContextMenuActionProvider::~ContextMenuActionProvider()
 }
 
 
-void ContextMenuActionProvider::addActions(QMenu *menu, BufferId bufId, QObject *receiver, const char *method)
+void ContextMenuActionProvider::addActions(QMenu *menu, BufferId bufId, ActionSlot slot)
 {
     if (!bufId.isValid())
         return;
-    addActions(menu, Client::networkModel()->bufferIndex(bufId), receiver, method);
+    addActions(menu, Client::networkModel()->bufferIndex(bufId), std::move(slot));
 }
 
 
-void ContextMenuActionProvider::addActions(QMenu *menu, const QModelIndex &index, QObject *receiver, const char *method, bool isCustomBufferView)
+void ContextMenuActionProvider::addActions(QMenu *menu, const QModelIndex &index, ActionSlot slot, bool isCustomBufferView)
 {
     if (!index.isValid())
         return;
-    addActions(menu, QList<QModelIndex>() << index, nullptr, QString(), receiver, method, isCustomBufferView);
+    addActions(menu, QList<QModelIndex>() << index, nullptr, QString(), std::move(slot), isCustomBufferView);
 }
 
 
-void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, QObject *receiver, const char *slot)
+void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, ActionSlot slot)
 {
-    addActions(menu, filter, msgBuffer, QString(), receiver, slot);
+    addActions(menu, filter, msgBuffer, QString(), std::move(slot));
 }
 
 
-void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver, const char *method)
+void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, ActionSlot slot)
 {
     if (!filter)
         return;
-    addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), filter, chanOrNick, receiver, method, false);
+    addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), filter, chanOrNick, std::move(slot), false);
 }
 
 
-void ContextMenuActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, QObject *receiver,  const char *method, bool isCustomBufferView)
+void ContextMenuActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, ActionSlot slot, bool isCustomBufferView)
 {
-    addActions(menu, indexList, nullptr, QString(), receiver, method, isCustomBufferView);
+    addActions(menu, indexList, nullptr, QString(), std::move(slot), isCustomBufferView);
 }
 
 
 // add a list of actions sensible for the current item(s)
 void ContextMenuActionProvider::addActions(QMenu *menu,
-    const QList<QModelIndex> &indexList_,
-    MessageFilter *filter_,
-    const QString &contextItem_,
-    QObject *receiver_,
-    const char *method_,
-    bool isCustomBufferView)
+                                           const QList<QModelIndex> &indexList_,
+                                           MessageFilter *filter_,
+                                           const QString &contextItem_,
+                                           ActionSlot actionSlot,
+                                           bool isCustomBufferView)
 {
     if (!indexList_.count())
         return;
@@ -210,7 +209,7 @@ void ContextMenuActionProvider::addActions(QMenu *menu,
     setIndexList(indexList_);
     setMessageFilter(filter_);
     setContextItem(contextItem_);
-    setSlot(receiver_, method_);
+    setSlot(std::move(actionSlot));
 
     if (!messageFilter()) {
         // this means we are in a BufferView (or NickView) rather than a ChatView
