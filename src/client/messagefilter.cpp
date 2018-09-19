@@ -55,19 +55,19 @@ void MessageFilter::init()
     _userNoticesTarget = _serverNoticesTarget = _errorMsgsTarget = -1;
 
     BufferSettings defaultSettings;
-    defaultSettings.notify("UserNoticesTarget", this, SLOT(messageRedirectionChanged()));
-    defaultSettings.notify("ServerNoticesTarget", this, SLOT(messageRedirectionChanged()));
-    defaultSettings.notify("ErrorMsgsTarget", this, SLOT(messageRedirectionChanged()));
+    defaultSettings.notify("UserNoticesTarget", this, &MessageFilter::messageRedirectionChanged);
+    defaultSettings.notify("ServerNoticesTarget", this, &MessageFilter::messageRedirectionChanged);
+    defaultSettings.notify("ErrorMsgsTarget", this, &MessageFilter::messageRedirectionChanged);
     messageRedirectionChanged();
 
     _messageTypeFilter = defaultSettings.messageFilter();
-    defaultSettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));
+    defaultSettings.notify("MessageTypeFilter", this, &MessageFilter::messageTypeFilterChanged);
 
     BufferSettings mySettings(MessageFilter::idString());
     if (mySettings.hasFilter())
         _messageTypeFilter = mySettings.messageFilter();
-    mySettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));
-    mySettings.notify("hasMessageTypeFilter", this, SLOT(messageTypeFilterChanged()));
+    mySettings.notify("MessageTypeFilter", this, &MessageFilter::messageTypeFilterChanged);
+    mySettings.notify("hasMessageTypeFilter", this, &MessageFilter::messageTypeFilterChanged);
 }
 
 

@@ -30,7 +30,7 @@ SystrayAnimationNotificationBackend::SystrayAnimationNotificationBackend(QObject
     : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
-    notificationSettings.initAndNotify("Systray/Alert", this, SLOT(alertChanged(QVariant)), true);
+    notificationSettings.initAndNotify("Systray/Alert", this, &SystrayAnimationNotificationBackend::alertChanged, true);
 }
 
 

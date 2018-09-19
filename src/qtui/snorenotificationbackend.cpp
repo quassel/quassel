@@ -60,7 +60,7 @@ SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
     NotificationSettings notificationSettings;
     bool enabled = notificationSettings.value("Snore/Enabled", false).toBool();
     setTraybackend(enabled);
-    notificationSettings.notify("Snore/Enabled", this, SLOT(setTraybackend(const QVariant &)));
+    notificationSettings.notify("Snore/Enabled", this, &SnoreNotificationBackend::setTraybackend);
 }
 
 SnoreNotificationBackend::~SnoreNotificationBackend()

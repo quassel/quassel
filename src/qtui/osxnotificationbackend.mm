@@ -49,7 +49,7 @@ OSXNotificationBackend::OSXNotificationBackend(QObject *parent)
       _enabled(true)
 {
     NotificationSettings notificationSettings;
-    notificationSettings.initAndNotify("OSXNotification/Enabled", this, SLOT(enabledChanged(QVariant)), true);
+    notificationSettings.initAndNotify("OSXNotification/Enabled", this, &OSXNotificationBackend::enabledChanged, true);
 }
 
 void OSXNotificationBackend::enabledChanged(const QVariant &value)

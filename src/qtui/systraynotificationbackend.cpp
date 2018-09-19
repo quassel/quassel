@@ -37,7 +37,7 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
     : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
-    notificationSettings.initAndNotify("Systray/ShowBubble", this, SLOT(showBubbleChanged(QVariant)), true);
+    notificationSettings.initAndNotify("Systray/ShowBubble", this, &SystrayNotificationBackend::showBubbleChanged, true);
 
     connect(QtUi::mainWindow()->systemTray(), &SystemTray::messageClicked,
             this, selectOverload<uint>(&SystrayNotificationBackend::onNotificationActivated));

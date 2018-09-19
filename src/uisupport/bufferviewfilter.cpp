@@ -57,7 +57,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
     connect(&_enableEditMode, &QAction::toggled, this, &BufferViewFilter::enableEditMode);
 
     BufferSettings defaultSettings;
-    defaultSettings.notify("ServerNoticesTarget", this, SLOT(showServerQueriesChanged()));
+    defaultSettings.notify("ServerNoticesTarget", this, &BufferViewFilter::showServerQueriesChanged);
     showServerQueriesChanged();
 }
 

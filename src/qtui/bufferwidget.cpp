@@ -84,8 +84,8 @@ BufferWidget::BufferWidget(QWidget *parent)
     coll->addAction("JumpToMarkerLine", new Action{tr("Go to Marker Line"), coll, this, [this]() { jumpToMarkerLine(); }, QKeySequence(Qt::CTRL + Qt::Key_K)});
 
     ChatViewSettings s;
-    s.initAndNotify("AutoMarkerLine", this, SLOT(setAutoMarkerLine(QVariant)), true);
-    s.initAndNotify("AutoMarkerLineOnLostFocus", this, SLOT(setAutoMarkerLineOnLostFocus(QVariant)), true);
+    s.initAndNotify("AutoMarkerLine", this, &BufferWidget::setAutoMarkerLine, true);
+    s.initAndNotify("AutoMarkerLineOnLostFocus", this, &BufferWidget::setAutoMarkerLineOnLostFocus, true);
 }
 
 

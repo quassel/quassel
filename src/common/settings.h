@@ -23,6 +23,7 @@
 #include "common-export.h"
 
 #include <memory>
+#include <type_traits>
 
 #include <QCoreApplication>
 #include <QHash>
@@ -51,11 +52,22 @@ public:
     enum Mode { Default, Custom };
 
 public:
-    //! Call the given slot on change of the given key
-    void notify(const QString &key, QObject *receiver, const char *slot) const;
+    //! Calls the given slot on change of the given key
+    template<typename Receiver, typename Slot>
+    void notify(const QString &key, const Receiver *receiver, Slot slot) const
+    {
+        static_assert(!std::is_same<Slot, const char*>::value, "Old-style slots not supported");
+        QObject::connect(notifier(normalizedKey(_group, keyForNotify(key))), &SettingsChangeNotifier::valueChanged, receiver, slot);
+    }
 
     //! Sets up notification and calls the given slot to set the initial value
-    void initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue = QVariant()) const;
+    template<typename Receiver, typename Slot>
+    void initAndNotify(const QString &key, const Receiver *receiver, Slot slot, const QVariant &defaultValue = {}) const
+    {
+        notify(key, receiver, std::move(slot));
+        auto notifyKey = keyForNotify(key);
+        emit notifier(normalizedKey(_group, notifyKey))->valueChanged(localValue(notifyKey, defaultValue));
+    }
 
     /**
      * Get the major configuration version
@@ -106,6 +118,16 @@ protected:
     virtual ~Settings() = default;
 
     void setGroup(QString group);
+
+    /**
+     * Allows subclasses to transform the key given to notify().
+     *
+     * Default implementation just returns the given key.
+     *
+     * @param key Key given to notify()
+     * @returns Key that should be used for notfication
+     */
+    virtual QString keyForNotify(const QString &key) const;
 
     virtual QStringList allLocalKeys() const;
     virtual QStringList localChildKeys(const QString &rootkey = QString()) const;

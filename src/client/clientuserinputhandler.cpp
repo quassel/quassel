@@ -41,7 +41,7 @@ ClientUserInputHandler::ClientUserInputHandler(QObject *parent)
     : BasicHandler(parent)
 {
     TabCompletionSettings s;
-    s.notify("CompletionSuffix", this, SLOT(completionSuffixChanged(QVariant)));
+    s.notify("CompletionSuffix", this, &ClientUserInputHandler::completionSuffixChanged);
     completionSuffixChanged(s.completionSuffix());
 }
 

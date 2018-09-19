@@ -112,36 +112,20 @@ InputWidget::InputWidget(QWidget *parent)
     new TabCompleter(ui.inputEdit);
 
     UiStyleSettings fs("Fonts");
-    fs.notify("UseCustomInputWidgetFont", this, SLOT(setUseCustomFont(QVariant)));
-    fs.notify("InputWidget", this, SLOT(setCustomFont(QVariant)));
+    fs.notify("UseCustomInputWidgetFont", this, &InputWidget::setUseCustomFont);
+    fs.notify("InputWidget", this, &InputWidget::setCustomFont);
     if (fs.value("UseCustomInputWidgetFont", false).toBool())
         setCustomFont(fs.value("InputWidget", QFont()));
 
     UiSettings s("InputWidget");
-
-    s.notify("EnableEmacsMode", this, SLOT(setEnableEmacsMode(QVariant)));
-    setEnableEmacsMode(s.value("EnableEmacsMode", false));
-
-    s.notify("ShowNickSelector", this, SLOT(setShowNickSelector(QVariant)));
-    setShowNickSelector(s.value("ShowNickSelector", true));
-
-    s.notify("ShowStyleButtons", this, SLOT(setShowStyleButtons(QVariant)));
-    setShowStyleButtons(s.value("ShowStyleButtons", true));
-
-    s.notify("EnablePerChatHistory", this, SLOT(setEnablePerChatHistory(QVariant)));
-    setEnablePerChatHistory(s.value("EnablePerChatHistory", true));
-
-    s.notify("MaxNumLines", this, SLOT(setMaxLines(QVariant)));
-    setMaxLines(s.value("MaxNumLines", 5));
-
-    s.notify("EnableScrollBars", this, SLOT(setScrollBarsEnabled(QVariant)));
-    setScrollBarsEnabled(s.value("EnableScrollBars", true));
-
-    s.notify("EnableLineWrap", this, SLOT(setLineWrapEnabled(QVariant)));
-    setLineWrapEnabled(s.value("EnableLineWrap", true));
-
-    s.notify("EnableMultiLine", this, SLOT(setMultiLineEnabled(QVariant)));
-    setMultiLineEnabled(s.value("EnableMultiLine", true));
+    s.initAndNotify("EnableEmacsMode", this, &InputWidget::setEnableEmacsMode, false);
+    s.initAndNotify("ShowNickSelector", this, &InputWidget::setShowNickSelector, true);
+    s.initAndNotify("ShowStyleButtons", this, &InputWidget::setShowStyleButtons, true);
+    s.initAndNotify("EnablePerChatHistory", this, &InputWidget::setEnablePerChatHistory, true);
+    s.initAndNotify("MaxNumLines", this, &InputWidget::setMaxLines, 5);
+    s.initAndNotify("EnableScrollBars", this, &InputWidget::setScrollBarsEnabled, true);
+    s.initAndNotify("EnableLineWrap", this, &InputWidget::setLineWrapEnabled, true);
+    s.initAndNotify("EnableMultiLine", this, &InputWidget::setMultiLineEnabled, true);
 
     ActionCollection *coll = QtUi::actionCollection();
     coll->addAction("FocusInputLine", new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL + Qt::Key_L)});

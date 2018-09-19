@@ -49,17 +49,9 @@ void Settings::setGroup(QString group) {
 }
 
 
-void Settings::notify(const QString &key, QObject *receiver, const char *slot) const
+QString Settings::keyForNotify(const QString &key) const
 {
-    QObject::connect(notifier(normalizedKey(_group, key)), SIGNAL(valueChanged(const QVariant &)),
-        receiver, slot);
-}
-
-
-void Settings::initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue) const
-{
-    notify(key, receiver, slot);
-    emit notifier(normalizedKey(_group, key))->valueChanged(localValue(key, defaultValue));
+    return key;
 }
 
 

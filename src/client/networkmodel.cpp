@@ -1284,9 +1284,9 @@ NetworkModel::NetworkModel(QObject *parent)
     connect(this, &NetworkModel::rowsAboutToBeRemoved, this, &NetworkModel::checkForRemovedBuffers);
 
     BufferSettings defaultSettings;
-    defaultSettings.notify("UserNoticesTarget", this, SLOT(messageRedirectionSettingsChanged()));
-    defaultSettings.notify("ServerNoticesTarget", this, SLOT(messageRedirectionSettingsChanged()));
-    defaultSettings.notify("ErrorMsgsTarget", this, SLOT(messageRedirectionSettingsChanged()));
+    defaultSettings.notify("UserNoticesTarget", this, &NetworkModel::messageRedirectionSettingsChanged);
+    defaultSettings.notify("ServerNoticesTarget", this, &NetworkModel::messageRedirectionSettingsChanged);
+    defaultSettings.notify("ErrorMsgsTarget", this, &NetworkModel::messageRedirectionSettingsChanged);
     messageRedirectionSettingsChanged();
 }
 
