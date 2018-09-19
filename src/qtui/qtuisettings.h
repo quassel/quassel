@@ -18,26 +18,23 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef QTUISETTINGS_H_
-#define QTUISETTINGS_H_
-
-#include <QColor>
+#pragma once
 
 #include "uisettings.h"
 
 class QtUiSettings : public UiSettings
 {
 public:
-    QtUiSettings(const QString &subGroup);
     QtUiSettings();
+    QtUiSettings(const QString &subGroup);
 };
 
 
 class QtUiStyleSettings : public UiSettings
 {
 public:
-    QtUiStyleSettings(const QString &subGroup);
     QtUiStyleSettings();
+    QtUiStyleSettings(const QString &subGroup);
 };
 
 
@@ -46,9 +43,6 @@ class WarningsSettings : public UiSettings
 public:
     WarningsSettings();
 
-    bool showWarning(const QString &key);
+    bool showWarning(const QString &key) const;
     void setShowWarning(const QString &key, bool show);
 };
-
-
-#endif

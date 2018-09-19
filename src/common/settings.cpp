@@ -29,56 +29,41 @@ const int VERSION = 1;              /// Settings version for backwords/forwards 
 // QtUiApplication::init() to handle upgrading and downgrading.
 const int VERSION_MINOR_INITIAL = 1; /// Initial settings version for compatible changes
 
-QHash<QString, QVariant> Settings::settingsCache;
-QHash<QString, bool> Settings::settingsKeyPersistedCache;
-QHash<QString, SettingsChangeNotifier *> Settings::settingsChangeNotifier;
+QHash<QString, QVariant> Settings::_settingsCache;
+QHash<QString, bool> Settings::_settingsKeyPersistedCache;
+QHash<QString, std::shared_ptr<SettingsChangeNotifier>> Settings::_settingsChangeNotifier;
 
 #ifdef Q_OS_MAC
-#  define create_qsettings QSettings s(QCoreApplication::organizationDomain(), appName)
+#  define create_qsettings QSettings s(QCoreApplication::organizationDomain(), _appName)
 #else
 #  define create_qsettings QSettings s(fileName(), format())
 #endif
 
-// Settings::Settings(QString group_, QString appName_)
-//   : group(group_),
-//     appName(appName_)
-// {
+Settings::Settings(QString group, QString appName)
+    : _group(std::move(group)), _appName(std::move(appName))
+{}
 
-// /* we need to call the constructor immediately in order to set the path...
-// #ifndef Q_WS_QWS
-//   QSettings(QCoreApplication::organizationName(), applicationName);
-// #else
-//   // FIXME sandboxDir() is not currently working correctly...
-//   //if(Qtopia::sandboxDir().isEmpty()) QSettings();
-//   //else QSettings(Qtopia::sandboxDir() + "/etc/QuasselIRC.conf", QSettings::NativeFormat);
-//   // ...so we have to use a workaround:
-//   QString appPath = QCoreApplication::applicationFilePath();
-//   if(appPath.startsWith(Qtopia::packagePath())) {
-//     QString sandboxPath = appPath.left(Qtopia::packagePath().length() + 32);
-//     QSettings(sandboxPath + "/etc/QuasselIRC.conf", QSettings::IniFormat);
-//     qDebug() << sandboxPath + "/etc/QuasselIRC.conf";
-//   } else {
-//     QSettings(QCoreApplication::organizationName(), applicationName);
-//   }
-// #endif
-// */
-// }
 
-void Settings::notify(const QString &key, QObject *receiver, const char *slot)
+void Settings::setGroup(QString group) {
+    _group = std::move(group);
+}
+
+
+void Settings::notify(const QString &key, QObject *receiver, const char *slot) const
 {
-    QObject::connect(notifier(normalizedKey(group, key)), SIGNAL(valueChanged(const QVariant &)),
+    QObject::connect(notifier(normalizedKey(_group, key)), SIGNAL(valueChanged(const QVariant &)),
         receiver, slot);
 }
 
 
-void Settings::initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue)
+void Settings::initAndNotify(const QString &key, QObject *receiver, const char *slot, const QVariant &defaultValue) const
 {
     notify(key, receiver, slot);
-    emit notifier(normalizedKey(group, key))->valueChanged(localValue(key, defaultValue));
+    emit notifier(normalizedKey(_group, key))->valueChanged(localValue(key, defaultValue));
 }
 
 
-uint Settings::version()
+uint Settings::version() const
 {
     // we don't cache this value, and we ignore the group
     create_qsettings;
@@ -92,7 +77,7 @@ uint Settings::version()
 }
 
 
-uint Settings::versionMinor()
+uint Settings::versionMinor() const
 {
     // Don't cache this value; ignore the group
     create_qsettings;
@@ -105,7 +90,8 @@ uint Settings::versionMinor()
     // than Config/Version exist.  If so, assume it's version 1.
     if (verMinor == 0 && s.allKeys().count() > 1) {
         // More than 1 key exists, but version's never been set.  Assume and set version 1.
-        setVersionMinor(VERSION_MINOR_INITIAL);
+        // const_cast is ok, because setVersionMinor() doesn't actually change this instance
+        const_cast<Settings*>(this)->setVersionMinor(VERSION_MINOR_INITIAL);
         return VERSION_MINOR_INITIAL;
     } else {
         return verMinor;
@@ -122,7 +108,18 @@ void Settings::setVersionMinor(const uint versionMinor)
 }
 
 
-bool Settings::sync() {
+QSettings::Format Settings::format() const
+{
+#ifdef Q_OS_WIN
+    return QSettings::IniFormat;
+#else
+    return QSettings::NativeFormat;
+#endif
+}
+
+
+bool Settings::sync()
+{
     create_qsettings;
     s.sync();
     switch (s.status()) {
@@ -134,29 +131,30 @@ bool Settings::sync() {
 }
 
 
-bool Settings::isWritable() {
+bool Settings::isWritable() const
+{
     create_qsettings;
     return s.isWritable();
 }
 
 
-QStringList Settings::allLocalKeys()
+QStringList Settings::allLocalKeys() const
 {
     create_qsettings;
-    s.beginGroup(group);
+    s.beginGroup(_group);
     QStringList res = s.allKeys();
     s.endGroup();
     return res;
 }
 
 
-QStringList Settings::localChildKeys(const QString &rootkey)
+QStringList Settings::localChildKeys(const QString &rootkey) const
 {
     QString g;
     if (rootkey.isEmpty())
-        g = group;
+        g = _group;
     else
-        g = QString("%1/%2").arg(group, rootkey);
+        g = QString("%1/%2").arg(_group, rootkey);
 
     create_qsettings;
     s.beginGroup(g);
@@ -166,13 +164,13 @@ QStringList Settings::localChildKeys(const QString &rootkey)
 }
 
 
-QStringList Settings::localChildGroups(const QString &rootkey)
+QStringList Settings::localChildGroups(const QString &rootkey) const
 {
     QString g;
     if (rootkey.isEmpty())
-        g = group;
+        g = _group;
     else
-        g = QString("%1/%2").arg(group, rootkey);
+        g = QString("%1/%2").arg(_group, rootkey);
 
     create_qsettings;
     s.beginGroup(g);
@@ -184,7 +182,7 @@ QStringList Settings::localChildGroups(const QString &rootkey)
 
 void Settings::setLocalValue(const QString &key, const QVariant &data)
 {
-    QString normKey = normalizedKey(group, key);
+    QString normKey = normalizedKey(_group, key);
     create_qsettings;
     s.setValue(normKey, data);
     setCacheKeyPersisted(normKey, true);
@@ -195,9 +193,9 @@ void Settings::setLocalValue(const QString &key, const QVariant &data)
 }
 
 
-QVariant Settings::localValue(const QString &key, const QVariant &def)
+QVariant Settings::localValue(const QString &key, const QVariant &def) const
 {
-    QString normKey = normalizedKey(group, key);
+    QString normKey = normalizedKey(_group, key);
     if (!isCached(normKey)) {
         create_qsettings;
         // Since we're loading from settings anyways, cache whether or not the key exists on disk
@@ -207,17 +205,16 @@ QVariant Settings::localValue(const QString &key, const QVariant &def)
     }
     if (cacheKeyPersisted(normKey)) {
         return cacheValue(normKey);
-    } else {
-        // Don't return possibly wrong cached values
-        // A key gets cached with the first default value requested and never changes afterwards
-        return def;
     }
+    // Don't return possibly wrong cached values
+    // A key gets cached with the first default value requested and never changes afterwards
+    return def;
 }
 
 
-bool Settings::localKeyExists(const QString &key)
+bool Settings::localKeyExists(const QString &key) const
 {
-    QString normKey = normalizedKey(group, key);
+    QString normKey = normalizedKey(_group, key);
     if (!isKeyPersistedCached(normKey)) {
         create_qsettings;
         // Cache whether or not key exists on disk
@@ -232,17 +229,82 @@ bool Settings::localKeyExists(const QString &key)
 void Settings::removeLocalKey(const QString &key)
 {
     create_qsettings;
-    s.beginGroup(group);
+    s.beginGroup(_group);
     s.remove(key);
     s.endGroup();
-    QString normKey = normalizedKey(group, key);
+    QString normKey = normalizedKey(_group, key);
     if (isCached(normKey)) {
-        settingsCache.remove(normKey);
+        _settingsCache.remove(normKey);
     }
     if (isKeyPersistedCached(normKey)) {
-        settingsKeyPersistedCache.remove(normKey);
+        _settingsKeyPersistedCache.remove(normKey);
     }
     if (hasNotifier(normKey)) {
         emit notifier(normKey)->valueChanged({});
     }
+}
+
+
+QString Settings::fileName() const
+{
+    return Quassel::configDirPath() + _appName
+           + ((format() == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
+}
+
+
+QString Settings::normalizedKey(const QString &group, const QString &key) const
+{
+    if (group.isEmpty())
+        return key;
+    return group + '/' + key;
+}
+
+
+void Settings::setCacheKeyPersisted(const QString &normKey, bool exists) const
+{
+    _settingsKeyPersistedCache[normKey] = exists;
+}
+
+
+bool Settings::cacheKeyPersisted(const QString &normKey) const
+{
+    return _settingsKeyPersistedCache[normKey];
+}
+
+
+bool Settings::isKeyPersistedCached(const QString &normKey) const
+{
+    return _settingsKeyPersistedCache.contains(normKey);
+}
+
+
+void Settings::setCacheValue(const QString &normKey, const QVariant &data) const
+{
+    _settingsCache[normKey] = data;
+}
+
+
+QVariant Settings::cacheValue(const QString &normKey) const
+{
+    return _settingsCache[normKey];
+}
+
+
+bool Settings::isCached(const QString &normKey) const
+{
+    return _settingsCache.contains(normKey);
+}
+
+
+SettingsChangeNotifier *Settings::notifier(const QString &normKey) const
+{
+    if (!hasNotifier(normKey))
+        _settingsChangeNotifier[normKey] = std::make_shared<SettingsChangeNotifier>();
+    return _settingsChangeNotifier[normKey].get();
+}
+
+
+bool Settings::hasNotifier(const QString &normKey) const
+{
+    return _settingsChangeNotifier.contains(normKey);
 }

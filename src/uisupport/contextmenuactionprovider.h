@@ -22,6 +22,8 @@
 
 #include "uisupport-export.h"
 
+#include <functional>
+
 #include "networkmodelcontroller.h"
 
 class UISUPPORT_EXPORT ContextMenuActionProvider : public NetworkModelController
@@ -41,19 +43,46 @@ public:
      * @param index The item index in the NetworkModel
      * @param receiver The optional object that is notified for actions that need to be handled externally.
      *                 The action type will be stored in the QAction's data().
-     * @param slot     The receiving slot name; should be "mySlot" rather than SLOT(mySlot(QAction *))
+     * @param slot     The receiving slot
      * @return A list of actions applying to the given item
      */
-    void addActions(QMenu *, const QModelIndex &index, QObject *receiver = nullptr, const char *slot = nullptr, bool allowBufferHide = false);
-    void addActions(QMenu *, const QList<QModelIndex> &indexList, QObject *receiver = nullptr, const char *slot = nullptr, bool allowBufferHide = false);
-    void addActions(QMenu *, BufferId id, QObject *receiver = nullptr, const char *slot = nullptr);
-    void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, QObject *receiver = nullptr, const char *slot = nullptr);
-    void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver = nullptr, const char *slot = nullptr);
+    template<typename Receiver, typename Slot>
+    void addActions(QMenu *menu, const QModelIndex &index, Receiver *receiver, Slot slot, bool isCustomBufferView = false)
+    {
+        addActions(menu, index, buildActionSlot(receiver, std::move(slot)), isCustomBufferView);
+    }
+    void addActions(QMenu *menu, const QModelIndex &index, ActionSlot = {}, bool isCustomBufferView = false);
+
+    template<typename Receiver, typename Slot>
+    void addActions(QMenu *menu, const QList<QModelIndex> &indexList, Receiver *receiver, Slot slot, bool isCustomBufferView = false)
+    {
+        addActions(menu, indexList, buildActionSlot(receiver, std::move(slot)), isCustomBufferView);
+    }
+    void addActions(QMenu *menu, const QList<QModelIndex> &indexList, ActionSlot = {}, bool isCustomBufferView = false);
+
+    template<typename Receiver, typename Slot>
+    void addActions(QMenu *menu, BufferId id, Receiver *receiver, Slot slot)
+    {
+        addActions(menu, id, buildActionSlot(receiver, std::move(slot)));
+    }
+    void addActions(QMenu *menu, BufferId id, ActionSlot = {});
+
+    template<typename Receiver, typename Slot>
+    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, Receiver *receiver, Slot slot)
+    {
+        addActions(menu, filter, msgBuffer, buildActionSlot(receiver, std::move(slot)));
+    }
+    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, ActionSlot = {});
+
+    template<typename Receiver, typename Slot>
+    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, Receiver *receiver, Slot slot)
+    {
+        addActions(menu, filter, msgBuffer, chanOrNick, buildActionSlot(receiver, std::move(slot)));
+    }
+    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, ActionSlot = {});
 
 private:
-
-    void addActions(QMenu *, const QList<QModelIndex> &indexList, MessageFilter *filter, const QString &chanOrNick,
-        QObject *receiver, const char *slot, bool allowBufferHide);
+    void addActions(QMenu *menu, const QList<QModelIndex> &indexList, MessageFilter *filter, const QString &chanOrNick, ActionSlot actionSlot, bool isCustomBufferView);
 
     Action *addAction(ActionType, QMenu *, bool condition = true);
     Action *addAction(Action *, QMenu *, bool condition = true);

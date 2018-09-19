@@ -36,25 +36,25 @@ public:
     BufferSettings(const QString &idString = "__default__");
     BufferSettings(BufferId bufferId);
 
-    inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
-    inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
+    void setValue(const QString &key, const QVariant &data);
+    QVariant value(const QString &key, const QVariant &def = {}) const;
 
     // Message Filter (default and per view)
-    inline bool hasFilter() { return localValue("hasMessageTypeFilter", false).toBool(); }
-    inline int messageFilter() { return localValue("MessageTypeFilter", 0).toInt(); }
+    bool hasFilter() const;
+    int messageFilter() const;
     void setMessageFilter(int filter);
     void filterMessage(Message::Type msgType, bool filter);
     void removeFilter();
 
     // user state icons for query buffers (default)
-    inline bool showUserStateIcons() { return localValue("ShowUserStateIcons", true).toBool(); }
-    inline void enableUserStateIcons(bool enabled) { setLocalValue("ShowUserStateIcons", enabled); }
+    bool showUserStateIcons() const;
+    void enableUserStateIcons(bool enabled);
 
     // redirection settings (default)
-    inline int userNoticesTarget() { return localValue("UserNoticesTarget", DefaultBuffer | CurrentBuffer).toInt(); }
-    inline void setUserNoticesTarget(int target) { setLocalValue("UserNoticesTarget", target); }
-    inline int serverNoticesTarget() { return localValue("ServerNoticesTarget", StatusBuffer).toInt(); }
-    inline void setServerNoticesTarget(int target) { setLocalValue("ServerNoticesTarget", target); }
-    inline int errorMsgsTarget() { return localValue("ErrorMsgsTarget", DefaultBuffer).toInt(); }
-    inline void setErrorMsgsTarget(int target) { setLocalValue("ErrorMsgsTarget", target); }
+    int userNoticesTarget() const;
+    void setUserNoticesTarget(int target);
+    int serverNoticesTarget() const;
+    void setServerNoticesTarget(int target);
+    int errorMsgsTarget() const;
+    void setErrorMsgsTarget(int target);
 };

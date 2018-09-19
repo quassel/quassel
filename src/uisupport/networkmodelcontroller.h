@@ -22,6 +22,9 @@
 
 #include "uisupport-export.h"
 
+#include <functional>
+#include <type_traits>
+
 #include <QDialog>
 
 #include "action.h"
@@ -132,14 +135,24 @@ protected:
     inline QList<QModelIndex> indexList() const;
     inline MessageFilter *messageFilter() const;
     inline QString contextItem() const;  ///< Channel name or nick to provide context menu for
-    inline QObject *receiver() const;
-    inline const char *method() const;
 
     void setIndexList(const QModelIndex &);
     void setIndexList(const QList<QModelIndex> &);
     void setMessageFilter(MessageFilter *);
     void setContextItem(const QString &);
-    void setSlot(QObject *receiver, const char *method);
+
+    using ActionSlot = std::function<void(QAction*)>;
+
+    template<typename Receiver, typename Slot>
+    ActionSlot buildActionSlot(Receiver *receiver, Slot slot)
+    {
+        static_assert(!std::is_same<Slot, const char*>::value, "Old-style slots not supported");
+        return [receiver, slot = std::move(slot)](QAction *action) {
+            (receiver->*slot)(action);
+        };
+    }
+
+    void setSlot(ActionSlot slot);
 
     Action *registerAction(ActionType type, const QString &text, bool checkable = false);
     Action *registerAction(NetworkModelController::ActionType type, const QIcon &icon, const QString &text, bool checkable = false);
@@ -186,8 +199,7 @@ private:
     QList<QModelIndex> _indexList;
     MessageFilter *_messageFilter{nullptr};
     QString _contextItem; ///< Channel name or nick to provide context menu for
-    QObject *_receiver{nullptr};
-    const char *_method;
+    ActionSlot _actionSlot;
 };
 
 
@@ -220,5 +232,3 @@ Action *NetworkModelController::action(ActionType type) const { return _actionBy
 QList<QModelIndex> NetworkModelController::indexList() const { return _indexList; }
 MessageFilter *NetworkModelController::messageFilter() const { return _messageFilter; }
 QString NetworkModelController::contextItem() const { return _contextItem; }
-QObject *NetworkModelController::receiver() const { return _receiver; }
-const char *NetworkModelController::method() const { return _method; }

@@ -46,13 +46,13 @@ CoreAccountSettings::CoreAccountSettings(QString subgroup)
 }
 
 
-void CoreAccountSettings::notify(const QString &key, QObject *receiver, const char *slot)
+void CoreAccountSettings::notify(const QString &key, QObject *receiver, const char *slot) const
 {
     ClientSettings::notify(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), receiver, slot);
 }
 
 
-QList<AccountId> CoreAccountSettings::knownAccounts()
+QList<AccountId> CoreAccountSettings::knownAccounts() const
 {
     QList<AccountId> ids;
     foreach(const QString &key, localChildGroups()) {
@@ -64,7 +64,7 @@ QList<AccountId> CoreAccountSettings::knownAccounts()
 }
 
 
-AccountId CoreAccountSettings::lastAccount()
+AccountId CoreAccountSettings::lastAccount() const
 {
     return localValue("LastAccount", 0).toInt();
 }
@@ -76,7 +76,7 @@ void CoreAccountSettings::setLastAccount(AccountId account)
 }
 
 
-AccountId CoreAccountSettings::autoConnectAccount()
+AccountId CoreAccountSettings::autoConnectAccount() const
 {
     return localValue("AutoConnectAccount", 0).toInt();
 }
@@ -88,7 +88,7 @@ void CoreAccountSettings::setAutoConnectAccount(AccountId account)
 }
 
 
-bool CoreAccountSettings::autoConnectOnStartup()
+bool CoreAccountSettings::autoConnectOnStartup() const
 {
     return localValue("AutoConnectOnStartup", false).toBool();
 }
@@ -100,7 +100,7 @@ void CoreAccountSettings::setAutoConnectOnStartup(bool b)
 }
 
 
-bool CoreAccountSettings::autoConnectToFixedAccount()
+bool CoreAccountSettings::autoConnectToFixedAccount() const
 {
     return localValue("AutoConnectToFixedAccount", false).toBool();
 }
@@ -124,7 +124,7 @@ void CoreAccountSettings::storeAccountData(AccountId id, const QVariantMap &data
 }
 
 
-QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id)
+QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id) const
 {
     QVariantMap map;
     QString base = QString::number(id.toInt());
@@ -166,7 +166,7 @@ void CoreAccountSettings::setAccountValue(const QString &key, const QVariant &va
 }
 
 
-QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &def)
+QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &def) const
 {
     if (!Client::currentCoreAccount().isValid())
         return QVariant();
@@ -186,7 +186,7 @@ void CoreAccountSettings::setJumpKeyMap(const QHash<int, BufferId> &keyMap)
 }
 
 
-QHash<int, BufferId> CoreAccountSettings::jumpKeyMap()
+QHash<int, BufferId> CoreAccountSettings::jumpKeyMap() const
 {
     QHash<int, BufferId> keyMap;
     QVariantMap variants = accountValue("JumpKeyMap", QVariant()).toMap();
@@ -209,7 +209,7 @@ void CoreAccountSettings::setBufferViewOverlay(const QSet<int> &viewIds)
 }
 
 
-QSet<int> CoreAccountSettings::bufferViewOverlay()
+QSet<int> CoreAccountSettings::bufferViewOverlay() const
 {
     QSet<int> viewIds;
     QVariantList variants = accountValue("BufferViewOverlay").toList();
@@ -236,7 +236,9 @@ void CoreAccountSettings::clearAccounts()
 /***********************************************************************************************/
 // CoreConnectionSettings:
 
-CoreConnectionSettings::CoreConnectionSettings() : ClientSettings("CoreConnection") {}
+CoreConnectionSettings::CoreConnectionSettings()
+    : ClientSettings("CoreConnection")
+{}
 
 void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
 {
@@ -244,7 +246,7 @@ void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
 }
 
 
-CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode()
+CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode() const
 {
     auto mode = localValue("NetworkDetectionMode", UseQNetworkConfigurationManager).toInt();
     if (mode == 0)
@@ -259,7 +261,7 @@ void CoreConnectionSettings::setAutoReconnect(bool autoReconnect)
 }
 
 
-bool CoreConnectionSettings::autoReconnect()
+bool CoreConnectionSettings::autoReconnect() const
 {
     return localValue("AutoReconnect", true).toBool();
 }
@@ -271,7 +273,7 @@ void CoreConnectionSettings::setPingTimeoutInterval(int interval)
 }
 
 
-int CoreConnectionSettings::pingTimeoutInterval()
+int CoreConnectionSettings::pingTimeoutInterval() const
 {
     return localValue("PingTimeoutInterval", 60).toInt();
 }
@@ -283,7 +285,7 @@ void CoreConnectionSettings::setReconnectInterval(int interval)
 }
 
 
-int CoreConnectionSettings::reconnectInterval()
+int CoreConnectionSettings::reconnectInterval() const
 {
     return localValue("ReconnectInterval", 60).toInt();
 }
@@ -292,8 +294,27 @@ int CoreConnectionSettings::reconnectInterval()
 /***********************************************************************************************/
 // NotificationSettings:
 
-NotificationSettings::NotificationSettings() : ClientSettings("Notification")
+NotificationSettings::NotificationSettings()
+    : ClientSettings("Notification")
 {
+}
+
+
+void NotificationSettings::setValue(const QString &key, const QVariant &data)
+{
+    setLocalValue(key, data);
+}
+
+
+QVariant NotificationSettings::value(const QString &key, const QVariant &def) const
+{
+    return localValue(key, def);
+}
+
+
+void NotificationSettings::remove(const QString &key)
+{
+    removeLocalKey(key);
 }
 
 
@@ -303,7 +324,7 @@ void NotificationSettings::setHighlightList(const QVariantList &highlightList)
 }
 
 
-QVariantList NotificationSettings::highlightList()
+QVariantList NotificationSettings::highlightList() const
 {
     return localValue("Highlights/CustomList").toList();
 }
@@ -315,7 +336,7 @@ void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickT
 }
 
 
-NotificationSettings::HighlightNickType NotificationSettings::highlightNick()
+NotificationSettings::HighlightNickType NotificationSettings::highlightNick() const
 {
     return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick",
                                                                CurrentNick).toInt();
@@ -328,7 +349,7 @@ void NotificationSettings::setNicksCaseSensitive(bool cs)
 }
 
 
-bool NotificationSettings::nicksCaseSensitive()
+bool NotificationSettings::nicksCaseSensitive() const
 {
     return localValue("Highlights/NicksCaseSensitive", false).toBool();
 }
@@ -338,7 +359,8 @@ bool NotificationSettings::nicksCaseSensitive()
 //  TabCompletionSettings
 // ========================================
 
-TabCompletionSettings::TabCompletionSettings() : ClientSettings("TabCompletion")
+TabCompletionSettings::TabCompletionSettings()
+    : ClientSettings("TabCompletion")
 {
 }
 
@@ -349,7 +371,7 @@ void TabCompletionSettings::setCompletionSuffix(const QString &suffix)
 }
 
 
-QString TabCompletionSettings::completionSuffix()
+QString TabCompletionSettings::completionSuffix() const
 {
     return localValue("CompletionSuffix", ": ").toString();
 }
@@ -361,7 +383,7 @@ void TabCompletionSettings::setAddSpaceMidSentence(bool space)
 }
 
 
-bool TabCompletionSettings::addSpaceMidSentence()
+bool TabCompletionSettings::addSpaceMidSentence() const
 {
     return localValue("AddSpaceMidSentence", false).toBool();
 }
@@ -373,7 +395,7 @@ void TabCompletionSettings::setSortMode(SortMode mode)
 }
 
 
-TabCompletionSettings::SortMode TabCompletionSettings::sortMode()
+TabCompletionSettings::SortMode TabCompletionSettings::sortMode() const
 {
     return static_cast<SortMode>(localValue("SortMode"), LastActivity);
 }
@@ -385,7 +407,7 @@ void TabCompletionSettings::setCaseSensitivity(Qt::CaseSensitivity cs)
 }
 
 
-Qt::CaseSensitivity TabCompletionSettings::caseSensitivity()
+Qt::CaseSensitivity TabCompletionSettings::caseSensitivity() const
 {
     return (Qt::CaseSensitivity)localValue("CaseSensitivity", Qt::CaseInsensitive).toInt();
 }
@@ -397,7 +419,7 @@ void TabCompletionSettings::setUseLastSpokenTo(bool use)
 }
 
 
-bool TabCompletionSettings::useLastSpokenTo()
+bool TabCompletionSettings::useLastSpokenTo() const
 {
     return localValue("UseLastSpokenTo", false).toBool();
 }
@@ -412,13 +434,13 @@ ItemViewSettings::ItemViewSettings(const QString &group) : ClientSettings(group)
 }
 
 
-bool ItemViewSettings::displayTopicInTooltip()
+bool ItemViewSettings::displayTopicInTooltip() const
 {
     return localValue("DisplayTopicInTooltip", false).toBool();
 }
 
 
-bool ItemViewSettings::mouseWheelChangesBuffer()
+bool ItemViewSettings::mouseWheelChangesBuffer() const
 {
     return localValue("MouseWheelChangesBuffer", false).toBool();
 }

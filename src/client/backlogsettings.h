@@ -18,39 +18,35 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef BACKLOGSETTINGS_H
-#define BACKLOGSETTINGS_H
+#pragma once
 
+#include "client-export.h"
+
+#include "backlogrequester.h"
 #include "clientsettings.h"
 
-// For backlog requester types
-#include "backlogrequester.h"
-
-class BacklogSettings : public ClientSettings
+class CLIENT_EXPORT BacklogSettings : public ClientSettings
 {
 public:
-    BacklogSettings() : ClientSettings("Backlog") {}
-    inline int requesterType() { return localValue("RequesterType", BacklogRequester::PerBufferUnread).toInt(); }
+    BacklogSettings();
+    int requesterType() const;
     // Default to PerBufferUnread to help work around performance problems on connect when there's
     // many buffers that don't have much activity.
-    inline void setRequesterType(int requesterType) { setLocalValue("RequesterType", requesterType); }
+    void setRequesterType(int requesterType);
 
-    inline int dynamicBacklogAmount() { return localValue("DynamicBacklogAmount", 200).toInt(); }
-    inline void setDynamicBacklogAmount(int amount) { return setLocalValue("DynamicBacklogAmount", amount); }
+    int dynamicBacklogAmount() const;
+    void setDynamicBacklogAmount(int amount);
 
-    inline int fixedBacklogAmount() { return localValue("FixedBacklogAmount", 500).toInt(); }
-    inline void setFixedBacklogAmount(int amount) { return setLocalValue("FixedBacklogAmount", amount); }
+    int fixedBacklogAmount() const;
+    void setFixedBacklogAmount(int amount);
 
-    inline int globalUnreadBacklogLimit() { return localValue("GlobalUnreadBacklogLimit", 5000).toInt(); }
-    inline void setGlobalUnreadBacklogLimit(int limit) { return setLocalValue("GlobalUnreadBacklogLimit", limit); }
-    inline int globalUnreadBacklogAdditional() { return localValue("GlobalUnreadBacklogAdditional", 100).toInt(); }
-    inline void setGlobalUnreadBacklogAdditional(int Additional) { return setLocalValue("GlobalUnreadBacklogAdditional", Additional); }
+    int globalUnreadBacklogLimit() const;
+    void setGlobalUnreadBacklogLimit(int limit);
+    int globalUnreadBacklogAdditional() const;
+    void setGlobalUnreadBacklogAdditional(int additional);
 
-    inline int perBufferUnreadBacklogLimit() { return localValue("PerBufferUnreadBacklogLimit", 200).toInt(); }
-    inline void setPerBufferUnreadBacklogLimit(int limit) { return setLocalValue("PerBufferUnreadBacklogLimit", limit); }
-    inline int perBufferUnreadBacklogAdditional() { return localValue("PerBufferUnreadBacklogAdditional", 50).toInt(); }
-    inline void setPerBufferUnreadBacklogAdditional(int Additional) { return setLocalValue("PerBufferUnreadBacklogAdditional", Additional); }
+    int perBufferUnreadBacklogLimit() const;
+    void setPerBufferUnreadBacklogLimit(int limit);
+    int perBufferUnreadBacklogAdditional() const;
+    void setPerBufferUnreadBacklogAdditional(int additional);
 };
-
-
-#endif //BACKLOGSETTINGS_H

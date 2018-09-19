@@ -54,32 +54,32 @@ public:
     // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
     CoreAccountSettings(QString subgroup = "General");
 
-    void notify(const QString &key, QObject *receiver, const char *slot) override;
+    void notify(const QString &key, QObject *receiver, const char *slot) const;  // shadows Settings::notify()
 
-    QList<AccountId> knownAccounts();
-    AccountId lastAccount();
+    QList<AccountId> knownAccounts() const;
+    AccountId lastAccount() const;
     void setLastAccount(AccountId);
-    AccountId autoConnectAccount();
+    AccountId autoConnectAccount() const;
     void setAutoConnectAccount(AccountId);
-    bool autoConnectOnStartup();
+    bool autoConnectOnStartup() const;
     void setAutoConnectOnStartup(bool);
-    bool autoConnectToFixedAccount();
+    bool autoConnectToFixedAccount() const;
     void setAutoConnectToFixedAccount(bool);
 
     void clearAccounts();
 
     void storeAccountData(AccountId id, const QVariantMap &data);
-    QVariantMap retrieveAccountData(AccountId);
+    QVariantMap retrieveAccountData(AccountId) const;
     void removeAccount(AccountId);
 
     void setJumpKeyMap(const QHash<int, BufferId> &keyMap);
-    QHash<int, BufferId> jumpKeyMap();
+    QHash<int, BufferId> jumpKeyMap() const;
 
     void setBufferViewOverlay(const QSet<int> &viewIds);
-    QSet<int> bufferViewOverlay();
+    QSet<int> bufferViewOverlay() const;
 
     void setAccountValue(const QString &key, const QVariant &data);
-    QVariant accountValue(const QString &key, const QVariant &def = QVariant());
+    QVariant accountValue(const QString &key, const QVariant &def = QVariant()) const;
 
 private:
     QString _subgroup;
@@ -100,18 +100,18 @@ public:
 
     NotificationSettings();
 
-    inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
-    inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
-    inline void remove(const QString &key) { removeLocalKey(key); }
+    void setValue(const QString &key, const QVariant &data);
+    QVariant value(const QString &key, const QVariant &def = {}) const;
+    void remove(const QString &key);
 
     void setHighlightList(const QVariantList &highlightList);
-    QVariantList highlightList();
+    QVariantList highlightList() const;
 
     void setHighlightNick(HighlightNickType);
-    HighlightNickType highlightNick();
+    HighlightNickType highlightNick() const;
 
     void setNicksCaseSensitive(bool);
-    bool nicksCaseSensitive();
+    bool nicksCaseSensitive() const;
 };
 
 
@@ -131,16 +131,16 @@ public:
     CoreConnectionSettings();
 
     void setNetworkDetectionMode(NetworkDetectionMode mode);
-    NetworkDetectionMode networkDetectionMode();
+    NetworkDetectionMode networkDetectionMode() const;
 
     void setAutoReconnect(bool autoReconnect);
-    bool autoReconnect();
+    bool autoReconnect() const;
 
     void setPingTimeoutInterval(int interval);
-    int pingTimeoutInterval();
+    int pingTimeoutInterval() const;
 
     void setReconnectInterval(int interval);
-    int reconnectInterval();
+    int reconnectInterval() const;
 };
 
 
@@ -159,19 +159,19 @@ public:
     TabCompletionSettings();
 
     void setCompletionSuffix(const QString &);
-    QString completionSuffix();
+    QString completionSuffix() const;
 
     void setAddSpaceMidSentence(bool);
-    bool addSpaceMidSentence();
+    bool addSpaceMidSentence() const;
 
     void setSortMode(SortMode);
-    SortMode sortMode();
+    SortMode sortMode() const;
 
     void setCaseSensitivity(Qt::CaseSensitivity);
-    Qt::CaseSensitivity caseSensitivity();
+    Qt::CaseSensitivity caseSensitivity() const;
 
     void setUseLastSpokenTo(bool);
-    bool useLastSpokenTo();
+    bool useLastSpokenTo() const;
 };
 
 
@@ -183,6 +183,6 @@ class CLIENT_EXPORT ItemViewSettings : public ClientSettings
 public:
     ItemViewSettings(const QString &group = "ItemViews");
 
-    bool displayTopicInTooltip();
-    bool mouseWheelChangesBuffer();
+    bool displayTopicInTooltip() const;
+    bool mouseWheelChangesBuffer() const;
 };

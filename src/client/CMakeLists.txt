@@ -3,6 +3,7 @@ quassel_add_module(Client EXPORT)
 target_sources(${TARGET} PRIVATE
     abstractmessageprocessor.cpp
     backlogrequester.cpp
+    backlogsettings.cpp
     buffermodel.cpp
     buffersettings.cpp
     bufferviewoverlay.cpp

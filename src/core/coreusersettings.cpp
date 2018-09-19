@@ -20,12 +20,13 @@
 
 #include "coreusersettings.h"
 
-CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/%1").arg(uid.toInt())), user(uid)
+CoreUserSettings::CoreUserSettings(UserId uid)
+    : CoreSettings(QString("CoreUser/%1").arg(uid.toInt())), user(uid)
 {
 }
 
 
-Identity CoreUserSettings::identity(IdentityId id)
+Identity CoreUserSettings::identity(IdentityId id) const
 {
     QVariant v = localValue(QString("Identities/%1").arg(id.toInt()));
     if (v.canConvert<Identity>()) {
@@ -35,7 +36,7 @@ Identity CoreUserSettings::identity(IdentityId id)
 }
 
 
-QList<IdentityId> CoreUserSettings::identityIds()
+QList<IdentityId> CoreUserSettings::identityIds() const
 {
     QList<IdentityId> res;
     foreach(QString id, localChildKeys("Identities")) {
@@ -63,13 +64,13 @@ void CoreUserSettings::setSessionState(const QVariant &data)
 }
 
 
-QVariant CoreUserSettings::sessionState(const QVariant &def)
+QVariant CoreUserSettings::sessionState(const QVariant &def) const
 {
     return localValue("SessionState", def);
 }
 
 
-QVariantMap CoreUserSettings::sessionData()
+QVariantMap CoreUserSettings::sessionData() const
 {
     QVariantMap res;
     foreach(QString key, localChildKeys(QString("SessionData"))) {
@@ -85,7 +86,7 @@ void CoreUserSettings::setSessionValue(const QString &key, const QVariant &data)
 }
 
 
-QVariant CoreUserSettings::sessionValue(const QString &key, const QVariant &def)
+QVariant CoreUserSettings::sessionValue(const QString &key, const QVariant &def) const
 {
     return localValue(QString("SessionData/%1").arg(key), def);
 }

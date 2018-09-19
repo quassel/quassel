@@ -25,27 +25,56 @@
 #include "action.h"
 #include "actioncollection.h"
 
-UiSettings::UiSettings(const QString &group)
-    : ClientSettings(group)
+UiSettings::UiSettings(QString group)
+    : ClientSettings(std::move(group))
 {
 }
 
+
+void UiSettings::setValue(const QString &key, const QVariant &data)
+{
+    setLocalValue(key, data);
+}
+
+
+QVariant UiSettings::value(const QString &key, const QVariant &def) const
+{
+    return localValue(key, def);
+}
+
+
+bool UiSettings::valueExists(const QString &key) const
+{
+    return localKeyExists(key);
+}
+
+
+void UiSettings::remove(const QString &key)
+{
+    removeLocalKey(key);
+}
 
 /**************************************************************************/
 
-UiStyleSettings::UiStyleSettings() : UiSettings("UiStyle") {}
-UiStyleSettings::UiStyleSettings(const QString &subGroup) : UiSettings(QString("UiStyle/%1").arg(subGroup))
+UiStyleSettings::UiStyleSettings()
+    : UiSettings("UiStyle")
 {
 }
 
 
-void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, QTextCharFormat format)
+UiStyleSettings::UiStyleSettings(const QString &subGroup)
+    : UiSettings(QString("UiStyle/%1").arg(subGroup))
+{
+}
+
+
+void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, const QTextCharFormat &format)
 {
     setLocalValue(QString("Format/%1").arg(static_cast<quint32>(ftype)), format);
 }
 
 
-QTextCharFormat UiStyleSettings::customFormat(UiStyle::FormatType ftype)
+QTextCharFormat UiStyleSettings::customFormat(UiStyle::FormatType ftype) const
 {
     return localValue(QString("Format/%1").arg(static_cast<quint32>(ftype)), QTextFormat()).value<QTextFormat>().toCharFormat();
 }
@@ -57,7 +86,7 @@ void UiStyleSettings::removeCustomFormat(UiStyle::FormatType ftype)
 }
 
 
-QList<UiStyle::FormatType> UiStyleSettings::availableFormats()
+QList<UiStyle::FormatType> UiStyleSettings::availableFormats() const
 {
     QList<UiStyle::FormatType> formats;
     QStringList list = localChildKeys("Format");
@@ -72,8 +101,9 @@ QList<UiStyle::FormatType> UiStyleSettings::availableFormats()
  * SessionSettings
  **************************************************************************/
 
-SessionSettings::SessionSettings(QString sessionId, const QString &group)
-    : UiSettings(group), _sessionId(std::move(sessionId))
+SessionSettings::SessionSettings(QString sessionId, QString group)
+    : UiSettings(std::move(group))
+    , _sessionId(std::move(sessionId))
 {
 }
 
@@ -84,7 +114,7 @@ void SessionSettings::setValue(const QString &key, const QVariant &data)
 }
 
 
-QVariant SessionSettings::value(const QString &key, const QVariant &def)
+QVariant SessionSettings::value(const QString &key, const QVariant &def) const
 {
     return localValue(QString("%1/%2").arg(_sessionId, key), def);
 }
@@ -108,6 +138,18 @@ void SessionSettings::cleanup()
             s.removeSession();
         }
     }
+}
+
+
+QString SessionSettings::sessionId() const
+{
+    return _sessionId;
+}
+
+
+void SessionSettings::setSessionId(QString sessionId)
+{
+    _sessionId = std::move(sessionId);
 }
 
 
@@ -160,25 +202,27 @@ void SessionSettings::sessionAging()
  * ShortcutSettings
  **************************************************************************/
 
-ShortcutSettings::ShortcutSettings() : UiSettings("Shortcuts")
+ShortcutSettings::ShortcutSettings()
+    : UiSettings("Shortcuts")
 {
 }
 
 
 void ShortcutSettings::clear()
 {
-    foreach(const QString &key, allLocalKeys())
-    removeLocalKey(key);
+    for (auto &&key : allLocalKeys()) {
+        removeLocalKey(key);
+    }
 }
 
 
-QStringList ShortcutSettings::savedShortcuts()
+QStringList ShortcutSettings::savedShortcuts() const
 {
     return localChildKeys();
 }
 
 
-QKeySequence ShortcutSettings::loadShortcut(const QString &name)
+QKeySequence ShortcutSettings::loadShortcut(const QString &name) const
 {
     return localValue(name, QKeySequence()).value<QKeySequence>();
 }

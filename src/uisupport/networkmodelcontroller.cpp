@@ -96,10 +96,9 @@ void NetworkModelController::setContextItem(const QString &contextItem)
 }
 
 
-void NetworkModelController::setSlot(QObject *receiver, const char *method)
+void NetworkModelController::setSlot(ActionSlot slot)
 {
-    _receiver = receiver;
-    _method = method;
+    _actionSlot = std::move(slot);
 }
 
 
@@ -197,9 +196,8 @@ void NetworkModelController::removeBuffers(const QModelIndexList &indexList)
 void NetworkModelController::handleExternalAction(ActionType type, QAction *action)
 {
     Q_UNUSED(type);
-    if (receiver() && method()) {
-        if (!QMetaObject::invokeMethod(receiver(), method(), Q_ARG(QAction *, action)))
-            qWarning() << "NetworkModelActionController::handleExternalAction(): Could not invoke slot" << receiver() << method();
+    if (_actionSlot) {
+        _actionSlot(action);
     }
 }
 

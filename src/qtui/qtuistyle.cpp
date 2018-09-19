@@ -57,7 +57,7 @@ void QtUiStyle::updateTimestampFormatString()
 void QtUiStyle::updateSenderPrefixDisplay()
 {
     ChatViewSettings s;
-    setSenderPrefixDisplay(s.SenderPrefixDisplay());
+    setSenderPrefixDisplay(s.senderPrefixDisplay());
 }
 
 void QtUiStyle::updateShowSenderBrackets()
