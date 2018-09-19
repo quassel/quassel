@@ -54,9 +54,9 @@ void CoreConnection::init()
     connect(_qNetworkConfigurationManager.data(), &QNetworkConfigurationManager::onlineStateChanged, this, &CoreConnection::onlineStateChanged);
 
     CoreConnectionSettings s;
-    s.initAndNotify("PingTimeoutInterval", this, SLOT(pingTimeoutIntervalChanged(QVariant)), 60);
-    s.initAndNotify("ReconnectInterval", this, SLOT(reconnectIntervalChanged(QVariant)), 60);
-    s.notify("NetworkDetectionMode", this, SLOT(networkDetectionModeChanged(QVariant)));
+    s.initAndNotify("PingTimeoutInterval", this, &CoreConnection::pingTimeoutIntervalChanged, 60);
+    s.initAndNotify("ReconnectInterval", this, &CoreConnection::reconnectIntervalChanged, 60);
+    s.notify("NetworkDetectionMode", this, &CoreConnection::networkDetectionModeChanged);
     networkDetectionModeChanged(s.networkDetectionMode());
 }
 

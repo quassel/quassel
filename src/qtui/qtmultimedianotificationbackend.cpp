@@ -33,8 +33,8 @@ QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject *parent
     : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
-    notificationSettings.notify("QtMultimedia/Enabled", this, SLOT(enabledChanged(const QVariant &)));
-    notificationSettings.notify("QtMultimedia/AudioFile", this, SLOT(audioFileChanged(const QVariant &)));
+    notificationSettings.notify("QtMultimedia/Enabled", this, &QtMultimediaNotificationBackend::enabledChanged);
+    notificationSettings.notify("QtMultimedia/AudioFile", this, &QtMultimediaNotificationBackend::audioFileChanged);
 
     createMediaObject(notificationSettings.value("QtMultimedia/AudioFile", QString()).toString());
 

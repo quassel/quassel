@@ -127,16 +127,16 @@ ChatScene::ChatScene(QAbstractItemModel *model, QString idString, qreal width, C
     connect(&webPreview.timer, &QTimer::timeout, this, &ChatScene::webPreviewNextStep);
 #endif
     _showWebPreview = defaultSettings.showWebPreview();
-    defaultSettings.notify("ShowWebPreview", this, SLOT(showWebPreviewChanged()));
+    defaultSettings.notify("ShowWebPreview", this, &ChatScene::showWebPreviewChanged);
 
     _showSenderBrackets = defaultSettings.showSenderBrackets();
-    defaultSettings.notify("ShowSenderBrackets", this, SLOT(showSenderBracketsChanged()));
+    defaultSettings.notify("ShowSenderBrackets", this, &ChatScene::showSenderBracketsChanged);
 
     _useCustomTimestampFormat = defaultSettings.useCustomTimestampFormat();
-    defaultSettings.notify("UseCustomTimestampFormat", this, SLOT(useCustomTimestampFormatChanged()));
+    defaultSettings.notify("UseCustomTimestampFormat", this, &ChatScene::useCustomTimestampFormatChanged);
 
     _timestampFormatString = defaultSettings.timestampFormatString();
-    defaultSettings.notify("TimestampFormat", this, SLOT(timestampFormatStringChanged()));
+    defaultSettings.notify("TimestampFormat", this, &ChatScene::timestampFormatStringChanged);
     updateTimestampHasBrackets();
 
     _clickTimer.setInterval(QApplication::doubleClickInterval());

@@ -28,14 +28,10 @@
 QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent)
 {
     ChatViewSettings s;
-    s.notify("UseCustomTimestampFormat", this, SLOT(updateUseCustomTimestampFormat()));
-    updateUseCustomTimestampFormat();
-    s.notify("TimestampFormat", this, SLOT(updateTimestampFormatString()));
-    updateTimestampFormatString();
-    s.notify("SenderPrefixMode", this, SLOT(updateSenderPrefixDisplay()));
-    updateSenderPrefixDisplay();
-    s.notify("ShowSenderBrackets", this, SLOT(updateShowSenderBrackets()));
-    updateShowSenderBrackets();
+    s.initAndNotify("UseCustomTimestampFormat", this, &QtUiStyle::updateUseCustomTimestampFormat);
+    s.initAndNotify("TimestampFormat", this, &QtUiStyle::updateTimestampFormatString);
+    s.initAndNotify("SenderPrefixMode", this, &QtUiStyle::updateSenderPrefixDisplay);
+    s.initAndNotify("ShowSenderBrackets", this, &QtUiStyle::updateShowSenderBrackets);
 
     // If no style sheet exists, generate it on first run.
     initializeSettingsQss();

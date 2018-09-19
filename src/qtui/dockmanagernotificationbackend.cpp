@@ -36,7 +36,7 @@ DockManagerNotificationBackend::DockManagerNotificationBackend(QObject *parent)
     NotificationSettings notificationSettings;
     _enabled = notificationSettings.value("DockManager/Enabled", false).toBool();
 
-    notificationSettings.notify("DockManager/Enabled", this, SLOT(enabledChanged(const QVariant &)));
+    notificationSettings.notify("DockManager/Enabled", this, &DockManagerNotificationBackend::enabledChanged);
 
     _dock = new QDBusInterface("net.launchpad.DockManager", "/net/launchpad/DockManager", "net.launchpad.DockManager", _bus, this);
     if (_dock->isValid()) {

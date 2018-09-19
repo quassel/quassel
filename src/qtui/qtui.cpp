@@ -90,7 +90,7 @@ void QtUi::init()
     _mainWin->init();
 
     QtUiSettings uiSettings;
-    uiSettings.initAndNotify("UseSystemTrayIcon", this, SLOT(useSystemTrayChanged(QVariant)), true);
+    uiSettings.initAndNotify("UseSystemTrayIcon", this, &QtUi::useSystemTrayChanged, true);
 
     GraphicalUi::init(); // needs to be called after the mainWin is initialized
 }

@@ -54,8 +54,6 @@ public:
     // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
     CoreAccountSettings(QString subgroup = "General");
 
-    void notify(const QString &key, QObject *receiver, const char *slot) const;  // shadows Settings::notify()
-
     QList<AccountId> knownAccounts() const;
     AccountId lastAccount() const;
     void setLastAccount(AccountId);
@@ -80,6 +78,9 @@ public:
 
     void setAccountValue(const QString &key, const QVariant &data);
     QVariant accountValue(const QString &key, const QVariant &def = QVariant()) const;
+
+protected:
+    QString keyForNotify(const QString &key) const override;
 
 private:
     QString _subgroup;

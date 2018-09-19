@@ -26,6 +26,7 @@
 #include "uisettings.h"
 #include "graphicalui.h"
 #include "uistyle.h"
+#include "util.h"
 
 TopicWidget::TopicWidget(QWidget *parent)
     : AbstractItemView(parent)
@@ -39,13 +40,13 @@ TopicWidget::TopicWidget(QWidget *parent)
     connect(ui.topicLineEdit, &MultiLineEdit::noTextEntered, this, &TopicWidget::on_topicLineEdit_textEntered);
 
     UiSettings s("TopicWidget");
-    s.notify("DynamicResize", this, SLOT(updateResizeMode()));
-    s.notify("ResizeOnHover", this, SLOT(updateResizeMode()));
+    s.notify("DynamicResize", this, &TopicWidget::updateResizeMode);
+    s.notify("ResizeOnHover", this, &TopicWidget::updateResizeMode);
     updateResizeMode();
 
     UiStyleSettings fs("Fonts");
-    fs.notify("UseCustomTopicWidgetFont", this, SLOT(setUseCustomFont(QVariant)));
-    fs.notify("TopicWidget", this, SLOT(setCustomFont(QVariant)));
+    fs.notify("UseCustomTopicWidgetFont", this, &TopicWidget::setUseCustomFont);
+    fs.notify("TopicWidget", this, selectOverload<const QVariant&>(&TopicWidget::setCustomFont));
     if (fs.value("UseCustomTopicWidgetFont", false).toBool())
         setCustomFont(fs.value("TopicWidget", QFont()));
 

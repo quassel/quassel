@@ -105,11 +105,8 @@ UiStyle::UiStyle(QObject *parent)
 
     // BufferView / NickView settings
     UiStyleSettings s;
-    _showBufferViewIcons = _showNickViewIcons = s.value("ShowItemViewIcons", true).toBool();
-    s.notify("ShowItemViewIcons", this, SLOT(showItemViewIconsChanged(QVariant)));
-
-    _allowMircColors = s.value("AllowMircColors", true).toBool();
-    s.notify("AllowMircColors", this, SLOT(allowMircColorsChanged(QVariant)));
+    s.initAndNotify("ShowItemViewIcons", this, &UiStyle::showItemViewIconsChanged, true);
+    s.initAndNotify("AllowMircColors", this, &UiStyle::allowMircColorsChanged, true);
 
     loadStyleSheet();
 }

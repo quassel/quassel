@@ -38,9 +38,9 @@ QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
     _nickMatcher.setHighlightMode(
                 static_cast<NickHighlightMatcher::HighlightNickType>(_highlightNick));
     highlightListChanged(notificationSettings.highlightList());
-    notificationSettings.notify("Highlights/NicksCaseSensitive", this, SLOT(nicksCaseSensitiveChanged(const QVariant &)));
-    notificationSettings.notify("Highlights/CustomList", this, SLOT(highlightListChanged(const QVariant &)));
-    notificationSettings.notify("Highlights/HighlightNick", this, SLOT(highlightNickChanged(const QVariant &)));
+    notificationSettings.notify("Highlights/NicksCaseSensitive", this, &QtUiMessageProcessor::nicksCaseSensitiveChanged);
+    notificationSettings.notify("Highlights/CustomList", this, &QtUiMessageProcessor::highlightListChanged);
+    notificationSettings.notify("Highlights/HighlightNick", this, &QtUiMessageProcessor::highlightNickChanged);
 
     _processTimer.setInterval(0);
     connect(&_processTimer, &QTimer::timeout, this, &QtUiMessageProcessor::processNextMessage);

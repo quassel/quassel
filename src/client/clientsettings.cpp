@@ -46,9 +46,9 @@ CoreAccountSettings::CoreAccountSettings(QString subgroup)
 }
 
 
-void CoreAccountSettings::notify(const QString &key, QObject *receiver, const char *slot) const
+QString CoreAccountSettings::keyForNotify(const QString &key) const
 {
-    ClientSettings::notify(QString("%1/%2/%3").arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key), receiver, slot);
+    return QString{"%1/%2/%3"}.arg(Client::currentCoreAccount().accountId().toInt()).arg(_subgroup).arg(key);
 }
 
 

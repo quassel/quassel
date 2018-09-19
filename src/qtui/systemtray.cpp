@@ -35,9 +35,9 @@ SystemTray::SystemTray(QWidget *parent)
 {
     Q_ASSERT(parent);
 
-    NotificationSettings{}.initAndNotify("Systray/ChangeColor", this, SLOT(enableChangeColorChanged(QVariant)), true);
-    NotificationSettings{}.initAndNotify("Systray/Animate", this, SLOT(enableBlinkChanged(QVariant)), false);
-    UiStyleSettings{}.initAndNotify("Icons/InvertTray", this, SLOT(invertTrayIconChanged(QVariant)), false);
+    NotificationSettings{}.initAndNotify("Systray/ChangeColor", this, &SystemTray::enableChangeColorChanged, true);
+    NotificationSettings{}.initAndNotify("Systray/Animate", this, &SystemTray::enableBlinkChanged, false);
+    UiStyleSettings{}.initAndNotify("Icons/InvertTray", this, &SystemTray::invertTrayIconChanged, false);
 
     ActionCollection *coll = QtUi::actionCollection("General");
     _minimizeRestoreAction = new Action(tr("&Minimize"), this, this, &SystemTray::minimizeRestore);
