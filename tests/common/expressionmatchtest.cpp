@@ -18,56 +18,32 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "expressionmatchtests.h"
-
-#include <QDebug>
-#include <QString>
-#include <QStringList>
 #include <vector>
 
+#include <QString>
+#include <QStringList>
+
+#include "testglobal.h"
 #include "expressionmatch.h"
 
-void ExpressionMatchTests::runTests()
+TEST(ExpressionMatchTest, emptyPattern)
 {
-    // Run all tests
-    qDebug() << "Running all ExpressionMatch tests";
-    runTestsEmptyPattern();
-    runTestsMatchPhrase();
-    runTestsMatchMultiPhrase();
-    runTestsMatchWildcard();
-    runTestsMatchMultiWildcard();
-    runTestsMatchRegEx();
-    runTestsTrimMultiWildcardWhitespace();
-
-    qDebug() << "Passed all ExpressionMatch tests";
-}
-
-
-void ExpressionMatchTests::runTestsEmptyPattern()
-{
-    qDebug() << "> Testing ExpressionMatch empty pattern handling";
-
     // Empty pattern
     ExpressionMatch emptyMatch =
             ExpressionMatch("", ExpressionMatch::MatchMode::MatchPhrase, false);
 
-    // Assert empty
-    Q_ASSERT(emptyMatch.isEmpty());
-    // Assert default match fails (same as setting match empty to false)
-    Q_ASSERT(!emptyMatch.match("something"));
-    // Assert match empty succeeds
-    Q_ASSERT(emptyMatch.match("something", true));
     // Assert empty is valid
-    Q_ASSERT(emptyMatch.isValid());
-
-    qDebug() << "* Passed ExpressionMatch empty pattern handling";
+    ASSERT_TRUE(emptyMatch.isValid());
+    // Assert empty
+    EXPECT_TRUE(emptyMatch.isEmpty());
+    // Assert default match fails (same as setting match empty to false)
+    EXPECT_FALSE(emptyMatch.match("something"));
+    // Assert match empty succeeds
+    EXPECT_TRUE(emptyMatch.match("something", true));
 }
 
-
-void ExpressionMatchTests::runTestsMatchPhrase()
+TEST(ExpressionMatchTest, matchPhrase)
 {
-    qDebug() << "> Testing ExpressionMatch phrase matching";
-
     // Simple phrase, case-insensitive
     ExpressionMatch simpleMatch =
             ExpressionMatch("test", ExpressionMatch::MatchMode::MatchPhrase, false);
@@ -84,45 +60,40 @@ void ExpressionMatchTests::runTestsMatchPhrase()
     ExpressionMatch complexMatch =
             ExpressionMatch(complexMatchFull, ExpressionMatch::MatchMode::MatchPhrase, false);
 
-
     // Assert valid and not empty
-    Q_ASSERT(!simpleMatch.isEmpty());
-    Q_ASSERT(simpleMatch.isValid());
-    Q_ASSERT(!simpleMatchCS.isEmpty());
-    Q_ASSERT(simpleMatchCS.isValid());
-    Q_ASSERT(!simpleMatchSpace.isEmpty());
-    Q_ASSERT(simpleMatchSpace.isValid());
-    Q_ASSERT(!complexMatch.isEmpty());
-    Q_ASSERT(complexMatch.isValid());
+    ASSERT_TRUE(simpleMatch.isValid());
+    EXPECT_FALSE(simpleMatch.isEmpty());
+    ASSERT_TRUE(simpleMatchCS.isValid());
+    EXPECT_FALSE(simpleMatchCS.isEmpty());
+    ASSERT_TRUE(simpleMatchSpace.isValid());
+    EXPECT_FALSE(simpleMatchSpace.isEmpty());
+    ASSERT_TRUE(complexMatch.isValid());
+    EXPECT_FALSE(complexMatch.isEmpty());
 
     // Assert match succeeds
-    Q_ASSERT(simpleMatch.match("test"));
-    Q_ASSERT(simpleMatch.match("other test;"));
-    Q_ASSERT(simpleMatchSpace.match(" space "));
+    EXPECT_TRUE(simpleMatch.match("test"));
+    EXPECT_TRUE(simpleMatch.match("other test;"));
+    EXPECT_TRUE(simpleMatchSpace.match(" space "));
     // Assert partial match fails
-    Q_ASSERT(!simpleMatch.match("testing"));
-    Q_ASSERT(!simpleMatchSpace.match("space"));
+    EXPECT_FALSE(simpleMatch.match("testing"));
+    EXPECT_FALSE(simpleMatchSpace.match("space"));
     // Assert unrelated fails
-    Q_ASSERT(!simpleMatch.match("not above"));
+    EXPECT_FALSE(simpleMatch.match("not above"));
 
     // Assert case sensitivity followed
-    Q_ASSERT(!simpleMatch.sourceCaseSensitive());
-    Q_ASSERT(simpleMatch.match("TeSt"));
-    Q_ASSERT(simpleMatchCS.sourceCaseSensitive());
-    Q_ASSERT(!simpleMatchCS.match("TeSt"));
+    EXPECT_FALSE(simpleMatch.sourceCaseSensitive());
+    EXPECT_TRUE(simpleMatch.match("TeSt"));
+    EXPECT_TRUE(simpleMatchCS.sourceCaseSensitive());
+    EXPECT_FALSE(simpleMatchCS.match("TeSt"));
 
     // Assert complex phrases are escaped properly
-    Q_ASSERT(complexMatch.match(complexMatchFull));
-    Q_ASSERT(!complexMatch.match("norm"));
-
-    qDebug() << "* Passed ExpressionMatch phrase matching";
+    EXPECT_TRUE(complexMatch.match(complexMatchFull));
+    EXPECT_FALSE(complexMatch.match("norm"));
 }
 
 
-void ExpressionMatchTests::runTestsMatchMultiPhrase()
+TEST(ExpressionMatchTest, matchMultiPhrase)
 {
-    qDebug() << "> Testing ExpressionMatch multiple phrase matching";
-
     // Simple phrases, case-insensitive
     ExpressionMatch simpleMatch =
             ExpressionMatch("test\nOther ", ExpressionMatch::MatchMode::MatchMultiPhrase, false);
@@ -138,47 +109,42 @@ void ExpressionMatchTests::runTestsMatchMultiPhrase()
             ExpressionMatch(complexMatchFullA + "\n" + complexMatchFullB,
                             ExpressionMatch::MatchMode::MatchMultiPhrase, false);
 
-
     // Assert valid and not empty
-    Q_ASSERT(!simpleMatch.isEmpty());
-    Q_ASSERT(simpleMatch.isValid());
-    Q_ASSERT(!simpleMatchCS.isEmpty());
-    Q_ASSERT(simpleMatchCS.isValid());
-    Q_ASSERT(!complexMatch.isEmpty());
-    Q_ASSERT(complexMatch.isValid());
+    ASSERT_TRUE(simpleMatch.isValid());
+    EXPECT_FALSE(simpleMatch.isEmpty());
+    ASSERT_TRUE(simpleMatchCS.isValid());
+    EXPECT_FALSE(simpleMatchCS.isEmpty());
+    ASSERT_TRUE(complexMatch.isValid());
+    EXPECT_FALSE(complexMatch.isEmpty());
 
     // Assert match succeeds
-    Q_ASSERT(simpleMatch.match("test"));
-    Q_ASSERT(simpleMatch.match("test[suffix]"));
-    Q_ASSERT(simpleMatch.match("other test;"));
-    Q_ASSERT(simpleMatch.match("Other "));
-    Q_ASSERT(simpleMatch.match(".Other !"));
+    EXPECT_TRUE(simpleMatch.match("test"));
+    EXPECT_TRUE(simpleMatch.match("test[suffix]"));
+    EXPECT_TRUE(simpleMatch.match("other test;"));
+    EXPECT_TRUE(simpleMatch.match("Other "));
+    EXPECT_TRUE(simpleMatch.match(".Other !"));
     // Assert partial match fails
-    Q_ASSERT(!simpleMatch.match("testing"));
-    Q_ASSERT(!simpleMatch.match("Other!"));
+    EXPECT_FALSE(simpleMatch.match("testing"));
+    EXPECT_FALSE(simpleMatch.match("Other!"));
     // Assert unrelated fails
-    Q_ASSERT(!simpleMatch.match("not above"));
+    EXPECT_FALSE(simpleMatch.match("not above"));
 
     // Assert case sensitivity followed
-    Q_ASSERT(!simpleMatch.sourceCaseSensitive());
-    Q_ASSERT(simpleMatch.match("TeSt"));
-    Q_ASSERT(simpleMatchCS.sourceCaseSensitive());
-    Q_ASSERT(!simpleMatchCS.match("TeSt"));
+    EXPECT_FALSE(simpleMatch.sourceCaseSensitive());
+    EXPECT_TRUE(simpleMatch.match("TeSt"));
+    EXPECT_TRUE(simpleMatchCS.sourceCaseSensitive());
+    EXPECT_FALSE(simpleMatchCS.match("TeSt"));
 
     // Assert complex phrases are escaped properly
-    Q_ASSERT(complexMatch.match(complexMatchFullA));
-    Q_ASSERT(complexMatch.match(complexMatchFullB));
-    Q_ASSERT(!complexMatch.match("norm"));
-    Q_ASSERT(!complexMatch.match("invert"));
-
-    qDebug() << "* Passed ExpressionMatch multiple phrase matching";
+    EXPECT_TRUE(complexMatch.match(complexMatchFullA));
+    EXPECT_TRUE(complexMatch.match(complexMatchFullB));
+    EXPECT_FALSE(complexMatch.match("norm"));
+    EXPECT_FALSE(complexMatch.match("invert"));
 }
 
 
-void ExpressionMatchTests::runTestsMatchWildcard()
+TEST(ExpressionMatchTest, matchWildcard)
 {
-    qDebug() << "> Testing ExpressionMatch wildcard matching";
-
     // Simple wildcard, case-insensitive
     ExpressionMatch simpleMatch =
             ExpressionMatch("?test*", ExpressionMatch::MatchMode::MatchWildcard, false);
@@ -202,66 +168,61 @@ void ExpressionMatchTests::runTestsMatchWildcard()
             ExpressionMatch(R"(never?gonna*give\*you\?up\\test|y\yeah\\1\\\\2\\\1inval)",
                             ExpressionMatch::MatchMode::MatchWildcard, false);
 
-
     // Assert valid and not empty
-    Q_ASSERT(!simpleMatch.isEmpty());
-    Q_ASSERT(simpleMatch.isValid());
-    Q_ASSERT(!simpleMatchCS.isEmpty());
-    Q_ASSERT(simpleMatchCS.isValid());
-    Q_ASSERT(!simpleMatchEscape.isEmpty());
-    Q_ASSERT(simpleMatchEscape.isValid());
-    Q_ASSERT(!simpleMatchInvert.isEmpty());
-    Q_ASSERT(simpleMatchInvert.isValid());
-    Q_ASSERT(!simpleMatchNoInvert.isEmpty());
-    Q_ASSERT(simpleMatchNoInvert.isValid());
-    Q_ASSERT(!simpleMatchNoInvertSlash.isEmpty());
-    Q_ASSERT(simpleMatchNoInvertSlash.isValid());
-    Q_ASSERT(!complexMatch.isEmpty());
-    Q_ASSERT(complexMatch.isValid());
+    ASSERT_TRUE(simpleMatch.isValid());
+    EXPECT_FALSE(simpleMatch.isEmpty());
+    ASSERT_TRUE(simpleMatchCS.isValid());
+    EXPECT_FALSE(simpleMatchCS.isEmpty());
+    ASSERT_TRUE(simpleMatchEscape.isValid());
+    EXPECT_FALSE(simpleMatchEscape.isEmpty());
+    ASSERT_TRUE(simpleMatchInvert.isValid());
+    EXPECT_FALSE(simpleMatchInvert.isEmpty());
+    ASSERT_TRUE(simpleMatchNoInvert.isValid());
+    EXPECT_FALSE(simpleMatchNoInvert.isEmpty());
+    ASSERT_TRUE(simpleMatchNoInvertSlash.isValid());
+    EXPECT_FALSE(simpleMatchNoInvertSlash.isEmpty());
+    ASSERT_TRUE(complexMatch.isValid());
+    EXPECT_FALSE(complexMatch.isEmpty());
 
     // Assert match succeeds
-    Q_ASSERT(simpleMatch.match("@test"));
-    Q_ASSERT(simpleMatch.match("@testing"));
-    Q_ASSERT(simpleMatch.match("!test"));
-    Q_ASSERT(simpleMatchEscape.match("?test*"));
-    Q_ASSERT(simpleMatchInvert.match("atest"));
-    Q_ASSERT(simpleMatchNoInvert.match("!test"));
-    Q_ASSERT(simpleMatchNoInvertSlash.match(R"(\!test)"));
+    EXPECT_TRUE(simpleMatch.match("@test"));
+    EXPECT_TRUE(simpleMatch.match("@testing"));
+    EXPECT_TRUE(simpleMatch.match("!test"));
+    EXPECT_TRUE(simpleMatchEscape.match("?test*"));
+    EXPECT_TRUE(simpleMatchInvert.match("atest"));
+    EXPECT_TRUE(simpleMatchNoInvert.match("!test"));
+    EXPECT_TRUE(simpleMatchNoInvertSlash.match(R"(\!test)"));
     // Assert partial match fails
-    Q_ASSERT(!simpleMatch.match("test"));
+    EXPECT_FALSE(simpleMatch.match("test"));
     // Assert unrelated fails
-    Q_ASSERT(!simpleMatch.match("not above"));
+    EXPECT_FALSE(simpleMatch.match("not above"));
     // Assert escaped wildcard fails
-    Q_ASSERT(!simpleMatchEscape.match("@testing"));
-    Q_ASSERT(!simpleMatchNoInvert.match("test"));
-    Q_ASSERT(!simpleMatchNoInvert.match("anything"));
-    Q_ASSERT(!simpleMatchNoInvertSlash.match("!test"));
-    Q_ASSERT(!simpleMatchNoInvertSlash.match("test"));
-    Q_ASSERT(!simpleMatchNoInvertSlash.match("anything"));
+    EXPECT_FALSE(simpleMatchEscape.match("@testing"));
+    EXPECT_FALSE(simpleMatchNoInvert.match("test"));
+    EXPECT_FALSE(simpleMatchNoInvert.match("anything"));
+    EXPECT_FALSE(simpleMatchNoInvertSlash.match("!test"));
+    EXPECT_FALSE(simpleMatchNoInvertSlash.match("test"));
+    EXPECT_FALSE(simpleMatchNoInvertSlash.match("anything"));
     // Assert non-inverted fails
-    Q_ASSERT(!simpleMatchInvert.match("testing"));
+    EXPECT_FALSE(simpleMatchInvert.match("testing"));
 
     // Assert case sensitivity followed
-    Q_ASSERT(!simpleMatch.sourceCaseSensitive());
-    Q_ASSERT(simpleMatch.match("@TeSt"));
-    Q_ASSERT(simpleMatchCS.sourceCaseSensitive());
-    Q_ASSERT(!simpleMatchCS.match("@TeSt"));
+    EXPECT_FALSE(simpleMatch.sourceCaseSensitive());
+    EXPECT_TRUE(simpleMatch.match("@TeSt"));
+    EXPECT_TRUE(simpleMatchCS.sourceCaseSensitive());
+    EXPECT_FALSE(simpleMatchCS.match("@TeSt"));
 
     // Assert complex match
-    Q_ASSERT(complexMatch.match(R"(neverAgonnaBBBgive*you?up\test|yyeah\1\\2\1inval)"));
+    EXPECT_TRUE(complexMatch.match(R"(neverAgonnaBBBgive*you?up\test|yyeah\1\\2\1inval)"));
     // Assert complex not literal match
-    Q_ASSERT(!complexMatch.match(R"(never?gonna*give\*you\?up\\test|y\yeah\\1\\\\2\\\1inval)"));
+    EXPECT_FALSE(complexMatch.match(R"(never?gonna*give\*you\?up\\test|y\yeah\\1\\\\2\\\1inval)"));
     // Assert complex unrelated not match
-    Q_ASSERT(!complexMatch.match("other"));
-
-    qDebug() << "* Passed ExpressionMatch wildcard matching";
+    EXPECT_FALSE(complexMatch.match("other"));
 }
 
 
-void ExpressionMatchTests::runTestsMatchMultiWildcard()
+TEST(ExpressionMatchTest, matchMultiWildcard)
 {
-    qDebug() << "> Testing ExpressionMatch multiple wildcard matching";
-
     // Simple wildcards, case-insensitive
     ExpressionMatch simpleMatch =
             ExpressionMatch("?test*;another?",
@@ -311,74 +272,69 @@ void ExpressionMatchTests::runTestsMatchMultiWildcard()
             ExpressionMatch(complexMatchFull, ExpressionMatch::MatchMode::MatchMultiWildcard,
                             false);
 
-
     // Assert valid and not empty
-    Q_ASSERT(!simpleMatch.isEmpty());
-    Q_ASSERT(simpleMatch.isValid());
-    Q_ASSERT(!simpleMatchCS.isEmpty());
-    Q_ASSERT(simpleMatchCS.isValid());
-    Q_ASSERT(!simpleMatchEscape.isEmpty());
-    Q_ASSERT(simpleMatchEscape.isValid());
-    Q_ASSERT(!simpleMatchInvert.isEmpty());
-    Q_ASSERT(simpleMatchInvert.isValid());
-    Q_ASSERT(!simpleMatchImplicit.isEmpty());
-    Q_ASSERT(simpleMatchImplicit.isValid());
-    Q_ASSERT(!complexMatch.isEmpty());
-    Q_ASSERT(complexMatch.isValid());
+    ASSERT_TRUE(simpleMatch.isValid());
+    EXPECT_FALSE(simpleMatch.isEmpty());
+    ASSERT_TRUE(simpleMatchCS.isValid());
+    EXPECT_FALSE(simpleMatchCS.isEmpty());
+    ASSERT_TRUE(simpleMatchEscape.isValid());
+    EXPECT_FALSE(simpleMatchEscape.isEmpty());
+    ASSERT_TRUE(simpleMatchInvert.isValid());
+    EXPECT_FALSE(simpleMatchInvert.isEmpty());
+    ASSERT_TRUE(simpleMatchImplicit.isValid());
+    EXPECT_FALSE(simpleMatchImplicit.isEmpty());
+    ASSERT_TRUE(complexMatch.isValid());
+    EXPECT_FALSE(complexMatch.isEmpty());
 
     // Assert match succeeds
-    Q_ASSERT(simpleMatch.match("@test"));
-    Q_ASSERT(simpleMatch.match("@testing"));
-    Q_ASSERT(simpleMatch.match("!test"));
-    Q_ASSERT(simpleMatch.match("anotherA"));
-    Q_ASSERT(simpleMatchEscape.match("?test*;thing*"));
-    Q_ASSERT(simpleMatchEscape.match("?test*;AAAAAthing*"));
-    Q_ASSERT(simpleMatchInvert.match("test"));
-    Q_ASSERT(simpleMatchInvert.match("testing things"));
+    EXPECT_TRUE(simpleMatch.match("@test"));
+    EXPECT_TRUE(simpleMatch.match("@testing"));
+    EXPECT_TRUE(simpleMatch.match("!test"));
+    EXPECT_TRUE(simpleMatch.match("anotherA"));
+    EXPECT_TRUE(simpleMatchEscape.match("?test*;thing*"));
+    EXPECT_TRUE(simpleMatchEscape.match("?test*;AAAAAthing*"));
+    EXPECT_TRUE(simpleMatchInvert.match("test"));
+    EXPECT_TRUE(simpleMatchInvert.match("testing things"));
     // Assert implicit wildcard succeeds
-    Q_ASSERT(simpleMatchImplicit.match("AAAAAA"));
+    EXPECT_TRUE(simpleMatchImplicit.match("AAAAAA"));
     // Assert partial match fails
-    Q_ASSERT(!simpleMatch.match("test"));
-    Q_ASSERT(!simpleMatch.match("another"));
-    Q_ASSERT(!simpleMatch.match("anotherBB"));
+    EXPECT_FALSE(simpleMatch.match("test"));
+    EXPECT_FALSE(simpleMatch.match("another"));
+    EXPECT_FALSE(simpleMatch.match("anotherBB"));
     // Assert unrelated fails
-    Q_ASSERT(!simpleMatch.match("not above"));
+    EXPECT_FALSE(simpleMatch.match("not above"));
     // Assert escaped wildcard fails
-    Q_ASSERT(!simpleMatchEscape.match("@testing"));
+    EXPECT_FALSE(simpleMatchEscape.match("@testing"));
     // Assert inverted match fails
-    Q_ASSERT(!simpleMatchInvert.match("testing"));
-    Q_ASSERT(!simpleMatchImplicit.match("testing"));
+    EXPECT_FALSE(simpleMatchInvert.match("testing"));
+    EXPECT_FALSE(simpleMatchImplicit.match("testing"));
 
     // Assert case sensitivity followed
-    Q_ASSERT(!simpleMatch.sourceCaseSensitive());
-    Q_ASSERT(simpleMatch.match("@TeSt"));
-    Q_ASSERT(simpleMatchCS.sourceCaseSensitive());
-    Q_ASSERT(!simpleMatchCS.match("@TeSt"));
+    EXPECT_FALSE(simpleMatch.sourceCaseSensitive());
+    EXPECT_TRUE(simpleMatch.match("@TeSt"));
+    EXPECT_TRUE(simpleMatchCS.sourceCaseSensitive());
+    EXPECT_FALSE(simpleMatchCS.match("@TeSt"));
 
     // Assert complex match
     for (auto&& normMatch : complexMatchNormal) {
         // Each normal component should match
-        Q_ASSERT(complexMatch.match(normMatch));
+        EXPECT_TRUE(complexMatch.match(normMatch));
     }
 
     for (auto&& invertMatch : complexMatchInvert) {
         // Each invert component should not match
-        Q_ASSERT(!complexMatch.match(invertMatch));
+        EXPECT_FALSE(complexMatch.match(invertMatch));
     }
 
     // Assert complex not literal match
-    Q_ASSERT(!complexMatch.match(complexMatchFull));
+    EXPECT_FALSE(complexMatch.match(complexMatchFull));
     // Assert complex unrelated not match
-    Q_ASSERT(!complexMatch.match("other"));
-
-    qDebug() << "* Passed ExpressionMatch multiple wildcard matching";
+    EXPECT_FALSE(complexMatch.match("other"));
 }
 
 
-void ExpressionMatchTests::runTestsMatchRegEx()
+TEST(ExpressionMatchTest, matchRegEx)
 {
-    qDebug() << "> Testing ExpressionMatch regex matching";
-
     // Simple regex, case-insensitive
     ExpressionMatch simpleMatch =
             ExpressionMatch(R"(simple.\*escape-match.*)",
@@ -401,52 +357,48 @@ void ExpressionMatchTests::runTestsMatchRegEx()
                             ExpressionMatch::MatchMode::MatchRegEx, false);
 
     // Assert valid and not empty
-    Q_ASSERT(!simpleMatch.isEmpty());
-    Q_ASSERT(simpleMatch.isValid());
-    Q_ASSERT(!simpleMatchCS.isEmpty());
-    Q_ASSERT(simpleMatchCS.isValid());
-    Q_ASSERT(!simpleMatchInvert.isEmpty());
-    Q_ASSERT(simpleMatchInvert.isValid());
-    Q_ASSERT(!simpleMatchNoInvert.isEmpty());
-    Q_ASSERT(simpleMatchNoInvert.isValid());
-    Q_ASSERT(!simpleMatchNoInvertSlash.isEmpty());
-    Q_ASSERT(simpleMatchNoInvertSlash.isValid());
+    ASSERT_TRUE(simpleMatch.isValid());
+    EXPECT_FALSE(simpleMatch.isEmpty());
+    ASSERT_TRUE(simpleMatchCS.isValid());
+    EXPECT_FALSE(simpleMatchCS.isEmpty());
+    ASSERT_TRUE(simpleMatchInvert.isValid());
+    EXPECT_FALSE(simpleMatchInvert.isEmpty());
+    ASSERT_TRUE(simpleMatchNoInvert.isValid());
+    EXPECT_FALSE(simpleMatchNoInvert.isEmpty());
+    ASSERT_TRUE(simpleMatchNoInvertSlash.isValid());
+    EXPECT_FALSE(simpleMatchNoInvertSlash.isEmpty());
 
     // Assert match succeeds
-    Q_ASSERT(simpleMatch.match("simpleA*escape-match"));
-    Q_ASSERT(simpleMatch.match("simpleA*escape-matchBBBB"));
-    Q_ASSERT(simpleMatchInvert.match("not above"));
-    Q_ASSERT(simpleMatchNoInvert.match("!simpleA*escape-matchBBBB"));
-    Q_ASSERT(simpleMatchNoInvertSlash.match(R"(\!simpleA*escape-matchBBBB)"));
+    EXPECT_TRUE(simpleMatch.match("simpleA*escape-match"));
+    EXPECT_TRUE(simpleMatch.match("simpleA*escape-matchBBBB"));
+    EXPECT_TRUE(simpleMatchInvert.match("not above"));
+    EXPECT_TRUE(simpleMatchNoInvert.match("!simpleA*escape-matchBBBB"));
+    EXPECT_TRUE(simpleMatchNoInvertSlash.match(R"(\!simpleA*escape-matchBBBB)"));
     // Assert partial match fails
-    Q_ASSERT(!simpleMatch.match("simpleA*escape-mat"));
-    Q_ASSERT(!simpleMatch.match("simple*escape-match"));
+    EXPECT_FALSE(simpleMatch.match("simpleA*escape-mat"));
+    EXPECT_FALSE(simpleMatch.match("simple*escape-match"));
     // Assert unrelated fails
-    Q_ASSERT(!simpleMatch.match("not above"));
+    EXPECT_FALSE(simpleMatch.match("not above"));
     // Assert escaped wildcard fails
-    Q_ASSERT(!simpleMatch.match("simpleABBBBescape-matchBBBB"));
+    EXPECT_FALSE(simpleMatch.match("simpleABBBBescape-matchBBBB"));
     // Assert inverted fails
-    Q_ASSERT(!simpleMatchInvert.match("invertA*escape-match"));
-    Q_ASSERT(!simpleMatchInvert.match("invertA*escape-matchBBBB"));
-    Q_ASSERT(!simpleMatchNoInvert.match("simpleA*escape-matchBBBB"));
-    Q_ASSERT(!simpleMatchNoInvert.match("anything"));
-    Q_ASSERT(!simpleMatchNoInvertSlash.match("!simpleA*escape-matchBBBB"));
-    Q_ASSERT(!simpleMatchNoInvertSlash.match("anything"));
+    EXPECT_FALSE(simpleMatchInvert.match("invertA*escape-match"));
+    EXPECT_FALSE(simpleMatchInvert.match("invertA*escape-matchBBBB"));
+    EXPECT_FALSE(simpleMatchNoInvert.match("simpleA*escape-matchBBBB"));
+    EXPECT_FALSE(simpleMatchNoInvert.match("anything"));
+    EXPECT_FALSE(simpleMatchNoInvertSlash.match("!simpleA*escape-matchBBBB"));
+    EXPECT_FALSE(simpleMatchNoInvertSlash.match("anything"));
 
     // Assert case sensitivity followed
-    Q_ASSERT(!simpleMatch.sourceCaseSensitive());
-    Q_ASSERT(simpleMatch.match("SiMpLEA*escape-MATCH"));
-    Q_ASSERT(simpleMatchCS.sourceCaseSensitive());
-    Q_ASSERT(!simpleMatchCS.match("SiMpLEA*escape-MATCH"));
-
-    qDebug() << "* Passed ExpressionMatch regex matching";
+    EXPECT_FALSE(simpleMatch.sourceCaseSensitive());
+    EXPECT_TRUE(simpleMatch.match("SiMpLEA*escape-MATCH"));
+    EXPECT_TRUE(simpleMatchCS.sourceCaseSensitive());
+    EXPECT_FALSE(simpleMatchCS.match("SiMpLEA*escape-MATCH"));
 }
 
 
-void ExpressionMatchTests::runTestsTrimMultiWildcardWhitespace()
+TEST(ExpressionMatchTest, trimMultiWildcardWhitespace)
 {
-    qDebug() << "> Testing ExpressionMatch multiple wildcard whitespace trimming";
-
     // Patterns
     static constexpr uint PATTERN_SOURCE = 0;
     static constexpr uint PATTERN_RESULT = 1;
@@ -473,14 +425,12 @@ void ExpressionMatchTests::runTestsTrimMultiWildcardWhitespace()
     QString result;
     for (auto&& patternPair : patterns) {
         // Make sure data is valid
-        Q_ASSERT(patternPair.size() == 2);
+        EXPECT_TRUE(patternPair.size() == 2);
         // Run transformation
         result = ExpressionMatch::trimMultiWildcardWhitespace(patternPair[PATTERN_SOURCE]);
         // Assert that source trims into expected pattern
-        Q_ASSERT(result == patternPair[PATTERN_RESULT]);
+        EXPECT_EQ(patternPair[PATTERN_RESULT], result);
         // Assert that re-trimming expected pattern gives the same result
-        Q_ASSERT(result == ExpressionMatch::trimMultiWildcardWhitespace(result));
+        EXPECT_EQ(ExpressionMatch::trimMultiWildcardWhitespace(result), result);
     }
-
-    qDebug() << "* Passed ExpressionMatch multiple wildcard whitespace trimming";
 }
