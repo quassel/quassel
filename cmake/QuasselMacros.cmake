@@ -33,7 +33,7 @@ include(QuasselCompileFeatures)
 # the alias name.
 #
 function(quassel_add_module _module)
-    set(options EXPORT STATIC)
+    set(options EXPORT STATIC NOINSTALL)
     set(oneValueArgs )
     set(multiValueArgs )
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -66,7 +66,7 @@ function(quassel_add_module _module)
         VERSION ${QUASSEL_MAJOR}.${QUASSEL_MINOR}.${QUASSEL_PATCH}
     )
 
-    if (buildmode STREQUAL "SHARED")
+    if (buildmode STREQUAL "SHARED" AND NOT ${ARG_NOINSTALL})
         install(TARGETS ${target}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -166,6 +166,63 @@ function(quassel_add_resource _name)
 
     # Set variable for referencing the target from outside
     set(RESOURCE_TARGET ${TARGET} PARENT_SCOPE)
+endfunction()
+
+###################################################################################################
+# Adds a unit test case
+#
+# quassel_add_test(TestName
+#                  [LIBRARIES lib1 lib2...]
+# )
+#
+# The test name is given in CamelCase as first and mandatory parameter. The corresponding source file
+# is expected the lower-cased test name plus the .cpp extension.
+# The test case is automatically linked against Qt5::Test, GMock, Quassel::Common and
+# Quassel::Test::Main, which contains the main function. This main function also instantiates a
+# QCoreApplication, so the event loop can be used in test cases.
+#
+# Additional libraries can be given using the LIBRARIES argument.
+#
+# Test cases should include testglobal.h, which transitively includes the GTest/GMock headers and
+# exports the main function.
+#
+# The compiled test case binary is located in the unit/ directory in the build directory.
+#
+function(quassel_add_test _target)
+    set(options )
+    set(oneValueArgs )
+    set(multiValueArgs LIBRARIES)
+    cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    string(TOLOWER ${_target} lower_target)
+    set(srcfile ${lower_target}.cpp)
+
+    list(APPEND ARG_LIBRARIES
+        Qt5::Test
+        Quassel::Common
+        Quassel::Test::Main
+    )
+
+    if (WIN32)
+        # On Windows, tests need to be built in the same directory that contains the libraries
+        set(output_dir "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+    else()
+        # On other platforms, separate the test cases out
+        set(output_dir "${CMAKE_BINARY_DIR}/unit")
+    endif()
+
+    add_executable(${_target} ${srcfile})
+    set_target_properties(${_target} PROPERTIES
+        OUTPUT_NAME ${_target}
+        RUNTIME_OUTPUT_DIRECTORY "${output_dir}"
+    )
+    target_link_libraries(${_target} PUBLIC ${ARG_LIBRARIES})
+
+    add_test(
+        NAME ${_target}
+        COMMAND $<TARGET_FILE:${_target}>
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    )
 endfunction()
 
 ###################################################################################################
