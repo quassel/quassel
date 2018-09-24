@@ -21,9 +21,9 @@
 #include "contextmenuactionprovider.h"
 
 #include <QInputDialog>
+#include <QMap>
 #include <QMenu>
 #include <QMessageBox>
-#include <QMap>
 
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -33,7 +33,8 @@
 #include "network.h"
 #include "util.h"
 
-ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkModelController(parent)
+ContextMenuActionProvider::ContextMenuActionProvider(QObject* parent)
+    : NetworkModelController(parent)
 {
     registerAction(NetworkConnect, icon::get("network-connect"), tr("Connect"));
     registerAction(NetworkDisconnect, icon::get("network-disconnect"), tr("Disconnect"));
@@ -92,7 +93,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     registerAction(ShowNetworkConfig, tr("Configure"));
     registerAction(ShowIgnoreList, tr("Show Ignore List"));
 
-    auto *hideEventsMenu = new QMenu();
+    auto* hideEventsMenu = new QMenu();
     hideEventsMenu->addAction(action(HideJoinPartQuit));
     hideEventsMenu->addSeparator();
     hideEventsMenu->addAction(action(HideJoin));
@@ -108,7 +109,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     _hideEventsMenuAction = new Action(tr("Hide Events"), nullptr);
     _hideEventsMenuAction->setMenu(hideEventsMenu);
 
-    auto *nickCtcpMenu = new QMenu();
+    auto* nickCtcpMenu = new QMenu();
     nickCtcpMenu->addAction(action(NickCtcpPing));
     nickCtcpMenu->addAction(action(NickCtcpVersion));
     nickCtcpMenu->addAction(action(NickCtcpTime));
@@ -116,7 +117,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     _nickCtcpMenuAction = new Action(tr("CTCP"), nullptr);
     _nickCtcpMenuAction->setMenu(nickCtcpMenu);
 
-    auto *nickModeMenu = new QMenu();
+    auto* nickModeMenu = new QMenu();
     nickModeMenu->addAction(action(NickOp));
     nickModeMenu->addAction(action(NickDeop));
     // this is where the halfops will be placed if available
@@ -131,7 +132,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     _nickModeMenuAction = new Action(tr("Actions"), nullptr);
     _nickModeMenuAction->setMenu(nickModeMenu);
 
-    auto *ignoreMenu = new QMenu();
+    auto* ignoreMenu = new QMenu();
     _nickIgnoreMenuAction = new Action(tr("Ignore"), nullptr);
     _nickIgnoreMenuAction->setMenu(ignoreMenu);
 
@@ -139,10 +140,9 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
     // They don't need any of the Action fancyness so we use plain QActions
     _ignoreDescriptions << new QAction(tr("Add Ignore Rule"), this);
     _ignoreDescriptions << new QAction(tr("Existing Rules"), this);
-    foreach(QAction *act, _ignoreDescriptions)
-    act->setEnabled(false);
+    foreach (QAction* act, _ignoreDescriptions)
+        act->setEnabled(false);
 }
-
 
 ContextMenuActionProvider::~ContextMenuActionProvider()
 {
@@ -158,48 +158,42 @@ ContextMenuActionProvider::~ContextMenuActionProvider()
     _ignoreDescriptions.clear();
 }
 
-
-void ContextMenuActionProvider::addActions(QMenu *menu, BufferId bufId, ActionSlot slot)
+void ContextMenuActionProvider::addActions(QMenu* menu, BufferId bufId, ActionSlot slot)
 {
     if (!bufId.isValid())
         return;
     addActions(menu, Client::networkModel()->bufferIndex(bufId), std::move(slot));
 }
 
-
-void ContextMenuActionProvider::addActions(QMenu *menu, const QModelIndex &index, ActionSlot slot, bool isCustomBufferView)
+void ContextMenuActionProvider::addActions(QMenu* menu, const QModelIndex& index, ActionSlot slot, bool isCustomBufferView)
 {
     if (!index.isValid())
         return;
     addActions(menu, QList<QModelIndex>() << index, nullptr, QString(), std::move(slot), isCustomBufferView);
 }
 
-
-void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, ActionSlot slot)
+void ContextMenuActionProvider::addActions(QMenu* menu, MessageFilter* filter, BufferId msgBuffer, ActionSlot slot)
 {
     addActions(menu, filter, msgBuffer, QString(), std::move(slot));
 }
 
-
-void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, ActionSlot slot)
+void ContextMenuActionProvider::addActions(QMenu* menu, MessageFilter* filter, BufferId msgBuffer, const QString& chanOrNick, ActionSlot slot)
 {
     if (!filter)
         return;
     addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), filter, chanOrNick, std::move(slot), false);
 }
 
-
-void ContextMenuActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, ActionSlot slot, bool isCustomBufferView)
+void ContextMenuActionProvider::addActions(QMenu* menu, const QList<QModelIndex>& indexList, ActionSlot slot, bool isCustomBufferView)
 {
     addActions(menu, indexList, nullptr, QString(), std::move(slot), isCustomBufferView);
 }
 
-
 // add a list of actions sensible for the current item(s)
-void ContextMenuActionProvider::addActions(QMenu *menu,
-                                           const QList<QModelIndex> &indexList_,
-                                           MessageFilter *filter_,
-                                           const QString &contextItem_,
+void ContextMenuActionProvider::addActions(QMenu* menu,
+                                           const QList<QModelIndex>& indexList_,
+                                           MessageFilter* filter_,
+                                           const QString& contextItem_,
                                            ActionSlot actionSlot,
                                            bool isCustomBufferView)
 {
@@ -273,13 +267,12 @@ void ContextMenuActionProvider::addActions(QMenu *menu,
     }
 }
 
-
-void ContextMenuActionProvider::addNetworkItemActions(QMenu *menu, const QModelIndex &index)
+void ContextMenuActionProvider::addNetworkItemActions(QMenu* menu, const QModelIndex& index)
 {
     NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
     if (!networkId.isValid())
         return;
-    const Network *network = Client::network(networkId);
+    const Network* network = Client::network(networkId);
     Q_CHECK_PTR(network);
     if (!network)
         return;
@@ -293,8 +286,7 @@ void ContextMenuActionProvider::addNetworkItemActions(QMenu *menu, const QModelI
     addAction(JoinChannel, menu, index, ActiveState);
 }
 
-
-void ContextMenuActionProvider::addBufferItemActions(QMenu *menu, const QModelIndex &index, bool isCustomBufferView)
+void ContextMenuActionProvider::addBufferItemActions(QMenu* menu, const QModelIndex& index, bool isCustomBufferView)
 {
     BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
 
@@ -311,10 +303,9 @@ void ContextMenuActionProvider::addBufferItemActions(QMenu *menu, const QModelIn
         addAction(BufferRemove, menu, index, InactiveState);
         break;
 
-    case BufferInfo::QueryBuffer:
-    {
-        //IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
-        //if(ircUser) {
+    case BufferInfo::QueryBuffer: {
+        // IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+        // if(ircUser) {
         addIrcUserActions(menu, index);
         menu->addSeparator();
         //}
@@ -332,8 +323,7 @@ void ContextMenuActionProvider::addBufferItemActions(QMenu *menu, const QModelIn
     }
 }
 
-
-void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex &index)
+void ContextMenuActionProvider::addIrcUserActions(QMenu* menu, const QModelIndex& index)
 {
     // this can be called: a) as a nicklist context menu (index has IrcUserItemType)
     //                     b) as a query buffer context menu (index has BufferItemType and is a QueryBufferItem)
@@ -347,9 +337,9 @@ void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex
         addAction(_nickModeMenuAction, menu, itemType == NetworkModel::IrcUserItemType);
         addAction(_nickCtcpMenuAction, menu);
 
-        auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+        auto* ircUser = qobject_cast<IrcUser*>(index.data(NetworkModel::IrcUserRole).value<QObject*>());
         if (ircUser) {
-            Network *network = ircUser->network();
+            Network* network = ircUser->network();
             // only show entries for usermode +h if server supports it
             if (network && network->prefixModes().contains('h')) {
                 action(NickHalfop)->setVisible(true);
@@ -364,7 +354,9 @@ void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex
             BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
             if (bufferInfo.type() == BufferInfo::ChannelBuffer)
                 bufferName = bufferInfo.bufferName();
-            QMap<QString, bool> ignoreMap = Client::ignoreListManager()->matchingRulesForHostmask(ircUser->hostmask(), ircUser->network()->networkName(), bufferName);
+            QMap<QString, bool> ignoreMap = Client::ignoreListManager()->matchingRulesForHostmask(ircUser->hostmask(),
+                                                                                                  ircUser->network()->networkName(),
+                                                                                                  bufferName);
             addIgnoreMenu(menu, ircUser->hostmask(), ignoreMap);
             // end of ignoreliststuff
         }
@@ -380,26 +372,22 @@ void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex
     }
 }
 
-
-Action *ContextMenuActionProvider::addAction(ActionType type, QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState)
+Action* ContextMenuActionProvider::addAction(ActionType type, QMenu* menu, const QModelIndex& index, ItemActiveStates requiredActiveState)
 {
     return addAction(action(type), menu, checkRequirements(index, requiredActiveState));
 }
 
-
-Action *ContextMenuActionProvider::addAction(Action *action, QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState)
+Action* ContextMenuActionProvider::addAction(Action* action, QMenu* menu, const QModelIndex& index, ItemActiveStates requiredActiveState)
 {
     return addAction(action, menu, checkRequirements(index, requiredActiveState));
 }
 
-
-Action *ContextMenuActionProvider::addAction(ActionType type, QMenu *menu, bool condition)
+Action* ContextMenuActionProvider::addAction(ActionType type, QMenu* menu, bool condition)
 {
     return addAction(action(type), menu, condition);
 }
 
-
-Action *ContextMenuActionProvider::addAction(Action *action, QMenu *menu, bool condition)
+Action* ContextMenuActionProvider::addAction(Action* action, QMenu* menu, bool condition)
 {
     if (condition) {
         menu->addAction(action);
@@ -411,8 +399,7 @@ Action *ContextMenuActionProvider::addAction(Action *action, QMenu *menu, bool c
     return action;
 }
 
-
-void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, BufferId bufferId)
+void ContextMenuActionProvider::addHideEventsMenu(QMenu* menu, BufferId bufferId)
 {
     if (BufferSettings(bufferId).hasFilter())
         addHideEventsMenu(menu, BufferSettings(bufferId).messageFilter());
@@ -420,8 +407,7 @@ void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, BufferId bufferId
         addHideEventsMenu(menu);
 }
 
-
-void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, MessageFilter *msgFilter)
+void ContextMenuActionProvider::addHideEventsMenu(QMenu* menu, MessageFilter* msgFilter)
 {
     if (BufferSettings(msgFilter->idString()).hasFilter())
         addHideEventsMenu(menu, BufferSettings(msgFilter->idString()).messageFilter());
@@ -429,8 +415,7 @@ void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, MessageFilter *ms
         addHideEventsMenu(menu);
 }
 
-
-void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, int filter)
+void ContextMenuActionProvider::addHideEventsMenu(QMenu* menu, int filter)
 {
     action(HideApplyToAll)->setEnabled(filter != -1);
     action(HideUseDefaults)->setEnabled(filter != -1);
@@ -448,10 +433,9 @@ void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, int filter)
     menu->addAction(_hideEventsMenuAction);
 }
 
-
-void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostmask, const QMap<QString, bool> &ignoreMap)
+void ContextMenuActionProvider::addIgnoreMenu(QMenu* menu, const QString& hostmask, const QMap<QString, bool>& ignoreMap)
 {
-    QMenu *ignoreMenu = _nickIgnoreMenuAction->menu();
+    QMenu* ignoreMenu = _nickIgnoreMenuAction->menu();
     ignoreMenu->clear();
     QString nick = nickFromMask(hostmask);
     QString ident = userFromMask(hostmask);
@@ -477,8 +461,7 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
         action(NickIgnoreHost)->setText(text);
         action(NickIgnoreHost)->setProperty("ignoreRule", text);
 
-        text = domain.at(0) == '.' ? QString("*!%1@*%2").arg(ident, domain)
-               : QString("*!%1@%2").arg(ident, domain);
+        text = domain.at(0) == '.' ? QString("*!%1@*%2").arg(ident, domain) : QString("*!%1@%2").arg(ident, domain);
 
         action(NickIgnoreDomain)->setText(text);
         action(NickIgnoreDomain)->setProperty("ignoreRule", text);
@@ -507,8 +490,8 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu *menu, const QString &hostma
             ignoreMenu->addAction(_ignoreDescriptions.at(1));
         while (ruleIter != ignoreMap.constEnd()) {
             if (counter < 5) {
-                auto type = static_cast<ActionType>(NickIgnoreToggleEnabled0 + counter*0x100000);
-                Action *act = action(type);
+                auto type = static_cast<ActionType>(NickIgnoreToggleEnabled0 + counter * 0x100000);
+                Action* act = action(type);
                 act->setText(ruleIter.key());
                 act->setProperty("ignoreRule", ruleIter.key());
                 act->setChecked(ruleIter.value());

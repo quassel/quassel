@@ -31,33 +31,32 @@ class ClientUserInputHandler : public BasicHandler
     Q_OBJECT
 
 public:
-    ClientUserInputHandler(QObject *parent = nullptr);
+    ClientUserInputHandler(QObject* parent = nullptr);
 
 public slots:
-    void handleUserInput(const BufferInfo &bufferInfo, const QString &msg);
+    void handleUserInput(const BufferInfo& bufferInfo, const QString& msg);
 
 signals:
-    void sendInput(const BufferInfo &, const QString &);
+    void sendInput(const BufferInfo&, const QString&);
 
 private slots:
-    void completionSuffixChanged(const QVariant &);
+    void completionSuffixChanged(const QVariant&);
 
-    void handleExec(const BufferInfo &bufferInfo, const QString &execString);
-    void handleJoin(const BufferInfo &bufferInfo, const QString &text);
-    void handleQuery(const BufferInfo &bufferInfo, const QString &text);
-    void handleIgnore(const BufferInfo &bufferInfo, const QString &text);
-    void handleList(const BufferInfo &bufferInfo, const QString &text);
-    void defaultHandler(const QString &cmd, const BufferInfo &bufferInfo, const QString &text);
+    void handleExec(const BufferInfo& bufferInfo, const QString& execString);
+    void handleJoin(const BufferInfo& bufferInfo, const QString& text);
+    void handleQuery(const BufferInfo& bufferInfo, const QString& text);
+    void handleIgnore(const BufferInfo& bufferInfo, const QString& text);
+    void handleList(const BufferInfo& bufferInfo, const QString& text);
+    void defaultHandler(const QString& cmd, const BufferInfo& bufferInfo, const QString& text);
 
 private:
     QRegExp _nickRx;
 
     //! Helper method for switching to new/existing buffers
     /** Immediately switches to the given buffer or schedules a switch for whenever
-      * the buffer is created
-      */
-    void switchBuffer(const NetworkId &networkId, const QString &bufferName);
+     * the buffer is created
+     */
+    void switchBuffer(const NetworkId& networkId, const QString& bufferName);
 };
-
 
 #endif

@@ -22,36 +22,33 @@
 
 #include <iostream>
 
-#include <QtGui>
-#include <QtGlobal>
 #include <QMetaObject>
+#include <QtGlobal>
+#include <QtGui>
 
-#include <libsnore/snore.h>
 #include <libsnore/notification/notification.h>
+#include <libsnore/snore.h>
 
 #include "client.h"
 #include "icon.h"
 #include "networkmodel.h"
-#include "systraynotificationbackend.h"
 #include "qtui.h"
+#include "systraynotificationbackend.h"
 
-
-SnoreNotificationBackend::SnoreNotificationBackend (QObject *parent)
+SnoreNotificationBackend::SnoreNotificationBackend(QObject* parent)
     : AbstractNotificationBackend(parent)
     , m_icon(icon::get("quassel"))
 {
-
     Snore::SnoreCore::instance().loadPlugins(
 #ifndef HAVE_KDE
-                Snore::SnorePlugin::Backend |
+        Snore::SnorePlugin::Backend |
 #endif
-                Snore::SnorePlugin::SecondaryBackend | Snore::SnorePlugin::Settings);
+        Snore::SnorePlugin::SecondaryBackend | Snore::SnorePlugin::Settings);
     m_application = Snore::Application("Quassel", m_icon);
-    m_application.hints().setValue("windows-app-id","QuasselProject.QuasselIRC");
+    m_application.hints().setValue("windows-app-id", "QuasselProject.QuasselIRC");
     m_application.hints().setValue("pushover-token", "arNtsi983QSZUqU3KAZrFLKHGFPkdL");
 
     connect(&Snore::SnoreCore::instance(), &Snore::SnoreCore::actionInvoked, this, &SnoreNotificationBackend::actionInvoked);
-
 
     m_alert = Snore::Alert(tr("Private Message"), m_icon);
     m_application.addAlert(m_alert);
@@ -68,14 +65,14 @@ SnoreNotificationBackend::~SnoreNotificationBackend()
     Snore::SnoreCore::instance().deregisterApplication(m_application);
 }
 
-void SnoreNotificationBackend::notify(const Notification &n)
+void SnoreNotificationBackend::notify(const Notification& n)
 {
 #ifndef HAVE_KDE
     if (m_systrayBackend != nullptr) {
         return;
     }
 #endif
-    QString title =  QString("%1 - %2").arg(Client::networkModel()->networkName(n.bufferId), Client::networkModel()->bufferName(n.bufferId));
+    QString title = QString("%1 - %2").arg(Client::networkModel()->networkName(n.bufferId), Client::networkModel()->bufferName(n.bufferId));
     QString message = QString("<%1> %2").arg(n.sender, n.message);
     Snore::Notification noti(m_application, m_alert, title, message, m_icon);
     noti.hints().setValue("QUASSEL_ID", n.notificationId);
@@ -91,7 +88,7 @@ void SnoreNotificationBackend::close(uint notificationId)
     }
 #endif
     Snore::Notification n = Snore::SnoreCore::instance().getActiveNotificationByID(m_notificationIds.take(notificationId));
-    if (n.isValid()) { // Don't close the notification if it no longer exists.
+    if (n.isValid()) {  // Don't close the notification if it no longer exists.
         Snore::SnoreCore::instance().requestCloseNotification(n, Snore::Notification::Closed);
     }
 }
@@ -101,13 +98,12 @@ void SnoreNotificationBackend::actionInvoked(Snore::Notification n)
     emit activated(n.hints().value("QUASSEL_ID").toUInt());
 }
 
-SettingsPage *SnoreNotificationBackend::createConfigWidget()const
+SettingsPage* SnoreNotificationBackend::createConfigWidget() const
 {
     return new ConfigWidget();
 }
 
-
-void SnoreNotificationBackend::setTraybackend(const QVariant &b)
+void SnoreNotificationBackend::setTraybackend(const QVariant& b)
 {
 #ifndef HAVE_KDE
     if (!b.toBool()) {
@@ -115,7 +111,8 @@ void SnoreNotificationBackend::setTraybackend(const QVariant &b)
             m_systrayBackend = new SystrayNotificationBackend(this);
             QtUi::registerNotificationBackend(m_systrayBackend);
         }
-    } else {
+    }
+    else {
         if (m_systrayBackend != nullptr) {
             QtUi::unregisterNotificationBackend(m_systrayBackend);
             m_systrayBackend->deleteLater();
@@ -127,7 +124,8 @@ void SnoreNotificationBackend::setTraybackend(const QVariant &b)
         if (!Snore::SnoreCore::instance().aplications().contains(m_application.name())) {
             Snore::SnoreCore::instance().registerApplication(m_application);
         }
-    } else {
+    }
+    else {
         if (Snore::SnoreCore::instance().aplications().contains(m_application.name())) {
             Snore::SnoreCore::instance().deregisterApplication(m_application);
         }
@@ -136,8 +134,8 @@ void SnoreNotificationBackend::setTraybackend(const QVariant &b)
 
 /***************************************************************************/
 
-SnoreNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
-    :SettingsPage("Internal", "SnoreNotification", parent)
+SnoreNotificationBackend::ConfigWidget::ConfigWidget(QWidget* parent)
+    : SettingsPage("Internal", "SnoreNotification", parent)
 {
     ui.setupUi(this);
     connect(ui.useSnoreCheckBox, &QCheckBox::toggled, this, &ConfigWidget::useSnoreChanged);
@@ -161,7 +159,7 @@ void SnoreNotificationBackend::ConfigWidget::load()
     ui.useSnoreCheckBox->setChecked(enabled);
     ui.widget->setEnabled(enabled);
     setChangedState(false);
-    QMetaObject::invokeMethod(this, "changed", Qt::QueuedConnection);//hack to make apply and accept button work for snore settings widget
+    QMetaObject::invokeMethod(this, "changed", Qt::QueuedConnection);  // hack to make apply and accept button work for snore settings widget
 }
 
 void SnoreNotificationBackend::ConfigWidget::save()
@@ -178,5 +176,3 @@ void SnoreNotificationBackend::ConfigWidget::useSnoreChanged(bool b)
     ui.widget->setEnabled(b);
     setChangedState(true);
 }
-
-

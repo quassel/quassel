@@ -29,15 +29,18 @@ namespace detail {
 
 // Primary template
 template<typename Func>
-struct FuncHelper : public FuncHelper<decltype(&Func::operator())> {};
+struct FuncHelper : public FuncHelper<decltype(&Func::operator())>
+{};
 
 // Overload for member function with const call operator
-template<typename C, typename R, typename ...Args>
-struct FuncHelper<R(C::*)(Args...) const> : public FuncHelper<R(C::*)(Args...)> {};
+template<typename C, typename R, typename... Args>
+struct FuncHelper<R (C::*)(Args...) const> : public FuncHelper<R (C::*)(Args...)>
+{};
 
 // Overload for member function with non-const call operator
-template<typename C, typename R, typename ...Args>
-struct FuncHelper<R(C::*)(Args...)> {
+template<typename C, typename R, typename... Args>
+struct FuncHelper<R (C::*)(Args...)>
+{
     using ClassType = C;
     using FunctionType = std::function<R(Args...)>;
     using ReturnType = R;
@@ -46,7 +49,7 @@ struct FuncHelper<R(C::*)(Args...)> {
 
 /// @endcond
 
-}  // detail
+}  // namespace detail
 
 /**
  * Provides traits for the given callable.

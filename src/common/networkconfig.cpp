@@ -20,11 +20,9 @@
 
 #include "networkconfig.h"
 
-NetworkConfig::NetworkConfig(const QString &objectName, QObject *parent)
+NetworkConfig::NetworkConfig(const QString& objectName, QObject* parent)
     : SyncableObject(objectName, parent)
-{
-}
-
+{}
 
 void NetworkConfig::setPingTimeoutEnabled(bool enabled)
 {
@@ -36,7 +34,6 @@ void NetworkConfig::setPingTimeoutEnabled(bool enabled)
     emit pingTimeoutEnabledSet(enabled);
 }
 
-
 void NetworkConfig::setPingInterval(int interval)
 {
     if (_pingInterval == interval)
@@ -47,7 +44,6 @@ void NetworkConfig::setPingInterval(int interval)
     emit pingIntervalSet(interval);
 }
 
-
 void NetworkConfig::setMaxPingCount(int count)
 {
     if (_maxPingCount == count)
@@ -56,7 +52,6 @@ void NetworkConfig::setMaxPingCount(int count)
     _maxPingCount = count;
     SYNC(ARG(count))
 }
-
 
 void NetworkConfig::setAutoWhoEnabled(bool enabled)
 {
@@ -68,7 +63,6 @@ void NetworkConfig::setAutoWhoEnabled(bool enabled)
     emit autoWhoEnabledSet(enabled);
 }
 
-
 void NetworkConfig::setAutoWhoInterval(int interval)
 {
     if (_autoWhoInterval == interval)
@@ -79,7 +73,6 @@ void NetworkConfig::setAutoWhoInterval(int interval)
     emit autoWhoIntervalSet(interval);
 }
 
-
 void NetworkConfig::setAutoWhoNickLimit(int nickLimit)
 {
     if (_autoWhoNickLimit == nickLimit)
@@ -88,7 +81,6 @@ void NetworkConfig::setAutoWhoNickLimit(int nickLimit)
     _autoWhoNickLimit = nickLimit;
     SYNC(ARG(nickLimit))
 }
-
 
 void NetworkConfig::setAutoWhoDelay(int delay)
 {
@@ -99,7 +91,6 @@ void NetworkConfig::setAutoWhoDelay(int delay)
     SYNC(ARG(delay))
     emit autoWhoDelaySet(delay);
 }
-
 
 void NetworkConfig::setStandardCtcp(bool enabled)
 {

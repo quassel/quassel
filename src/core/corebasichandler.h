@@ -25,9 +25,8 @@
 #include <QStringList>
 
 #include "basichandler.h"
-#include "message.h"
-
 #include "corenetwork.h"
+#include "message.h"
 
 class CoreSession;
 
@@ -36,45 +35,52 @@ class CoreBasicHandler : public BasicHandler
     Q_OBJECT
 
 public:
-    CoreBasicHandler(CoreNetwork *parent = nullptr);
+    CoreBasicHandler(CoreNetwork* parent = nullptr);
 
-    QString serverDecode(const QByteArray &string);
-    QStringList serverDecode(const QList<QByteArray> &stringlist);
-    QString channelDecode(const QString &bufferName, const QByteArray &string);
-    QStringList channelDecode(const QString &bufferName, const QList<QByteArray> &stringlist);
-    QString userDecode(const QString &userNick, const QByteArray &string);
-    QStringList userDecode(const QString &userNick, const QList<QByteArray> &stringlist);
+    QString serverDecode(const QByteArray& string);
+    QStringList serverDecode(const QList<QByteArray>& stringlist);
+    QString channelDecode(const QString& bufferName, const QByteArray& string);
+    QStringList channelDecode(const QString& bufferName, const QList<QByteArray>& stringlist);
+    QString userDecode(const QString& userNick, const QByteArray& string);
+    QStringList userDecode(const QString& userNick, const QList<QByteArray>& stringlist);
 
-    QByteArray serverEncode(const QString &string);
-    QList<QByteArray> serverEncode(const QStringList &stringlist);
-    QByteArray channelEncode(const QString &bufferName, const QString &string);
-    QList<QByteArray> channelEncode(const QString &bufferName, const QStringList &stringlist);
-    QByteArray userEncode(const QString &userNick, const QString &string);
-    QList<QByteArray> userEncode(const QString &userNick, const QStringList &stringlist);
+    QByteArray serverEncode(const QString& string);
+    QList<QByteArray> serverEncode(const QStringList& stringlist);
+    QByteArray channelEncode(const QString& bufferName, const QString& string);
+    QList<QByteArray> channelEncode(const QString& bufferName, const QStringList& stringlist);
+    QByteArray userEncode(const QString& userNick, const QString& string);
+    QList<QByteArray> userEncode(const QString& userNick, const QStringList& stringlist);
 
 signals:
-    void displayMsg(Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
+    void displayMsg(Message::Type,
+                    BufferInfo::Type,
+                    const QString& target,
+                    const QString& text,
+                    const QString& sender = "",
+                    Message::Flags flags = Message::None);
 
     /**
      * Sends the raw (encoded) line, adding to the queue if needed, optionally with higher priority.
      *
      * @see CoreNetwork::putRawLine()
      */
-    void putRawLine(const QByteArray &msg, const bool prepend = false);
+    void putRawLine(const QByteArray& msg, const bool prepend = false);
 
     /**
      * Sends the command with encoded parameters, with optional prefix or high priority.
      *
-     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray(), const bool prepend = false)
+     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray(), const bool
+     * prepend = false)
      */
-    void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = {}, bool prepend = false);
+    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, bool prepend = false);
 
     /**
      * Sends the command for each set of encoded parameters, with optional prefix or high priority.
      *
-     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray(), const bool prepend = false)
+     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray(), const
+     * bool prepend = false)
      */
-    void putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = {}, bool prepend = false);
+    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, bool prepend = false);
 
 protected:
     /**
@@ -90,16 +96,15 @@ protected:
      * maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix = QByteArray(), const bool prepend = false);
+    void putCmd(const QString& cmd, const QByteArray& param, const QByteArray& prefix = QByteArray(), const bool prepend = false);
 
-    inline CoreNetwork *network() const { return _network; }
-    inline CoreSession *coreSession() const { return _network->coreSession(); }
+    inline CoreNetwork* network() const { return _network; }
+    inline CoreSession* coreSession() const { return _network->coreSession(); }
 
-    BufferInfo::Type typeByTarget(const QString &target) const;
+    BufferInfo::Type typeByTarget(const QString& target) const;
 
 private:
-    CoreNetwork *_network;
+    CoreNetwork* _network;
 };
-
 
 #endif

@@ -21,22 +21,22 @@
 #ifndef SIMPLENETWORKEDITOR_H
 #define SIMPLENETWORKEDITOR_H
 
-#include "ui_simplenetworkeditor.h"
-
 #include "network.h"
+
+#include "ui_simplenetworkeditor.h"
 
 class SimpleNetworkEditor : public QWidget
 {
     Q_OBJECT
 
 public:
-    SimpleNetworkEditor(QWidget *parent = nullptr);
+    SimpleNetworkEditor(QWidget* parent = nullptr);
 
-    void displayNetworkInfo(const NetworkInfo &networkInfo);
-    void saveToNetworkInfo(NetworkInfo &networkInfo);
+    void displayNetworkInfo(const NetworkInfo& networkInfo);
+    void saveToNetworkInfo(NetworkInfo& networkInfo);
 
     QStringList defaultChannels() const;
-    void setDefaultChannels(const QStringList &channels);
+    void setDefaultChannels(const QStringList& channels);
 
 signals:
     void widgetHasChanged();
@@ -58,5 +58,4 @@ private:
     NetworkInfo _networkInfo;
 };
 
-
-#endif //SIMPLENETWORKEDITOR_H
+#endif  // SIMPLENETWORKEDITOR_H

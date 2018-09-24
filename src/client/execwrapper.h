@@ -30,14 +30,14 @@ class ExecWrapper : public QObject
     Q_OBJECT
 
 public:
-    ExecWrapper(QObject *parent = nullptr);
+    ExecWrapper(QObject* parent = nullptr);
 
 public slots:
-    void start(const BufferInfo &info, const QString &command);
+    void start(const BufferInfo& info, const QString& command);
 
 signals:
-    void error(const QString &errorMsg);
-    void output(const QString &out);
+    void error(const QString& errorMsg);
+    void output(const QString& out);
 
 private slots:
     void processReadStdout();
@@ -45,8 +45,8 @@ private slots:
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processError(QProcess::ProcessError);
 
-    void postStdout(const QString &);
-    void postStderr(const QString &);
+    void postStdout(const QString&);
+    void postStderr(const QString&);
 
 private:
     QProcess _process;
@@ -55,6 +55,5 @@ private:
     QString _stdoutBuffer;
     QString _stderrBuffer;
 };
-
 
 #endif

@@ -24,9 +24,9 @@
 #include "networkmodel.h"
 #include "types.h"
 
-BufferViewOverlayFilter::BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay)
-    : QSortFilterProxyModel(model),
-    _overlay(nullptr)
+BufferViewOverlayFilter::BufferViewOverlayFilter(QAbstractItemModel* model, BufferViewOverlay* overlay)
+    : QSortFilterProxyModel(model)
+    , _overlay(nullptr)
 {
     setOverlay(overlay);
     setSourceModel(model);
@@ -34,8 +34,7 @@ BufferViewOverlayFilter::BufferViewOverlayFilter(QAbstractItemModel *model, Buff
     setDynamicSortFilter(true);
 }
 
-
-void BufferViewOverlayFilter::setOverlay(BufferViewOverlay *overlay)
+void BufferViewOverlayFilter::setOverlay(BufferViewOverlay* overlay)
 {
     if (_overlay == overlay)
         return;
@@ -56,14 +55,12 @@ void BufferViewOverlayFilter::setOverlay(BufferViewOverlay *overlay)
     invalidate();
 }
 
-
 void BufferViewOverlayFilter::overlayDestroyed()
 {
     setOverlay(nullptr);
 }
 
-
-bool BufferViewOverlayFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool BufferViewOverlayFilter::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
     if (!_overlay)
         return false;

@@ -22,8 +22,8 @@
 
 #include <QPointer>
 
-#include "transfer.h"
 #include "peer.h"
+#include "transfer.h"
 
 class QTcpSocket;
 
@@ -32,7 +32,13 @@ class CoreTransfer : public Transfer
     Q_OBJECT
 
 public:
-    CoreTransfer(Direction direction, const QString &nick, const QString &fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = nullptr);
+    CoreTransfer(Direction direction,
+                 const QString& nick,
+                 const QString& fileName,
+                 const QHostAddress& address,
+                 quint16 port,
+                 quint64 size = 0,
+                 QObject* parent = nullptr);
 
     quint64 transferred() const override;
 
@@ -51,11 +57,11 @@ private slots:
 
 private:
     void setupConnectionForReceive();
-    bool relayData(const QByteArray &data, bool requireChunkSize);
+    bool relayData(const QByteArray& data, bool requireChunkSize);
     void cleanUp() override;
 
     QPointer<Peer> _peer;
-    QTcpSocket *_socket;
+    QTcpSocket* _socket;
     quint64 _pos;
     QByteArray _buffer;
     bool _reading;

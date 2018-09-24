@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "compressor.h"
 #include "authhandler.h"
+#include "compressor.h"
 #include "coreaccount.h"
 
 class QSslSocket;
@@ -33,60 +33,61 @@ class ClientAuthHandler : public AuthHandler
     Q_OBJECT
 
 public:
-    enum DigestVersion {
+    enum DigestVersion
+    {
         Md5,
         Sha2_512,
-        Latest=Sha2_512
+        Latest = Sha2_512
     };
 
-    ClientAuthHandler(CoreAccount account, QObject *parent = nullptr);
+    ClientAuthHandler(CoreAccount account, QObject* parent = nullptr);
 
-    Peer *peer() const;
+    Peer* peer() const;
 
 public slots:
     void connectToCore();
 
-    void login(const QString &previousError = QString());
-    void login(const QString &user, const QString &password, bool remember);
-    void setupCore(const Protocol::SetupData &setupData);
+    void login(const QString& previousError = QString());
+    void login(const QString& user, const QString& password, bool remember);
+    void setupCore(const Protocol::SetupData& setupData);
 
 signals:
-    void statusMessage(const QString &message);
-    void errorMessage(const QString &message);
-    void errorPopup(const QString &message);
+    void statusMessage(const QString& message);
+    void errorMessage(const QString& message);
+    void errorPopup(const QString& message);
     void transferProgress(int current, int max);
 
-    void requestDisconnect(const QString &errorString = QString(), bool wantReconnect = false);
+    void requestDisconnect(const QString& errorString = QString(), bool wantReconnect = false);
 
     void connectionReady();
-    void loginSuccessful(const CoreAccount &account);
-    void handshakeComplete(RemotePeer *peer, const Protocol::SessionState &sessionState);
+    void loginSuccessful(const CoreAccount& account);
+    void handshakeComplete(RemotePeer* peer, const Protocol::SessionState& sessionState);
 
     // These signals MUST be handled synchronously!
-    void userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage = QString());
-    void handleNoSslInClient(bool *accepted);
-    void handleNoSslInCore(bool *accepted);
+    void userAuthenticationRequired(CoreAccount* account, bool* valid, const QString& errorMessage = QString());
+    void handleNoSslInClient(bool* accepted);
+    void handleNoSslInCore(bool* accepted);
 #ifdef HAVE_SSL
-    void handleSslErrors(const QSslSocket *socket, bool *accepted, bool *permanently);
+    void handleSslErrors(const QSslSocket* socket, bool* accepted, bool* permanently);
 #endif
 
     void encrypted(bool isEncrypted = true);
-    void startCoreSetup(const QVariantList &backendInfo, const QVariantList &authenticatorInfo);
+    void startCoreSetup(const QVariantList& backendInfo, const QVariantList& authenticatorInfo);
     void coreSetupSuccessful();
-    void coreSetupFailed(const QString &error);
+    void coreSetupFailed(const QString& error);
 
 private:
     using AuthHandler::handle;
 
-    void handle(const Protocol::ClientDenied &msg) override;
-    void handle(const Protocol::ClientRegistered &msg) override;
-    void handle(const Protocol::SetupFailed &msg) override;
-    void handle(const Protocol::SetupDone &msg) override;
-    void handle(const Protocol::LoginFailed &msg) override;
-    void handle(const Protocol::LoginSuccess &msg) override;
-    void handle(const Protocol::SessionState &msg) override;
+    void handle(const Protocol::ClientDenied& msg) override;
+    void handle(const Protocol::ClientRegistered& msg) override;
+    void handle(const Protocol::SetupFailed& msg) override;
+    void handle(const Protocol::SetupDone& msg) override;
+    void handle(const Protocol::LoginFailed& msg) override;
+    void handle(const Protocol::LoginSuccess& msg) override;
+    void handle(const Protocol::SessionState& msg) override;
 
-    void setPeer(RemotePeer *peer);
+    void setPeer(RemotePeer* peer);
     void checkAndEnableSsl(bool coreSupportsSsl);
     void startRegistration();
 
@@ -107,7 +108,7 @@ private slots:
     void onConnectionReady();
 
 private:
-    RemotePeer *_peer;
+    RemotePeer* _peer;
     bool _coreConfigured;
     QVariantList _backendInfo;
     QVariantList _authenticatorInfo;

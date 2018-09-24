@@ -29,8 +29,8 @@
 #include <QSet>
 #include <QSortFilterProxyModel>
 
-#include "types.h"
 #include "bufferviewconfig.h"
+#include "types.h"
 
 /*****************************************
  * Buffer View Filter
@@ -40,7 +40,8 @@ class UISUPPORT_EXPORT BufferViewFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    enum Mode {
+    enum Mode
+    {
         NoActive = 0x01,
         NoInactive = 0x02,
         SomeNets = 0x04,
@@ -52,31 +53,31 @@ public:
     };
     Q_DECLARE_FLAGS(Modes, Mode)
 
-    BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = nullptr);
+    BufferViewFilter(QAbstractItemModel* model, BufferViewConfig* config = nullptr);
 
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) override;
 
-    QVariant data(const QModelIndex &index, int role) const override;
-    QVariant checkedState(const QModelIndex &index) const;
+    QVariant data(const QModelIndex& index, int role) const override;
+    QVariant checkedState(const QModelIndex& index) const;
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    bool setCheckedState(const QModelIndex &index, Qt::CheckState state);
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    bool setCheckedState(const QModelIndex& index, Qt::CheckState state);
 
-    void setConfig(BufferViewConfig *config);
-    inline BufferViewConfig *config() const { return _config; }
+    void setConfig(BufferViewConfig* config);
+    inline BufferViewConfig* config() const { return _config; }
 
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
-    QList<QAction *> actions(const QModelIndex &index);
+    QList<QAction*> actions(const QModelIndex& index);
 
     void setFilterString(const QString string);
 
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
-    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
-    bool bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
-    bool networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+    bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
+    bool bufferLessThan(const QModelIndex& source_left, const QModelIndex& source_right) const;
+    bool networkLessThan(const QModelIndex& source_left, const QModelIndex& source_right) const;
 
 signals:
     void configChanged();
@@ -98,12 +99,11 @@ private:
     QSet<BufferId> _toRemove;
     QString _filterString;
 
-    bool filterAcceptBuffer(const QModelIndex &) const;
-    bool filterAcceptNetwork(const QModelIndex &) const;
-    void addBuffer(const BufferId &bufferId) const;
-    void addBuffers(const QList<BufferId> &bufferIds) const;
-    static bool bufferIdLessThan(const BufferId &, const BufferId &);
+    bool filterAcceptBuffer(const QModelIndex&) const;
+    bool filterAcceptNetwork(const QModelIndex&) const;
+    void addBuffer(const BufferId& bufferId) const;
+    void addBuffers(const QList<BufferId>& bufferIds) const;
+    static bool bufferIdLessThan(const BufferId&, const BufferId&);
 };
-
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)

@@ -30,7 +30,7 @@ class WindowsSignalWatcher : public AbstractSignalWatcher, private Singleton<Win
     Q_OBJECT
 
 public:
-    WindowsSignalWatcher(QObject *parent = nullptr);
+    WindowsSignalWatcher(QObject* parent = nullptr);
 
     static void signalHandler(int signal);
 };

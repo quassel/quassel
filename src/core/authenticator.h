@@ -28,20 +28,20 @@
 
 #include "types.h"
 
-class Authenticator : public QObject {
-
+class Authenticator : public QObject
+{
     Q_OBJECT
 
 public:
     using QObject::QObject;
     ~Authenticator() override = default;
 
-    enum State {
+    enum State
+    {
         IsReady,      // ready to go
         NeedsSetup,   // need basic setup (ask the user for input)
         NotAvailable  // remove the authenticator backend from the list of avaliable authenticators.
     };
-
 
 public slots:
     // General
@@ -82,22 +82,24 @@ public slots:
      *  \param settings   Hostname, port, username, password, ...
      *  \return True if and only if the authenticator provider was initialized successfully.
      */
-    virtual bool setup(const QVariantMap &settings = QVariantMap(),
-                       const QProcessEnvironment &environment = {},
-                       bool loadFromEnvironment = false) = 0;
+    virtual bool setup(const QVariantMap& settings = QVariantMap(),
+                       const QProcessEnvironment& environment = {},
+                       bool loadFromEnvironment = false)
+        = 0;
 
     //! Initialize the authenticator provider
     /** \param settings   Hostname, port, username, password, ...
      *  \return the State the authenticator backend is now in (see authenticator::State)
      */
-    virtual State init(const QVariantMap &settings = QVariantMap(),
-                       const QProcessEnvironment &environment = {},
-                       bool loadFromEnvironment = false) = 0;
+    virtual State init(const QVariantMap& settings = QVariantMap(),
+                       const QProcessEnvironment& environment = {},
+                       bool loadFromEnvironment = false)
+        = 0;
 
     //! Validate a username with a given password.
     /** \param user     The username to validate
      *  \param password The user's alleged password
      *  \return A valid UserId if the password matches the username; 0 else
      */
-    virtual UserId validateUser(const QString &user, const QString &password) = 0;
+    virtual UserId validateUser(const QString& user, const QString& password) = 0;
 };

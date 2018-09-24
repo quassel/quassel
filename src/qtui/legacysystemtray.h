@@ -22,22 +22,26 @@
 
 #ifndef QT_NO_SYSTEMTRAYICON
 
-#include <QString>
-#include <QSystemTrayIcon>
+#    include <QString>
+#    include <QSystemTrayIcon>
 
-#include "systemtray.h"
+#    include "systemtray.h"
 
 class LegacySystemTray : public SystemTray
 {
     Q_OBJECT
 
 public:
-    explicit LegacySystemTray(QWidget *parent);
+    explicit LegacySystemTray(QWidget* parent);
 
     bool isSystemTrayAvailable() const override;
 
 public slots:
-    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0) override;
+    void showMessage(const QString& title,
+                     const QString& message,
+                     MessageIcon icon = Information,
+                     int msTimeout = 10000,
+                     uint notificationId = 0) override;
     void closeMessage(uint notificationId) override;
 
 private slots:
@@ -51,9 +55,9 @@ private slots:
     void updateToolTip();
 
 private:
-    uint _lastMessageId {0};
+    uint _lastMessageId{0};
 
-    QSystemTrayIcon *_trayIcon;
+    QSystemTrayIcon* _trayIcon;
 };
 
 #endif /* QT_NO_SYSTEMTRAYICON */

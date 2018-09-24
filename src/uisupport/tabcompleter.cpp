@@ -20,45 +20,44 @@
 
 #include "tabcompleter.h"
 
+#include <QRegExp>
+
+#include "action.h"
+#include "actioncollection.h"
 #include "buffermodel.h"
 #include "client.h"
+#include "graphicalui.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "multilineedit.h"
 #include "network.h"
 #include "networkmodel.h"
 #include "uisettings.h"
-#include "action.h"
-#include "actioncollection.h"
-#include "graphicalui.h"
 
-#include <QRegExp>
-
-const Network *TabCompleter::_currentNetwork;
+const Network* TabCompleter::_currentNetwork;
 BufferId TabCompleter::_currentBufferId;
 QString TabCompleter::_currentBufferName;
 TabCompleter::Type TabCompleter::_completionType;
 
-TabCompleter::TabCompleter(MultiLineEdit *_lineEdit)
-    : QObject(_lineEdit),
-    _lineEdit(_lineEdit),
-    _enabled(false),
-    _nickSuffix(": ")
+TabCompleter::TabCompleter(MultiLineEdit* _lineEdit)
+    : QObject(_lineEdit)
+    , _lineEdit(_lineEdit)
+    , _enabled(false)
+    , _nickSuffix(": ")
 {
     // This Action just serves as a container for the custom shortcut and isn't actually handled;
     // apparently, using tab as an Action shortcut in an input widget is unreliable on some platforms (e.g. OS/2)
     _lineEdit->installEventFilter(this);
-    ActionCollection *coll = GraphicalUi::actionCollection("General");
-    QAction *a = coll->addAction("TabCompletionKey", new Action(tr("Tab completion"), coll, this, &TabCompleter::onTabCompletionKey, QKeySequence(Qt::Key_Tab)));
-    a->setEnabled(false); // avoid catching the shortcut
+    ActionCollection* coll = GraphicalUi::actionCollection("General");
+    QAction* a = coll->addAction("TabCompletionKey",
+                                 new Action(tr("Tab completion"), coll, this, &TabCompleter::onTabCompletionKey, QKeySequence(Qt::Key_Tab)));
+    a->setEnabled(false);  // avoid catching the shortcut
 }
-
 
 void TabCompleter::onTabCompletionKey()
 {
     // do nothing; we use the event filter instead
 }
-
 
 void TabCompleter::buildCompletionList()
 {
@@ -85,7 +84,7 @@ void TabCompleter::buildCompletionList()
     // channel completion - add all channels of the current network to the map
     if (tabAbbrev.startsWith('#')) {
         _completionType = ChannelTab;
-        foreach(IrcChannel *ircChannel, _currentNetwork->ircChannels()) {
+        foreach (IrcChannel* ircChannel, _currentNetwork->ircChannels()) {
             if (regex.indexIn(ircChannel->name()) > -1)
                 _completionMap[ircChannel->name()] = ircChannel->name();
         }
@@ -94,17 +93,15 @@ void TabCompleter::buildCompletionList()
         // user completion
         _completionType = UserTab;
         switch (static_cast<BufferInfo::Type>(currentIndex.data(NetworkModel::BufferTypeRole).toInt())) {
-        case BufferInfo::ChannelBuffer:
-        { // scope is needed for local var declaration
-            IrcChannel *channel = _currentNetwork->ircChannel(_currentBufferName);
+        case BufferInfo::ChannelBuffer: {  // scope is needed for local var declaration
+            IrcChannel* channel = _currentNetwork->ircChannel(_currentBufferName);
             if (!channel)
                 return;
-            foreach(IrcUser *ircUser, channel->ircUsers()) {
+            foreach (IrcUser* ircUser, channel->ircUsers()) {
                 if (regex.indexIn(ircUser->nick()) > -1)
                     _completionMap[ircUser->nick().toLower()] = ircUser->nick();
             }
-        }
-        break;
+        } break;
         case BufferInfo::QueryBuffer:
             if (regex.indexIn(_currentBufferName) > -1)
                 _completionMap[_currentBufferName.toLower()] = _currentBufferName;
@@ -121,7 +118,6 @@ void TabCompleter::buildCompletionList()
     _nextCompletion = _completionMap.begin();
     _lastCompletionLength = tabAbbrev.length();
 }
-
 
 void TabCompleter::complete()
 {
@@ -166,19 +162,17 @@ void TabCompleter::complete()
     }
 }
 
-
 void TabCompleter::reset()
 {
     _enabled = false;
 }
 
-
-bool TabCompleter::eventFilter(QObject *obj, QEvent *event)
+bool TabCompleter::eventFilter(QObject* obj, QEvent* event)
 {
     if (obj != _lineEdit || event->type() != QEvent::KeyPress)
         return QObject::eventFilter(obj, event);
 
-    auto *keyEvent = static_cast<QKeyEvent *>(event);
+    auto* keyEvent = static_cast<QKeyEvent*>(event);
 
     if (keyEvent->key() == GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut()[0])
         complete();
@@ -188,18 +182,16 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
-
 // this determines the sort order
-bool TabCompleter::CompletionKey::operator<(const CompletionKey &other) const
+bool TabCompleter::CompletionKey::operator<(const CompletionKey& other) const
 {
     switch (_completionType) {
-    case UserTab:
-    {
-        IrcUser *thisUser = _currentNetwork->ircUser(this->contents);
+    case UserTab: {
+        IrcUser* thisUser = _currentNetwork->ircUser(this->contents);
         if (thisUser && _currentNetwork->isMe(thisUser))
             return false;
 
-        IrcUser *thatUser = _currentNetwork->ircUser(other.contents);
+        IrcUser* thatUser = _currentNetwork->ircUser(other.contents);
         if (thatUser && _currentNetwork->isMe(thatUser))
             return true;
 
@@ -217,8 +209,7 @@ bool TabCompleter::CompletionKey::operator<(const CompletionKey &other) const
 
         if (thisTime.isValid() || thatTime.isValid())
             return thisTime > thatTime;
-    }
-    break;
+    } break;
     case ChannelTab:
         if (QString::compare(_currentBufferName, this->contents, Qt::CaseInsensitive) == 0)
             return true;

@@ -20,12 +20,12 @@
 
 #include "backlogsettingspage.h"
 
-#include "backlogsettings.h"
 #include "backlogrequester.h"
+#include "backlogsettings.h"
 #include "qtui.h"
 #include "widgethelpers.h"
 
-BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
+BacklogSettingsPage::BacklogSettingsPage(QWidget* parent)
     : SettingsPage(tr("Interface"), tr("Backlog Fetching"), parent)
 {
     ui.setupUi(this);
@@ -38,12 +38,10 @@ BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
     connectToWidgetChangedSignal(ui.requesterType, this, &BacklogSettingsPage::widgetHasChanged);
 }
 
-
 bool BacklogSettingsPage::hasDefaults() const
 {
     return true;
 }
-
 
 void BacklogSettingsPage::defaults()
 {
@@ -51,7 +49,6 @@ void BacklogSettingsPage::defaults()
 
     SettingsPage::defaults();
 }
-
 
 void BacklogSettingsPage::load()
 {
@@ -63,7 +60,6 @@ void BacklogSettingsPage::load()
     SettingsPage::load();
 }
 
-
 void BacklogSettingsPage::save()
 {
     BacklogSettings backlogSettings;
@@ -72,7 +68,6 @@ void BacklogSettingsPage::save()
 
     SettingsPage::save();
 }
-
 
 void BacklogSettingsPage::widgetHasChanged()
 {

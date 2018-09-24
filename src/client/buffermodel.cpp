@@ -26,21 +26,19 @@
 #include "networkmodel.h"
 #include "quassel.h"
 
-BufferModel::BufferModel(NetworkModel *parent)
-    : QSortFilterProxyModel(parent),
-    _selectionModelSynchronizer(this)
+BufferModel::BufferModel(NetworkModel* parent)
+    : QSortFilterProxyModel(parent)
+    , _selectionModelSynchronizer(this)
 {
     setSourceModel(parent);
     if (Quassel::isOptionSet("debugbufferswitches")) {
-        connect(_selectionModelSynchronizer.selectionModel(), &QItemSelectionModel::currentChanged,
-            this, &BufferModel::debug_currentChanged);
+        connect(_selectionModelSynchronizer.selectionModel(), &QItemSelectionModel::currentChanged, this, &BufferModel::debug_currentChanged);
     }
     connect(Client::instance(), &Client::networkCreated, this, &BufferModel::newNetwork);
     connect(this, &QAbstractItemModel::rowsInserted, this, &BufferModel::newBuffers);
 }
 
-
-bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const
+bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex& parent) const
 {
     Q_UNUSED(sourceRow);
     // only networks and buffers are allowed
@@ -52,15 +50,12 @@ bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) con
     return false;
 }
 
-
 void BufferModel::newNetwork(NetworkId id)
 {
-    const Network *net = Client::network(id);
+    const Network* net = Client::network(id);
     Q_ASSERT(net);
-    connect(net, &Network::connectionStateSet,
-        this, &BufferModel::networkConnectionChanged);
+    connect(net, &Network::connectionStateSet, this, &BufferModel::networkConnectionChanged);
 }
-
 
 void BufferModel::networkConnectionChanged(Network::ConnectionState state)
 {
@@ -70,7 +65,7 @@ void BufferModel::networkConnectionChanged(Network::ConnectionState state)
         if (currentIndex().isValid())
             return;
         {
-            auto *net = qobject_cast<Network *>(sender());
+            auto* net = qobject_cast<Network*>(sender());
             Q_ASSERT(net);
             setCurrentIndex(mapFromSource(Client::networkModel()->networkIndex(net->networkId())));
         }
@@ -80,28 +75,24 @@ void BufferModel::networkConnectionChanged(Network::ConnectionState state)
     }
 }
 
-
-void BufferModel::synchronizeView(QAbstractItemView *view)
+void BufferModel::synchronizeView(QAbstractItemView* view)
 {
     _selectionModelSynchronizer.synchronizeSelectionModel(view->selectionModel());
 }
 
-
-void BufferModel::setCurrentIndex(const QModelIndex &newCurrent)
+void BufferModel::setCurrentIndex(const QModelIndex& newCurrent)
 {
     _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::Current);
     _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
-
-void BufferModel::switchToBuffer(const BufferId &bufferId)
+void BufferModel::switchToBuffer(const BufferId& bufferId)
 {
     QModelIndex source_index = Client::networkModel()->bufferIndex(bufferId);
     setCurrentIndex(mapFromSource(source_index));
 }
 
-
-void BufferModel::switchToBufferIndex(const QModelIndex &bufferIdx)
+void BufferModel::switchToBufferIndex(const QModelIndex& bufferIdx)
 {
     // we accept indexes that directly belong to us or our parent - nothing else
     if (bufferIdx.model() == this) {
@@ -117,8 +108,7 @@ void BufferModel::switchToBufferIndex(const QModelIndex &bufferIdx)
     qWarning() << "BufferModel::switchToBufferIndex(const QModelIndex &):" << bufferIdx << "does not belong to BufferModel or NetworkModel";
 }
 
-
-void BufferModel::switchToOrJoinBuffer(NetworkId networkId, const QString &name, bool isQuery)
+void BufferModel::switchToOrJoinBuffer(NetworkId networkId, const QString& name, bool isQuery)
 {
     BufferId bufId = Client::networkModel()->bufferId(networkId, name);
     if (bufId.isValid()) {
@@ -135,15 +125,14 @@ void BufferModel::switchToOrJoinBuffer(NetworkId networkId, const QString &name,
     }
 }
 
-
 void BufferModel::debug_currentChanged(QModelIndex current, QModelIndex previous)
 {
     Q_UNUSED(previous);
-    qDebug() << "Switched current Buffer: " << current << current.data().toString() << "Buffer:" << current.data(NetworkModel::BufferIdRole).value<BufferId>();
+    qDebug() << "Switched current Buffer: " << current << current.data().toString()
+             << "Buffer:" << current.data(NetworkModel::BufferIdRole).value<BufferId>();
 }
 
-
-void BufferModel::newBuffers(const QModelIndex &parent, int start, int end)
+void BufferModel::newBuffers(const QModelIndex& parent, int start, int end)
 {
     if (parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
         return;
@@ -154,20 +143,17 @@ void BufferModel::newBuffers(const QModelIndex &parent, int start, int end)
     }
 }
 
-
 void BufferModel::newBuffer(BufferId bufferId)
 {
     BufferInfo bufferInfo = Client::networkModel()->bufferInfo(bufferId);
-    if (_bufferToSwitchTo.first == bufferInfo.networkId()
-        && _bufferToSwitchTo.second == bufferInfo.bufferName()) {
+    if (_bufferToSwitchTo.first == bufferInfo.networkId() && _bufferToSwitchTo.second == bufferInfo.bufferName()) {
         _bufferToSwitchTo.first = 0;
         _bufferToSwitchTo.second.clear();
         switchToBuffer(bufferId);
     }
 }
 
-
-void BufferModel::switchToBufferAfterCreation(NetworkId network, const QString &name)
+void BufferModel::switchToBufferAfterCreation(NetworkId network, const QString& name)
 {
     _bufferToSwitchTo = qMakePair(network, name);
 }

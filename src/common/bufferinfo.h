@@ -30,7 +30,8 @@ class QDataStream;
 class COMMON_EXPORT BufferInfo
 {
 public:
-    enum Type {
+    enum Type
+    {
         InvalidBuffer = 0x00,
         StatusBuffer = 0x01,
         ChannelBuffer = 0x02,
@@ -38,7 +39,8 @@ public:
         GroupBuffer = 0x08
     };
 
-    enum Activity {
+    enum Activity
+    {
         NoActivity = 0x00,
         OtherActivity = 0x01,
         NewMessage = 0x02,
@@ -52,17 +54,17 @@ public:
     static BufferInfo fakeStatusBuffer(NetworkId networkId);
 
     inline bool isValid() const { return _bufferId != 0; }
-    inline const BufferId &bufferId() const { return _bufferId; }
+    inline const BufferId& bufferId() const { return _bufferId; }
     inline void setBufferId(BufferId id) { _bufferId = id; }
-    inline const NetworkId &networkId() const { return _netid; }
-    inline const Type &type() const { return _type; }
-    inline const uint &groupId() const { return _groupId; }
+    inline const NetworkId& networkId() const { return _netid; }
+    inline const Type& type() const { return _type; }
+    inline const uint& groupId() const { return _groupId; }
     void setGroupId(uint gid) { _groupId = gid; }
 
     QString bufferName() const;
     bool acceptsRegularMessages() const;
 
-    inline bool operator==(const BufferInfo &other) const { return _bufferId == other._bufferId; }
+    inline bool operator==(const BufferInfo& other) const { return _bufferId == other._bufferId; }
 
 private:
     BufferId _bufferId;
@@ -71,17 +73,16 @@ private:
     uint _groupId{0};
     QString _bufferName;
 
-    friend uint qHash(const BufferInfo &);
-    friend QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
-    friend QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
+    friend uint qHash(const BufferInfo&);
+    friend QDataStream& operator<<(QDataStream& out, const BufferInfo& bufferInfo);
+    friend QDataStream& operator>>(QDataStream& in, BufferInfo& bufferInfo);
 };
 
-
-QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
-QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
-QDebug operator<<(QDebug dbg, const BufferInfo &b);
+QDataStream& operator<<(QDataStream& out, const BufferInfo& bufferInfo);
+QDataStream& operator>>(QDataStream& in, BufferInfo& bufferInfo);
+QDebug operator<<(QDebug dbg, const BufferInfo& b);
 
 Q_DECLARE_METATYPE(BufferInfo)
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferInfo::ActivityLevel)
 
-uint qHash(const BufferInfo &);
+uint qHash(const BufferInfo&);

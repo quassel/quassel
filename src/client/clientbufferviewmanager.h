@@ -32,14 +32,14 @@ class CLIENT_EXPORT ClientBufferViewManager : public BufferViewManager
     Q_OBJECT
 
 public:
-    ClientBufferViewManager(SignalProxy *proxy, QObject *parent = nullptr);
+    ClientBufferViewManager(SignalProxy* proxy, QObject* parent = nullptr);
 
-    QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
-    ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
+    QList<ClientBufferViewConfig*> clientBufferViewConfigs() const;
+    ClientBufferViewConfig* clientBufferViewConfig(int bufferViewId) const;
 
 public slots:
     void setInitialized() override;
 
 protected:
-    BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId) override;
+    BufferViewConfig* bufferViewConfigFactory(int bufferViewConfigId) override;
 };

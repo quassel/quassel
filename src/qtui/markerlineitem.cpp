@@ -18,30 +18,29 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "markerlineitem.h"
+
 #include <QPainter>
 
-#include "markerlineitem.h"
 #include "qtui.h"
 
-MarkerLineItem::MarkerLineItem(qreal sceneWidth, QGraphicsItem *parent)
-    : QGraphicsObject(parent),
-    _boundingRect(0, 0, sceneWidth, 1),
-    _chatLine(nullptr)
+MarkerLineItem::MarkerLineItem(qreal sceneWidth, QGraphicsItem* parent)
+    : QGraphicsObject(parent)
+    , _boundingRect(0, 0, sceneWidth, 1)
+    , _chatLine(nullptr)
 {
     setVisible(false);
     setZValue(8);
-    styleChanged(); // init brush and height
+    styleChanged();  // init brush and height
     connect(QtUi::style(), &UiStyle::changed, this, &MarkerLineItem::styleChanged);
 }
 
-
-void MarkerLineItem::setChatLine(ChatLine *line)
+void MarkerLineItem::setChatLine(ChatLine* line)
 {
     _chatLine = line;
     if (!line)
         setVisible(false);
 }
-
 
 void MarkerLineItem::styleChanged()
 {
@@ -57,15 +56,13 @@ void MarkerLineItem::styleChanged()
     _boundingRect = QRectF(0, 0, scene() ? scene()->width() : 100, height);
 }
 
-
-void MarkerLineItem::sceneRectChanged(const QRectF &rect)
+void MarkerLineItem::sceneRectChanged(const QRectF& rect)
 {
     prepareGeometryChange();
     _boundingRect.setWidth(rect.width());
 }
 
-
-void MarkerLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void MarkerLineItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);

@@ -20,6 +20,6 @@
 
 #pragma once
 
-#include <gmock/gmock.h>
-
 #include "test-main-export.h"
+
+#include <gmock/gmock.h>

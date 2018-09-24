@@ -18,16 +18,17 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "itemviewsettingspage.h"
+
 #include <QSignalMapper>
 
-#include "itemviewsettingspage.h"
 #include "colorbutton.h"
 #include "qtui.h"
 #include "qtuistyle.h"
 
-ItemViewSettingsPage::ItemViewSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Chat & Nick Lists"), parent),
-    _mapper(new QSignalMapper(this))
+ItemViewSettingsPage::ItemViewSettingsPage(QWidget* parent)
+    : SettingsPage(tr("Interface"), tr("Chat & Nick Lists"), parent)
+    , _mapper(new QSignalMapper(this))
 {
     ui.setupUi(this);
 
@@ -42,7 +43,7 @@ ItemViewSettingsPage::ItemViewSettingsPage(QWidget *parent)
 
     ui.bufferViewPreview->expandAll();
 
-    foreach(ColorButton *button, findChildren<ColorButton *>()) {
+    foreach (ColorButton* button, findChildren<ColorButton*>()) {
         connect(button, &ColorButton::colorChanged, _mapper, selectOverload<>(&QSignalMapper::map));
         _mapper->setMapping(button, button);
     }
@@ -51,7 +52,6 @@ ItemViewSettingsPage::ItemViewSettingsPage(QWidget *parent)
     initAutoWidgets();
 }
 
-
 void ItemViewSettingsPage::save()
 {
     SettingsPage::save();
@@ -59,10 +59,9 @@ void ItemViewSettingsPage::save()
     QtUi::style()->reload();
 }
 
-
-void ItemViewSettingsPage::updateBufferViewPreview(QWidget *widget)
+void ItemViewSettingsPage::updateBufferViewPreview(QWidget* widget)
 {
-    auto *button = qobject_cast<ColorButton *>(widget);
+    auto* button = qobject_cast<ColorButton*>(widget);
     if (!button)
         return;
 

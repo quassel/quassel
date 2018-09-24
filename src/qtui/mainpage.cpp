@@ -20,21 +20,22 @@
 
 #include "mainpage.h"
 
-#include <QPushButton>
 #include <QImage>
 #include <QLabel>
 #include <QLayout>
 #include <QPainter>
+#include <QPushButton>
 
 #include "client.h"
 #include "coreconnectdlg.h"
 #include "icon.h"
 
-MainPage::MainPage(QWidget *parent) : QWidget(parent)
+MainPage::MainPage(QWidget* parent)
+    : QWidget(parent)
 {
-    auto *layout = new QVBoxLayout(this);
+    auto* layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignCenter);
-    QLabel *label = new QLabel(this);
+    QLabel* label = new QLabel(this);
     label->setPixmap(QPixmap(":/pics/quassel-logo.png"));
     layout->addWidget(label);
 
@@ -62,7 +63,8 @@ void MainPage::coreConnectionStateChanged()
 {
     if (Client::coreConnection()->state() == CoreConnection::Disconnected) {
         _connectButton->setEnabled(true);
-    } else {
+    }
+    else {
         _connectButton->setDisabled(true);
     }
 }

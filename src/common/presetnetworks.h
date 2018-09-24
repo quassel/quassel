@@ -31,8 +31,8 @@ class COMMON_EXPORT PresetNetworks
 {
 public:
     static QStringList names(bool onlyDefault = false);
-    static QStringList defaultChannels(const QString &networkName);
-    static NetworkInfo networkInfo(const QString &networkName);
+    static QStringList defaultChannels(const QString& networkName);
+    static NetworkInfo networkInfo(const QString& networkName);
 
 private:
     static QString _networksIniPath;

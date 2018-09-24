@@ -29,14 +29,14 @@ class OSXNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    OSXNotificationBackend(QObject *parent = 0);
+    OSXNotificationBackend(QObject* parent = 0);
 
-    void notify(const Notification &);
+    void notify(const Notification&);
     void close(uint notificationId);
-    virtual SettingsPage *createConfigWidget() const;
+    virtual SettingsPage* createConfigWidget() const;
 
 private slots:
-    void enabledChanged(const QVariant &value);
+    void enabledChanged(const QVariant& value);
 
 private:
     class ConfigWidget;
@@ -49,7 +49,7 @@ class OSXNotificationBackend::ConfigWidget : public SettingsPage
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(QWidget* parent = 0);
     void save();
     void load();
     bool hasDefaults() const;
@@ -59,8 +59,8 @@ private slots:
     void widgetChanged();
 
 private:
-    QCheckBox *_enabledBox;
+    QCheckBox* _enabledBox;
     bool _enabled;
 };
 
-#endif // OSXNOTIFICATIONBACKEND_H_
+#endif  // OSXNOTIFICATIONBACKEND_H_

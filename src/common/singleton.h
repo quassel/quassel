@@ -40,9 +40,9 @@ namespace detail {
 // We need to export the function on anything not using Windows DLLs, otherwise local static members don't
 // work across library boundaries.
 template<typename T>
-QUASSEL_SINGLETON_EXPORT T *getOrSetInstance(T *instance = nullptr, bool destroyed = false)
+QUASSEL_SINGLETON_EXPORT T* getOrSetInstance(T* instance = nullptr, bool destroyed = false)
 {
-    static T *_instance = instance;
+    static T* _instance = instance;
     static bool _destroyed = destroyed;
 
     if (destroyed) {
@@ -93,16 +93,16 @@ public:
      *
      * @param instance Pointer to the instance being created, i.e. the 'this' pointer of the parent class
      */
-    Singleton(T *instance)
+    Singleton(T* instance)
     {
         detail::getOrSetInstance<T>(instance);
     }
 
     // Satisfy Rule of Five
-    Singleton(const Singleton &) = delete;
-    Singleton(Singleton &&) = delete;
-    Singleton &operator=(const Singleton &) = delete;
-    Singleton &operator=(Singleton &&) = delete;
+    Singleton(const Singleton&) = delete;
+    Singleton(Singleton&&) = delete;
+    Singleton& operator=(const Singleton&) = delete;
+    Singleton& operator=(Singleton&&) = delete;
 
     /**
      * Destructor.
@@ -122,7 +122,7 @@ public:
      *
      * @returns A pointer to the instance
      */
-    static T *instance()
+    static T* instance()
     {
         return detail::getOrSetInstance<T>();
     }

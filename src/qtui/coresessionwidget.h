@@ -24,12 +24,12 @@
 
 #include "ui_coresessionwidget.h"
 
-class CoreSessionWidget: public QWidget
+class CoreSessionWidget : public QWidget
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
-    explicit CoreSessionWidget(QWidget *);
+    explicit CoreSessionWidget(QWidget*);
 
     void setData(QMap<QString, QVariant>);
 

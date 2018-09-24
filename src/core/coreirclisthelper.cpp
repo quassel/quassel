@@ -25,7 +25,7 @@
 
 constexpr auto kTimeoutMs = 5000;
 
-QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters)
+QVariantList CoreIrcListHelper::requestChannelList(const NetworkId& netId, const QStringList& channelFilters)
 {
     if (_finishedChannelLists.contains(netId))
         return _finishedChannelLists.take(netId);
@@ -39,8 +39,7 @@ QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const
     return QVariantList();
 }
 
-
-bool CoreIrcListHelper::addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic)
+bool CoreIrcListHelper::addChannel(const NetworkId& netId, const QString& channelName, quint32 userCount, const QString& topic)
 {
     if (!_channelLists.contains(netId))
         return false;
@@ -52,10 +51,9 @@ bool CoreIrcListHelper::addChannel(const NetworkId &netId, const QString &channe
     return true;
 }
 
-
-bool CoreIrcListHelper::dispatchQuery(const NetworkId &netId, const QString &query)
+bool CoreIrcListHelper::dispatchQuery(const NetworkId& netId, const QString& query)
 {
-    CoreNetwork *network = coreSession()->network(netId);
+    CoreNetwork* network = coreSession()->network(netId);
     if (network) {
         _channelLists[netId] = QList<ChannelDescription>();
         network->userInputHandler()->handleList(BufferInfo(), query);
@@ -72,8 +70,7 @@ bool CoreIrcListHelper::dispatchQuery(const NetworkId &netId, const QString &que
     }
 }
 
-
-bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId)
+bool CoreIrcListHelper::endOfChannelList(const NetworkId& netId)
 {
     if (_queryTimeoutByNetId.contains(netId)) {
         // If we recieved an actual RPL_LISTEND, remove the timer
@@ -87,11 +84,9 @@ bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId)
     }
     else if (_channelLists.contains(netId)) {
         QVariantList channelList;
-        foreach(ChannelDescription channel, _channelLists[netId]) {
+        foreach (ChannelDescription channel, _channelLists[netId]) {
             QVariantList channelVariant;
-            channelVariant << channel.channelName
-                           << channel.userCount
-                           << channel.topic;
+            channelVariant << channel.channelName << channel.userCount << channel.topic;
             channelList << qVariantFromValue<QVariant>(channelVariant);
         }
         _finishedChannelLists[netId] = channelList;
@@ -104,8 +99,7 @@ bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId)
     }
 }
 
-
-void CoreIrcListHelper::timerEvent(QTimerEvent *event)
+void CoreIrcListHelper::timerEvent(QTimerEvent* event)
 {
     if (!_queryTimeoutByTimerId.contains(event->timerId())) {
         IrcListHelper::timerEvent(event);

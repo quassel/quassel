@@ -43,7 +43,8 @@ class COMMON_EXPORT Transfer : public SyncableObject
     Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickChanged)
 
 public:
-    enum class Status {
+    enum class Status
+    {
         New,
         Pending,
         Connecting,
@@ -55,14 +56,21 @@ public:
     };
     Q_ENUMS(State)
 
-    enum class Direction {
+    enum class Direction
+    {
         Send,
         Receive
     };
     Q_ENUMS(Direction)
 
-    Transfer(const QUuid &uuid, QObject *parent = nullptr); // for creating a syncable object client-side
-    Transfer(Direction direction, QString nick, QString fileName, const QHostAddress &address, quint16 port, quint64 size = 0, QObject *parent = nullptr);
+    Transfer(const QUuid& uuid, QObject* parent = nullptr);  // for creating a syncable object client-side
+    Transfer(Direction direction,
+             QString nick,
+             QString fileName,
+             const QHostAddress& address,
+             quint16 port,
+             quint64 size = 0,
+             QObject* parent = nullptr);
 
     QUuid uuid() const;
     Status status() const;
@@ -78,7 +86,7 @@ public:
 
 public slots:
     // called on the client side
-    virtual void accept(const QString &savePath) const { Q_UNUSED(savePath); }
+    virtual void accept(const QString& savePath) const { Q_UNUSED(savePath); }
     virtual void reject() const {}
 
     // called on the core side through sync calls
@@ -88,24 +96,24 @@ public slots:
 signals:
     void statusChanged(Transfer::Status state);
     void directionChanged(Transfer::Direction direction);
-    void addressChanged(const QHostAddress &address);
+    void addressChanged(const QHostAddress& address);
     void portChanged(quint16 port);
-    void fileNameChanged(const QString &fileName);
+    void fileNameChanged(const QString& fileName);
     void fileSizeChanged(quint64 fileSize);
     void transferredChanged(quint64 transferred);
-    void nickChanged(const QString &nick);
+    void nickChanged(const QString& nick);
 
-    void error(const QString &errorString);
+    void error(const QString& errorString);
 
     void accepted(PeerPtr peer = nullptr) const;
     void rejected(PeerPtr peer = nullptr) const;
 
 protected slots:
     void setStatus(Transfer::Status status);
-    void setError(const QString &errorString);
+    void setError(const QString& errorString);
 
     // called on the client side through sync calls
-    virtual void dataReceived(PeerPtr, const QByteArray &data) { Q_UNUSED(data); }
+    virtual void dataReceived(PeerPtr, const QByteArray& data) { Q_UNUSED(data); }
 
     virtual void cleanUp() = 0;
 
@@ -113,12 +121,11 @@ private:
     void init();
 
     void setDirection(Direction direction);
-    void setAddress(const QHostAddress &address);
+    void setAddress(const QHostAddress& address);
     void setPort(quint16 port);
-    void setFileName(const QString &fileName);
+    void setFileName(const QString& fileName);
     void setFileSize(quint64 fileSize);
-    void setNick(const QString &nick);
-
+    void setNick(const QString& nick);
 
     Status _status;
     Direction _direction;
@@ -133,7 +140,7 @@ private:
 Q_DECLARE_METATYPE(Transfer::Status)
 Q_DECLARE_METATYPE(Transfer::Direction)
 
-QDataStream &operator<<(QDataStream &out, Transfer::Status state);
-QDataStream &operator>>(QDataStream &in, Transfer::Status &state);
-QDataStream &operator<<(QDataStream &out, Transfer::Direction direction);
-QDataStream &operator>>(QDataStream &in, Transfer::Direction &direction);
+QDataStream& operator<<(QDataStream& out, Transfer::Status state);
+QDataStream& operator>>(QDataStream& in, Transfer::Status& state);
+QDataStream& operator<<(QDataStream& out, Transfer::Direction direction);
+QDataStream& operator>>(QDataStream& in, Transfer::Direction& direction);

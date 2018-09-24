@@ -27,29 +27,24 @@
 
 UiSettings::UiSettings(QString group)
     : ClientSettings(std::move(group))
-{
-}
+{}
 
-
-void UiSettings::setValue(const QString &key, const QVariant &data)
+void UiSettings::setValue(const QString& key, const QVariant& data)
 {
     setLocalValue(key, data);
 }
 
-
-QVariant UiSettings::value(const QString &key, const QVariant &def) const
+QVariant UiSettings::value(const QString& key, const QVariant& def) const
 {
     return localValue(key, def);
 }
 
-
-bool UiSettings::valueExists(const QString &key) const
+bool UiSettings::valueExists(const QString& key) const
 {
     return localKeyExists(key);
 }
 
-
-void UiSettings::remove(const QString &key)
+void UiSettings::remove(const QString& key)
 {
     removeLocalKey(key);
 }
@@ -58,44 +53,36 @@ void UiSettings::remove(const QString &key)
 
 UiStyleSettings::UiStyleSettings()
     : UiSettings("UiStyle")
-{
-}
+{}
 
-
-UiStyleSettings::UiStyleSettings(const QString &subGroup)
+UiStyleSettings::UiStyleSettings(const QString& subGroup)
     : UiSettings(QString("UiStyle/%1").arg(subGroup))
-{
-}
+{}
 
-
-void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, const QTextCharFormat &format)
+void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, const QTextCharFormat& format)
 {
     setLocalValue(QString("Format/%1").arg(static_cast<quint32>(ftype)), format);
 }
-
 
 QTextCharFormat UiStyleSettings::customFormat(UiStyle::FormatType ftype) const
 {
     return localValue(QString("Format/%1").arg(static_cast<quint32>(ftype)), QTextFormat()).value<QTextFormat>().toCharFormat();
 }
 
-
 void UiStyleSettings::removeCustomFormat(UiStyle::FormatType ftype)
 {
     removeLocalKey(QString("Format/%1").arg(static_cast<quint32>(ftype)));
 }
 
-
 QList<UiStyle::FormatType> UiStyleSettings::availableFormats() const
 {
     QList<UiStyle::FormatType> formats;
     QStringList list = localChildKeys("Format");
-    foreach(QString type, list) {
+    foreach (QString type, list) {
         formats << (UiStyle::FormatType)type.toInt();
     }
     return formats;
 }
-
 
 /**************************************************************************
  * SessionSettings
@@ -104,34 +91,29 @@ QList<UiStyle::FormatType> UiStyleSettings::availableFormats() const
 SessionSettings::SessionSettings(QString sessionId, QString group)
     : UiSettings(std::move(group))
     , _sessionId(std::move(sessionId))
-{
-}
+{}
 
-
-void SessionSettings::setValue(const QString &key, const QVariant &data)
+void SessionSettings::setValue(const QString& key, const QVariant& data)
 {
     setLocalValue(QString("%1/%2").arg(_sessionId, key), data);
 }
 
-
-QVariant SessionSettings::value(const QString &key, const QVariant &def) const
+QVariant SessionSettings::value(const QString& key, const QVariant& def) const
 {
     return localValue(QString("%1/%2").arg(_sessionId, key), def);
 }
 
-
-void SessionSettings::removeKey(const QString &key)
+void SessionSettings::removeKey(const QString& key)
 {
     removeLocalKey(QString("%1/%2").arg(_sessionId, key));
 }
-
 
 void SessionSettings::cleanup()
 {
     QStringList sessions = localChildGroups();
     QString str;
     SessionSettings s(sessionId());
-    foreach(str, sessions) {
+    foreach (str, sessions) {
         // load session and check age
         s.setSessionId(str);
         if (s.sessionAge() > 3) {
@@ -140,18 +122,15 @@ void SessionSettings::cleanup()
     }
 }
 
-
 QString SessionSettings::sessionId() const
 {
     return _sessionId;
 }
 
-
 void SessionSettings::setSessionId(QString sessionId)
 {
     _sessionId = std::move(sessionId);
 }
-
 
 int SessionSettings::sessionAge()
 {
@@ -163,40 +142,36 @@ int SessionSettings::sessionAge()
     }
     else {
         // no int saved, delete session
-        //qDebug() << QString("deleting invalid session %1 (invalid session age found)").arg(_sessionId);
+        // qDebug() << QString("deleting invalid session %1 (invalid session age found)").arg(_sessionId);
         removeSession();
     }
     return 10;
 }
 
-
 void SessionSettings::removeSession()
 {
     QStringList keys = localChildKeys(sessionId());
-    foreach(QString k, keys) {
+    foreach (QString k, keys) {
         removeKey(k);
     }
 }
-
 
 void SessionSettings::setSessionAge(int age)
 {
     setValue(QString("_sessionAge"), age);
 }
 
-
 void SessionSettings::sessionAging()
 {
     QStringList sessions = localChildGroups();
     QString str;
     SessionSettings s(sessionId());
-    foreach(str, sessions) {
+    foreach (str, sessions) {
         // load session and check age
         s.setSessionId(str);
-        s.setSessionAge(s.sessionAge()+1);
+        s.setSessionAge(s.sessionAge() + 1);
     }
 }
-
 
 /**************************************************************************
  * ShortcutSettings
@@ -204,31 +179,26 @@ void SessionSettings::sessionAging()
 
 ShortcutSettings::ShortcutSettings()
     : UiSettings("Shortcuts")
-{
-}
-
+{}
 
 void ShortcutSettings::clear()
 {
-    for (auto &&key : allLocalKeys()) {
+    for (auto&& key : allLocalKeys()) {
         removeLocalKey(key);
     }
 }
-
 
 QStringList ShortcutSettings::savedShortcuts() const
 {
     return localChildKeys();
 }
 
-
-QKeySequence ShortcutSettings::loadShortcut(const QString &name) const
+QKeySequence ShortcutSettings::loadShortcut(const QString& name) const
 {
     return localValue(name, QKeySequence()).value<QKeySequence>();
 }
 
-
-void ShortcutSettings::saveShortcut(const QString &name, const QKeySequence &seq)
+void ShortcutSettings::saveShortcut(const QString& name, const QKeySequence& seq)
 {
     setLocalValue(name, seq);
 }

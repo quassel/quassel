@@ -31,19 +31,19 @@ class CoreAuthHandler : public AuthHandler
     Q_OBJECT
 
 public:
-    CoreAuthHandler(QTcpSocket *socket, QObject *parent = nullptr);
+    CoreAuthHandler(QTcpSocket* socket, QObject* parent = nullptr);
 
 signals:
-    void handshakeComplete(RemotePeer *peer, UserId uid);
+    void handshakeComplete(RemotePeer* peer, UserId uid);
 
 private:
     using AuthHandler::handle;
 
-    void handle(const Protocol::RegisterClient &msg) override;
-    void handle(const Protocol::SetupData &msg) override;
-    void handle(const Protocol::Login &msg) override;
+    void handle(const Protocol::RegisterClient& msg) override;
+    void handle(const Protocol::SetupData& msg) override;
+    void handle(const Protocol::Login& msg) override;
 
-    void setPeer(RemotePeer *peer);
+    void setPeer(RemotePeer* peer);
     void startSsl();
 
     bool checkClientRegistered();
@@ -59,7 +59,7 @@ private slots:
     void onProtocolVersionMismatch(int actual, int expected);
 
 private:
-    RemotePeer *_peer;
+    RemotePeer* _peer;
 
     bool _magicReceived;
     bool _legacy;

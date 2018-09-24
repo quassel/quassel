@@ -22,24 +22,24 @@
 
 #ifdef HAVE_SSL
 
-#include <QSslCertificate>
-#include <QSslKey>
-#include <QTcpServer>
-#include <QLinkedList>
-#include <QFile>
+#    include <QFile>
+#    include <QLinkedList>
+#    include <QSslCertificate>
+#    include <QSslKey>
+#    include <QTcpServer>
 
 class SslServer : public QTcpServer
 {
     Q_OBJECT
 
 public:
-    SslServer(QObject *parent = nullptr);
+    SslServer(QObject* parent = nullptr);
 
     bool hasPendingConnections() const override { return !_pendingConnections.isEmpty(); }
-    QTcpSocket *nextPendingConnection() override;
+    QTcpSocket* nextPendingConnection() override;
 
-    const QSslCertificate &certificate() const { return _cert; }
-    const QSslKey &key() const { return _key; }
+    const QSslCertificate& certificate() const { return _cert; }
+    const QSslKey& key() const { return _key; }
     bool isCertValid() const { return _isCertValid; }
 
     /**
@@ -55,7 +55,7 @@ public:
 protected:
     void incomingConnection(qintptr socketDescriptor) override;
 
-    bool setCertificate(const QString &path, const QString &keyPath);
+    bool setCertificate(const QString& path, const QString& keyPath);
 
 private:
     /**
@@ -67,18 +67,17 @@ private:
      * @return True if certificates loaded successfully, otherwise false.
      */
     bool loadCerts();
-    QSslKey loadKey(QFile *keyFile);
+    QSslKey loadKey(QFile* keyFile);
 
-    QLinkedList<QTcpSocket *> _pendingConnections;
+    QLinkedList<QTcpSocket*> _pendingConnections;
     QSslCertificate _cert;
     QSslKey _key;
     QList<QSslCertificate> _ca;
     bool _isCertValid{false};
 
     // Used when reloading certificates later
-    QString _sslCertPath; /// Path to the certificate file
-    QString _sslKeyPath;  /// Path to the private key file (may be in same file as above)
+    QString _sslCertPath;  /// Path to the certificate file
+    QString _sslKeyPath;   /// Path to the private key file (may be in same file as above)
 };
 
-
-#endif //HAVE_SSL
+#endif  // HAVE_SSL

@@ -23,20 +23,19 @@
 
 #if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
 
-#include <QGraphicsItem>
+#    include <QGraphicsItem>
 
 class WebPreviewItem : public QGraphicsItem
 {
 public:
-    WebPreviewItem(const QUrl &url);
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    WebPreviewItem(const QUrl& url);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
     inline QRectF boundingRect() const override { return _boundingRect; }
 
 private:
     QRectF _boundingRect;
 };
 
+#endif  //#ifdef HAVE_WEBKIT || HAVE_WEBENGINE
 
-#endif //#ifdef HAVE_WEBKIT || HAVE_WEBENGINE
-
-#endif //WEBPREVIEWITEM_H
+#endif  // WEBPREVIEWITEM_H

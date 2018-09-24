@@ -19,11 +19,12 @@
  ***************************************************************************/
 
 #include "internalpeer.h"
+
 #include "util.h"
 
 using namespace Protocol;
 
-InternalPeer::InternalPeer(QObject *parent)
+InternalPeer::InternalPeer(QObject* parent)
     : Peer(nullptr, parent)
 {
     static bool registered = []() {
@@ -39,7 +40,6 @@ InternalPeer::InternalPeer(QObject *parent)
     setFeatures(Quassel::Features{});
 }
 
-
 InternalPeer::~InternalPeer()
 {
     if (_isOpen) {
@@ -47,63 +47,53 @@ InternalPeer::~InternalPeer()
     }
 }
 
-
 QString InternalPeer::description() const
 {
     return tr("internal connection");
 }
-
 
 QString InternalPeer::address() const
 {
     return tr("internal connection");
 }
 
-
 quint16 InternalPeer::port() const
 {
     return 0;
 }
-
 
 bool InternalPeer::isOpen() const
 {
     return _isOpen;
 }
 
-
 bool InternalPeer::isSecure() const
 {
     return true;
 }
-
 
 bool InternalPeer::isLocal() const
 {
     return true;
 }
 
-
-void InternalPeer::close(const QString &reason)
+void InternalPeer::close(const QString& reason)
 {
     Q_UNUSED(reason);
     _isOpen = false;
 }
-
 
 int InternalPeer::lag() const
 {
     return 0;
 }
 
-
-::SignalProxy *InternalPeer::signalProxy() const
+::SignalProxy* InternalPeer::signalProxy() const
 {
     return _proxy;
 }
 
-
-void InternalPeer::setSignalProxy(::SignalProxy *proxy)
+void InternalPeer::setSignalProxy(::SignalProxy* proxy)
 {
     if (!proxy && _proxy) {
         _proxy = nullptr;
@@ -123,23 +113,29 @@ void InternalPeer::setSignalProxy(::SignalProxy *proxy)
     qWarning() << Q_FUNC_INFO << "Changing the SignalProxy is not supported!";
 }
 
-
-void InternalPeer::setPeer(InternalPeer *peer)
+void InternalPeer::setPeer(InternalPeer* peer)
 {
-    connect(peer, selectOverload<const Protocol::SyncMessage&>(&InternalPeer::dispatchMessage),
-            this, selectOverload<const Protocol::SyncMessage&>(&InternalPeer::handleMessage));
-    connect(peer, selectOverload<const Protocol::RpcCall&>(&InternalPeer::dispatchMessage),
-            this, selectOverload<const Protocol::RpcCall&>(&InternalPeer::handleMessage));
-    connect(peer, selectOverload<const Protocol::InitRequest&>(&InternalPeer::dispatchMessage),
-            this, selectOverload<const Protocol::InitRequest&>(&InternalPeer::handleMessage));
-    connect(peer, selectOverload<const Protocol::InitData&>(&InternalPeer::dispatchMessage),
-            this, selectOverload<const Protocol::InitData&>(&InternalPeer::handleMessage));
+    connect(peer,
+            selectOverload<const Protocol::SyncMessage&>(&InternalPeer::dispatchMessage),
+            this,
+            selectOverload<const Protocol::SyncMessage&>(&InternalPeer::handleMessage));
+    connect(peer,
+            selectOverload<const Protocol::RpcCall&>(&InternalPeer::dispatchMessage),
+            this,
+            selectOverload<const Protocol::RpcCall&>(&InternalPeer::handleMessage));
+    connect(peer,
+            selectOverload<const Protocol::InitRequest&>(&InternalPeer::dispatchMessage),
+            this,
+            selectOverload<const Protocol::InitRequest&>(&InternalPeer::handleMessage));
+    connect(peer,
+            selectOverload<const Protocol::InitData&>(&InternalPeer::dispatchMessage),
+            this,
+            selectOverload<const Protocol::InitData&>(&InternalPeer::handleMessage));
 
     connect(peer, &Peer::disconnected, this, &InternalPeer::peerDisconnected);
 
     _isOpen = true;
 }
-
 
 void InternalPeer::peerDisconnected()
 {
@@ -150,59 +146,50 @@ void InternalPeer::peerDisconnected()
     }
 }
 
-
-void InternalPeer::dispatch(const SyncMessage &msg)
+void InternalPeer::dispatch(const SyncMessage& msg)
 {
     emit dispatchMessage(msg);
 }
 
-
-void InternalPeer::dispatch(const RpcCall &msg)
+void InternalPeer::dispatch(const RpcCall& msg)
 {
     emit dispatchMessage(msg);
 }
 
-
-void InternalPeer::dispatch(const InitRequest &msg)
+void InternalPeer::dispatch(const InitRequest& msg)
 {
     emit dispatchMessage(msg);
 }
 
-
-void InternalPeer::dispatch(const InitData &msg)
+void InternalPeer::dispatch(const InitData& msg)
 {
     emit dispatchMessage(msg);
 }
 
-
-void InternalPeer::handleMessage(const Protocol::SyncMessage &msg)
+void InternalPeer::handleMessage(const Protocol::SyncMessage& msg)
 {
     handle(msg);
 }
 
-
-void InternalPeer::handleMessage(const Protocol::RpcCall &msg)
+void InternalPeer::handleMessage(const Protocol::RpcCall& msg)
 {
     handle(msg);
 }
 
-
-void InternalPeer::handleMessage(const Protocol::InitRequest &msg)
+void InternalPeer::handleMessage(const Protocol::InitRequest& msg)
 {
     handle(msg);
 }
 
-
-void InternalPeer::handleMessage(const Protocol::InitData &msg)
+void InternalPeer::handleMessage(const Protocol::InitData& msg)
 {
     handle(msg);
 }
-
 
 template<class T>
-void InternalPeer::handle(const T &msg)
+void InternalPeer::handle(const T& msg)
 {
-    static auto setSourcePeer = [](Peer *peer) {
+    static auto setSourcePeer = [](Peer* peer) {
         auto p = SignalProxy::current();
         if (p) {
             p->setSourcePeer(peer);

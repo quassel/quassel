@@ -20,33 +20,30 @@
 
 #include "logmessage.h"
 
+#include <QDateTime>
 #include <QFile>
 #include <QTextStream>
-#include <QDateTime>
 
 #include "quassel.h"
 
 LogMessage::LogMessage(Logger::LogLevel level)
     : _stream(&_buffer, QIODevice::WriteOnly)
     , _logLevel(level)
-{
-}
-
+{}
 
 LogMessage::~LogMessage()
 {
     Quassel::instance()->logger()->handleMessage(_logLevel, _buffer);
 }
 
-
-LogMessage &LogMessage::operator<<(const QStringList &t)
+LogMessage& LogMessage::operator<<(const QStringList& t)
 {
     _stream << t.join(" ") << " ";
     return *this;
 }
 
-
-LogMessage &LogMessage::operator<<(bool t) {
+LogMessage& LogMessage::operator<<(bool t)
+{
     _stream << (t ? "true" : "false") << " ";
     return *this;
 }

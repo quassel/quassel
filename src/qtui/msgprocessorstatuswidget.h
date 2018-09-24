@@ -28,7 +28,7 @@ class MsgProcessorStatusWidget : public QWidget
     Q_OBJECT
 
 public:
-    MsgProcessorStatusWidget(QWidget *parent = nullptr);
+    MsgProcessorStatusWidget(QWidget* parent = nullptr);
 
 public slots:
     void setProgress(int value, int max);
@@ -36,6 +36,5 @@ public slots:
 private:
     Ui::MsgProcessorStatusWidget ui;
 };
-
 
 #endif

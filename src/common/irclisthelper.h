@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include <utility>
-
 #include "common-export.h"
+
+#include <utility>
 
 #include "syncableobject.h"
 #include "types.h"
@@ -41,18 +41,30 @@ class COMMON_EXPORT IrcListHelper : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    inline IrcListHelper(QObject *parent = nullptr) : SyncableObject(parent) { setInitialized(); };
+    inline IrcListHelper(QObject* parent = nullptr)
+        : SyncableObject(parent)
+    {
+        setInitialized();
+    };
 
-    struct ChannelDescription {
+    struct ChannelDescription
+    {
         QString channelName;
         quint32 userCount;
         QString topic;
-        ChannelDescription(QString channelName_, quint32 userCount_, QString topic_) : channelName(std::move(channelName_)), userCount(userCount_), topic(std::move(topic_)) {};
+        ChannelDescription(QString channelName_, quint32 userCount_, QString topic_)
+            : channelName(std::move(channelName_))
+            , userCount(userCount_)
+            , topic(std::move(topic_)){};
     };
 
 public slots:
-    inline virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters) { REQUEST(ARG(netId), ARG(channelFilters)); return QVariantList(); }
-    inline virtual void receiveChannelList(const NetworkId &, const QStringList &, const QVariantList &) {};
-    inline virtual void reportFinishedList(const NetworkId &netId) { SYNC(ARG(netId)) }
-    inline virtual void reportError(const QString &error) { SYNC(ARG(error)) }
+    inline virtual QVariantList requestChannelList(const NetworkId& netId, const QStringList& channelFilters)
+    {
+        REQUEST(ARG(netId), ARG(channelFilters));
+        return QVariantList();
+    }
+    inline virtual void receiveChannelList(const NetworkId&, const QStringList&, const QVariantList&){};
+    inline virtual void reportFinishedList(const NetworkId& netId) { SYNC(ARG(netId)) }
+    inline virtual void reportError(const QString& error) { SYNC(ARG(error)) }
 };

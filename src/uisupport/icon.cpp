@@ -28,7 +28,7 @@ namespace icon {
 
 namespace {
 
-void printWarning(const QString &iconName, const QString &extra = {})
+void printWarning(const QString& iconName, const QString& extra = {})
 {
     static std::set<QString> warnedAbout;
     if (warnedAbout.insert(iconName).second) {
@@ -36,25 +36,23 @@ void printWarning(const QString &iconName, const QString &extra = {})
     }
 }
 
-}
+}  // namespace
 
-
-QIcon get(const QString &iconName, const QString &fallbackPath)
+QIcon get(const QString& iconName, const QString& fallbackPath)
 {
     return get(std::vector<QString>{iconName}, fallbackPath);
 }
 
-
-QIcon get(const std::vector<QString> &iconNames, const QString &fallbackPath)
+QIcon get(const std::vector<QString>& iconNames, const QString& fallbackPath)
 {
-    for (auto &&iconName : iconNames) {
+    for (auto&& iconName : iconNames) {
         // Exact match
         if (QIcon::hasThemeIcon(iconName)) {
             return QIcon::fromTheme(iconName);
         }
     }
 
-    for (auto &&iconName : iconNames) {
+    for (auto&& iconName : iconNames) {
         // Try to get something from the theme anyway (i.e. a more generic fallback)
         QIcon fallback = QIcon::fromTheme(iconName);
         if (!fallback.availableSizes().isEmpty()) {
@@ -65,7 +63,7 @@ QIcon get(const std::vector<QString> &iconNames, const QString &fallbackPath)
 
     // Build error string
     QStringList requested;
-    for (auto &&iconName : iconNames) {
+    for (auto&& iconName : iconNames) {
         requested << iconName;
     }
     QString missing = "{" + requested.join(", ") + "}";
@@ -84,4 +82,4 @@ QIcon get(const std::vector<QString> &iconNames, const QString &fallbackPath)
     return {};
 }
 
-}
+}  // namespace icon

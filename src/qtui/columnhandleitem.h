@@ -32,8 +32,8 @@ class ColumnHandleItem : public QGraphicsObject
     Q_OBJECT
     Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
-public :
-        ColumnHandleItem(qreal width, QGraphicsItem *parent = nullptr);
+public:
+    ColumnHandleItem(qreal width, QGraphicsItem* parent = nullptr);
     inline int type() const override { return ChatScene::ColumnHandleType; }
 
     inline qreal width() const { return _width; }
@@ -46,18 +46,18 @@ public :
     void setXPos(qreal xpos);
     void setXLimits(qreal min, qreal max);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
 public slots:
-    void sceneRectChanged(const QRectF &);
+    void sceneRectChanged(const QRectF&);
     void setOpacity(qreal opacity);
 
 protected:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
 signals:
     void positionChanged(qreal x);
@@ -70,8 +70,7 @@ private:
     qreal _offset;
     qreal _minXPos, _maxXPos;
     qreal _opacity;
-    QPropertyAnimation *_animation;
+    QPropertyAnimation* _animation;
 };
-
 
 #endif

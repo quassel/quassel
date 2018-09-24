@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "uistyle.h"
+
 #include <utility>
 #include <vector>
 
@@ -28,40 +30,41 @@
 #include "icon.h"
 #include "qssparser.h"
 #include "quassel.h"
-#include "uistyle.h"
 #include "uisettings.h"
 #include "util.h"
 
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
-bool UiStyle::_useCustomTimestampFormat;       /// If true, use the custom timestamp format
-QString UiStyle::_timestampFormatString;       /// Timestamp format
-QString UiStyle::_systemTimestampFormatString; /// Cached copy of system locale timestamp format
-UiStyle::SenderPrefixMode UiStyle::_senderPrefixDisplay; /// Display of prefix modes before sender
-bool UiStyle::_showSenderBrackets;             /// If true, show brackets around sender names
+bool UiStyle::_useCustomTimestampFormat;                  /// If true, use the custom timestamp format
+QString UiStyle::_timestampFormatString;                  /// Timestamp format
+QString UiStyle::_systemTimestampFormatString;            /// Cached copy of system locale timestamp format
+UiStyle::SenderPrefixMode UiStyle::_senderPrefixDisplay;  /// Display of prefix modes before sender
+bool UiStyle::_showSenderBrackets;                        /// If true, show brackets around sender names
 
 namespace {
 
 // Extended mIRC colors as defined in https://modern.ircdocs.horse/formatting.html#colors-16-98
 QColor extendedMircColor(int number)
 {
-    static const std::vector<QColor> colorMap = {
-        "#470000", "#472100", "#474700", "#324700", "#004700", "#00472c", "#004747", "#002747", "#000047", "#2e0047", "#470047", "#47002a",
-        "#740000", "#743a00", "#747400", "#517400", "#007400", "#007449", "#007474", "#004074", "#000074", "#4b0074", "#740074", "#740045",
-        "#b50000", "#b56300", "#b5b500", "#7db500", "#00b500", "#00b571", "#00b5b5", "#0063b5", "#0000b5", "#7500b5", "#b500b5", "#b5006b",
-        "#ff0000", "#ff8c00", "#ffff00", "#b2ff00", "#00ff00", "#00ffa0", "#00ffff", "#008cff", "#0000ff", "#a500ff", "#ff00ff", "#ff0098",
-        "#ff5959", "#ffb459", "#ffff71", "#cfff60", "#6fff6f", "#65ffc9", "#6dffff", "#59b4ff", "#5959ff", "#c459ff", "#ff66ff", "#ff59bc",
-        "#ff9c9c", "#ffd39c", "#ffff9c", "#e2ff9c", "#9cff9c", "#9cffdb", "#9cffff", "#9cd3ff", "#9c9cff", "#dc9cff", "#ff9cff", "#ff94d3",
-        "#000000", "#131313", "#282828", "#363636", "#4d4d4d", "#656565", "#818181", "#9f9f9f", "#bcbcbc", "#e2e2e2", "#ffffff"
-    };
+    static const std::vector<QColor> colorMap = {"#470000", "#472100", "#474700", "#324700", "#004700", "#00472c", "#004747", "#002747",
+                                                 "#000047", "#2e0047", "#470047", "#47002a", "#740000", "#743a00", "#747400", "#517400",
+                                                 "#007400", "#007449", "#007474", "#004074", "#000074", "#4b0074", "#740074", "#740045",
+                                                 "#b50000", "#b56300", "#b5b500", "#7db500", "#00b500", "#00b571", "#00b5b5", "#0063b5",
+                                                 "#0000b5", "#7500b5", "#b500b5", "#b5006b", "#ff0000", "#ff8c00", "#ffff00", "#b2ff00",
+                                                 "#00ff00", "#00ffa0", "#00ffff", "#008cff", "#0000ff", "#a500ff", "#ff00ff", "#ff0098",
+                                                 "#ff5959", "#ffb459", "#ffff71", "#cfff60", "#6fff6f", "#65ffc9", "#6dffff", "#59b4ff",
+                                                 "#5959ff", "#c459ff", "#ff66ff", "#ff59bc", "#ff9c9c", "#ffd39c", "#ffff9c", "#e2ff9c",
+                                                 "#9cff9c", "#9cffdb", "#9cffff", "#9cd3ff", "#9c9cff", "#dc9cff", "#ff9cff", "#ff94d3",
+                                                 "#000000", "#131313", "#282828", "#363636", "#4d4d4d", "#656565", "#818181", "#9f9f9f",
+                                                 "#bcbcbc", "#e2e2e2", "#ffffff"};
     if (number < 16)
         return {};
     size_t index = number - 16;
     return (index < colorMap.size() ? colorMap[index] : QColor{});
 }
 
-}
+}  // namespace
 
-UiStyle::UiStyle(QObject *parent)
+UiStyle::UiStyle(QObject* parent)
     : QObject(parent)
     , _channelJoinedIcon{icon::get("irc-channel-active")}
     , _channelPartedIcon{icon::get("irc-channel-inactive")}
@@ -111,18 +114,15 @@ UiStyle::UiStyle(QObject *parent)
     loadStyleSheet();
 }
 
-
 UiStyle::~UiStyle()
 {
     qDeleteAll(_metricsCache);
 }
 
-
 void UiStyle::reload()
 {
     loadStyleSheet();
 }
-
 
 void UiStyle::loadStyleSheet()
 {
@@ -171,8 +171,7 @@ void UiStyle::loadStyleSheet()
     emit changed();
 }
 
-
-QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist)
+QString UiStyle::loadStyleSheet(const QString& styleSheet, bool shouldExist)
 {
     QString ss = styleSheet;
     if (ss.startsWith("file:///")) {
@@ -194,7 +193,6 @@ QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist)
     }
     return ss;
 }
-
 
 void UiStyle::updateSystemTimestampFormat()
 {
@@ -222,7 +220,8 @@ void UiStyle::updateSystemTimestampFormat()
     if (regExpMatchAMPM.exactMatch(QLocale().timeFormat(QLocale::ShortFormat))) {
         // AM/PM style used
         _systemTimestampFormatString = " h:mm:ss ap";
-    } else {
+    }
+    else {
         // 24-hour style used
         _systemTimestampFormatString = " hh:mm:ss";
     }
@@ -232,7 +231,6 @@ void UiStyle::updateSystemTimestampFormat()
     // ChatScene::updateTimestampHasBrackets() to true or false as needed!
 }
 
-
 // FIXME The following should trigger a reload/refresh of the chat view.
 void UiStyle::setUseCustomTimestampFormat(bool enabled)
 {
@@ -241,7 +239,7 @@ void UiStyle::setUseCustomTimestampFormat(bool enabled)
     }
 }
 
-void UiStyle::setTimestampFormatString(const QString &format)
+void UiStyle::setTimestampFormatString(const QString& format)
 {
     if (_timestampFormatString != format) {
         _timestampFormatString = format;
@@ -262,23 +260,20 @@ void UiStyle::enableSenderBrackets(bool enabled)
     }
 }
 
-
-void UiStyle::allowMircColorsChanged(const QVariant &v)
+void UiStyle::allowMircColorsChanged(const QVariant& v)
 {
     _allowMircColors = v.toBool();
     emit changed();
 }
 
-
 /******** ItemView Styling *******/
 
-void UiStyle::showItemViewIconsChanged(const QVariant &v)
+void UiStyle::showItemViewIconsChanged(const QVariant& v)
 {
     _showBufferViewIcons = _showNickViewIcons = v.toBool();
 }
 
-
-QVariant UiStyle::bufferViewItemData(const QModelIndex &index, int role) const
+QVariant UiStyle::bufferViewItemData(const QModelIndex& index, int role) const
 {
     BufferInfo::Type type = (BufferInfo::Type)index.data(NetworkModel::BufferTypeRole).toInt();
     bool isActive = index.data(NetworkModel::ItemActiveRole).toBool();
@@ -348,8 +343,7 @@ QVariant UiStyle::bufferViewItemData(const QModelIndex &index, int role) const
     return itemData(role, fmt);
 }
 
-
-QVariant UiStyle::nickViewItemData(const QModelIndex &index, int role) const
+QVariant UiStyle::nickViewItemData(const QModelIndex& index, int role) const
 {
     NetworkModel::ItemType type = (NetworkModel::ItemType)index.data(NetworkModel::ItemTypeRole).toInt();
 
@@ -358,8 +352,7 @@ QVariant UiStyle::nickViewItemData(const QModelIndex &index, int role) const
             return QVariant();
 
         switch (type) {
-        case NetworkModel::UserCategoryItemType:
-        {
+        case NetworkModel::UserCategoryItemType: {
             int categoryId = index.data(TreeModel::SortRole).toInt();
             if (categoryId <= _opIconLimit)
                 return _categoryOpIcon;
@@ -397,8 +390,7 @@ QVariant UiStyle::nickViewItemData(const QModelIndex &index, int role) const
     return itemData(role, fmt);
 }
 
-
-QVariant UiStyle::itemData(int role, const QTextCharFormat &format) const
+QVariant UiStyle::itemData(int role, const QTextCharFormat& format) const
 {
     switch (role) {
     case Qt::FontRole:
@@ -412,7 +404,6 @@ QVariant UiStyle::itemData(int role, const QTextCharFormat &format) const
     }
 }
 
-
 /******** Caching *******/
 
 QTextCharFormat UiStyle::parsedFormat(quint64 key) const
@@ -423,28 +414,25 @@ QTextCharFormat UiStyle::parsedFormat(quint64 key) const
 namespace {
 
 // Create unique key for given Format object and message label
-QString formatKey(const UiStyle::Format &format, UiStyle::MessageLabel label)
+QString formatKey(const UiStyle::Format& format, UiStyle::MessageLabel label)
 {
-    return QString::number(format.type | label, 16)
-            + (format.foreground.isValid() ? format.foreground.name() : "#------")
-            + (format.background.isValid() ? format.background.name() : "#------");
+    return QString::number(format.type | label, 16) + (format.foreground.isValid() ? format.foreground.name() : "#------")
+           + (format.background.isValid() ? format.background.name() : "#------");
 }
 
-}
+}  // namespace
 
-QTextCharFormat UiStyle::cachedFormat(const Format &format, MessageLabel messageLabel) const
+QTextCharFormat UiStyle::cachedFormat(const Format& format, MessageLabel messageLabel) const
 {
     return _formatCache.value(formatKey(format, messageLabel), QTextCharFormat());
 }
 
-
-void UiStyle::setCachedFormat(const QTextCharFormat &charFormat, const Format &format, MessageLabel messageLabel) const
+void UiStyle::setCachedFormat(const QTextCharFormat& charFormat, const Format& format, MessageLabel messageLabel) const
 {
     _formatCache[formatKey(format, messageLabel)] = charFormat;
 }
 
-
-QFontMetricsF *UiStyle::fontMetrics(FormatType ftype, MessageLabel label) const
+QFontMetricsF* UiStyle::fontMetrics(FormatType ftype, MessageLabel label) const
 {
     // QFontMetricsF is not assignable, so we need to store pointers :/
     quint64 key = ftype | label;
@@ -455,12 +443,11 @@ QFontMetricsF *UiStyle::fontMetrics(FormatType ftype, MessageLabel label) const
     return (_metricsCache[key] = new QFontMetricsF(format({ftype, {}, {}}, label).font()));
 }
 
-
 /******** Generate formats ********/
 
 // NOTE: This and the following functions are intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
-QTextCharFormat UiStyle::format(const Format &format, MessageLabel label) const
+QTextCharFormat UiStyle::format(const Format& format, MessageLabel label) const
 {
     if (format.type == FormatType::Invalid)
         return {};
@@ -493,14 +480,13 @@ QTextCharFormat UiStyle::format(const Format &format, MessageLabel label) const
     return charFormat;
 }
 
-
-void UiStyle::mergeFormat(QTextCharFormat &charFormat, const Format &format, MessageLabel label) const
+void UiStyle::mergeFormat(QTextCharFormat& charFormat, const Format& format, MessageLabel label) const
 {
     mergeSubElementFormat(charFormat, format.type & 0x00ff, label);
 
     // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
     //       or "foreground 01 and background 03"
-    if ((format.type & 0xfff00) != FormatType::Base) { // element format
+    if ((format.type & 0xfff00) != FormatType::Base) {  // element format
         for (quint32 mask = 0x00100; mask <= 0x80000; mask <<= 1) {
             if ((format.type & mask) != FormatType::Base) {
                 mergeSubElementFormat(charFormat, format.type & (mask | 0xff), label);
@@ -509,19 +495,17 @@ void UiStyle::mergeFormat(QTextCharFormat &charFormat, const Format &format, Mes
     }
 }
 
-
 // Merge a subelement format into an existing message format
-void UiStyle::mergeSubElementFormat(QTextCharFormat &fmt, FormatType ftype, MessageLabel label) const
+void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, FormatType ftype, MessageLabel label) const
 {
     quint64 key = ftype | label;
-    fmt.merge(parsedFormat(key & 0x0000ffffffffff00ull)); // label + subelement
-    fmt.merge(parsedFormat(key & 0x0000ffffffffffffull)); // label + subelement + msgtype
-    fmt.merge(parsedFormat(key & 0xffffffffffffff00ull)); // label + subelement + nickhash
-    fmt.merge(parsedFormat(key & 0xffffffffffffffffull)); // label + subelement + nickhash + msgtype
+    fmt.merge(parsedFormat(key & 0x0000ffffffffff00ull));  // label + subelement
+    fmt.merge(parsedFormat(key & 0x0000ffffffffffffull));  // label + subelement + msgtype
+    fmt.merge(parsedFormat(key & 0xffffffffffffff00ull));  // label + subelement + nickhash
+    fmt.merge(parsedFormat(key & 0xffffffffffffffffull));  // label + subelement + nickhash + msgtype
 }
 
-
-void UiStyle::mergeColors(QTextCharFormat &charFormat, const Format &format, MessageLabel label) const
+void UiStyle::mergeColors(QTextCharFormat& charFormat, const Format& format, MessageLabel label) const
 {
     bool allowFg = charFormat.property(static_cast<int>(FormatProperty::AllowForegroundOverride)).toBool();
     bool allowBg = charFormat.property(static_cast<int>(FormatProperty::AllowBackgroundOverride)).toBool();
@@ -541,7 +525,6 @@ void UiStyle::mergeColors(QTextCharFormat &charFormat, const Format &format, Mes
     if (allowBg && format.background.isValid())
         charFormat.setBackground(format.background);
 }
-
 
 UiStyle::FormatType UiStyle::formatType(Message::Type msgType)
 {
@@ -583,27 +566,24 @@ UiStyle::FormatType UiStyle::formatType(Message::Type msgType)
     case Message::Invite:
         return FormatType::InviteMsg;
     }
-    //Q_ASSERT(false); // we need to handle all message types
+    // Q_ASSERT(false); // we need to handle all message types
     qWarning() << Q_FUNC_INFO << "Unknown message type:" << msgType;
     return FormatType::ErrorMsg;
 }
 
-
-UiStyle::FormatType UiStyle::formatType(const QString &code)
+UiStyle::FormatType UiStyle::formatType(const QString& code)
 {
     if (_formatCodes.contains(code))
         return _formatCodes.value(code);
     return FormatType::Invalid;
 }
 
-
 QString UiStyle::formatCode(FormatType ftype)
 {
     return _formatCodes.key(ftype);
 }
 
-
-QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength, MessageLabel messageLabel) const
+QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList& formatList, int textLength, MessageLabel messageLabel) const
 {
     QList<QTextLayout::FormatRange> formatRanges;
     QTextLayout::FormatRange range;
@@ -620,10 +600,9 @@ QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &form
     return formatRanges;
 }
 
-
 // This method expects a well-formatted string, there is no error checking!
 // Since we create those ourselves, we should be pretty safe that nobody does something crappy here.
-UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFormat)
+UiStyle::StyledString UiStyle::styleString(const QString& s_, FormatType baseFormat)
 {
     QString s = s_;
     StyledString result;
@@ -637,29 +616,31 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
     }
 
     Format curfmt{baseFormat, {}, {}};
-    QChar fgChar{'f'}; // character to indicate foreground color, changed when reversing
+    QChar fgChar{'f'};  // character to indicate foreground color, changed when reversing
 
-    int pos = 0; quint16 length = 0;
+    int pos = 0;
+    quint16 length = 0;
     for (;;) {
         pos = s.indexOf('%', pos);
-        if (pos < 0) break;
-        if (s[pos+1] == '%') { // escaped %, we just remove one and continue
+        if (pos < 0)
+            break;
+        if (s[pos + 1] == '%') {  // escaped %, we just remove one and continue
             s.remove(pos, 1);
             pos++;
             continue;
         }
-        if (s[pos+1] == 'D' && s[pos+2] == 'c') { // mIRC color code
-            if (s[pos+3] == '-') { // color off
+        if (s[pos + 1] == 'D' && s[pos + 2] == 'c') {  // mIRC color code
+            if (s[pos + 3] == '-') {                   // color off
                 curfmt.type &= 0x003fffff;
                 curfmt.foreground = QColor{};
                 curfmt.background = QColor{};
                 length = 4;
             }
             else {
-                quint32 color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
+                quint32 color = 10 * s[pos + 4].digitValue() + s[pos + 5].digitValue();
                 // Color values 0-15 are traditional mIRC colors, defined in the stylesheet and thus going through the format engine
                 // Larger color values are hardcoded and applied separately (cf. https://modern.ircdocs.horse/formatting.html#colors-16-98)
-                if (s[pos+3] == fgChar) {
+                if (s[pos + 3] == fgChar) {
                     if (color < 16) {
                         // Traditional mIRC color, defined in the stylesheet
                         curfmt.type &= 0xf0ffffff;
@@ -685,9 +666,9 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
                 length = 6;
             }
         }
-        else if (s[pos+1] == 'D' && s[pos+2] == 'h') { // Hex color
-            QColor color{s.mid(pos+4, 7)};
-            if (s[pos+3] == fgChar) {
+        else if (s[pos + 1] == 'D' && s[pos + 2] == 'h') {  // Hex color
+            QColor color{s.mid(pos + 4, 7)};
+            if (s[pos + 3] == fgChar) {
                 curfmt.type &= 0xf0bfffff;  // mask out mIRC foreground color
                 curfmt.foreground = std::move(color);
             }
@@ -697,27 +678,28 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
             }
             length = 11;
         }
-        else if (s[pos+1] == 'O') { // reset formatting
-            curfmt.type &= 0x000000ff; // we keep message type-specific formatting
+        else if (s[pos + 1] == 'O') {   // reset formatting
+            curfmt.type &= 0x000000ff;  // we keep message type-specific formatting
             curfmt.foreground = QColor{};
             curfmt.background = QColor{};
             fgChar = 'f';
             length = 2;
         }
-        else if (s[pos+1] == 'R') { // Reverse colors
+        else if (s[pos + 1] == 'R') {  // Reverse colors
             fgChar = (fgChar == 'f' ? 'b' : 'f');
             auto orig = static_cast<quint32>(curfmt.type & 0xffc00000);
             curfmt.type &= 0x003fffff;
-            curfmt.type |= (orig & 0x00400000) <<1;
-            curfmt.type |= (orig & 0x0f000000) <<4;
-            curfmt.type |= (orig & 0x00800000) >>1;
-            curfmt.type |= (orig & 0xf0000000) >>4;
+            curfmt.type |= (orig & 0x00400000) << 1;
+            curfmt.type |= (orig & 0x0f000000) << 4;
+            curfmt.type |= (orig & 0x00800000) >> 1;
+            curfmt.type |= (orig & 0xf0000000) >> 4;
             std::swap(curfmt.foreground, curfmt.background);
             length = 2;
         }
-        else { // all others are toggles
-            QString code = QString("%") + s[pos+1];
-            if (s[pos+1] == 'D') code += s[pos+2];
+        else {  // all others are toggles
+            QString code = QString("%") + s[pos + 1];
+            if (s[pos + 1] == 'D')
+                code += s[pos + 2];
             FormatType ftype = formatType(code);
             if (ftype == FormatType::Invalid) {
                 pos++;
@@ -737,46 +719,46 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, FormatType baseFor
     return result;
 }
 
-
-QString UiStyle::mircToInternal(const QString &mirc_)
+QString UiStyle::mircToInternal(const QString& mirc_)
 {
     QString mirc;
     mirc.reserve(mirc_.size());
-    foreach (const QChar &c, mirc_) {
+    foreach (const QChar& c, mirc_) {
         if ((c < '\x20' || c == '\x7f') && c != '\x03' && c != '\x04') {
             switch (c.unicode()) {
-                case '\x02':
-                    mirc += "%B";
-                    break;
-                case '\x0f':
-                    mirc += "%O";
-                    break;
-                case '\x09':
-                    mirc += "        ";
-                    break;
-                case '\x11':
-                    // Monospace not supported yet
-                    break;
-                case '\x12':
-                case '\x16':
-                    mirc += "%R";
-                    break;
-                case '\x1d':
-                    mirc += "%I";
-                    break;
-                case '\x1e':
-                    mirc += "%S";
-                    break;
-                case '\x1f':
-                    mirc += "%U";
-                    break;
-                case '\x7f':
-                    mirc += QChar(0x2421);
-                    break;
-                default:
-                    mirc += QChar(0x2400 + c.unicode());
+            case '\x02':
+                mirc += "%B";
+                break;
+            case '\x0f':
+                mirc += "%O";
+                break;
+            case '\x09':
+                mirc += "        ";
+                break;
+            case '\x11':
+                // Monospace not supported yet
+                break;
+            case '\x12':
+            case '\x16':
+                mirc += "%R";
+                break;
+            case '\x1d':
+                mirc += "%I";
+                break;
+            case '\x1e':
+                mirc += "%S";
+                break;
+            case '\x1f':
+                mirc += "%U";
+                break;
+            case '\x7f':
+                mirc += QChar(0x2421);
+                break;
+            default:
+                mirc += QChar(0x2400 + c.unicode());
             }
-        } else {
+        }
+        else {
             if (c == '%')
                 mirc += c;
             mirc += c;
@@ -806,7 +788,7 @@ QString UiStyle::mircToInternal(const QString &mirc_)
                     num.prepend('0');
                 ins = QString("%Dcf%1").arg(num);
 
-                if (i+1 < l && mirc[i] == ',' && mirc[i+1].isDigit()) {
+                if (i + 1 < l && mirc[i] == ',' && mirc[i + 1].isDigit()) {
                     i++;
                     num = mirc[i++];
                     if (i < l && mirc[i].isDigit())
@@ -819,7 +801,7 @@ QString UiStyle::mircToInternal(const QString &mirc_)
             else {
                 ins = "%Dc-";
             }
-            mirc.replace(pos, i-pos, ins);
+            mirc.replace(pos, i - pos, ins);
         }
     }
 
@@ -856,7 +838,6 @@ QString UiStyle::mircToInternal(const QString &mirc_)
     return mirc;
 }
 
-
 QString UiStyle::systemTimestampFormatString()
 {
     if (_systemTimestampFormatString.isEmpty()) {
@@ -866,45 +847,43 @@ QString UiStyle::systemTimestampFormatString()
     return _systemTimestampFormatString;
 }
 
-
 QString UiStyle::timestampFormatString()
 {
     if (useCustomTimestampFormat()) {
         return _timestampFormatString;
-    } else {
+    }
+    else {
         return systemTimestampFormatString();
     }
 }
 
-
 /***********************************************************************************/
-UiStyle::StyledMessage::StyledMessage(const Message &msg)
+UiStyle::StyledMessage::StyledMessage(const Message& msg)
     : Message(msg)
 {
     switch (type()) {
-        // Don't compute the sender hash for message types without a nickname embedded
-        case Message::Server:
-        case Message::Info:
-        case Message::Error:
-        case Message::DayChange:
-        case Message::Topic:
-        case Message::Invite:
-        // Don't compute the sender hash for messages with multiple nicks
-        // Fixing this without breaking themes would be.. complex.
-        case Message::NetsplitJoin:
-        case Message::NetsplitQuit:
-        case Message::Kick:
-        // Don't compute the sender hash for message types that are not yet completed elsewhere
-        case Message::Kill:
-            _senderHash = 0x00;
-            break;
-        default:
-            // Compute the sender hash for all other message types
-            _senderHash = 0xff;
-            break;
+    // Don't compute the sender hash for message types without a nickname embedded
+    case Message::Server:
+    case Message::Info:
+    case Message::Error:
+    case Message::DayChange:
+    case Message::Topic:
+    case Message::Invite:
+    // Don't compute the sender hash for messages with multiple nicks
+    // Fixing this without breaking themes would be.. complex.
+    case Message::NetsplitJoin:
+    case Message::NetsplitQuit:
+    case Message::Kick:
+    // Don't compute the sender hash for message types that are not yet completed elsewhere
+    case Message::Kill:
+        _senderHash = 0x00;
+        break;
+    default:
+        // Compute the sender hash for all other message types
+        _senderHash = 0xff;
+        break;
     }
 }
-
 
 void UiStyle::StyledMessage::style() const
 {
@@ -913,71 +892,80 @@ void UiStyle::StyledMessage::style() const
     QString nick = nickFromMask(sender());
     QString txt = UiStyle::mircToInternal(contents());
     QString bufferName = bufferInfo().bufferName();
-    bufferName.replace('%', "%%"); // well, you _can_ have a % in a buffername apparently... -_-
-    host.replace('%', "%%");     // hostnames too...
-    user.replace('%', "%%");     // and the username...
-    nick.replace('%', "%%");     // ... and then there's totally RFC-violating servers like justin.tv m(
+    bufferName.replace('%', "%%");  // well, you _can_ have a % in a buffername apparently... -_-
+    host.replace('%', "%%");        // hostnames too...
+    user.replace('%', "%%");        // and the username...
+    nick.replace('%', "%%");        // ... and then there's totally RFC-violating servers like justin.tv m(
     const int maxNetsplitNicks = 15;
 
     QString t;
     switch (type()) {
     case Message::Plain:
-        t = QString("%1").arg(txt); break;
+        t = QString("%1").arg(txt);
+        break;
     case Message::Notice:
-        t = QString("%1").arg(txt); break;
+        t = QString("%1").arg(txt);
+        break;
     case Message::Action:
         t = QString("%DN%1%DN %2").arg(nick).arg(txt);
         break;
     case Message::Nick:
         //: Nick Message
-        if (nick == contents()) t = tr("You are now known as %DN%1%DN").arg(txt);
-        else t = tr("%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
+        if (nick == contents())
+            t = tr("You are now known as %DN%1%DN").arg(txt);
+        else
+            t = tr("%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
         break;
     case Message::Mode:
         //: Mode Message
-        if (nick.isEmpty()) t = tr("User mode: %DM%1%DM").arg(txt);
-        else t = tr("Mode %DM%1%DM by %DN%2%DN").arg(txt, nick);
+        if (nick.isEmpty())
+            t = tr("User mode: %DM%1%DM").arg(txt);
+        else
+            t = tr("Mode %DM%1%DM by %DN%2%DN").arg(txt, nick);
         break;
     case Message::Join:
         //: Join Message
-        t = tr("%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
+        t = tr("%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName);
+        break;
     case Message::Part:
         //: Part Message
         t = tr("%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
-        if (!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
+        if (!txt.isEmpty())
+            t = QString("%1 (%2)").arg(t).arg(txt);
         break;
     case Message::Quit:
         //: Quit Message
         t = tr("%DN%1%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
-        if (!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
+        if (!txt.isEmpty())
+            t = QString("%1 (%2)").arg(t).arg(txt);
         break;
-    case Message::Kick:
-    {
+    case Message::Kick: {
         QString victim = txt.section(" ", 0, 0);
         QString kickmsg = txt.section(" ", 1);
         //: Kick Message
         t = tr("%DN%1%DN has kicked %DN%2%DN from %DC%3%DC").arg(nick).arg(victim).arg(bufferName);
-        if (!kickmsg.isEmpty()) t = QString("%1 (%2)").arg(t).arg(kickmsg);
-    }
-    break;
-    //case Message::Kill: FIXME
+        if (!kickmsg.isEmpty())
+            t = QString("%1 (%2)").arg(t).arg(kickmsg);
+    } break;
+        // case Message::Kill: FIXME
 
     case Message::Server:
-        t = QString("%1").arg(txt); break;
+        t = QString("%1").arg(txt);
+        break;
     case Message::Info:
-        t = QString("%1").arg(txt); break;
+        t = QString("%1").arg(txt);
+        break;
     case Message::Error:
-        t = QString("%1").arg(txt); break;
-    case Message::DayChange:
-    {
+        t = QString("%1").arg(txt);
+        break;
+    case Message::DayChange: {
         //: Day Change Message
         t = tr("{Day changed to %1}").arg(timestamp().date().toString(Qt::DefaultLocaleLongDate));
-    }
-        break;
+    } break;
     case Message::Topic:
-        t = QString("%1").arg(txt); break;
-    case Message::NetsplitJoin:
-    {
+        t = QString("%1").arg(txt);
+        break;
+    case Message::NetsplitJoin: {
         QStringList users = txt.split("#:#");
         QStringList servers = users.takeLast().split(" ");
 
@@ -988,11 +976,11 @@ void UiStyle::StyledMessage::style() const
         if (users.count() <= maxNetsplitNicks)
             t.append(QString("%DN%1%DN").arg(users.join(", ")));
         else
-            t.append(tr("%DN%1%DN (%2 more)").arg(static_cast<QStringList>(users.mid(0, maxNetsplitNicks)).join(", ")).arg(users.count() - maxNetsplitNicks));
-    }
-    break;
-    case Message::NetsplitQuit:
-    {
+            t.append(tr("%DN%1%DN (%2 more)")
+                         .arg(static_cast<QStringList>(users.mid(0, maxNetsplitNicks)).join(", "))
+                         .arg(users.count() - maxNetsplitNicks));
+    } break;
+    case Message::NetsplitQuit: {
         QStringList users = txt.split("#:#");
         QStringList servers = users.takeLast().split(" ");
 
@@ -1004,19 +992,20 @@ void UiStyle::StyledMessage::style() const
         if (users.count() <= maxNetsplitNicks)
             t.append(QString("%DN%1%DN").arg(users.join(", ")));
         else
-            t.append(tr("%DN%1%DN (%2 more)").arg(static_cast<QStringList>(users.mid(0, maxNetsplitNicks)).join(", ")).arg(users.count() - maxNetsplitNicks));
-    }
-    break;
+            t.append(tr("%DN%1%DN (%2 more)")
+                         .arg(static_cast<QStringList>(users.mid(0, maxNetsplitNicks)).join(", "))
+                         .arg(users.count() - maxNetsplitNicks));
+    } break;
     case Message::Invite:
-        t = QString("%1").arg(txt); break;
+        t = QString("%1").arg(txt);
+        break;
     default:
         t = QString("[%1]").arg(txt);
     }
     _contents = UiStyle::styleString(t, UiStyle::formatType(type()));
 }
 
-
-const QString &UiStyle::StyledMessage::plainContents() const
+const QString& UiStyle::StyledMessage::plainContents() const
 {
     if (_contents.plainText.isNull())
         style();
@@ -1024,8 +1013,7 @@ const QString &UiStyle::StyledMessage::plainContents() const
     return _contents.plainText;
 }
 
-
-const UiStyle::FormatList &UiStyle::StyledMessage::contentsFormatList() const
+const UiStyle::FormatList& UiStyle::StyledMessage::contentsFormatList() const
 {
     if (_contents.plainText.isNull())
         style();
@@ -1033,12 +1021,10 @@ const UiStyle::FormatList &UiStyle::StyledMessage::contentsFormatList() const
     return _contents.formatList;
 }
 
-
 QString UiStyle::StyledMessage::decoratedTimestamp() const
 {
     return timestamp().toLocalTime().toString(UiStyle::timestampFormatString());
 }
-
 
 QString UiStyle::StyledMessage::plainSender() const
 {
@@ -1050,7 +1036,6 @@ QString UiStyle::StyledMessage::plainSender() const
         return QString();
     }
 }
-
 
 QString UiStyle::StyledMessage::decoratedSender() const
 {
@@ -1114,7 +1099,6 @@ QString UiStyle::StyledMessage::decoratedSender() const
     return QString("%1%2").arg(_senderPrefixes, plainSender());
 }
 
-
 // FIXME hardcoded to 16 sender hashes
 quint8 UiStyle::StyledMessage::senderHash() const
 {
@@ -1129,7 +1113,8 @@ quint8 UiStyle::StyledMessage::senderHash() const
     if (type() == Message::Nick) {
         // New nickname is given as contents.  Change to that.
         nick = stripFormatCodes(contents()).toLower();
-    } else {
+    }
+    else {
         // Just use the sender directly
         nick = nickFromMask(sender()).toLower();
     }
@@ -1152,12 +1137,10 @@ uint qHash(UiStyle::ItemFormatType key, uint seed)
     return qHash(static_cast<quint32>(key), seed);
 }
 
-
 UiStyle::FormatType operator|(UiStyle::FormatType lhs, UiStyle::FormatType rhs)
 {
     return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
 }
-
 
 UiStyle::FormatType& operator|=(UiStyle::FormatType& lhs, UiStyle::FormatType rhs)
 {
@@ -1165,92 +1148,78 @@ UiStyle::FormatType& operator|=(UiStyle::FormatType& lhs, UiStyle::FormatType rh
     return lhs;
 }
 
-
 UiStyle::FormatType operator|(UiStyle::FormatType lhs, quint32 rhs)
 {
     return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | rhs);
 }
 
-
-UiStyle::FormatType& operator|=(UiStyle::FormatType &lhs, quint32 rhs)
+UiStyle::FormatType& operator|=(UiStyle::FormatType& lhs, quint32 rhs)
 {
     lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) | rhs);
     return lhs;
 }
-
 
 UiStyle::FormatType operator&(UiStyle::FormatType lhs, UiStyle::FormatType rhs)
 {
     return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & static_cast<quint32>(rhs));
 }
 
-
-UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs)
+UiStyle::FormatType& operator&=(UiStyle::FormatType& lhs, UiStyle::FormatType rhs)
 {
     lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & static_cast<quint32>(rhs));
     return lhs;
 }
-
 
 UiStyle::FormatType operator&(UiStyle::FormatType lhs, quint32 rhs)
 {
     return static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & rhs);
 }
 
-
-UiStyle::FormatType& operator&=(UiStyle::FormatType &lhs, quint32 rhs)
+UiStyle::FormatType& operator&=(UiStyle::FormatType& lhs, quint32 rhs)
 {
     lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) & rhs);
     return lhs;
 }
 
-
-UiStyle::FormatType& operator^=(UiStyle::FormatType &lhs, UiStyle::FormatType rhs)
+UiStyle::FormatType& operator^=(UiStyle::FormatType& lhs, UiStyle::FormatType rhs)
 {
     lhs = static_cast<UiStyle::FormatType>(static_cast<quint32>(lhs) ^ static_cast<quint32>(rhs));
     return lhs;
 }
-
 
 UiStyle::MessageLabel operator|(UiStyle::MessageLabel lhs, UiStyle::MessageLabel rhs)
 {
     return static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
 }
 
-
-UiStyle::MessageLabel& operator|=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs)
+UiStyle::MessageLabel& operator|=(UiStyle::MessageLabel& lhs, UiStyle::MessageLabel rhs)
 {
     lhs = static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
     return lhs;
 }
-
 
 UiStyle::MessageLabel operator&(UiStyle::MessageLabel lhs, quint32 rhs)
 {
     return static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) & rhs);
 }
 
-
-UiStyle::MessageLabel& operator&=(UiStyle::MessageLabel &lhs, UiStyle::MessageLabel rhs)
+UiStyle::MessageLabel& operator&=(UiStyle::MessageLabel& lhs, UiStyle::MessageLabel rhs)
 {
     lhs = static_cast<UiStyle::MessageLabel>(static_cast<quint32>(lhs) & static_cast<quint32>(rhs));
     return lhs;
 }
-
 
 quint64 operator|(UiStyle::FormatType lhs, UiStyle::MessageLabel rhs)
 {
     return static_cast<quint64>(lhs) | (static_cast<quint64>(rhs) << 32ull);
 }
 
-
 UiStyle::ItemFormatType operator|(UiStyle::ItemFormatType lhs, UiStyle::ItemFormatType rhs)
 {
     return static_cast<UiStyle::ItemFormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
 }
 
-
-UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType &lhs, UiStyle::ItemFormatType rhs)
+UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType& lhs, UiStyle::ItemFormatType rhs)
 {
     lhs = static_cast<UiStyle::ItemFormatType>(static_cast<quint32>(lhs) | static_cast<quint32>(rhs));
     return lhs;
@@ -1258,22 +1227,18 @@ UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType &lhs, UiStyle::ItemF
 
 /***********************************************************************************/
 
-QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList)
+QDataStream& operator<<(QDataStream& out, const UiStyle::FormatList& formatList)
 {
     out << static_cast<quint16>(formatList.size());
     auto it = formatList.cbegin();
     while (it != formatList.cend()) {
-        out << it->first
-            << static_cast<quint32>(it->second.type)
-            << it->second.foreground
-            << it->second.background;
+        out << it->first << static_cast<quint32>(it->second.type) << it->second.foreground << it->second.background;
         ++it;
     }
     return out;
 }
 
-
-QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList)
+QDataStream& operator>>(QDataStream& in, UiStyle::FormatList& formatList)
 {
     quint16 cnt;
     in >> cnt;
@@ -1283,7 +1248,8 @@ QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList)
         QColor foreground;
         QColor background;
         in >> pos >> ftype >> foreground >> background;
-        formatList.emplace_back(std::make_pair(quint16{pos}, UiStyle::Format{static_cast<UiStyle::FormatType>(ftype), foreground, background}));
+        formatList.emplace_back(
+            std::make_pair(quint16{pos}, UiStyle::Format{static_cast<UiStyle::FormatType>(ftype), foreground, background}));
     }
     return in;
 }

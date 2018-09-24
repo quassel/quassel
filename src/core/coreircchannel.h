@@ -23,7 +23,7 @@
 #include "ircchannel.h"
 
 #ifdef HAVE_QCA2
-#  include "cipher.h"
+#    include "cipher.h"
 #endif
 
 class CoreIrcChannel : public IrcChannel
@@ -31,11 +31,11 @@ class CoreIrcChannel : public IrcChannel
     Q_OBJECT
 
 public:
-    CoreIrcChannel(const QString &channelname, Network *network);
+    CoreIrcChannel(const QString& channelname, Network* network);
     ~CoreIrcChannel() override;
 
 #ifdef HAVE_QCA2
-    Cipher *cipher() const;
+    Cipher* cipher() const;
     void setEncrypted(bool);
 #endif
 
@@ -46,6 +46,6 @@ private:
     bool _receivedWelcomeMsg;
 
 #ifdef HAVE_QCA2
-    mutable Cipher *_cipher;
+    mutable Cipher* _cipher;
 #endif
 };

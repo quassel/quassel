@@ -31,14 +31,13 @@
 #include "qtuisettings.h"
 #include "types.h"
 
-QtUiApplication::QtUiApplication(int &argc, char **argv)
+QtUiApplication::QtUiApplication(int& argc, char** argv)
     : QApplication(argc, argv)
 {
 #if QT_VERSION >= 0x050600
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 #endif
 }
-
 
 void QtUiApplication::init()
 {
@@ -62,7 +61,6 @@ void QtUiApplication::init()
     });
 }
 
-
 Quassel::QuitHandler QtUiApplication::quitHandler()
 {
     // Wait until the Client instance is destroyed before quitting the event loop
@@ -73,7 +71,6 @@ Quassel::QuitHandler QtUiApplication::quitHandler()
     };
 }
 
-
 bool QtUiApplication::migrateSettings()
 {
     // --------
@@ -82,8 +79,7 @@ bool QtUiApplication::migrateSettings()
     QtUiSettings s;
     uint versionMajor = s.version();
     if (versionMajor != 1) {
-        qCritical() << qPrintable(QString("Invalid client settings version '%1'")
-                                  .arg(versionMajor));
+        qCritical() << qPrintable(QString("Invalid client settings version '%1'").arg(versionMajor));
         return false;
     }
 
@@ -100,10 +96,10 @@ bool QtUiApplication::migrateSettings()
     if (versionMinor == VERSION_MINOR_CURRENT) {
         // At latest version, no need to migrate defaults or other settings
         return true;
-    } else if (versionMinor == 0) {
+    }
+    else if (versionMinor == 0) {
         // New configuration, store as current version
-        qDebug() << qPrintable(QString("Set up new client settings v%1.%2")
-                               .arg(versionMajor).arg(VERSION_MINOR_CURRENT));
+        qDebug() << qPrintable(QString("Set up new client settings v%1.%2").arg(versionMajor).arg(VERSION_MINOR_CURRENT));
         s.setVersionMinor(VERSION_MINOR_CURRENT);
 
         // Update the settings stylesheet for first setup.  We don't know if older content exists,
@@ -111,7 +107,8 @@ bool QtUiApplication::migrateSettings()
         QtUiStyle qtUiStyle;
         qtUiStyle.generateSettingsQss();
         return true;
-    } else if (versionMinor < VERSION_MINOR_CURRENT) {
+    }
+    else if (versionMinor < VERSION_MINOR_CURRENT) {
         // We're upgrading - apply the neccessary upgrades from each interim version
         // curVersion will never equal VERSION_MINOR_CURRENT, as it represents the version before
         // the most recent applySettingsMigration() call.
@@ -120,7 +117,9 @@ bool QtUiApplication::migrateSettings()
                 // Something went wrong, time to bail out
                 qCritical() << qPrintable(QString("Could not migrate client settings from v%1.%2 "
                                                   "to v%1.%3")
-                                          .arg(versionMajor).arg(curVersion).arg(curVersion + 1));
+                                              .arg(versionMajor)
+                                              .arg(curVersion)
+                                              .arg(curVersion + 1));
                 // Keep track of the last successful upgrade to avoid repeating it on next start
                 s.setVersionMinor(curVersion);
                 return false;
@@ -129,21 +128,25 @@ bool QtUiApplication::migrateSettings()
         // Migration successful!
         qDebug() << qPrintable(QString("Successfully migrated client settings from v%1.%2 to "
                                        "v%1.%3")
-                               .arg(versionMajor).arg(versionMinor).arg(VERSION_MINOR_CURRENT));
+                                   .arg(versionMajor)
+                                   .arg(versionMinor)
+                                   .arg(VERSION_MINOR_CURRENT));
         // Store the new minor version
         s.setVersionMinor(VERSION_MINOR_CURRENT);
         return true;
-    } else {
+    }
+    else {
         // versionMinor > VERSION_MINOR_CURRENT
         // The user downgraded to an older version of Quassel.  Let's hope for the best.
         // Don't change the minorVersion as the newer version's upgrade logic has already run.
         qWarning() << qPrintable(QString("Client settings v%1.%2 is newer than latest known v%1.%3,"
                                          " things might not work!")
-                                 .arg(versionMajor).arg(versionMinor).arg(VERSION_MINOR_CURRENT));
+                                     .arg(versionMajor)
+                                     .arg(versionMinor)
+                                     .arg(VERSION_MINOR_CURRENT));
         return true;
     }
 }
-
 
 bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint newVersion)
 {
@@ -158,8 +161,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     // saved.  Exceptions will be noted below.
     // NOTE:  If you add new upgrade logic here, you MUST ALSO increase VERSION_MINOR_CURRENT in
     // migrateSettings()!  Otherwise, your upgrade logic won't ever be called.
-    case 9:
-    {
+    case 9: {
         // New default changes: show highest sender prefix mode, if available
 
         // --------
@@ -168,8 +170,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         const QString senderPrefixModeId = "SenderPrefixMode";
         if (!chatViewSettings.valueExists(senderPrefixModeId)) {
             // New default is HighestMode, preserve previous behavior by setting to NoModes
-            chatViewSettings.setValue(senderPrefixModeId,
-                                      static_cast<int>(UiStyle::SenderPrefixMode::NoModes));
+            chatViewSettings.setValue(senderPrefixModeId, static_cast<int>(UiStyle::SenderPrefixMode::NoModes));
         }
         // --------
 
@@ -177,8 +178,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         return true;
     }
 
-    case 8:
-    {
+    case 8: {
         // New default changes: RegEx checkbox now toggles Channel regular expressions, too
         //
         // This only affects local highlights.  Core-side highlights weren't released in stable when
@@ -192,14 +192,12 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // This might be more efficient with std::transform() or such.  It /is/ only run once...
         auto highlightList = notificationSettings.highlightList();
         bool changesMade = false;
-        for (int index = 0; index < highlightList.count(); ++index)
-        {
+        for (int index = 0; index < highlightList.count(); ++index) {
             // Load the highlight rule...
             auto highlightRule = highlightList[index].toMap();
 
             // Check if "Channel" has anything set and RegEx is disabled
-            if (!highlightRule["Channel"].toString().isEmpty()
-                    && highlightRule["RegEx"].toBool() == false) {
+            if (!highlightRule["Channel"].toString().isEmpty() && highlightRule["RegEx"].toBool() == false) {
                 // We have a rule to convert
 
                 // Mark as a regular expression, allowing the Channel filtering to work the same as
@@ -208,8 +206,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
 
                 // Convert the main rule to regular expression, mirroring the conversion to wildcard
                 // format from QtUiMessageProcessor::checkForHighlight()
-                highlightRule["Name"] =
-                        "(^|\\W)" + QRegExp::escape(highlightRule["Name"].toString()) + "(\\W|$)";
+                highlightRule["Name"] = "(^|\\W)" + QRegExp::escape(highlightRule["Name"].toString()) + "(\\W|$)";
 
                 // Save the rule back
                 highlightList[index] = highlightRule;
@@ -226,11 +223,10 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // Migration complete!
         return true;
     }
-    case 7:
-    {
+    case 7: {
         // New default changes: UseProxy is no longer used in CoreAccountSettings
         CoreAccountSettings s;
-        for (auto &&accountId : s.knownAccounts()) {
+        for (auto&& accountId : s.knownAccounts()) {
             auto map = s.retrieveAccountData(accountId);
             if (!map.value("UseProxy", false).toBool()) {
                 map["ProxyType"] = static_cast<int>(QNetworkProxy::ProxyType::NoProxy);
@@ -242,8 +238,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // Migration complete!
         return true;
     }
-    case 6:
-    {
+    case 6: {
         // New default changes: sender colors switched around to Tango-ish theme
 
         // --------
@@ -251,23 +246,23 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         QtUiStyleSettings settingsUiStyleColors("Colors");
         // Preserve the old default values for all variants
         const QColor oldDefaultSenderColorSelf = QColor(0, 0, 0);
-        const QList<QColor> oldDefaultSenderColors = QList<QColor> {
-            QColor(204,  13, 127),  /// Sender00
-            QColor(142,  85, 233),  /// Sender01
-            QColor(179,  14,  14),  /// Sender02
-            QColor( 23, 179,  57),  /// Sender03
-            QColor( 88, 175, 179),  /// Sender04
-            QColor(157,  84, 179),  /// Sender05
+        const QList<QColor> oldDefaultSenderColors = QList<QColor>{
+            QColor(204, 13, 127),   /// Sender00
+            QColor(142, 85, 233),   /// Sender01
+            QColor(179, 14, 14),    /// Sender02
+            QColor(23, 179, 57),    /// Sender03
+            QColor(88, 175, 179),   /// Sender04
+            QColor(157, 84, 179),   /// Sender05
             QColor(179, 151, 117),  /// Sender06
-            QColor( 49, 118, 179),  /// Sender07
-            QColor(233,  13, 127),  /// Sender08
-            QColor(142,  85, 233),  /// Sender09
-            QColor(179,  14,  14),  /// Sender10
-            QColor( 23, 179,  57),  /// Sender11
-            QColor( 88, 175, 179),  /// Sender12
-            QColor(157,  84, 179),  /// Sender13
+            QColor(49, 118, 179),   /// Sender07
+            QColor(233, 13, 127),   /// Sender08
+            QColor(142, 85, 233),   /// Sender09
+            QColor(179, 14, 14),    /// Sender10
+            QColor(23, 179, 57),    /// Sender11
+            QColor(88, 175, 179),   /// Sender12
+            QColor(157, 84, 179),   /// Sender13
             QColor(179, 151, 117),  /// Sender14
-            QColor( 49, 118, 179),  /// Sender15
+            QColor(49, 118, 179),   /// Sender15
         };
         if (!settingsUiStyleColors.valueExists("SenderSelf")) {
             // Preserve the old default sender color if none set
@@ -277,7 +272,8 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         for (int i = 0; i < oldDefaultSenderColors.count(); i++) {
             // Get the sender color ID for each available color
             QString dez = QString::number(i);
-            if (dez.length() == 1) dez.prepend('0');
+            if (dez.length() == 1)
+                dez.prepend('0');
             senderColorId = QString("Sender" + dez);
             if (!settingsUiStyleColors.valueExists(senderColorId)) {
                 // Preserve the old default sender color if none set
@@ -293,8 +289,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // Migration complete!
         return true;
     }
-    case 5:
-    {
+    case 5: {
         // New default changes: sender colors apply to nearly all messages with nicks
 
         // --------
@@ -314,8 +309,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // Migration complete!
         return true;
     }
-    case 4:
-    {
+    case 4: {
         // New default changes: system locale used to generate a timestamp format string, deciding
         // 24-hour or 12-hour timestamp.
 
@@ -331,8 +325,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // Migration complete!
         return true;
     }
-    case 3:
-    {
+    case 3: {
         // New default changes: per-chat history and line wrapping enabled by default.
 
         // --------
@@ -354,8 +347,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
         // Migration complete!
         return true;
     }
-    case 2:
-    {
+    case 2: {
         // New default changes: sender <nick> brackets disabled, sender colors and sender CTCP
         // colors enabled.
 
@@ -403,23 +395,20 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
     }
 }
 
-
-void QtUiApplication::commitData(QSessionManager &manager)
+void QtUiApplication::commitData(QSessionManager& manager)
 {
     Q_UNUSED(manager)
     _aboutToQuit = true;
 }
 
-
-void QtUiApplication::saveState(QSessionManager &manager)
+void QtUiApplication::saveState(QSessionManager& manager)
 {
-    //qDebug() << QString("saving session state to id %1").arg(manager.sessionId());
+    // qDebug() << QString("saving session state to id %1").arg(manager.sessionId());
     // AccountId activeCore = Client::currentCoreAccount().accountId(); // FIXME store this!
     SessionSettings s(manager.sessionId());
     s.setSessionAge(0);
     QtUi::mainWindow()->saveStateToSettings(s);
 }
-
 
 void QtUiApplication::resumeSessionIfPossible()
 {

@@ -33,20 +33,23 @@ class SystemTray : public QObject
     Q_ENUMS(State Mode MessageIcon ActivationReason)
 
 public:
-    enum State {
+    enum State
+    {
         Passive,
         Active,
         NeedsAttention
     };
 
-    enum Mode {
+    enum Mode
+    {
         Invalid,
         Legacy,
         StatusNotifier
     };
 
     // same as in QSystemTrayIcon
-    enum MessageIcon {
+    enum MessageIcon
+    {
         NoIcon,
         Information,
         Warning,
@@ -54,7 +57,8 @@ public:
     };
 
     // same as in QSystemTrayIcon
-    enum ActivationReason {
+    enum ActivationReason
+    {
         Unknown,
         Context,
         DoubleClick,
@@ -62,13 +66,14 @@ public:
         MiddleClick
     };
 
-    enum class AttentionBehavior {
+    enum class AttentionBehavior
+    {
         DoNothing,
         ChangeColor,
         Blink
     };
 
-    explicit SystemTray(QWidget *parent);
+    explicit SystemTray(QWidget* parent);
     ~SystemTray() override;
 
     Mode mode() const;
@@ -78,15 +83,16 @@ public:
 
     virtual bool isSystemTrayAvailable() const;
 
-    QWidget *associatedWidget() const;
+    QWidget* associatedWidget() const;
 
 public slots:
     void setVisible(bool visible = true);
     void setState(State);
     void setAlert(bool alerted);
 
-    void setToolTip(const QString &title, const QString &subtitle);
-    virtual void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
+    void setToolTip(const QString& title, const QString& subtitle);
+    virtual void showMessage(
+        const QString& title, const QString& message, MessageIcon icon = Information, int msTimeout = 10000, uint notificationId = 0);
     virtual void closeMessage(uint notificationId);
 
 signals:
@@ -95,7 +101,7 @@ signals:
     void visibilityChanged(bool isVisible);
     void iconsChanged();
     void currentIconNameChanged();
-    void toolTipChanged(const QString &title, const QString &subtitle);
+    void toolTipChanged(const QString& title, const QString& subtitle);
 
     void activated(SystemTray::ActivationReason);
     void messageClicked(uint notificationId);
@@ -109,7 +115,7 @@ protected:
 
     QString toolTipTitle() const;
     QString toolTipSubTitle() const;
-    QMenu *trayMenu() const;
+    QMenu* trayMenu() const;
 
     QString iconName(State state) const;
     QString currentIconName() const;
@@ -118,9 +124,9 @@ protected:
 private slots:
     void minimizeRestore();
     void trayMenuAboutToShow();
-    void invertTrayIconChanged(const QVariant &);
-    void enableChangeColorChanged(const QVariant &);
-    void enableBlinkChanged(const QVariant &);
+    void invertTrayIconChanged(const QVariant&);
+    void enableChangeColorChanged(const QVariant&);
+    void enableBlinkChanged(const QVariant&);
 
     void onBlinkTimeout();
 
@@ -137,7 +143,7 @@ private:
     QString _toolTipTitle;
     QString _toolTipSubTitle;
 
-    QMenu *_trayMenu{nullptr};
-    QWidget *_associatedWidget{nullptr};
-    Action *_minimizeRestoreAction{nullptr};
+    QMenu* _trayMenu{nullptr};
+    QWidget* _associatedWidget{nullptr};
+    Action* _minimizeRestoreAction{nullptr};
 };

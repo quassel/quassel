@@ -23,12 +23,12 @@
 #include <tuple>
 #include <vector>
 
-#include <QWizard>
 #include <QVariantMap>
+#include <QWizard>
 
-#include "ui_coreconfigwizardintropage.h"
 #include "ui_coreconfigwizardadminuserpage.h"
 #include "ui_coreconfigwizardauthenticationselectionpage.h"
+#include "ui_coreconfigwizardintropage.h"
 #include "ui_coreconfigwizardstorageselectionpage.h"
 #include "ui_coreconfigwizardsyncpage.h"
 
@@ -39,14 +39,15 @@ namespace CoreConfigWizardPages {
 class SyncPage;
 class SyncRelayPage;
 
-}
+}  // namespace CoreConfigWizardPages
 
 class CoreConfigWizard : public QWizard
 {
     Q_OBJECT
 
 public:
-    enum {
+    enum
+    {
         IntroPage,
         AdminUserPage,
         AuthenticationSelectionPage,
@@ -57,30 +58,32 @@ public:
         ConclusionPage
     };
 
-    CoreConfigWizard(CoreConnection *connection, const QVariantList &backendInfos, const QVariantList &authInfos, QWidget *parent = nullptr);
+    CoreConfigWizard(CoreConnection* connection, const QVariantList& backendInfos, const QVariantList& authInfos, QWidget* parent = nullptr);
 
-    inline CoreConnection *coreConnection() const { return _connection; }
+    inline CoreConnection* coreConnection() const { return _connection; }
 
 signals:
-    void setupCore(const QVariant &setupData);
-    void loginToCore(const QString &user, const QString &password, bool rememberPassword);
+    void setupCore(const QVariant& setupData);
+    void loginToCore(const QString& user, const QString& password, bool rememberPassword);
 
 public slots:
     void syncFinished();
 
 private slots:
-    void prepareCoreSetup(const QString &backend, const QVariantMap &properties, const QString &authenticator, const QVariantMap &authProperties);
+    void prepareCoreSetup(const QString& backend,
+                          const QVariantMap& properties,
+                          const QString& authenticator,
+                          const QVariantMap& authProperties);
     void coreSetupSuccess();
-    void coreSetupFailed(const QString &);
+    void coreSetupFailed(const QString&);
     void startOver();
 
 private:
-    CoreConfigWizardPages::SyncPage *syncPage;
-    CoreConfigWizardPages::SyncRelayPage *syncRelayPage;
+    CoreConfigWizardPages::SyncPage* syncPage;
+    CoreConfigWizardPages::SyncRelayPage* syncRelayPage;
 
-    CoreConnection *_connection;
+    CoreConnection* _connection;
 };
-
 
 namespace CoreConfigWizardPages {
 
@@ -89,25 +92,25 @@ class IntroPage : public QWizardPage
     Q_OBJECT
 
 public:
-    IntroPage(QWidget *parent = nullptr);
+    IntroPage(QWidget* parent = nullptr);
     int nextId() const override;
+
 private:
     Ui::CoreConfigWizardIntroPage ui;
 };
-
 
 class AdminUserPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    AdminUserPage(QWidget *parent = nullptr);
+    AdminUserPage(QWidget* parent = nullptr);
     int nextId() const override;
     bool isComplete() const override;
+
 private:
     Ui::CoreConfigWizardAdminUserPage ui;
 };
-
 
 class AuthenticationSelectionPage : public QWizardPage
 {
@@ -115,7 +118,7 @@ class AuthenticationSelectionPage : public QWizardPage
     using FieldInfo = std::tuple<QString, QString, QVariant>;
 
 public:
-    AuthenticationSelectionPage(const QVariantList &authInfos, QWidget *parent = nullptr);
+    AuthenticationSelectionPage(const QVariantList& authInfos, QWidget* parent = nullptr);
     int nextId() const override;
     QString displayName() const;
     QString authenticator() const;
@@ -130,14 +133,13 @@ private:
     std::vector<std::vector<FieldInfo>> _authFields;
 };
 
-
 class StorageSelectionPage : public QWizardPage
 {
     Q_OBJECT
     using FieldInfo = std::tuple<QString, QString, QVariant>;
 
 public:
-    StorageSelectionPage(const QVariantList &backendInfos, QWidget *parent = nullptr);
+    StorageSelectionPage(const QVariantList& backendInfos, QWidget* parent = nullptr);
     int nextId() const override;
     QString displayName() const;
     QString backend() const;
@@ -152,40 +154,42 @@ private:
     std::vector<std::vector<FieldInfo>> _backendFields;
 };
 
-
 class SyncPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    SyncPage(QWidget *parent = nullptr);
+    SyncPage(QWidget* parent = nullptr);
     void initializePage() override;
     int nextId() const override;
     bool isComplete() const override;
 
 public slots:
-    void setStatus(const QString &status);
+    void setStatus(const QString& status);
     void setError(bool);
     void setComplete(bool);
 
 signals:
-    void setupCore(const QString &backend, const QVariantMap &, const QString &authenticator, const QVariantMap &);
+    void setupCore(const QString& backend, const QVariantMap&, const QString& authenticator, const QVariantMap&);
 
 private:
     Ui::CoreConfigWizardSyncPage ui;
-    bool _complete {false};
-    bool _hasError {false};
+    bool _complete{false};
+    bool _hasError{false};
 };
-
 
 class SyncRelayPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    SyncRelayPage(QWidget *parent = nullptr);
+    SyncRelayPage(QWidget* parent = nullptr);
     int nextId() const override;
-    enum Mode { Success, Error };
+    enum Mode
+    {
+        Success,
+        Error
+    };
 
 public slots:
     void setMode(Mode);
@@ -197,4 +201,4 @@ private:
     Mode mode;
 };
 
-}
+}  // namespace CoreConfigWizardPages

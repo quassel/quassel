@@ -22,12 +22,11 @@
 
 #include "client-export.h"
 
+#include <QAbstractItemModel>
+#include <QLinkedList>  // needed for debug
 #include <QList>
 #include <QStringList>
 #include <QVariant>
-#include <QAbstractItemModel>
-
-#include <QLinkedList> // needed for debug
 
 /*****************************************
  *  general item used in the Tree Model
@@ -37,31 +36,32 @@ class CLIENT_EXPORT AbstractTreeItem : public QObject
     Q_OBJECT
 
 public:
-    enum TreeItemFlag {
+    enum TreeItemFlag
+    {
         NoTreeItemFlag = 0x00,
         DeleteOnLastChildRemoved = 0x01
     };
     Q_DECLARE_FLAGS(TreeItemFlags, TreeItemFlag)
 
-    AbstractTreeItem(AbstractTreeItem *parent = nullptr);
+    AbstractTreeItem(AbstractTreeItem* parent = nullptr);
 
-    bool newChild(AbstractTreeItem *child);
-    bool newChilds(const QList<AbstractTreeItem *> &items);
+    bool newChild(AbstractTreeItem* child);
+    bool newChilds(const QList<AbstractTreeItem*>& items);
 
     bool removeChild(int row);
-    inline bool removeChild(AbstractTreeItem *child) { return removeChild(child->row()); }
+    inline bool removeChild(AbstractTreeItem* child) { return removeChild(child->row()); }
     void removeAllChilds();
 
-    bool reParent(AbstractTreeItem *newParent);
+    bool reParent(AbstractTreeItem* newParent);
 
-    AbstractTreeItem *child(int row) const;
+    AbstractTreeItem* child(int row) const;
 
     int childCount(int column = 0) const;
 
     virtual int columnCount() const = 0;
 
     virtual QVariant data(int column, int role) const = 0;
-    virtual bool setData(int column, const QVariant &value, int role) = 0;
+    virtual bool setData(int column, const QVariant& value, int role) = 0;
 
     virtual inline Qt::ItemFlags flags() const { return _flags; }
     virtual inline void setFlags(Qt::ItemFlags flags) { _flags = flags; }
@@ -69,7 +69,7 @@ public:
     inline AbstractTreeItem::TreeItemFlags treeItemFlags() const { return _treeItemFlags; }
     inline void setTreeItemFlags(AbstractTreeItem::TreeItemFlags flags) { _treeItemFlags = flags; }
     int row() const;
-    inline AbstractTreeItem *parent() const { return qobject_cast<AbstractTreeItem *>(QObject::parent()); }
+    inline AbstractTreeItem* parent() const { return qobject_cast<AbstractTreeItem*>(QObject::parent()); }
 
     void dumpChildList();
 
@@ -83,20 +83,20 @@ signals:
     void endRemoveChilds();
 
 protected:
-    void customEvent(QEvent *event) override;
+    void customEvent(QEvent* event) override;
 
 private:
-    QList<AbstractTreeItem *> _childItems;
+    QList<AbstractTreeItem*> _childItems;
     Qt::ItemFlags _flags;
     TreeItemFlags _treeItemFlags;
 
-    void removeChildLater(AbstractTreeItem *child);
+    void removeChildLater(AbstractTreeItem* child);
     inline void checkForDeletion()
     {
-        if (treeItemFlags() & DeleteOnLastChildRemoved && childCount() == 0) parent()->removeChildLater(this);
+        if (treeItemFlags() & DeleteOnLastChildRemoved && childCount() == 0)
+            parent()->removeChildLater(this);
     }
 };
-
 
 /*****************************************
  * SimpleTreeItem
@@ -106,17 +106,16 @@ class CLIENT_EXPORT SimpleTreeItem : public AbstractTreeItem
     Q_OBJECT
 
 public:
-    SimpleTreeItem(QList<QVariant> data, AbstractTreeItem *parent = nullptr);
+    SimpleTreeItem(QList<QVariant> data, AbstractTreeItem* parent = nullptr);
 
     QVariant data(int column, int role) const override;
-    bool setData(int column, const QVariant &value, int role) override;
+    bool setData(int column, const QVariant& value, int role) override;
 
     int columnCount() const override;
 
 private:
     QList<QVariant> _itemData;
 };
-
 
 /*****************************************
  * PropertyMapItem
@@ -126,17 +125,16 @@ class CLIENT_EXPORT PropertyMapItem : public AbstractTreeItem
     Q_OBJECT
 
 public:
-    PropertyMapItem(AbstractTreeItem *parent = nullptr);
+    PropertyMapItem(AbstractTreeItem* parent = nullptr);
 
     virtual QStringList propertyOrder() const = 0;
 
     QVariant data(int column, int role) const override;
-    bool setData(int column, const QVariant &value, int role) override;
+    bool setData(int column, const QVariant& value, int role) override;
 
     virtual QString toolTip(int column) const { Q_UNUSED(column) return QString(); }
     int columnCount() const override;
 };
-
 
 /*****************************************
  * TreeModel
@@ -146,29 +144,30 @@ class CLIENT_EXPORT TreeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    enum myRoles {
+    enum myRoles
+    {
         SortRole = Qt::UserRole,
         UserRole
     };
 
-    TreeModel(const QList<QVariant> &, QObject *parent = nullptr);
+    TreeModel(const QList<QVariant>&, QObject* parent = nullptr);
     ~TreeModel() override;
 
-    AbstractTreeItem *root() const;
+    AbstractTreeItem* root() const;
 
-    QVariant data(const QModelIndex &index, int role) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    QVariant data(const QModelIndex& index, int role) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
 
-    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex indexByItem(AbstractTreeItem *item) const;
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+    QModelIndex indexByItem(AbstractTreeItem* item) const;
 
-    QModelIndex parent(const QModelIndex &index) const override;
+    QModelIndex parent(const QModelIndex& index) const override;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
     virtual void clear();
 
@@ -182,25 +181,30 @@ private slots:
     void endRemoveChilds();
 
 protected:
-    AbstractTreeItem *rootItem;
+    AbstractTreeItem* rootItem;
 
 private:
-    void connectItem(AbstractTreeItem *item);
+    void connectItem(AbstractTreeItem* item);
 
-    struct ChildStatus {
+    struct ChildStatus
+    {
         QModelIndex parent;
         int childCount;
         int start;
         int end;
-        inline ChildStatus(QModelIndex parent_, int cc_, int s_, int e_) : parent(parent_), childCount(cc_), start(s_), end(e_) {};
+        inline ChildStatus(QModelIndex parent_, int cc_, int s_, int e_)
+            : parent(parent_)
+            , childCount(cc_)
+            , start(s_)
+            , end(e_){};
     };
     ChildStatus _childStatus;
     int _aboutToRemoveOrInsert;
 
 private slots:
-    void debug_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-    void debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-    void debug_rowsInserted(const QModelIndex &parent, int start, int end);
-    void debug_rowsRemoved(const QModelIndex &parent, int start, int end);
-    void debug_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void debug_rowsAboutToBeInserted(const QModelIndex& parent, int start, int end);
+    void debug_rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end);
+    void debug_rowsInserted(const QModelIndex& parent, int start, int end);
+    void debug_rowsRemoved(const QModelIndex& parent, int start, int end);
+    void debug_dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 };

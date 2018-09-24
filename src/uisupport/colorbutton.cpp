@@ -25,15 +25,14 @@
 #include <QStyle>
 #include <QStyleOptionFrame>
 
-
-ColorButton::ColorButton(QWidget *parent) : QToolButton(parent)
+ColorButton::ColorButton(QWidget* parent)
+    : QToolButton(parent)
 {
     setText("");
     connect(this, &QAbstractButton::clicked, this, &ColorButton::chooseColor);
 }
 
-
-void ColorButton::setColor(const QColor &color)
+void ColorButton::setColor(const QColor& color)
 {
     _color = color;
     QPixmap pixmap(QSize(32, 32));
@@ -43,12 +42,10 @@ void ColorButton::setColor(const QColor &color)
     emit colorChanged(color);
 }
 
-
 QColor ColorButton::color() const
 {
     return _color;
 }
-
 
 void ColorButton::chooseColor()
 {

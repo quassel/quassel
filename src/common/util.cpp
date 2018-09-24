@@ -33,16 +33,14 @@
 #include "quassel.h"
 
 // MIBenum values from http://www.iana.org/assignments/character-sets/character-sets.xml#table-character-sets-1
-static QList<int> utf8DetectionBlacklist = QList<int>()
-    << 39 /* ISO-2022-JP */;
+static QList<int> utf8DetectionBlacklist = QList<int>() << 39 /* ISO-2022-JP */;
 
-QString nickFromMask(const QString &mask)
+QString nickFromMask(const QString& mask)
 {
     return mask.left(mask.indexOf('!'));
 }
 
-
-QString userFromMask(const QString &mask)
+QString userFromMask(const QString& mask)
 {
     const int offset = mask.indexOf('!') + 1;
     if (offset <= 0)
@@ -51,8 +49,7 @@ QString userFromMask(const QString &mask)
     return mask.mid(offset, length >= 0 ? length : -1);
 }
 
-
-QString hostFromMask(const QString &mask)
+QString hostFromMask(const QString& mask)
 {
     const int excl = mask.indexOf('!');
     if (excl < 0)
@@ -61,8 +58,7 @@ QString hostFromMask(const QString &mask)
     return offset > 0 && offset < mask.size() ? mask.mid(offset) : QString{};
 }
 
-
-bool isChannelName(const QString &str)
+bool isChannelName(const QString& str)
 {
     if (str.isEmpty())
         return false;
@@ -70,19 +66,18 @@ bool isChannelName(const QString &str)
     return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return c == str[0]; });
 }
 
-
 QString stripFormatCodes(QString message)
 {
     static QRegExp regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
     return message.remove(regEx);
 }
 
-
-QString stripAcceleratorMarkers(const QString &label_)
+QString stripAcceleratorMarkers(const QString& label_)
 {
     QString label = label_;
     int p = 0;
-    forever {
+    forever
+    {
         p = label.indexOf('&', p);
         if (p < 0 || p + 1 >= label.length())
             break;
@@ -95,8 +90,7 @@ QString stripAcceleratorMarkers(const QString &label_)
     return label;
 }
 
-
-QString decodeString(const QByteArray &input, QTextCodec *codec)
+QString decodeString(const QByteArray& input, QTextCodec* codec)
 {
     if (codec && utf8DetectionBlacklist.contains(codec->mibEnum()))
         return codec->toUnicode(input);
@@ -110,32 +104,46 @@ QString decodeString(const QByteArray &input, QTextCodec *codec)
     for (uchar c : input) {
         if (cnt) {
             // We check a part of a multibyte char. These need to be of the form 10yyyyyy.
-            if ((c & 0xc0) != 0x80) { isUtf8 = false; break; }
+            if ((c & 0xc0) != 0x80) {
+                isUtf8 = false;
+                break;
+            }
             cnt--;
             continue;
         }
-        if ((c & 0x80) == 0x00) continue;  // 7 bit is always ok
-        if ((c & 0xf8) == 0xf0) { cnt = 3; continue; } // 4-byte char 11110xxx 10yyyyyy 10zzzzzz 10vvvvvv
-        if ((c & 0xf0) == 0xe0) { cnt = 2; continue; } // 3-byte char 1110xxxx 10yyyyyy 10zzzzzz
-        if ((c & 0xe0) == 0xc0) { cnt = 1; continue; } // 2-byte char 110xxxxx 10yyyyyy
-        isUtf8 = false; break; // 8 bit char, but not utf8!
+        if ((c & 0x80) == 0x00)
+            continue;  // 7 bit is always ok
+        if ((c & 0xf8) == 0xf0) {
+            cnt = 3;
+            continue;
+        }  // 4-byte char 11110xxx 10yyyyyy 10zzzzzz 10vvvvvv
+        if ((c & 0xf0) == 0xe0) {
+            cnt = 2;
+            continue;
+        }  // 3-byte char 1110xxxx 10yyyyyy 10zzzzzz
+        if ((c & 0xe0) == 0xc0) {
+            cnt = 1;
+            continue;
+        }  // 2-byte char 110xxxxx 10yyyyyy
+        isUtf8 = false;
+        break;  // 8 bit char, but not utf8!
     }
     if (isUtf8 && cnt == 0) {
         QString s = QString::fromUtf8(input);
-        //qDebug() << "Detected utf8:" << s;
+        // qDebug() << "Detected utf8:" << s;
         return s;
     }
-    //QTextCodec *codec = QTextCodec::codecForName(encoding.toLatin1());
-    if (!codec) return QString::fromLatin1(input);
+    // QTextCodec *codec = QTextCodec::codecForName(encoding.toLatin1());
+    if (!codec)
+        return QString::fromLatin1(input);
     return codec->toUnicode(input);
 }
 
-
-uint editingDistance(const QString &s1, const QString &s2)
+uint editingDistance(const QString& s1, const QString& s2)
 {
-    uint n = s1.size()+1;
-    uint m = s2.size()+1;
-    QVector<QVector<uint> > matrix(n, QVector<uint>(m, 0));
+    uint n = s1.size() + 1;
+    uint m = s2.size() + 1;
+    QVector<QVector<uint>> matrix(n, QVector<uint>(m, 0));
 
     for (uint i = 0; i < n; i++)
         matrix[i][0] = i;
@@ -146,16 +154,16 @@ uint editingDistance(const QString &s1, const QString &s2)
     uint min;
     for (uint i = 1; i < n; i++) {
         for (uint j = 1; j < m; j++) {
-            uint deleteChar = matrix[i-1][j] + 1;
-            uint insertChar = matrix[i][j-1] + 1;
+            uint deleteChar = matrix[i - 1][j] + 1;
+            uint insertChar = matrix[i][j - 1] + 1;
 
             if (deleteChar < insertChar)
                 min = deleteChar;
             else
                 min = insertChar;
 
-            if (s1[i-1] == s2[j-1]) {
-                uint inheritChar = matrix[i-1][j-1];
+            if (s1[i - 1] == s2[j - 1]) {
+                uint inheritChar = matrix[i - 1][j - 1];
                 if (inheritChar < min)
                     min = inheritChar;
             }
@@ -163,23 +171,22 @@ uint editingDistance(const QString &s1, const QString &s2)
             matrix[i][j] = min;
         }
     }
-    return matrix[n-1][m-1];
+    return matrix[n - 1][m - 1];
 }
-
 
 QString secondsToString(int timeInSeconds)
 {
-    static QVector<std::pair<int, QString>> timeUnit {
-        std::make_pair(365*24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "year")),
-        std::make_pair(24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "day")),
-        std::make_pair(60*60, QCoreApplication::translate("Quassel::secondsToString()", "h")),
-        std::make_pair(60, QCoreApplication::translate("Quassel::secondsToString()", "min")),
-        std::make_pair(1, QCoreApplication::translate("Quassel::secondsToString()", "sec"))
-    };
+    static QVector<std::pair<int, QString>> timeUnit{std::make_pair(365 * 24 * 60 * 60,
+                                                                    QCoreApplication::translate("Quassel::secondsToString()", "year")),
+                                                     std::make_pair(24 * 60 * 60,
+                                                                    QCoreApplication::translate("Quassel::secondsToString()", "day")),
+                                                     std::make_pair(60 * 60, QCoreApplication::translate("Quassel::secondsToString()", "h")),
+                                                     std::make_pair(60, QCoreApplication::translate("Quassel::secondsToString()", "min")),
+                                                     std::make_pair(1, QCoreApplication::translate("Quassel::secondsToString()", "sec"))};
 
     if (timeInSeconds != 0) {
         QStringList returnString;
-        for (const auto &tu : timeUnit) {
+        for (const auto& tu : timeUnit) {
             int n = timeInSeconds / tu.first;
             if (n > 0) {
                 returnString += QString("%1 %2").arg(QString::number(n), tu.second);
@@ -192,8 +199,7 @@ QString secondsToString(int timeInSeconds)
     return QString("%1 %2").arg(QString::number(timeInSeconds), timeUnit.last().second);
 }
 
-
-QByteArray prettyDigest(const QByteArray &digest)
+QByteArray prettyDigest(const QByteArray& digest)
 {
     QByteArray hexDigest = digest.toHex().toUpper();
     QByteArray prettyDigest;
@@ -205,8 +211,7 @@ QByteArray prettyDigest(const QByteArray &digest)
     return prettyDigest;
 }
 
-
-QString formatCurrentDateTimeInString(const QString &formatStr)
+QString formatCurrentDateTimeInString(const QString& formatStr)
 {
     // Work on a copy of the string to avoid modifying the input string
     QString formattedStr = QString(formatStr);
@@ -255,21 +260,23 @@ QString formatCurrentDateTimeInString(const QString &formatStr)
         if (matchedFormat.length() > 0) {
             // Format the string according to the current date and time.  Invalid time format
             // strings are ignored.
-            formattedStr.replace(index, matchLength,
-                                 QDateTime::currentDateTime().toString(matchedFormat));
+            formattedStr.replace(index, matchLength, QDateTime::currentDateTime().toString(matchedFormat));
             // Subtract the length of the removed % signs
             // E.g. "%%h:mm ap%%" turns into "h:mm ap", removing four % signs, thus -4.  This is
             // used below to determine how far to advance when looking for the next formatting code.
             matchLength -= 4;
-        } else if (matchLength == 4) {
+        }
+        else if (matchLength == 4) {
             // Remove two of the four percent signs, so '%%%%' escapes to '%%'
             formattedStr.remove(index, 2);
             // Subtract the length of the removed % signs, this time removing two % signs, thus -2.
             matchLength -= 2;
-        } else {
+        }
+        else {
             // If neither of these match, something went wrong.  Don't modify it to be safe.
             qDebug() << "Unexpected time format when parsing string, no matchedFormat, matchLength "
-                        "should be 4, actually is" << matchLength;
+                        "should be 4, actually is"
+                     << matchLength;
         }
 
         // Find the next group of %%text here%% starting from where the last group ended
@@ -280,8 +287,7 @@ QString formatCurrentDateTimeInString(const QString &formatStr)
     return formattedStr;
 }
 
-
-QString tryFormatUnixEpoch(const QString &possibleEpochDate, Qt::DateFormat dateFormat, bool useUTC)
+QString tryFormatUnixEpoch(const QString& possibleEpochDate, Qt::DateFormat dateFormat, bool useUTC)
 {
     // Does the string resemble a Unix epoch?  Parse as 64-bit time
     qint64 secsSinceEpoch = possibleEpochDate.toLongLong();
@@ -317,21 +323,23 @@ QString tryFormatUnixEpoch(const QString &possibleEpochDate, Qt::DateFormat date
             // See https://en.wikipedia.org/wiki/ISO_8601#cite_note-32
             // And https://www.ietf.org/rfc/rfc3339.txt
             return date.toUTC().toString(dateFormat).replace(10, 1, " ");
-        } else {
+        }
+        else {
             return date.toUTC().toString(dateFormat);
         }
-    } else if (dateFormat == Qt::DateFormat::ISODate) {
+    }
+    else if (dateFormat == Qt::DateFormat::ISODate) {
         // Add in ISO local timezone information via special handling below
         // formatDateTimeToOffsetISO() handles converting "T" to " "
         return formatDateTimeToOffsetISO(date);
-    } else {
+    }
+    else {
         // Return local time
         return date.toString(dateFormat);
     }
 }
 
-
-QString formatDateTimeToOffsetISO(const QDateTime &dateTime)
+QString formatDateTimeToOffsetISO(const QDateTime& dateTime)
 {
     if (!dateTime.isValid()) {
         // Don't try to do anything with invalid date/time

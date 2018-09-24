@@ -27,7 +27,7 @@ class SqlAuthenticator : public Authenticator
     Q_OBJECT
 
 public:
-    SqlAuthenticator(QObject *parent = nullptr);
+    SqlAuthenticator(QObject* parent = nullptr);
 
 public slots:
     /* General */
@@ -39,12 +39,10 @@ public slots:
 
     inline bool canChangePassword() const override { return true; }
 
-    bool setup(const QVariantMap &settings, const QProcessEnvironment &environment,
-               bool loadFromEnvironment) override;
-    State init(const QVariantMap &settings, const QProcessEnvironment &environment,
-               bool loadFromEnvironment) override;
-    UserId validateUser(const QString &user, const QString &password) override;
+    bool setup(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment) override;
+    State init(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment) override;
+    UserId validateUser(const QString& user, const QString& password) override;
 
     /* User handling */
-    //virtual UserId getUserId(const QString &username);
+    // virtual UserId getUserId(const QString &username);
 };

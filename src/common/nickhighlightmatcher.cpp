@@ -24,8 +24,7 @@
 #include <QString>
 #include <QStringList>
 
-bool NickHighlightMatcher::match(const QString &string, const NetworkId &netId,
-                                 const QString &currentNick, const QStringList &identityNicks) const
+bool NickHighlightMatcher::match(const QString& string, const NetworkId& netId, const QString& currentNick, const QStringList& identityNicks) const
 {
     // Never match for no nicknames
     if (_highlightMode == HighlightNickType::NoNick) {
@@ -41,8 +40,7 @@ bool NickHighlightMatcher::match(const QString &string, const NetworkId &netId,
     determineExpressions(netId, currentNick, identityNicks);
 
     // Check for a match
-    if (_nickMatchCache[netId].matcher.isValid()
-            && _nickMatchCache[netId].matcher.match(string)) {
+    if (_nickMatchCache[netId].matcher.isValid() && _nickMatchCache[netId].matcher.match(string)) {
         // Nick matcher is valid and match found
         return true;
     }
@@ -50,9 +48,7 @@ bool NickHighlightMatcher::match(const QString &string, const NetworkId &netId,
     return false;
 }
 
-
-void NickHighlightMatcher::determineExpressions(const NetworkId &netId, const QString &currentNick,
-                                                const QStringList &identityNicks) const
+void NickHighlightMatcher::determineExpressions(const NetworkId& netId, const QString& currentNick, const QStringList& identityNicks) const
 {
     // Don't do anything for no nicknames
     if (_highlightMode == HighlightNickType::NoNick) {
@@ -60,9 +56,8 @@ void NickHighlightMatcher::determineExpressions(const NetworkId &netId, const QS
     }
 
     // Only update if needed (check nickname config, current nick, identity nicks for change)
-    if (_nickMatchCache.contains(netId)
-            && _nickMatchCache[netId].nickCurrent == currentNick
-            && _nickMatchCache[netId].identityNicks == identityNicks) {
+    if (_nickMatchCache.contains(netId) && _nickMatchCache[netId].nickCurrent == currentNick
+        && _nickMatchCache[netId].identityNicks == identityNicks) {
         return;
     }
 
@@ -78,9 +73,7 @@ void NickHighlightMatcher::determineExpressions(const NetworkId &netId, const QS
     }
 
     // Set up phrase matcher, joining with newlines
-    _nickMatchCache[netId].matcher =
-            ExpressionMatch(nickList.join("\n"), ExpressionMatch::MatchMode::MatchMultiPhrase,
-                            _isCaseSensitive);
+    _nickMatchCache[netId].matcher = ExpressionMatch(nickList.join("\n"), ExpressionMatch::MatchMode::MatchMultiPhrase, _isCaseSensitive);
 
     _nickMatchCache[netId].nickCurrent = currentNick;
     _nickMatchCache[netId].identityNicks = identityNicks;

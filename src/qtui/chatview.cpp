@@ -18,42 +18,40 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "chatview.h"
+
 #include <QGraphicsTextItem>
 #include <QKeyEvent>
 #include <QMenu>
 #include <QScrollBar>
 
 #include "bufferwidget.h"
+#include "chatline.h"
 #include "chatscene.h"
-#include "chatview.h"
 #include "client.h"
+#include "clientignorelistmanager.h"
 #include "messagefilter.h"
 #include "qtui.h"
 #include "qtuistyle.h"
-#include "clientignorelistmanager.h"
 
-#include "chatline.h"
-
-ChatView::ChatView(BufferId bufferId, QWidget *parent)
-    : QGraphicsView(parent),
-    AbstractChatView()
+ChatView::ChatView(BufferId bufferId, QWidget* parent)
+    : QGraphicsView(parent)
+    , AbstractChatView()
 {
     QList<BufferId> filterList;
     filterList.append(bufferId);
-    auto *filter = new MessageFilter(Client::messageModel(), filterList, this);
+    auto* filter = new MessageFilter(Client::messageModel(), filterList, this);
     init(filter);
 }
 
-
-ChatView::ChatView(MessageFilter *filter, QWidget *parent)
-    : QGraphicsView(parent),
-    AbstractChatView()
+ChatView::ChatView(MessageFilter* filter, QWidget* parent)
+    : QGraphicsView(parent)
+    , AbstractChatView()
 {
     init(filter);
 }
 
-
-void ChatView::init(MessageFilter *filter)
+void ChatView::init(MessageFilter* filter)
 {
     _bufferContainer = nullptr;
     _currentScaleFactor = 1;
@@ -62,9 +60,9 @@ void ChatView::init(MessageFilter *filter)
     setAttribute(Qt::WA_AcceptTouchEvents);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    setAlignment(Qt::AlignLeft|Qt::AlignBottom);
+    setAlignment(Qt::AlignLeft | Qt::AlignBottom);
     setInteractive(true);
-    //setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
+    // setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
     // setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
     setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
     // setTransformationAnchor(QGraphicsView::NoAnchor);
@@ -90,11 +88,10 @@ void ChatView::init(MessageFilter *filter)
         connect(Client::ignoreListManager(), &ClientIgnoreListManager::ignoreListChanged, this, &ChatView::invalidateFilter);
 }
 
-
-bool ChatView::event(QEvent *event)
+bool ChatView::event(QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
-        auto *keyEvent = static_cast<QKeyEvent *>(event);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
         switch (keyEvent->key()) {
         case Qt::Key_Up:
         case Qt::Key_Down:
@@ -115,7 +112,8 @@ bool ChatView::event(QEvent *event)
         setInteractive(false);
         // if scrollbar is not visible we need to request backlog below else we need to accept
         // the event now (return true) so that we will receive TouchUpdate and TouchEnd/TouchCancel
-        if (verticalScrollBar()->isVisible()) return true;
+        if (verticalScrollBar()->isVisible())
+            return true;
     }
 
     if (event->type() == QEvent::TouchEnd || event->type() == QEvent::TouchCancel) {
@@ -141,7 +139,9 @@ bool ChatView::event(QEvent *event)
         }
         // Applying the movement happens automatically by the drag-mode
     }
-    if (event->type() == QEvent::Wheel || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen) || event->type() == QEvent::TouchUpdate) {
+    if (event->type() == QEvent::Wheel
+        || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen)
+        || event->type() == QEvent::TouchUpdate) {
         if (!verticalScrollBar()->isVisible()) {
             scene()->requestBacklog();
             return true;
@@ -156,8 +156,7 @@ bool ChatView::event(QEvent *event)
     return QGraphicsView::event(event);
 }
 
-
-void ChatView::resizeEvent(QResizeEvent *event)
+void ChatView::resizeEvent(QResizeEvent* event)
 {
     // if view is currently scrolled to bottom, we want it that way after resizing
     bool atBottom = (_lastScrollbarPos == verticalScrollBar()->maximum());
@@ -165,8 +164,7 @@ void ChatView::resizeEvent(QResizeEvent *event)
     QGraphicsView::resizeEvent(event);
 
     // if scrolling to bottom, do it immediately.
-    if(atBottom)
-    {
+    if (atBottom) {
         // we can reduce viewport updates if we scroll to the bottom allready at the beginning
         verticalScrollBar()->setValue(verticalScrollBar()->maximum());
     }
@@ -174,14 +172,12 @@ void ChatView::resizeEvent(QResizeEvent *event)
     scene()->updateForViewport(viewport()->width(), viewport()->height());
     adjustSceneRect();
 
-    if(atBottom)
-    {
+    if (atBottom) {
         _lastScrollbarPos = verticalScrollBar()->maximum();
         verticalScrollBar()->setValue(verticalScrollBar()->maximum());
     }
     checkChatLineCaches();
 }
-
 
 void ChatView::adjustSceneRect()
 {
@@ -195,8 +191,7 @@ void ChatView::adjustSceneRect()
     setSceneRect(scene()->sceneRect().adjusted(0, 0, -25, 0));
 }
 
-
-void ChatView::mouseMoveWhileSelecting(const QPointF &scenePos)
+void ChatView::mouseMoveWhileSelecting(const QPointF& scenePos)
 {
     int y = (int)mapFromScene(scenePos).y();
     _scrollOffset = 0;
@@ -209,36 +204,33 @@ void ChatView::mouseMoveWhileSelecting(const QPointF &scenePos)
         _scrollTimer.start();
 }
 
-
 void ChatView::scrollTimerTimeout()
 {
     // scroll view
-    QAbstractSlider *vbar = verticalScrollBar();
+    QAbstractSlider* vbar = verticalScrollBar();
     if (_scrollOffset < 0 && vbar->value() > 0)
         vbar->setValue(qMax(vbar->value() + _scrollOffset, 0));
     else if (_scrollOffset > 0 && vbar->value() < vbar->maximum())
         vbar->setValue(qMin(vbar->value() + _scrollOffset, vbar->maximum()));
 }
 
-
-void ChatView::lastLineChanged(QGraphicsItem *chatLine, qreal offset)
+void ChatView::lastLineChanged(QGraphicsItem* chatLine, qreal offset)
 {
     Q_UNUSED(chatLine)
     // disabled until further testing/discussion
-    //if(!scene()->isScrollingAllowed())
+    // if(!scene()->isScrollingAllowed())
     //  return;
 
-    QAbstractSlider *vbar = verticalScrollBar();
+    QAbstractSlider* vbar = verticalScrollBar();
     Q_ASSERT(vbar);
-    if (vbar->maximum() - vbar->value() <= (offset + 5) * _currentScaleFactor) { // 5px grace area
+    if (vbar->maximum() - vbar->value() <= (offset + 5) * _currentScaleFactor) {  // 5px grace area
         vbar->setValue(vbar->maximum());
     }
 }
 
-
 void ChatView::verticalScrollbarChanged(int newPos)
 {
-    QAbstractSlider *vbar = verticalScrollBar();
+    QAbstractSlider* vbar = verticalScrollBar();
     Q_ASSERT(vbar);
 
     // check for backlog request
@@ -258,23 +250,21 @@ void ChatView::verticalScrollbarChanged(int newPos)
         vbar->setValue(vbar->maximum());
 }
 
-
 MsgId ChatView::lastMsgId() const
 {
     if (!scene())
         return {};
 
-    QAbstractItemModel *model = scene()->model();
+    QAbstractItemModel* model = scene()->model();
     if (!model || model->rowCount() == 0)
         return {};
 
     return model->index(model->rowCount() - 1, 0).data(MessageModel::MsgIdRole).value<MsgId>();
 }
 
-
 MsgId ChatView::lastVisibleMsgId() const
 {
-    ChatLine *line = lastVisibleChatLine();
+    ChatLine* line = lastVisibleChatLine();
 
     if (line)
         return line->msgId();
@@ -282,47 +272,43 @@ MsgId ChatView::lastVisibleMsgId() const
     return {};
 }
 
-
-bool chatLinePtrLessThan(ChatLine *one, ChatLine *other)
+bool chatLinePtrLessThan(ChatLine* one, ChatLine* other)
 {
     return one->row() < other->row();
 }
 
-
 // TODO: figure out if it's cheaper to use a cached list (that we'd need to keep updated)
-QSet<ChatLine *> ChatView::visibleChatLines(Qt::ItemSelectionMode mode) const
+QSet<ChatLine*> ChatView::visibleChatLines(Qt::ItemSelectionMode mode) const
 {
-    QSet<ChatLine *> result;
-    foreach(QGraphicsItem *item, items(viewport()->rect().adjusted(-1, -1, 1, 1), mode)) {
-        auto *line = qgraphicsitem_cast<ChatLine *>(item);
+    QSet<ChatLine*> result;
+    foreach (QGraphicsItem* item, items(viewport()->rect().adjusted(-1, -1, 1, 1), mode)) {
+        auto* line = qgraphicsitem_cast<ChatLine*>(item);
         if (line)
             result.insert(line);
     }
     return result;
 }
 
-
-QList<ChatLine *> ChatView::visibleChatLinesSorted(Qt::ItemSelectionMode mode) const
+QList<ChatLine*> ChatView::visibleChatLinesSorted(Qt::ItemSelectionMode mode) const
 {
-    QList<ChatLine *> result = visibleChatLines(mode).toList();
+    QList<ChatLine*> result = visibleChatLines(mode).toList();
     qSort(result.begin(), result.end(), chatLinePtrLessThan);
     return result;
 }
 
-
-ChatLine *ChatView::lastVisibleChatLine(bool ignoreDayChange) const
+ChatLine* ChatView::lastVisibleChatLine(bool ignoreDayChange) const
 {
     if (!scene())
         return nullptr;
 
-    QAbstractItemModel *model = scene()->model();
+    QAbstractItemModel* model = scene()->model();
     if (!model || model->rowCount() == 0)
         return nullptr;
 
     int row = -1;
 
-    QSet<ChatLine *> visibleLines = visibleChatLines(Qt::ContainsItemBoundingRect);
-    foreach(ChatLine *line, visibleLines) {
+    QSet<ChatLine*> visibleLines = visibleChatLines(Qt::ContainsItemBoundingRect);
+    foreach (ChatLine* line, visibleLines) {
         if (line->row() > row && (ignoreDayChange ? line->msgType() != Message::DayChange : true))
             row = line->row();
     }
@@ -333,12 +319,10 @@ ChatLine *ChatView::lastVisibleChatLine(bool ignoreDayChange) const
     return nullptr;
 }
 
-
 void ChatView::setMarkerLineVisible(bool visible)
 {
     scene()->setMarkerLineVisible(visible);
 }
-
 
 void ChatView::setMarkerLine(MsgId msgId)
 {
@@ -349,7 +333,6 @@ void ChatView::setMarkerLine(MsgId msgId)
     Client::setMarkerLine(bufId, msgId);
 }
 
-
 void ChatView::markerLineSet(BufferId buffer, MsgId msgId)
 {
     if (!scene()->isSingleBufferScene() || scene()->singleBufferId() != buffer)
@@ -359,23 +342,20 @@ void ChatView::markerLineSet(BufferId buffer, MsgId msgId)
     scene()->setMarkerLineVisible(true);
 }
 
-
 void ChatView::jumpToMarkerLine(bool requestBacklog)
 {
     scene()->jumpToMarkerLine(requestBacklog);
 }
 
-
-void ChatView::addActionsToMenu(QMenu *menu, const QPointF &pos)
+void ChatView::addActionsToMenu(QMenu* menu, const QPointF& pos)
 {
     // zoom actions
-    auto *bw = qobject_cast<BufferWidget *>(bufferContainer());
+    auto* bw = qobject_cast<BufferWidget*>(bufferContainer());
     if (bw) {
         bw->addActionsToMenu(menu, pos);
         menu->addSeparator();
     }
 }
-
 
 void ChatView::zoomIn()
 {
@@ -384,7 +364,6 @@ void ChatView::zoomIn()
     scene()->setWidth(viewport()->width() / _currentScaleFactor - 2);
 }
 
-
 void ChatView::zoomOut()
 {
     _currentScaleFactor /= 1.2;
@@ -392,14 +371,12 @@ void ChatView::zoomOut()
     scene()->setWidth(viewport()->width() / _currentScaleFactor - 2);
 }
 
-
 void ChatView::zoomOriginal()
 {
-    scale(1/_currentScaleFactor, 1/_currentScaleFactor);
+    scale(1 / _currentScaleFactor, 1 / _currentScaleFactor);
     _currentScaleFactor = 1;
     scene()->setWidth(viewport()->width() - 2);
 }
-
 
 void ChatView::invalidateFilter()
 {
@@ -415,15 +392,13 @@ void ChatView::invalidateFilter()
     }
 }
 
-
 void ChatView::scrollContentsBy(int dx, int dy)
 {
     QGraphicsView::scrollContentsBy(dx, dy);
     checkChatLineCaches();
 }
 
-
-void ChatView::setHasCache(ChatLine *line, bool hasCache)
+void ChatView::setHasCache(ChatLine* line, bool hasCache)
 {
     if (hasCache)
         _linesWithCache.insert(line);
@@ -431,14 +406,13 @@ void ChatView::setHasCache(ChatLine *line, bool hasCache)
         _linesWithCache.remove(line);
 }
 
-
 void ChatView::checkChatLineCaches()
 {
-    qreal top = mapToScene(viewport()->rect().topLeft()).y() - 10; // some grace area to avoid premature cleaning
+    qreal top = mapToScene(viewport()->rect().topLeft()).y() - 10;  // some grace area to avoid premature cleaning
     qreal bottom = mapToScene(viewport()->rect().bottomRight()).y() + 10;
-    QSet<ChatLine *>::iterator iter = _linesWithCache.begin();
+    QSet<ChatLine*>::iterator iter = _linesWithCache.begin();
     while (iter != _linesWithCache.end()) {
-        ChatLine *line = *iter;
+        ChatLine* line = *iter;
         if (line->pos().y() + line->height() < top || line->pos().y() > bottom) {
             line->clearCache();
             iter = _linesWithCache.erase(iter);

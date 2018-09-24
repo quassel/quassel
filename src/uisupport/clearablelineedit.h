@@ -31,14 +31,14 @@ class UISUPPORT_EXPORT ClearableLineEdit : public QLineEdit
     Q_OBJECT
 
 public:
-    ClearableLineEdit(QWidget *parent = nullptr);
+    ClearableLineEdit(QWidget* parent = nullptr);
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    void updateClearButton(const QString &text);
+    void updateClearButton(const QString& text);
 
 private:
-    QToolButton *clearButton;
+    QToolButton* clearButton;
 };

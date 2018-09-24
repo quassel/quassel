@@ -22,40 +22,40 @@
 #include <memory>
 
 #ifdef HAVE_UMASK
-#  include <sys/types.h>
-#  include <sys/stat.h>
+#    include <sys/stat.h>
+#    include <sys/types.h>
 #endif /* HAVE_UMASK */
 
 #include <QCoreApplication>
 #include <QTextCodec>
 
 #ifdef BUILD_CORE
-#  include "coreapplication.h"
+#    include "coreapplication.h"
 #elif defined BUILD_QTUI
-#  include "aboutdata.h"
-#  include "qtuiapplication.h"
+#    include "aboutdata.h"
+#    include "qtuiapplication.h"
 #elif defined BUILD_MONO
-#  include "aboutdata.h"
-#  include "monoapplication.h"
+#    include "aboutdata.h"
+#    include "monoapplication.h"
 
 #else
-#error "Something is wrong - you need to #define a build mode!"
+#    error "Something is wrong - you need to #define a build mode!"
 #endif
 
 // We don't want quasselcore to depend on KDE
 #if defined HAVE_KF5 && defined BUILD_CORE
-#  undef HAVE_KF5
+#    undef HAVE_KF5
 #endif
 
 #if defined HAVE_KF5
-#  include <KCoreAddons/KAboutData>
-#  include <KCoreAddons/Kdelibs4ConfigMigrator>
+#    include <KCoreAddons/KAboutData>
+#    include <KCoreAddons/Kdelibs4ConfigMigrator>
 #endif
 
 #include "quassel.h"
 #include "types.h"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     // Set umask so files are created with restricted permissions
 #ifdef HAVE_UMASK
@@ -74,13 +74,14 @@ int main(int argc, char **argv)
     // Migrate settings from KDE4 to KF5 if appropriate
 #ifdef HAVE_KF5
     Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
-    migrator.setConfigFiles(QStringList() << "quasselrc" << "quassel.notifyrc");
+    migrator.setConfigFiles(QStringList() << "quasselrc"
+                                          << "quassel.notifyrc");
     migrator.migrate();
 #endif
 
-    //Setup the High-DPI settings
-# if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); //Added in Qt 5.6
+    // Setup the High-DPI settings
+#if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Added in Qt 5.6
 #endif
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 

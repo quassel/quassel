@@ -20,7 +20,7 @@
 
 #include "coreconnectionsettingspage.h"
 
-CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget *parent)
+CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget* parent)
     : SettingsPage(tr("Remote Cores"), tr("Connection"), parent)
 {
     ui.setupUi(this);
@@ -32,7 +32,6 @@ CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget *parent)
     connect(ui.useNoTimeout, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
 }
 
-
 void CoreConnectionSettingsPage::widgetHasChanged()
 {
     bool hasChanged = false;
@@ -43,14 +42,12 @@ void CoreConnectionSettingsPage::widgetHasChanged()
     setChangedState(hasChanged);
 }
 
-
 void CoreConnectionSettingsPage::defaults()
 {
     setRadioButtons(CoreConnectionSettings::UseQNetworkConfigurationManager);
 
     SettingsPage::defaults();
 }
-
 
 void CoreConnectionSettingsPage::load()
 {
@@ -60,7 +57,6 @@ void CoreConnectionSettingsPage::load()
     SettingsPage::load();
 }
 
-
 void CoreConnectionSettingsPage::save()
 {
     _detectionMode = modeFromRadioButtons();
@@ -68,7 +64,6 @@ void CoreConnectionSettingsPage::save()
     s.setNetworkDetectionMode(_detectionMode);
     SettingsPage::save();
 }
-
 
 void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::NetworkDetectionMode mode)
 {
@@ -83,7 +78,6 @@ void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::Network
         ui.useNoTimeout->setChecked(true);
     }
 }
-
 
 CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettingsPage::modeFromRadioButtons() const
 {

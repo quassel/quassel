@@ -23,7 +23,7 @@
 #include "ircuser.h"
 
 #ifdef HAVE_QCA2
-#  include "cipher.h"
+#    include "cipher.h"
 #endif
 
 class CoreIrcUser : public IrcUser
@@ -31,15 +31,15 @@ class CoreIrcUser : public IrcUser
     Q_OBJECT
 
 public:
-    CoreIrcUser(const QString &hostmask, Network *network);
+    CoreIrcUser(const QString& hostmask, Network* network);
     ~CoreIrcUser() override;
 
 #ifdef HAVE_QCA2
-    Cipher *cipher() const;
+    Cipher* cipher() const;
 #endif
 
 #ifdef HAVE_QCA2
 private:
-    mutable Cipher *_cipher;
+    mutable Cipher* _cipher;
 #endif
 };

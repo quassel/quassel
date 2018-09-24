@@ -28,6 +28,7 @@
 
 #include "settings.h"
 #include "settingspage.h"
+
 #include "ui_appearancesettingspage.h"
 
 class AppearanceSettingsPage : public SettingsPage
@@ -35,7 +36,7 @@ class AppearanceSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    AppearanceSettingsPage(QWidget *parent = nullptr);
+    AppearanceSettingsPage(QWidget* parent = nullptr);
 
     inline bool hasDefaults() const override { return true; }
 
@@ -63,6 +64,5 @@ private:
 
     inline QString settingsKey() const override { return QString("QtUi"); }
 };
-
 
 #endif

@@ -28,11 +28,11 @@ QString CFStringToQString(CFStringRef str)
         return QString();
 
     CFIndex length = CFStringGetLength(str);
-    const UniChar *chars = CFStringGetCharactersPtr(str);
+    const UniChar* chars = CFStringGetCharactersPtr(str);
     if (chars)
-        return QString(reinterpret_cast<const QChar *>(chars), length);
+        return QString(reinterpret_cast<const QChar*>(chars), length);
 
     QVarLengthArray<UniChar> buffer(length);
     CFStringGetCharacters(str, CFRangeMake(0, length), buffer.data());
-    return QString(reinterpret_cast<const QChar *>(buffer.constData()), length);
+    return QString(reinterpret_cast<const QChar*>(buffer.constData()), length);
 }

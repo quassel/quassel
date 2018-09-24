@@ -23,20 +23,20 @@
 
 #include <QDialog>
 
-#include "ui_settingspagedlg.h"
-
 #include "settingspage.h"
+
+#include "ui_settingspagedlg.h"
 
 class SettingsPageDlg : public QDialog
 {
     Q_OBJECT
 public:
-    SettingsPageDlg(SettingsPage *page, QWidget *parent = nullptr);
+    SettingsPageDlg(SettingsPage* page, QWidget* parent = nullptr);
 
-    SettingsPage *currentPage() const;
+    SettingsPage* currentPage() const;
 
 private slots:
-    void buttonClicked(QAbstractButton *);
+    void buttonClicked(QAbstractButton*);
     bool applyChanges();
     void undoChanges();
     void reload();
@@ -46,8 +46,7 @@ private slots:
 private:
     Ui::SettingsPageDlg ui;
 
-    SettingsPage *_currentPage;
+    SettingsPage* _currentPage;
 };
-
 
 #endif

@@ -34,16 +34,16 @@ class QtMultimediaNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    QtMultimediaNotificationBackend(QObject *parent = nullptr);
+    QtMultimediaNotificationBackend(QObject* parent = nullptr);
 
-    void notify(const Notification &) override;
+    void notify(const Notification&) override;
     void close(uint notificationId) override;
-    SettingsPage *createConfigWidget() const override;
+    SettingsPage* createConfigWidget() const override;
 
 private slots:
-    void enabledChanged(const QVariant &);
-    void audioFileChanged(const QVariant &);
-    void createMediaObject(const QString &name);
+    void enabledChanged(const QVariant&);
+    void audioFileChanged(const QVariant&);
+    void createMediaObject(const QString& name);
 
 private:
     class ConfigWidget;
@@ -52,13 +52,12 @@ private:
     std::unique_ptr<QMediaPlayer> _media;
 };
 
-
 class QtMultimediaNotificationBackend::ConfigWidget : public SettingsPage
 {
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = nullptr);
+    ConfigWidget(QWidget* parent = nullptr);
 
     void save() override;
     void load() override;

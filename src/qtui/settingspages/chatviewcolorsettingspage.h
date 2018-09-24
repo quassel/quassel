@@ -21,6 +21,7 @@
 #pragma once
 
 #include "settingspage.h"
+
 #include "ui_chatviewcolorsettingspage.h"
 
 class ColorButton;
@@ -35,7 +36,7 @@ public:
      *
      * @param parent Parent QWidget object, such as the settings dialog
      */
-    explicit ChatViewColorSettingsPage(QWidget *parent = nullptr);
+    explicit ChatViewColorSettingsPage(QWidget* parent = nullptr);
 
     /**
      * Gets whether or not this settings page has defaults

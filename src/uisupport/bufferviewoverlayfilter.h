@@ -33,16 +33,16 @@ class UISUPPORT_EXPORT BufferViewOverlayFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = nullptr);
+    BufferViewOverlayFilter(QAbstractItemModel* model, BufferViewOverlay* overlay = nullptr);
 
-    void setOverlay(BufferViewOverlay *overlay);
+    void setOverlay(BufferViewOverlay* overlay);
 
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
 private slots:
     void overlayDestroyed();
 
 private:
-    BufferViewOverlay *_overlay;
+    BufferViewOverlay* _overlay;
 };

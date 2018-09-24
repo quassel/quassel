@@ -29,7 +29,7 @@ class ResourceTreeDlg : public QDialog
     Q_OBJECT
 
 public:
-    ResourceTreeDlg(QWidget *parent = nullptr);
+    ResourceTreeDlg(QWidget* parent = nullptr);
 
 private:
     Ui::ResourceTreeDlg ui;

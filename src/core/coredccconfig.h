@@ -38,7 +38,7 @@ public:
      *
      * @param[in] session Pointer to the parent CoreSession (takes ownership)
      */
-    CoreDccConfig(CoreSession *session);
+    CoreDccConfig(CoreSession* session);
 
 public slots:
     /**
@@ -47,5 +47,5 @@ public slots:
     void save();
 
 private:
-    CoreSession *_coreSession {nullptr};  ///< Pointer to the parent CoreSession
+    CoreSession* _coreSession{nullptr};  ///< Pointer to the parent CoreSession
 };

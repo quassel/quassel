@@ -30,12 +30,12 @@
 #include "bufferviewoverlayfilter.h"
 #include "client.h"
 
-DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget *parent)
+DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
 
-    auto *filter = new BufferViewOverlayFilter(Client::bufferModel(), Client::bufferViewOverlay());
+    auto* filter = new BufferViewOverlayFilter(Client::bufferModel(), Client::bufferViewOverlay());
 
     filter->setParent(ui.bufferView);
 
@@ -46,7 +46,7 @@ DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget *parent)
     ui.bufferView->resize(610, 300);
     ui.bufferView->show();
 
-    auto *layout = new QFormLayout(ui.overlayProperties);
+    auto* layout = new QFormLayout(ui.overlayProperties);
     layout->addRow(tr("BufferViews:"), _bufferViews = new QLineEdit(this));
     layout->addRow(tr("All Networks:"), _allNetworks = new QLabel(this));
     layout->addRow(tr("Networks:"), _networks = new QLineEdit(this));
@@ -63,39 +63,38 @@ DebugBufferViewOverlay::DebugBufferViewOverlay(QWidget *parent)
     connect(Client::bufferViewOverlay(), &BufferViewOverlay::hasChanged, this, &DebugBufferViewOverlay::update);
 }
 
-
 void DebugBufferViewOverlay::update()
 {
-    BufferViewOverlay *overlay = Client::bufferViewOverlay();
+    BufferViewOverlay* overlay = Client::bufferViewOverlay();
 
     _allNetworks->setText(overlay->allNetworks() ? "yes" : "no");
 
     QStringList ids;
-    foreach(int bufferViewId, overlay->bufferViewIds()) {
+    foreach (int bufferViewId, overlay->bufferViewIds()) {
         ids << QString::number(bufferViewId);
     }
     _bufferViews->setText(ids.join(", "));
 
     ids.clear();
-    foreach(NetworkId networkId, overlay->networkIds()) {
+    foreach (NetworkId networkId, overlay->networkIds()) {
         ids << QString::number(networkId.toInt());
     }
     _networks->setText(ids.join(", "));
 
     ids.clear();
-    foreach(BufferId bufferId, overlay->bufferIds()) {
+    foreach (BufferId bufferId, overlay->bufferIds()) {
         ids << QString::number(bufferId.toInt());
     }
     _bufferIds->setText(ids.join(", "));
 
     ids.clear();
-    foreach(BufferId bufferId, overlay->removedBufferIds()) {
+    foreach (BufferId bufferId, overlay->removedBufferIds()) {
         ids << QString::number(bufferId.toInt());
     }
     _removedBufferIds->setText(ids.join(", "));
 
     ids.clear();
-    foreach(BufferId bufferId, overlay->tempRemovedBufferIds()) {
+    foreach (BufferId bufferId, overlay->tempRemovedBufferIds()) {
         ids << QString::number(bufferId.toInt());
     }
     _tempRemovedBufferIds->setText(ids.join(", "));

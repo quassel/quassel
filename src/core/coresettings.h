@@ -27,14 +27,14 @@ class CoreSettings : public Settings
 public:
     CoreSettings(QString group = "Core");
 
-    void setStorageSettings(const QVariant &data);
-    QVariant storageSettings(const QVariant &def = {}) const;
+    void setStorageSettings(const QVariant& data);
+    QVariant storageSettings(const QVariant& def = {}) const;
 
-    void setAuthSettings(const QVariant &data);
-    QVariant authSettings(const QVariant &def = {}) const;
+    void setAuthSettings(const QVariant& data);
+    QVariant authSettings(const QVariant& def = {}) const;
 
     QVariant oldDbSettings() const;  // FIXME remove
 
-    void setCoreState(const QVariant &data);
-    QVariant coreState(const QVariant &def = {}) const;
+    void setCoreState(const QVariant& data);
+    QVariant coreState(const QVariant& def = {}) const;
 };

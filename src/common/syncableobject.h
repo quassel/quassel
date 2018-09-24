@@ -36,12 +36,11 @@
  *        i.e., if you have Foo, ClientFoo and/or CoreFoo, the SYNCABLE_OBJECT macro would
  *        only be declared in the class declaration of Foo.
  */
-#define SYNCABLE_OBJECT \
-    public: \
-        const QMetaObject *syncMetaObject() const final override { \
-            return &staticMetaObject; \
-        } \
-    private: \
+#define SYNCABLE_OBJECT                                                                                                                    \
+public:                                                                                                                                    \
+    const QMetaObject* syncMetaObject() const final override { return &staticMetaObject; }                                                 \
+                                                                                                                                           \
+private:
 
 #define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
 #define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
@@ -49,7 +48,7 @@
 #define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
 #define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
 
-#define ARG(x) const_cast<void *>(reinterpret_cast<const void *>(&x))
+#define ARG(x) const_cast<void*>(reinterpret_cast<const void*>(&x))
 #define NO_ARG 0
 
 class COMMON_EXPORT SyncableObject : public QObject
@@ -57,9 +56,9 @@ class COMMON_EXPORT SyncableObject : public QObject
     Q_OBJECT
 
 public:
-    SyncableObject(QObject *parent = nullptr);
-    SyncableObject(const QString &objectName, QObject *parent = nullptr);
-    SyncableObject(const SyncableObject &other, QObject *parent = nullptr);
+    SyncableObject(QObject* parent = nullptr);
+    SyncableObject(const QString& objectName, QObject* parent = nullptr);
+    SyncableObject(const SyncableObject& other, QObject* parent = nullptr);
     ~SyncableObject() override;
 
     //! Stores the object's state into a QVariantMap.
@@ -78,25 +77,25 @@ public:
     //! Initialize the object's state from a given QVariantMap.
     /** \see toVariantMap() for important information concerning this method.
      */
-    virtual void fromVariantMap(const QVariantMap &properties);
+    virtual void fromVariantMap(const QVariantMap& properties);
 
     virtual bool isInitialized() const;
 
-    virtual const QMetaObject *syncMetaObject() const { return metaObject(); }
+    virtual const QMetaObject* syncMetaObject() const { return metaObject(); }
 
     inline void setAllowClientUpdates(bool allow) { _allowClientUpdates = allow; }
     inline bool allowClientUpdates() const { return _allowClientUpdates; }
 
 public slots:
     virtual void setInitialized();
-    void requestUpdate(const QVariantMap &properties);
-    virtual void update(const QVariantMap &properties);
+    void requestUpdate(const QVariantMap& properties);
+    virtual void update(const QVariantMap& properties);
 
 protected:
-    void sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...) const;
+    void sync_call__(SignalProxy::ProxyMode modeType, const char* funcname, ...) const;
 
-    void renameObject(const QString &newName);
-    SyncableObject &operator=(const SyncableObject &other);
+    void renameObject(const QString& newName);
+    SyncableObject& operator=(const SyncableObject& other);
 
 signals:
     void initDone();
@@ -104,15 +103,15 @@ signals:
     void updated();
 
 private:
-    void synchronize(SignalProxy *proxy);
-    void stopSynchronize(SignalProxy *proxy);
+    void synchronize(SignalProxy* proxy);
+    void stopSynchronize(SignalProxy* proxy);
 
-    bool setInitValue(const QString &property, const QVariant &value);
+    bool setInitValue(const QString& property, const QVariant& value);
 
     bool _initialized{false};
     bool _allowClientUpdates{false};
 
-    QList<SignalProxy *> _signalProxies;
+    QList<SignalProxy*> _signalProxies;
 
     friend class SignalProxy;
 };

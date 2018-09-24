@@ -18,12 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QHostAddress>
+#include "legacypeer.h"
+
 #include <QDataStream>
+#include <QHostAddress>
 #include <QTcpSocket>
 
-#include "legacypeer.h"
 #include "quassel.h"
+
 #include "serializers/serializers.h"
 
 /* version.inc is no longer used for this */
@@ -33,15 +35,12 @@ const uint clientNeedsProtocol = protocolVersion;
 
 using namespace Protocol;
 
-LegacyPeer::LegacyPeer(::AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent)
-    : RemotePeer(authHandler, socket, level, parent),
-    _useCompression(false)
-{
+LegacyPeer::LegacyPeer(::AuthHandler* authHandler, QTcpSocket* socket, Compressor::CompressionLevel level, QObject* parent)
+    : RemotePeer(authHandler, socket, level, parent)
+    , _useCompression(false)
+{}
 
-}
-
-
-void LegacyPeer::setSignalProxy(::SignalProxy *proxy)
+void LegacyPeer::setSignalProxy(::SignalProxy* proxy)
 {
     RemotePeer::setSignalProxy(proxy);
 
@@ -52,11 +51,9 @@ void LegacyPeer::setSignalProxy(::SignalProxy *proxy)
         if (_useCompression)
             qDebug() << "Using compression for peer:" << qPrintable(socket()->peerAddress().toString());
     }
-
 }
 
-
-void LegacyPeer::processMessage(const QByteArray &msg)
+void LegacyPeer::processMessage(const QByteArray& msg)
 {
     QDataStream stream(msg);
     stream.setVersion(QDataStream::Qt_4_2);
@@ -71,7 +68,7 @@ void LegacyPeer::processMessage(const QByteArray &msg)
 
         int nbytes = rawItem.size();
         if (nbytes <= 4) {
-            const char *data = rawItem.constData();
+            const char* data = rawItem.constData();
             if (nbytes < 4 || (data[0] != 0 || data[1] != 0 || data[2] != 0 || data[3] != 0)) {
                 close("Peer sent corrupted compressed data!");
                 return;
@@ -86,7 +83,8 @@ void LegacyPeer::processMessage(const QByteArray &msg)
             close("Peer sent corrupt data: unable to load QVariant!");
             return;
         }
-    } else {
+    }
+    else {
         if (!Serializers::deserialize(stream, features(), item)) {
             close("Peer sent corrupt data: unable to load QVariant!");
             return;
@@ -105,8 +103,7 @@ void LegacyPeer::processMessage(const QByteArray &msg)
         handlePackedFunc(item);
 }
 
-
-void LegacyPeer::writeMessage(const QVariant &item)
+void LegacyPeer::writeMessage(const QVariant& item)
 {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
@@ -129,7 +126,6 @@ void LegacyPeer::writeMessage(const QVariant &item)
     writeMessage(block);
 }
 
-
 /*** Handshake messages ***/
 
 /* These messages are transmitted during handshake phase, which in case of the legacy protocol means they have
@@ -137,7 +133,7 @@ void LegacyPeer::writeMessage(const QVariant &item)
  * Also, the legacy handshake does not fully match the redesigned one, so we'll have to do various mappings here.
  */
 
-void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
+void LegacyPeer::handleHandshakeMessage(const QVariant& msg)
 {
     QVariantMap m = msg.toMap();
 
@@ -173,7 +169,7 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
 
     else if (msgType == "ClientInitAck") {
         // FIXME only in compat mode
-        uint ver = m["ProtocolVersion"].toUInt(); // actually an UInt
+        uint ver = m["ProtocolVersion"].toUInt();  // actually an UInt
         if (ver < clientNeedsProtocol) {
             emit protocolVersionMismatch((int)ver, (int)clientNeedsProtocol);
             return;
@@ -192,7 +188,12 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
 
     else if (msgType == "CoreSetupData") {
         QVariantMap map = m["SetupData"].toMap();
-        handle(SetupData(map["AdminUser"].toString(), map["AdminPasswd"].toString(), map["Backend"].toString(), map["ConnectionProperties"].toMap(), map["Authenticator"].toString(), map["AuthProperties"].toMap()));
+        handle(SetupData(map["AdminUser"].toString(),
+                         map["AdminPasswd"].toString(),
+                         map["Backend"].toString(),
+                         map["ConnectionProperties"].toMap(),
+                         map["Authenticator"].toString(),
+                         map["AuthProperties"].toMap()));
     }
 
     else if (msgType == "CoreSetupReject") {
@@ -225,8 +226,8 @@ void LegacyPeer::handleHandshakeMessage(const QVariant &msg)
     }
 }
 
-
-void LegacyPeer::dispatch(const RegisterClient &msg) {
+void LegacyPeer::dispatch(const RegisterClient& msg)
+{
     QVariantMap m;
     m["MsgType"] = "ClientInit";
     m["Features"] = static_cast<quint32>(msg.features.toLegacyFeatures());
@@ -246,8 +247,8 @@ void LegacyPeer::dispatch(const RegisterClient &msg) {
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const ClientDenied &msg) {
+void LegacyPeer::dispatch(const ClientDenied& msg)
+{
     QVariantMap m;
     m["MsgType"] = "ClientInitReject";
     m["Error"] = msg.errorString;
@@ -255,8 +256,8 @@ void LegacyPeer::dispatch(const ClientDenied &msg) {
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const ClientRegistered &msg) {
+void LegacyPeer::dispatch(const ClientRegistered& msg)
+{
     QVariantMap m;
     m["MsgType"] = "ClientInitAck";
     if (hasFeature(Quassel::Feature::ExtendedFeatures)) {
@@ -273,7 +274,7 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     // FIXME only in compat mode
     m["ProtocolVersion"] = protocolVersion;
     m["SupportSsl"] = msg.sslSupported;
-    m["SupportsCompression"] = socket()->property("UseCompression").toBool(); // this property gets already set in the ClientInit handler
+    m["SupportsCompression"] = socket()->property("UseCompression").toBool();  // this property gets already set in the ClientInit handler
 
     // This is only used for display by really old v10 clients (pre-0.5), and we no longer set this
     m["CoreInfo"] = QString();
@@ -283,8 +284,7 @@ void LegacyPeer::dispatch(const ClientRegistered &msg) {
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const SetupData &msg)
+void LegacyPeer::dispatch(const SetupData& msg)
 {
     QVariantMap map;
     map["AdminUser"] = msg.adminUser;
@@ -302,8 +302,7 @@ void LegacyPeer::dispatch(const SetupData &msg)
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const SetupFailed &msg)
+void LegacyPeer::dispatch(const SetupFailed& msg)
 {
     QVariantMap m;
     m["MsgType"] = "CoreSetupReject";
@@ -312,8 +311,7 @@ void LegacyPeer::dispatch(const SetupFailed &msg)
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const SetupDone &msg)
+void LegacyPeer::dispatch(const SetupDone& msg)
 {
     Q_UNUSED(msg)
 
@@ -323,8 +321,7 @@ void LegacyPeer::dispatch(const SetupDone &msg)
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const Login &msg)
+void LegacyPeer::dispatch(const Login& msg)
 {
     QVariantMap m;
     m["MsgType"] = "ClientLogin";
@@ -334,8 +331,7 @@ void LegacyPeer::dispatch(const Login &msg)
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const LoginFailed &msg)
+void LegacyPeer::dispatch(const LoginFailed& msg)
 {
     QVariantMap m;
     m["MsgType"] = "ClientLoginReject";
@@ -344,8 +340,7 @@ void LegacyPeer::dispatch(const LoginFailed &msg)
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const LoginSuccess &msg)
+void LegacyPeer::dispatch(const LoginSuccess& msg)
 {
     Q_UNUSED(msg)
 
@@ -355,8 +350,7 @@ void LegacyPeer::dispatch(const LoginSuccess &msg)
     writeMessage(m);
 }
 
-
-void LegacyPeer::dispatch(const SessionState &msg)
+void LegacyPeer::dispatch(const SessionState& msg)
 {
     QVariantMap m;
     m["MsgType"] = "SessionInit";
@@ -370,10 +364,9 @@ void LegacyPeer::dispatch(const SessionState &msg)
     writeMessage(m);
 }
 
-
 /*** Standard messages ***/
 
-void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
+void LegacyPeer::handlePackedFunc(const QVariant& packedFunc)
 {
     QVariantList params(packedFunc.toList());
 
@@ -385,99 +378,94 @@ void LegacyPeer::handlePackedFunc(const QVariant &packedFunc)
     // TODO: make sure that this is a valid request type
     RequestType requestType = (RequestType)params.takeFirst().value<int>();
     switch (requestType) {
-        case Sync: {
-            if (params.count() < 3) {
-                qWarning() << Q_FUNC_INFO << "Received invalid sync call:" << params;
-                return;
-            }
-            QByteArray className = params.takeFirst().toByteArray();
-            QString objectName = params.takeFirst().toString();
-            QByteArray slotName = params.takeFirst().toByteArray();
-            handle(Protocol::SyncMessage(className, objectName, slotName, params));
-            break;
+    case Sync: {
+        if (params.count() < 3) {
+            qWarning() << Q_FUNC_INFO << "Received invalid sync call:" << params;
+            return;
         }
-        case RpcCall: {
-            if (params.empty()) {
-                qWarning() << Q_FUNC_INFO << "Received empty RPC call!";
-                return;
-            }
-            QByteArray slotName = params.takeFirst().toByteArray();
-            handle(Protocol::RpcCall(slotName, params));
-            break;
+        QByteArray className = params.takeFirst().toByteArray();
+        QString objectName = params.takeFirst().toString();
+        QByteArray slotName = params.takeFirst().toByteArray();
+        handle(Protocol::SyncMessage(className, objectName, slotName, params));
+        break;
+    }
+    case RpcCall: {
+        if (params.empty()) {
+            qWarning() << Q_FUNC_INFO << "Received empty RPC call!";
+            return;
         }
-        case InitRequest: {
-            if (params.count() != 2) {
-                qWarning() << Q_FUNC_INFO << "Received invalid InitRequest:" << params;
-                return;
-            }
-            QByteArray className = params[0].toByteArray();
-            QString objectName = params[1].toString();
-            handle(Protocol::InitRequest(className, objectName));
-            break;
+        QByteArray slotName = params.takeFirst().toByteArray();
+        handle(Protocol::RpcCall(slotName, params));
+        break;
+    }
+    case InitRequest: {
+        if (params.count() != 2) {
+            qWarning() << Q_FUNC_INFO << "Received invalid InitRequest:" << params;
+            return;
         }
-        case InitData: {
-            if (params.count() != 3) {
-                qWarning() << Q_FUNC_INFO << "Received invalid InitData:" << params;
-                return;
-            }
-            QByteArray className = params[0].toByteArray();
-            QString objectName = params[1].toString();
-            QVariantMap initData = params[2].toMap();
+        QByteArray className = params[0].toByteArray();
+        QString objectName = params[1].toString();
+        handle(Protocol::InitRequest(className, objectName));
+        break;
+    }
+    case InitData: {
+        if (params.count() != 3) {
+            qWarning() << Q_FUNC_INFO << "Received invalid InitData:" << params;
+            return;
+        }
+        QByteArray className = params[0].toByteArray();
+        QString objectName = params[1].toString();
+        QVariantMap initData = params[2].toMap();
 
-            // we need to special-case IrcUsersAndChannels here, since the format changed
-            if (className == "Network")
-                fromLegacyIrcUsersAndChannels(initData);
-            handle(Protocol::InitData(className, objectName, initData));
-            break;
+        // we need to special-case IrcUsersAndChannels here, since the format changed
+        if (className == "Network")
+            fromLegacyIrcUsersAndChannels(initData);
+        handle(Protocol::InitData(className, objectName, initData));
+        break;
+    }
+    case HeartBeat: {
+        if (params.count() != 1) {
+            qWarning() << Q_FUNC_INFO << "Received invalid HeartBeat:" << params;
+            return;
         }
-        case HeartBeat: {
-            if (params.count() != 1) {
-                qWarning() << Q_FUNC_INFO << "Received invalid HeartBeat:" << params;
-                return;
-            }
-            // The legacy protocol would only send a QTime, no QDateTime
-            // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
-            QDateTime dateTime = QDateTime::currentDateTime().toUTC();
-            dateTime.setTime(params[0].toTime());
-            handle(Protocol::HeartBeat(dateTime));
-            break;
+        // The legacy protocol would only send a QTime, no QDateTime
+        // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
+        QDateTime dateTime = QDateTime::currentDateTime().toUTC();
+        dateTime.setTime(params[0].toTime());
+        handle(Protocol::HeartBeat(dateTime));
+        break;
+    }
+    case HeartBeatReply: {
+        if (params.count() != 1) {
+            qWarning() << Q_FUNC_INFO << "Received invalid HeartBeat:" << params;
+            return;
         }
-        case HeartBeatReply: {
-            if (params.count() != 1) {
-                qWarning() << Q_FUNC_INFO << "Received invalid HeartBeat:" << params;
-                return;
-            }
-            // The legacy protocol would only send a QTime, no QDateTime
-            // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
-            QDateTime dateTime = QDateTime::currentDateTime().toUTC();
-            dateTime.setTime(params[0].toTime());
-            handle(Protocol::HeartBeatReply(dateTime));
-            break;
-        }
-
+        // The legacy protocol would only send a QTime, no QDateTime
+        // so we assume it's sent today, which works in exactly the same cases as it did in the old implementation
+        QDateTime dateTime = QDateTime::currentDateTime().toUTC();
+        dateTime.setTime(params[0].toTime());
+        handle(Protocol::HeartBeatReply(dateTime));
+        break;
+    }
     }
 }
 
-
-void LegacyPeer::dispatch(const Protocol::SyncMessage &msg)
+void LegacyPeer::dispatch(const Protocol::SyncMessage& msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)Sync << msg.className << msg.objectName << msg.slotName << msg.params);
 }
 
-
-void LegacyPeer::dispatch(const Protocol::RpcCall &msg)
+void LegacyPeer::dispatch(const Protocol::RpcCall& msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.slotName << msg.params);
 }
 
-
-void LegacyPeer::dispatch(const Protocol::InitRequest &msg)
+void LegacyPeer::dispatch(const Protocol::InitRequest& msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)InitRequest << msg.className << msg.objectName);
 }
 
-
-void LegacyPeer::dispatch(const Protocol::InitData &msg)
+void LegacyPeer::dispatch(const Protocol::InitData& msg)
 {
     // We need to special-case IrcUsersAndChannels, as the format changed
     if (msg.className == "Network") {
@@ -489,72 +477,67 @@ void LegacyPeer::dispatch(const Protocol::InitData &msg)
         dispatchPackedFunc(QVariantList() << (qint16)InitData << msg.className << msg.objectName << msg.initData);
 }
 
-
-void LegacyPeer::dispatch(const Protocol::HeartBeat &msg)
+void LegacyPeer::dispatch(const Protocol::HeartBeat& msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)HeartBeat << msg.timestamp.time());
 }
 
-
-void LegacyPeer::dispatch(const Protocol::HeartBeatReply &msg)
+void LegacyPeer::dispatch(const Protocol::HeartBeatReply& msg)
 {
     dispatchPackedFunc(QVariantList() << (qint16)HeartBeatReply << msg.timestamp.time());
 }
 
-
-void LegacyPeer::dispatchPackedFunc(const QVariantList &packedFunc)
+void LegacyPeer::dispatchPackedFunc(const QVariantList& packedFunc)
 {
     writeMessage(QVariant(packedFunc));
 }
 
-
 // Handle the changed format for Network's initData
 // cf. Network::initIrcUsersAndChannels()
-void LegacyPeer::fromLegacyIrcUsersAndChannels(QVariantMap &initData)
+void LegacyPeer::fromLegacyIrcUsersAndChannels(QVariantMap& initData)
 {
-    const QVariantMap &legacyMap = initData["IrcUsersAndChannels"].toMap();
+    const QVariantMap& legacyMap = initData["IrcUsersAndChannels"].toMap();
     QVariantMap newMap;
 
     QHash<QString, QVariantList> users;
-    foreach(const QVariant &v, legacyMap["users"].toMap().values()) {
-        const QVariantMap &map = v.toMap();
-        foreach(const QString &key, map.keys())
+    foreach (const QVariant& v, legacyMap["users"].toMap().values()) {
+        const QVariantMap& map = v.toMap();
+        foreach (const QString& key, map.keys())
             users[key] << map[key];
     }
     QVariantMap userMap;
-    foreach(const QString &key, users.keys())
+    foreach (const QString& key, users.keys())
         userMap[key] = users[key];
     newMap["Users"] = userMap;
 
     QHash<QString, QVariantList> channels;
-    foreach(const QVariant &v, legacyMap["channels"].toMap().values()) {
-        const QVariantMap &map = v.toMap();
-        foreach(const QString &key, map.keys())
+    foreach (const QVariant& v, legacyMap["channels"].toMap().values()) {
+        const QVariantMap& map = v.toMap();
+        foreach (const QString& key, map.keys())
             channels[key] << map[key];
     }
     QVariantMap channelMap;
-    foreach(const QString &key, channels.keys())
+    foreach (const QString& key, channels.keys())
         channelMap[key] = channels[key];
     newMap["Channels"] = channelMap;
 
     initData["IrcUsersAndChannels"] = newMap;
 }
 
-
-void LegacyPeer::toLegacyIrcUsersAndChannels(QVariantMap &initData)
+void LegacyPeer::toLegacyIrcUsersAndChannels(QVariantMap& initData)
 {
-    const QVariantMap &usersAndChannels = initData["IrcUsersAndChannels"].toMap();
+    const QVariantMap& usersAndChannels = initData["IrcUsersAndChannels"].toMap();
     QVariantMap legacyMap;
 
     // toMap() and toList() are cheap, so no need to copy to a hash
 
     QVariantMap userMap;
-    const QVariantMap &users = usersAndChannels["Users"].toMap();
+    const QVariantMap& users = usersAndChannels["Users"].toMap();
 
-    int size = users["nick"].toList().size(); // we know this key exists
-    for(int i = 0; i < size; i++) {
+    int size = users["nick"].toList().size();  // we know this key exists
+    for (int i = 0; i < size; i++) {
         QVariantMap map;
-        foreach(const QString &key, users.keys())
+        foreach (const QString& key, users.keys())
             map[key] = users[key].toList().at(i);
         QString hostmask = QString("%1!%2@%3").arg(map["nick"].toString(), map["user"].toString(), map["host"].toString());
         userMap[hostmask.toLower()] = map;
@@ -562,12 +545,12 @@ void LegacyPeer::toLegacyIrcUsersAndChannels(QVariantMap &initData)
     legacyMap["users"] = userMap;
 
     QVariantMap channelMap;
-    const QVariantMap &channels = usersAndChannels["Channels"].toMap();
+    const QVariantMap& channels = usersAndChannels["Channels"].toMap();
 
     size = channels["name"].toList().size();
-    for(int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++) {
         QVariantMap map;
-        foreach(const QString &key, channels.keys())
+        foreach (const QString& key, channels.keys())
             map[key] = channels[key].toList().at(i);
         channelMap[map["name"].toString().toLower()] = map;
     }

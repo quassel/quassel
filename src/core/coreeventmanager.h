@@ -30,16 +30,16 @@ class CoreEventManager : public EventManager
     Q_OBJECT
 
 public:
-    CoreEventManager(CoreSession *session)
+    CoreEventManager(CoreSession* session)
         : EventManager(session)
         , _coreSession(session)
     {}
 
 protected:
-    inline Network *networkById(NetworkId id) const override { return _coreSession->network(id); }
+    inline Network* networkById(NetworkId id) const override { return _coreSession->network(id); }
 
 private:
-    CoreSession *_coreSession;
+    CoreSession* _coreSession;
 };
 
 #endif

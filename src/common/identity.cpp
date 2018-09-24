@@ -21,78 +21,75 @@
 #include "identity.h"
 
 #include <QMetaProperty>
-#include <QVariantMap>
 #include <QString>
+#include <QVariantMap>
 
 #ifdef Q_OS_MAC
-#  include <CoreServices/CoreServices.h>
-#  include "mac_utils.h"
+#    include <CoreServices/CoreServices.h>
+
+#    include "mac_utils.h"
 #endif
 
 #ifdef Q_OS_UNIX
-#  include <sys/types.h>
-#  include <pwd.h>
-#  include <unistd.h>
+#    include <pwd.h>
+#    include <sys/types.h>
+#    include <unistd.h>
 #endif
 
 #ifdef Q_OS_WIN
-#  include <windows.h>
-#  include <Winbase.h>
-#  define SECURITY_WIN32
-#  include <Security.h>
+#    include <windows.h>
+#    include <Winbase.h>
+#    define SECURITY_WIN32
+#    include <Security.h>
 #endif
 
-Identity::Identity(IdentityId id, QObject *parent)
-    : SyncableObject(parent),
-    _identityId(id)
+Identity::Identity(IdentityId id, QObject* parent)
+    : SyncableObject(parent)
+    , _identityId(id)
 {
     init();
     setToDefaults();
 }
 
-
-Identity::Identity(const Identity &other, QObject *parent)
-    : SyncableObject(parent),
-    _identityId(other.id()),
-    _identityName(other.identityName()),
-    _realName(other.realName()),
-    _nicks(other.nicks()),
-    _awayNick(other.awayNick()),
-    _awayNickEnabled(other.awayNickEnabled()),
-    _awayReason(other.awayReason()),
-    _awayReasonEnabled(other.awayReasonEnabled()),
-    _autoAwayEnabled(other.autoAwayEnabled()),
-    _autoAwayTime(other.autoAwayTime()),
-    _autoAwayReason(other.autoAwayReason()),
-    _autoAwayReasonEnabled(other.autoAwayReasonEnabled()),
-    _detachAwayEnabled(other.detachAwayEnabled()),
-    _detachAwayReason(other.detachAwayReason()),
-    _detachAwayReasonEnabled(other.detachAwayReasonEnabled()),
-    _ident(other.ident()),
-    _kickReason(other.kickReason()),
-    _partReason(other.partReason()),
-    _quitReason(other.quitReason())
+Identity::Identity(const Identity& other, QObject* parent)
+    : SyncableObject(parent)
+    , _identityId(other.id())
+    , _identityName(other.identityName())
+    , _realName(other.realName())
+    , _nicks(other.nicks())
+    , _awayNick(other.awayNick())
+    , _awayNickEnabled(other.awayNickEnabled())
+    , _awayReason(other.awayReason())
+    , _awayReasonEnabled(other.awayReasonEnabled())
+    , _autoAwayEnabled(other.autoAwayEnabled())
+    , _autoAwayTime(other.autoAwayTime())
+    , _autoAwayReason(other.autoAwayReason())
+    , _autoAwayReasonEnabled(other.autoAwayReasonEnabled())
+    , _detachAwayEnabled(other.detachAwayEnabled())
+    , _detachAwayReason(other.detachAwayReason())
+    , _detachAwayReasonEnabled(other.detachAwayReasonEnabled())
+    , _ident(other.ident())
+    , _kickReason(other.kickReason())
+    , _partReason(other.partReason())
+    , _quitReason(other.quitReason())
 {
     init();
 }
 
-
 #ifdef Q_OS_WIN
-#ifdef UNICODE
-QString tcharToQString(TCHAR *tchar)
+#    ifdef UNICODE
+QString tcharToQString(TCHAR* tchar)
 {
-    return QString::fromUtf16(reinterpret_cast<ushort *>(tchar));
+    return QString::fromUtf16(reinterpret_cast<ushort*>(tchar));
 }
 
-
-#else
-QString tcharToQString(TCHAR *tchar)
+#    else
+QString tcharToQString(TCHAR* tchar)
 {
     return QString::fromLocal8Bit(tchar);
 }
 
-
-#endif
+#    endif
 
 #endif
 void Identity::init()
@@ -101,10 +98,9 @@ void Identity::init()
     setAllowClientUpdates(true);
 }
 
-
 QString Identity::defaultNick()
 {
-    QString nick = QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
+    QString nick = QString("quassel%1").arg(qrand() & 0xff);  // FIXME provide more sensible default nicks
 
 #ifdef Q_OS_MAC
     QString shortUserName = CFStringToQString(CSCopyUserName(true));
@@ -113,7 +109,7 @@ QString Identity::defaultNick()
 
 #elif defined(Q_OS_UNIX)
     QString userName;
-    struct passwd *pwd = getpwuid(getuid());
+    struct passwd* pwd = getpwuid(getuid());
     if (pwd)
         userName = pwd->pw_name;
     if (!userName.isEmpty())
@@ -122,7 +118,7 @@ QString Identity::defaultNick()
 #elif defined(Q_OS_WIN)
     TCHAR infoBuf[128];
     DWORD bufCharCount = 128;
-    //if(GetUserNameEx(/* NameSamCompatible */ 1, infoBuf, &bufCharCount))
+    // if(GetUserNameEx(/* NameSamCompatible */ 1, infoBuf, &bufCharCount))
     if (GetUserNameEx(NameSamCompatible, infoBuf, &bufCharCount)) {
         QString nickName(tcharToQString(infoBuf));
         int lastBs = nickName.lastIndexOf('\\');
@@ -140,7 +136,6 @@ QString Identity::defaultNick()
     return nick;
 }
 
-
 QString Identity::defaultRealName()
 {
     QString generalDefault = tr("Quassel IRC User");
@@ -150,7 +145,7 @@ QString Identity::defaultRealName()
 
 #elif defined(Q_OS_UNIX)
     QString realName;
-    struct passwd *pwd = getpwuid(getuid());
+    struct passwd* pwd = getpwuid(getuid());
     if (pwd)
         realName = QString::fromUtf8(pwd->pw_gecos);
     if (!realName.isEmpty())
@@ -169,7 +164,6 @@ QString Identity::defaultRealName()
     return generalDefault;
 #endif
 }
-
 
 void Identity::setToDefaults()
 {
@@ -194,7 +188,6 @@ void Identity::setToDefaults()
     setQuitReason(tr("https://quassel-irc.org - Chat comfortably. Anywhere."));
 }
 
-
 /*** setters ***/
 
 void Identity::setId(IdentityId _id)
@@ -205,42 +198,36 @@ void Identity::setId(IdentityId _id)
     renameObject(QString::number(id().toInt()));
 }
 
-
-void Identity::setIdentityName(const QString &identityName)
+void Identity::setIdentityName(const QString& identityName)
 {
     _identityName = identityName;
     SYNC(ARG(identityName))
 }
 
-
-void Identity::setRealName(const QString &realName)
+void Identity::setRealName(const QString& realName)
 {
     _realName = realName;
     SYNC(ARG(realName))
 }
 
-
-void Identity::setNicks(const QStringList &nicks)
+void Identity::setNicks(const QStringList& nicks)
 {
     _nicks = nicks;
     SYNC(ARG(nicks))
     emit nicksSet(nicks);
 }
 
-
-void Identity::setAwayNick(const QString &nick)
+void Identity::setAwayNick(const QString& nick)
 {
     _awayNick = nick;
     SYNC(ARG(nick))
 }
 
-
-void Identity::setAwayReason(const QString &reason)
+void Identity::setAwayReason(const QString& reason)
 {
     _awayReason = reason;
     SYNC(ARG(reason))
 }
-
 
 void Identity::setAwayNickEnabled(bool enabled)
 {
@@ -248,13 +235,11 @@ void Identity::setAwayNickEnabled(bool enabled)
     SYNC(ARG(enabled))
 }
 
-
 void Identity::setAwayReasonEnabled(bool enabled)
 {
     _awayReasonEnabled = enabled;
     SYNC(ARG(enabled))
 }
-
 
 void Identity::setAutoAwayEnabled(bool enabled)
 {
@@ -262,20 +247,17 @@ void Identity::setAutoAwayEnabled(bool enabled)
     SYNC(ARG(enabled))
 }
 
-
 void Identity::setAutoAwayTime(int time)
 {
     _autoAwayTime = time;
     SYNC(ARG(time))
 }
 
-
-void Identity::setAutoAwayReason(const QString &reason)
+void Identity::setAutoAwayReason(const QString& reason)
 {
     _autoAwayReason = reason;
     SYNC(ARG(reason))
 }
-
 
 void Identity::setAutoAwayReasonEnabled(bool enabled)
 {
@@ -283,20 +265,17 @@ void Identity::setAutoAwayReasonEnabled(bool enabled)
     SYNC(ARG(enabled))
 }
 
-
 void Identity::setDetachAwayEnabled(bool enabled)
 {
     _detachAwayEnabled = enabled;
     SYNC(ARG(enabled))
 }
 
-
-void Identity::setDetachAwayReason(const QString &reason)
+void Identity::setDetachAwayReason(const QString& reason)
 {
     _detachAwayReason = reason;
     SYNC(ARG(reason))
 }
-
 
 void Identity::setDetachAwayReasonEnabled(bool enabled)
 {
@@ -304,38 +283,33 @@ void Identity::setDetachAwayReasonEnabled(bool enabled)
     SYNC(ARG(enabled))
 }
 
-
-void Identity::setIdent(const QString &ident)
+void Identity::setIdent(const QString& ident)
 {
     _ident = ident;
     SYNC(ARG(ident))
 }
 
-
-void Identity::setKickReason(const QString &reason)
+void Identity::setKickReason(const QString& reason)
 {
     _kickReason = reason;
     SYNC(ARG(reason))
 }
 
-
-void Identity::setPartReason(const QString &reason)
+void Identity::setPartReason(const QString& reason)
 {
     _partReason = reason;
     SYNC(ARG(reason))
 }
 
-
-void Identity::setQuitReason(const QString &reason)
+void Identity::setQuitReason(const QString& reason)
 {
     _quitReason = reason;
     SYNC(ARG(reason))
 }
 
-
 /***  ***/
 
-void Identity::copyFrom(const Identity &other)
+void Identity::copyFrom(const Identity& other)
 {
     for (int idx = staticMetaObject.propertyOffset(); idx < staticMetaObject.propertyCount(); idx++) {
         QMetaProperty metaProp = staticMetaObject.property(idx);
@@ -346,42 +320,40 @@ void Identity::copyFrom(const Identity &other)
     }
 }
 
-
-bool Identity::operator==(const Identity &other) const
+bool Identity::operator==(const Identity& other) const
 {
     for (int idx = staticMetaObject.propertyOffset(); idx < staticMetaObject.propertyCount(); idx++) {
         QMetaProperty metaProp = staticMetaObject.property(idx);
         Q_ASSERT(metaProp.isValid());
         QVariant v1 = this->property(metaProp.name());
-        QVariant v2 = other.property(metaProp.name()); // qDebug() << v1 << v2;
+        QVariant v2 = other.property(metaProp.name());  // qDebug() << v1 << v2;
         // QVariant cannot compare custom types, so we need to check for this special case
         if (QString(v1.typeName()) == "IdentityId") {
-            if (v1.value<IdentityId>() != v2.value<IdentityId>()) return false;
+            if (v1.value<IdentityId>() != v2.value<IdentityId>())
+                return false;
         }
         else {
-            if (v1 != v2) return false;
+            if (v1 != v2)
+                return false;
         }
     }
     return true;
 }
 
-
-bool Identity::operator!=(const Identity &other) const
+bool Identity::operator!=(const Identity& other) const
 {
     return !(*this == other);
 }
 
-
 ///////////////////////////////
 
-QDataStream &operator<<(QDataStream &out, Identity id)
+QDataStream& operator<<(QDataStream& out, Identity id)
 {
     out << id.toVariantMap();
     return out;
 }
 
-
-QDataStream &operator>>(QDataStream &in, Identity &id)
+QDataStream& operator>>(QDataStream& in, Identity& id)
 {
     QVariantMap i;
     in >> i;

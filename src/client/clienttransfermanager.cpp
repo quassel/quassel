@@ -23,15 +23,14 @@
 #include "client.h"
 #include "clienttransfer.h"
 
-void ClientTransferManager::setTransferIds(const QList<QUuid> &transferIds)
+void ClientTransferManager::setTransferIds(const QList<QUuid>& transferIds)
 {
-    for(auto &&id : transferIds) {
+    for (auto&& id : transferIds) {
         onCoreTransferAdded(id);
     }
 }
 
-
-void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
+void ClientTransferManager::onCoreTransferAdded(const QUuid& uuid)
 {
     if (uuid.isNull()) {
         qWarning() << Q_FUNC_INFO << "Invalid transfer uuid" << uuid.toString();
@@ -39,14 +38,13 @@ void ClientTransferManager::onCoreTransferAdded(const QUuid &uuid)
     }
 
     auto transfer = new ClientTransfer(uuid, this);
-    connect(transfer, &SyncableObject::initDone, this, &ClientTransferManager::onTransferInitDone); // we only want to add initialized transfers
+    connect(transfer, &SyncableObject::initDone, this, &ClientTransferManager::onTransferInitDone);  // we only want to add initialized transfers
     Client::signalProxy()->synchronize(transfer);
 }
 
-
 void ClientTransferManager::onTransferInitDone()
 {
-    auto *transfer = qobject_cast<Transfer *>(sender());
+    auto* transfer = qobject_cast<Transfer*>(sender());
     Q_ASSERT(transfer);
     addTransfer(transfer);
 }

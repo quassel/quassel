@@ -27,11 +27,11 @@
 
 namespace {
 
-void addEntries(const QString &dir, AbstractTreeItem *parentItem) {
-
-    auto entries = QDir{dir}.entryInfoList(QDir::AllEntries|QDir::NoDotAndDotDot, QDir::Name|QDir::DirsFirst);
-    QList<AbstractTreeItem *> itemList;
-    for (auto &&entry : entries) {
+void addEntries(const QString& dir, AbstractTreeItem* parentItem)
+{
+    auto entries = QDir{dir}.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot, QDir::Name | QDir::DirsFirst);
+    QList<AbstractTreeItem*> itemList;
+    for (auto&& entry : entries) {
         auto item = new SimpleTreeItem({entry.fileName(), entry.size()}, parentItem);
         itemList << item;
         if (entry.isDir()) {
@@ -41,9 +41,9 @@ void addEntries(const QString &dir, AbstractTreeItem *parentItem) {
     parentItem->newChilds(itemList);
 }
 
-}
+}  // namespace
 
-ResourceTreeDlg::ResourceTreeDlg(QWidget *parent)
+ResourceTreeDlg::ResourceTreeDlg(QWidget* parent)
     : QDialog(parent)
 {
     ui.setupUi(this);

@@ -20,7 +20,7 @@
 
 #include "coreapplication.h"
 
-CoreApplication::CoreApplication(int &argc, char **argv)
+CoreApplication::CoreApplication(int& argc, char** argv)
     : QCoreApplication(argc, argv)
 {
     Quassel::registerQuitHandler([this]() {
@@ -29,13 +29,11 @@ CoreApplication::CoreApplication(int &argc, char **argv)
     });
 }
 
-
 void CoreApplication::init()
 {
     _core = std::make_unique<Core>();
     _core->init();
 }
-
 
 void CoreApplication::onShutdownComplete()
 {

@@ -34,7 +34,7 @@ class COMMON_EXPORT InternalPeer : public Peer
     Q_OBJECT
 
 public:
-    InternalPeer(QObject *parent = nullptr);
+    InternalPeer(QObject* parent = nullptr);
     ~InternalPeer() override;
 
     Protocol::Type protocol() const override { return Protocol::InternalProtocol; }
@@ -43,11 +43,11 @@ public:
     QString address() const override;
     quint16 port() const override;
 
-    SignalProxy *signalProxy() const override;
-    void setSignalProxy(SignalProxy *proxy) override;
+    SignalProxy* signalProxy() const override;
+    void setSignalProxy(SignalProxy* proxy) override;
 
-    InternalPeer *peer() const;
-    void setPeer(InternalPeer *peer);
+    InternalPeer* peer() const;
+    void setPeer(InternalPeer* peer);
 
     bool isOpen() const override;
     bool isSecure() const override;
@@ -55,46 +55,46 @@ public:
 
     int lag() const override;
 
-    void dispatch(const Protocol::SyncMessage &msg) override;
-    void dispatch(const Protocol::RpcCall &msg) override;
-    void dispatch(const Protocol::InitRequest &msg) override;
-    void dispatch(const Protocol::InitData &msg) override;
+    void dispatch(const Protocol::SyncMessage& msg) override;
+    void dispatch(const Protocol::RpcCall& msg) override;
+    void dispatch(const Protocol::InitRequest& msg) override;
+    void dispatch(const Protocol::InitData& msg) override;
 
     /* These are not needed for InternalPeer */
-    void dispatch(const Protocol::RegisterClient &) override {}
-    void dispatch(const Protocol::ClientDenied &) override {}
-    void dispatch(const Protocol::ClientRegistered &) override {}
-    void dispatch(const Protocol::SetupData &) override {}
-    void dispatch(const Protocol::SetupFailed &) override {}
-    void dispatch(const Protocol::SetupDone &) override {}
-    void dispatch(const Protocol::Login &) override {}
-    void dispatch(const Protocol::LoginFailed &) override {}
-    void dispatch(const Protocol::LoginSuccess &) override {}
-    void dispatch(const Protocol::SessionState &) override {}
+    void dispatch(const Protocol::RegisterClient&) override {}
+    void dispatch(const Protocol::ClientDenied&) override {}
+    void dispatch(const Protocol::ClientRegistered&) override {}
+    void dispatch(const Protocol::SetupData&) override {}
+    void dispatch(const Protocol::SetupFailed&) override {}
+    void dispatch(const Protocol::SetupDone&) override {}
+    void dispatch(const Protocol::Login&) override {}
+    void dispatch(const Protocol::LoginFailed&) override {}
+    void dispatch(const Protocol::LoginSuccess&) override {}
+    void dispatch(const Protocol::SessionState&) override {}
 
 public slots:
-    void close(const QString &reason = QString()) override;
+    void close(const QString& reason = QString()) override;
 
 signals:
-    void dispatchMessage(const Protocol::SyncMessage &msg);
-    void dispatchMessage(const Protocol::RpcCall &msg);
-    void dispatchMessage(const Protocol::InitRequest &msg);
-    void dispatchMessage(const Protocol::InitData &msg);
+    void dispatchMessage(const Protocol::SyncMessage& msg);
+    void dispatchMessage(const Protocol::RpcCall& msg);
+    void dispatchMessage(const Protocol::InitRequest& msg);
+    void dispatchMessage(const Protocol::InitData& msg);
 
 private slots:
     void peerDisconnected();
 
-    void handleMessage(const Protocol::SyncMessage &msg);
-    void handleMessage(const Protocol::RpcCall &msg);
-    void handleMessage(const Protocol::InitRequest &msg);
-    void handleMessage(const Protocol::InitData &msg);
+    void handleMessage(const Protocol::SyncMessage& msg);
+    void handleMessage(const Protocol::RpcCall& msg);
+    void handleMessage(const Protocol::InitRequest& msg);
+    void handleMessage(const Protocol::InitData& msg);
 
 private:
     template<typename T>
-    void handle(const T &msg);
+    void handle(const T& msg);
 
 private:
-    SignalProxy *_proxy{nullptr};
+    SignalProxy* _proxy{nullptr};
     bool _isOpen{true};
 };
 

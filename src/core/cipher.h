@@ -24,19 +24,19 @@ public:
     explicit Cipher(QByteArray key, QString cipherType = QString("blowfish"));
     QByteArray decrypt(QByteArray cipher);
     QByteArray decryptTopic(QByteArray cipher);
-    bool encrypt(QByteArray &cipher);
+    bool encrypt(QByteArray& cipher);
     QByteArray initKeyExchange();
     QByteArray parseInitKeyX(QByteArray key);
     bool parseFinishKeyX(QByteArray key);
     bool setKey(QByteArray key);
     QByteArray key() { return m_key; }
-    bool setType(const QString &type);
+    bool setType(const QString& type);
     QString type() { return m_type; }
     static bool neededFeaturesAvailable();
     inline bool usesCBC() { return m_cbc; }
 
 private:
-    //direction is true for encrypt, false for decrypt
+    // direction is true for encrypt, false for decrypt
     QByteArray blowfishCBC(QByteArray cipherText, bool direction);
     QByteArray blowfishECB(QByteArray cipherText, bool direction);
     QByteArray b64ToByte(QByteArray text);
@@ -50,5 +50,4 @@ private:
     bool m_cbc;
 };
 
-
-#endif // CIPHER_H
+#endif  // CIPHER_H

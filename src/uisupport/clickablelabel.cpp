@@ -23,13 +23,11 @@
 #include <QDebug>
 #include <QMouseEvent>
 
-ClickableLabel::ClickableLabel(QWidget *parent)
+ClickableLabel::ClickableLabel(QWidget* parent)
     : QLabel(parent)
-{
-}
+{}
 
-
-void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
+void ClickableLabel::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->pos().x() > size().width() || event->pos().y() > size().height())
         return;

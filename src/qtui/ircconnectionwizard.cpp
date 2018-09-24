@@ -20,14 +20,14 @@
 
 #include "ircconnectionwizard.h"
 
-#include "client.h"
-#include "identityeditwidget.h"
-#include "simplenetworkeditor.h"
-#include "presetnetworks.h"
-
 #include <QVBoxLayout>
 
-IrcConnectionWizard::IrcConnectionWizard(QWidget *parent, Qt::WindowFlags flags)
+#include "client.h"
+#include "identityeditwidget.h"
+#include "presetnetworks.h"
+#include "simplenetworkeditor.h"
+
+IrcConnectionWizard::IrcConnectionWizard(QWidget* parent, Qt::WindowFlags flags)
     : QWizard(parent, flags)
 {
     _introductionPage = createIntroductionPage(this);
@@ -47,26 +47,27 @@ IrcConnectionWizard::IrcConnectionWizard(QWidget *parent, Qt::WindowFlags flags)
     setButtonText(QWizard::FinishButton, tr("Save && Connect"));
 }
 
-
-QWizardPage *IrcConnectionWizard::createIntroductionPage(QWidget *parent)
+QWizardPage* IrcConnectionWizard::createIntroductionPage(QWidget* parent)
 {
-    auto *page = new QWizardPage(parent);
+    auto* page = new QWizardPage(parent);
     page->setTitle(QObject::tr("Welcome to Quassel IRC"));
 
-    QLabel *label = new QLabel(QObject::tr("This wizard will help you to set up your default identity and your IRC network connection.<br>"
-                                           "This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."), page);
+    QLabel* label = new QLabel(
+        QObject::tr(
+            "This wizard will help you to set up your default identity and your IRC network connection.<br>"
+            "This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes."),
+        page);
     label->setWordWrap(true);
 
-    auto *layout = new QVBoxLayout;
+    auto* layout = new QVBoxLayout;
     layout->addWidget(label);
     page->setLayout(layout);
     return page;
 }
 
-
 void IrcConnectionWizard::finishClicked()
 {
-    CertIdentity *identity = static_cast<IdentityPage *>(_identityPage)->identity();
+    CertIdentity* identity = static_cast<IdentityPage*>(_identityPage)->identity();
     if (identity->id().isValid()) {
         Client::updateIdentity(identity->id(), identity->toVariantMap());
         identityReady(identity->id());
@@ -77,11 +78,10 @@ void IrcConnectionWizard::finishClicked()
     }
 }
 
-
 void IrcConnectionWizard::identityReady(IdentityId id)
 {
     disconnect(Client::instance(), &Client::identityCreated, this, &IrcConnectionWizard::identityReady);
-    auto *networkPage = static_cast<NetworkPage *>(_networkPage);
+    auto* networkPage = static_cast<NetworkPage*>(_networkPage);
     NetworkInfo networkInfo = networkPage->networkInfo();
     QStringList channels = networkPage->channelList();
     networkInfo.identity = id;
@@ -89,25 +89,23 @@ void IrcConnectionWizard::identityReady(IdentityId id)
     Client::createNetwork(networkInfo, channels);
 }
 
-
 void IrcConnectionWizard::networkReady(NetworkId id)
 {
     disconnect(Client::instance(), &Client::networkCreated, this, &IrcConnectionWizard::networkReady);
-    const Network *net = Client::network(id);
+    const Network* net = Client::network(id);
     Q_ASSERT(net);
     net->requestConnect();
     deleteLater();
 }
-
 
 // ==============================
 //  Wizard Pages
 // ==============================
 
 // Identity Page
-IdentityPage::IdentityPage(QWidget *parent)
-    : QWizardPage(parent),
-    _identityEditWidget(new IdentityEditWidget(this))
+IdentityPage::IdentityPage(QWidget* parent)
+    : QWizardPage(parent)
+    , _identityEditWidget(new IdentityEditWidget(this))
 {
     setTitle(tr("Setup Identity"));
 
@@ -122,23 +120,21 @@ IdentityPage::IdentityPage(QWidget *parent)
 
     _identityEditWidget->displayIdentity(_identity);
     _identityEditWidget->showAdvanced(false);
-    auto *layout = new QVBoxLayout;
+    auto* layout = new QVBoxLayout;
     layout->addWidget(_identityEditWidget);
     setLayout(layout);
 }
 
-
-CertIdentity *IdentityPage::identity()
+CertIdentity* IdentityPage::identity()
 {
     _identityEditWidget->saveToIdentity(_identity);
     return _identity;
 }
 
-
 // Network Page
-NetworkPage::NetworkPage(QWidget *parent)
-    : QWizardPage(parent),
-    _networkEditor(new SimpleNetworkEditor(this))
+NetworkPage::NetworkPage(QWidget* parent)
+    : QWizardPage(parent)
+    , _networkEditor(new SimpleNetworkEditor(this))
 {
     QStringList defaultNets = PresetNetworks::names(true);
     if (!defaultNets.isEmpty()) {
@@ -154,18 +150,16 @@ NetworkPage::NetworkPage(QWidget *parent)
 
     setTitle(tr("Setup Network Connection"));
 
-    auto *layout = new QVBoxLayout;
+    auto* layout = new QVBoxLayout;
     layout->addWidget(_networkEditor);
     setLayout(layout);
 }
-
 
 NetworkInfo NetworkPage::networkInfo()
 {
     _networkEditor->saveToNetworkInfo(_networkInfo);
     return _networkInfo;
 }
-
 
 QStringList NetworkPage::channelList()
 {

@@ -23,18 +23,18 @@
 
 #include <QWidget>
 
-#include "ui_coreconnectionstatuswidget.h"
-
 #include "coreconnection.h"
+
+#include "ui_coreconnectionstatuswidget.h"
 
 class CoreConnectionStatusWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent = nullptr);
+    CoreConnectionStatusWidget(CoreConnection* connection, QWidget* parent = nullptr);
 
-    inline CoreConnection *coreConnection() const { return _coreConnection; }
+    inline CoreConnection* coreConnection() const { return _coreConnection; }
 
 public slots:
     void update();
@@ -47,8 +47,7 @@ private slots:
 private:
     Ui::CoreConnectionStatusWidget ui;
 
-    CoreConnection *_coreConnection;
+    CoreConnection* _coreConnection;
 };
 
-
-#endif // CORECONNECTIONSTATUSWIDGET_H
+#endif  // CORECONNECTIONSTATUSWIDGET_H

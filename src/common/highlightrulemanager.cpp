@@ -25,7 +25,7 @@
 #include "expressionmatch.h"
 #include "util.h"
 
-HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager &other)
+HighlightRuleManager& HighlightRuleManager::operator=(const HighlightRuleManager& other)
 {
     if (this == &other)
         return *this;
@@ -37,7 +37,6 @@ HighlightRuleManager &HighlightRuleManager::operator=(const HighlightRuleManager
     return *this;
 }
 
-
 int HighlightRuleManager::indexOf(int id) const
 {
     for (int i = 0; i < _highlightRuleList.count(); i++) {
@@ -46,7 +45,6 @@ int HighlightRuleManager::indexOf(int id) const
     }
     return -1;
 }
-
 
 int HighlightRuleManager::nextId()
 {
@@ -59,7 +57,6 @@ int HighlightRuleManager::nextId()
     }
     return max + 1;
 }
-
 
 QVariantMap HighlightRuleManager::initHighlightRuleList() const
 {
@@ -95,8 +92,7 @@ QVariantMap HighlightRuleManager::initHighlightRuleList() const
     return highlightRuleListMap;
 }
 
-
-void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlightRuleList)
+void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap& highlightRuleList)
 {
     QVariantList id = highlightRuleList["id"].toList();
     QStringList name = highlightRuleList["name"].toStringList();
@@ -108,24 +104,27 @@ void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap &highlight
     QStringList channel = highlightRuleList["channel"].toStringList();
 
     int count = id.count();
-    if (count != name.count() || count != isRegEx.count() || count != isCaseSensitive.count() ||
-        count != isActive.count() || count != isInverse.count() || count != sender.count() ||
-        count != channel.count()) {
+    if (count != name.count() || count != isRegEx.count() || count != isCaseSensitive.count() || count != isActive.count()
+        || count != isInverse.count() || count != sender.count() || count != channel.count()) {
         qWarning() << "Corrupted HighlightRuleList settings! (Count mismatch)";
         return;
     }
 
     _highlightRuleList.clear();
     for (int i = 0; i < name.count(); i++) {
-        _highlightRuleList << HighlightRule(id[i].toInt(), name[i], isRegEx[i].toBool(), isCaseSensitive[i].toBool(),
-                                            isActive[i].toBool(), isInverse[i].toBool(), sender[i], channel[i]);
+        _highlightRuleList << HighlightRule(id[i].toInt(),
+                                            name[i],
+                                            isRegEx[i].toBool(),
+                                            isCaseSensitive[i].toBool(),
+                                            isActive[i].toBool(),
+                                            isInverse[i].toBool(),
+                                            sender[i],
+                                            channel[i]);
     }
 }
 
-
-void HighlightRuleManager::addHighlightRule(int id, const QString &name, bool isRegEx, bool isCaseSensitive,
-                                            bool isActive, bool isInverse, const QString &sender,
-                                            const QString &channel)
+void HighlightRuleManager::addHighlightRule(
+    int id, const QString& name, bool isRegEx, bool isCaseSensitive, bool isActive, bool isInverse, const QString& sender, const QString& channel)
 {
     if (contains(id)) {
         return;
@@ -134,28 +133,26 @@ void HighlightRuleManager::addHighlightRule(int id, const QString &name, bool is
     HighlightRule newItem = HighlightRule(id, name, isRegEx, isCaseSensitive, isActive, isInverse, sender, channel);
     _highlightRuleList << newItem;
 
-    SYNC(ARG(id), ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isActive), ARG(isInverse), ARG(sender),
-         ARG(channel))
+    SYNC(ARG(id), ARG(name), ARG(isRegEx), ARG(isCaseSensitive), ARG(isActive), ARG(isInverse), ARG(sender), ARG(channel))
 }
 
-
-bool HighlightRuleManager::match(const NetworkId &netId,
-                                 const QString &msgContents,
-                                 const QString &msgSender,
+bool HighlightRuleManager::match(const NetworkId& netId,
+                                 const QString& msgContents,
+                                 const QString& msgSender,
                                  Message::Type msgType,
                                  Message::Flags msgFlags,
-                                 const QString &bufferName,
-                                 const QString &currentNick,
-                                 const QStringList &identityNicks)
+                                 const QString& bufferName,
+                                 const QString& currentNick,
+                                 const QStringList& identityNicks)
 {
     if (!((msgType & (Message::Plain | Message::Notice | Message::Action)) && !(msgFlags & Message::Self))) {
-       return false;
+        return false;
     }
 
     bool matches = false;
 
     for (int i = 0; i < _highlightRuleList.count(); i++) {
-        auto &rule = _highlightRuleList.at(i);
+        auto& rule = _highlightRuleList.at(i);
         if (!rule.isEnabled())
             continue;
 
@@ -203,13 +200,11 @@ bool HighlightRuleManager::match(const NetworkId &netId,
     return false;
 }
 
-
 void HighlightRuleManager::removeHighlightRule(int highlightRule)
 {
     removeAt(indexOf(highlightRule));
     SYNC(ARG(highlightRule))
 }
-
 
 void HighlightRuleManager::toggleHighlightRule(int highlightRule)
 {
@@ -220,30 +215,27 @@ void HighlightRuleManager::toggleHighlightRule(int highlightRule)
     SYNC(ARG(highlightRule))
 }
 
-
-bool HighlightRuleManager::match(const Message &msg, const QString &currentNick, const QStringList &identityNicks)
+bool HighlightRuleManager::match(const Message& msg, const QString& currentNick, const QStringList& identityNicks)
 {
-    return match(msg.bufferInfo().networkId(), msg.contents(), msg.sender(), msg.type(), msg.flags(),
-                 msg.bufferInfo().bufferName(), currentNick, identityNicks);
+    return match(msg.bufferInfo().networkId(),
+                 msg.contents(),
+                 msg.sender(),
+                 msg.type(),
+                 msg.flags(),
+                 msg.bufferInfo().bufferName(),
+                 currentNick,
+                 identityNicks);
 }
-
 
 /**************************************************************************
  * HighlightRule
  *************************************************************************/
-bool HighlightRuleManager::HighlightRule::operator!=(const HighlightRule &other) const
+bool HighlightRuleManager::HighlightRule::operator!=(const HighlightRule& other) const
 {
-    return (_id != other._id ||
-            _contents != other._contents ||
-            _isRegEx != other._isRegEx ||
-            _isCaseSensitive != other._isCaseSensitive ||
-            _isEnabled != other._isEnabled ||
-            _isInverse != other._isInverse ||
-            _sender != other._sender ||
-            _chanName != other._chanName);
+    return (_id != other._id || _contents != other._contents || _isRegEx != other._isRegEx || _isCaseSensitive != other._isCaseSensitive
+            || _isEnabled != other._isEnabled || _isInverse != other._isInverse || _sender != other._sender || _chanName != other._chanName);
     // Don't compare ExpressionMatch objects as they are created as needed from the above
 }
-
 
 void HighlightRuleManager::HighlightRule::determineExpressions() const
 {
@@ -254,13 +246,9 @@ void HighlightRuleManager::HighlightRule::determineExpressions() const
 
     // Set up matching rules
     // Message is either phrase or regex
-    ExpressionMatch::MatchMode contentsMode =
-            _isRegEx ? ExpressionMatch::MatchMode::MatchRegEx :
-                       ExpressionMatch::MatchMode::MatchPhrase;
+    ExpressionMatch::MatchMode contentsMode = _isRegEx ? ExpressionMatch::MatchMode::MatchRegEx : ExpressionMatch::MatchMode::MatchPhrase;
     // Sender and channel are either multiple wildcard entries or regex
-    ExpressionMatch::MatchMode scopeMode =
-            _isRegEx ? ExpressionMatch::MatchMode::MatchRegEx :
-                       ExpressionMatch::MatchMode::MatchMultiWildcard;
+    ExpressionMatch::MatchMode scopeMode = _isRegEx ? ExpressionMatch::MatchMode::MatchRegEx : ExpressionMatch::MatchMode::MatchMultiWildcard;
 
     _contentsMatch = ExpressionMatch(_contents, contentsMode, _isCaseSensitive);
     _senderMatch = ExpressionMatch(_sender, scopeMode, _isCaseSensitive);

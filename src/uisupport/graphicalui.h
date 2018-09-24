@@ -31,10 +31,10 @@ class ToolBarActionProvider;
 class UiStyle;
 
 #ifdef Q_OS_WIN
-#  include <windows.h>
+#    include <windows.h>
 #endif
 #ifdef Q_OS_MAC
-#include <Carbon/Carbon.h>
+#    include <Carbon/Carbon.h>
 #endif
 
 class UISUPPORT_EXPORT GraphicalUi : public AbstractUi, protected Singleton<GraphicalUi>
@@ -44,12 +44,12 @@ class UISUPPORT_EXPORT GraphicalUi : public AbstractUi, protected Singleton<Grap
 public:
     //! Access global ActionCollections.
     /** These ActionCollections are associated with the main window, i.e. they contain global
-    *  actions (and thus, shortcuts). Widgets providing application-wide shortcuts should
-    *  create appropriate Action objects using GraphicalUi::actionCollection(cat)->add\<Action\>().
-    *  @param category The category (default: "General")
-    */
-    static ActionCollection *actionCollection(const QString &category = "General", const QString &translatedCategory = QString());
-    static QHash<QString, ActionCollection *> actionCollections();
+     *  actions (and thus, shortcuts). Widgets providing application-wide shortcuts should
+     *  create appropriate Action objects using GraphicalUi::actionCollection(cat)->add\<Action\>().
+     *  @param category The category (default: "General")
+     */
+    static ActionCollection* actionCollection(const QString& category = "General", const QString& translatedCategory = QString());
+    static QHash<QString, ActionCollection*> actionCollections();
 
     //! Load custom shortcuts from ShortcutSettings
     /** @note This method assumes that all configurable actions are defined when being called
@@ -59,10 +59,10 @@ public:
     //! Save custom shortcuts to ShortcutSettings
     static void saveShortcuts();
 
-    inline static ContextMenuActionProvider *contextMenuActionProvider();
-    inline static ToolBarActionProvider *toolBarActionProvider();
-    inline static UiStyle *uiStyle();
-    inline static QWidget *mainWidget();
+    inline static ContextMenuActionProvider* contextMenuActionProvider();
+    inline static ToolBarActionProvider* toolBarActionProvider();
+    inline static UiStyle* uiStyle();
+    inline static QWidget* mainWidget();
 
     //! Force the main widget to the front and focus it (may not work in all window systems)
     static void activateMainWidget();
@@ -77,11 +77,11 @@ public:
     static bool isMainWidgetVisible();
 
 protected:
-    GraphicalUi(QObject *parent = nullptr);
+    GraphicalUi(QObject* parent = nullptr);
     void init() override;
 
     //! This is the widget we associate global actions with, typically the main window
-    void setMainWidget(QWidget *);
+    void setMainWidget(QWidget*);
 
     //! Check if the mainWidget is visible and optionally toggle its visibility
     /** With KDE integration, we check if the mainWidget is (partially) obscured in order to determine if
@@ -101,21 +101,21 @@ protected:
      */
     virtual inline bool isHidingMainWidgetAllowed() const;
 
-    void setContextMenuActionProvider(ContextMenuActionProvider *);
-    void setToolBarActionProvider(ToolBarActionProvider *);
-    void setUiStyle(UiStyle *);
+    void setContextMenuActionProvider(ContextMenuActionProvider*);
+    void setToolBarActionProvider(ToolBarActionProvider*);
+    void setUiStyle(UiStyle*);
 
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 protected slots:
     void disconnectedFromCore() override;
 
 private:
-    static QWidget *_mainWidget;
-    static QHash<QString, ActionCollection *> _actionCollections;
-    static ContextMenuActionProvider *_contextMenuActionProvider;
-    static ToolBarActionProvider *_toolBarActionProvider;
-    static UiStyle *_uiStyle;
+    static QWidget* _mainWidget;
+    static QHash<QString, ActionCollection*> _actionCollections;
+    static ContextMenuActionProvider* _contextMenuActionProvider;
+    static ToolBarActionProvider* _toolBarActionProvider;
+    static UiStyle* _uiStyle;
 
 #ifdef Q_OS_WIN
     DWORD _dwTickCount;
@@ -125,11 +125,29 @@ private:
 #endif
 };
 
-
 // inlines
 
-ContextMenuActionProvider *GraphicalUi::contextMenuActionProvider() { return _contextMenuActionProvider; }
-ToolBarActionProvider *GraphicalUi::toolBarActionProvider() { return _toolBarActionProvider; }
-UiStyle *GraphicalUi::uiStyle() { return _uiStyle; }
-QWidget *GraphicalUi::mainWidget() { return _mainWidget; }
-bool GraphicalUi::isHidingMainWidgetAllowed() const { return false; }
+ContextMenuActionProvider* GraphicalUi::contextMenuActionProvider()
+{
+    return _contextMenuActionProvider;
+}
+
+ToolBarActionProvider* GraphicalUi::toolBarActionProvider()
+{
+    return _toolBarActionProvider;
+}
+
+UiStyle* GraphicalUi::uiStyle()
+{
+    return _uiStyle;
+}
+
+QWidget* GraphicalUi::mainWidget()
+{
+    return _mainWidget;
+}
+
+bool GraphicalUi::isHidingMainWidgetAllowed() const
+{
+    return false;
+}

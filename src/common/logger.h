@@ -38,10 +38,11 @@ class COMMON_EXPORT Logger : public QObject
     Q_OBJECT
 
 public:
-    Logger(QObject *parent = nullptr);
+    Logger(QObject* parent = nullptr);
     ~Logger() override;
 
-    enum class LogLevel {
+    enum class LogLevel
+    {
         Debug,
         Info,
         Warning,
@@ -49,7 +50,8 @@ public:
         Fatal
     };
 
-    struct LogEntry {
+    struct LogEntry
+    {
         QDateTime timeStamp;
         LogLevel logLevel;
         QString message;
@@ -74,7 +76,7 @@ public:
      */
     std::vector<Logger::LogEntry> messages() const;
 
-    static void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &message);
+    static void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message);
 
     /**
      * Takes the given message with the given log level, formats it and emits the @a messageLogged() signal.
@@ -84,7 +86,7 @@ public:
      * @param logLevel The log leve of the message
      * @param message  The message
      */
-    void handleMessage(LogLevel logLevel, const QString &message);
+    void handleMessage(LogLevel logLevel, const QString& message);
 
 signals:
     /**
@@ -92,14 +94,14 @@ signals:
      *
      * @param message The message that was logged
      */
-    void messageLogged(const Logger::LogEntry &message);
+    void messageLogged(const Logger::LogEntry& message);
 
 private slots:
-    void onMessageLogged(const Logger::LogEntry &message);
+    void onMessageLogged(const Logger::LogEntry& message);
 
 private:
-    void handleMessage(QtMsgType type, const QString &message);
-    void outputMessage(const LogEntry &message);
+    void handleMessage(QtMsgType type, const QString& message);
+    void outputMessage(const LogEntry& message);
 
 private:
     LogLevel _outputLevel{LogLevel::Info};

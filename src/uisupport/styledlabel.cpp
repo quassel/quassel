@@ -18,17 +18,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "styledlabel.h"
+
 #include <QPainter>
 #include <QTextDocument>
 #include <QTextLayout>
 
 #include "graphicalui.h"
-#include "styledlabel.h"
 #include "uistyle.h"
 
-StyledLabel::StyledLabel(QWidget *parent)
-    : QFrame(parent),
-    _alignment(Qt::AlignVCenter|Qt::AlignLeft)
+StyledLabel::StyledLabel(QWidget* parent)
+    : QFrame(parent)
+    , _alignment(Qt::AlignVCenter | Qt::AlignLeft)
 {
     setMouseTracking(true);
 
@@ -38,14 +39,12 @@ StyledLabel::StyledLabel(QWidget *parent)
     _layout.setTextOption(opt);
 }
 
-
-void StyledLabel::setCustomFont(const QFont &font)
+void StyledLabel::setCustomFont(const QFont& font)
 {
     setFont(font);
     _layout.setFont(font);
     setText(_layout.text());
 }
-
 
 void StyledLabel::setWrapMode(QTextOption::WrapMode mode)
 {
@@ -60,7 +59,6 @@ void StyledLabel::setWrapMode(QTextOption::WrapMode mode)
     layout();
 }
 
-
 void StyledLabel::setAlignment(Qt::Alignment alignment)
 {
     if (_alignment == alignment)
@@ -74,7 +72,6 @@ void StyledLabel::setAlignment(Qt::Alignment alignment)
     layout();
 }
 
-
 void StyledLabel::setResizeMode(ResizeMode mode)
 {
     if (_resizeMode == mode)
@@ -87,20 +84,17 @@ void StyledLabel::setResizeMode(ResizeMode mode)
         setWrapMode(QTextOption::NoWrap);
 }
 
-
-void StyledLabel::resizeEvent(QResizeEvent *event)
+void StyledLabel::resizeEvent(QResizeEvent* event)
 {
     QFrame::resizeEvent(event);
 
     layout();
 }
 
-
 QSize StyledLabel::sizeHint() const
 {
     return _sizeHint;
 }
-
 
 void StyledLabel::updateSizeHint()
 {
@@ -114,10 +108,9 @@ void StyledLabel::updateSizeHint()
     }
 }
 
-
-void StyledLabel::setText(const QString &text)
+void StyledLabel::setText(const QString& text)
 {
-    UiStyle *style = GraphicalUi::uiStyle();
+    UiStyle* style = GraphicalUi::uiStyle();
 
     UiStyle::StyledString sstr = style->styleString(style->mircToInternal(text), UiStyle::FormatType::PlainMsg);
     QList<QTextLayout::FormatRange> layoutList = style->toTextLayoutList(sstr.formatList, sstr.plainText.length(), UiStyle::MessageLabel::None);
@@ -131,7 +124,7 @@ void StyledLabel::setText(const QString &text)
 
     // Mark URLs
     _clickables = ClickableList::fromString(sstr.plainText);
-    foreach(Clickable click, _clickables) {
+    foreach (Clickable click, _clickables) {
         if (click.type() == Clickable::Url) {
             QTextLayout::FormatRange range;
             range.start = click.start();
@@ -149,15 +142,13 @@ void StyledLabel::setText(const QString &text)
     endHoverMode();
 }
 
-
 void StyledLabel::updateToolTip()
 {
-    if (frameRect().width() - 2*frameWidth() < _layout.minimumWidth())
+    if (frameRect().width() - 2 * frameWidth() < _layout.minimumWidth())
         setToolTip(QString("<qt>%1</qt>").arg(_layout.text().toHtmlEscaped()));  // only rich text gets wordwrapped!
     else
         setToolTip(QString());
 }
-
 
 void StyledLabel::layout()
 {
@@ -165,7 +156,8 @@ void StyledLabel::layout()
     qreal w = contentsRect().width();
 
     _layout.beginLayout();
-    forever {
+    forever
+    {
         QTextLine line = _layout.createLine();
         if (!line.isValid())
             break;
@@ -180,8 +172,7 @@ void StyledLabel::layout()
     update();
 }
 
-
-void StyledLabel::paintEvent(QPaintEvent *e)
+void StyledLabel::paintEvent(QPaintEvent* e)
 {
     QFrame::paintEvent(e);
     QPainter painter(this);
@@ -190,8 +181,7 @@ void StyledLabel::paintEvent(QPaintEvent *e)
     _layout.draw(&painter, QPointF(contentsRect().x(), y), _extraLayoutList);
 }
 
-
-int StyledLabel::posToCursor(const QPointF &pos)
+int StyledLabel::posToCursor(const QPointF& pos)
 {
     if (pos.y() < 0 || pos.y() > height())
         return -1;
@@ -205,8 +195,7 @@ int StyledLabel::posToCursor(const QPointF &pos)
     return -1;
 }
 
-
-void StyledLabel::mouseMoveEvent(QMouseEvent *event)
+void StyledLabel::mouseMoveEvent(QMouseEvent* event)
 {
     if (event->buttons() == Qt::NoButton) {
         Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
@@ -217,23 +206,20 @@ void StyledLabel::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-
-void StyledLabel::enterEvent(QEvent *)
+void StyledLabel::enterEvent(QEvent*)
 {
     if (resizeMode() == ResizeOnHover)
         setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 }
 
-
-void StyledLabel::leaveEvent(QEvent *)
+void StyledLabel::leaveEvent(QEvent*)
 {
     endHoverMode();
     if (resizeMode() == ResizeOnHover)
         setWrapMode(QTextOption::NoWrap);
 }
 
-
-void StyledLabel::mousePressEvent(QMouseEvent *event)
+void StyledLabel::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton) {
         Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
@@ -241,7 +227,6 @@ void StyledLabel::mousePressEvent(QMouseEvent *event)
             emit clickableActivated(click);
     }
 }
-
 
 void StyledLabel::setHoverMode(int start, int length)
 {
@@ -258,7 +243,6 @@ void StyledLabel::setHoverMode(int start, int length)
     setCursor(Qt::PointingHandCursor);
     update();
 }
-
 
 void StyledLabel::endHoverMode()
 {

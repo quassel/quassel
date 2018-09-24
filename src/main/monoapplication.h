@@ -33,7 +33,7 @@ class MonolithicApplication : public QtUiApplication
     Q_OBJECT
 
 public:
-    MonolithicApplication(int &, char **);
+    MonolithicApplication(int&, char**);
 
     void init() override;
 

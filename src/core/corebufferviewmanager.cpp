@@ -20,26 +20,24 @@
 
 #include "corebufferviewmanager.h"
 
-#include "corebufferviewconfig.h"
-
 #include "core.h"
+#include "corebufferviewconfig.h"
 #include "coresession.h"
 
-CoreBufferViewManager::CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent)
-    : BufferViewManager(proxy, parent),
-    _coreSession(parent)
+CoreBufferViewManager::CoreBufferViewManager(SignalProxy* proxy, CoreSession* parent)
+    : BufferViewManager(proxy, parent)
+    , _coreSession(parent)
 {
     QVariantMap views = Core::getUserSetting(_coreSession->user(), "BufferViews").toMap();
     QVariantMap::iterator iter = views.begin();
     QVariantMap::iterator iterEnd = views.end();
-    CoreBufferViewConfig *config = nullptr;
+    CoreBufferViewConfig* config = nullptr;
     while (iter != iterEnd) {
         config = new CoreBufferViewConfig(iter.key().toInt(), iter.value().toMap(), this);
         addBufferViewConfig(config);
         ++iter;
     }
 }
-
 
 void CoreBufferViewManager::saveBufferViews()
 {
@@ -55,8 +53,7 @@ void CoreBufferViewManager::saveBufferViews()
     Core::setUserSetting(_coreSession->user(), "BufferViews", views);
 }
 
-
-void CoreBufferViewManager::requestCreateBufferView(const QVariantMap &properties)
+void CoreBufferViewManager::requestCreateBufferView(const QVariantMap& properties)
 {
     QString bufferViewName = properties["bufferViewName"].toString();
     int maxId = -1;
@@ -76,8 +73,7 @@ void CoreBufferViewManager::requestCreateBufferView(const QVariantMap &propertie
     addBufferViewConfig(new CoreBufferViewConfig(maxId, properties, this));
 }
 
-
-void CoreBufferViewManager::requestCreateBufferViews(const QVariantList &properties)
+void CoreBufferViewManager::requestCreateBufferViews(const QVariantList& properties)
 {
     QVariantList::const_iterator iter = properties.constBegin();
     QVariantList::const_iterator iterEnd = properties.constEnd();
@@ -87,16 +83,14 @@ void CoreBufferViewManager::requestCreateBufferViews(const QVariantList &propert
     }
 }
 
-
 void CoreBufferViewManager::requestDeleteBufferView(int bufferViewId)
 {
     deleteBufferViewConfig(bufferViewId);
 }
 
-
-void CoreBufferViewManager::requestDeleteBufferViews(const QVariantList &bufferViews)
+void CoreBufferViewManager::requestDeleteBufferViews(const QVariantList& bufferViews)
 {
-    foreach(QVariant bufferView, bufferViews) {
+    foreach (QVariant bufferView, bufferViews) {
         deleteBufferViewConfig(bufferView.toInt());
     }
 }

@@ -18,14 +18,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "coresessionwidget.h"
+
 #include <QDateTime>
 
 #include "client.h"
-#include "coresessionwidget.h"
 #include "util.h"
 
-
-CoreSessionWidget::CoreSessionWidget(QWidget *parent)
+CoreSessionWidget::CoreSessionWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
@@ -41,11 +41,9 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.labelVersionDate->setText(QString("<i>%1</i>").arg(tr("Unknown date")));
     }
     else {
-        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString(),
-                                     Qt::DateFormat::DefaultLocaleShortDate));
+        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString(), Qt::DateFormat::DefaultLocaleShortDate));
     }
-    ui.labelUptime->setText(map["connectedSince"].toDateTime()
-            .toLocalTime().toString(Qt::DateFormat::DefaultLocaleShortDate));
+    ui.labelUptime->setText(map["connectedSince"].toDateTime().toLocalTime().toString(Qt::DateFormat::DefaultLocaleShortDate));
     if (map["location"].toString().isEmpty()) {
         ui.labelLocation->hide();
         ui.labelLocationTitle->hide();
@@ -57,7 +55,8 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         // Both client and core support it, enable the button
         ui.disconnectButton->setEnabled(true);
         ui.disconnectButton->setToolTip(tr("End the client's session, disconnecting it"));
-    } else {
+    }
+    else {
         // For any active sessions to be displayed, the core must support this feature.  We can
         // assume the client doesn't support being remotely disconnected.
         //
@@ -68,14 +67,14 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.disconnectButton->setEnabled(false);
         // Assuming the client lacks support, set the tooltip accordingly
         ui.disconnectButton->setToolTip(
-                QString("<p>%1</p><p><b>%2</b></p>").arg(
-                        tr("End the client's session, disconnecting it"),
-                        tr("This client does not support being remotely disconnected")));
+            QString("<p>%1</p><p><b>%2</b></p>")
+                .arg(tr("End the client's session, disconnecting it"), tr("This client does not support being remotely disconnected")));
     }
 
     bool success = false;
     _peerId = map["id"].toInt(&success);
-    if (!success) _peerId = -1;
+    if (!success)
+        _peerId = -1;
 }
 
 void CoreSessionWidget::onDisconnectClicked()

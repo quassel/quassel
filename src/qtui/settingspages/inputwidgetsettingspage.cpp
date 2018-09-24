@@ -20,7 +20,7 @@
 
 #include "inputwidgetsettingspage.h"
 
-InputWidgetSettingsPage::InputWidgetSettingsPage(QWidget *parent)
+InputWidgetSettingsPage::InputWidgetSettingsPage(QWidget* parent)
     : SettingsPage(tr("Interface"), tr("Input Widget"), parent)
 {
     ui.setupUi(this);

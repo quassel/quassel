@@ -35,7 +35,6 @@ class RemotePeer;
 
 class COMMON_EXPORT PeerFactory
 {
-
 public:
     // second value is the protocol-specific features
     using ProtoDescriptor = QPair<Protocol::Type, quint16>;
@@ -43,7 +42,14 @@ public:
 
     static ProtoList supportedProtocols();
 
-    static RemotePeer *createPeer(const ProtoDescriptor &protocol, AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = nullptr);
-    static RemotePeer *createPeer(const ProtoList &protocols, AuthHandler *authHandler, QTcpSocket *socket, Compressor::CompressionLevel level, QObject *parent = nullptr);
-
+    static RemotePeer* createPeer(const ProtoDescriptor& protocol,
+                                  AuthHandler* authHandler,
+                                  QTcpSocket* socket,
+                                  Compressor::CompressionLevel level,
+                                  QObject* parent = nullptr);
+    static RemotePeer* createPeer(const ProtoList& protocols,
+                                  AuthHandler* authHandler,
+                                  QTcpSocket* socket,
+                                  Compressor::CompressionLevel level,
+                                  QObject* parent = nullptr);
 };

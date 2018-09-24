@@ -22,7 +22,7 @@
 
 #include <utility>
 
-Event *MessageEvent::create(EventManager::EventType type, QVariantMap &map, Network *network)
+Event* MessageEvent::create(EventManager::EventType type, QVariantMap& map, Network* network)
 {
     if (type == EventManager::MessageEvent)
         return new MessageEvent(type, map, network);
@@ -30,17 +30,16 @@ Event *MessageEvent::create(EventManager::EventType type, QVariantMap &map, Netw
     return nullptr;
 }
 
-
-MessageEvent::MessageEvent(Message::Type msgType, Network *net, QString msg, const QString &sender, QString target,
-    Message::Flags flags, const QDateTime &timestamp)
-    : NetworkEvent(EventManager::MessageEvent, net),
-    _msgType(msgType),
-    _text(std::move(msg)),
-    _sender(sender),
-    _target(std::move(target)),
-    _msgFlags(flags)
+MessageEvent::MessageEvent(
+    Message::Type msgType, Network* net, QString msg, const QString& sender, QString target, Message::Flags flags, const QDateTime& timestamp)
+    : NetworkEvent(EventManager::MessageEvent, net)
+    , _msgType(msgType)
+    , _text(std::move(msg))
+    , _sender(sender)
+    , _target(std::move(target))
+    , _msgFlags(flags)
 {
-    IrcChannel *channel = network()->ircChannel(_target);
+    IrcChannel* channel = network()->ircChannel(_target);
     if (!channel) {
         if (!_target.isEmpty() && network()->prefixes().contains(_target.at(0)))
             _target = _target.mid(1);
@@ -57,8 +56,7 @@ MessageEvent::MessageEvent(Message::Type msgType, Network *net, QString msg, con
         setTimestamp(QDateTime::currentDateTime());
 }
 
-
-MessageEvent::MessageEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+MessageEvent::MessageEvent(EventManager::EventType type, QVariantMap& map, Network* network)
     : NetworkEvent(type, map, network)
 {
     _msgType = static_cast<Message::Type>(map.take("messageType").toInt());
@@ -69,8 +67,7 @@ MessageEvent::MessageEvent(EventManager::EventType type, QVariantMap &map, Netwo
     _target = map.take("target").toString();
 }
 
-
-void MessageEvent::toVariantMap(QVariantMap &map) const
+void MessageEvent::toVariantMap(QVariantMap& map) const
 {
     NetworkEvent::toVariantMap(map);
     map["messageType"] = msgType();
@@ -81,8 +78,7 @@ void MessageEvent::toVariantMap(QVariantMap &map) const
     map["target"] = target();
 }
 
-
-BufferInfo::Type MessageEvent::bufferTypeByTarget(const QString &target) const
+BufferInfo::Type MessageEvent::bufferTypeByTarget(const QString& target) const
 {
     if (target.isEmpty())
         return BufferInfo::StatusBuffer;

@@ -23,7 +23,7 @@
 #include "client.h"
 #include "networkconfig.h"
 
-ConnectionSettingsPage::ConnectionSettingsPage(QWidget *parent)
+ConnectionSettingsPage::ConnectionSettingsPage(QWidget* parent)
     : SettingsPage(tr("IRC"), QString(), parent)
 {
     ui.setupUi(this);
@@ -37,7 +37,6 @@ ConnectionSettingsPage::ConnectionSettingsPage(QWidget *parent)
         clientConnected();
 }
 
-
 void ConnectionSettingsPage::clientConnected()
 {
     if (Client::networkConfig()->isInitialized())
@@ -46,31 +45,27 @@ void ConnectionSettingsPage::clientConnected()
         connect(Client::networkConfig(), &SyncableObject::initDone, this, &ConnectionSettingsPage::initDone);
 }
 
-
 void ConnectionSettingsPage::clientDisconnected()
 {
     setEnabled(false);
     setChangedState(false);
 }
 
-
 void ConnectionSettingsPage::initDone()
 {
     setEnabled(true);
 }
-
 
 bool ConnectionSettingsPage::hasDefaults() const
 {
     return true;
 }
 
-
-QVariant ConnectionSettingsPage::loadAutoWidgetValue(const QString &widgetName)
+QVariant ConnectionSettingsPage::loadAutoWidgetValue(const QString& widgetName)
 {
     if (!isEnabled())
         return QVariant();
-    NetworkConfig *config = Client::networkConfig();
+    NetworkConfig* config = Client::networkConfig();
     if (widgetName == "pingTimeoutEnabled")
         return config->pingTimeoutEnabled();
     if (widgetName == "pingInterval")
@@ -91,12 +86,11 @@ QVariant ConnectionSettingsPage::loadAutoWidgetValue(const QString &widgetName)
     return SettingsPage::loadAutoWidgetValue(widgetName);
 }
 
-
-void ConnectionSettingsPage::saveAutoWidgetValue(const QString &widgetName, const QVariant &value)
+void ConnectionSettingsPage::saveAutoWidgetValue(const QString& widgetName, const QVariant& value)
 {
     if (!isEnabled())
         return;
-    NetworkConfig *config = Client::networkConfig();
+    NetworkConfig* config = Client::networkConfig();
     if (widgetName == "pingTimeoutEnabled")
         config->requestSetPingTimeoutEnabled(value.toBool());
     else if (widgetName == "pingInterval")

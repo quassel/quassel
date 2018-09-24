@@ -21,17 +21,17 @@
 #ifndef ALIASESSETTINGSPAGE_H
 #define ALIASESSETTINGSPAGE_H
 
-#include "settingspage.h"
-#include "ui_aliasessettingspage.h"
-
 #include "aliasesmodel.h"
+#include "settingspage.h"
+
+#include "ui_aliasessettingspage.h"
 
 class AliasesSettingsPage : public SettingsPage
 {
     Q_OBJECT
 
 public:
-    AliasesSettingsPage(QWidget *parent = nullptr);
+    AliasesSettingsPage(QWidget* parent = nullptr);
 
     inline bool hasDefaults() const override { return true; }
     inline bool needsCoreConnection() const override { return true; }
@@ -51,5 +51,4 @@ private:
     AliasesModel _aliasesModel;
 };
 
-
-#endif //ALIASESSETTINGSPAGE_H
+#endif  // ALIASESSETTINGSPAGE_H

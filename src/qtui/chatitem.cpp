@@ -28,10 +28,10 @@
 #include <QDesktopServices>
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
+#include <QMenu>
 #include <QPainter>
 #include <QPalette>
 #include <QTextLayout>
-#include <QMenu>
 
 #include "action.h"
 #include "buffermodel.h"
@@ -45,76 +45,64 @@
 #include "qtui.h"
 #include "qtuistyle.h"
 
-ChatItem::ChatItem(const QRectF &boundingRect, ChatLine *parent)
-    : _parent(parent),
-    _boundingRect(boundingRect),
-    _selectionMode(NoSelection),
-    _selectionStart(-1),
-    _cachedLayout(nullptr)
-{
-}
-
+ChatItem::ChatItem(const QRectF& boundingRect, ChatLine* parent)
+    : _parent(parent)
+    , _boundingRect(boundingRect)
+    , _selectionMode(NoSelection)
+    , _selectionStart(-1)
+    , _cachedLayout(nullptr)
+{}
 
 ChatItem::~ChatItem()
 {
     delete _cachedLayout;
 }
 
-
-ChatLine *ChatItem::chatLine() const
+ChatLine* ChatItem::chatLine() const
 {
     return _parent;
 }
 
-
-ChatScene *ChatItem::chatScene() const
+ChatScene* ChatItem::chatScene() const
 {
     return chatLine()->chatScene();
 }
 
-
-ChatView *ChatItem::chatView() const
+ChatView* ChatItem::chatView() const
 {
     return chatScene()->chatView();
 }
 
-
-const QAbstractItemModel *ChatItem::model() const
+const QAbstractItemModel* ChatItem::model() const
 {
     return chatLine()->model();
 }
-
 
 int ChatItem::row() const
 {
     return chatLine()->row();
 }
 
-
-QPointF ChatItem::mapToLine(const QPointF &p) const
+QPointF ChatItem::mapToLine(const QPointF& p) const
 {
     return p + pos();
 }
 
-
-QPointF ChatItem::mapFromLine(const QPointF &p) const
+QPointF ChatItem::mapFromLine(const QPointF& p) const
 {
     return p - pos();
 }
 
-
 // relative to the ChatLine
-QPointF ChatItem::mapToScene(const QPointF &p) const
+QPointF ChatItem::mapToScene(const QPointF& p) const
 {
     return chatLine()->mapToScene(p /* + pos() */);
 }
 
-
-QPointF ChatItem::mapFromScene(const QPointF &p) const
+QPointF ChatItem::mapFromScene(const QPointF& p) const
 {
     return chatLine()->mapFromScene(p) /* - pos() */;
 }
-
 
 QVariant ChatItem::data(int role) const
 {
@@ -126,8 +114,7 @@ QVariant ChatItem::data(int role) const
     return model()->data(index, role);
 }
 
-
-QTextLayout *ChatItem::layout() const
+QTextLayout* ChatItem::layout() const
 {
     if (_cachedLayout)
         return _cachedLayout;
@@ -138,15 +125,13 @@ QTextLayout *ChatItem::layout() const
     return _cachedLayout;
 }
 
-
 void ChatItem::clearCache()
 {
     delete _cachedLayout;
     _cachedLayout = nullptr;
 }
 
-
-void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapMode, Qt::Alignment alignment) const
+void ChatItem::initLayoutHelper(QTextLayout* layout, QTextOption::WrapMode wrapMode, Qt::Alignment alignment) const
 {
     Q_ASSERT(layout);
 
@@ -157,20 +142,20 @@ void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapM
     option.setAlignment(alignment);
     layout->setTextOption(option);
 
-    QList<QTextLayout::FormatRange> formatRanges
-        = QtUi::style()->toTextLayoutList(formatList(), layout->text().length(), data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>());
+    QList<QTextLayout::FormatRange> formatRanges = QtUi::style()
+                                                       ->toTextLayoutList(formatList(),
+                                                                          layout->text().length(),
+                                                                          data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>());
     layout->setAdditionalFormats(formatRanges);
 }
 
-
-void ChatItem::initLayout(QTextLayout *layout) const
+void ChatItem::initLayout(QTextLayout* layout) const
 {
     initLayoutHelper(layout, QTextOption::NoWrap);
     doLayout(layout);
 }
 
-
-void ChatItem::doLayout(QTextLayout *layout) const
+void ChatItem::doLayout(QTextLayout* layout) const
 {
     layout->beginLayout();
     QTextLine line = layout->createLine();
@@ -181,14 +166,12 @@ void ChatItem::doLayout(QTextLayout *layout) const
     layout->endLayout();
 }
 
-
 UiStyle::FormatList ChatItem::formatList() const
 {
     return data(MessageModel::FormatRole).value<UiStyle::FormatList>();
 }
 
-
-qint16 ChatItem::posToCursor(const QPointF &posInLine) const
+qint16 ChatItem::posToCursor(const QPointF& posInLine) const
 {
     QPointF pos = mapFromLine(posInLine);
     if (pos.y() > height())
@@ -205,8 +188,7 @@ qint16 ChatItem::posToCursor(const QPointF &posInLine) const
     return 0;
 }
 
-
-void ChatItem::paintBackground(QPainter *painter)
+void ChatItem::paintBackground(QPainter* painter)
 {
     QVariant bgBrush;
     if (_selectionMode == FullSelection)
@@ -217,12 +199,12 @@ void ChatItem::paintBackground(QPainter *painter)
         painter->fillRect(boundingRect(), bgBrush.value<QBrush>());
 }
 
-
 // NOTE: This is not the most time-efficient implementation, but it saves space by not caching unnecessary data
 //       This is a deliberate trade-off. (-> selectFmt creation, data() call)
-void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ChatItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    Q_UNUSED(option); Q_UNUSED(widget);
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     painter->save();
     painter->setClipRect(boundingRect());
     paintBackground(painter);
@@ -235,38 +217,37 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     // uncomment partially or all of the following stuff:
     //
     // 0) alternativ painter color for debug stuff
-//   if(row() % 2)
-//     painter->setPen(Qt::red);
-//   else
-//     painter->setPen(Qt::blue);
-// 1) draw wordwrap points in the first line
-//   if(column() == 2) {
-//     ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
-//     foreach(ChatLineModel::Word word, wrapList) {
-//       if(word.endX > width())
-//      break;
-//       painter->drawLine(word.endX, 0, word.endX, height());
-//     }
-//   }
-// 2) draw MsgId over the time column
-//   if(column() == 0) {
-//     QString msgIdString = QString::number(data(MessageModel::MsgIdRole).value<MsgId>().toLongLong());
-//     QPointF bottomPoint = boundingRect().bottomLeft();
-//     bottomPoint.ry() -= 2;
-//     painter->drawText(bottomPoint, msgIdString);
-//   }
-// 3) draw bounding rect
-//   painter->drawRect(_boundingRect.adjusted(0, 0, -1, -1));
+    //   if(row() % 2)
+    //     painter->setPen(Qt::red);
+    //   else
+    //     painter->setPen(Qt::blue);
+    // 1) draw wordwrap points in the first line
+    //   if(column() == 2) {
+    //     ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
+    //     foreach(ChatLineModel::Word word, wrapList) {
+    //       if(word.endX > width())
+    //      break;
+    //       painter->drawLine(word.endX, 0, word.endX, height());
+    //     }
+    //   }
+    // 2) draw MsgId over the time column
+    //   if(column() == 0) {
+    //     QString msgIdString = QString::number(data(MessageModel::MsgIdRole).value<MsgId>().toLongLong());
+    //     QPointF bottomPoint = boundingRect().bottomLeft();
+    //     bottomPoint.ry() -= 2;
+    //     painter->drawText(bottomPoint, msgIdString);
+    //   }
+    // 3) draw bounding rect
+    //   painter->drawRect(_boundingRect.adjusted(0, 0, -1, -1));
 
     painter->restore();
 }
 
-
-void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, quint16 start, quint16 end, UiStyle::FormatType overlayFmt) const
+void ChatItem::overlayFormat(UiStyle::FormatList& fmtList, quint16 start, quint16 end, UiStyle::FormatType overlayFmt) const
 {
     for (size_t i = 0; i < fmtList.size(); i++) {
         int fmtStart = fmtList.at(i).first;
-        int fmtEnd = (i < fmtList.size()-1 ? fmtList.at(i+1).first : data(MessageModel::DisplayRole).toString().length());
+        int fmtEnd = (i < fmtList.size() - 1 ? fmtList.at(i + 1).first : data(MessageModel::DisplayRole).toString().length());
 
         if (fmtEnd <= start)
             continue;
@@ -280,13 +261,12 @@ void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, quint16 start, quint1
         }
         if (end < fmtEnd) {
             fmtList.insert(fmtList.begin() + i, fmtList.at(i));
-            fmtList[i+1].first = end;
+            fmtList[i + 1].first = end;
         }
 
         fmtList[i].second.type |= overlayFmt;
     }
 }
-
 
 QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
 {
@@ -299,9 +279,10 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
     using Format = UiStyle::Format;
 
     auto itemLabel = data(ChatLineModel::MsgLabelRole).value<Label>();
-    const auto &fmtList = formatList();
+    const auto& fmtList = formatList();
 
-    struct LabelFormat {
+    struct LabelFormat
+    {
         quint16 offset;
         Format format;
         Label label;
@@ -309,7 +290,7 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
 
     // Transform formatList() into an extended list of LabelFormats
     std::vector<LabelFormat> labelFmtList;
-    std::transform(fmtList.cbegin(), fmtList.cend(), std::back_inserter(labelFmtList), [itemLabel](const std::pair<quint16, Format> &f) {
+    std::transform(fmtList.cbegin(), fmtList.cend(), std::back_inserter(labelFmtList), [itemLabel](const std::pair<quint16, Format>& f) {
         return LabelFormat{f.first, f.second, itemLabel};
     });
     // Append dummy element to avoid special-casing handling the last real format
@@ -321,7 +302,7 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
 
         // Skip unaffected formats
         for (; i < labelFmtList.size() - 1; ++i) {
-            if (labelFmtList[i+1].offset > start)
+            if (labelFmtList[i + 1].offset > start)
                 break;
         }
         // Range start doesn't align; split affected format and let the index point to the newly inserted copy
@@ -332,15 +313,15 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
 
         // Apply label to formats fully affected
         for (; i < labelFmtList.size() - 1; ++i) {
-            if (labelFmtList[i+1].offset <= end) {
+            if (labelFmtList[i + 1].offset <= end) {
                 labelFmtList[i].label |= label;
                 continue;
             }
             // Last affected format, split if end of range doesn't align
-            if (labelFmtList[i+1].offset > end) {
+            if (labelFmtList[i + 1].offset > end) {
                 labelFmtList.insert(labelFmtList.begin() + i, labelFmtList[i]);
                 labelFmtList[i].label |= label;
-                labelFmtList[i+1].offset = end;
+                labelFmtList[i + 1].offset = end;
             }
             break;
         }
@@ -370,14 +351,13 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
     for (size_t i = 0; i < labelFmtList.size() - 1; ++i) {
         if (labelFmtList[i].label != itemLabel) {
             additionalFormats << QtUi::style()->toTextLayoutList({std::make_pair(labelFmtList[i].offset, labelFmtList[i].format)},
-                                                                 labelFmtList[i+1].offset,
+                                                                 labelFmtList[i + 1].offset,
                                                                  labelFmtList[i].label);
         }
     }
 
     return additionalFormats.toVector();
 }
-
 
 bool ChatItem::hasSelection() const
 {
@@ -389,7 +369,6 @@ bool ChatItem::hasSelection() const
     return _selectionStart != _selectionEnd;
 }
 
-
 QString ChatItem::selection() const
 {
     if (_selectionMode == FullSelection)
@@ -399,7 +378,6 @@ QString ChatItem::selection() const
     return QString();
 }
 
-
 void ChatItem::setSelection(SelectionMode mode, qint16 start, qint16 end)
 {
     _selectionMode = mode;
@@ -407,7 +385,6 @@ void ChatItem::setSelection(SelectionMode mode, qint16 start, qint16 end)
     _selectionEnd = end;
     chatLine()->update();
 }
-
 
 void ChatItem::setFullSelection()
 {
@@ -417,7 +394,6 @@ void ChatItem::setFullSelection()
     }
 }
 
-
 void ChatItem::clearSelection()
 {
     if (_selectionMode != NoSelection) {
@@ -426,16 +402,14 @@ void ChatItem::clearSelection()
     }
 }
 
-
-void ChatItem::continueSelecting(const QPointF &pos)
+void ChatItem::continueSelecting(const QPointF& pos)
 {
     _selectionMode = PartialSelection;
     _selectionEnd = posToCursor(pos);
     chatLine()->update();
 }
 
-
-bool ChatItem::isPosOverSelection(const QPointF &pos) const
+bool ChatItem::isPosOverSelection(const QPointF& pos) const
 {
     if (_selectionMode == FullSelection)
         return true;
@@ -446,23 +420,20 @@ bool ChatItem::isPosOverSelection(const QPointF &pos) const
     return false;
 }
 
-
 bool ChatItem::hasActiveClickable() const
 {
     return false;
 }
-
 
 std::pair<quint16, quint16> ChatItem::activeClickableRange() const
 {
     return {};
 }
 
-
-QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity caseSensitive)
+QList<QRectF> ChatItem::findWords(const QString& searchWord, Qt::CaseSensitivity caseSensitive)
 {
     QList<QRectF> resultList;
-    const QAbstractItemModel *model_ = model();
+    const QAbstractItemModel* model_ = model();
     if (!model_)
         return resultList;
 
@@ -474,7 +445,7 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
         searchIdx = plainText.indexOf(searchWord, searchIdx + 1, caseSensitive);
     }
 
-    foreach(int idx, indexList) {
+    foreach (int idx, indexList) {
         QTextLine line = layout()->lineForTextPosition(idx);
         qreal x = line.cursorToX(idx);
         qreal width = line.cursorToX(idx + searchWord.count()) - x;
@@ -486,20 +457,18 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
     return resultList;
 }
 
-
-void ChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode)
+void ChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickMode)
 {
     // single clicks are already handled by the scene (for clearing the selection)
     if (clickMode == ChatScene::DragStartClick) {
         chatScene()->setSelectingItem(this);
         _selectionStart = _selectionEnd = posToCursor(pos);
-        _selectionMode = NoSelection; // will be set to PartialSelection by mouseMoveEvent
+        _selectionMode = NoSelection;  // will be set to PartialSelection by mouseMoveEvent
         chatLine()->update();
     }
 }
 
-
-void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->buttons() == Qt::LeftButton) {
         if (boundingRect().contains(event->pos())) {
@@ -521,8 +490,7 @@ void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
-void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->buttons() == Qt::LeftButton)
         event->accept();
@@ -530,8 +498,7 @@ void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
         event->ignore();
 }
 
-
-void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     if (_selectionMode != NoSelection && event->button() == Qt::LeftButton) {
         chatScene()->selectionToClipboard(QClipboard::Selection);
@@ -541,29 +508,27 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         event->ignore();
 }
 
-
-void ChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos)
+void ChatItem::addActionsToMenu(QMenu* menu, const QPointF& pos)
 {
     Q_UNUSED(pos);
 
     GraphicalUi::contextMenuActionProvider()->addActions(menu, chatScene()->filter(), data(MessageModel::BufferIdRole).value<BufferId>());
 }
 
-
 // ************************************************************
 // SenderChatItem
 // ************************************************************
 
-void SenderChatItem::initLayout(QTextLayout *layout) const
+void SenderChatItem::initLayout(QTextLayout* layout) const
 {
     initLayoutHelper(layout, QTextOption::ManualWrap, Qt::AlignRight);
     doLayout(layout);
 }
 
-
-void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void SenderChatItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    Q_UNUSED(option); Q_UNUSED(widget);
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     painter->save();
     painter->setClipRect(boundingRect());
     paintBackground(painter);
@@ -593,12 +558,12 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
             gradient.setColorAt(1, Qt::white);
         }
         else {
-            gradient.setStart(width()-10, 0);
+            gradient.setStart(width() - 10, 0);
             gradient.setFinalStop(width(), 0);
             gradient.setColorAt(0, Qt::white);
             gradient.setColorAt(1, Qt::transparent);
         }
-        pixPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn); // gradient's alpha gets applied to the pixmap
+        pixPainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);  // gradient's alpha gets applied to the pixmap
         pixPainter.fillRect(pixmap.rect(), gradient);
         painter->drawPixmap(pos(), pixmap);
     }
@@ -608,8 +573,7 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter->restore();
 }
 
-
-void SenderChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode)
+void SenderChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickMode)
 {
     if (clickMode == ChatScene::DoubleClick) {
         BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
@@ -622,33 +586,30 @@ void SenderChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickM
         ChatItem::handleClick(pos, clickMode);
 }
 
-
 // ************************************************************
 // ContentsChatItem
 // ************************************************************
 
 ContentsChatItem::ActionProxy ContentsChatItem::_actionProxy;
 
-ContentsChatItem::ContentsChatItem(const QPointF &pos, const qreal &width, ChatLine *parent)
-    : ChatItem(QRectF(pos, QSizeF(width, 0)), parent),
-    _data(nullptr)
+ContentsChatItem::ContentsChatItem(const QPointF& pos, const qreal& width, ChatLine* parent)
+    : ChatItem(QRectF(pos, QSizeF(width, 0)), parent)
+    , _data(nullptr)
 {
     setPos(pos);
     setGeometryByWidth(width);
 }
 
-
-QFontMetricsF *ContentsChatItem::fontMetrics() const
+QFontMetricsF* ContentsChatItem::fontMetrics() const
 {
-    return QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second.type, UiStyle::MessageLabel::None);
+    return QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second.type,
+                                      UiStyle::MessageLabel::None);
 }
-
 
 ContentsChatItem::~ContentsChatItem()
 {
     delete _data;
 }
-
 
 void ContentsChatItem::clearCache()
 {
@@ -657,16 +618,14 @@ void ContentsChatItem::clearCache()
     ChatItem::clearCache();
 }
 
-
-ContentsChatItemPrivate *ContentsChatItem::privateData() const
+ContentsChatItemPrivate* ContentsChatItem::privateData() const
 {
     if (!_data) {
-        auto *that = const_cast<ContentsChatItem *>(this);
+        auto* that = const_cast<ContentsChatItem*>(this);
         that->_data = new ContentsChatItemPrivate(ClickableList::fromString(data(ChatLineModel::DisplayRole).toString()), that);
     }
     return _data;
 }
-
 
 qreal ContentsChatItem::setGeometryByWidth(qreal w)
 {
@@ -677,7 +636,7 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w)
     WrapColumnFinder finder(this);
     while (finder.nextWrapColumn(w) > 0)
         lines++;
-    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height()); // cope with negative leading()
+    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height());  // cope with negative leading()
     qreal h = lines * spacing;
     delete _data;
     _data = nullptr;
@@ -688,24 +647,24 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w)
     return h;
 }
 
-
-void ContentsChatItem::initLayout(QTextLayout *layout) const
+void ContentsChatItem::initLayout(QTextLayout* layout) const
 {
     initLayoutHelper(layout, QTextOption::WrapAtWordBoundaryOrAnywhere);
     doLayout(layout);
 }
 
-
-void ContentsChatItem::doLayout(QTextLayout *layout) const
+void ContentsChatItem::doLayout(QTextLayout* layout) const
 {
     ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
-    if (!wrapList.count()) return;  // empty chatitem
+    if (!wrapList.count())
+        return;  // empty chatitem
 
     qreal h = 0;
-    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height()); // cope with negative leading()
+    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height());  // cope with negative leading()
     WrapColumnFinder finder(this);
     layout->beginLayout();
-    forever {
+    forever
+    {
         QTextLine line = layout->createLine();
         if (!line.isValid())
             break;
@@ -720,7 +679,7 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const
         // Sometimes, setNumColumns will create a line that's too long (cf. Qt bug 238249)
         // We verify this and try setting the width again, making it shorter each time until the lengths match.
         // Dead fugly, but seems to work…
-        for (int i = line.textLength()-1; i >= 0 && line.textLength() > num; i--) {
+        for (int i = line.textLength() - 1; i >= 0 && line.textLength() > num; i--) {
             line.setNumColumns(i);
         }
         if (num != line.textLength()) {
@@ -734,28 +693,24 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const
     layout->endLayout();
 }
 
-
 bool ContentsChatItem::hasActiveClickable() const
 {
     return privateData()->currentClickable.isValid();
 }
 
-
 std::pair<quint16, quint16> ContentsChatItem::activeClickableRange() const
 {
-    const auto &clickable = privateData()->currentClickable;
+    const auto& clickable = privateData()->currentClickable;
     if (clickable.isValid()) {
         return {clickable.start(), clickable.start() + clickable.length()};
     }
     return {};
 }
 
-
-Clickable ContentsChatItem::clickableAt(const QPointF &pos) const
+Clickable ContentsChatItem::clickableAt(const QPointF& pos) const
 {
     return privateData()->clickables.atCursorPos(posToCursor(pos));
 }
-
 
 UiStyle::FormatList ContentsChatItem::formatList() const
 {
@@ -769,7 +724,6 @@ UiStyle::FormatList ContentsChatItem::formatList() const
     return fmtList;
 }
 
-
 void ContentsChatItem::endHoverMode()
 {
     if (privateData()) {
@@ -782,8 +736,7 @@ void ContentsChatItem::endHoverMode()
     }
 }
 
-
-void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode)
+void ContentsChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickMode)
 {
     if (clickMode == ChatScene::SingleClick) {
         qint16 idx = posToCursor(pos);
@@ -808,7 +761,8 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
             qint16 cursor = posToCursor(pos);
             qint16 start = str.lastIndexOf(QRegExp("\\W"), cursor) + 1;
             qint16 end = qMin(str.indexOf(QRegExp("\\W"), cursor), str.length());
-            if (end < 0) end = str.length();
+            if (end < 0)
+                end = str.length();
             setSelectionStart(start);
             setSelectionEnd(end);
         }
@@ -820,23 +774,20 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
     ChatItem::handleClick(pos, clickMode);
 }
 
-
-void ContentsChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void ContentsChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     // mouse move events always mean we're not hovering anymore...
     endHoverMode();
     ChatItem::mouseMoveEvent(event);
 }
 
-
-void ContentsChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void ContentsChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
     endHoverMode();
     event->accept();
 }
 
-
-void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 {
     bool onClickable = false;
     Clickable click = clickableAt(event->pos());
@@ -859,30 +810,31 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
             return;
         }
     }
-    if (!onClickable) endHoverMode();
+    if (!onClickable)
+        endHoverMode();
     event->accept();
 }
 
-
-void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos)
+void ContentsChatItem::addActionsToMenu(QMenu* menu, const QPointF& pos)
 {
     if (privateData()->currentClickable.isValid()) {
         Clickable click = privateData()->currentClickable;
         switch (click.type()) {
-        case Clickable::Url:
-        {
+        case Clickable::Url: {
             privateData()->activeClickable = click;
             auto action = new Action{icon::get("edit-copy"), tr("Copy Link Address"), menu, &_actionProxy, &ActionProxy::copyLinkToClipboard};
-            action->setData(QVariant::fromValue<void *>(this));
+            action->setData(QVariant::fromValue<void*>(this));
             menu->addAction(action);
             break;
         }
-        case Clickable::Channel:
-        {
+        case Clickable::Channel: {
             // Remove existing menu actions, they confuse us when right-clicking on a clickable
             menu->clear();
             QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
-            GraphicalUi::contextMenuActionProvider()->addActions(menu, chatScene()->filter(), data(MessageModel::BufferIdRole).value<BufferId>(), name);
+            GraphicalUi::contextMenuActionProvider()->addActions(menu,
+                                                                 chatScene()->filter(),
+                                                                 data(MessageModel::BufferIdRole).value<BufferId>(),
+                                                                 name);
             break;
         }
         default:
@@ -895,7 +847,6 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos)
     }
 }
 
-
 void ContentsChatItem::copyLinkToClipboard()
 {
     Clickable click = privateData()->activeClickable;
@@ -907,10 +858,9 @@ void ContentsChatItem::copyLinkToClipboard()
     }
 }
 
-
 /******** WEB PREVIEW *****************************************************************************/
 
-void ContentsChatItem::showWebPreview(const Clickable &click)
+void ContentsChatItem::showWebPreview(const Clickable& click)
 {
 #if !defined HAVE_WEBKIT && !defined HAVE_WEBENGINE
     Q_UNUSED(click);
@@ -932,7 +882,6 @@ void ContentsChatItem::showWebPreview(const Clickable &click)
 #endif
 }
 
-
 void ContentsChatItem::clearWebPreview()
 {
 #if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
@@ -940,18 +889,15 @@ void ContentsChatItem::clearWebPreview()
 #endif
 }
 
-
 /*************************************************************************************************/
 
-ContentsChatItem::WrapColumnFinder::WrapColumnFinder(const ChatItem *_item)
-    : item(_item),
-    wrapList(item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>()),
-    wordidx(0),
-    lineCount(0),
-    choppedTrailing(0)
-{
-}
-
+ContentsChatItem::WrapColumnFinder::WrapColumnFinder(const ChatItem* _item)
+    : item(_item)
+    , wrapList(item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>())
+    , wordidx(0)
+    , lineCount(0)
+    , choppedTrailing(0)
+{}
 
 qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn(qreal width)
 {
@@ -965,7 +911,7 @@ qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn(qreal width)
     qint16 end = wrapList.count() - 1;
 
     // check if the whole line fits
-    if (wrapList.at(end).endX <= targetWidth) //  || start == end)
+    if (wrapList.at(end).endX <= targetWidth)  //  || start == end)
         return -1;
 
     // check if we have a very long word that needs inter word wrap
@@ -982,11 +928,11 @@ qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn(qreal width)
     while (true) {
         if (start + 1 == end) {
             wordidx = end;
-            const ChatLineModel::Word &lastWord = wrapList.at(start); // the last word we were able to squeeze in
+            const ChatLineModel::Word& lastWord = wrapList.at(start);  // the last word we were able to squeeze in
 
             // both cases should be cought preliminary
-            Q_ASSERT(lastWord.endX <= targetWidth); // ensure that "start" really fits in
-            Q_ASSERT(end < wrapList.count()); // ensure that start isn't the last word
+            Q_ASSERT(lastWord.endX <= targetWidth);  // ensure that "start" really fits in
+            Q_ASSERT(end < wrapList.count());        // ensure that start isn't the last word
 
             choppedTrailing += lastWord.trailing - (targetWidth - lastWord.endX);
             return wrapList.at(wordidx).start;
@@ -1003,6 +949,5 @@ qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn(qreal width)
     Q_ASSERT(false);
     return -1;
 }
-
 
 /*************************************************************************************************/

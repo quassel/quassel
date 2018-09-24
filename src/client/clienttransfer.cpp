@@ -18,17 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QFile>
-
 #include "clienttransfer.h"
 
-ClientTransfer::ClientTransfer(const QUuid &uuid, QObject *parent)
-    : Transfer(uuid, parent),
-    _file(nullptr)
+#include <QFile>
+
+ClientTransfer::ClientTransfer(const QUuid& uuid, QObject* parent)
+    : Transfer(uuid, parent)
+    , _file(nullptr)
 {
     connect(this, &Transfer::statusChanged, this, &ClientTransfer::onStatusChanged);
 }
-
 
 quint64 ClientTransfer::transferred() const
 {
@@ -37,7 +36,6 @@ quint64 ClientTransfer::transferred() const
 
     return _file ? _file->size() : 0;
 }
-
 
 void ClientTransfer::cleanUp()
 {
@@ -48,21 +46,18 @@ void ClientTransfer::cleanUp()
     }
 }
 
-
 QString ClientTransfer::savePath() const
 {
     return _savePath;
 }
 
-
-void ClientTransfer::accept(const QString &savePath) const
+void ClientTransfer::accept(const QString& savePath) const
 {
     _savePath = savePath;
     PeerPtr ptr = nullptr;
     REQUEST_OTHER(requestAccepted, ARG(ptr));
     emit accepted();
 }
-
 
 void ClientTransfer::reject() const
 {
@@ -71,13 +66,12 @@ void ClientTransfer::reject() const
     emit rejected();
 }
 
-
-void ClientTransfer::dataReceived(PeerPtr, const QByteArray &data)
+void ClientTransfer::dataReceived(PeerPtr, const QByteArray& data)
 {
     // TODO: proper error handling (relay to core)
     if (!_file) {
         _file = new QFile(_savePath, this);
-        if (!_file->open(QFile::WriteOnly|QFile::Truncate)) {
+        if (!_file->open(QFile::WriteOnly | QFile::Truncate)) {
             qWarning() << Q_FUNC_INFO << "Could not open file:" << _file->errorString();
             return;
         }
@@ -94,19 +88,18 @@ void ClientTransfer::dataReceived(PeerPtr, const QByteArray &data)
     emit transferredChanged(transferred());
 }
 
-
 void ClientTransfer::onStatusChanged(Transfer::Status status)
 {
-    switch(status) {
-        case Status::Completed:
-            if (_file)
-                _file->close();
-            break;
-        case Status::Failed:
-            if (_file)
-                _file->remove();
-            break;
-        default:
-            ;
+    switch (status) {
+    case Status::Completed:
+        if (_file)
+            _file->close();
+        break;
+    case Status::Failed:
+        if (_file)
+            _file->remove();
+        break;
+    default:
+        ;
     }
 }

@@ -20,24 +20,20 @@
 
 #include "sqlauthenticator.h"
 
+#include "core.h"
 #include "logmessage.h"
 #include "network.h"
 #include "quassel.h"
 
-#include "core.h"
-
-SqlAuthenticator::SqlAuthenticator(QObject *parent)
+SqlAuthenticator::SqlAuthenticator(QObject* parent)
     : Authenticator(parent)
-{
-}
-
+{}
 
 bool SqlAuthenticator::isAvailable() const
 {
     // FIXME: probably this should query the current storage (see the ::init routine too).
     return true;
 }
-
 
 QString SqlAuthenticator::backendId() const
 {
@@ -47,12 +43,10 @@ QString SqlAuthenticator::backendId() const
     return QString("Database");
 }
 
-
 QString SqlAuthenticator::displayName() const
 {
     return tr("Database");
 }
-
 
 QString SqlAuthenticator::description() const
 {
@@ -60,15 +54,12 @@ QString SqlAuthenticator::description() const
               "in the database selected in the next step.");
 }
 
-
-UserId SqlAuthenticator::validateUser(const QString &user, const QString &password)
+UserId SqlAuthenticator::validateUser(const QString& user, const QString& password)
 {
     return Core::validateUser(user, password);
 }
 
-
-bool SqlAuthenticator::setup(const QVariantMap &settings, const QProcessEnvironment &environment,
-                             bool loadFromEnvironment)
+bool SqlAuthenticator::setup(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment)
 {
     Q_UNUSED(settings)
     Q_UNUSED(environment)
@@ -76,10 +67,7 @@ bool SqlAuthenticator::setup(const QVariantMap &settings, const QProcessEnvironm
     return true;
 }
 
-
-Authenticator::State SqlAuthenticator::init(const QVariantMap &settings,
-                                            const QProcessEnvironment &environment,
-                                            bool loadFromEnvironment)
+Authenticator::State SqlAuthenticator::init(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment)
 {
     Q_UNUSED(settings)
     Q_UNUSED(environment)

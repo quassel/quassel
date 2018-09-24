@@ -30,11 +30,9 @@
 
 const int BufferViewOverlay::_updateEventId = QEvent::registerEventType();
 
-BufferViewOverlay::BufferViewOverlay(QObject *parent)
+BufferViewOverlay::BufferViewOverlay(QObject* parent)
     : QObject(parent)
-{
-}
-
+{}
 
 void BufferViewOverlay::reset()
 {
@@ -52,12 +50,10 @@ void BufferViewOverlay::reset()
     _tempRemovedBuffers.clear();
 }
 
-
 void BufferViewOverlay::save()
 {
     CoreAccountSettings().setBufferViewOverlay(_bufferViewIds);
 }
-
 
 void BufferViewOverlay::restore()
 {
@@ -71,13 +67,12 @@ void BufferViewOverlay::restore()
     }
 }
 
-
 void BufferViewOverlay::addView(int viewId)
 {
     if (_bufferViewIds.contains(viewId))
         return;
 
-    BufferViewConfig *config = Client::bufferViewManager()->bufferViewConfig(viewId);
+    BufferViewConfig* config = Client::bufferViewManager()->bufferViewConfig(viewId);
     if (!config) {
         qDebug() << "BufferViewOverlay::addView(): no such buffer view:" << viewId;
         return;
@@ -93,11 +88,11 @@ void BufferViewOverlay::addView(int viewId)
         if (wasInitialized) {
             BufferIdList buffers;
             if (config->networkId().isValid()) {
-                foreach(BufferId bufferId, config->bufferList()) {
+                foreach (BufferId bufferId, config->bufferList()) {
                     if (Client::networkModel()->networkId(bufferId) == config->networkId())
                         buffers << bufferId;
                 }
-                foreach(BufferId bufferId, config->temporarilyRemovedBuffers().toList()) {
+                foreach (BufferId bufferId, config->temporarilyRemovedBuffers().toList()) {
                     if (Client::networkModel()->networkId(bufferId) == config->networkId())
                         buffers << bufferId;
                 }
@@ -116,14 +111,13 @@ void BufferViewOverlay::addView(int viewId)
     save();
 }
 
-
 void BufferViewOverlay::removeView(int viewId)
 {
     if (!_bufferViewIds.contains(viewId))
         return;
 
     _bufferViewIds.remove(viewId);
-    BufferViewConfig *config = Client::bufferViewManager()->bufferViewConfig(viewId);
+    BufferViewConfig* config = Client::bufferViewManager()->bufferViewConfig(viewId);
     if (config)
         disconnect(config, nullptr, this, nullptr);
 
@@ -149,8 +143,7 @@ void BufferViewOverlay::removeView(int viewId)
     save();
 }
 
-
-void BufferViewOverlay::viewInitialized(BufferViewConfig *config)
+void BufferViewOverlay::viewInitialized(BufferViewConfig* config)
 {
     if (!config) {
         qWarning() << "BufferViewOverlay::viewInitialized() received invalid view!";
@@ -167,15 +160,13 @@ void BufferViewOverlay::viewInitialized(BufferViewConfig *config)
         emit initDone();
 }
 
-
 void BufferViewOverlay::viewInitialized()
 {
-    auto *config = qobject_cast<BufferViewConfig *>(sender());
+    auto* config = qobject_cast<BufferViewConfig*>(sender());
     Q_ASSERT(config);
 
     viewInitialized(config);
 }
-
 
 void BufferViewOverlay::update()
 {
@@ -185,7 +176,6 @@ void BufferViewOverlay::update()
     _aboutToUpdate = true;
     QCoreApplication::postEvent(this, new QEvent((QEvent::Type)_updateEventId));
 }
-
 
 void BufferViewOverlay::updateHelper()
 {
@@ -202,7 +192,7 @@ void BufferViewOverlay::updateHelper()
     QSet<BufferId> tempRemovedBuffers;
 
     if (Client::bufferViewManager()) {
-        BufferViewConfig *config = nullptr;
+        BufferViewConfig* config = nullptr;
         QSet<int>::const_iterator viewIter;
         for (viewIter = _bufferViewIds.constBegin(); viewIter != _bufferViewIds.constEnd(); ++viewIter) {
             config = Client::bufferViewManager()->bufferViewConfig(*viewIter);
@@ -254,14 +244,13 @@ void BufferViewOverlay::updateHelper()
         emit hasChanged();
 }
 
-
-QSet<BufferId> BufferViewOverlay::filterBuffersByConfig(const QList<BufferId> &buffers, const BufferViewConfig *config)
+QSet<BufferId> BufferViewOverlay::filterBuffersByConfig(const QList<BufferId>& buffers, const BufferViewConfig* config)
 {
     Q_ASSERT(config);
 
     QSet<BufferId> bufferIds;
     BufferInfo bufferInfo;
-    foreach(BufferId bufferId, buffers) {
+    foreach (BufferId bufferId, buffers) {
         bufferInfo = Client::networkModel()->bufferInfo(bufferId);
         if (!(bufferInfo.type() & config->allowedBufferTypes()))
             continue;
@@ -273,14 +262,12 @@ QSet<BufferId> BufferViewOverlay::filterBuffersByConfig(const QList<BufferId> &b
     return bufferIds;
 }
 
-
-void BufferViewOverlay::customEvent(QEvent *event)
+void BufferViewOverlay::customEvent(QEvent* event)
 {
     if (event->type() == _updateEventId) {
         updateHelper();
     }
 }
-
 
 bool BufferViewOverlay::allNetworks()
 {
@@ -288,41 +275,35 @@ bool BufferViewOverlay::allNetworks()
     return _networkIds.contains(NetworkId());
 }
 
-
-const QSet<NetworkId> &BufferViewOverlay::networkIds()
+const QSet<NetworkId>& BufferViewOverlay::networkIds()
 {
     updateHelper();
     return _networkIds;
 }
 
-
-const QSet<BufferId> &BufferViewOverlay::bufferIds()
+const QSet<BufferId>& BufferViewOverlay::bufferIds()
 {
     updateHelper();
     return _buffers;
 }
 
-
-const QSet<BufferId> &BufferViewOverlay::removedBufferIds()
+const QSet<BufferId>& BufferViewOverlay::removedBufferIds()
 {
     updateHelper();
     return _removedBuffers;
 }
 
-
-const QSet<BufferId> &BufferViewOverlay::tempRemovedBufferIds()
+const QSet<BufferId>& BufferViewOverlay::tempRemovedBufferIds()
 {
     updateHelper();
     return _tempRemovedBuffers;
 }
-
 
 int BufferViewOverlay::allowedBufferTypes()
 {
     updateHelper();
     return _allowedBufferTypes;
 }
-
 
 int BufferViewOverlay::minimumActivity()
 {

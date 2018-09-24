@@ -21,21 +21,23 @@
 #include "quassel.h"
 
 #if defined(HAVE_BACKTRACE) && !defined(Q_OS_MAC)
-#  define BUILD_CRASHHANDLER
-#  include <dlfcn.h>
-#  include <cxxabi.h>
-#  include <QFile>
-#  include <QTextStream>
-#  include <QDebug>
-#  include "backtrace_config.h"
+#    define BUILD_CRASHHANDLER
+#    include <QDebug>
+#    include <QFile>
+#    include <QTextStream>
+
+#    include <cxxabi.h>
+#    include <dlfcn.h>
+
+#    include "backtrace_config.h"
 #endif
 
-void Quassel::logBacktrace(const QString &filename)
+void Quassel::logBacktrace(const QString& filename)
 {
 #ifndef BUILD_CRASHHANDLER
     Q_UNUSED(filename)
 #else
-    void *callstack[128];
+    void* callstack[128];
     int i, frames = backtrace(callstack, 128);
 
     QFile dumpFile(filename);
@@ -54,15 +56,15 @@ void Quassel::logBacktrace(const QString &filename)
         //       void *dli_saddr;           /* Exact value of nearest symbol.  */
         //     } Dl_info;
 
-    #ifdef __LP64__
+#    ifdef __LP64__
         int addrSize = 16;
-    #else
+#    else
         int addrSize = 8;
-    #endif
+#    endif
 
         QString funcName;
         if (info.dli_sname) {
-            char *func = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, nullptr);
+            char* func = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, nullptr);
             if (func) {
                 funcName = QString(func);
                 free(func);
@@ -84,10 +86,11 @@ void Quassel::logBacktrace(const QString &filename)
                 fileName = fileName.mid(slashPos + 1);
         }
 
-        QString debugLine = QString("#%1 %2 0x%3 %4").arg(i, 3, 10)
-                            .arg(fileName, -20)
-                            .arg((ulong)(callstack[i]), addrSize, 16, QLatin1Char('0'))
-                            .arg(funcName);
+        QString debugLine = QString("#%1 %2 0x%3 %4")
+                                .arg(i, 3, 10)
+                                .arg(fileName, -20)
+                                .arg((ulong)(callstack[i]), addrSize, 16, QLatin1Char('0'))
+                                .arg(funcName);
 
         dumpStream << debugLine << "\n";
         qDebug() << qPrintable(debugLine);

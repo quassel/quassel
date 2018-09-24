@@ -22,8 +22,8 @@
 
 #include <QAbstractTableModel>
 #include <QString>
-#include <QVector>
 #include <QUuid>
+#include <QVector>
 
 #include "transfer.h"
 
@@ -40,9 +40,9 @@ public:
     using QAbstractTableModel::QAbstractTableModel;
 
     // see base class docs
-    int rowCount(const QModelIndex &index = {}) const override;
-    int columnCount(const QModelIndex &index = {}) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& index = {}) const override;
+    int columnCount(const QModelIndex& index = {}) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     /**
@@ -51,7 +51,7 @@ public:
      * @param[in] transferId Transfer ID
      * @returns A pointer to the transfer with the given ID, or nullptr for an unknown ID
      */
-    Transfer *transfer(const QUuid &transferId) const;
+    Transfer* transfer(const QUuid& transferId) const;
 
     /**
      * Sets the TransferManager associated with this model.
@@ -61,7 +61,7 @@ public:
      *
      * @param[in] manager Pointer to the TransferManager instance, or nullptr for clearing the model
      */
-    void setManager(const TransferManager *manager);
+    void setManager(const TransferManager* manager);
 
 private slots:
     /**
@@ -69,14 +69,14 @@ private slots:
      *
      * @param[in] transferId The transfer's ID
      */
-    void onTransferAdded(const QUuid &transferId);
+    void onTransferAdded(const QUuid& transferId);
 
     /**
      * Slot to be called when a transfer is removed.
      *
      * @param[in] transferId The transfer's ID
      */
-    void onTransferRemoved(const QUuid &transferId);
+    void onTransferRemoved(const QUuid& transferId);
 
     /**
      * Slot to be called when a transfer's data changes.
@@ -84,6 +84,6 @@ private slots:
     void onTransferDataChanged();
 
 private:
-    const TransferManager *_manager{nullptr}; ///< Pointer to the active TransferManager instance, if any
-    QVector<QUuid> _transferIds;              ///< List of transfer IDs
+    const TransferManager* _manager{nullptr};  ///< Pointer to the active TransferManager instance, if any
+    QVector<QUuid> _transferIds;               ///< List of transfer IDs
 };

@@ -22,14 +22,15 @@
 #ifndef STATUSNOTIFIERITEMDBUS_H_
 #define STATUSNOTIFIERITEMDBUS_H_
 
-#include <QObject>
-#include <QString>
 #include <QDBusArgument>
 #include <QDBusConnection>
+#include <QObject>
 #include <QPixmap>
+#include <QString>
 
-//Custom message type for DBus
-struct DBusImageStruct {
+// Custom message type for DBus
+struct DBusImageStruct
+{
     int width;
     int height;
     QByteArray data;
@@ -37,7 +38,8 @@ struct DBusImageStruct {
 
 using DBusImageVector = QVector<DBusImageStruct>;
 
-struct DBusToolTipStruct {
+struct DBusToolTipStruct
+{
     QString icon;
     DBusImageVector image;
     QString title;
@@ -67,8 +69,9 @@ class StatusNotifierItemDBus : public QObject
     Q_PROPERTY(QDBusObjectPath Menu READ Menu)
 
     friend class StatusNotifierItem;
+
 public:
-    StatusNotifierItemDBus(StatusNotifierItem *parent);
+    StatusNotifierItemDBus(StatusNotifierItem* parent);
     ~StatusNotifierItemDBus() override;
 
     /**
@@ -173,7 +176,7 @@ public:
     QDBusObjectPath Menu() const;
 
 public slots:
-    //interaction
+    // interaction
     /**
      * Shows the context menu associated to this item
      * at the desired screen position
@@ -194,7 +197,7 @@ public slots:
     /**
      * Inform this item that the mouse wheel was used on its representation
      */
-    void Scroll(int delta, const QString &orientation);
+    void Scroll(int delta, const QString& orientation);
 
 signals:
     /**
@@ -223,27 +226,26 @@ signals:
      * Signal the new status when it has been changed
      * @see Status
      */
-    void NewStatus(const QString &status);
+    void NewStatus(const QString& status);
 
 private:
-    StatusNotifierItem *m_statusNotifierItem;
+    StatusNotifierItem* m_statusNotifierItem;
     QDBusConnection m_dbus;
     static int s_serviceCount;
 };
 
-
-const QDBusArgument &operator<<(QDBusArgument &argument, const DBusImageStruct &icon);
-const QDBusArgument &operator>>(const QDBusArgument &argument, DBusImageStruct &icon);
+const QDBusArgument& operator<<(QDBusArgument& argument, const DBusImageStruct& icon);
+const QDBusArgument& operator>>(const QDBusArgument& argument, DBusImageStruct& icon);
 
 Q_DECLARE_METATYPE(DBusImageStruct)
 
-const QDBusArgument &operator<<(QDBusArgument &argument, const DBusImageVector &iconVector);
-const QDBusArgument &operator>>(const QDBusArgument &argument, DBusImageVector &iconVector);
+const QDBusArgument& operator<<(QDBusArgument& argument, const DBusImageVector& iconVector);
+const QDBusArgument& operator>>(const QDBusArgument& argument, DBusImageVector& iconVector);
 
 Q_DECLARE_METATYPE(DBusImageVector)
 
-const QDBusArgument &operator<<(QDBusArgument &argument, const DBusToolTipStruct &toolTip);
-const QDBusArgument &operator>>(const QDBusArgument &argument, DBusToolTipStruct &toolTip);
+const QDBusArgument& operator<<(QDBusArgument& argument, const DBusToolTipStruct& toolTip);
+const QDBusArgument& operator>>(const QDBusArgument& argument, DBusToolTipStruct& toolTip);
 
 Q_DECLARE_METATYPE(DBusToolTipStruct)
 

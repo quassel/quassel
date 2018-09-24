@@ -49,12 +49,12 @@ public:
     QtUi();
     ~QtUi() override;
 
-    MessageModel *createMessageModel(QObject *parent) override;
-    AbstractMessageProcessor *createMessageProcessor(QObject *parent) override;
+    MessageModel* createMessageModel(QObject* parent) override;
+    AbstractMessageProcessor* createMessageProcessor(QObject* parent) override;
 
-    static QtUi *instance();
-    inline static QtUiStyle *style();
-    inline static MainWin *mainWindow();
+    static QtUi* instance();
+    inline static QtUiStyle* style();
+    inline static MainWin* mainWindow();
 
     QString debugLog() const;
 
@@ -62,11 +62,11 @@ public:
 
     /* Notifications */
 
-    static void registerNotificationBackend(AbstractNotificationBackend *);
-    static void unregisterNotificationBackend(AbstractNotificationBackend *);
+    static void registerNotificationBackend(AbstractNotificationBackend*);
+    static void unregisterNotificationBackend(AbstractNotificationBackend*);
     static void unregisterAllNotificationBackends();
-    static const QList<AbstractNotificationBackend *> &notificationBackends();
-    static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
+    static const QList<AbstractNotificationBackend*>& notificationBackends();
+    static const QList<AbstractNotificationBackend::Notification>& activeNotifications();
 
     /**
      * Determine available fallback icon themes.
@@ -91,7 +91,7 @@ public:
 public slots:
     void init() override;
 
-    uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text);
+    uint invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString& sender, const QString& text);
     void closeNotification(uint notificationId);
     void closeNotifications(BufferId bufferId = BufferId());
 
@@ -117,7 +117,7 @@ protected:
     bool isHidingMainWidgetAllowed() const override;
 
 private slots:
-    void useSystemTrayChanged(const QVariant &);
+    void useSystemTrayChanged(const QVariant&);
 
 private:
     /**
@@ -126,7 +126,7 @@ private:
     void setupIconTheme();
 
 private:
-    static QList<AbstractNotificationBackend *> _notificationBackends;
+    static QList<AbstractNotificationBackend*> _notificationBackends;
     static QList<AbstractNotificationBackend::Notification> _notifications;
 
     std::unique_ptr<MainWin> _mainWin;
@@ -138,5 +138,12 @@ private:
     bool _useSystemTray;
 };
 
-QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle *>(uiStyle()); }
-MainWin *QtUi::mainWindow() { return instance()->_mainWin.get(); }
+QtUiStyle* QtUi::style()
+{
+    return qobject_cast<QtUiStyle*>(uiStyle());
+}
+
+MainWin* QtUi::mainWindow()
+{
+    return instance()->_mainWin.get();
+}

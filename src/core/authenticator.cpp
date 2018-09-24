@@ -20,4 +20,5 @@
 
 // Make moc happy
 #include "authenticator.h"
+
 #include "moc_authenticator.cpp"

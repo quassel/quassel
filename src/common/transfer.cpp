@@ -22,31 +22,31 @@
 
 #include <utility>
 
-Transfer::Transfer(const QUuid &uuid, QObject *parent)
-    : SyncableObject(parent),
-    _status(Status::New),
-    _direction(Direction::Receive),
-    _port(0),
-    _fileSize(0),
-    _uuid(uuid)
+Transfer::Transfer(const QUuid& uuid, QObject* parent)
+    : SyncableObject(parent)
+    , _status(Status::New)
+    , _direction(Direction::Receive)
+    , _port(0)
+    , _fileSize(0)
+    , _uuid(uuid)
 {
     init();
 }
 
-Transfer::Transfer(Direction direction, QString nick, QString fileName, const QHostAddress &address, quint16 port, quint64 fileSize, QObject *parent)
-    : SyncableObject(parent),
-    _status(Status::New),
-    _direction(direction),
-    _fileName(std::move(fileName)),
-    _address(address),
-    _port(port),
-    _fileSize(fileSize),
-    _nick(std::move(nick)),
-    _uuid(QUuid::createUuid())
+Transfer::Transfer(
+    Direction direction, QString nick, QString fileName, const QHostAddress& address, quint16 port, quint64 fileSize, QObject* parent)
+    : SyncableObject(parent)
+    , _status(Status::New)
+    , _direction(direction)
+    , _fileName(std::move(fileName))
+    , _address(address)
+    , _port(port)
+    , _fileSize(fileSize)
+    , _nick(std::move(nick))
+    , _uuid(QUuid::createUuid())
 {
     init();
 }
-
 
 void Transfer::init()
 {
@@ -63,18 +63,15 @@ void Transfer::init()
     setAllowClientUpdates(true);
 }
 
-
 QUuid Transfer::uuid() const
 {
     return _uuid;
 }
 
-
 Transfer::Status Transfer::status() const
 {
     return _status;
 }
-
 
 void Transfer::setStatus(Transfer::Status status)
 {
@@ -88,38 +85,34 @@ void Transfer::setStatus(Transfer::Status status)
     }
 }
 
-
 QString Transfer::prettyStatus() const
 {
-    switch(status()) {
-        case Status::New:
-            return tr("New");
-        case Status::Pending:
-            return tr("Pending");
-        case Status::Connecting:
-            return tr("Connecting");
-        case Status::Transferring:
-            return tr("Transferring");
-        case Status::Paused:
-            return tr("Paused");
-        case Status::Completed:
-            return tr("Completed");
-        case Status::Failed:
-            return tr("Failed");
-        case Status::Rejected:
-            return tr("Rejected");
+    switch (status()) {
+    case Status::New:
+        return tr("New");
+    case Status::Pending:
+        return tr("Pending");
+    case Status::Connecting:
+        return tr("Connecting");
+    case Status::Transferring:
+        return tr("Transferring");
+    case Status::Paused:
+        return tr("Paused");
+    case Status::Completed:
+        return tr("Completed");
+    case Status::Failed:
+        return tr("Failed");
+    case Status::Rejected:
+        return tr("Rejected");
     }
 
     return QString();
 }
 
-
-
 Transfer::Direction Transfer::direction() const
 {
     return _direction;
 }
-
 
 void Transfer::setDirection(Transfer::Direction direction)
 {
@@ -130,14 +123,12 @@ void Transfer::setDirection(Transfer::Direction direction)
     }
 }
 
-
 QHostAddress Transfer::address() const
 {
     return _address;
 }
 
-
-void Transfer::setAddress(const QHostAddress &address)
+void Transfer::setAddress(const QHostAddress& address)
 {
     if (_address != address) {
         _address = address;
@@ -146,12 +137,10 @@ void Transfer::setAddress(const QHostAddress &address)
     }
 }
 
-
 quint16 Transfer::port() const
 {
     return _port;
 }
-
 
 void Transfer::setPort(quint16 port)
 {
@@ -162,14 +151,12 @@ void Transfer::setPort(quint16 port)
     }
 }
 
-
 QString Transfer::fileName() const
 {
     return _fileName;
 }
 
-
-void Transfer::setFileName(const QString &fileName)
+void Transfer::setFileName(const QString& fileName)
 {
     if (_fileName != fileName) {
         _fileName = fileName;
@@ -178,12 +165,10 @@ void Transfer::setFileName(const QString &fileName)
     }
 }
 
-
 quint64 Transfer::fileSize() const
 {
     return _fileSize;
 }
-
 
 void Transfer::setFileSize(quint64 fileSize)
 {
@@ -194,14 +179,12 @@ void Transfer::setFileSize(quint64 fileSize)
     }
 }
 
-
 QString Transfer::nick() const
 {
     return _nick;
 }
 
-
-void Transfer::setNick(const QString &nick)
+void Transfer::setNick(const QString& nick)
 {
     if (_nick != nick) {
         _nick = nick;
@@ -210,33 +193,35 @@ void Transfer::setNick(const QString &nick)
     }
 }
 
-
-void Transfer::setError(const QString &errorString)
+void Transfer::setError(const QString& errorString)
 {
     qWarning() << Q_FUNC_INFO << errorString;
     emit error(errorString);
     setStatus(Status::Failed);
 }
 
-
-QDataStream &operator<<(QDataStream &out, Transfer::Status state) {
+QDataStream& operator<<(QDataStream& out, Transfer::Status state)
+{
     out << static_cast<qint8>(state);
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, Transfer::Status &state) {
+QDataStream& operator>>(QDataStream& in, Transfer::Status& state)
+{
     qint8 s;
     in >> s;
     state = static_cast<Transfer::Status>(s);
     return in;
 }
 
-QDataStream &operator<<(QDataStream &out, Transfer::Direction direction) {
+QDataStream& operator<<(QDataStream& out, Transfer::Direction direction)
+{
     out << static_cast<qint8>(direction);
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, Transfer::Direction &direction) {
+QDataStream& operator>>(QDataStream& in, Transfer::Direction& direction)
+{
     qint8 d;
     in >> d;
     direction = static_cast<Transfer::Direction>(d);

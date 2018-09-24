@@ -21,27 +21,28 @@
 #include "chatmonitorview.h"
 
 #include <QAction>
-#include <QMenu>
 #include <QContextMenuEvent>
+#include <QMenu>
 
 #include "action.h"
 #include "buffermodel.h"
-#include "chatmonitorfilter.h"
-#include "chatlinemodel.h"
 #include "chatitem.h"
+#include "chatlinemodel.h"
+#include "chatmonitorfilter.h"
 #include "chatscene.h"
 #include "client.h"
 #include "clientignorelistmanager.h"
 #include "icon.h"
-#include "networkmodel.h"
 #include "messagemodel.h"
+#include "networkmodel.h"
 #include "qtuisettings.h"
 #include "settingspagedlg.h"
+
 #include "settingspages/chatmonitorsettingspage.h"
 
-ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
-    : ChatView(filter, parent),
-    _filter(filter)
+ChatMonitorView::ChatMonitorView(ChatMonitorFilter* filter, QWidget* parent)
+    : ChatView(filter, parent)
+    , _filter(filter)
 {
     scene()->setSenderCutoffMode(ChatScene::CutoffLeft);
     // The normal message prefixes get replaced by the network and buffer name.  Re-add brackets for
@@ -50,8 +51,7 @@ ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
     connect(Client::instance(), &Client::coreConnectionStateChanged, this, &ChatMonitorView::coreConnectionStateChanged);
 }
 
-
-void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
+void ChatMonitorView::addActionsToMenu(QMenu* menu, const QPointF& pos)
 {
     ChatView::addActionsToMenu(menu, pos);
     menu->addSeparator();
@@ -80,15 +80,14 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos)
     menu->addAction(new Action(icon::get("configure"), tr("Configure..."), menu, this, &ChatMonitorView::showSettingsPage));
 }
 
-
-void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event)
+void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent* event)
 {
     if (scene()->columnByScenePos(event->pos()) != ChatLineModel::SenderColumn) {
         ChatView::mouseDoubleClickEvent(event);
         return;
     }
 
-    ChatItem *chatItem = scene()->chatItemAt(mapToScene(event->pos()));
+    ChatItem* chatItem = scene()->chatItemAt(mapToScene(event->pos()));
     if (!chatItem) {
         event->ignore();
         return;
@@ -102,10 +101,9 @@ void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event)
     Client::bufferModel()->switchToBuffer(bufferId);
 }
 
-
 void ChatMonitorView::showFieldsChanged(bool checked)
 {
-    auto *showAction = qobject_cast<QAction *>(sender());
+    auto* showAction = qobject_cast<QAction*>(sender());
     if (!showAction)
         return;
 
@@ -115,13 +113,11 @@ void ChatMonitorView::showFieldsChanged(bool checked)
         _filter->removeShowField(showAction->data().toInt());
 }
 
-
 void ChatMonitorView::showSettingsPage()
 {
     SettingsPageDlg dlg(new ChatMonitorSettingsPage(), this);
     dlg.exec();
 }
-
 
 // connect only after client is synced to core since ChatMonitorView is created before
 // the ignoreListManager

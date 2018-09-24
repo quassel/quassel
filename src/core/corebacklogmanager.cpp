@@ -19,17 +19,16 @@
  ***************************************************************************/
 
 #include "corebacklogmanager.h"
-#include "core.h"
-#include "coresession.h"
 
 #include <QDebug>
 
-CoreBacklogManager::CoreBacklogManager(CoreSession *coreSession)
-    : BacklogManager(coreSession),
-    _coreSession(coreSession)
-{
-}
+#include "core.h"
+#include "coresession.h"
 
+CoreBacklogManager::CoreBacklogManager(CoreSession* coreSession)
+    : BacklogManager(coreSession)
+    , _coreSession(coreSession)
+{}
 
 QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional)
 {
@@ -76,7 +75,6 @@ QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, 
     return backlog;
 }
 
-
 QVariantList CoreBacklogManager::requestBacklogFiltered(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, int type, int flags)
 {
     QVariantList backlog;
@@ -122,7 +120,6 @@ QVariantList CoreBacklogManager::requestBacklogFiltered(BufferId bufferId, MsgId
     return backlog;
 }
 
-
 QVariantList CoreBacklogManager::requestBacklogAll(MsgId first, MsgId last, int limit, int additional)
 {
     QVariantList backlog;
@@ -161,9 +158,7 @@ QVariantList CoreBacklogManager::requestBacklogAll(MsgId first, MsgId last, int 
     return backlog;
 }
 
-
-QVariantList CoreBacklogManager::requestBacklogAllFiltered(MsgId first, MsgId last, int limit, int additional, int type,
-                                                           int flags)
+QVariantList CoreBacklogManager::requestBacklogAllFiltered(MsgId first, MsgId last, int limit, int additional, int type, int flags)
 {
     QVariantList backlog;
     QList<Message> msgList;

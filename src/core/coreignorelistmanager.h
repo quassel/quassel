@@ -30,23 +30,22 @@ class CoreIgnoreListManager : public IgnoreListManager
     Q_OBJECT
 
 public:
-    explicit CoreIgnoreListManager(CoreSession *parent);
+    explicit CoreIgnoreListManager(CoreSession* parent);
 
-    StrictnessType match(const RawMessage &rawMsg, const QString &networkName);
+    StrictnessType match(const RawMessage& rawMsg, const QString& networkName);
 
 public slots:
-    inline void requestToggleIgnoreRule(const QString &ignoreRule) override { toggleIgnoreRule(ignoreRule); }
-    inline void requestRemoveIgnoreListItem(const QString &ignoreRule) override { removeIgnoreListItem(ignoreRule); }
-    inline void requestAddIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
-        int scope, const QString &scopeRule, bool isActive) override
+    inline void requestToggleIgnoreRule(const QString& ignoreRule) override { toggleIgnoreRule(ignoreRule); }
+    inline void requestRemoveIgnoreListItem(const QString& ignoreRule) override { removeIgnoreListItem(ignoreRule); }
+    inline void requestAddIgnoreListItem(
+        int type, const QString& ignoreRule, bool isRegEx, int strictness, int scope, const QString& scopeRule, bool isActive) override
     {
         addIgnoreListItem(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
     }
 
-
 private slots:
     void save() const;
 
-//private:
-//  void loadDefaults();
+    // private:
+    //  void loadDefaults();
 };

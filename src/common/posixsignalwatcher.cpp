@@ -20,10 +20,10 @@
 
 #include "posixsignalwatcher.h"
 
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include <cerrno>
@@ -36,7 +36,7 @@
 
 int PosixSignalWatcher::_sockpair[2];
 
-PosixSignalWatcher::PosixSignalWatcher(QObject *parent)
+PosixSignalWatcher::PosixSignalWatcher(QObject* parent)
     : AbstractSignalWatcher{parent}
 {
     if (::socketpair(AF_UNIX, SOCK_STREAM, 0, _sockpair)) {
@@ -54,7 +54,7 @@ PosixSignalWatcher::PosixSignalWatcher(QObject *parent)
 
 #ifdef HAVE_BACKTRACE
     // we only handle crashes ourselves if coredumps are disabled
-    struct rlimit *limit = (rlimit *)malloc(sizeof(struct rlimit));
+    struct rlimit* limit = (rlimit*)malloc(sizeof(struct rlimit));
     int rc = getrlimit(RLIMIT_CORE, limit);
     if (rc == -1 || !((long)limit->rlim_cur > 0 || limit->rlim_cur == RLIM_INFINITY)) {
         registerSignal(SIGABRT);

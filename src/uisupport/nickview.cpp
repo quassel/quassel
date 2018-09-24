@@ -21,21 +21,21 @@
 #include "nickview.h"
 
 #include <QApplication>
-#include <QHeaderView>
-#include <QScrollBar>
 #include <QDebug>
+#include <QHeaderView>
 #include <QMenu>
+#include <QScrollBar>
 
 #include "buffermodel.h"
 #include "client.h"
 #include "contextmenuactionprovider.h"
 #include "graphicalui.h"
+#include "networkmodel.h"
 #include "nickview.h"
 #include "nickviewfilter.h"
-#include "networkmodel.h"
 #include "types.h"
 
-NickView::NickView(QWidget *parent)
+NickView::NickView(QWidget* parent)
     : TreeViewTouch(parent)
 {
     setIndentation(10);
@@ -59,7 +59,6 @@ NickView::NickView(QWidget *parent)
 #endif
 }
 
-
 void NickView::init()
 {
     if (!model())
@@ -72,8 +71,7 @@ void NickView::init()
     connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &NickView::selectionUpdated);
 }
 
-
-void NickView::setModel(QAbstractItemModel *model_)
+void NickView::setModel(QAbstractItemModel* model_)
 {
     if (model())
         disconnect(model(), nullptr, this, nullptr);
@@ -82,8 +80,7 @@ void NickView::setModel(QAbstractItemModel *model_)
     init();
 }
 
-
-void NickView::rowsInserted(const QModelIndex &parent, int start, int end)
+void NickView::rowsInserted(const QModelIndex& parent, int start, int end)
 {
     TreeViewTouch::rowsInserted(parent, start, end);
     if (model()->data(parent, NetworkModel::ItemTypeRole) == NetworkModel::UserCategoryItemType && !isExpanded(parent)) {
@@ -91,14 +88,12 @@ void NickView::rowsInserted(const QModelIndex &parent, int start, int end)
     }
 }
 
-
-void NickView::setRootIndex(const QModelIndex &index)
+void NickView::setRootIndex(const QModelIndex& index)
 {
     QAbstractItemView::setRootIndex(index);
     if (index.isValid())
         unanimatedExpandAll();
 }
-
 
 QModelIndexList NickView::selectedIndexes() const
 {
@@ -113,7 +108,6 @@ QModelIndexList NickView::selectedIndexes() const
     return indexList;
 }
 
-
 void NickView::unanimatedExpandAll()
 {
     // since of Qt Version 4.8.0 the default expandAll will not properly work if
@@ -125,8 +119,7 @@ void NickView::unanimatedExpandAll()
     setAnimated(wasAnimated);
 }
 
-
-void NickView::showContextMenu(const QPoint &pos)
+void NickView::showContextMenu(const QPoint& pos)
 {
     Q_UNUSED(pos);
 
@@ -135,13 +128,12 @@ void NickView::showContextMenu(const QPoint &pos)
     contextMenu.exec(QCursor::pos());
 }
 
-
-void NickView::startQuery(const QModelIndex &index)
+void NickView::startQuery(const QModelIndex& index)
 {
     if (index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType)
         return;
 
-    auto *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+    auto* ircUser = qobject_cast<IrcUser*>(index.data(NetworkModel::IrcUserRole).value<QObject*>());
     NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
     if (!ircUser || !networkId.isValid())
         return;

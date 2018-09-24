@@ -20,7 +20,7 @@
 
 #include "keyevent.h"
 
-Event *KeyEvent::create(EventManager::EventType type, QVariantMap &map, Network *network)
+Event* KeyEvent::create(EventManager::EventType type, QVariantMap& map, Network* network)
 {
     if (type == EventManager::KeyEvent)
         return new KeyEvent(type, map, network);
@@ -28,8 +28,7 @@ Event *KeyEvent::create(EventManager::EventType type, QVariantMap &map, Network 
     return nullptr;
 }
 
-
-KeyEvent::KeyEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+KeyEvent::KeyEvent(EventManager::EventType type, QVariantMap& map, Network* network)
     : IrcEvent(type, map, network)
 {
     _exchangeType = static_cast<ExchangeType>(map.take("exchangeType").toInt());
@@ -37,8 +36,7 @@ KeyEvent::KeyEvent(EventManager::EventType type, QVariantMap &map, Network *netw
     _key = map.take("key").toByteArray();
 }
 
-
-void KeyEvent::toVariantMap(QVariantMap &map) const
+void KeyEvent::toVariantMap(QVariantMap& map) const
 {
     IrcEvent::toVariantMap(map);
     map["exchangeType"] = exchangeType();

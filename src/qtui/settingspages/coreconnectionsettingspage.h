@@ -31,7 +31,7 @@ class CoreConnectionSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    CoreConnectionSettingsPage(QWidget *parent = nullptr);
+    CoreConnectionSettingsPage(QWidget* parent = nullptr);
 
     inline bool hasDefaults() const override { return true; }
 
@@ -54,6 +54,5 @@ private:
 
     inline QString settingsKey() const override { return QString("CoreConnection"); }
 };
-
 
 #endif

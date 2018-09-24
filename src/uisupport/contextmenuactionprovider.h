@@ -31,7 +31,7 @@ class UISUPPORT_EXPORT ContextMenuActionProvider : public NetworkModelController
     Q_OBJECT
 
 public:
-    ContextMenuActionProvider(QObject *parent = nullptr);
+    ContextMenuActionProvider(QObject* parent = nullptr);
     ~ContextMenuActionProvider() override;
 
     //! Provide a list of actions applying to the given item
@@ -47,60 +47,71 @@ public:
      * @return A list of actions applying to the given item
      */
     template<typename Receiver, typename Slot>
-    void addActions(QMenu *menu, const QModelIndex &index, Receiver *receiver, Slot slot, bool isCustomBufferView = false)
+    void addActions(QMenu* menu, const QModelIndex& index, Receiver* receiver, Slot slot, bool isCustomBufferView = false)
     {
         addActions(menu, index, buildActionSlot(receiver, std::move(slot)), isCustomBufferView);
     }
-    void addActions(QMenu *menu, const QModelIndex &index, ActionSlot = {}, bool isCustomBufferView = false);
+    void addActions(QMenu* menu, const QModelIndex& index, ActionSlot = {}, bool isCustomBufferView = false);
 
     template<typename Receiver, typename Slot>
-    void addActions(QMenu *menu, const QList<QModelIndex> &indexList, Receiver *receiver, Slot slot, bool isCustomBufferView = false)
+    void addActions(QMenu* menu, const QList<QModelIndex>& indexList, Receiver* receiver, Slot slot, bool isCustomBufferView = false)
     {
         addActions(menu, indexList, buildActionSlot(receiver, std::move(slot)), isCustomBufferView);
     }
-    void addActions(QMenu *menu, const QList<QModelIndex> &indexList, ActionSlot = {}, bool isCustomBufferView = false);
+    void addActions(QMenu* menu, const QList<QModelIndex>& indexList, ActionSlot = {}, bool isCustomBufferView = false);
 
     template<typename Receiver, typename Slot>
-    void addActions(QMenu *menu, BufferId id, Receiver *receiver, Slot slot)
+    void addActions(QMenu* menu, BufferId id, Receiver* receiver, Slot slot)
     {
         addActions(menu, id, buildActionSlot(receiver, std::move(slot)));
     }
-    void addActions(QMenu *menu, BufferId id, ActionSlot = {});
+    void addActions(QMenu* menu, BufferId id, ActionSlot = {});
 
     template<typename Receiver, typename Slot>
-    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, Receiver *receiver, Slot slot)
+    void addActions(QMenu* menu, MessageFilter* filter, BufferId msgBuffer, Receiver* receiver, Slot slot)
     {
         addActions(menu, filter, msgBuffer, buildActionSlot(receiver, std::move(slot)));
     }
-    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, ActionSlot = {});
+    void addActions(QMenu* menu, MessageFilter* filter, BufferId msgBuffer, ActionSlot = {});
 
     template<typename Receiver, typename Slot>
-    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, Receiver *receiver, Slot slot)
+    void addActions(QMenu* menu, MessageFilter* filter, BufferId msgBuffer, const QString& chanOrNick, Receiver* receiver, Slot slot)
     {
         addActions(menu, filter, msgBuffer, chanOrNick, buildActionSlot(receiver, std::move(slot)));
     }
-    void addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, ActionSlot = {});
+    void addActions(QMenu* menu, MessageFilter* filter, BufferId msgBuffer, const QString& chanOrNick, ActionSlot = {});
 
 private:
-    void addActions(QMenu *menu, const QList<QModelIndex> &indexList, MessageFilter *filter, const QString &chanOrNick, ActionSlot actionSlot, bool isCustomBufferView);
+    void addActions(QMenu* menu,
+                    const QList<QModelIndex>& indexList,
+                    MessageFilter* filter,
+                    const QString& chanOrNick,
+                    ActionSlot actionSlot,
+                    bool isCustomBufferView);
 
-    Action *addAction(ActionType, QMenu *, bool condition = true);
-    Action *addAction(Action *, QMenu *, bool condition = true);
-    Action *addAction(ActionType, QMenu *, const QModelIndex &index, ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
-    Action *addAction(Action *, QMenu *, const QModelIndex &index, ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
+    Action* addAction(ActionType, QMenu*, bool condition = true);
+    Action* addAction(Action*, QMenu*, bool condition = true);
+    Action* addAction(ActionType,
+                      QMenu*,
+                      const QModelIndex& index,
+                      ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
+    Action* addAction(Action*,
+                      QMenu*,
+                      const QModelIndex& index,
+                      ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
 
-    void addHideEventsMenu(QMenu *, BufferId bufferId);
-    void addHideEventsMenu(QMenu *, MessageFilter *msgFilter);
-    void addHideEventsMenu(QMenu *, int filter = -1);
-    void addIgnoreMenu(QMenu *menu, const QString &hostmask, const QMap<QString, bool> &ignoreMap);
+    void addHideEventsMenu(QMenu*, BufferId bufferId);
+    void addHideEventsMenu(QMenu*, MessageFilter* msgFilter);
+    void addHideEventsMenu(QMenu*, int filter = -1);
+    void addIgnoreMenu(QMenu* menu, const QString& hostmask, const QMap<QString, bool>& ignoreMap);
 
-    void addNetworkItemActions(QMenu *, const QModelIndex &);
-    void addBufferItemActions(QMenu *, const QModelIndex &, bool isCustomBufferView = false);
-    void addIrcUserActions(QMenu *, const QModelIndex &);
+    void addNetworkItemActions(QMenu*, const QModelIndex&);
+    void addBufferItemActions(QMenu*, const QModelIndex&, bool isCustomBufferView = false);
+    void addIrcUserActions(QMenu*, const QModelIndex&);
 
-    Action *_hideEventsMenuAction;
-    Action *_nickCtcpMenuAction;
-    Action *_nickModeMenuAction;
-    Action *_nickIgnoreMenuAction;
-    QList<QAction *> _ignoreDescriptions;
+    Action* _hideEventsMenuAction;
+    Action* _nickCtcpMenuAction;
+    Action* _nickModeMenuAction;
+    Action* _nickIgnoreMenuAction;
+    QList<QAction*> _ignoreDescriptions;
 };

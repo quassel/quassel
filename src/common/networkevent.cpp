@@ -20,7 +20,7 @@
 
 #include "networkevent.h"
 
-Event *NetworkEvent::create(EventManager::EventType type, QVariantMap &map, Network *network)
+Event* NetworkEvent::create(EventManager::EventType type, QVariantMap& map, Network* network)
 {
     switch (type) {
     case EventManager::NetworkIncoming:
@@ -43,50 +43,42 @@ Event *NetworkEvent::create(EventManager::EventType type, QVariantMap &map, Netw
     }
 }
 
-
-NetworkEvent::NetworkEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+NetworkEvent::NetworkEvent(EventManager::EventType type, QVariantMap& map, Network* network)
     : Event(type, map)
     , _network(network)
-{
-}
+{}
 
-
-void NetworkEvent::toVariantMap(QVariantMap &map) const
+void NetworkEvent::toVariantMap(QVariantMap& map) const
 {
     Event::toVariantMap(map);
     map["network"] = networkId().toInt();
 }
 
-
-NetworkDataEvent::NetworkDataEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+NetworkDataEvent::NetworkDataEvent(EventManager::EventType type, QVariantMap& map, Network* network)
     : NetworkEvent(type, map, network)
 {
     _data = map.take("data").toByteArray();
 }
 
-
-void NetworkDataEvent::toVariantMap(QVariantMap &map) const
+void NetworkDataEvent::toVariantMap(QVariantMap& map) const
 {
     NetworkEvent::toVariantMap(map);
     map["data"] = data();
 }
 
-
-NetworkConnectionEvent::NetworkConnectionEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+NetworkConnectionEvent::NetworkConnectionEvent(EventManager::EventType type, QVariantMap& map, Network* network)
     : NetworkEvent(type, map, network)
 {
-    _state = static_cast<Network::ConnectionState>(map.take("state").toInt()); // FIXME: check enum plausibility
+    _state = static_cast<Network::ConnectionState>(map.take("state").toInt());  // FIXME: check enum plausibility
 }
 
-
-void NetworkConnectionEvent::toVariantMap(QVariantMap &map) const
+void NetworkConnectionEvent::toVariantMap(QVariantMap& map) const
 {
     NetworkEvent::toVariantMap(map);
     map["state"] = connectionState();
 }
 
-
-NetworkSplitEvent::NetworkSplitEvent(EventManager::EventType type, QVariantMap &map, Network *network)
+NetworkSplitEvent::NetworkSplitEvent(EventManager::EventType type, QVariantMap& map, Network* network)
     : NetworkEvent(type, map, network)
 {
     _channel = map.take("channel").toString();
@@ -94,8 +86,7 @@ NetworkSplitEvent::NetworkSplitEvent(EventManager::EventType type, QVariantMap &
     _quitMsg = map.take("quitMessage").toString();
 }
 
-
-void NetworkSplitEvent::toVariantMap(QVariantMap &map) const
+void NetworkSplitEvent::toVariantMap(QVariantMap& map) const
 {
     NetworkEvent::toVariantMap(map);
     map["channel"] = channel();

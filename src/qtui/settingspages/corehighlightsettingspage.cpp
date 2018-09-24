@@ -18,21 +18,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "corehighlightsettingspage.h"
+
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QTableWidget>
 
 #include "client.h"
-#include "corehighlightsettingspage.h"
 #include "icon.h"
 #include "qtui.h"
 #include "util.h"
 
-CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
+CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget* parent)
     : SettingsPage(tr("Interface"),
                    // In Monolithic mode, local highlights are replaced by remote highlights
-                   Quassel::runMode() == Quassel::Monolithic ?
-                       tr("Highlights") : tr("Remote Highlights"),
+                   Quassel::runMode() == Quassel::Monolithic ? tr("Highlights") : tr("Remote Highlights"),
                    parent)
 {
     ui.setupUi(this);
@@ -44,7 +44,7 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     ui.highlightNicksComboBox->addItem(tr("Current Nick"), QVariant(HighlightRuleManager::CurrentNick));
     ui.highlightNicksComboBox->addItem(tr("None"), QVariant(HighlightRuleManager::NoNick));
 
-    coreConnectionStateChanged(Client::isConnected()); // need a core connection!
+    coreConnectionStateChanged(Client::isConnected());  // need a core connection!
     connect(Client::instance(), &Client::coreConnectionStateChanged, this, &CoreHighlightSettingsPage::coreConnectionStateChanged);
 
     connect(ui.highlightAdd, &QAbstractButton::clicked, this, [this]() { addNewHighlightRow(); });
@@ -59,7 +59,10 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     connect(ui.ignoredTable, &QTableWidget::itemClicked, this, &CoreHighlightSettingsPage::selectIgnoredRow);
 
     // Update the "Case sensitive" checkbox
-    connect(ui.highlightNicksComboBox, selectOverload<int>(&QComboBox::currentIndexChanged), this, &CoreHighlightSettingsPage::highlightNicksChanged);
+    connect(ui.highlightNicksComboBox,
+            selectOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &CoreHighlightSettingsPage::highlightNicksChanged);
     connect(ui.highlightNicksComboBox, selectOverload<int>(&QComboBox::currentIndexChanged), this, &CoreHighlightSettingsPage::widgetHasChanged);
     connect(ui.nicksCaseSensitive, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
 
@@ -69,15 +72,9 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     connect(ui.ignoredAdd, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
     connect(ui.ignoredRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::widgetHasChanged);
 
-    connect(ui.highlightTable,
-            &QTableWidget::itemChanged,
-            this,
-            &CoreHighlightSettingsPage::highlightTableChanged);
+    connect(ui.highlightTable, &QTableWidget::itemChanged, this, &CoreHighlightSettingsPage::highlightTableChanged);
 
-    connect(ui.ignoredTable,
-            &QTableWidget::itemChanged,
-            this,
-            &CoreHighlightSettingsPage::ignoredTableChanged);
+    connect(ui.ignoredTable, &QTableWidget::itemChanged, this, &CoreHighlightSettingsPage::ignoredTableChanged);
 
     connect(Client::instance(), &Client::connected, this, &CoreHighlightSettingsPage::clientConnected);
 
@@ -88,20 +85,20 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget *parent)
     if (Quassel::runMode() == Quassel::Monolithic) {
         // We're running in Monolithic mode, local highlights are considered legacy
         ui.highlightImport->setText(tr("Import Legacy"));
-        ui.highlightImport->setToolTip(tr("Import highlight rules configured in <i>%1</i>.")
-                                       .arg(tr("Legacy Highlights").replace(" ", "&nbsp;")));
+        ui.highlightImport->setToolTip(
+            tr("Import highlight rules configured in <i>%1</i>.").arg(tr("Legacy Highlights").replace(" ", "&nbsp;")));
         // Re-use translations of "Legacy Highlights" as this is a word-for-word reference, forcing
         // all spaces to be non-breaking
-    } else {
+    }
+    else {
         // We're running in client/split mode, local highlights are distinguished from remote
         ui.highlightImport->setText(tr("Import Local"));
-        ui.highlightImport->setToolTip(tr("Import highlight rules configured in <i>%1</i>.")
-                                       .arg(tr("Local Highlights").replace(" ", "&nbsp;")));
+        ui.highlightImport->setToolTip(
+            tr("Import highlight rules configured in <i>%1</i>.").arg(tr("Local Highlights").replace(" ", "&nbsp;")));
         // Re-use translations of "Local Highlights" as this is a word-for-word reference, forcing
         // all spaces to be non-breaking
     }
 }
-
 
 void CoreHighlightSettingsPage::coreConnectionStateChanged(bool state)
 {
@@ -109,13 +106,13 @@ void CoreHighlightSettingsPage::coreConnectionStateChanged(bool state)
     setEnabled(state);
     if (state) {
         load();
-    } else {
+    }
+    else {
         revert();
     }
 }
 
-
-void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
+void CoreHighlightSettingsPage::setupRuleTable(QTableWidget* table) const
 {
     table->verticalHeader()->hide();
     table->setShowGrid(false);
@@ -134,7 +131,6 @@ void CoreHighlightSettingsPage::setupRuleTable(QTableWidget *table) const
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::SenderColumn, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(CoreHighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 }
-
 
 QString CoreHighlightSettingsPage::getTableTooltip(column tableColumn) const
 {
@@ -188,10 +184,8 @@ QString CoreHighlightSettingsPage::getTableTooltip(column tableColumn) const
     }
 }
 
-
-void CoreHighlightSettingsPage::setupTableTooltips(QWidget *enableWidget, QWidget *nameWidget,
-                                                   QWidget *regExWidget, QWidget *csWidget,
-                                                   QWidget *senderWidget, QWidget *chanWidget) const
+void CoreHighlightSettingsPage::setupTableTooltips(
+    QWidget* enableWidget, QWidget* nameWidget, QWidget* regExWidget, QWidget* csWidget, QWidget* senderWidget, QWidget* chanWidget) const
 {
     // Make sure everything's valid
     Q_ASSERT(enableWidget);
@@ -227,13 +221,12 @@ void CoreHighlightSettingsPage::setupTableTooltips(QWidget *enableWidget, QWidge
     chanWidget->setWhatsThis(chanWidget->toolTip());
 }
 
-
-void CoreHighlightSettingsPage::setupTableTooltips(QTableWidgetItem *enableWidget,
-                                                   QTableWidgetItem *nameWidget,
-                                                   QTableWidgetItem *regExWidget,
-                                                   QTableWidgetItem *csWidget,
-                                                   QTableWidgetItem *senderWidget,
-                                                   QTableWidgetItem *chanWidget) const
+void CoreHighlightSettingsPage::setupTableTooltips(QTableWidgetItem* enableWidget,
+                                                   QTableWidgetItem* nameWidget,
+                                                   QTableWidgetItem* regExWidget,
+                                                   QTableWidgetItem* csWidget,
+                                                   QTableWidgetItem* senderWidget,
+                                                   QTableWidgetItem* chanWidget) const
 {
     // Make sure everything's valid
     Q_ASSERT(enableWidget);
@@ -268,7 +261,6 @@ void CoreHighlightSettingsPage::setupTableTooltips(QTableWidgetItem *enableWidge
     chanWidget->setToolTip(getTableTooltip(CoreHighlightSettingsPage::ChanColumn));
     chanWidget->setWhatsThis(chanWidget->toolTip());
 }
-
 
 void CoreHighlightSettingsPage::updateCoreSupportStatus(bool state)
 {
@@ -278,19 +270,18 @@ void CoreHighlightSettingsPage::updateCoreSupportStatus(bool state)
         // warning.  Don't show the warning needlessly when disconnected.
         ui.highlightsConfigWidget->setEnabled(true);
         ui.coreUnsupportedWidget->setVisible(false);
-    } else {
+    }
+    else {
         // Core does not support highlights, show warning and disable highlight configuration
         ui.highlightsConfigWidget->setEnabled(false);
         ui.coreUnsupportedWidget->setVisible(true);
     }
 }
 
-
 void CoreHighlightSettingsPage::clientConnected()
 {
     connect(Client::highlightRuleManager(), &SyncableObject::updated, this, &CoreHighlightSettingsPage::revert);
 }
-
 
 void CoreHighlightSettingsPage::revert()
 {
@@ -301,12 +292,10 @@ void CoreHighlightSettingsPage::revert()
     load();
 }
 
-
 bool CoreHighlightSettingsPage::hasDefaults() const
 {
     return true;
 }
-
 
 void CoreHighlightSettingsPage::defaults()
 {
@@ -320,9 +309,8 @@ void CoreHighlightSettingsPage::defaults()
     widgetHasChanged();
 }
 
-
-void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, int id, const QString &name, bool regex, bool cs,
-                                                   const QString &sender, const QString &chanName, bool self)
+void CoreHighlightSettingsPage::addNewHighlightRow(
+    bool enable, int id, const QString& name, bool regex, bool cs, const QString& sender, const QString& chanName, bool self)
 {
     ui.highlightTable->setRowCount(ui.highlightTable->rowCount() + 1);
 
@@ -330,32 +318,32 @@ void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, int id, const QS
         id = nextId();
     }
 
-    auto *nameItem = new QTableWidgetItem(name);
+    auto* nameItem = new QTableWidgetItem(name);
 
-    auto *regexItem = new QTableWidgetItem("");
+    auto* regexItem = new QTableWidgetItem("");
     if (regex)
         regexItem->setCheckState(Qt::Checked);
     else
         regexItem->setCheckState(Qt::Unchecked);
     regexItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-    auto *csItem = new QTableWidgetItem("");
+    auto* csItem = new QTableWidgetItem("");
     if (cs)
         csItem->setCheckState(Qt::Checked);
     else
         csItem->setCheckState(Qt::Unchecked);
     csItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-    auto *enableItem = new QTableWidgetItem("");
+    auto* enableItem = new QTableWidgetItem("");
     if (enable)
         enableItem->setCheckState(Qt::Checked);
     else
         enableItem->setCheckState(Qt::Unchecked);
     enableItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-    auto *senderItem = new QTableWidgetItem(sender);
+    auto* senderItem = new QTableWidgetItem(sender);
 
-    auto *chanNameItem = new QTableWidgetItem(chanName);
+    auto* chanNameItem = new QTableWidgetItem(chanName);
 
     setupTableTooltips(enableItem, nameItem, regexItem, csItem, senderItem, chanNameItem);
 
@@ -373,9 +361,8 @@ void CoreHighlightSettingsPage::addNewHighlightRow(bool enable, int id, const QS
     highlightList << HighlightRuleManager::HighlightRule(id, name, regex, cs, enable, false, sender, chanName);
 }
 
-
-void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, int id, const QString &name, bool regex, bool cs,
-                                                 const QString &sender, const QString &chanName, bool self)
+void CoreHighlightSettingsPage::addNewIgnoredRow(
+    bool enable, int id, const QString& name, bool regex, bool cs, const QString& sender, const QString& chanName, bool self)
 {
     ui.ignoredTable->setRowCount(ui.ignoredTable->rowCount() + 1);
 
@@ -383,32 +370,32 @@ void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, int id, const QStr
         id = nextId();
     }
 
-    auto *nameItem = new QTableWidgetItem(name);
+    auto* nameItem = new QTableWidgetItem(name);
 
-    auto *regexItem = new QTableWidgetItem("");
+    auto* regexItem = new QTableWidgetItem("");
     if (regex)
         regexItem->setCheckState(Qt::Checked);
     else
         regexItem->setCheckState(Qt::Unchecked);
     regexItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-    auto *csItem = new QTableWidgetItem("");
+    auto* csItem = new QTableWidgetItem("");
     if (cs)
         csItem->setCheckState(Qt::Checked);
     else
         csItem->setCheckState(Qt::Unchecked);
     csItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-    auto *enableItem = new QTableWidgetItem("");
+    auto* enableItem = new QTableWidgetItem("");
     if (enable)
         enableItem->setCheckState(Qt::Checked);
     else
         enableItem->setCheckState(Qt::Unchecked);
     enableItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-    auto *chanNameItem = new QTableWidgetItem(chanName);
+    auto* chanNameItem = new QTableWidgetItem(chanName);
 
-    auto *senderItem = new QTableWidgetItem(sender);
+    auto* senderItem = new QTableWidgetItem(sender);
 
     setupTableTooltips(enableItem, nameItem, regexItem, csItem, senderItem, chanNameItem);
 
@@ -426,11 +413,10 @@ void CoreHighlightSettingsPage::addNewIgnoredRow(bool enable, int id, const QStr
     ignoredList << HighlightRuleManager::HighlightRule(id, name, regex, cs, enable, true, sender, chanName);
 }
 
-
 void CoreHighlightSettingsPage::removeSelectedHighlightRows()
 {
     QList<int> selectedRows;
-    QList<QTableWidgetItem *> selectedItemList = ui.highlightTable->selectedItems();
+    QList<QTableWidgetItem*> selectedItemList = ui.highlightTable->selectedItems();
     for (auto selectedItem : selectedItemList) {
         selectedRows.append(selectedItem->row());
     }
@@ -445,11 +431,10 @@ void CoreHighlightSettingsPage::removeSelectedHighlightRows()
     }
 }
 
-
 void CoreHighlightSettingsPage::removeSelectedIgnoredRows()
 {
     QList<int> selectedRows;
-    QList<QTableWidgetItem *> selectedItemList = ui.ignoredTable->selectedItems();
+    QList<QTableWidgetItem*> selectedItemList = ui.ignoredTable->selectedItems();
     for (auto selectedItem : selectedItemList) {
         selectedRows.append(selectedItem->row());
     }
@@ -464,7 +449,6 @@ void CoreHighlightSettingsPage::removeSelectedIgnoredRows()
     }
 }
 
-
 void CoreHighlightSettingsPage::highlightNicksChanged(const int index)
 {
     // Only allow toggling "Case sensitive" when a nickname will be highlighted
@@ -472,26 +456,19 @@ void CoreHighlightSettingsPage::highlightNicksChanged(const int index)
     ui.nicksCaseSensitive->setEnabled(highlightNickType != HighlightRuleManager::NoNick);
 }
 
-
-void CoreHighlightSettingsPage::selectHighlightRow(QTableWidgetItem *item)
+void CoreHighlightSettingsPage::selectHighlightRow(QTableWidgetItem* item)
 {
     int row = item->row();
     bool selected = item->isSelected();
-    ui.highlightTable
-        ->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, CoreHighlightSettingsPage::ColumnCount - 1),
-                           selected);
+    ui.highlightTable->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, CoreHighlightSettingsPage::ColumnCount - 1), selected);
 }
 
-
-void CoreHighlightSettingsPage::selectIgnoredRow(QTableWidgetItem *item)
+void CoreHighlightSettingsPage::selectIgnoredRow(QTableWidgetItem* item)
 {
     int row = item->row();
     bool selected = item->isSelected();
-    ui.ignoredTable
-        ->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, CoreHighlightSettingsPage::ColumnCount - 1),
-                           selected);
+    ui.ignoredTable->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, CoreHighlightSettingsPage::ColumnCount - 1), selected);
 }
-
 
 void CoreHighlightSettingsPage::emptyHighlightTable()
 {
@@ -505,7 +482,6 @@ void CoreHighlightSettingsPage::emptyHighlightTable()
     highlightList.clear();
 }
 
-
 void CoreHighlightSettingsPage::emptyIgnoredTable()
 {
     // ui.highlight and highlightList should have the same size, but just to make sure.
@@ -518,80 +494,75 @@ void CoreHighlightSettingsPage::emptyIgnoredTable()
     ignoredList.clear();
 }
 
-
-void CoreHighlightSettingsPage::highlightTableChanged(QTableWidgetItem *item)
+void CoreHighlightSettingsPage::highlightTableChanged(QTableWidgetItem* item)
 {
     if (item->row() + 1 > highlightList.size())
         return;
 
     auto highlightRule = highlightList.value(item->row());
 
-
     switch (item->column()) {
-        case CoreHighlightSettingsPage::EnableColumn:
-            highlightRule.setIsEnabled(item->checkState() == Qt::Checked);
-            break;
-        case CoreHighlightSettingsPage::NameColumn:
-            highlightRule.setContents(item->text());
-            break;
-        case CoreHighlightSettingsPage::RegExColumn:
-            highlightRule.setIsRegEx(item->checkState() == Qt::Checked);
-            break;
-        case CoreHighlightSettingsPage::CsColumn:
-            highlightRule.setIsCaseSensitive(item->checkState() == Qt::Checked);
-            break;
-        case CoreHighlightSettingsPage::SenderColumn:
-            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
-                item->setText("");
-            highlightRule.setSender(item->text());
-            break;
-        case CoreHighlightSettingsPage::ChanColumn:
-            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
-                item->setText("");
-            highlightRule.setChanName(item->text());
-            break;
+    case CoreHighlightSettingsPage::EnableColumn:
+        highlightRule.setIsEnabled(item->checkState() == Qt::Checked);
+        break;
+    case CoreHighlightSettingsPage::NameColumn:
+        highlightRule.setContents(item->text());
+        break;
+    case CoreHighlightSettingsPage::RegExColumn:
+        highlightRule.setIsRegEx(item->checkState() == Qt::Checked);
+        break;
+    case CoreHighlightSettingsPage::CsColumn:
+        highlightRule.setIsCaseSensitive(item->checkState() == Qt::Checked);
+        break;
+    case CoreHighlightSettingsPage::SenderColumn:
+        if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+            item->setText("");
+        highlightRule.setSender(item->text());
+        break;
+    case CoreHighlightSettingsPage::ChanColumn:
+        if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+            item->setText("");
+        highlightRule.setChanName(item->text());
+        break;
     }
     highlightList[item->row()] = highlightRule;
     emit widgetHasChanged();
 }
 
-
-void CoreHighlightSettingsPage::ignoredTableChanged(QTableWidgetItem *item)
+void CoreHighlightSettingsPage::ignoredTableChanged(QTableWidgetItem* item)
 {
     if (item->row() + 1 > ignoredList.size())
         return;
 
     auto ignoredRule = ignoredList.value(item->row());
 
-
     switch (item->column()) {
-        case CoreHighlightSettingsPage::EnableColumn:
-            ignoredRule.setIsEnabled(item->checkState() == Qt::Checked);
-            break;
-        case CoreHighlightSettingsPage::NameColumn:
-            ignoredRule.setContents(item->text());
-            break;
-        case CoreHighlightSettingsPage::RegExColumn:
-            ignoredRule.setIsRegEx(item->checkState() == Qt::Checked);
-            break;
-        case CoreHighlightSettingsPage::CsColumn:
-            ignoredRule.setIsCaseSensitive(item->checkState() == Qt::Checked);
-            break;
-        case CoreHighlightSettingsPage::SenderColumn:
-            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
-                item->setText("");
-            ignoredRule.setSender(item->text());
-            break;
-        case CoreHighlightSettingsPage::ChanColumn:
-            if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
-                item->setText("");
-            ignoredRule.setChanName(item->text());
-            break;
+    case CoreHighlightSettingsPage::EnableColumn:
+        ignoredRule.setIsEnabled(item->checkState() == Qt::Checked);
+        break;
+    case CoreHighlightSettingsPage::NameColumn:
+        ignoredRule.setContents(item->text());
+        break;
+    case CoreHighlightSettingsPage::RegExColumn:
+        ignoredRule.setIsRegEx(item->checkState() == Qt::Checked);
+        break;
+    case CoreHighlightSettingsPage::CsColumn:
+        ignoredRule.setIsCaseSensitive(item->checkState() == Qt::Checked);
+        break;
+    case CoreHighlightSettingsPage::SenderColumn:
+        if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+            item->setText("");
+        ignoredRule.setSender(item->text());
+        break;
+    case CoreHighlightSettingsPage::ChanColumn:
+        if (!item->text().isEmpty() && item->text().trimmed().isEmpty())
+            item->setText("");
+        ignoredRule.setChanName(item->text());
+        break;
     }
     ignoredList[item->row()] = ignoredRule;
     emit widgetHasChanged();
 }
-
 
 void CoreHighlightSettingsPage::load()
 {
@@ -600,14 +571,24 @@ void CoreHighlightSettingsPage::load()
 
     auto ruleManager = Client::highlightRuleManager();
     if (ruleManager) {
-        for (auto &rule : ruleManager->highlightRuleList()) {
+        for (auto& rule : ruleManager->highlightRuleList()) {
             if (rule.isInverse()) {
-                addNewIgnoredRow(rule.isEnabled(), rule.id(), rule.contents(), rule.isRegEx(),
-                                 rule.isCaseSensitive(), rule.sender(), rule.chanName());
+                addNewIgnoredRow(rule.isEnabled(),
+                                 rule.id(),
+                                 rule.contents(),
+                                 rule.isRegEx(),
+                                 rule.isCaseSensitive(),
+                                 rule.sender(),
+                                 rule.chanName());
             }
             else {
-                addNewHighlightRow(rule.isEnabled(), rule.id(), rule.contents(), rule.isRegEx(),
-                                   rule.isCaseSensitive(), rule.sender(), rule.chanName());
+                addNewHighlightRow(rule.isEnabled(),
+                                   rule.id(),
+                                   rule.contents(),
+                                   rule.isRegEx(),
+                                   rule.isCaseSensitive(),
+                                   rule.sender(),
+                                   rule.chanName());
             }
         }
 
@@ -619,11 +600,11 @@ void CoreHighlightSettingsPage::load()
 
         setChangedState(false);
         _initialized = true;
-    } else {
+    }
+    else {
         defaults();
     }
 }
-
 
 void CoreHighlightSettingsPage::save()
 {
@@ -641,16 +622,26 @@ void CoreHighlightSettingsPage::save()
     clonedManager.fromVariantMap(ruleManager->toVariantMap());
     clonedManager.clear();
 
-    for (auto &rule : highlightList) {
-        clonedManager.addHighlightRule(rule.id(), rule.contents(), rule.isRegEx(),
-                                       rule.isCaseSensitive(), rule.isEnabled(), false,
-                                       rule.sender(), rule.chanName());
+    for (auto& rule : highlightList) {
+        clonedManager.addHighlightRule(rule.id(),
+                                       rule.contents(),
+                                       rule.isRegEx(),
+                                       rule.isCaseSensitive(),
+                                       rule.isEnabled(),
+                                       false,
+                                       rule.sender(),
+                                       rule.chanName());
     }
 
-    for (auto &rule : ignoredList) {
-        clonedManager.addHighlightRule(rule.id(), rule.contents(), rule.isRegEx(),
-                                       rule.isCaseSensitive (), rule.isEnabled(), true,
-                                       rule.sender(), rule.chanName());
+    for (auto& rule : ignoredList) {
+        clonedManager.addHighlightRule(rule.id(),
+                                       rule.contents(),
+                                       rule.isRegEx(),
+                                       rule.isCaseSensitive(),
+                                       rule.isEnabled(),
+                                       true,
+                                       rule.sender(),
+                                       rule.chanName());
     }
 
     auto highlightNickType = ui.highlightNicksComboBox->itemData(ui.highlightNicksComboBox->currentIndex()).value<int>();
@@ -662,7 +653,6 @@ void CoreHighlightSettingsPage::save()
     setChangedState(false);
     load();
 }
-
 
 int CoreHighlightSettingsPage::nextId()
 {
@@ -682,12 +672,10 @@ int CoreHighlightSettingsPage::nextId()
     return max + 1;
 }
 
-
 void CoreHighlightSettingsPage::widgetHasChanged()
 {
     setChangedState(true);
 }
-
 
 void CoreHighlightSettingsPage::on_coreUnsupportedDetails_clicked()
 {
@@ -695,19 +683,16 @@ void CoreHighlightSettingsPage::on_coreUnsupportedDetails_clicked()
     // spaces to non-breaking
     const QString localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
 
-    const QString remoteHighlightsMsgText =
-            QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>"
-                    ).arg(tr("Your Quassel core is too old to support remote highlights"),
-                          tr("You need a Quassel core v0.13.0 or newer to configure remote "
-                             "highlights."),
-                          tr("You can still configure highlights for this device only in "
-                             "<i>%1</i>.").arg(localHighlightsName));
+    const QString remoteHighlightsMsgText = QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>")
+                                                .arg(tr("Your Quassel core is too old to support remote highlights"),
+                                                     tr("You need a Quassel core v0.13.0 or newer to configure remote "
+                                                        "highlights."),
+                                                     tr("You can still configure highlights for this device only in "
+                                                        "<i>%1</i>.")
+                                                         .arg(localHighlightsName));
 
-    QMessageBox::warning(this,
-                         tr("Remote Highlights unsupported"),
-                         remoteHighlightsMsgText);
+    QMessageBox::warning(this, tr("Remote Highlights unsupported"), remoteHighlightsMsgText);
 }
-
 
 void CoreHighlightSettingsPage::importRules()
 {
@@ -720,24 +705,21 @@ void CoreHighlightSettingsPage::importRules()
     QString localHighlightsName;
     if (Quassel::runMode() == Quassel::Monolithic) {
         localHighlightsName = tr("Legacy Highlights").replace(" ", "&nbsp;");
-    } else {
+    }
+    else {
         localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
     }
 
     if (localHighlightList.count() == 0) {
         // No highlight rules exist to import, do nothing
-        QMessageBox::information(this,
-                                 tr("No highlights to import"),
-                                 tr("No highlight rules in <i>%1</i>."
-                                    ).arg(localHighlightsName));
+        QMessageBox::information(this, tr("No highlights to import"), tr("No highlight rules in <i>%1</i>.").arg(localHighlightsName));
         return;
     }
 
     int ret = QMessageBox::question(this,
                                     tr("Import highlights?"),
-                                    tr("Import all highlight rules from <i>%1</i>?"
-                                       ).arg(localHighlightsName),
-                                    QMessageBox::Yes|QMessageBox::No,
+                                    tr("Import all highlight rules from <i>%1</i>?").arg(localHighlightsName),
+                                    QMessageBox::Yes | QMessageBox::No,
                                     QMessageBox::No);
 
     if (ret != QMessageBox::Yes) {
@@ -753,19 +735,17 @@ void CoreHighlightSettingsPage::importRules()
     auto clonedManager = HighlightRuleManager();
     clonedManager.fromVariantMap(Client::highlightRuleManager()->toVariantMap());
 
-    for (const auto &variant : notificationSettings.highlightList()) {
+    for (const auto& variant : notificationSettings.highlightList()) {
         auto highlightRule = variant.toMap();
 
-        clonedManager.addHighlightRule(
-                clonedManager.nextId(),
-                highlightRule["Name"].toString(),
-                highlightRule["RegEx"].toBool(),
-                highlightRule["CS"].toBool(),
-                highlightRule["Enable"].toBool(),
-                false,
-                "",
-                highlightRule["Channel"].toString()
-        );
+        clonedManager.addHighlightRule(clonedManager.nextId(),
+                                       highlightRule["Name"].toString(),
+                                       highlightRule["RegEx"].toBool(),
+                                       highlightRule["CS"].toBool(),
+                                       highlightRule["Enable"].toBool(),
+                                       false,
+                                       "",
+                                       highlightRule["Channel"].toString());
     }
 
     Client::highlightRuleManager()->requestUpdate(clonedManager.toVariantMap());
@@ -775,10 +755,8 @@ void CoreHighlightSettingsPage::importRules()
     // Give a heads-up that all succeeded
     QMessageBox::information(this,
                              tr("Imported highlights"),
-                             tr("%1 highlight rules successfully imported."
-                                ).arg(QString::number(localHighlightList.count())));
+                             tr("%1 highlight rules successfully imported.").arg(QString::number(localHighlightList.count())));
 }
-
 
 bool CoreHighlightSettingsPage::isSelectable() const
 {

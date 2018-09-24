@@ -22,9 +22,9 @@
 
 #include "uisupport-export.h"
 
+#include <QMap>
 #include <QPointer>
 #include <QString>
-#include <QMap>
 
 #include "types.h"
 
@@ -37,26 +37,27 @@ class UISUPPORT_EXPORT TabCompleter : public QObject
     Q_OBJECT
 
 public:
-    enum Type {
+    enum Type
+    {
         UserTab = 0x01,
         ChannelTab = 0x02
     };
 
-    explicit TabCompleter(MultiLineEdit *inputLine_);
+    explicit TabCompleter(MultiLineEdit* inputLine_);
 
     void reset();
     void complete();
 
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 public slots:
     void onTabCompletionKey();
 
 private:
-
-    struct CompletionKey {
-        inline CompletionKey(const QString &n) { contents = n; }
-        bool operator<(const CompletionKey &other) const;
+    struct CompletionKey
+    {
+        inline CompletionKey(const QString& n) { contents = n; }
+        bool operator<(const CompletionKey& other) const;
         QString contents;
     };
 
@@ -64,7 +65,7 @@ private:
     bool _enabled;
     QString _nickSuffix;
 
-    static const Network *_currentNetwork;
+    static const Network* _currentNetwork;
     static BufferId _currentBufferId;
     static QString _currentBufferName;
     static Type _completionType;

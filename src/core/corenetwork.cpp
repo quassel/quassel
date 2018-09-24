@@ -33,16 +33,18 @@
 // IRCv3 capabilities
 #include "irccap.h"
 
-CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
-    : Network(networkid, session),
-    _coreSession(session),
-    _userInputHandler(new CoreUserInputHandler(this)),
-    _autoReconnectCount(0),
-    _quitRequested(false),
-    _disconnectExpected(false),
+CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
+    : Network(networkid, session)
+    , _coreSession(session)
+    , _userInputHandler(new CoreUserInputHandler(this))
+    , _autoReconnectCount(0)
+    , _quitRequested(false)
+    , _disconnectExpected(false)
+    ,
 
-    _previousConnectionAttemptFailed(false),
-    _lastUsedServerIndex(0),
+    _previousConnectionAttemptFailed(false)
+    , _lastUsedServerIndex(0)
+    ,
 
     _requestedUserModes('-')
 {
@@ -60,12 +62,12 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     setAutoWhoInterval(networkConfig()->autoWhoInterval());
 
     QHash<QString, QString> channels = coreSession()->persistentChannels(networkId());
-    foreach(QString chan, channels.keys()) {
+    foreach (QString chan, channels.keys()) {
         _channelKeys[chan.toLower()] = channels[chan];
     }
 
     QHash<QString, QByteArray> bufferCiphers = coreSession()->bufferCiphers(networkId());
-    foreach(QString buffer, bufferCiphers.keys()) {
+    foreach (QString buffer, bufferCiphers.keys()) {
         storeChannelCipherKey(buffer.toLower(), bufferCiphers[buffer]);
     }
 
@@ -114,17 +116,17 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     }
 }
 
-
 CoreNetwork::~CoreNetwork()
 {
     // Ensure we don't get any more signals from the socket while shutting down
     disconnect(&socket, nullptr, this, nullptr);
     if (!forceDisconnect()) {
         qWarning() << QString{"Could not disconnect from network %1 (network ID: %2, user ID: %3)"}
-                      .arg(networkName()).arg(networkId().toInt()).arg(userId().toInt());
+                          .arg(networkName())
+                          .arg(networkId().toInt())
+                          .arg(userId().toInt());
     }
 }
-
 
 bool CoreNetwork::forceDisconnect(int msecs)
 {
@@ -140,46 +142,41 @@ bool CoreNetwork::forceDisconnect(int msecs)
     return true;
 }
 
-
-QString CoreNetwork::channelDecode(const QString &bufferName, const QByteArray &string) const
+QString CoreNetwork::channelDecode(const QString& bufferName, const QByteArray& string) const
 {
     if (!bufferName.isEmpty()) {
-        IrcChannel *channel = ircChannel(bufferName);
+        IrcChannel* channel = ircChannel(bufferName);
         if (channel)
             return channel->decodeString(string);
     }
     return decodeString(string);
 }
 
-
-QString CoreNetwork::userDecode(const QString &userNick, const QByteArray &string) const
+QString CoreNetwork::userDecode(const QString& userNick, const QByteArray& string) const
 {
-    IrcUser *user = ircUser(userNick);
+    IrcUser* user = ircUser(userNick);
     if (user)
         return user->decodeString(string);
     return decodeString(string);
 }
 
-
-QByteArray CoreNetwork::channelEncode(const QString &bufferName, const QString &string) const
+QByteArray CoreNetwork::channelEncode(const QString& bufferName, const QString& string) const
 {
     if (!bufferName.isEmpty()) {
-        IrcChannel *channel = ircChannel(bufferName);
+        IrcChannel* channel = ircChannel(bufferName);
         if (channel)
             return channel->encodeString(string);
     }
     return encodeString(string);
 }
 
-
-QByteArray CoreNetwork::userEncode(const QString &userNick, const QString &string) const
+QByteArray CoreNetwork::userEncode(const QString& userNick, const QString& string) const
 {
-    IrcUser *user = ircUser(userNick);
+    IrcUser* user = ircUser(userNick);
     if (user)
         return user->encodeString(string);
     return encodeString(string);
 }
-
 
 void CoreNetwork::connectToIrc(bool reconnecting)
 {
@@ -202,7 +199,7 @@ void CoreNetwork::connectToIrc(bool reconnecting)
         qWarning() << "Server list empty, ignoring connect request!";
         return;
     }
-    CoreIdentity *identity = identityPtr();
+    CoreIdentity* identity = identityPtr();
     if (!identity) {
         qWarning() << "Invalid identity configures, ignoring connect request!";
         return;
@@ -254,14 +251,14 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 
     // Qt caches DNS entries for a minute, resulting in round-robin (e.g. for chat.freenode.net) not working if several users
     // connect at a similar time. QHostInfo::fromName(), however, always performs a fresh lookup, overwriting the cache entry.
-    if (! server.useProxy) {
-        //Avoid hostname lookups when a proxy is specified. The lookups won't use the proxy and may therefore leak the DNS
-        //hostname of the server. Qt's DNS cache also isn't used by the proxy so we don't need to refresh the entry.
+    if (!server.useProxy) {
+        // Avoid hostname lookups when a proxy is specified. The lookups won't use the proxy and may therefore leak the DNS
+        // hostname of the server. Qt's DNS cache also isn't used by the proxy so we don't need to refresh the entry.
         QHostInfo::fromName(server.host);
     }
 #ifdef HAVE_SSL
     if (server.useSsl) {
-        CoreIdentity *identity = identityPtr();
+        CoreIdentity* identity = identityPtr();
         if (identity) {
             socket.setLocalCertificate(identity->sslCert());
             socket.setPrivateKey(identity->sslKey());
@@ -276,20 +273,19 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 #endif
 }
 
-
-void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool withReconnect)
+void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool withReconnect)
 {
     // Disconnecting from the network, should expect a socket close or error
     _disconnectExpected = true;
-    _quitRequested = requested; // see socketDisconnected();
+    _quitRequested = requested;  // see socketDisconnected();
     if (!withReconnect) {
         _autoReconnectTimer.stop();
-        _autoReconnectCount = 0; // prohibiting auto reconnect
+        _autoReconnectCount = 0;  // prohibiting auto reconnect
     }
     disablePingTimeout();
     _msgQueue.clear();
 
-    IrcUser *me_ = me();
+    IrcUser* me_ = me();
     if (me_) {
         QString awayMsg;
         if (me_->isAway())
@@ -302,7 +298,10 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
     else
         _quitReason = reason;
 
-    showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason));
+    showMessage(Message::Server,
+                BufferInfo::StatusBuffer,
+                "",
+                tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason));
     if (socket.state() == QAbstractSocket::UnconnectedState) {
         onSocketDisconnected();
     }
@@ -321,14 +320,14 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
     }
 }
 
-
 void CoreNetwork::onSocketCloseTimeout()
 {
     qWarning() << QString{"Timed out quitting network %1 (network ID: %2, user ID: %3)"}
-                  .arg(networkName()).arg(networkId().toInt()).arg(userId().toInt());
+                      .arg(networkName())
+                      .arg(networkId().toInt())
+                      .arg(userId().toInt());
     socket.abort();
 }
-
 
 void CoreNetwork::shutdown()
 {
@@ -336,34 +335,33 @@ void CoreNetwork::shutdown()
     disconnectFromIrc(false, {}, false);
 }
 
-
-void CoreNetwork::userInput(const BufferInfo &buf, QString msg)
+void CoreNetwork::userInput(const BufferInfo& buf, QString msg)
 {
     userInputHandler()->handleUserInput(buf, msg);
 }
 
-
-void CoreNetwork::putRawLine(const QByteArray &s, bool prepend)
+void CoreNetwork::putRawLine(const QByteArray& s, bool prepend)
 {
     if (_tokenBucket > 0 || (_skipMessageRates && _msgQueue.isEmpty())) {
         // If there's tokens remaining, ...
         // Or rate limits don't apply AND no messages are in queue (to prevent out-of-order), ...
         // Send the message now.
         writeToSocket(s);
-    } else {
+    }
+    else {
         // Otherwise, queue the message for later
         if (prepend) {
             // Jump to the start, skipping other messages
             _msgQueue.prepend(s);
-        } else {
+        }
+        else {
             // Add to back, waiting in order
             _msgQueue.append(s);
         }
     }
 }
 
-
-void CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix, const bool prepend)
+void CoreNetwork::putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix, const bool prepend)
 {
     QByteArray msg;
 
@@ -383,8 +381,7 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, co
     putRawLine(msg, prepend);
 }
 
-
-void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix, const bool prependAll)
+void CoreNetwork::putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix, const bool prependAll)
 {
     QListIterator<QList<QByteArray>> i(params);
     while (i.hasNext()) {
@@ -393,17 +390,15 @@ void CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &par
     }
 }
 
-
-void CoreNetwork::setChannelJoined(const QString &channel)
+void CoreNetwork::setChannelJoined(const QString& channel)
 {
-    queueAutoWhoOneshot(channel); // check this new channel first
+    queueAutoWhoOneshot(channel);  // check this new channel first
 
     Core::setChannelPersistent(userId(), networkId(), channel, true);
     Core::setPersistentChannelKey(userId(), networkId(), channel, _channelKeys[channel.toLower()]);
 }
 
-
-void CoreNetwork::setChannelParted(const QString &channel)
+void CoreNetwork::setChannelParted(const QString& channel)
 {
     removeChannelKey(channel);
     _autoWhoQueue.removeAll(channel.toLower());
@@ -412,8 +407,7 @@ void CoreNetwork::setChannelParted(const QString &channel)
     Core::setChannelPersistent(userId(), networkId(), channel, false);
 }
 
-
-void CoreNetwork::addChannelKey(const QString &channel, const QString &key)
+void CoreNetwork::addChannelKey(const QString& channel, const QString& key)
 {
     if (key.isEmpty()) {
         removeChannelKey(channel);
@@ -423,15 +417,13 @@ void CoreNetwork::addChannelKey(const QString &channel, const QString &key)
     }
 }
 
-
-void CoreNetwork::removeChannelKey(const QString &channel)
+void CoreNetwork::removeChannelKey(const QString& channel)
 {
     _channelKeys.remove(channel.toLower());
 }
 
-
 #ifdef HAVE_QCA2
-Cipher *CoreNetwork::cipher(const QString &target)
+Cipher* CoreNetwork::cipher(const QString& target)
 {
     if (target.isEmpty())
         return nullptr;
@@ -439,44 +431,43 @@ Cipher *CoreNetwork::cipher(const QString &target)
     if (!Cipher::neededFeaturesAvailable())
         return nullptr;
 
-    auto *channel = qobject_cast<CoreIrcChannel *>(ircChannel(target));
+    auto* channel = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (channel) {
         return channel->cipher();
     }
-    auto *user = qobject_cast<CoreIrcUser *>(ircUser(target));
+    auto* user = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (user) {
         return user->cipher();
-    } else if (!isChannelName(target)) {
+    }
+    else if (!isChannelName(target)) {
         return qobject_cast<CoreIrcUser*>(newIrcUser(target))->cipher();
     }
     return nullptr;
 }
 
-
-QByteArray CoreNetwork::cipherKey(const QString &target) const
+QByteArray CoreNetwork::cipherKey(const QString& target) const
 {
-    auto *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    auto* c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (c)
         return c->cipher()->key();
 
-    auto *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    auto* u = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (u)
         return u->cipher()->key();
 
     return QByteArray();
 }
 
-
-void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
+void CoreNetwork::setCipherKey(const QString& target, const QByteArray& key)
 {
-    auto *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    auto* c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (c) {
         c->setEncrypted(c->cipher()->setKey(key));
         coreSession()->setBufferCipher(networkId(), target, key);
         return;
     }
 
-    auto *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    auto* u = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (!u && !isChannelName(target))
         u = qobject_cast<CoreIrcUser*>(newIrcUser(target));
 
@@ -487,13 +478,12 @@ void CoreNetwork::setCipherKey(const QString &target, const QByteArray &key)
     }
 }
 
-
-bool CoreNetwork::cipherUsesCBC(const QString &target)
+bool CoreNetwork::cipherUsesCBC(const QString& target)
 {
-    auto *c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
+    auto* c = qobject_cast<CoreIrcChannel*>(ircChannel(target));
     if (c)
         return c->cipher()->usesCBC();
-    auto *u = qobject_cast<CoreIrcUser*>(ircUser(target));
+    auto* u = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (u)
         return u->cipher()->usesCBC();
 
@@ -501,7 +491,7 @@ bool CoreNetwork::cipherUsesCBC(const QString &target)
 }
 #endif /* HAVE_QCA2 */
 
-bool CoreNetwork::setAutoWhoDone(const QString &name)
+bool CoreNetwork::setAutoWhoDone(const QString& name)
 {
     QString chanOrNick = name.toLower();
     if (_autoWhoPending.value(chanOrNick, 0) <= 0)
@@ -511,14 +501,12 @@ bool CoreNetwork::setAutoWhoDone(const QString &name)
     return true;
 }
 
-
-void CoreNetwork::setMyNick(const QString &mynick)
+void CoreNetwork::setMyNick(const QString& mynick)
 {
     Network::setMyNick(mynick);
     if (connectionState() == Network::Initializing)
         networkInitialized();
 }
-
 
 void CoreNetwork::onSocketHasData()
 {
@@ -528,12 +516,11 @@ void CoreNetwork::onSocketHasData()
             s.chop(2);
         else if (s.endsWith("\n"))
             s.chop(1);
-        NetworkDataEvent *event = new NetworkDataEvent(EventManager::NetworkIncoming, this, s);
+        NetworkDataEvent* event = new NetworkDataEvent(EventManager::NetworkIncoming, this, s);
         event->setTimestamp(QDateTime::currentDateTimeUtc());
         emit newEvent(event);
     }
 }
-
 
 void CoreNetwork::onSocketError(QAbstractSocket::SocketError error)
 {
@@ -552,10 +539,9 @@ void CoreNetwork::onSocketError(QAbstractSocket::SocketError error)
     }
 }
 
-
 void CoreNetwork::onSocketInitialized()
 {
-    CoreIdentity *identity = identityPtr();
+    CoreIdentity* identity = identityPtr();
     if (!identity) {
         qCritical() << "Identity invalid!";
         disconnectFromIrc();
@@ -609,11 +595,8 @@ void CoreNetwork::onSocketInitialized()
     }
     putRawLine(serverEncode(QString("NICK %1").arg(nick)));
     // Only allow strict-compliant idents when strict mode is enabled
-    putRawLine(serverEncode(QString("USER %1 8 * :%2").arg(
-                                coreSession()->strictCompliantIdent(identity),
-                                identity->realName())));
+    putRawLine(serverEncode(QString("USER %1 8 * :%2").arg(coreSession()->strictCompliantIdent(identity), identity->realName())));
 }
-
 
 void CoreNetwork::onSocketDisconnected()
 {
@@ -629,10 +612,10 @@ void CoreNetwork::onSocketDisconnected()
 
     _tokenBucketTimer.stop();
 
-    IrcUser *me_ = me();
+    IrcUser* me_ = me();
     if (me_) {
-        foreach(QString channel, me_->channels())
-        showMessage(Message::Quit, BufferInfo::ChannelBuffer, channel, _quitReason, me_->hostmask());
+        foreach (QString channel, me_->channels())
+            showMessage(Message::Quit, BufferInfo::ChannelBuffer, channel, _quitReason, me_->hostmask());
     }
 
     setConnected(false);
@@ -653,7 +636,6 @@ void CoreNetwork::onSocketDisconnected()
             _autoReconnectTimer.start();
     }
 }
-
 
 void CoreNetwork::onSocketStateChanged(QAbstractSocket::SocketState socketState)
 {
@@ -678,7 +660,6 @@ void CoreNetwork::onSocketStateChanged(QAbstractSocket::SocketState socketState)
     }
     setConnectionState(state);
 }
-
 
 void CoreNetwork::networkInitialized()
 {
@@ -711,13 +692,12 @@ void CoreNetwork::networkInitialized()
     if (networkConfig()->autoWhoEnabled()) {
         _autoWhoCycleTimer.start();
         _autoWhoTimer.start();
-        startAutoWhoCycle(); // FIXME wait for autojoin to be completed
+        startAutoWhoCycle();  // FIXME wait for autojoin to be completed
     }
 
-    Core::bufferInfo(userId(), networkId(), BufferInfo::StatusBuffer); // create status buffer
+    Core::bufferInfo(userId(), networkId(), BufferInfo::StatusBuffer);  // create status buffer
     Core::setNetworkConnected(userId(), networkId(), true);
 }
-
 
 void CoreNetwork::sendPerform()
 {
@@ -729,7 +709,7 @@ void CoreNetwork::sendPerform()
     }
 
     // restore old user modes if server default mode is set.
-    IrcUser *me_ = me();
+    IrcUser* me_ = me();
     if (me_) {
         if (!me_->userModes().isEmpty()) {
             restoreUserModes();
@@ -741,14 +721,15 @@ void CoreNetwork::sendPerform()
     }
 
     // send perform list
-    foreach(QString line, perform()) {
-        if (!line.isEmpty()) userInput(statusBuf, line);
+    foreach (QString line, perform()) {
+        if (!line.isEmpty())
+            userInput(statusBuf, line);
     }
 
     // rejoin channels we've been in
     if (rejoinChannels()) {
         QStringList channels, keys;
-        foreach(QString chan, coreSession()->persistentChannels(networkId()).keys()) {
+        foreach (QString chan, coreSession()->persistentChannels(networkId()).keys()) {
             QString key = channelKey(chan);
             if (!key.isEmpty()) {
                 channels.prepend(chan);
@@ -764,10 +745,9 @@ void CoreNetwork::sendPerform()
     }
 }
 
-
 void CoreNetwork::restoreUserModes()
 {
-    IrcUser *me_ = me();
+    IrcUser* me_ = me();
     Q_ASSERT(me_);
 
     disconnect(me_, &IrcUser::userModesSet, this, &CoreNetwork::restoreUserModes);
@@ -803,8 +783,7 @@ void CoreNetwork::restoreUserModes()
     putRawLine(serverEncode(QString("MODE %1 %2%3").arg(me_->nick()).arg(addModes).arg(removeModes)));
 }
 
-
-void CoreNetwork::updateIssuedModes(const QString &requestedModes)
+void CoreNetwork::updateIssuedModes(const QString& requestedModes)
 {
     QString addModes;
     QString removeModes;
@@ -830,17 +809,16 @@ void CoreNetwork::updateIssuedModes(const QString &requestedModes)
     QString addModesOld = _requestedUserModes.section('-', 0, 0);
     QString removeModesOld = _requestedUserModes.section('-', 1);
 
-    addModes.remove(QRegExp(QString("[%1]").arg(addModesOld))); // deduplicate
-    addModesOld.remove(QRegExp(QString("[%1]").arg(removeModes))); // update
+    addModes.remove(QRegExp(QString("[%1]").arg(addModesOld)));     // deduplicate
+    addModesOld.remove(QRegExp(QString("[%1]").arg(removeModes)));  // update
     addModes += addModesOld;
 
-    removeModes.remove(QRegExp(QString("[%1]").arg(removeModesOld))); // deduplicate
-    removeModesOld.remove(QRegExp(QString("[%1]").arg(addModes))); // update
+    removeModes.remove(QRegExp(QString("[%1]").arg(removeModesOld)));  // deduplicate
+    removeModesOld.remove(QRegExp(QString("[%1]").arg(addModes)));     // update
     removeModes += removeModesOld;
 
     _requestedUserModes = QString("%1-%2").arg(addModes).arg(removeModes);
 }
-
 
 void CoreNetwork::updatePersistentModes(QString addModes, QString removeModes)
 {
@@ -887,13 +865,11 @@ void CoreNetwork::updatePersistentModes(QString addModes, QString removeModes)
     Core::setUserModes(userId(), networkId(), QString("%1-%2").arg(persistentAdd).arg(persistentRemove));
 }
 
-
 void CoreNetwork::resetPersistentModes()
 {
     _requestedUserModes = QString('-');
     Core::setUserModes(userId(), networkId(), QString());
 }
-
 
 void CoreNetwork::setUseAutoReconnect(bool use)
 {
@@ -902,13 +878,11 @@ void CoreNetwork::setUseAutoReconnect(bool use)
         _autoReconnectTimer.stop();
 }
 
-
 void CoreNetwork::setAutoReconnectInterval(quint32 interval)
 {
     Network::setAutoReconnectInterval(interval);
     _autoReconnectTimer.setInterval(interval * 1000);
 }
-
 
 void CoreNetwork::setAutoReconnectRetries(quint16 retries)
 {
@@ -921,7 +895,6 @@ void CoreNetwork::setAutoReconnectRetries(quint16 retries)
     }
 }
 
-
 void CoreNetwork::doAutoReconnect()
 {
     if (connectionState() != Network::Disconnected && connectionState() != Network::Reconnecting) {
@@ -933,7 +906,6 @@ void CoreNetwork::doAutoReconnect()
     connectToIrc(true);
 }
 
-
 void CoreNetwork::sendPing()
 {
     qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
@@ -941,8 +913,7 @@ void CoreNetwork::sendPing()
         qDebug() << "UserId:" << userId() << "Network:" << networkName() << "missed" << _pingCount << "pings."
                  << "BA:" << socket.bytesAvailable() << "BTW:" << socket.bytesToWrite();
     }
-    if ((int)_pingCount >= networkConfig()->maxPingCount()
-            && (now - _lastPingTime) <= (_pingTimer.interval() + (1 * 1000))) {
+    if ((int)_pingCount >= networkConfig()->maxPingCount() && (now - _lastPingTime) <= (_pingTimer.interval() + (1 * 1000))) {
         // In transitioning to 64-bit time, the interval no longer needs converted down to seconds.
         // However, to reduce the risk of breaking things by changing past behavior, we still allow
         // up to 1 second missed instead of enforcing a stricter 1 millisecond allowance.
@@ -950,13 +921,15 @@ void CoreNetwork::sendPing()
         // the second check compares the actual elapsed time since the last ping and the pingTimer interval
         // if the interval is shorter then the actual elapsed time it means that this thread was somehow blocked
         // and unable to even handle a ping answer. So we ignore those misses.
-        disconnectFromIrc(false, QString("No Ping reply in %1 seconds.").arg(_pingCount * _pingTimer.interval() / 1000), true /* withReconnect */);
+        disconnectFromIrc(false,
+                          QString("No Ping reply in %1 seconds.").arg(_pingCount * _pingTimer.interval() / 1000),
+                          true /* withReconnect */);
     }
     else {
         _lastPingTime = now;
         _pingCount++;
         // Don't send pings until the network is initialized
-        if(_sendPings) {
+        if (_sendPings) {
             // Mark as waiting for a reply
             _pongReplyPending = true;
             // Send default timestamp ping
@@ -964,7 +937,6 @@ void CoreNetwork::sendPing()
         }
     }
 }
-
 
 void CoreNetwork::enablePingTimeout(bool enable)
 {
@@ -978,7 +950,6 @@ void CoreNetwork::enablePingTimeout(bool enable)
     }
 }
 
-
 void CoreNetwork::disablePingTimeout()
 {
     _pingTimer.stop();
@@ -987,18 +958,15 @@ void CoreNetwork::disablePingTimeout()
     resetPongReplyPending();
 }
 
-
 void CoreNetwork::setPingInterval(int interval)
 {
     _pingTimer.setInterval(interval * 1000);
 }
 
-
 void CoreNetwork::setPongTimestampValid(bool validTimestamp)
 {
     _pongTimestampValid = validTimestamp;
 }
-
 
 /******** Custom Rate Limiting ********/
 
@@ -1015,8 +983,7 @@ void CoreNetwork::updateRateLimiting(const bool forceUnlimited)
 
         _burstSize = messageRateBurstSize();
         if (_burstSize < 1) {
-            qWarning() << "Invalid messageRateBurstSize data, cannot have zero message burst size!"
-                       << _burstSize;
+            qWarning() << "Invalid messageRateBurstSize data, cannot have zero message burst size!" << _burstSize;
             // Can't go slower than one message at a time
             _burstSize = 1;
         }
@@ -1047,15 +1014,18 @@ void CoreNetwork::updateRateLimiting(const bool forceUnlimited)
                 // TODO If testing shows this isn't needed, it can be simplified to a direct call.
                 // Hesitant to change it without a wide variety of situations to verify behavior.
                 _tokenBucketTimer.start(100);
-            } else {
+            }
+            else {
                 // No rate limiting, disable the timer
                 _tokenBucketTimer.stop();
             }
-        } else {
+        }
+        else {
             // Rate limiting enabled, enable the timer
             _tokenBucketTimer.start(_messageDelay);
         }
-    } else {
+    }
+    else {
         // Custom message rates disabled.  Go for the default.
 
         _skipMessageRates = false;  // Enable rate-limiting by default
@@ -1080,10 +1050,9 @@ void CoreNetwork::resetTokenBucket()
     _tokenBucket = _burstSize;
 }
 
-
 /******** IRCv3 Capability Negotiation ********/
 
-void CoreNetwork::serverCapAdded(const QString &capability)
+void CoreNetwork::serverCapAdded(const QString& capability)
 {
     // Check if it's a known capability; if so, add it to the list
     // Handle special cases first
@@ -1091,13 +1060,14 @@ void CoreNetwork::serverCapAdded(const QString &capability)
         // Only request SASL if it's enabled
         if (networkInfo().useSasl)
             queueCap(capability);
-    } else if (IrcCap::knownCaps.contains(capability)) {
+    }
+    else if (IrcCap::knownCaps.contains(capability)) {
         // Handling for general known capabilities
         queueCap(capability);
     }
 }
 
-void CoreNetwork::serverCapAcknowledged(const QString &capability)
+void CoreNetwork::serverCapAcknowledged(const QString& capability)
 {
     // This may be called multiple times in certain situations.
 
@@ -1118,17 +1088,20 @@ void CoreNetwork::serverCapAcknowledged(const QString &capability)
             if (saslMaybeSupports(IrcCap::SaslMech::EXTERNAL)) {
                 // EXTERNAL authentication supported, send request
                 putRawLine(serverEncode("AUTHENTICATE EXTERNAL"));
-            } else {
+            }
+            else {
                 showMessage(Message::Error, BufferInfo::StatusBuffer, "", tr("SASL EXTERNAL authentication not supported"));
                 sendNextCap();
             }
-        } else {
+        }
+        else {
 #endif
             if (saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
                 // PLAIN authentication supported, send request
                 // Only working with PLAIN atm, blowfish later
                 putRawLine(serverEncode("AUTHENTICATE PLAIN"));
-            } else {
+            }
+            else {
                 showMessage(Message::Error, BufferInfo::StatusBuffer, "", tr("SASL PLAIN authentication not supported"));
                 sendNextCap();
             }
@@ -1138,7 +1111,7 @@ void CoreNetwork::serverCapAcknowledged(const QString &capability)
     }
 }
 
-void CoreNetwork::serverCapRemoved(const QString &capability)
+void CoreNetwork::serverCapRemoved(const QString& capability)
 {
     // This may be called multiple times in certain situations.
 
@@ -1149,19 +1122,20 @@ void CoreNetwork::serverCapRemoved(const QString &capability)
     }
 }
 
-void CoreNetwork::queueCap(const QString &capability)
+void CoreNetwork::queueCap(const QString& capability)
 {
     // IRCv3 specs all use lowercase capability names
     QString _capLowercase = capability.toLower();
 
-    if(capsRequiringConfiguration.contains(_capLowercase)) {
+    if (capsRequiringConfiguration.contains(_capLowercase)) {
         // The capability requires additional configuration before being acknowledged (e.g. SASL),
         // so we should negotiate it separately from all other capabilities.  Otherwise new
         // capabilities will be requested while still configuring the previous one.
         if (!_capsQueuedIndividual.contains(_capLowercase)) {
             _capsQueuedIndividual.append(_capLowercase);
         }
-    } else {
+    }
+    else {
         // The capability doesn't need any special configuration, so it should be safe to try
         // bundling together with others.  "Should" being the imperative word, as IRC servers can do
         // anything.
@@ -1181,7 +1155,8 @@ QString CoreNetwork::takeQueuedCaps()
     if (!_capsQueuedIndividual.empty()) {
         // We have an individual capability available.  Take the first and pass it back.
         return _capsQueuedIndividual.takeFirst();
-    } else if (!_capsQueuedBundled.empty()) {
+    }
+    else if (!_capsQueuedBundled.empty()) {
         // We have capabilities available that can be grouped.  Try to fit in as many as within the
         // maximum length.
         // See CoreNetwork::maxCapRequestLength
@@ -1201,14 +1176,16 @@ QString CoreNetwork::takeQueuedCaps()
                 _capsQueuedLastBundle.append(nextCap);
                 // Then remove it from the queue
                 _capsQueuedBundled.removeFirst();
-            } else {
+            }
+            else {
                 // We've reached the length limit for a single capability request, stop adding more
                 break;
             }
         }
         // Return this space-separated set of capabilities, removing any extra spaces
         return capBundle.trimmed();
-    } else {
+    }
+    else {
         // No capabilities left to negotiate, return an empty string.
         return QString();
     }
@@ -1234,9 +1211,10 @@ void CoreNetwork::retryCapsIndividually()
     // Add most recently tried capability set to individual list, re-requesting them one at a time
     _capsQueuedIndividual.append(_capsQueuedLastBundle);
     // Warn of this issue to explain the slower login.  Servers usually shouldn't trigger this.
-    showMessage(Message::Server, BufferInfo::StatusBuffer, "",
-                tr("Could not negotiate some capabilities, retrying individually (%1)...")
-                .arg(_capsQueuedLastBundle.join(", ")));
+    showMessage(Message::Server,
+                BufferInfo::StatusBuffer,
+                "",
+                tr("Could not negotiate some capabilities, retrying individually (%1)...").arg(_capsQueuedLastBundle.join(", ")));
     // Capabilities are already removed from the capability bundle queue via takeQueuedCaps(), no
     // need to remove them here.
     // Clear the most recently tried set to reduce risk that mistakes elsewhere causes retrying
@@ -1260,10 +1238,9 @@ void CoreNetwork::beginCapNegotiation()
 
     // Build a list of queued capabilities, starting with individual, then bundled, only adding the
     // comma separator between the two if needed (both individual and bundled caps exist).
-    QString queuedCapsDisplay =
-            _capsQueuedIndividual.join(", ")
-            + ((!_capsQueuedIndividual.empty() && !_capsQueuedBundled.empty()) ? ", " : "")
-            + _capsQueuedBundled.join(", ");
+    QString queuedCapsDisplay = _capsQueuedIndividual.join(", ")
+                                + ((!_capsQueuedIndividual.empty() && !_capsQueuedBundled.empty()) ? ", " : "")
+                                + _capsQueuedBundled.join(", ");
     showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Negotiating capabilities (requesting: %1)...").arg(queuedCapsDisplay));
 
     sendNextCap();
@@ -1274,14 +1251,18 @@ void CoreNetwork::sendNextCap()
     if (capNegotiationInProgress()) {
         // Request the next set of capabilities and remove them from the list
         putRawLine(serverEncode(QString("CAP REQ :%1").arg(takeQueuedCaps())));
-    } else {
+    }
+    else {
         // No pending desired capabilities, capability negotiation finished
         // If SASL requested but not available, print a warning
         if (networkInfo().useSasl && !capEnabled(IrcCap::SASL))
             showMessage(Message::Error, BufferInfo::StatusBuffer, "", tr("SASL authentication currently not supported by server"));
 
         if (_capNegotiationActive) {
-            showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Capability negotiation finished (enabled: %1)").arg(capsEnabled().join(", ")));
+            showMessage(Message::Server,
+                        BufferInfo::StatusBuffer,
+                        "",
+                        tr("Capability negotiation finished (enabled: %1)").arg(capsEnabled().join(", ")));
             _capNegotiationActive = false;
         }
 
@@ -1309,7 +1290,7 @@ void CoreNetwork::startAutoWhoCycle()
     _autoWhoQueue = channels();
 }
 
-void CoreNetwork::queueAutoWhoOneshot(const QString &name)
+void CoreNetwork::queueAutoWhoOneshot(const QString& name)
 {
     // Prepend so these new channels/nicks are the first to be checked
     // Don't allow duplicates
@@ -1322,18 +1303,15 @@ void CoreNetwork::queueAutoWhoOneshot(const QString &name)
     }
 }
 
-
 void CoreNetwork::setAutoWhoDelay(int delay)
 {
     _autoWhoTimer.setInterval(delay * 1000);
 }
 
-
 void CoreNetwork::setAutoWhoInterval(int interval)
 {
     _autoWhoCycleTimer.setInterval(interval * 1000);
 }
-
 
 void CoreNetwork::setAutoWhoEnabled(bool enabled)
 {
@@ -1345,7 +1323,6 @@ void CoreNetwork::setAutoWhoEnabled(bool enabled)
     }
 }
 
-
 void CoreNetwork::sendAutoWho()
 {
     // Don't send autowho if there are still some pending
@@ -1355,21 +1332,22 @@ void CoreNetwork::sendAutoWho()
     while (!_autoWhoQueue.isEmpty()) {
         QString chanOrNick = _autoWhoQueue.takeFirst();
         // Check if it's a known channel or nick
-        IrcChannel *ircchan = ircChannel(chanOrNick);
-        IrcUser *ircuser = ircUser(chanOrNick);
+        IrcChannel* ircchan = ircChannel(chanOrNick);
+        IrcUser* ircuser = ircUser(chanOrNick);
         if (ircchan) {
             // Apply channel limiting rules
             // If using away-notify, don't impose channel size limits in order to capture away
             // state of everyone.  Auto-who won't run on a timer so network impact is minimal.
-            if (networkConfig()->autoWhoNickLimit() > 0
-                && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
+            if (networkConfig()->autoWhoNickLimit() > 0 && ircchan->ircUsers().count() >= networkConfig()->autoWhoNickLimit()
                 && !capEnabled(IrcCap::AWAY_NOTIFY))
                 continue;
             _autoWhoPending[chanOrNick.toLower()]++;
-        } else if (ircuser) {
+        }
+        else if (ircuser) {
             // Checking a nick, add it to the pending list
             _autoWhoPending[ircuser->nick().toLower()]++;
-        } else {
+        }
+        else {
             // Not a channel or a nick, skip it
             qDebug() << "Skipping who polling of unknown channel or nick" << chanOrNick;
             continue;
@@ -1383,10 +1361,10 @@ void CoreNetwork::sendAutoWho()
             // See http://faerion.sourceforge.net/doc/irc/whox.var
             // And https://github.com/quakenet/snircd/blob/master/doc/readme.who
             // And https://github.com/hexchat/hexchat/blob/57478b65758e6b697b1d82ce21075e74aa475efc/src/common/proto-irc.c#L752
-            putRawLine(serverEncode(QString("WHO %1 n%chtsunfra,%2")
-                                    .arg(serverEncode(chanOrNick),
-                                         QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))));
-        } else {
+            putRawLine(serverEncode(
+                QString("WHO %1 n%chtsunfra,%2").arg(serverEncode(chanOrNick), QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))));
+        }
+        else {
             // Fall back to normal WHO
             //
             // Note: According to RFC 1459, "WHO <phrase>" can fall back to searching realname,
@@ -1398,21 +1376,20 @@ void CoreNetwork::sendAutoWho()
         break;
     }
 
-    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive()
-        && !capEnabled(IrcCap::AWAY_NOTIFY)) {
+    if (_autoWhoQueue.isEmpty() && networkConfig()->autoWhoEnabled() && !_autoWhoCycleTimer.isActive() && !capEnabled(IrcCap::AWAY_NOTIFY)) {
         // Timer was stopped, means a new cycle is due immediately
         // Don't run a new cycle if using away-notify; server will notify as appropriate
         _autoWhoCycleTimer.start();
         startAutoWhoCycle();
-    } else if (capEnabled(IrcCap::AWAY_NOTIFY) && _autoWhoCycleTimer.isActive()) {
+    }
+    else if (capEnabled(IrcCap::AWAY_NOTIFY) && _autoWhoCycleTimer.isActive()) {
         // Don't run another who cycle if away-notify is enabled
         _autoWhoCycleTimer.stop();
     }
 }
 
-
 #ifdef HAVE_SSL
-void CoreNetwork::onSslErrors(const QList<QSslError> &sslErrors)
+void CoreNetwork::onSslErrors(const QList<QSslError>& sslErrors)
 {
     Server server = usedServer();
     if (server.sslVerify) {
@@ -1428,7 +1405,8 @@ void CoreNetwork::onSslErrors(const QList<QSslError> &sslErrors)
         // Disconnect, triggering a reconnect in case it's a temporary issue with certificate
         // validity, network trouble, etc.
         disconnectFromIrc(false, QString("Encrypted connection not verified"), true /* withReconnect */);
-    } else {
+    }
+    else {
         // Treat the SSL error as a warning, continue to connect anyways
         QString sslErrorMessage = tr("Encrypted connection couldn't be verified, continuing "
                                      "since verification is not required");
@@ -1442,7 +1420,6 @@ void CoreNetwork::onSslErrors(const QList<QSslError> &sslErrors)
         socket.ignoreSslErrors();
     }
 }
-
 
 #endif  // HAVE_SSL
 
@@ -1461,7 +1438,6 @@ void CoreNetwork::checkTokenBucket()
     fillBucketAndProcessQueue();
 }
 
-
 void CoreNetwork::fillBucketAndProcessQueue()
 {
     // If there's less tokens than burst size, refill the token bucket by 1
@@ -1475,12 +1451,10 @@ void CoreNetwork::fillBucketAndProcessQueue()
     }
 }
 
-
-void CoreNetwork::writeToSocket(const QByteArray &data)
+void CoreNetwork::writeToSocket(const QByteArray& data)
 {
     // Log the message if enabled and network ID matches or allows all
-    if (_debugLogRawIrc
-            && (_debugLogRawNetId == -1 || networkId().toInt() == _debugLogRawNetId)) {
+    if (_debugLogRawIrc && (_debugLogRawNetId == -1 || networkId().toInt() == _debugLogRawNetId)) {
         // Include network ID
         qDebug() << "IRC net" << networkId() << ">>" << data;
     }
@@ -1491,7 +1465,6 @@ void CoreNetwork::writeToSocket(const QByteArray &data)
         _tokenBucket--;
     }
 }
-
 
 Network::Server CoreNetwork::usedServer() const
 {
@@ -1504,7 +1477,6 @@ Network::Server CoreNetwork::usedServer() const
     return Network::Server();
 }
 
-
 void CoreNetwork::requestConnect() const
 {
     if (_shuttingDown) {
@@ -1514,9 +1486,8 @@ void CoreNetwork::requestConnect() const
         qWarning() << "Requesting connect while already being connected!";
         return;
     }
-    QMetaObject::invokeMethod(const_cast<CoreNetwork *>(this), "connectToIrc", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(const_cast<CoreNetwork*>(this), "connectToIrc", Qt::QueuedConnection);
 }
-
 
 void CoreNetwork::requestDisconnect() const
 {
@@ -1530,8 +1501,7 @@ void CoreNetwork::requestDisconnect() const
     userInputHandler()->handleQuit(BufferInfo(), QString());
 }
 
-
-void CoreNetwork::requestSetNetworkInfo(const NetworkInfo &info)
+void CoreNetwork::requestSetNetworkInfo(const NetworkInfo& info)
 {
     Network::Server currentServer = usedServer();
     setNetworkInfo(info);
@@ -1549,8 +1519,9 @@ void CoreNetwork::requestSetNetworkInfo(const NetworkInfo &info)
     }
 }
 
-
-QList<QList<QByteArray>> CoreNetwork::splitMessage(const QString &cmd, const QString &message, const std::function<QList<QByteArray>(QString &)> &cmdGenerator)
+QList<QList<QByteArray>> CoreNetwork::splitMessage(const QString& cmd,
+                                                   const QString& message,
+                                                   const std::function<QList<QByteArray>(QString&)>& cmdGenerator)
 {
     QString wrkMsg(message);
     QList<QList<QByteArray>> msgsToSend;
@@ -1614,7 +1585,7 @@ QList<QList<QByteArray>> CoreNetwork::splitMessage(const QString &cmd, const QSt
             wrkMsg.remove(0, splitPos);
             msgsToSend.append(splitMsgEnc);
         }
-        else{
+        else {
             // If the entire remaining message is short enough to be sent all at once, remove
             // it from the wrkMsg and add it to the list of messages to be sent.
             wrkMsg.remove(0, splitPos);

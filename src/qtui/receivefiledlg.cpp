@@ -18,30 +18,29 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "receivefiledlg.h"
+
 #include <QDir>
 #include <QFileDialog>
 
-#include "receivefiledlg.h"
-
 #include "transfer.h"
 
-ReceiveFileDlg::ReceiveFileDlg(const Transfer *transfer, QWidget *parent)
-    : QDialog(parent),
-    _transfer(transfer)
+ReceiveFileDlg::ReceiveFileDlg(const Transfer* transfer, QWidget* parent)
+    : QDialog(parent)
+    , _transfer(transfer)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     ui.setupUi(this);
 
-    QString label = tr("<b>%1</b> wants to send you a file:<br>%2 (%3 bytes)").arg(transfer->nick(), transfer->fileName()).arg(transfer->fileSize());
+    QString label
+        = tr("<b>%1</b> wants to send you a file:<br>%2 (%3 bytes)").arg(transfer->nick(), transfer->fileName()).arg(transfer->fileSize());
     ui.infoText->setText(label);
 }
 
-
-void ReceiveFileDlg::on_buttonBox_clicked(QAbstractButton *button)
+void ReceiveFileDlg::on_buttonBox_clicked(QAbstractButton* button)
 {
     if (ui.buttonBox->standardButton(button) == QDialogButtonBox::Save) {
         QString name = QFileDialog::getSaveFileName(this, QString(), QDir::currentPath() + "/" + _transfer->fileName());
         _transfer->accept(name);
     }
-
 }

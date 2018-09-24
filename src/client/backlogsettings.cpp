@@ -24,84 +24,70 @@ BacklogSettings::BacklogSettings()
     : ClientSettings("Backlog")
 {}
 
-
 int BacklogSettings::requesterType() const
 {
     return localValue("RequesterType", BacklogRequester::PerBufferUnread).toInt();
 }
-
 
 void BacklogSettings::setRequesterType(int requesterType)
 {
     setLocalValue("RequesterType", requesterType);
 }
 
-
 int BacklogSettings::dynamicBacklogAmount() const
 {
     return localValue("DynamicBacklogAmount", 200).toInt();
 }
-
 
 void BacklogSettings::setDynamicBacklogAmount(int amount)
 {
     return setLocalValue("DynamicBacklogAmount", amount);
 }
 
-
 int BacklogSettings::fixedBacklogAmount() const
 {
     return localValue("FixedBacklogAmount", 500).toInt();
 }
-
 
 void BacklogSettings::setFixedBacklogAmount(int amount)
 {
     return setLocalValue("FixedBacklogAmount", amount);
 }
 
-
 int BacklogSettings::globalUnreadBacklogLimit() const
 {
     return localValue("GlobalUnreadBacklogLimit", 5000).toInt();
 }
-
 
 void BacklogSettings::setGlobalUnreadBacklogLimit(int limit)
 {
     return setLocalValue("GlobalUnreadBacklogLimit", limit);
 }
 
-
 int BacklogSettings::globalUnreadBacklogAdditional() const
 {
     return localValue("GlobalUnreadBacklogAdditional", 100).toInt();
 }
-
 
 void BacklogSettings::setGlobalUnreadBacklogAdditional(int additional)
 {
     return setLocalValue("GlobalUnreadBacklogAdditional", additional);
 }
 
-
 int BacklogSettings::perBufferUnreadBacklogLimit() const
 {
     return localValue("PerBufferUnreadBacklogLimit", 200).toInt();
 }
-
 
 void BacklogSettings::setPerBufferUnreadBacklogLimit(int limit)
 {
     return setLocalValue("PerBufferUnreadBacklogLimit", limit);
 }
 
-
 int BacklogSettings::perBufferUnreadBacklogAdditional() const
 {
     return localValue("PerBufferUnreadBacklogAdditional", 50).toInt();
 }
-
 
 void BacklogSettings::setPerBufferUnreadBacklogAdditional(int additional)
 {

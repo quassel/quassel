@@ -61,7 +61,7 @@ class UISUPPORT_EXPORT SettingsPage : public QWidget
     Q_OBJECT
 
 public:
-    SettingsPage(QString category, QString name, QWidget *parent = nullptr);
+    SettingsPage(QString category, QString name, QWidget* parent = nullptr);
 
     //! The category of this settings page.
     inline virtual QString category() const { return _category; }
@@ -97,7 +97,7 @@ public:
      *  enabled. You also need to provide an implementation of defaults() then.
      *
      * The default implementation returns false.
-       */
+     */
     inline virtual bool hasDefaults() const { return false; }
 
     //! Check if there are changes in the page, compared to the state saved in permanent storage.
@@ -110,14 +110,14 @@ public:
     inline virtual bool aboutToSave() { return true; }
 
     //! sets checked state depending on \checked and stores the value for later comparision
-    static void load(QCheckBox *box, bool checked);
-    static bool hasChanged(QCheckBox *box);
-    static void load(QComboBox *box, int index);
-    static bool hasChanged(QComboBox *box);
-    static void load(QSpinBox *box, int value);
-    static bool hasChanged(QSpinBox *box);
-    static void load(FontSelector *box, QFont value);
-    static bool hasChanged(FontSelector *box);
+    static void load(QCheckBox* box, bool checked);
+    static bool hasChanged(QCheckBox* box);
+    static void load(QComboBox* box, int index);
+    static bool hasChanged(QComboBox* box);
+    static void load(QSpinBox* box, int value);
+    static bool hasChanged(QSpinBox* box);
+    static void load(FontSelector* box, QFont value);
+    static bool hasChanged(FontSelector* box);
 
 public slots:
     //! Save settings to permanent storage.
@@ -144,8 +144,8 @@ protected slots:
 
 protected:
     void initAutoWidgets();
-    virtual QVariant loadAutoWidgetValue(const QString &widgetName);
-    virtual void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
+    virtual QVariant loadAutoWidgetValue(const QString& widgetName);
+    virtual void saveAutoWidgetValue(const QString& widgetName, const QVariant& value);
 
 signals:
     //! Emitted whenever the widget state changes.
@@ -156,9 +156,9 @@ private slots:
     void autoWidgetHasChanged();
 
 private:
-    void findAutoWidgets(QObject *parent, QObjectList *widgetList) const;
-    QByteArray autoWidgetPropertyName(QObject *widget) const;
-    QString autoWidgetSettingsKey(QObject *widget) const;
+    void findAutoWidgets(QObject* parent, QObjectList* widgetList) const;
+    QByteArray autoWidgetPropertyName(QObject* widget) const;
+    QString autoWidgetSettingsKey(QObject* widget) const;
 
     QString _category, _title;
     bool _changed, _autoWidgetsChanged;

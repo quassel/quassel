@@ -29,7 +29,7 @@ class CoreNetworkConfig : public NetworkConfig
     Q_OBJECT
 
 public:
-    CoreNetworkConfig(const QString &objectName, CoreSession *parent);
+    CoreNetworkConfig(const QString& objectName, CoreSession* parent);
 
     void save();
 

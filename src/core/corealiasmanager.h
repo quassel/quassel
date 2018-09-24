@@ -29,10 +29,10 @@ class CoreAliasManager : public AliasManager
     Q_OBJECT
 
 public:
-    explicit CoreAliasManager(CoreSession *parent);
+    explicit CoreAliasManager(CoreSession* parent);
 
 protected:
-    const Network *network(NetworkId) const override;
+    const Network* network(NetworkId) const override;
 
 private slots:
     void save() const;

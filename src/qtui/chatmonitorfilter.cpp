@@ -20,13 +20,13 @@
 
 #include "chatmonitorfilter.h"
 
-#include "client.h"
 #include "chatlinemodel.h"
-#include "networkmodel.h"
 #include "chatviewsettings.h"
+#include "client.h"
 #include "clientignorelistmanager.h"
+#include "networkmodel.h"
 
-ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
+ChatMonitorFilter::ChatMonitorFilter(MessageModel* model, QObject* parent)
     : MessageFilter(model, parent)
 {
     // Global configuration
@@ -54,7 +54,7 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     _showHighlights = viewSettings.value(showHighlightsSettingsId, false).toBool();
     _operationMode = viewSettings.value(operationModeSettingsId, ChatViewSettings::InvalidMode).toInt();
     // read configured list of buffers to monitor/ignore
-    foreach(QVariant v, viewSettings.value(buffersSettingsId, QVariant()).toList())
+    foreach (QVariant v, viewSettings.value(buffersSettingsId, QVariant()).toList())
         _bufferIds << v.value<BufferId>();
     _showBacklog = viewSettings.value(showBacklogSettingsId, true).toBool();
     _includeRead = viewSettings.value(includeReadSettingsId, false).toBool();
@@ -68,8 +68,7 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
     viewSettings.notify(alwaysOwnSettingsId, this, &ChatMonitorFilter::alwaysOwnSettingChanged);
 }
 
-
-bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
     Q_UNUSED(sourceParent)
 
@@ -81,7 +80,8 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
         if (!_showBacklog)
             return false;
 
-        if (!_includeRead && Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>())
+        if (!_includeRead
+            && Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>())
             return false;
     }
 
@@ -94,9 +94,9 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
     // ChatMonitorSettingsPage
     if (_showHighlights && flags & Message::Highlight)
-        ; // pass
+        ;  // pass
     else if (_alwaysOwn && flags & Message::Self)
-        ; // pass
+        ;  // pass
     else if (_operationMode == ChatViewSettings::OptOut && _bufferIds.contains(bufferId))
         return false;
     else if (_operationMode == ChatViewSettings::OptIn && !_bufferIds.contains(bufferId))
@@ -105,15 +105,15 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     // ignorelist handling
     // only match if message is not flagged as server msg
     if (!(flags & Message::ServerMsg) && Client::ignoreListManager()
-        && Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
+        && Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(),
+                                              Client::networkModel()->networkName(bufferId)))
         return false;
 
     return true;
 }
 
-
 // override this to inject display of network and channel
-QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const
+QVariant ChatMonitorFilter::data(const QModelIndex& index, int role) const
 {
     if (index.column() != ChatLineModel::SenderColumn || role != ChatLineModel::DisplayRole)
         return MessageFilter::data(index, role);
@@ -145,7 +145,6 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const
         return QString("%1").arg(fields.join(":"));
 }
 
-
 void ChatMonitorFilter::addShowField(int field)
 {
     if (_showFields & field)
@@ -153,7 +152,6 @@ void ChatMonitorFilter::addShowField(int field)
 
     ChatViewSettings(idString()).setValue("ShowFields", _showFields | field);
 }
-
 
 void ChatMonitorFilter::removeShowField(int field)
 {
@@ -163,7 +161,6 @@ void ChatMonitorFilter::removeShowField(int field)
     ChatViewSettings(idString()).setValue("ShowFields", _showFields ^ field);
 }
 
-
 void ChatMonitorFilter::setShowOwnMessages(bool show)
 {
     if (_showOwnMessages == show)
@@ -172,8 +169,7 @@ void ChatMonitorFilter::setShowOwnMessages(bool show)
     ChatViewSettings(idString()).setValue("ShowOwnMsgs", show);
 }
 
-
-void ChatMonitorFilter::showFieldsSettingChanged(const QVariant &newValue)
+void ChatMonitorFilter::showFieldsSettingChanged(const QVariant& newValue)
 {
     int newFields = newValue.toInt();
     if (_showFields == newFields)
@@ -188,46 +184,46 @@ void ChatMonitorFilter::showFieldsSettingChanged(const QVariant &newValue)
     emit dataChanged(index(0, ChatLineModel::SenderColumn), index(rows - 1, ChatLineModel::SenderColumn));
 }
 
-
-void ChatMonitorFilter::showOwnMessagesSettingChanged(const QVariant &newValue)
+void ChatMonitorFilter::showOwnMessagesSettingChanged(const QVariant& newValue)
 {
     _showOwnMessages = newValue.toBool();
 }
 
-void ChatMonitorFilter::alwaysOwnSettingChanged(const QVariant &newValue) {
+void ChatMonitorFilter::alwaysOwnSettingChanged(const QVariant& newValue)
+{
     _alwaysOwn = newValue.toBool();
 }
 
-void ChatMonitorFilter::showHighlightsSettingChanged(const QVariant &newValue)
+void ChatMonitorFilter::showHighlightsSettingChanged(const QVariant& newValue)
 {
     _showHighlights = newValue.toBool();
 }
 
-
-void ChatMonitorFilter::operationModeSettingChanged(const QVariant &newValue)
+void ChatMonitorFilter::operationModeSettingChanged(const QVariant& newValue)
 {
     _operationMode = newValue.toInt();
 }
 
-
-void ChatMonitorFilter::buffersSettingChanged(const QVariant &newValue)
+void ChatMonitorFilter::buffersSettingChanged(const QVariant& newValue)
 {
     _bufferIds.clear();
-    foreach(QVariant v, newValue.toList()) {
+    foreach (QVariant v, newValue.toList()) {
         _bufferIds << v.value<BufferId>();
     }
     invalidateFilter();
 }
 
-void ChatMonitorFilter::showBacklogSettingChanged(const QVariant &newValue) {
+void ChatMonitorFilter::showBacklogSettingChanged(const QVariant& newValue)
+{
     _showBacklog = newValue.toBool();
 }
 
-void ChatMonitorFilter::includeReadSettingChanged(const QVariant &newValue) {
+void ChatMonitorFilter::includeReadSettingChanged(const QVariant& newValue)
+{
     _includeRead = newValue.toBool();
 }
 
-void ChatMonitorFilter::showSenderBracketsSettingChanged(const QVariant &newValue)
+void ChatMonitorFilter::showSenderBracketsSettingChanged(const QVariant& newValue)
 {
     _showSenderBrackets = newValue.toBool();
 }

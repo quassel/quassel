@@ -24,6 +24,7 @@
 #include <QHash>
 
 #include "settingspage.h"
+
 #include "ui_backlogsettingspage.h"
 
 class BacklogSettingsPage : public SettingsPage
@@ -31,7 +32,7 @@ class BacklogSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    BacklogSettingsPage(QWidget *parent = nullptr);
+    BacklogSettingsPage(QWidget* parent = nullptr);
 
     inline QString settingsKey() const override { return "Backlog"; }
     bool hasDefaults() const override;
@@ -47,6 +48,5 @@ private slots:
 private:
     Ui::BacklogSettingsPage ui;
 };
-
 
 #endif

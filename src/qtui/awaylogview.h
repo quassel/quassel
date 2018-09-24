@@ -30,9 +30,8 @@ class AwayLogView : public ChatMonitorView
     Q_OBJECT
 
 public:
-    AwayLogView(AwayLogFilter *filter, QWidget *parent = nullptr);
-    void addActionsToMenu(QMenu *menu, const QPointF &pos) override;
+    AwayLogView(AwayLogFilter* filter, QWidget* parent = nullptr);
+    void addActionsToMenu(QMenu* menu, const QPointF& pos) override;
 };
 
-
-#endif //AWAYLOGVIEW_H
+#endif  // AWAYLOGVIEW_H

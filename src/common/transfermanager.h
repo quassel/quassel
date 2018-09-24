@@ -40,26 +40,26 @@ class COMMON_EXPORT TransferManager : public SyncableObject
 public:
     using TransferIdList = QList<QUuid>;
 
-    TransferManager(QObject *parent = nullptr);
+    TransferManager(QObject* parent = nullptr);
 
-    Transfer *transfer(const QUuid &uuid) const;
+    Transfer* transfer(const QUuid& uuid) const;
     TransferIdList transferIds() const;
 
 signals:
-    void transferAdded(const QUuid &uuid);
-    void transferRemoved(const QUuid &uuid);
+    void transferAdded(const QUuid& uuid);
+    void transferRemoved(const QUuid& uuid);
 
 protected:
-    void addTransfer(Transfer *transfer);
-    void removeTransfer(const QUuid &uuid);
+    void addTransfer(Transfer* transfer);
+    void removeTransfer(const QUuid& uuid);
 
 protected slots:
-    virtual void setTransferIds(const TransferIdList &transferIds) { Q_UNUSED(transferIds) };
-    virtual void onCoreTransferAdded(const QUuid &transferId) { Q_UNUSED(transferId) };
+    virtual void setTransferIds(const TransferIdList& transferIds){Q_UNUSED(transferIds)};
+    virtual void onCoreTransferAdded(const QUuid& transferId){Q_UNUSED(transferId)};
 
 private:
-    QHash<QUuid, Transfer *> _transfers;
+    QHash<QUuid, Transfer*> _transfers;
 };
 
-QDataStream &operator<<(QDataStream &out, const TransferManager::TransferIdList &transferIds);
-QDataStream &operator>>(QDataStream &in, TransferManager::TransferIdList &state);
+QDataStream& operator<<(QDataStream& out, const TransferManager::TransferIdList& transferIds);
+QDataStream& operator>>(QDataStream& in, TransferManager::TransferIdList& state);

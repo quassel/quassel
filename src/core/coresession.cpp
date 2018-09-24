@@ -23,9 +23,8 @@
 #include <QtScript>
 
 #include "core.h"
-#include "coreuserinputhandler.h"
-#include "corebuffersyncer.h"
 #include "corebacklogmanager.h"
+#include "corebuffersyncer.h"
 #include "corebufferviewmanager.h"
 #include "coredccconfig.h"
 #include "coreeventmanager.h"
@@ -37,6 +36,7 @@
 #include "corenetworkconfig.h"
 #include "coresessioneventprocessor.h"
 #include "coretransfermanager.h"
+#include "coreuserinputhandler.h"
 #include "coreusersettings.h"
 #include "ctcpparser.h"
 #include "eventstringifier.h"
@@ -50,41 +50,41 @@
 #include "storage.h"
 #include "util.h"
 
-
 class ProcessMessagesEvent : public QEvent
 {
 public:
-    ProcessMessagesEvent() : QEvent(QEvent::User) {}
+    ProcessMessagesEvent()
+        : QEvent(QEvent::User)
+    {}
 };
 
-
-CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled, QObject *parent)
-    : QObject(parent),
-    _user(uid),
-    _strictIdentEnabled(strictIdentEnabled),
-    _signalProxy(new SignalProxy(SignalProxy::Server, this)),
-    _aliasManager(this),
-    _bufferSyncer(new CoreBufferSyncer(this)),
-    _backlogManager(new CoreBacklogManager(this)),
-    _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
-    _dccConfig(new CoreDccConfig(this)),
-    _ircListHelper(new CoreIrcListHelper(this)),
-    _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
-    _coreInfo(new CoreInfo(this)),
-    _transferManager(new CoreTransferManager(this)),
-    _eventManager(new CoreEventManager(this)),
-    _eventStringifier(new EventStringifier(this)),
-    _sessionEventProcessor(new CoreSessionEventProcessor(this)),
-    _ctcpParser(new CtcpParser(this)),
-    _ircParser(new IrcParser(this)),
-    scriptEngine(new QScriptEngine(this)),
-    _processMessages(false),
-    _ignoreListManager(this),
-    _highlightRuleManager(this)
+CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled, QObject* parent)
+    : QObject(parent)
+    , _user(uid)
+    , _strictIdentEnabled(strictIdentEnabled)
+    , _signalProxy(new SignalProxy(SignalProxy::Server, this))
+    , _aliasManager(this)
+    , _bufferSyncer(new CoreBufferSyncer(this))
+    , _backlogManager(new CoreBacklogManager(this))
+    , _bufferViewManager(new CoreBufferViewManager(_signalProxy, this))
+    , _dccConfig(new CoreDccConfig(this))
+    , _ircListHelper(new CoreIrcListHelper(this))
+    , _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this))
+    , _coreInfo(new CoreInfo(this))
+    , _transferManager(new CoreTransferManager(this))
+    , _eventManager(new CoreEventManager(this))
+    , _eventStringifier(new EventStringifier(this))
+    , _sessionEventProcessor(new CoreSessionEventProcessor(this))
+    , _ctcpParser(new CtcpParser(this))
+    , _ircParser(new IrcParser(this))
+    , scriptEngine(new QScriptEngine(this))
+    , _processMessages(false)
+    , _ignoreListManager(this)
+    , _highlightRuleManager(this)
 {
-    SignalProxy *p = signalProxy();
+    SignalProxy* p = signalProxy();
     p->setHeartBeatInterval(30);
-    p->setMaxHeartBeatCount(60); // 30 mins until we throw a dead socket out
+    p->setMaxHeartBeatCount(60);  // 30 mins until we throw a dead socket out
 
     connect(p, &SignalProxy::peerRemoved, this, &CoreSession::removeClient);
 
@@ -95,25 +95,29 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     p->attachSignal(this, SIGNAL(displayMsg(Message)));
     p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));
 
-    p->attachSignal(this, SIGNAL(identityCreated(const Identity &)));
+    p->attachSignal(this, SIGNAL(identityCreated(const Identity&)));
     p->attachSignal(this, SIGNAL(identityRemoved(IdentityId)));
-    p->attachSlot(SIGNAL(createIdentity(const Identity &, const QVariantMap &)), this, SLOT(createIdentity(const Identity &, const QVariantMap &)));
+    p->attachSlot(SIGNAL(createIdentity(const Identity&, const QVariantMap&)),
+                  this,
+                  SLOT(createIdentity(const Identity&, const QVariantMap&)));
     p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, SLOT(removeIdentity(IdentityId)));
 
     p->attachSignal(this, SIGNAL(networkCreated(NetworkId)));
     p->attachSignal(this, SIGNAL(networkRemoved(NetworkId)));
-    p->attachSlot(SIGNAL(createNetwork(const NetworkInfo &, const QStringList &)), this, SLOT(createNetwork(const NetworkInfo &, const QStringList &)));
+    p->attachSlot(SIGNAL(createNetwork(const NetworkInfo&, const QStringList&)),
+                  this,
+                  SLOT(createNetwork(const NetworkInfo&, const QStringList&)));
     p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, SLOT(removeNetwork(NetworkId)));
 
-    p->attachSlot(SIGNAL(changePassword(PeerPtr,QString,QString,QString)), this, SLOT(changePassword(PeerPtr,QString,QString,QString)));
-    p->attachSignal(this, SIGNAL(passwordChanged(PeerPtr,bool)));
+    p->attachSlot(SIGNAL(changePassword(PeerPtr, QString, QString, QString)), this, SLOT(changePassword(PeerPtr, QString, QString, QString)));
+    p->attachSignal(this, SIGNAL(passwordChanged(PeerPtr, bool)));
 
     p->attachSlot(SIGNAL(kickClient(int)), this, SLOT(kickClient(int)));
     p->attachSignal(this, SIGNAL(disconnectFromCore()));
 
     QVariantMap data;
     data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
-    data["quasselBuildDate"] = Quassel::buildInfo().commitDate; // "BuildDate" for compatibility
+    data["quasselBuildDate"] = Quassel::buildInfo().commitDate;  // "BuildDate" for compatibility
     data["startTime"] = Core::instance()->startTime();
     data["sessionConnectedClients"] = 0;
     _coreInfo->setCoreData(data);
@@ -122,10 +126,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     initScriptEngine();
 
     eventManager()->registerObject(ircParser(), EventManager::NormalPriority);
-    eventManager()->registerObject(sessionEventProcessor(), EventManager::HighPriority); // needs to process events *before* the stringifier!
+    eventManager()->registerObject(sessionEventProcessor(), EventManager::HighPriority);  // needs to process events *before* the stringifier!
     eventManager()->registerObject(ctcpParser(), EventManager::NormalPriority);
     eventManager()->registerObject(eventStringifier(), EventManager::NormalPriority);
-    eventManager()->registerObject(this, EventManager::LowPriority); // for sending MessageEvents to the client
+    eventManager()->registerObject(this, EventManager::LowPriority);  // for sending MessageEvents to the client
     // some events need to be handled after msg generation
     eventManager()->registerObject(sessionEventProcessor(), EventManager::LowPriority, "lateProcess");
     eventManager()->registerObject(ctcpParser(), EventManager::LowPriority, "send");
@@ -143,8 +147,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     p->synchronize(&_ignoreListManager);
     p->synchronize(&_highlightRuleManager);
     // Listen to network removed events
-    connect(this, &CoreSession::networkRemoved,
-        &_highlightRuleManager, &HighlightRuleManager::networkRemoved);
+    connect(this, &CoreSession::networkRemoved, &_highlightRuleManager, &HighlightRuleManager::networkRemoved);
     p->synchronize(transferManager());
     // Restore session state
     if (restoreState)
@@ -153,14 +156,13 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     emit initialized();
 }
 
-
 void CoreSession::shutdown()
 {
     saveSessionState();
 
     // Request disconnect from all connected networks in parallel, and wait until every network
     // has emitted the disconnected() signal before deleting the session itself
-    for (CoreNetwork *net : _networks.values()) {
+    for (CoreNetwork* net : _networks.values()) {
         if (net->socketState() != QAbstractSocket::UnconnectedState) {
             _networksPendingDisconnect.insert(net->networkId());
             connect(net, &CoreNetwork::disconnected, this, &CoreSession::onNetworkDisconnected);
@@ -174,7 +176,6 @@ void CoreSession::shutdown()
     }
 }
 
-
 void CoreSession::onNetworkDisconnected(NetworkId networkId)
 {
     _networksPendingDisconnect.remove(networkId);
@@ -184,20 +185,19 @@ void CoreSession::onNetworkDisconnected(NetworkId networkId)
     }
 }
 
-
-CoreNetwork *CoreSession::network(NetworkId id) const
+CoreNetwork* CoreSession::network(NetworkId id) const
 {
-    if (_networks.contains(id)) return _networks[id];
+    if (_networks.contains(id))
+        return _networks[id];
     return nullptr;
 }
 
-
-CoreIdentity *CoreSession::identity(IdentityId id) const
+CoreIdentity* CoreSession::identity(IdentityId id) const
 {
-    if (_identities.contains(id)) return _identities[id];
+    if (_identities.contains(id))
+        return _identities[id];
     return nullptr;
 }
-
 
 void CoreSession::loadSettings()
 {
@@ -206,7 +206,7 @@ void CoreSession::loadSettings()
     // migrate to db
     QList<IdentityId> ids = s.identityIds();
     QList<NetworkInfo> networkInfos = Core::networks(user());
-    foreach(IdentityId id, ids) {
+    foreach (IdentityId id, ids) {
         CoreIdentity identity(s.identity(id));
         IdentityId newId = Core::createIdentity(user(), identity);
         QList<NetworkInfo>::iterator networkIter = networkInfos.begin();
@@ -224,15 +224,14 @@ void CoreSession::loadSettings()
     }
     // end of migration
 
-    foreach(CoreIdentity identity, Core::identities(user())) {
+    foreach (CoreIdentity identity, Core::identities(user())) {
         createIdentity(identity);
     }
 
-    foreach(NetworkInfo info, Core::networks(user())) {
+    foreach (NetworkInfo info, Core::networks(user())) {
         createNetwork(info);
     }
 }
-
 
 void CoreSession::saveSessionState() const
 {
@@ -241,20 +240,18 @@ void CoreSession::saveSessionState() const
     _networkConfig->save();
 }
 
-
 void CoreSession::restoreSessionState()
 {
     QList<NetworkId> nets = Core::connectedNetworks(user());
-    CoreNetwork *net = nullptr;
-    foreach(NetworkId id, nets) {
+    CoreNetwork* net = nullptr;
+    foreach (NetworkId id, nets) {
         net = network(id);
         Q_ASSERT(net);
         net->connectToIrc();
     }
 }
 
-
-void CoreSession::addClient(RemotePeer *peer)
+void CoreSession::addClient(RemotePeer* peer)
 {
     signalProxy()->setTargetPeer(peer);
 
@@ -265,44 +262,39 @@ void CoreSession::addClient(RemotePeer *peer)
     signalProxy()->setTargetPeer(nullptr);
 }
 
-
-void CoreSession::addClient(InternalPeer *peer)
+void CoreSession::addClient(InternalPeer* peer)
 {
     signalProxy()->addPeer(peer);
     emit sessionStateReceived(sessionState());
 }
 
-
-void CoreSession::removeClient(Peer *peer)
+void CoreSession::removeClient(Peer* peer)
 {
-    auto *p = qobject_cast<RemotePeer *>(peer);
+    auto* p = qobject_cast<RemotePeer*>(peer);
     if (p)
         quInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
     _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
 }
-
 
 QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const
 {
     return Core::persistentChannels(user(), id);
 }
 
-
 QHash<QString, QByteArray> CoreSession::bufferCiphers(NetworkId id) const
 {
     return Core::bufferCiphers(user(), id);
 }
 
-void CoreSession::setBufferCipher(NetworkId id, const QString &bufferName, const QByteArray &cipher) const
+void CoreSession::setBufferCipher(NetworkId id, const QString& bufferName, const QByteArray& cipher) const
 {
     Core::setBufferCipher(user(), id, bufferName, cipher);
 }
 
-
 // FIXME switch to BufferId
 void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg)
 {
-    CoreNetwork *net = network(bufinfo.networkId());
+    CoreNetwork* net = network(bufinfo.networkId());
     if (net) {
         net->userInput(bufinfo, msg);
     }
@@ -311,11 +303,15 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg)
     }
 }
 
-
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
-void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type, BufferInfo::Type bufferType,
-    const QString &target, const QString &text_, const QString &sender, Message::Flags flags)
+void CoreSession::recvMessageFromServer(NetworkId networkId,
+                                        Message::Type type,
+                                        BufferInfo::Type bufferType,
+                                        const QString& target,
+                                        const QString& text_,
+                                        const QString& sender,
+                                        Message::Flags flags)
 {
     // U+FDD0 and U+FDD1 are special characters for Qt's text engine, specifically they mark the boundaries of
     // text frames in a QTextDocument. This might lead to problems in widgets displaying QTextDocuments (such as
@@ -325,11 +321,10 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
     RawMessage rawMsg(networkId, type, bufferType, target, text, sender, flags);
 
     // check for HardStrictness ignore
-    CoreNetwork *currentNetwork = network(networkId);
+    CoreNetwork* currentNetwork = network(networkId);
     QString networkName = currentNetwork ? currentNetwork->networkName() : QString("");
     if (_ignoreListManager.match(rawMsg, networkName) == IgnoreListManager::HardStrictness)
         return;
-
 
     if (currentNetwork && _highlightRuleManager.match(rawMsg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
         rawMsg.flags |= Message::Flag::Highlight;
@@ -341,32 +336,30 @@ void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type,
     }
 }
 
-
 void CoreSession::recvStatusMsgFromServer(QString msg)
 {
-    auto *net = qobject_cast<CoreNetwork *>(sender());
+    auto* net = qobject_cast<CoreNetwork*>(sender());
     Q_ASSERT(net);
     emit displayStatusMsg(net->networkName(), msg);
 }
 
-
-void CoreSession::processMessageEvent(MessageEvent *event)
+void CoreSession::processMessageEvent(MessageEvent* event)
 {
-    recvMessageFromServer(event->networkId(), event->msgType(), event->bufferType(),
-        event->target().isNull() ? "" : event->target(),
-        event->text().isNull() ? "" : event->text(),
-        event->sender().isNull() ? "" : event->sender(),
-        event->msgFlags());
+    recvMessageFromServer(event->networkId(),
+                          event->msgType(),
+                          event->bufferType(),
+                          event->target().isNull() ? "" : event->target(),
+                          event->text().isNull() ? "" : event->text(),
+                          event->sender().isNull() ? "" : event->sender(),
+                          event->msgFlags());
 }
-
 
 QList<BufferInfo> CoreSession::buffers() const
 {
     return Core::requestBuffers(user());
 }
 
-
-void CoreSession::customEvent(QEvent *event)
+void CoreSession::customEvent(QEvent* event)
 {
     if (event->type() != QEvent::User)
         return;
@@ -375,30 +368,34 @@ void CoreSession::customEvent(QEvent *event)
     event->accept();
 }
 
-
 void CoreSession::processMessages()
 {
     if (_messageQueue.count() == 1) {
-        const RawMessage &rawMsg = _messageQueue.first();
+        const RawMessage& rawMsg = _messageQueue.first();
         bool createBuffer = !(rawMsg.flags & Message::Redirected);
         BufferInfo bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target, createBuffer);
         if (!bufferInfo.isValid()) {
             Q_ASSERT(!createBuffer);
             bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, BufferInfo::StatusBuffer, "");
         }
-        Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, senderPrefixes(rawMsg.sender, bufferInfo),
-                    realName(rawMsg.sender, rawMsg.networkId),  avatarUrl(rawMsg.sender, rawMsg.networkId),
+        Message msg(bufferInfo,
+                    rawMsg.type,
+                    rawMsg.text,
+                    rawMsg.sender,
+                    senderPrefixes(rawMsg.sender, bufferInfo),
+                    realName(rawMsg.sender, rawMsg.networkId),
+                    avatarUrl(rawMsg.sender, rawMsg.networkId),
                     rawMsg.flags);
-        if(Core::storeMessage(msg))
+        if (Core::storeMessage(msg))
             emit displayMsg(msg);
     }
     else {
-        QHash<NetworkId, QHash<QString, BufferInfo> > bufferInfoCache;
+        QHash<NetworkId, QHash<QString, BufferInfo>> bufferInfoCache;
         MessageList messages;
-        QList<RawMessage> redirectedMessages; // list of Messages which don't enforce a buffer creation
+        QList<RawMessage> redirectedMessages;  // list of Messages which don't enforce a buffer creation
         BufferInfo bufferInfo;
         for (int i = 0; i < _messageQueue.count(); i++) {
-            const RawMessage &rawMsg = _messageQueue.at(i);
+            const RawMessage& rawMsg = _messageQueue.at(i);
             if (bufferInfoCache.contains(rawMsg.networkId) && bufferInfoCache[rawMsg.networkId].contains(rawMsg.target)) {
                 bufferInfo = bufferInfoCache[rawMsg.networkId][rawMsg.target];
             }
@@ -412,15 +409,20 @@ void CoreSession::processMessages()
                 }
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, senderPrefixes(rawMsg.sender, bufferInfo),
-                        realName(rawMsg.sender, rawMsg.networkId),  avatarUrl(rawMsg.sender, rawMsg.networkId),
+            Message msg(bufferInfo,
+                        rawMsg.type,
+                        rawMsg.text,
+                        rawMsg.sender,
+                        senderPrefixes(rawMsg.sender, bufferInfo),
+                        realName(rawMsg.sender, rawMsg.networkId),
+                        avatarUrl(rawMsg.sender, rawMsg.networkId),
                         rawMsg.flags);
             messages << msg;
         }
 
         // recheck if there exists a buffer to store a redirected message in
         for (int i = 0; i < redirectedMessages.count(); i++) {
-            const RawMessage &rawMsg = redirectedMessages.at(i);
+            const RawMessage& rawMsg = redirectedMessages.at(i);
             if (bufferInfoCache.contains(rawMsg.networkId) && bufferInfoCache[rawMsg.networkId].contains(rawMsg.target)) {
                 bufferInfo = bufferInfoCache[rawMsg.networkId][rawMsg.target];
             }
@@ -430,13 +432,18 @@ void CoreSession::processMessages()
                 // add the StatusBuffer to the Cache in case there are more Messages for the original target
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, senderPrefixes(rawMsg.sender, bufferInfo),
-                        realName(rawMsg.sender, rawMsg.networkId),  avatarUrl(rawMsg.sender, rawMsg.networkId),
+            Message msg(bufferInfo,
+                        rawMsg.type,
+                        rawMsg.text,
+                        rawMsg.sender,
+                        senderPrefixes(rawMsg.sender, bufferInfo),
+                        realName(rawMsg.sender, rawMsg.networkId),
+                        avatarUrl(rawMsg.sender, rawMsg.networkId),
                         rawMsg.flags);
             messages << msg;
         }
 
-        if(Core::storeMessages(messages)) {
+        if (Core::storeMessages(messages)) {
             // FIXME: extend protocol to a displayMessages(MessageList)
             for (int i = 0; i < messages.count(); i++) {
                 emit displayMsg(messages[i]);
@@ -447,9 +454,9 @@ void CoreSession::processMessages()
     _messageQueue.clear();
 }
 
-QString CoreSession::senderPrefixes(const QString &sender, const BufferInfo &bufferInfo) const
+QString CoreSession::senderPrefixes(const QString& sender, const BufferInfo& bufferInfo) const
 {
-    CoreNetwork *currentNetwork = network(bufferInfo.networkId());
+    CoreNetwork* currentNetwork = network(bufferInfo.networkId());
     if (!currentNetwork) {
         return {};
     }
@@ -458,7 +465,7 @@ QString CoreSession::senderPrefixes(const QString &sender, const BufferInfo &buf
         return {};
     }
 
-    IrcChannel *currentChannel = currentNetwork->ircChannel(bufferInfo.bufferName());
+    IrcChannel* currentChannel = currentNetwork->ircChannel(bufferInfo.bufferName());
     if (!currentChannel) {
         return {};
     }
@@ -467,14 +474,14 @@ QString CoreSession::senderPrefixes(const QString &sender, const BufferInfo &buf
     return currentNetwork->modesToPrefixes(modes);
 }
 
-QString CoreSession::realName(const QString &sender, NetworkId networkId) const
+QString CoreSession::realName(const QString& sender, NetworkId networkId) const
 {
-    CoreNetwork *currentNetwork = network(networkId);
+    CoreNetwork* currentNetwork = network(networkId);
     if (!currentNetwork) {
         return {};
     }
 
-    IrcUser *currentUser = currentNetwork->ircUser(nickFromMask(sender));
+    IrcUser* currentUser = currentNetwork->ircUser(nickFromMask(sender));
     if (!currentUser) {
         return {};
     }
@@ -482,7 +489,7 @@ QString CoreSession::realName(const QString &sender, NetworkId networkId) const
     return currentUser->realName();
 }
 
-QString CoreSession::avatarUrl(const QString &sender, NetworkId networkId) const
+QString CoreSession::avatarUrl(const QString& sender, NetworkId networkId) const
 {
     Q_UNUSED(sender);
     Q_UNUSED(networkId);
@@ -500,16 +507,15 @@ Protocol::SessionState CoreSession::sessionState() const
     QVariantList networkIds;
     QVariantList identities;
 
-    foreach(const BufferInfo &id, buffers())
+    foreach (const BufferInfo& id, buffers())
         bufferInfos << QVariant::fromValue(id);
-    foreach(const NetworkId &id, _networks.keys())
+    foreach (const NetworkId& id, _networks.keys())
         networkIds << QVariant::fromValue(id);
-    foreach(const Identity *i, _identities.values())
+    foreach (const Identity* i, _identities.values())
         identities << QVariant::fromValue(*i);
 
     return Protocol::SessionState(identities, bufferInfos, networkIds);
 }
-
 
 void CoreSession::initScriptEngine()
 {
@@ -517,19 +523,17 @@ void CoreSession::initScriptEngine()
     signalProxy()->attachSignal(this, SIGNAL(scriptResult(QString)));
 
     // FIXME
-    //QScriptValue storage_ = scriptEngine->newQObject(storage);
-    //scriptEngine->globalObject().setProperty("storage", storage_);
+    // QScriptValue storage_ = scriptEngine->newQObject(storage);
+    // scriptEngine->globalObject().setProperty("storage", storage_);
 }
-
 
 void CoreSession::scriptRequest(QString script)
 {
     emit scriptResult(scriptEngine->evaluate(script).toString());
 }
 
-
 /*** Identity Handling ***/
-void CoreSession::createIdentity(const Identity &identity, const QVariantMap &additional)
+void CoreSession::createIdentity(const Identity& identity, const QVariantMap& additional)
 {
 #ifndef HAVE_SSL
     Q_UNUSED(additional)
@@ -550,19 +554,21 @@ void CoreSession::createIdentity(const Identity &identity, const QVariantMap &ad
         createIdentity(coreIdentity);
 }
 
-const QString CoreSession::strictCompliantIdent(const CoreIdentity *identity) {
+const QString CoreSession::strictCompliantIdent(const CoreIdentity* identity)
+{
     if (_strictIdentEnabled) {
         // Strict mode enabled: only allow the user's Quassel username as an ident
         return Core::instance()->strictSysIdent(_user);
-    } else {
+    }
+    else {
         // Strict mode disabled: allow any identity specified
         return identity->ident();
     }
 }
 
-void CoreSession::createIdentity(const CoreIdentity &identity)
+void CoreSession::createIdentity(const CoreIdentity& identity)
 {
-    auto *coreIdentity = new CoreIdentity(identity, this);
+    auto* coreIdentity = new CoreIdentity(identity, this);
     _identities[identity.id()] = coreIdentity;
     // CoreIdentity has its own synchronize method since its "private" sslManager needs to be synced as well
     coreIdentity->synchronize(signalProxy());
@@ -570,19 +576,17 @@ void CoreSession::createIdentity(const CoreIdentity &identity)
     emit identityCreated(*coreIdentity);
 }
 
-
 void CoreSession::updateIdentityBySender()
 {
-    auto *identity = qobject_cast<CoreIdentity *>(sender());
+    auto* identity = qobject_cast<CoreIdentity*>(sender());
     if (!identity)
         return;
     Core::updateIdentity(user(), *identity);
 }
 
-
 void CoreSession::removeIdentity(IdentityId id)
 {
-    CoreIdentity *identity = _identities.take(id);
+    CoreIdentity* identity = _identities.take(id);
     if (identity) {
         emit identityRemoved(id);
         Core::removeIdentity(user(), id);
@@ -590,10 +594,9 @@ void CoreSession::removeIdentity(IdentityId id)
     }
 }
 
-
 /*** Network Handling ***/
 
-void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &persistentChans)
+void CoreSession::createNetwork(const NetworkInfo& info_, const QStringList& persistentChans)
 {
     NetworkInfo info = info_;
     int id;
@@ -602,7 +605,8 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
         Core::createNetwork(user(), info);
 
     if (!info.networkId.isValid()) {
-        qWarning() << qPrintable(tr("CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!").arg(info.networkName));
+        qWarning() << qPrintable(
+            tr("CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!").arg(info.networkName));
         return;
     }
 
@@ -610,7 +614,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
     if (!_networks.contains(id)) {
         // create persistent chans
         QRegExp rx(R"(\s*(\S+)(?:\s*(\S+))?\s*)");
-        foreach(QString channel, persistentChans) {
+        foreach (QString channel, persistentChans) {
             if (!rx.exactMatch(channel)) {
                 qWarning() << QString("Invalid persistent channel declaration: %1").arg(channel);
                 continue;
@@ -621,7 +625,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
                 Core::setPersistentChannelKey(user(), info.networkId, rx.cap(1), rx.cap(2));
         }
 
-        CoreNetwork *net = new CoreNetwork(id, this);
+        CoreNetwork* net = new CoreNetwork(id, this);
         connect(net, &CoreNetwork::displayMsg, this, &CoreSession::recvMessageFromServer);
         connect(net, &CoreNetwork::displayStatusMsg, this, &CoreSession::recvStatusMsgFromServer);
         connect(net, &CoreNetwork::disconnected, this, &CoreSession::networkDisconnected);
@@ -638,11 +642,10 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
     }
 }
 
-
 void CoreSession::removeNetwork(NetworkId id)
 {
     // Make sure the network is disconnected!
-    CoreNetwork *net = network(id);
+    CoreNetwork* net = network(id);
     if (!net)
         return;
 
@@ -658,11 +661,10 @@ void CoreSession::removeNetwork(NetworkId id)
     }
 }
 
-
 void CoreSession::destroyNetwork(NetworkId id)
 {
     QList<BufferId> removedBuffers = Core::requestBufferIdsForNetwork(user(), id);
-    Network *net = _networks.take(id);
+    Network* net = _networks.take(id);
     if (net && Core::removeNetwork(user(), id)) {
         // make sure that all unprocessed RawMessages from this network are removed
         QList<RawMessage>::iterator messageIter = _messageQueue.begin();
@@ -675,7 +677,7 @@ void CoreSession::destroyNetwork(NetworkId id)
             }
         }
         // remove buffers from syncer
-        foreach(BufferId bufferId, removedBuffers) {
+        foreach (BufferId bufferId, removedBuffers) {
             _bufferSyncer->removeBuffer(bufferId);
         }
         emit networkRemoved(id);
@@ -683,8 +685,7 @@ void CoreSession::destroyNetwork(NetworkId id)
     }
 }
 
-
-void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName)
+void CoreSession::renameBuffer(const NetworkId& networkId, const QString& newName, const QString& oldName)
 {
     BufferInfo bufferInfo = Core::bufferInfo(user(), networkId, BufferInfo::QueryBuffer, oldName, false);
     if (bufferInfo.isValid()) {
@@ -692,13 +693,12 @@ void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newNam
     }
 }
 
-
 void CoreSession::clientsConnected()
 {
-    QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
-    Identity *identity = nullptr;
-    CoreNetwork *net = nullptr;
-    IrcUser *me = nullptr;
+    QHash<NetworkId, CoreNetwork*>::iterator netIter = _networks.begin();
+    Identity* identity = nullptr;
+    CoreNetwork* net = nullptr;
+    IrcUser* me = nullptr;
     while (netIter != _networks.end()) {
         net = *netIter;
         ++netIter;
@@ -718,13 +718,12 @@ void CoreSession::clientsConnected()
     }
 }
 
-
 void CoreSession::clientsDisconnected()
 {
-    QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
-    Identity *identity = nullptr;
-    CoreNetwork *net = nullptr;
-    IrcUser *me = nullptr;
+    QHash<NetworkId, CoreNetwork*>::iterator netIter = _networks.begin();
+    Identity* identity = nullptr;
+    CoreNetwork* net = nullptr;
+    IrcUser* me = nullptr;
     QString awayReason;
     while (netIter != _networks.end()) {
         net = *netIter;
@@ -750,11 +749,10 @@ void CoreSession::clientsDisconnected()
     }
 }
 
-
-void CoreSession::globalAway(const QString &msg, const bool skipFormatting)
+void CoreSession::globalAway(const QString& msg, const bool skipFormatting)
 {
-    QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
-    CoreNetwork *net = nullptr;
+    QHash<NetworkId, CoreNetwork*>::iterator netIter = _networks.begin();
+    CoreNetwork* net = nullptr;
     while (netIter != _networks.end()) {
         net = *netIter;
         ++netIter;
@@ -766,7 +764,8 @@ void CoreSession::globalAway(const QString &msg, const bool skipFormatting)
     }
 }
 
-void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QString &oldPassword, const QString &newPassword) {
+void CoreSession::changePassword(PeerPtr peer, const QString& userName, const QString& oldPassword, const QString& newPassword)
+{
     Q_UNUSED(peer);
 
     bool success = false;
@@ -774,18 +773,15 @@ void CoreSession::changePassword(PeerPtr peer, const QString &userName, const QS
     if (uid.isValid() && uid == user())
         success = Core::changeUserPassword(uid, newPassword);
 
-    signalProxy()->restrictTargetPeers(signalProxy()->sourcePeer(), [&]{
-        emit passwordChanged(nullptr, success);
-    });
+    signalProxy()->restrictTargetPeers(signalProxy()->sourcePeer(), [&] { emit passwordChanged(nullptr, success); });
 }
 
-void CoreSession::kickClient(int peerId) {
+void CoreSession::kickClient(int peerId)
+{
     auto peer = signalProxy()->peerById(peerId);
     if (peer == nullptr) {
         qWarning() << "Invalid peer Id: " << peerId;
         return;
     }
-    signalProxy()->restrictTargetPeers(peer, [&]{
-        emit disconnectFromCore();
-    });
+    signalProxy()->restrictTargetPeers(peer, [&] { emit disconnectFromCore(); });
 }

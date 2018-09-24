@@ -23,7 +23,6 @@
 #include "client-export.h"
 
 #include "settings.h"
-
 #include "types.h"
 
 class QHostAddress;
@@ -31,11 +30,9 @@ class QSslSocket;
 
 class CLIENT_EXPORT ClientSettings : public Settings
 {
-
 protected:
     ClientSettings(QString group = "General");
 };
-
 
 // ========================================
 //  CoreAccountSettings
@@ -66,26 +63,25 @@ public:
 
     void clearAccounts();
 
-    void storeAccountData(AccountId id, const QVariantMap &data);
+    void storeAccountData(AccountId id, const QVariantMap& data);
     QVariantMap retrieveAccountData(AccountId) const;
     void removeAccount(AccountId);
 
-    void setJumpKeyMap(const QHash<int, BufferId> &keyMap);
+    void setJumpKeyMap(const QHash<int, BufferId>& keyMap);
     QHash<int, BufferId> jumpKeyMap() const;
 
-    void setBufferViewOverlay(const QSet<int> &viewIds);
+    void setBufferViewOverlay(const QSet<int>& viewIds);
     QSet<int> bufferViewOverlay() const;
 
-    void setAccountValue(const QString &key, const QVariant &data);
-    QVariant accountValue(const QString &key, const QVariant &def = QVariant()) const;
+    void setAccountValue(const QString& key, const QVariant& data);
+    QVariant accountValue(const QString& key, const QVariant& def = QVariant()) const;
 
 protected:
-    QString keyForNotify(const QString &key) const override;
+    QString keyForNotify(const QString& key) const override;
 
 private:
     QString _subgroup;
 };
-
 
 // ========================================
 //  NotificationSettings
@@ -93,7 +89,8 @@ private:
 class CLIENT_EXPORT NotificationSettings : public ClientSettings
 {
 public:
-    enum HighlightNickType {
+    enum HighlightNickType
+    {
         NoNick = 0x00,
         CurrentNick = 0x01,
         AllNicks = 0x02
@@ -101,11 +98,11 @@ public:
 
     NotificationSettings();
 
-    void setValue(const QString &key, const QVariant &data);
-    QVariant value(const QString &key, const QVariant &def = {}) const;
-    void remove(const QString &key);
+    void setValue(const QString& key, const QVariant& data);
+    QVariant value(const QString& key, const QVariant& def = {}) const;
+    void remove(const QString& key);
 
-    void setHighlightList(const QVariantList &highlightList);
+    void setHighlightList(const QVariantList& highlightList);
     QVariantList highlightList() const;
 
     void setHighlightNick(HighlightNickType);
@@ -115,7 +112,6 @@ public:
     bool nicksCaseSensitive() const;
 };
 
-
 // ========================================
 // CoreConnectionSettings
 // ========================================
@@ -123,8 +119,9 @@ public:
 class CLIENT_EXPORT CoreConnectionSettings : public ClientSettings
 {
 public:
-    enum NetworkDetectionMode {
-        UseQNetworkConfigurationManager = 1, // UseSolid is gone
+    enum NetworkDetectionMode
+    {
+        UseQNetworkConfigurationManager = 1,  // UseSolid is gone
         UsePingTimeout,
         NoActiveDetection
     };
@@ -144,7 +141,6 @@ public:
     int reconnectInterval() const;
 };
 
-
 // ========================================
 // TabCompletionSettings
 // ========================================
@@ -152,14 +148,15 @@ public:
 class CLIENT_EXPORT TabCompletionSettings : public ClientSettings
 {
 public:
-    enum SortMode {
+    enum SortMode
+    {
         Alphabetical,
         LastActivity
     };
 
     TabCompletionSettings();
 
-    void setCompletionSuffix(const QString &);
+    void setCompletionSuffix(const QString&);
     QString completionSuffix() const;
 
     void setAddSpaceMidSentence(bool);
@@ -175,14 +172,13 @@ public:
     bool useLastSpokenTo() const;
 };
 
-
 // ========================================
 // ItemViewSettings
 // ========================================
 class CLIENT_EXPORT ItemViewSettings : public ClientSettings
 {
 public:
-    ItemViewSettings(const QString &group = "ItemViews");
+    ItemViewSettings(const QString& group = "ItemViews");
 
     bool displayTopicInTooltip() const;
     bool mouseWheelChangesBuffer() const;

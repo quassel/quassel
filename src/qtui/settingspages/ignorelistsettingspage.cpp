@@ -20,20 +20,20 @@
 
 #include "ignorelistsettingspage.h"
 
+#include <QDebug>
+#include <QEvent>
 #include <QHeaderView>
 #include <QItemSelectionModel>
+#include <QMessageBox>
 #include <QModelIndex>
 #include <QPainter>
-#include <QMessageBox>
 #include <QString>
-#include <QEvent>
-#include <QDebug>
 
 #include "expressionmatch.h"
 #include "icon.h"
 #include "util.h"
 
-IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
+IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget* parent)
     : SettingsPage(tr("IRC"), tr("Ignore List"), parent)
 {
     ui.setupUi(this);
@@ -68,12 +68,10 @@ IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
     enableDialog(_ignoreListModel.isReady());
 }
 
-
 IgnoreListSettingsPage::~IgnoreListSettingsPage()
 {
     delete _delegate;
 }
-
 
 void IgnoreListSettingsPage::load()
 {
@@ -83,12 +81,10 @@ void IgnoreListSettingsPage::load()
     ui.editIgnoreRuleButton->setEnabled(false);
 }
 
-
 void IgnoreListSettingsPage::defaults()
 {
     _ignoreListModel.loadDefaults();
 }
-
 
 void IgnoreListSettingsPage::save()
 {
@@ -99,21 +95,18 @@ void IgnoreListSettingsPage::save()
     ui.editIgnoreRuleButton->setEnabled(false);
 }
 
-
 void IgnoreListSettingsPage::enableDialog(bool enabled)
 {
     ui.newIgnoreRuleButton->setEnabled(enabled);
     setEnabled(enabled);
 }
 
-
-void IgnoreListSettingsPage::selectionChanged(const QItemSelection &selection, const QItemSelection &)
+void IgnoreListSettingsPage::selectionChanged(const QItemSelection& selection, const QItemSelection&)
 {
     bool state = !selection.isEmpty();
     ui.deleteIgnoreRuleButton->setEnabled(state);
     ui.editIgnoreRuleButton->setEnabled(state);
 }
-
 
 void IgnoreListSettingsPage::deleteSelectedIgnoreRule()
 {
@@ -123,8 +116,7 @@ void IgnoreListSettingsPage::deleteSelectedIgnoreRule()
     _ignoreListModel.removeIgnoreRule(ui.ignoreListView->selectionModel()->selectedIndexes()[0].row());
 }
 
-
-void IgnoreListSettingsPage::newIgnoreRule(const QString &rule)
+void IgnoreListSettingsPage::newIgnoreRule(const QString& rule)
 {
     IgnoreListManager::IgnoreListItem newItem = IgnoreListManager::IgnoreListItem();
     newItem.setStrictness(IgnoreListManager::SoftStrictness);
@@ -139,15 +131,15 @@ void IgnoreListSettingsPage::newIgnoreRule(const QString &rule)
         enableOkButton = true;
     }
 
-    auto *dlg = new IgnoreListEditDlg(newItem, this, enableOkButton);
+    auto* dlg = new IgnoreListEditDlg(newItem, this, enableOkButton);
     dlg->enableOkButton(enableOkButton);
     while (dlg->exec() == QDialog::Accepted) {
         if (!_ignoreListModel.newIgnoreRule(dlg->ignoreListItem())) {
             if (QMessageBox::warning(this,
-                    tr("Rule already exists"),
-                    tr("There is already a rule\n\"%1\"\nPlease choose another rule.")
-                    .arg(dlg->ignoreListItem().contents()),
-                    QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok)
+                                     tr("Rule already exists"),
+                                     tr("There is already a rule\n\"%1\"\nPlease choose another rule.").arg(dlg->ignoreListItem().contents()),
+                                     QMessageBox::Ok | QMessageBox::Cancel,
+                                     QMessageBox::Ok)
                 == QMessageBox::Cancel)
                 break;
 
@@ -162,7 +154,6 @@ void IgnoreListSettingsPage::newIgnoreRule(const QString &rule)
     dlg->deleteLater();
 }
 
-
 void IgnoreListSettingsPage::editSelectedIgnoreRule()
 {
     if (!ui.ignoreListView->selectionModel()->hasSelection())
@@ -175,31 +166,29 @@ void IgnoreListSettingsPage::editSelectedIgnoreRule()
     }
 }
 
-
-void IgnoreListSettingsPage::editIgnoreRule(const QString &ignoreRule)
+void IgnoreListSettingsPage::editIgnoreRule(const QString& ignoreRule)
 {
     ui.ignoreListView->selectionModel()->select(_ignoreListModel.indexOf(ignoreRule), QItemSelectionModel::Select);
-    if (ui.ignoreListView->selectionModel()->hasSelection()) // && ui.ignoreListView->selectionModel()->selectedIndexes()[0].row() != -1)
+    if (ui.ignoreListView->selectionModel()->hasSelection())  // && ui.ignoreListView->selectionModel()->selectedIndexes()[0].row() != -1)
         editSelectedIgnoreRule();
     else
         newIgnoreRule(ignoreRule);
 }
 
-
 /*
   IgnoreListDelegate
 */
-void IgnoreListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void IgnoreListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     if (index.column() == 0) {
-        QStyle *style = QApplication::style();
+        QStyle* style = QApplication::style();
         if (option.state & QStyle::State_Selected)
             painter->fillRect(option.rect, option.palette.highlight());
 
         QStyleOptionButton opts;
         opts.direction = option.direction;
         opts.rect = option.rect;
-        opts.rect.moveLeft(option.rect.center().rx()-10);
+        opts.rect.moveLeft(option.rect.center().rx() - 10);
         opts.state = option.state;
         opts.state |= index.data().toBool() ? QStyle::State_On : QStyle::State_Off;
         style->drawControl(QStyle::CE_CheckBox, &opts, painter);
@@ -208,10 +197,8 @@ void IgnoreListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
         QStyledItemDelegate::paint(painter, option, index);
 }
 
-
 // provide interactivity for the checkboxes
-bool IgnoreListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
-    const QStyleOptionViewItem &option, const QModelIndex &index)
+bool IgnoreListDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index)
 {
     Q_UNUSED(option)
     switch (event->type()) {
@@ -226,12 +213,13 @@ bool IgnoreListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     }
 }
 
-
 /*
   IgnoreListEditDlg
 */
-IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent, bool enabled)
-    : QDialog(parent), _ignoreListItem(item), _hasChanged(enabled)
+IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem& item, QWidget* parent, bool enabled)
+    : QDialog(parent)
+    , _ignoreListItem(item)
+    , _hasChanged(enabled)
 {
     ui.setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose, false);
@@ -300,7 +288,6 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &it
     widgetHasChanged();
 }
 
-
 void IgnoreListEditDlg::widgetHasChanged()
 {
     if (ui.messageTypeButton->isChecked())
@@ -333,9 +320,7 @@ void IgnoreListEditDlg::widgetHasChanged()
     }
     else {
         // Trim the resulting MultiWildcard expression
-        _clonedIgnoreListItem.setScopeRule(
-                    ExpressionMatch::trimMultiWildcardWhitespace(
-                        ui.scopeRuleTextEdit->toPlainText()));
+        _clonedIgnoreListItem.setScopeRule(ExpressionMatch::trimMultiWildcardWhitespace(ui.scopeRuleTextEdit->toPlainText()));
     }
 
     _clonedIgnoreListItem.setContents(ui.ignoreRuleLineEdit->text());
@@ -348,7 +333,6 @@ void IgnoreListEditDlg::widgetHasChanged()
         _hasChanged = false;
     ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(_hasChanged);
 }
-
 
 void IgnoreListEditDlg::enableOkButton(bool state)
 {

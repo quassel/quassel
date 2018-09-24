@@ -20,11 +20,11 @@
 
 #include "test-main-export.h"
 
-#include <gmock/gmock.h>
-
 #include <QCoreApplication>
 
-TEST_MAIN_EXPORT int main(int argc, char **argv)
+#include <gmock/gmock.h>
+
+TEST_MAIN_EXPORT int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
     QCoreApplication app(argc, argv);

@@ -34,7 +34,7 @@ class NotificationsSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    NotificationsSettingsPage(QWidget *parent = nullptr);
+    NotificationsSettingsPage(QWidget* parent = nullptr);
 
     bool hasDefaults() const override;
 
@@ -47,6 +47,6 @@ private slots:
     void widgetHasChanged();
 
 private:
-    QList<SettingsPage *> _configWidgets;
+    QList<SettingsPage*> _configWidgets;
     bool _hasDefaults{false};
 };

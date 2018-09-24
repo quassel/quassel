@@ -45,28 +45,28 @@ namespace detail {
  * Contains all supported widget changed signals.
  */
 static const auto supportedWidgetChangedSignals = std::make_tuple(
-            &ColorButton::colorChanged,
-            &FontSelector::fontChanged,
-            &QAbstractButton::toggled,
-            selectOverload<int>(&QComboBox::currentIndexChanged),
-            selectOverload<double>(&QDoubleSpinBox::valueChanged),
-            &QGroupBox::toggled,
-            &QLineEdit::textChanged,
-            selectOverload<int>(&QSpinBox::valueChanged),
-            &QTextEdit::textChanged
+        &ColorButton::colorChanged,
+        &FontSelector::fontChanged,
+        &QAbstractButton::toggled,
+        selectOverload<int>(&QComboBox::currentIndexChanged),
+        selectOverload<double>(&QDoubleSpinBox::valueChanged),
+        &QGroupBox::toggled,
+        &QLineEdit::textChanged,
+        selectOverload<int>(&QSpinBox::valueChanged),
+        &QTextEdit::textChanged
 );
 
 /**
  * Tries to find a changed signal that matches the given widget type, and connects that to the given receiver/slot.
  */
-template<typename Receiver, typename Slot, std::size_t ...Is>
+template<typename Receiver, typename Slot, std::size_t... Is>
 bool tryConnectChangedSignal(const QObject* widget, const Receiver* receiver, Slot slot, std::index_sequence<Is...>)
 {
     // Tries to cast the given QObject to the given signal's class type, and connects to receiver/slot if successful.
     // If *alreadyConnected is true, just returns false to prevent multiple connections.
     static const auto tryConnect = [](const QObject* object, auto sig, auto receiver, auto slot, bool* alreadyConnected) {
         if (!*alreadyConnected) {
-            auto widget = qobject_cast<const typename MemberFunction<decltype(sig)>::ClassType *>(object);
+            auto widget = qobject_cast<const typename MemberFunction<decltype(sig)>::ClassType*>(object);
             if (widget) {
                 *alreadyConnected = QObject::connect(widget, sig, receiver, slot);
                 return *alreadyConnected;
@@ -77,11 +77,11 @@ bool tryConnectChangedSignal(const QObject* widget, const Receiver* receiver, Sl
 
     // Unpack the tuple and try to connect to each contained signal in order
     bool alreadyConnected{false};
-    auto results = { tryConnect(widget, std::get<Is>(supportedWidgetChangedSignals), receiver, slot, &alreadyConnected)... };
+    auto results = {tryConnect(widget, std::get<Is>(supportedWidgetChangedSignals), receiver, slot, &alreadyConnected)...};
     return std::any_of(results.begin(), results.end(), [](bool result) { return result; });
 }
 
-}  //detail
+}  // namespace detail
 
 /**
  * Connects the given widget's changed signal to the given receiver/context and slot.
@@ -98,7 +98,9 @@ bool tryConnectChangedSignal(const QObject* widget, const Receiver* receiver, Sl
 template<typename Receiver, typename Slot>
 bool connectToWidgetChangedSignal(const QObject* widget, const Receiver* receiver, Slot slot)
 {
-    return detail::tryConnectChangedSignal(widget, receiver, slot,
+    return detail::tryConnectChangedSignal(widget,
+                                           receiver,
+                                           slot,
                                            std::make_index_sequence<std::tuple_size<decltype(detail::supportedWidgetChangedSignals)>::value>{});
 }
 
@@ -119,8 +121,11 @@ bool connectToWidgetsChangedSignals(const Container& widgets, const Receiver* re
 {
     bool success = true;
     for (auto&& widget : widgets) {
-        success &= detail::tryConnectChangedSignal(widget, receiver, slot,
-                                                   std::make_index_sequence<std::tuple_size<decltype(detail::supportedWidgetChangedSignals)>::value>{});
+        success &= detail::tryConnectChangedSignal(widget,
+                                                   receiver,
+                                                   slot,
+                                                   std::make_index_sequence<
+                                                       std::tuple_size<decltype(detail::supportedWidgetChangedSignals)>::value>{});
     }
     return success;
 }

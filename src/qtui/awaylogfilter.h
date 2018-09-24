@@ -28,12 +28,11 @@ class AwayLogFilter : public ChatMonitorFilter
     Q_OBJECT
 
 public:
-    AwayLogFilter(MessageModel *model, QObject *parent = nullptr);
+    AwayLogFilter(MessageModel* model, QObject* parent = nullptr);
 
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
     QString idString() const override { return "AwayLog"; }
-    QVariant data(const QModelIndex &index, int role) const override;
+    QVariant data(const QModelIndex& index, int role) const override;
 };
 
-
-#endif //AWAYLOGFILTER_H
+#endif  // AWAYLOGFILTER_H

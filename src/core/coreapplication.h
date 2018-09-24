@@ -36,7 +36,7 @@ class CORE_EXPORT CoreApplication : public QCoreApplication
     Q_OBJECT
 
 public:
-    CoreApplication(int &argc, char **argv);
+    CoreApplication(int& argc, char** argv);
 
     void init();
 

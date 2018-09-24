@@ -22,7 +22,7 @@
 
 #include "quassel.h"
 
-DebugLogDlg::DebugLogDlg(QWidget *parent)
+DebugLogDlg::DebugLogDlg(QWidget* parent)
     : QDialog(parent)
 {
     ui.setupUi(this);
@@ -33,21 +33,18 @@ DebugLogDlg::DebugLogDlg(QWidget *parent)
     connect(Quassel::instance()->logger(), &Logger::messageLogged, this, &DebugLogDlg::logUpdated);
 
     QString content;
-    for (auto &&message : Quassel::instance()->logger()->messages()) {
+    for (auto&& message : Quassel::instance()->logger()->messages()) {
         content += toString(message);
     }
     ui.textEdit->setPlainText(content);
-
 }
 
-
-QString DebugLogDlg::toString(const Logger::LogEntry &msg)
+QString DebugLogDlg::toString(const Logger::LogEntry& msg)
 {
     return msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + msg.message + "\n";
 }
 
-
-void DebugLogDlg::logUpdated(const Logger::LogEntry &msg)
+void DebugLogDlg::logUpdated(const Logger::LogEntry& msg)
 {
     ui.textEdit->moveCursor(QTextCursor::End);
     ui.textEdit->insertPlainText(toString(msg));

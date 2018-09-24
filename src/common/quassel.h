@@ -46,22 +46,24 @@ class COMMON_EXPORT Quassel : public QObject, public Singleton<Quassel>
     Q_OBJECT
 
 public:
-    enum RunMode {
+    enum RunMode
+    {
         Monolithic,
         ClientOnly,
         CoreOnly
     };
 
-    struct BuildInfo {
-        QString fancyVersionString; // clickable rev
-        QString plainVersionString; // no <a> tag
+    struct BuildInfo
+    {
+        QString fancyVersionString;  // clickable rev
+        QString plainVersionString;  // no <a> tag
 
         QString baseVersion;
         QString generatedVersion;
         QString commitHash;
         QString commitDate;
 
-        uint protocolVersion; // deprecated
+        uint protocolVersion;  // deprecated
 
         QString applicationName;
         QString coreApplicationName;
@@ -83,7 +85,8 @@ public:
      *
      * @sa Feature
      */
-    enum class LegacyFeature : quint32 {
+    enum class LegacyFeature : quint32
+    {
         SynchronizedMarkerLine = 0x0001,
         SaslAuthentication     = 0x0002,
         SaslExternal           = 0x0004,
@@ -116,28 +119,29 @@ public:
      *
      * This list should be cleaned up after every protocol break, as we can assume them to be present then.
      */
-    enum class Feature : uint32_t {
+    enum class Feature : uint32_t
+    {
         SynchronizedMarkerLine,
         SaslAuthentication,
         SaslExternal,
         HideInactiveNetworks,
-        PasswordChange,           ///< Remote password change
-        CapNegotiation,           ///< IRCv3 capability negotiation, account tracking
-        VerifyServerSSL,          ///< IRC server SSL validation
-        CustomRateLimits,         ///< IRC server custom message rate limits
-        AwayFormatTimestamp,      ///< Timestamp formatting in away (e.g. %%hh:mm%%)
-        Authenticators,           ///< Whether or not the core supports auth backends
-        BufferActivitySync,       ///< Sync buffer activity status
-        CoreSideHighlights,       ///< Core-Side highlight configuration and matching
-        SenderPrefixes,           ///< Show prefixes for senders in backlog
-        RemoteDisconnect,         ///< Allow this peer to be remotely disconnected
-        ExtendedFeatures,         ///< Extended features
-        LongTime,                 ///< Serialize time as 64-bit values
-        RichMessages,             ///< Real Name and Avatar URL in backlog
-        BacklogFilterType,        ///< BacklogManager supports filtering backlog by MessageType
-        EcdsaCertfpKeys,          ///< ECDSA keys for CertFP in identities
-        LongMessageId,            ///< 64-bit IDs for messages
-        SyncedCoreInfo,           ///< CoreInfo dynamically updated using signals
+        PasswordChange,       ///< Remote password change
+        CapNegotiation,       ///< IRCv3 capability negotiation, account tracking
+        VerifyServerSSL,      ///< IRC server SSL validation
+        CustomRateLimits,     ///< IRC server custom message rate limits
+        AwayFormatTimestamp,  ///< Timestamp formatting in away (e.g. %%hh:mm%%)
+        Authenticators,       ///< Whether or not the core supports auth backends
+        BufferActivitySync,   ///< Sync buffer activity status
+        CoreSideHighlights,   ///< Core-Side highlight configuration and matching
+        SenderPrefixes,       ///< Show prefixes for senders in backlog
+        RemoteDisconnect,     ///< Allow this peer to be remotely disconnected
+        ExtendedFeatures,     ///< Extended features
+        LongTime,             ///< Serialize time as 64-bit values
+        RichMessages,         ///< Real Name and Avatar URL in backlog
+        BacklogFilterType,    ///< BacklogManager supports filtering backlog by MessageType
+        EcdsaCertfpKeys,      ///< ECDSA keys for CertFP in identities
+        LongMessageId,        ///< 64-bit IDs for messages
+        SyncedCoreInfo,       ///< CoreInfo dynamically updated using signals
     };
     Q_ENUMS(Feature)
 
@@ -152,42 +156,42 @@ public:
      *
      * @returns The Logger instance
      */
-    Logger *logger() const;
+    Logger* logger() const;
 
     static void setupBuildInfo();
-    static const BuildInfo &buildInfo();
+    static const BuildInfo& buildInfo();
     static RunMode runMode();
 
     static QString configDirPath();
 
     //! Returns a list of data directory paths
     /** There are several locations for applications to install their data files in. On Unix,
-    *  a common location is /usr/share; others include $PREFIX/share and additional directories
-    *  specified in the env variable XDG_DATA_DIRS.
-    *  \return A list of directory paths to look for data files in
-    */
+     *  a common location is /usr/share; others include $PREFIX/share and additional directories
+     *  specified in the env variable XDG_DATA_DIRS.
+     *  \return A list of directory paths to look for data files in
+     */
     static QStringList dataDirPaths();
 
     //! Searches for a data file in the possible data directories
     /** Data files can reside in $DATA_DIR/apps/quassel, where $DATA_DIR is one of the directories
-    *  returned by \sa dataDirPaths().
-    *  \Note With KDE integration enabled, files are searched (only) in KDE's appdata dirs.
-    *  \return The full path to the data file if found; a null QString else
-    */
-    static QString findDataFilePath(const QString &filename);
+     *  returned by \sa dataDirPaths().
+     *  \Note With KDE integration enabled, files are searched (only) in KDE's appdata dirs.
+     *  \return The full path to the data file if found; a null QString else
+     */
+    static QString findDataFilePath(const QString& filename);
 
     static QString translationDirPath();
 
     //! Returns a list of directories we look for scripts in
     /** We look for a subdirectory named "scripts" in the configdir and in all datadir paths.
-    *   \return A list of directory paths containing executable scripts for /exec
-    */
+     *   \return A list of directory paths containing executable scripts for /exec
+     */
     static QStringList scriptDirPaths();
 
-    static void loadTranslation(const QLocale &locale);
+    static void loadTranslation(const QLocale& locale);
 
-    static QString optionValue(const QString &option);
-    static bool isOptionSet(const QString &option);
+    static QString optionValue(const QString& option);
+    static bool isOptionSet(const QString& option);
 
     using ReloadHandler = std::function<bool()>;
 
@@ -205,7 +209,7 @@ public:
      */
     static void registerQuitHandler(QuitHandler quitHandler);
 
-    const QString &coreDumpFileName();
+    const QString& coreDumpFileName();
 
 public slots:
     /**
@@ -216,7 +220,7 @@ public slots:
     void quit();
 
 signals:
-    void messageLogged(const QDateTime &timeStamp, const QString &msg);
+    void messageLogged(const QDateTime& timeStamp, const QString& msg);
 
 private:
     void registerMetaTypes();
@@ -234,7 +238,7 @@ private:
      */
     bool reloadConfig();
 
-    void logBacktrace(const QString &filename);
+    void logBacktrace(const QString& filename);
 
 private slots:
     void handleSignal(AbstractSignalWatcher::Action action);
@@ -251,8 +255,8 @@ private:
 
     QCommandLineParser _cliParser;
 
-    Logger *_logger;
-    AbstractSignalWatcher *_signalWatcher{nullptr};
+    Logger* _logger;
+    AbstractSignalWatcher* _signalWatcher{nullptr};
 
     std::vector<ReloadHandler> _reloadHandlers;
     std::vector<QuitHandler> _quitHandlers;
@@ -287,7 +291,7 @@ public:
      * @param legacyFeatures Holds a bit-wise combination of LegacyFeature flag values, which are each added to the list of
      *                       features represented by this Features instance.
      */
-    Features(const QStringList &features, LegacyFeatures legacyFeatures);
+    Features(const QStringList& features, LegacyFeatures legacyFeatures);
 
     /**
      * Check if a given feature is marked as enabled in this Features instance.

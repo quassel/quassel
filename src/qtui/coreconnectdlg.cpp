@@ -27,7 +27,8 @@
 #include "coreaccountsettingspage.h"
 #include "icon.h"
 
-CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
+CoreConnectDlg::CoreConnectDlg(QWidget* parent)
+    : QDialog(parent)
 {
     _settingsPage = new CoreAccountSettingsPage(this);
     _settingsPage->setStandAlone(true);
@@ -41,11 +42,11 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
     setWindowTitle(tr("Connect to Core"));
     setWindowIcon(icon::get("network-disconnect"));
 
-    auto *layout = new QVBoxLayout(this);
+    auto* layout = new QVBoxLayout(this);
     layout->addWidget(_settingsPage);
 
-    auto *buttonBox = new QDialogButtonBox(this);
-    buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    auto* buttonBox = new QDialogButtonBox(this);
+    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     layout->addWidget(buttonBox);
 
     connect(_settingsPage, &CoreAccountSettingsPage::connectToCore, this, &QDialog::accept);
@@ -53,12 +54,10 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
-
 AccountId CoreConnectDlg::selectedAccount() const
 {
     return _settingsPage->selectedAccount();
 }
-
 
 void CoreConnectDlg::accept()
 {
@@ -66,12 +65,11 @@ void CoreConnectDlg::accept()
     QDialog::accept();
 }
 
-
 /******** CoreConnectAuthDlg ****************************************************************/
 
-CoreConnectAuthDlg::CoreConnectAuthDlg(CoreAccount *account, QWidget *parent)
-    : QDialog(parent),
-    _account(account)
+CoreConnectAuthDlg::CoreConnectAuthDlg(CoreAccount* account, QWidget* parent)
+    : QDialog(parent)
+    , _account(account)
 {
     ui.setupUi(this);
 
@@ -89,7 +87,6 @@ CoreConnectAuthDlg::CoreConnectAuthDlg(CoreAccount *account, QWidget *parent)
         ui.password->setFocus();
 }
 
-
 void CoreConnectAuthDlg::accept()
 {
     _account->setUser(ui.user->text());
@@ -98,7 +95,6 @@ void CoreConnectAuthDlg::accept()
 
     QDialog::accept();
 }
-
 
 void CoreConnectAuthDlg::setButtonStates()
 {

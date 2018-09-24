@@ -29,7 +29,6 @@
 #pragma once
 
 #include "authenticator.h"
-
 #include "core.h"
 
 // Link against LDAP.
@@ -50,7 +49,7 @@ class LdapAuthenticator : public Authenticator
     Q_OBJECT
 
 public:
-    LdapAuthenticator(QObject *parent = nullptr);
+    LdapAuthenticator(QObject* parent = nullptr);
     ~LdapAuthenticator() override;
 
 public slots:
@@ -63,18 +62,15 @@ public slots:
 
     bool canChangePassword() const override { return false; }
 
-    bool setup(const QVariantMap &settings, const QProcessEnvironment &environment,
-               bool loadFromEnvironment) override;
-    State init(const QVariantMap &settings, const QProcessEnvironment &environment,
-               bool loadFromEnvironment) override;
-    UserId validateUser(const QString &user, const QString &password) override;
+    bool setup(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment) override;
+    State init(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment) override;
+    UserId validateUser(const QString& user, const QString& password) override;
 
 protected:
-    void setAuthProperties(const QVariantMap &properties, const QProcessEnvironment &environment,
-                           bool loadFromEnvironment);
+    void setAuthProperties(const QVariantMap& properties, const QProcessEnvironment& environment, bool loadFromEnvironment);
     bool ldapConnect();
     void ldapDisconnect();
-    bool ldapAuth(const QString &username, const QString &password);
+    bool ldapAuth(const QString& username, const QString& password);
 
     // Protected methods for retrieving info about the LDAP connection.
     QString hostName() const { return _hostName; }
@@ -92,5 +88,5 @@ private:
     QString _uidAttribute;
 
     // The actual connection object.
-    LDAP *_connection {nullptr};
+    LDAP* _connection{nullptr};
 };

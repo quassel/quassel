@@ -32,19 +32,20 @@ class UISUPPORT_EXPORT StyledLabel : public QFrame
     Q_OBJECT
 
 public:
-    enum ResizeMode {
+    enum ResizeMode
+    {
         NoResize,
         DynamicResize,
         ResizeOnHover
     };
 
-    StyledLabel(QWidget *parent = nullptr);
+    StyledLabel(QWidget* parent = nullptr);
 
-    void setText(const QString &text);
-    void setCustomFont(const QFont &font);
+    void setText(const QString& text);
+    void setCustomFont(const QFont& font);
 
     QSize sizeHint() const override;
-    //virtual QSize minimumSizeHint() const;
+    // virtual QSize minimumSizeHint() const;
 
     inline QTextOption::WrapMode wrapMode() const { return _wrapMode; }
     void setWrapMode(QTextOption::WrapMode mode);
@@ -59,17 +60,17 @@ public:
     void setResizeMode(ResizeMode);
 
 signals:
-    void clickableActivated(const Clickable &click);
+    void clickableActivated(const Clickable& click);
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
-    void enterEvent(QEvent *) override;
-    void leaveEvent(QEvent *) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void enterEvent(QEvent*) override;
+    void leaveEvent(QEvent*) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 
-    int posToCursor(const QPointF &pos);
+    int posToCursor(const QPointF& pos);
 
 private:
     QSize _sizeHint;
