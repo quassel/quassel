@@ -321,6 +321,13 @@ if (BUILD_CORE)
 endif()
 
 # Non-Qt-based packages
+#####################################################################
+
+find_package(Boost 1.56 REQUIRED)
+set_package_properties(Boost PROPERTIES TYPE REQUIRED
+    URL "https://www.boost.org/"
+    DESCRIPTION "Boost libraries for C++"
+)
 
 find_package(ZLIB REQUIRED)
 set_package_properties(ZLIB PROPERTIES TYPE REQUIRED
