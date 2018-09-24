@@ -1,0 +1,6 @@
+We bundle the GTest sources because it is recommended to build the
+libraries with the same settings as the program under test, and
+most distros don't seem to provide the sources in their GTest package.
+
+We ship the unmodified upstream sources, but we do remove a bunch of
+unneeded directories (such as samples and build scripts).
