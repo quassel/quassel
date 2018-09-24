@@ -40,8 +40,10 @@ script:
                sh -c "cmake /src $CMAKE_OPTIONS \
                             -GNinja \
                             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                            -DBUILD_TESTING=ON \
                       && ninja install \
                       && ccache -s \
+                      && ninja test \
                      "
 
 # Define a separate job for OSX
@@ -65,9 +67,10 @@ jobs:
           if [[ "$TRAVIS_TAG" != "" && "$GH_TOKEN" != "" ]]; then
             DEPLOY=ON
           fi
-          cmake -GNinja .. -DCMAKE_BUILD_TYPE=Release -DDEPLOY=$DEPLOY
+          cmake -GNinja .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DDEPLOY=$DEPLOY
           ninja install
         - ccache -s
+        - ninja test
       deploy:
         provider: releases
         api_key: "${GH_TOKEN}"
