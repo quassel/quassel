@@ -1,0 +1,1 @@
+quassel_add_test(ExpressionMatchTest)

@@ -530,3 +530,8 @@ feature_summary(WHAT ALL
 #####################################################################
 
 add_subdirectory(src)
+
+# Build tests if so desired
+if (BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
