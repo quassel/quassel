@@ -35,6 +35,7 @@ script:
                -v "$(readlink -f build):/build" \
                -v "$(readlink -f ccache):/ccache" \
                -e CCACHE_DIR=/ccache \
+               -e CCACHE_MAXSIZE=1G \
                -e CXX=$CXX \
                quassel/quassel-build-env:$DIST \
                sh -c "cmake /src $CMAKE_OPTIONS \
@@ -60,6 +61,7 @@ jobs:
       before_install:
         - brew update && brew install ccache ninja qca qt5
       script:
+        - export CCACHE_MAXSIZE=1G
         - mkdir build && cd build
         - |
           PATH=$PATH:/usr/local/opt/qt5/bin
