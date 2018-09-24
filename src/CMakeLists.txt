@@ -8,3 +8,7 @@ if (BUILD_GUI)
     add_subdirectory(uisupport)
     add_subdirectory(qtui)
 endif()
+
+if (BUILD_TESTING)
+    add_subdirectory(test)
+endif()

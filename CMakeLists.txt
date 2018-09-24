@@ -338,7 +338,30 @@ if (NOT WIN32)
     )
 endif()
 
+# Setup unit testing
+#####################################################################
+
+option(BUILD_TESTING "Enable unit tests" OFF)
+add_feature_info(BUILD_TESTING BUILD_TESTING "Build unit tests")
+
+if (BUILD_TESTING)
+    find_package(GTest QUIET)
+    set_package_properties(GTest PROPERTIES TYPE REQUIRED
+        DESCRIPTION "Google's unit testing framework"
+        PURPOSE "Required for building unit tests"
+    )
+
+    find_package(Qt5Test QUIET)
+    set_package_properties(Qt5Test PROPERTIES TYPE REQUIRED
+        DESCRIPTION "unit testing library for the Qt5 framework"
+        PURPOSE "Required for building unit tests"
+    )
+    enable_testing()
+endif()
+
 # Check for SSL support in Qt
+#####################################################################
+
 cmake_push_check_state(RESET)
 set(CMAKE_REQUIRED_LIBRARIES Qt5::Core)
 check_cxx_source_compiles("
