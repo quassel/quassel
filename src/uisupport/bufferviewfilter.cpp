@@ -21,8 +21,8 @@
 #include "bufferviewfilter.h"
 
 #include <QApplication>
-#include <QPalette>
 #include <QBrush>
+#include <QPalette>
 
 #include "bufferinfo.h"
 #include "buffermodel.h"
@@ -33,17 +33,16 @@
 #include "networkmodel.h"
 #include "uistyle.h"
 
-
 /*****************************************
-* The Filter for the Tree View
-*****************************************/
-BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config)
-    : QSortFilterProxyModel(model),
-    _config(nullptr),
-    _sortOrder(Qt::AscendingOrder),
-    _showServerQueries(false),
-    _editMode(false),
-    _enableEditMode(tr("Show / Hide Chats"), this)
+ * The Filter for the Tree View
+ *****************************************/
+BufferViewFilter::BufferViewFilter(QAbstractItemModel* model, BufferViewConfig* config)
+    : QSortFilterProxyModel(model)
+    , _config(nullptr)
+    , _sortOrder(Qt::AscendingOrder)
+    , _showServerQueries(false)
+    , _editMode(false)
+    , _enableEditMode(tr("Show / Hide Chats"), this)
 {
     setConfig(config);
     setSourceModel(model);
@@ -61,8 +60,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
     showServerQueriesChanged();
 }
 
-
-void BufferViewFilter::setConfig(BufferViewConfig *config)
+void BufferViewFilter::setConfig(BufferViewConfig* config)
 {
     if (_config == config)
         return;
@@ -90,7 +88,6 @@ void BufferViewFilter::setConfig(BufferViewConfig *config)
     }
 }
 
-
 void BufferViewFilter::configInitialized()
 {
     if (!config())
@@ -106,7 +103,6 @@ void BufferViewFilter::configInitialized()
     emit configChanged();
 }
 
-
 void BufferViewFilter::showServerQueriesChanged()
 {
     BufferSettings bufferSettings;
@@ -118,11 +114,10 @@ void BufferViewFilter::showServerQueriesChanged()
     }
 }
 
-
-QList<QAction *> BufferViewFilter::actions(const QModelIndex &index)
+QList<QAction*> BufferViewFilter::actions(const QModelIndex& index)
 {
     Q_UNUSED(index)
-    QList<QAction *> actionList;
+    QList<QAction*> actionList;
     actionList << &_enableEditMode;
     return actionList;
 }
@@ -134,7 +129,6 @@ void BufferViewFilter::setFilterString(const QString string)
     endResetModel();
     enableEditMode(!string.isEmpty());
 }
-
 
 void BufferViewFilter::enableEditMode(bool enable)
 {
@@ -167,8 +161,7 @@ void BufferViewFilter::enableEditMode(bool enable)
     invalidate();
 }
 
-
-Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const
+Qt::ItemFlags BufferViewFilter::flags(const QModelIndex& index) const
 {
     QModelIndex source_index = mapToSource(index);
     Qt::ItemFlags flags = sourceModel()->flags(source_index);
@@ -180,7 +173,7 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const
         // This DOES mean that it looks like you can merge a buffer into the Status buffer, but that is restricted in BufferView::dropEvent().
         if (bufferType == BufferInfo::StatusBuffer) {
             // But only if the layout isn't locked!
-            auto *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+            auto* clientConf = qobject_cast<ClientBufferViewConfig*>(config());
             if (clientConf && !clientConf->isLocked()) {
                 flags |= Qt::ItemIsDropEnabled;
             }
@@ -194,8 +187,7 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const
     return flags;
 }
 
-
-bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+bool BufferViewFilter::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
     if (!config() || !NetworkModel::mimeContainsBufferList(data))
         return QSortFilterProxyModel::dropMimeData(data, action, row, column, parent);
@@ -205,7 +197,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     if (sourceModel()->data(source_parent, NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType)
         droppedNetworkId = sourceModel()->data(source_parent, NetworkModel::NetworkIdRole).value<NetworkId>();
 
-    QList<QPair<NetworkId, BufferId> > bufferList = NetworkModel::mimeDataToBufferList(data);
+    QList<QPair<NetworkId, BufferId>> bufferList = NetworkModel::mimeDataToBufferList(data);
     BufferId bufferId;
     NetworkId networkId;
     int pos;
@@ -233,7 +225,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
             if (config()->bufferList().contains(bufferId) && !config()->sortAlphabetically()) {
                 if (config()->bufferList().indexOf(bufferId) < pos)
                     pos--;
-                auto *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+                auto* clientConf = qobject_cast<ClientBufferViewConfig*>(config());
                 if (!clientConf || !clientConf->isLocked())
                     config()->requestMoveBuffer(bufferId, pos);
             }
@@ -248,15 +240,13 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     return true;
 }
 
-
 void BufferViewFilter::sort(int column, Qt::SortOrder order)
 {
     _sortOrder = order;
     QSortFilterProxyModel::sort(column, order);
 }
 
-
-void BufferViewFilter::addBuffer(const BufferId &bufferId) const
+void BufferViewFilter::addBuffer(const BufferId& bufferId) const
 {
     if (!config() || config()->bufferList().contains(bufferId))
         return;
@@ -277,14 +267,13 @@ void BufferViewFilter::addBuffer(const BufferId &bufferId) const
     config()->requestAddBuffer(bufferId, pos);
 }
 
-
-void BufferViewFilter::addBuffers(const QList<BufferId> &bufferIds) const
+void BufferViewFilter::addBuffers(const QList<BufferId>& bufferIds) const
 {
     if (!config())
         return;
 
     QList<BufferId> bufferList = config()->bufferList();
-    foreach(BufferId bufferId, bufferIds) {
+    foreach (BufferId bufferId, bufferIds) {
         if (bufferList.contains(bufferId))
             continue;
 
@@ -306,8 +295,7 @@ void BufferViewFilter::addBuffers(const QList<BufferId> &bufferIds) const
     }
 }
 
-
-bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const
+bool BufferViewFilter::filterAcceptBuffer(const QModelIndex& source_bufferIndex) const
 {
     // no config -> "all buffers" -> accept everything
     if (!config())
@@ -320,17 +308,19 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 
     if (!config()->bufferList().contains(bufferId) && !_editMode) {
         // add the buffer if...
-        if (config()->isInitialized()
-            && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
-            && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
-                || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > BufferInfo::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
+        if (config()->isInitialized() && !config()->removedBuffers().contains(bufferId)  // it hasn't been manually removed and either
+            && ((config()->addNewBuffersAutomatically()
+                 && !config()->temporarilyRemovedBuffers().contains(bufferId))  // is totally unknown to us (a new buffer)...
+                || (config()->temporarilyRemovedBuffers().contains(bufferId)
+                    && activityLevel > BufferInfo::OtherActivity))) {  // or was just temporarily hidden and has a new message waiting for us.
             addBuffer(bufferId);
         }
         // note: adding the buffer to the valid list does not temper with the following filters ("show only channels" and stuff)
         return false;
     }
 
-    if (config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
+    if (config()->networkId().isValid()
+        && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
         return false;
 
     int allowedBufferTypes = config()->allowedBufferTypes();
@@ -340,7 +330,8 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     if (!(allowedBufferTypes & bufferType))
         return false;
 
-    if (bufferType & BufferInfo::QueryBuffer && !_showServerQueries && sourceModel()->data(source_bufferIndex, Qt::DisplayRole).toString().contains('.')) {
+    if (bufferType & BufferInfo::QueryBuffer && !_showServerQueries
+        && sourceModel()->data(source_bufferIndex, Qt::DisplayRole).toString().contains('.')) {
         return false;
     }
 
@@ -349,7 +340,8 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
         QString name = info.bufferName();
         if (name.contains(_filterString, Qt::CaseInsensitive)) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -359,7 +351,8 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     if (bufferId == Client::bufferModel()->data(currentIndex, NetworkModel::BufferIdRole).value<BufferId>())
         return true;
 
-    if (config()->hideInactiveBuffers() && !sourceModel()->data(source_bufferIndex, NetworkModel::ItemActiveRole).toBool() && activityLevel <= BufferInfo::OtherActivity)
+    if (config()->hideInactiveBuffers() && !sourceModel()->data(source_bufferIndex, NetworkModel::ItemActiveRole).toBool()
+        && activityLevel <= BufferInfo::OtherActivity)
         return false;
 
     if (config()->minimumActivity() > activityLevel)
@@ -368,8 +361,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     return true;
 }
 
-
-bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const
+bool BufferViewFilter::filterAcceptNetwork(const QModelIndex& source_index) const
 {
     if (!config())
         return true;
@@ -386,8 +378,7 @@ bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) cons
     }
 }
 
-
-bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
     QModelIndex child = sourceModel()->index(source_row, 0, source_parent);
 
@@ -407,8 +398,7 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
     }
 }
 
-
-bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+bool BufferViewFilter::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
 {
     int leftItemType = sourceModel()->data(source_left, NetworkModel::ItemTypeRole).toInt();
     int rightItemType = sourceModel()->data(source_right, NetworkModel::ItemTypeRole).toInt();
@@ -423,28 +413,25 @@ bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelInde
     }
 }
 
-
-bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+bool BufferViewFilter::bufferLessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
 {
     BufferId leftBufferId = sourceModel()->data(source_left, NetworkModel::BufferIdRole).value<BufferId>();
     BufferId rightBufferId = sourceModel()->data(source_right, NetworkModel::BufferIdRole).value<BufferId>();
     // If filtering, prioritize relevant items first
     if (!_filterString.isEmpty()) {
         // Get names of the buffers
-        QString leftBufferName = sourceModel()->data(source_left, NetworkModel::BufferInfoRole)
-                .value<BufferInfo>().bufferName();
-        QString rightBufferName = sourceModel()->data(source_right, NetworkModel::BufferInfoRole)
-                .value<BufferInfo>().bufferName();
+        QString leftBufferName = sourceModel()->data(source_left, NetworkModel::BufferInfoRole).value<BufferInfo>().bufferName();
+        QString rightBufferName = sourceModel()->data(source_right, NetworkModel::BufferInfoRole).value<BufferInfo>().bufferName();
         // Check if there's any differences across types, most important first
         if ((QString::compare(leftBufferName, _filterString, Qt::CaseInsensitive) == 0)
-                != (QString::compare(rightBufferName, _filterString, Qt::CaseInsensitive) == 0)) {
+            != (QString::compare(rightBufferName, _filterString, Qt::CaseInsensitive) == 0)) {
             // One of these buffers is an exact match with the filter string, while the other isn't
             // Prioritize whichever one is the exact match
             // (If left buffer is exact, return true to set it as less than right)
             return (QString::compare(leftBufferName, _filterString, Qt::CaseInsensitive) == 0);
         }
         else if (leftBufferName.startsWith(_filterString, Qt::CaseInsensitive)
-                != rightBufferName.startsWith(_filterString, Qt::CaseInsensitive)) {
+                 != rightBufferName.startsWith(_filterString, Qt::CaseInsensitive)) {
             // One of these buffers starts with the filter string, while the other doesn't
             // Prioritize whichever one starts with the filter string
             // (If left buffer starts with, return true to set it as less than right)
@@ -465,8 +452,7 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QMod
         return bufferIdLessThan(leftBufferId, rightBufferId);
 }
 
-
-bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+bool BufferViewFilter::networkLessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
 {
     // NetworkId leftNetworkId = sourceModel()->data(source_left, NetworkModel::NetworkIdRole).value<NetworkId>();
     // NetworkId rightNetworkId = sourceModel()->data(source_right, NetworkModel::NetworkIdRole).value<NetworkId>();
@@ -474,8 +460,7 @@ bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QMo
     return QSortFilterProxyModel::lessThan(source_left, source_right);
 }
 
-
-QVariant BufferViewFilter::data(const QModelIndex &index, int role) const
+QVariant BufferViewFilter::data(const QModelIndex& index, int role) const
 {
     switch (role) {
     case Qt::FontRole:
@@ -492,8 +477,7 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const
     }
 }
 
-
-QVariant BufferViewFilter::checkedState(const QModelIndex &index) const
+QVariant BufferViewFilter::checkedState(const QModelIndex& index) const
 {
     if (!_editMode || !config())
         return QVariant();
@@ -521,8 +505,7 @@ QVariant BufferViewFilter::checkedState(const QModelIndex &index) const
     return Qt::Unchecked;
 }
 
-
-bool BufferViewFilter::setData(const QModelIndex &index, const QVariant &value, int role)
+bool BufferViewFilter::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     switch (role) {
     case Qt::CheckStateRole:
@@ -532,8 +515,7 @@ bool BufferViewFilter::setData(const QModelIndex &index, const QVariant &value, 
     }
 }
 
-
-bool BufferViewFilter::setCheckedState(const QModelIndex &index, Qt::CheckState state)
+bool BufferViewFilter::setCheckedState(const QModelIndex& index, Qt::CheckState state)
 {
     QModelIndex source_index = mapToSource(index);
     BufferId bufferId = sourceModel()->data(source_index, NetworkModel::BufferIdRole).value<BufferId>();
@@ -563,8 +545,7 @@ bool BufferViewFilter::setCheckedState(const QModelIndex &index, Qt::CheckState 
     return true;
 }
 
-
-bool BufferViewFilter::bufferIdLessThan(const BufferId &left, const BufferId &right)
+bool BufferViewFilter::bufferIdLessThan(const BufferId& left, const BufferId& right)
 {
     Q_CHECK_PTR(Client::networkModel());
     if (!Client::networkModel())
@@ -579,5 +560,8 @@ bool BufferViewFilter::bufferIdLessThan(const BufferId &left, const BufferId &ri
     if (leftType != rightType)
         return leftType < rightType;
     else
-        return QString::compare(Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString(), Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
+        return QString::compare(Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString(),
+                                Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString(),
+                                Qt::CaseInsensitive)
+               < 0;
 }

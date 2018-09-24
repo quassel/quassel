@@ -18,11 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "core.h"
+
 #include <algorithm>
 
 #include <QCoreApplication>
 
-#include "core.h"
 #include "coreauthhandler.h"
 #include "coresession.h"
 #include "coresettings.h"
@@ -37,16 +38,16 @@
 #include "util.h"
 
 #ifdef HAVE_LDAP
-#  include "ldapauthenticator.h"
+#    include "ldapauthenticator.h"
 #endif
 
 // migration related
 #include <QFile>
 #ifdef Q_OS_WIN
-#  include <windows.h>
+#    include <windows.h>
 #else
-#  include <unistd.h>
-#  include <termios.h>
+#    include <termios.h>
+#    include <unistd.h>
 #endif /* Q_OS_WIN */
 
 // ==============================
@@ -57,11 +58,14 @@ const int Core::AddClientEventId = QEvent::registerEventType();
 class AddClientEvent : public QEvent
 {
 public:
-    AddClientEvent(RemotePeer *p, UserId uid) : QEvent(QEvent::Type(Core::AddClientEventId)), peer(p), userId(uid) {}
-    RemotePeer *peer;
+    AddClientEvent(RemotePeer* p, UserId uid)
+        : QEvent(QEvent::Type(Core::AddClientEventId))
+        , peer(p)
+        , userId(uid)
+    {}
+    RemotePeer* peer;
     UserId userId;
 };
-
 
 // ==============================
 //  Core
@@ -79,7 +83,6 @@ Core::Core()
     _storageSyncTimer.setParent(this);
 }
 
-
 Core::~Core()
 {
     qDeleteAll(_connectingClients);
@@ -87,10 +90,9 @@ Core::~Core()
     syncStorage();
 }
 
-
 void Core::init()
 {
-    _startTime = QDateTime::currentDateTime().toUTC(); // for uptime :)
+    _startTime = QDateTime::currentDateTime().toUTC();  // for uptime :)
 
     // check settings version
     // so far, we only have 1
@@ -206,7 +208,6 @@ void Core::init()
             _oidentdConfigGenerator = new OidentdConfigGenerator(this);
         }
 
-
         if (Quassel::isOptionSet("ident-daemon")) {
             _identServer = new IdentServer(this);
         }
@@ -222,7 +223,7 @@ void Core::init()
         });
 
         connect(&_storageSyncTimer, &QTimer::timeout, this, &Core::syncStorage);
-        _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
+        _storageSyncTimer.start(10 * 60 * 1000);  // 10 minutes
     }
 
     connect(&_server, &QTcpServer::newConnection, this, &Core::incomingConnection);
@@ -244,7 +245,6 @@ void Core::init()
     }
 }
 
-
 void Core::initAsync()
 {
     try {
@@ -255,14 +255,13 @@ void Core::initAsync()
     }
 }
 
-
 void Core::shutdown()
 {
     quInfo() << "Core shutting down...";
 
     saveState();
 
-    for (auto &&client : _connectingClients) {
+    for (auto&& client : _connectingClients) {
         client->deleteLater();
     }
     _connectingClients.clear();
@@ -272,14 +271,13 @@ void Core::shutdown()
         return;
     }
 
-    for (auto &&session : _sessions) {
+    for (auto&& session : _sessions) {
         connect(session, &SessionThread::shutdownComplete, this, &Core::onSessionShutdown);
         session->shutdown();
     }
 }
 
-
-void Core::onSessionShutdown(SessionThread *session)
+void Core::onSessionShutdown(SessionThread* session)
 {
     _sessions.take(_sessions.key(session))->deleteLater();
     if (_sessions.isEmpty()) {
@@ -288,19 +286,17 @@ void Core::onSessionShutdown(SessionThread *session)
     }
 }
 
-
 /*** Session Restore ***/
 
 void Core::saveState()
 {
     if (_storage) {
         QVariantList activeSessions;
-        for (auto &&user : instance()->_sessions.keys())
+        for (auto&& user : instance()->_sessions.keys())
             activeSessions << QVariant::fromValue<UserId>(user);
         _storage->setCoreState(activeSessions);
     }
 }
-
 
 void Core::restoreState()
 {
@@ -322,28 +318,36 @@ void Core::restoreState()
     }
     */
 
-    const QList<QVariant> &activeSessionsFallback = s.coreState().toMap()["ActiveSessions"].toList();
+    const QList<QVariant>& activeSessionsFallback = s.coreState().toMap()["ActiveSessions"].toList();
     QVariantList activeSessions = instance()->_storage->getCoreState(activeSessionsFallback);
 
     if (activeSessions.count() > 0) {
         quInfo() << "Restoring previous core state...";
-        for(auto &&v : activeSessions) {
+        for (auto&& v : activeSessions) {
             UserId user = v.value<UserId>();
             sessionForUser(user, true);
         }
     }
 }
 
-
 /*** Core Setup ***/
 
-QString Core::setup(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupData)
+QString Core::setup(const QString& adminUser,
+                    const QString& adminPassword,
+                    const QString& backend,
+                    const QVariantMap& setupData,
+                    const QString& authenticator,
+                    const QVariantMap& authSetupData)
 {
     return instance()->setupCore(adminUser, adminPassword, backend, setupData, authenticator, authSetupData);
 }
 
-
-QString Core::setupCore(const QString &adminUser, const QString &adminPassword, const QString &backend, const QVariantMap &setupData, const QString &authenticator, const QVariantMap &authSetupData)
+QString Core::setupCore(const QString& adminUser,
+                        const QString& adminPassword,
+                        const QString& backend,
+                        const QVariantMap& setupData,
+                        const QString& authenticator,
+                        const QVariantMap& authSetupData)
 {
     if (_configured)
         return tr("Core is already configured! Not configuring again...");
@@ -357,8 +361,7 @@ QString Core::setupCore(const QString &adminUser, const QString &adminPassword, 
         }
 
         quInfo() << "Selected authenticator:" << authenticator;
-        if (!(_configured = initAuthenticator(authenticator, authSetupData, {}, false, true)))
-        {
+        if (!(_configured = initAuthenticator(authenticator, authSetupData, {}, false, true))) {
             return tr("Could not setup authenticator!");
         }
     }
@@ -376,10 +379,9 @@ QString Core::setupCore(const QString &adminUser, const QString &adminPassword, 
     quInfo() << qPrintable(tr("Creating admin user..."));
     _storage->addUser(adminUser, adminPassword);
     cacheSysIdent();
-    startListening(); // TODO check when we need this
+    startListening();  // TODO check when we need this
     return QString();
 }
-
 
 QString Core::setupCoreForInternalUsage()
 {
@@ -396,7 +398,6 @@ QString Core::setupCoreForInternalUsage()
     return setupCore("AdminUser", QString::number(pass), "SQLite", QVariantMap(), "Database", QVariantMap());
 }
 
-
 /*** Storage Handling ***/
 
 template<typename Storage>
@@ -409,7 +410,6 @@ void Core::registerStorageBackend()
         backend->deleteLater();
 }
 
-
 void Core::registerStorageBackends()
 {
     if (_registeredStorageBackends.empty()) {
@@ -418,19 +418,16 @@ void Core::registerStorageBackends()
     }
 }
 
-
-DeferredSharedPtr<Storage> Core::storageBackend(const QString &backendId) const
+DeferredSharedPtr<Storage> Core::storageBackend(const QString& backendId) const
 {
-    auto it = std::find_if(_registeredStorageBackends.begin(), _registeredStorageBackends.end(),
-                           [backendId](const DeferredSharedPtr<Storage> &backend) {
-                               return backend->displayName() == backendId;
-                           });
+    auto it = std::find_if(_registeredStorageBackends.begin(),
+                           _registeredStorageBackends.end(),
+                           [backendId](const DeferredSharedPtr<Storage>& backend) { return backend->displayName() == backendId; });
     return it != _registeredStorageBackends.end() ? *it : nullptr;
 }
 
-
-bool Core::initStorage(const QString &backend, const QVariantMap &settings,
-                       const QProcessEnvironment &environment, bool loadFromEnvironment, bool setup)
+bool Core::initStorage(
+    const QString& backend, const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment, bool setup)
 {
     if (backend.isEmpty()) {
         quWarning() << "No storage backend selected!";
@@ -465,14 +462,12 @@ bool Core::initStorage(const QString &backend, const QVariantMap &settings,
     case Storage::IsReady:
         // delete all other backends
         _registeredStorageBackends.clear();
-        connect(storage.get(), &Storage::bufferInfoUpdated,
-                this, &Core::bufferInfoUpdated);
+        connect(storage.get(), &Storage::bufferInfoUpdated, this, &Core::bufferInfoUpdated);
         break;
     }
     _storage = std::move(storage);
     return true;
 }
-
 
 void Core::syncStorage()
 {
@@ -480,9 +475,8 @@ void Core::syncStorage()
         _storage->sync();
 }
 
-
 /*** Storage Access ***/
-bool Core::createNetwork(UserId user, NetworkInfo &info)
+bool Core::createNetwork(UserId user, NetworkInfo& info)
 {
     NetworkId networkId = instance()->_storage->createNetwork(user, info);
     if (!networkId.isValid())
@@ -491,7 +485,6 @@ bool Core::createNetwork(UserId user, NetworkInfo &info)
     info.networkId = networkId;
     return true;
 }
-
 
 /*** Authenticators ***/
 
@@ -506,7 +499,6 @@ void Core::registerAuthenticator()
         authenticator->deleteLater();
 }
 
-
 void Core::registerAuthenticators()
 {
     if (_registeredAuthenticators.empty()) {
@@ -517,22 +509,20 @@ void Core::registerAuthenticators()
     }
 }
 
-
-DeferredSharedPtr<Authenticator> Core::authenticator(const QString &backendId) const
+DeferredSharedPtr<Authenticator> Core::authenticator(const QString& backendId) const
 {
-    auto it = std::find_if(_registeredAuthenticators.begin(), _registeredAuthenticators.end(),
-                           [backendId](const DeferredSharedPtr<Authenticator> &authenticator) {
+    auto it = std::find_if(_registeredAuthenticators.begin(),
+                           _registeredAuthenticators.end(),
+                           [backendId](const DeferredSharedPtr<Authenticator>& authenticator) {
                                return authenticator->backendId() == backendId;
                            });
     return it != _registeredAuthenticators.end() ? *it : nullptr;
 }
 
-
 // FIXME: Apparently, this is the legacy way of initting storage backends?
 // If there's a not-legacy way, it should be used here
-bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings,
-                             const QProcessEnvironment &environment, bool loadFromEnvironment,
-                             bool setup)
+bool Core::initAuthenticator(
+    const QString& backend, const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment, bool setup)
 {
     if (backend.isEmpty()) {
         quWarning() << "No authenticator selected!";
@@ -571,27 +561,25 @@ bool Core::initAuthenticator(const QString &backend, const QVariantMap &settings
     return true;
 }
 
-
 /*** Network Management ***/
 
 bool Core::sslSupported()
 {
 #ifdef HAVE_SSL
-    auto *sslServer = qobject_cast<SslServer *>(&instance()->_server);
+    auto* sslServer = qobject_cast<SslServer*>(&instance()->_server);
     return sslServer && sslServer->isCertValid();
 #else
     return false;
 #endif
 }
 
-
 bool Core::reloadCerts()
 {
 #ifdef HAVE_SSL
-    auto *sslServerv4 = qobject_cast<SslServer *>(&_server);
+    auto* sslServerv4 = qobject_cast<SslServer*>(&_server);
     bool retv4 = sslServerv4->reloadCerts();
 
-    auto *sslServerv6 = qobject_cast<SslServer *>(&_v6server);
+    auto* sslServerv6 = qobject_cast<SslServer*>(&_v6server);
     bool retv6 = sslServerv6->reloadCerts();
 
     return retv4 && retv6;
@@ -601,14 +589,12 @@ bool Core::reloadCerts()
 #endif
 }
 
-
 void Core::cacheSysIdent()
 {
     if (isConfigured()) {
         _authUserNames = _storage->getAllAuthUserNames();
     }
 }
-
 
 QString Core::strictSysIdent(UserId user) const
 {
@@ -626,9 +612,8 @@ QString Core::strictSysIdent(UserId user) const
 
     // ...something very weird is going on if we ended up here (an active CoreSession without a corresponding database entry?)
     qWarning().nospace() << "Unable to find authusername for UserId " << user << ", this should never happen!";
-    return "unknown"; // Should we just terminate the program instead?
+    return "unknown";  // Should we just terminate the program instead?
 }
-
 
 bool Core::startListening()
 {
@@ -642,58 +627,42 @@ bool Core::startListening()
     const QString listen = Quassel::optionValue("listen");
     const QStringList listen_list = listen.split(",", QString::SkipEmptyParts);
     if (listen_list.size() > 0) {
-        foreach(const QString listen_term, listen_list) { // TODO: handle multiple interfaces for same TCP version gracefully
+        foreach (const QString listen_term, listen_list) {  // TODO: handle multiple interfaces for same TCP version gracefully
             QHostAddress addr;
             if (!addr.setAddress(listen_term)) {
-                qCritical() << qPrintable(
-                    tr("Invalid listen address %1")
-                    .arg(listen_term)
-                    );
+                qCritical() << qPrintable(tr("Invalid listen address %1").arg(listen_term));
             }
             else {
                 switch (addr.protocol()) {
                 case QAbstractSocket::IPv6Protocol:
                     if (_v6server.listen(addr, port)) {
-                        quInfo() << qPrintable(
-                            tr("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
-                            .arg(addr.toString())
-                            .arg(_v6server.serverPort())
-                            .arg(Quassel::buildInfo().protocolVersion)
-                            );
+                        quInfo() << qPrintable(tr("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
+                                                   .arg(addr.toString())
+                                                   .arg(_v6server.serverPort())
+                                                   .arg(Quassel::buildInfo().protocolVersion));
                         success = true;
                     }
                     else
                         quWarning() << qPrintable(
-                            tr("Could not open IPv6 interface %1:%2: %3")
-                            .arg(addr.toString())
-                            .arg(port)
-                            .arg(_v6server.errorString()));
+                            tr("Could not open IPv6 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_v6server.errorString()));
                     break;
                 case QAbstractSocket::IPv4Protocol:
                     if (_server.listen(addr, port)) {
-                        quInfo() << qPrintable(
-                            tr("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
-                            .arg(addr.toString())
-                            .arg(_server.serverPort())
-                            .arg(Quassel::buildInfo().protocolVersion)
-                            );
+                        quInfo() << qPrintable(tr("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
+                                                   .arg(addr.toString())
+                                                   .arg(_server.serverPort())
+                                                   .arg(Quassel::buildInfo().protocolVersion));
                         success = true;
                     }
                     else {
                         // if v6 succeeded on Any, the port will be already in use - don't display the error then
                         if (!success || _server.serverError() != QAbstractSocket::AddressInUseError)
                             quWarning() << qPrintable(
-                                tr("Could not open IPv4 interface %1:%2: %3")
-                                .arg(addr.toString())
-                                .arg(port)
-                                .arg(_server.errorString()));
+                                tr("Could not open IPv4 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_server.errorString()));
                     }
                     break;
                 default:
-                    qCritical() << qPrintable(
-                        tr("Invalid listen address %1, unknown network protocol")
-                        .arg(listen_term)
-                        );
+                    qCritical() << qPrintable(tr("Invalid listen address %1, unknown network protocol").arg(listen_term));
                     break;
                 }
             }
@@ -709,8 +678,7 @@ bool Core::startListening()
     return success;
 }
 
-
-void Core::stopListening(const QString &reason)
+void Core::stopListening(const QString& reason)
 {
     if (_identServer) {
         _identServer->stopListening(reason);
@@ -733,22 +701,21 @@ void Core::stopListening(const QString &reason)
     }
 }
 
-
 void Core::incomingConnection()
 {
-    auto *server = qobject_cast<QTcpServer *>(sender());
+    auto* server = qobject_cast<QTcpServer*>(sender());
     Q_ASSERT(server);
     while (server->hasPendingConnections()) {
-        QTcpSocket *socket = server->nextPendingConnection();
+        QTcpSocket* socket = server->nextPendingConnection();
 
-        auto *handler = new CoreAuthHandler(socket, this);
+        auto* handler = new CoreAuthHandler(socket, this);
         _connectingClients.insert(handler);
 
         connect(handler, &AuthHandler::disconnected, this, &Core::clientDisconnected);
         connect(handler, &AuthHandler::socketError, this, &Core::socketError);
         connect(handler, &CoreAuthHandler::handshakeComplete, this, &Core::setupClientSession);
 
-        quInfo() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
+        quInfo() << qPrintable(tr("Client connected from")) << qPrintable(socket->peerAddress().toString());
 
         if (!_configured) {
             stopListening(tr("Closing server for basic setup."));
@@ -756,11 +723,10 @@ void Core::incomingConnection()
     }
 }
 
-
 // Potentially called during the initialization phase (before handing the connection off to the session)
 void Core::clientDisconnected()
 {
-    auto *handler = qobject_cast<CoreAuthHandler *>(sender());
+    auto* handler = qobject_cast<CoreAuthHandler*>(sender());
     Q_ASSERT(handler);
 
     quInfo() << qPrintable(tr("Non-authed client disconnected:")) << qPrintable(handler->socket()->peerAddress().toString());
@@ -776,10 +742,9 @@ void Core::clientDisconnected()
     // Suggestion: kill sessions if they are not connected to any network and client.
 }
 
-
-void Core::setupClientSession(RemotePeer *peer, UserId uid)
+void Core::setupClientSession(RemotePeer* peer, UserId uid)
 {
-    auto *handler = qobject_cast<CoreAuthHandler *>(sender());
+    auto* handler = qobject_cast<CoreAuthHandler*>(sender());
     Q_ASSERT(handler);
 
     // From now on everything is handled by the client session
@@ -795,24 +760,21 @@ void Core::setupClientSession(RemotePeer *peer, UserId uid)
     QCoreApplication::postEvent(this, new AddClientEvent(peer, uid));
 }
 
-
-void Core::customEvent(QEvent *event)
+void Core::customEvent(QEvent* event)
 {
     if (event->type() == AddClientEventId) {
-        auto *addClientEvent = static_cast<AddClientEvent *>(event);
+        auto* addClientEvent = static_cast<AddClientEvent*>(event);
         addClientHelper(addClientEvent->peer, addClientEvent->userId);
         return;
     }
 }
 
-
-void Core::addClientHelper(RemotePeer *peer, UserId uid)
+void Core::addClientHelper(RemotePeer* peer, UserId uid)
 {
     // Find or create session for validated user
-    SessionThread *session = sessionForUser(uid);
+    SessionThread* session = sessionForUser(uid);
     session->addClient(peer);
 }
-
 
 void Core::connectInternalPeer(QPointer<InternalPeer> peer)
 {
@@ -823,7 +785,6 @@ void Core::connectInternalPeer(QPointer<InternalPeer> peer)
         _pendingInternalConnection = peer;
     }
 }
-
 
 void Core::setupInternalClientSession(QPointer<InternalPeer> clientPeer)
 {
@@ -851,17 +812,16 @@ void Core::setupInternalClientSession(QPointer<InternalPeer> clientPeer)
         return;
     }
 
-    auto *corePeer = new InternalPeer(this);
+    auto* corePeer = new InternalPeer(this);
     corePeer->setPeer(clientPeer);
     clientPeer->setPeer(corePeer);
 
     // Find or create session for validated user
-    SessionThread *sessionThread = sessionForUser(uid);
+    SessionThread* sessionThread = sessionForUser(uid);
     sessionThread->addClient(corePeer);
 }
 
-
-SessionThread *Core::sessionForUser(UserId uid, bool restore)
+SessionThread* Core::sessionForUser(UserId uid, bool restore)
 {
     if (_sessions.contains(uid))
         return _sessions[uid];
@@ -869,72 +829,69 @@ SessionThread *Core::sessionForUser(UserId uid, bool restore)
     return (_sessions[uid] = new SessionThread(uid, restore, strictIdentEnabled(), this));
 }
 
-
-void Core::socketError(QAbstractSocket::SocketError err, const QString &errorString)
+void Core::socketError(QAbstractSocket::SocketError err, const QString& errorString)
 {
     quWarning() << QString("Socket error %1: %2").arg(err).arg(errorString);
 }
-
 
 QVariantList Core::backendInfo()
 {
     instance()->registerStorageBackends();
 
     QVariantList backendInfos;
-    for (auto &&backend : instance()->_registeredStorageBackends) {
+    for (auto&& backend : instance()->_registeredStorageBackends) {
         QVariantMap v;
-        v["BackendId"]   = backend->backendId();
+        v["BackendId"] = backend->backendId();
         v["DisplayName"] = backend->displayName();
         v["Description"] = backend->description();
-        v["SetupData"]   = backend->setupData(); // ignored by legacy clients
+        v["SetupData"] = backend->setupData();  // ignored by legacy clients
 
         // TODO Protocol Break: Remove legacy (cf. authenticatorInfo())
-        const auto &setupData = backend->setupData();
+        const auto& setupData = backend->setupData();
         QStringList setupKeys;
         QVariantMap setupDefaults;
         for (int i = 0; i + 2 < setupData.size(); i += 3) {
             setupKeys << setupData[i].toString();
             setupDefaults[setupData[i].toString()] = setupData[i + 2];
         }
-        v["SetupKeys"]     = setupKeys;
+        v["SetupKeys"] = setupKeys;
         v["SetupDefaults"] = setupDefaults;
         // TODO Protocol Break: Remove
-        v["IsDefault"]     = (backend->backendId() == "SQLite"); // newer clients will just use the first in the list
+        v["IsDefault"] = (backend->backendId() == "SQLite");  // newer clients will just use the first in the list
 
         backendInfos << v;
     }
     return backendInfos;
 }
 
-
 QVariantList Core::authenticatorInfo()
 {
     instance()->registerAuthenticators();
 
     QVariantList authInfos;
-    for(auto &&backend : instance()->_registeredAuthenticators) {
+    for (auto&& backend : instance()->_registeredAuthenticators) {
         QVariantMap v;
-        v["BackendId"]   = backend->backendId();
+        v["BackendId"] = backend->backendId();
         v["DisplayName"] = backend->displayName();
         v["Description"] = backend->description();
-        v["SetupData"]   = backend->setupData();
+        v["SetupData"] = backend->setupData();
         authInfos << v;
     }
     return authInfos;
 }
 
 // migration / backend selection
-bool Core::selectBackend(const QString &backend)
+bool Core::selectBackend(const QString& backend)
 {
     // reregister all storage backends
     registerStorageBackends();
     auto storage = storageBackend(backend);
     if (!storage) {
         QStringList backends;
-        std::transform(_registeredStorageBackends.begin(), _registeredStorageBackends.end(),
-                       std::back_inserter(backends), [](const DeferredSharedPtr<Storage>& backend) {
-                           return backend->displayName();
-                       });
+        std::transform(_registeredStorageBackends.begin(),
+                       _registeredStorageBackends.end(),
+                       std::back_inserter(backends),
+                       [](const DeferredSharedPtr<Storage>& backend) { return backend->displayName(); });
         quWarning() << qPrintable(tr("Unsupported storage backend: %1").arg(backend));
         quWarning() << qPrintable(tr("Supported backends are:")) << qPrintable(backends.join(", "));
         return false;
@@ -1011,17 +968,17 @@ bool Core::selectBackend(const QString &backend)
 
 // TODO: I am not sure if this function is implemented correctly.
 // There is currently no concept of migraiton between auth backends.
-bool Core::selectAuthenticator(const QString &backend)
+bool Core::selectAuthenticator(const QString& backend)
 {
     // Register all authentication backends.
     registerAuthenticators();
     auto auther = authenticator(backend);
     if (!auther) {
         QStringList authenticators;
-        std::transform(_registeredAuthenticators.begin(), _registeredAuthenticators.end(),
-                       std::back_inserter(authenticators), [](const DeferredSharedPtr<Authenticator>& authenticator) {
-                           return authenticator->displayName();
-                       });
+        std::transform(_registeredAuthenticators.begin(),
+                       _registeredAuthenticators.end(),
+                       std::back_inserter(authenticators),
+                       [](const DeferredSharedPtr<Authenticator>& authenticator) { return authenticator->displayName(); });
         quWarning() << qPrintable(tr("Unsupported authenticator: %1").arg(backend));
         quWarning() << qPrintable(tr("Supported authenticators are:")) << qPrintable(authenticators.join(", "));
         return false;
@@ -1056,7 +1013,6 @@ bool Core::selectAuthenticator(const QString &backend)
     _authenticator = std::move(auther);
     return true;
 }
-
 
 bool Core::createUser()
 {
@@ -1097,8 +1053,7 @@ bool Core::createUser()
     }
 }
 
-
-bool Core::changeUserPass(const QString &username)
+bool Core::changeUserPass(const QString& username)
 {
     QTextStream out(stdout);
     QTextStream in(stdin);
@@ -1145,8 +1100,7 @@ bool Core::changeUserPass(const QString &username)
     }
 }
 
-
-bool Core::changeUserPassword(UserId userId, const QString &password)
+bool Core::changeUserPassword(UserId userId, const QString& password)
 {
     if (!isConfigured() || !userId.isValid())
         return false;
@@ -1175,13 +1129,12 @@ bool Core::canChangeUserPassword(UserId userId)
     return true;
 }
 
-
-std::unique_ptr<AbstractSqlMigrationReader> Core::getMigrationReader(Storage *storage)
+std::unique_ptr<AbstractSqlMigrationReader> Core::getMigrationReader(Storage* storage)
 {
     if (!storage)
         return nullptr;
 
-    auto *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
+    auto* sqlStorage = qobject_cast<AbstractSqlStorage*>(storage);
     if (!sqlStorage) {
         qDebug() << "Core::migrateDb(): only SQL based backends can be migrated!";
         return nullptr;
@@ -1190,13 +1143,12 @@ std::unique_ptr<AbstractSqlMigrationReader> Core::getMigrationReader(Storage *st
     return sqlStorage->createMigrationReader();
 }
 
-
-std::unique_ptr<AbstractSqlMigrationWriter> Core::getMigrationWriter(Storage *storage)
+std::unique_ptr<AbstractSqlMigrationWriter> Core::getMigrationWriter(Storage* storage)
 {
     if (!storage)
         return nullptr;
 
-    auto *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
+    auto* sqlStorage = qobject_cast<AbstractSqlStorage*>(storage);
     if (!sqlStorage) {
         qDebug() << "Core::migrateDb(): only SQL based backends can be migrated!";
         return nullptr;
@@ -1205,8 +1157,7 @@ std::unique_ptr<AbstractSqlMigrationWriter> Core::getMigrationWriter(Storage *st
     return sqlStorage->createMigrationWriter();
 }
 
-
-bool Core::saveBackendSettings(const QString &backend, const QVariantMap &settings)
+bool Core::saveBackendSettings(const QString& backend, const QVariantMap& settings)
 {
     QVariantMap dbsettings;
     dbsettings["Backend"] = backend;
@@ -1216,8 +1167,7 @@ bool Core::saveBackendSettings(const QString &backend, const QVariantMap &settin
     return s.sync();
 }
 
-
-void Core::saveAuthenticatorSettings(const QString &backend, const QVariantMap &settings)
+void Core::saveAuthenticatorSettings(const QString& backend, const QVariantMap& settings)
 {
     QVariantMap dbsettings;
     dbsettings["Authenticator"] = backend;
@@ -1228,7 +1178,7 @@ void Core::saveAuthenticatorSettings(const QString &backend, const QVariantMap &
 // Generic version of promptForSettings that doesn't care what *type* of
 // backend it runs over.
 template<typename Backend>
-QVariantMap Core::promptForSettings(const Backend *backend)
+QVariantMap Core::promptForSettings(const Backend* backend)
 {
     QVariantMap settings;
     const QVariantList& setupData = backend->setupData();
@@ -1242,7 +1192,7 @@ QVariantMap Core::promptForSettings(const Backend *backend)
 
     for (int i = 0; i + 2 < setupData.size(); i += 3) {
         QString key = setupData[i].toString();
-        out << setupData[i+1].toString() << " [" << setupData[i+2].toString() << "]: " << flush;
+        out << setupData[i + 1].toString() << " [" << setupData[i + 2].toString() << "]: " << flush;
 
         bool noEcho = key.toLower().contains("password");
         if (noEcho) {
@@ -1254,7 +1204,7 @@ QVariantMap Core::promptForSettings(const Backend *backend)
             enableStdInEcho();
         }
 
-        QVariant value{setupData[i+2]};
+        QVariant value{setupData[i + 2]};
         if (!input.isEmpty()) {
             switch (value.type()) {
             case QVariant::Int:
@@ -1268,7 +1218,6 @@ QVariantMap Core::promptForSettings(const Backend *backend)
     }
     return settings;
 }
-
 
 #ifdef Q_OS_WIN
 void Core::stdInEcho(bool on)

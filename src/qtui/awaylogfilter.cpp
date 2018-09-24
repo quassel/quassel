@@ -19,15 +19,14 @@
  ***************************************************************************/
 
 #include "awaylogfilter.h"
+
 #include "clientignorelistmanager.h"
 
-AwayLogFilter::AwayLogFilter(MessageModel *model, QObject *parent)
+AwayLogFilter::AwayLogFilter(MessageModel* model, QObject* parent)
     : ChatMonitorFilter(model, parent)
-{
-}
+{}
 
-
-bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
     Q_UNUSED(sourceParent)
 
@@ -53,15 +52,15 @@ bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     // ignorelist handling
     // only match if message is not flagged as server msg
     if (!(flags & Message::ServerMsg) && Client::ignoreListManager()
-            && Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId))) {
+        && Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(),
+                                              Client::networkModel()->networkName(bufferId))) {
         return false;
     }
 
     return true;
 }
 
-
-QVariant AwayLogFilter::data(const QModelIndex &index, int role) const
+QVariant AwayLogFilter::data(const QModelIndex& index, int role) const
 {
     if (role != MessageModel::FlagsRole)
         return ChatMonitorFilter::data(index, role);

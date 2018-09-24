@@ -27,9 +27,8 @@
 #include <QString>
 
 #ifdef HAVE_KF5
-#  include <KCoreAddons/KAboutData>
+#    include <KCoreAddons/KAboutData>
 #endif
-
 
 /**
  * Represents a contributor or author for Quassel.
@@ -93,13 +92,12 @@ public:
     QString prettyName() const;
 
 private:
-    QString _name;               ///< The person's name
-    QString _nick;               ///< The person's nick
-    QString _task;               ///< The person's task
-    QString _emailAddress;       ///< The person's email address
-    QLocale::Language _language; ///< The language the person helps translate
+    QString _name;                ///< The person's name
+    QString _nick;                ///< The person's nick
+    QString _task;                ///< The person's task
+    QString _emailAddress;        ///< The person's email address
+    QLocale::Language _language;  ///< The language the person helps translate
 };
-
 
 /**
  * Holds a list of authors, contributors and translators.
@@ -117,7 +115,7 @@ public:
      *
      * @param[in] parent The parent object, if applicable
      */
-    AboutData(QObject *parent = nullptr);
+    AboutData(QObject* parent = nullptr);
 
     /**
      * Adds an author to the list of contributors.
@@ -127,7 +125,7 @@ public:
      * @param[in] author The author to add
      * @returns A reference to this AboutData instance
      */
-    AboutData &addAuthor(const AboutPerson &author);
+    AboutData& addAuthor(const AboutPerson& author);
 
     /**
      * Adds a list of authors to the list of contributors.
@@ -138,7 +136,7 @@ public:
      * @param[in] authors A list of authors to add
      * @returns A reference to this AboutData instance
      */
-    AboutData &addAuthors(std::initializer_list<AboutPerson> authors);
+    AboutData& addAuthors(std::initializer_list<AboutPerson> authors);
 
     /**
      * Adds a contributor.
@@ -146,7 +144,7 @@ public:
      * @param[in] author The contributor to add
      * @returns A reference to this AboutData instance
      */
-    AboutData &addCredit(const AboutPerson &credit);
+    AboutData& addCredit(const AboutPerson& credit);
 
     /**
      * Adds a list of contributors.
@@ -157,7 +155,7 @@ public:
      * @param[in] authors A list of contributors to add
      * @returns A reference to this AboutData instance
      */
-    AboutData &addCredits(std::initializer_list<AboutPerson> credits);
+    AboutData& addCredits(std::initializer_list<AboutPerson> credits);
 
     /**
      * Gets the list of authors stored in this AboutData instance.
@@ -190,7 +188,7 @@ public:
      *
      * @param[in,out] aboutData An existing AboutData instance to add Quassel's contributors to
      */
-    static void setQuasselPersons(AboutData *aboutData);
+    static void setQuasselPersons(AboutData* aboutData);
 
 private:
     QList<AboutPerson> _authors;  ///< The list of authors

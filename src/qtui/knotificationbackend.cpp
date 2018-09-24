@@ -33,36 +33,46 @@
 #include "qtui.h"
 #include "util.h"
 
-KNotificationBackend::KNotificationBackend(QObject *parent)
+KNotificationBackend::KNotificationBackend(QObject* parent)
     : AbstractNotificationBackend(parent)
 {
-    connect(QtUi::mainWindow()->systemTray(), &SystemTray::activated,
-            this, selectOverload<SystemTray::ActivationReason>(&KNotificationBackend::notificationActivated));
+    connect(QtUi::mainWindow()->systemTray(),
+            &SystemTray::activated,
+            this,
+            selectOverload<SystemTray::ActivationReason>(&KNotificationBackend::notificationActivated));
 
     updateToolTip();
 }
 
-
-void KNotificationBackend::notify(const Notification &n)
+void KNotificationBackend::notify(const Notification& n)
 {
     QString type;
     switch (n.type) {
     case Highlight:
-        type = "Highlight"; break;
+        type = "Highlight";
+        break;
     case HighlightFocused:
-        type = "HighlightFocused"; break;
+        type = "HighlightFocused";
+        break;
     case PrivMsg:
-        type = "PrivMsg"; break;
+        type = "PrivMsg";
+        break;
     case PrivMsgFocused:
-        type = "PrivMsgFocused"; break;
+        type = "PrivMsgFocused";
+        break;
     }
 
     QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, n.message.toHtmlEscaped());
-    KNotification *notification = KNotification::event(type, message, icon::get("dialog-information").pixmap(48), QtUi::mainWindow(),
-        KNotification::RaiseWidgetOnActivation
-        |KNotification::CloseWhenWidgetActivated
-        |KNotification::CloseOnTimeout);
-    connect(notification, selectOverload<uint>(&KNotification::activated), this, selectOverload<>(&KNotificationBackend::notificationActivated));
+    KNotification* notification = KNotification::event(type,
+                                                       message,
+                                                       icon::get("dialog-information").pixmap(48),
+                                                       QtUi::mainWindow(),
+                                                       KNotification::RaiseWidgetOnActivation | KNotification::CloseWhenWidgetActivated
+                                                           | KNotification::CloseOnTimeout);
+    connect(notification,
+            selectOverload<uint>(&KNotification::activated),
+            this,
+            selectOverload<>(&KNotificationBackend::notificationActivated));
     notification->setActions(QStringList("View"));
     notification->setProperty("notificationId", n.notificationId);
 
@@ -71,10 +81,9 @@ void KNotificationBackend::notify(const Notification &n)
     updateToolTip();
 }
 
-
 void KNotificationBackend::removeNotificationById(uint notificationId)
 {
-    QList<QPair<uint, QPointer<KNotification> > >::iterator i = _notifications.begin();
+    QList<QPair<uint, QPointer<KNotification>>>::iterator i = _notifications.begin();
     while (i != _notifications.end()) {
         if (i->first == notificationId) {
             if (i->second)
@@ -87,24 +96,21 @@ void KNotificationBackend::removeNotificationById(uint notificationId)
     updateToolTip();
 }
 
-
 void KNotificationBackend::close(uint notificationId)
 {
     removeNotificationById(notificationId);
-    //if(!_notifications.count()) // FIXME make configurable
+    // if(!_notifications.count()) // FIXME make configurable
 }
-
 
 void KNotificationBackend::notificationActivated()
 {
     uint id = 0;
-    KNotification *n = qobject_cast<KNotification *>(sender());
+    KNotification* n = qobject_cast<KNotification*>(sender());
     if (n)
         id = n->property("notificationId").toUInt();
 
     notificationActivated(id);
 }
-
 
 void KNotificationBackend::notificationActivated(SystemTray::ActivationReason reason)
 {
@@ -116,51 +122,46 @@ void KNotificationBackend::notificationActivated(SystemTray::ActivationReason re
     }
 }
 
-
 void KNotificationBackend::notificationActivated(uint notificationId)
 {
     emit activated(notificationId);
 }
 
-
 void KNotificationBackend::updateToolTip()
 {
     QtUi::mainWindow()->systemTray()->setToolTip("Quassel IRC",
-        _notifications.count() ? tr("%n pending highlight(s)", "", _notifications.count()) : QString());
+                                                 _notifications.count() ? tr("%n pending highlight(s)", "", _notifications.count())
+                                                                        : QString());
 }
 
-
-SettingsPage *KNotificationBackend::createConfigWidget() const
+SettingsPage* KNotificationBackend::createConfigWidget() const
 {
     return new ConfigWidget();
 }
 
-
 /***************************************************************************/
 
-KNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "KNotification", parent)
+KNotificationBackend::ConfigWidget::ConfigWidget(QWidget* parent)
+    : SettingsPage("Internal", "KNotification", parent)
 {
     _widget = new KNotifyConfigWidget(this);
     _widget->setApplication("quassel");
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(_widget);
 
     connect(_widget, &KNotifyConfigWidget::changed, this, &ConfigWidget::widgetChanged);
 }
-
 
 void KNotificationBackend::ConfigWidget::widgetChanged(bool changed)
 {
     setChangedState(changed);
 }
 
-
 void KNotificationBackend::ConfigWidget::load()
 {
     setChangedState(false);
 }
-
 
 void KNotificationBackend::ConfigWidget::save()
 {

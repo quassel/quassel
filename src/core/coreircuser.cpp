@@ -19,15 +19,17 @@
  ***************************************************************************/
 
 #include "coreircuser.h"
+
 #include "corenetwork.h"
 
-CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(hostmask, network)
+CoreIrcUser::CoreIrcUser(const QString& hostmask, Network* network)
+    : IrcUser(hostmask, network)
 {
 #ifdef HAVE_QCA2
     _cipher = nullptr;
 
     // Get the cipher key from CoreNetwork if present
-    auto *coreNetwork = qobject_cast<CoreNetwork *>(network);
+    auto* coreNetwork = qobject_cast<CoreNetwork*>(network);
     if (coreNetwork) {
         QByteArray key = coreNetwork->readChannelCipherKey(nick().toLower());
         if (!key.isEmpty()) {
@@ -40,7 +42,6 @@ CoreIrcUser::CoreIrcUser(const QString &hostmask, Network *network) : IrcUser(ho
 #endif
 }
 
-
 CoreIrcUser::~CoreIrcUser()
 {
 #ifdef HAVE_QCA2
@@ -48,7 +49,7 @@ CoreIrcUser::~CoreIrcUser()
     // exists. There is no need to store the empty key if no cipher exists; no
     // key was present when instantiating and no key was set during the
     // channel's lifetime.
-    auto *coreNetwork = qobject_cast<CoreNetwork *>(network());
+    auto* coreNetwork = qobject_cast<CoreNetwork*>(network());
     if (coreNetwork && _cipher) {
         coreNetwork->storeChannelCipherKey(nick().toLower(), _cipher->key());
     }
@@ -57,15 +58,13 @@ CoreIrcUser::~CoreIrcUser()
 #endif
 }
 
-
 #ifdef HAVE_QCA2
-Cipher *CoreIrcUser::cipher() const
+Cipher* CoreIrcUser::cipher() const
 {
     if (!_cipher)
         _cipher = new Cipher();
 
     return _cipher;
 }
-
 
 #endif

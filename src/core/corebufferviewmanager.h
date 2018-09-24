@@ -29,16 +29,16 @@ class CoreBufferViewManager : public BufferViewManager
     Q_OBJECT
 
 public:
-    CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
+    CoreBufferViewManager(SignalProxy* proxy, CoreSession* parent);
 
 public slots:
-    void requestCreateBufferView(const QVariantMap &properties) override;
-    void requestCreateBufferViews(const QVariantList &properties) override;
+    void requestCreateBufferView(const QVariantMap& properties) override;
+    void requestCreateBufferViews(const QVariantList& properties) override;
     void requestDeleteBufferView(int bufferViewId) override;
-    void requestDeleteBufferViews(const QVariantList &bufferViews) override;
+    void requestDeleteBufferViews(const QVariantList& bufferViews) override;
 
     void saveBufferViews();
 
 private:
-    CoreSession *_coreSession;
+    CoreSession* _coreSession;
 };

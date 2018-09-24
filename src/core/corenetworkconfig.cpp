@@ -18,11 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "core.h"
-#include "coresession.h"
 #include "corenetworkconfig.h"
 
-CoreNetworkConfig::CoreNetworkConfig(const QString &objectName, CoreSession *session)
+#include "core.h"
+#include "coresession.h"
+
+CoreNetworkConfig::CoreNetworkConfig(const QString& objectName, CoreSession* session)
     : NetworkConfig(objectName, session)
 {
     setAllowClientUpdates(true);
@@ -35,10 +36,9 @@ CoreNetworkConfig::CoreNetworkConfig(const QString &objectName, CoreSession *ses
     fromVariantMap(Core::getUserSetting(session->user(), objectName).toMap());
 }
 
-
 void CoreNetworkConfig::save()
 {
-    auto *session = qobject_cast<CoreSession *>(parent());
+    auto* session = qobject_cast<CoreSession*>(parent());
     if (!session) {
         qWarning() << Q_FUNC_INFO << "No CoreSession set, cannot save network configuration!";
         return;

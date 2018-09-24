@@ -18,61 +18,60 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "network.h"
+
 #include <algorithm>
 
 #include <QTextCodec>
 
-#include "network.h"
 #include "peer.h"
 
-QTextCodec *Network::_defaultCodecForServer = nullptr;
-QTextCodec *Network::_defaultCodecForEncoding = nullptr;
-QTextCodec *Network::_defaultCodecForDecoding = nullptr;
+QTextCodec* Network::_defaultCodecForServer = nullptr;
+QTextCodec* Network::_defaultCodecForEncoding = nullptr;
+QTextCodec* Network::_defaultCodecForDecoding = nullptr;
 
 // ====================
 //  Public:
 // ====================
 
-Network::Network(const NetworkId &networkid, QObject *parent)
-    : SyncableObject(parent),
-    _proxy(nullptr),
-    _networkId(networkid),
-    _identity(0),
-    _myNick(QString()),
-    _latency(0),
-    _networkName(QString("<not initialized>")),
-    _currentServer(QString()),
-    _connected(false),
-    _connectionState(Disconnected),
-    _prefixes(QString()),
-    _prefixModes(QString()),
-    _useRandomServer(false),
-    _useAutoIdentify(false),
-    _useSasl(false),
-    _useAutoReconnect(false),
-    _autoReconnectInterval(60),
-    _autoReconnectRetries(10),
-    _unlimitedReconnectRetries(false),
-    _useCustomMessageRate(false),
-    _messageRateBurstSize(5),
-    _messageRateDelay(2200),
-    _unlimitedMessageRate(false),
-    _codecForServer(nullptr),
-    _codecForEncoding(nullptr),
-    _codecForDecoding(nullptr),
-    _autoAwayActive(false)
+Network::Network(const NetworkId& networkid, QObject* parent)
+    : SyncableObject(parent)
+    , _proxy(nullptr)
+    , _networkId(networkid)
+    , _identity(0)
+    , _myNick(QString())
+    , _latency(0)
+    , _networkName(QString("<not initialized>"))
+    , _currentServer(QString())
+    , _connected(false)
+    , _connectionState(Disconnected)
+    , _prefixes(QString())
+    , _prefixModes(QString())
+    , _useRandomServer(false)
+    , _useAutoIdentify(false)
+    , _useSasl(false)
+    , _useAutoReconnect(false)
+    , _autoReconnectInterval(60)
+    , _autoReconnectRetries(10)
+    , _unlimitedReconnectRetries(false)
+    , _useCustomMessageRate(false)
+    , _messageRateBurstSize(5)
+    , _messageRateDelay(2200)
+    , _unlimitedMessageRate(false)
+    , _codecForServer(nullptr)
+    , _codecForEncoding(nullptr)
+    , _codecForDecoding(nullptr)
+    , _autoAwayActive(false)
 {
     setObjectName(QString::number(networkid.toInt()));
 }
-
 
 Network::~Network()
 {
     emit aboutToBeDestroyed();
 }
 
-
-bool Network::isChannelName(const QString &channelname) const
+bool Network::isChannelName(const QString& channelname) const
 {
     if (channelname.isEmpty())
         return false;
@@ -83,8 +82,7 @@ bool Network::isChannelName(const QString &channelname) const
         return QString("#&!+").contains(channelname[0]);
 }
 
-
-bool Network::isStatusMsg(const QString &target) const
+bool Network::isStatusMsg(const QString& target) const
 {
     if (target.isEmpty())
         return false;
@@ -94,7 +92,6 @@ bool Network::isStatusMsg(const QString &target) const
     else
         return QString("@+").contains(target[0]);
 }
-
 
 NetworkInfo Network::networkInfo() const
 {
@@ -126,29 +123,47 @@ NetworkInfo Network::networkInfo() const
     return info;
 }
 
-
-void Network::setNetworkInfo(const NetworkInfo &info)
+void Network::setNetworkInfo(const NetworkInfo& info)
 {
     // we don't set our ID!
-    if (!info.networkName.isEmpty() && info.networkName != networkName()) setNetworkName(info.networkName);
-    if (info.identity > 0 && info.identity != identity()) setIdentity(info.identity);
-    if (info.codecForServer != codecForServer()) setCodecForServer(QTextCodec::codecForName(info.codecForServer));
-    if (info.codecForEncoding != codecForEncoding()) setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
-    if (info.codecForDecoding != codecForDecoding()) setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
-    if (info.serverList.count()) setServerList(toVariantList(info.serverList));  // FIXME compare components
-    if (info.useRandomServer != useRandomServer()) setUseRandomServer(info.useRandomServer);
-    if (info.perform != perform()) setPerform(info.perform);
-    if (info.useAutoIdentify != useAutoIdentify()) setUseAutoIdentify(info.useAutoIdentify);
-    if (info.autoIdentifyService != autoIdentifyService()) setAutoIdentifyService(info.autoIdentifyService);
-    if (info.autoIdentifyPassword != autoIdentifyPassword()) setAutoIdentifyPassword(info.autoIdentifyPassword);
-    if (info.useSasl != useSasl()) setUseSasl(info.useSasl);
-    if (info.saslAccount != saslAccount()) setSaslAccount(info.saslAccount);
-    if (info.saslPassword != saslPassword()) setSaslPassword(info.saslPassword);
-    if (info.useAutoReconnect != useAutoReconnect()) setUseAutoReconnect(info.useAutoReconnect);
-    if (info.autoReconnectInterval != autoReconnectInterval()) setAutoReconnectInterval(info.autoReconnectInterval);
-    if (info.autoReconnectRetries != autoReconnectRetries()) setAutoReconnectRetries(info.autoReconnectRetries);
-    if (info.unlimitedReconnectRetries != unlimitedReconnectRetries()) setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
-    if (info.rejoinChannels != rejoinChannels()) setRejoinChannels(info.rejoinChannels);
+    if (!info.networkName.isEmpty() && info.networkName != networkName())
+        setNetworkName(info.networkName);
+    if (info.identity > 0 && info.identity != identity())
+        setIdentity(info.identity);
+    if (info.codecForServer != codecForServer())
+        setCodecForServer(QTextCodec::codecForName(info.codecForServer));
+    if (info.codecForEncoding != codecForEncoding())
+        setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
+    if (info.codecForDecoding != codecForDecoding())
+        setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
+    if (info.serverList.count())
+        setServerList(toVariantList(info.serverList));  // FIXME compare components
+    if (info.useRandomServer != useRandomServer())
+        setUseRandomServer(info.useRandomServer);
+    if (info.perform != perform())
+        setPerform(info.perform);
+    if (info.useAutoIdentify != useAutoIdentify())
+        setUseAutoIdentify(info.useAutoIdentify);
+    if (info.autoIdentifyService != autoIdentifyService())
+        setAutoIdentifyService(info.autoIdentifyService);
+    if (info.autoIdentifyPassword != autoIdentifyPassword())
+        setAutoIdentifyPassword(info.autoIdentifyPassword);
+    if (info.useSasl != useSasl())
+        setUseSasl(info.useSasl);
+    if (info.saslAccount != saslAccount())
+        setSaslAccount(info.saslAccount);
+    if (info.saslPassword != saslPassword())
+        setSaslPassword(info.saslPassword);
+    if (info.useAutoReconnect != useAutoReconnect())
+        setUseAutoReconnect(info.useAutoReconnect);
+    if (info.autoReconnectInterval != autoReconnectInterval())
+        setAutoReconnectInterval(info.autoReconnectInterval);
+    if (info.autoReconnectRetries != autoReconnectRetries())
+        setAutoReconnectRetries(info.autoReconnectRetries);
+    if (info.unlimitedReconnectRetries != unlimitedReconnectRetries())
+        setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
+    if (info.rejoinChannels != rejoinChannels())
+        setRejoinChannels(info.rejoinChannels);
     // Custom rate limiting
     if (info.useCustomMessageRate != useCustomMessageRate())
         setUseCustomMessageRate(info.useCustomMessageRate);
@@ -160,8 +175,7 @@ void Network::setNetworkInfo(const NetworkInfo &info)
         setUnlimitedMessageRate(info.unlimitedMessageRate);
 }
 
-
-QString Network::prefixToMode(const QString &prefix) const
+QString Network::prefixToMode(const QString& prefix) const
 {
     if (prefixes().contains(prefix))
         return QString(prefixModes()[prefixes().indexOf(prefix)]);
@@ -169,8 +183,7 @@ QString Network::prefixToMode(const QString &prefix) const
         return QString();
 }
 
-
-QString Network::modeToPrefix(const QString &mode) const
+QString Network::modeToPrefix(const QString& mode) const
 {
     if (prefixModes().contains(mode))
         return QString(prefixes()[prefixModes().indexOf(mode)]);
@@ -178,8 +191,7 @@ QString Network::modeToPrefix(const QString &mode) const
         return QString();
 }
 
-
-QString Network::sortPrefixModes(const QString &modes) const
+QString Network::sortPrefixModes(const QString& modes) const
 {
     // If modes is empty or we don't have any modes, nothing can be sorted, bail out early
     if (modes.isEmpty() || prefixModes().isEmpty()) {
@@ -194,7 +206,7 @@ QString Network::sortPrefixModes(const QString &modes) const
     // Sort modes as if a QChar array
     // See https://en.cppreference.com/w/cpp/algorithm/sort
     // Defining lambda with [&] implicitly captures variables by reference
-    std::sort(sortedModes.begin(), sortedModes.end(), [&](const QChar &lmode, const QChar &rmode) {
+    std::sort(sortedModes.begin(), sortedModes.end(), [&](const QChar& lmode, const QChar& rmode) {
         // Compare characters according to prefix modes
         // Return true if lmode comes before rmode (is "less than")
 
@@ -202,10 +214,12 @@ QString Network::sortPrefixModes(const QString &modes) const
         if (!prefixModes().contains(lmode)) {
             // Left mode not in prefix list, send to end
             return false;
-        } else if (!prefixModes().contains(rmode)) {
+        }
+        else if (!prefixModes().contains(rmode)) {
             // Right mode not in prefix list, send to end
             return true;
-        } else {
+        }
+        else {
             // Both characters known, sort according to index in prefixModes()
             return (prefixModes().indexOf(lmode) < prefixModes().indexOf(rmode));
         }
@@ -214,18 +228,16 @@ QString Network::sortPrefixModes(const QString &modes) const
     return sortedModes;
 }
 
-
 QStringList Network::nicks() const
 {
     // we don't use _ircUsers.keys() since the keys may be
     // not up to date after a nick change
     QStringList nicks;
-    foreach(IrcUser *ircuser, _ircUsers.values()) {
+    foreach (IrcUser* ircuser, _ircUsers.values()) {
         nicks << ircuser->nick();
     }
     return nicks;
 }
-
 
 QString Network::prefixes() const
 {
@@ -235,7 +247,6 @@ QString Network::prefixes() const
     return _prefixes;
 }
 
-
 QString Network::prefixModes() const
 {
     if (_prefixModes.isNull())
@@ -244,9 +255,8 @@ QString Network::prefixModes() const
     return _prefixModes;
 }
 
-
 // example Unreal IRCD: CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTG
-Network::ChannelModeType Network::channelModeType(const QString &mode)
+Network::ChannelModeType Network::channelModeType(const QString& mode)
 {
     if (mode.isEmpty())
         return NOT_A_CHANMODE;
@@ -269,8 +279,7 @@ Network::ChannelModeType Network::channelModeType(const QString &mode)
     return modeType;
 }
 
-
-QString Network::support(const QString &param) const
+QString Network::support(const QString& param) const
 {
     QString support_ = param.toUpper();
     if (_supports.contains(support_))
@@ -279,8 +288,7 @@ QString Network::support(const QString &param) const
         return QString();
 }
 
-
-bool Network::saslMaybeSupports(const QString &saslMechanism) const
+bool Network::saslMaybeSupports(const QString& saslMechanism) const
 {
     if (!capAvailable(IrcCap::SASL)) {
         // If SASL's not advertised at all, it's likely the mechanism isn't supported, as per specs.
@@ -297,16 +305,14 @@ bool Network::saslMaybeSupports(const QString &saslMechanism) const
     // reduce the risk of breaking existing setups.
     // See: http://ircv3.net/specs/extensions/sasl-3.1.html
     // And: http://ircv3.net/specs/extensions/sasl-3.2.html
-    return (saslCapValue.length() == 0)
-            || (saslCapValue.contains(saslMechanism, Qt::CaseInsensitive));
+    return (saslCapValue.length() == 0) || (saslCapValue.contains(saslMechanism, Qt::CaseInsensitive));
 }
 
-
-IrcUser *Network::newIrcUser(const QString &hostmask, const QVariantMap &initData)
+IrcUser* Network::newIrcUser(const QString& hostmask, const QVariantMap& initData)
 {
     QString nick(nickFromMask(hostmask).toLower());
     if (!_ircUsers.contains(nick)) {
-        IrcUser *ircuser = ircUserFactory(hostmask);
+        IrcUser* ircuser = ircUserFactory(hostmask);
         if (!initData.isEmpty()) {
             ircuser->fromVariantMap(initData);
             ircuser->setInitialized();
@@ -333,8 +339,7 @@ IrcUser *Network::newIrcUser(const QString &hostmask, const QVariantMap &initDat
     return _ircUsers[nick];
 }
 
-
-IrcUser *Network::ircUser(QString nickname) const
+IrcUser* Network::ircUser(QString nickname) const
 {
     nickname = nickname.toLower();
     if (_ircUsers.contains(nickname))
@@ -343,8 +348,7 @@ IrcUser *Network::ircUser(QString nickname) const
         return nullptr;
 }
 
-
-void Network::removeIrcUser(IrcUser *ircuser)
+void Network::removeIrcUser(IrcUser* ircuser)
 {
     QString nick = _ircUsers.key(ircuser);
     if (nick.isNull())
@@ -355,8 +359,7 @@ void Network::removeIrcUser(IrcUser *ircuser)
     ircuser->deleteLater();
 }
 
-
-void Network::removeIrcChannel(IrcChannel *channel)
+void Network::removeIrcChannel(IrcChannel* channel)
 {
     QString chanName = _ircChannels.key(channel);
     if (chanName.isNull())
@@ -367,23 +370,21 @@ void Network::removeIrcChannel(IrcChannel *channel)
     channel->deleteLater();
 }
 
-
 void Network::removeChansAndUsers()
 {
-    QList<IrcUser *> users = ircUsers();
+    QList<IrcUser*> users = ircUsers();
     _ircUsers.clear();
-    QList<IrcChannel *> channels = ircChannels();
+    QList<IrcChannel*> channels = ircChannels();
     _ircChannels.clear();
 
     qDeleteAll(users);
     qDeleteAll(channels);
 }
 
-
-IrcChannel *Network::newIrcChannel(const QString &channelname, const QVariantMap &initData)
+IrcChannel* Network::newIrcChannel(const QString& channelname, const QVariantMap& initData)
 {
     if (!_ircChannels.contains(channelname.toLower())) {
-        IrcChannel *channel = ircChannelFactory(channelname);
+        IrcChannel* channel = ircChannelFactory(channelname);
         if (!initData.isEmpty()) {
             channel->fromVariantMap(initData);
             channel->setInitialized();
@@ -403,8 +404,7 @@ IrcChannel *Network::newIrcChannel(const QString &channelname, const QVariantMap
     return _ircChannels[channelname.toLower()];
 }
 
-
-IrcChannel *Network::ircChannel(QString channelname) const
+IrcChannel* Network::ircChannel(QString channelname) const
 {
     channelname = channelname.toLower();
     if (_ircChannels.contains(channelname))
@@ -413,7 +413,6 @@ IrcChannel *Network::ircChannel(QString channelname) const
         return nullptr;
 }
 
-
 QByteArray Network::defaultCodecForServer()
 {
     if (_defaultCodecForServer)
@@ -421,12 +420,10 @@ QByteArray Network::defaultCodecForServer()
     return QByteArray();
 }
 
-
-void Network::setDefaultCodecForServer(const QByteArray &name)
+void Network::setDefaultCodecForServer(const QByteArray& name)
 {
     _defaultCodecForServer = QTextCodec::codecForName(name);
 }
-
 
 QByteArray Network::defaultCodecForEncoding()
 {
@@ -435,12 +432,10 @@ QByteArray Network::defaultCodecForEncoding()
     return QByteArray();
 }
 
-
-void Network::setDefaultCodecForEncoding(const QByteArray &name)
+void Network::setDefaultCodecForEncoding(const QByteArray& name)
 {
     _defaultCodecForEncoding = QTextCodec::codecForName(name);
 }
-
 
 QByteArray Network::defaultCodecForDecoding()
 {
@@ -449,12 +444,10 @@ QByteArray Network::defaultCodecForDecoding()
     return QByteArray();
 }
 
-
-void Network::setDefaultCodecForDecoding(const QByteArray &name)
+void Network::setDefaultCodecForDecoding(const QByteArray& name)
 {
     _defaultCodecForDecoding = QTextCodec::codecForName(name);
 }
-
 
 QByteArray Network::codecForServer() const
 {
@@ -463,21 +456,18 @@ QByteArray Network::codecForServer() const
     return QByteArray();
 }
 
-
-void Network::setCodecForServer(const QByteArray &name)
+void Network::setCodecForServer(const QByteArray& name)
 {
     setCodecForServer(QTextCodec::codecForName(name));
 }
 
-
-void Network::setCodecForServer(QTextCodec *codec)
+void Network::setCodecForServer(QTextCodec* codec)
 {
     _codecForServer = codec;
     QByteArray codecName = codecForServer();
     SYNC_OTHER(setCodecForServer, ARG(codecName))
     emit configChanged();
 }
-
 
 QByteArray Network::codecForEncoding() const
 {
@@ -486,14 +476,12 @@ QByteArray Network::codecForEncoding() const
     return QByteArray();
 }
 
-
-void Network::setCodecForEncoding(const QByteArray &name)
+void Network::setCodecForEncoding(const QByteArray& name)
 {
     setCodecForEncoding(QTextCodec::codecForName(name));
 }
 
-
-void Network::setCodecForEncoding(QTextCodec *codec)
+void Network::setCodecForEncoding(QTextCodec* codec)
 {
     _codecForEncoding = codec;
     QByteArray codecName = codecForEncoding();
@@ -501,22 +489,20 @@ void Network::setCodecForEncoding(QTextCodec *codec)
     emit configChanged();
 }
 
-
 QByteArray Network::codecForDecoding() const
 {
     if (_codecForDecoding)
         return _codecForDecoding->name();
-    else return QByteArray();
+    else
+        return QByteArray();
 }
 
-
-void Network::setCodecForDecoding(const QByteArray &name)
+void Network::setCodecForDecoding(const QByteArray& name)
 {
     setCodecForDecoding(QTextCodec::codecForName(name));
 }
 
-
-void Network::setCodecForDecoding(QTextCodec *codec)
+void Network::setCodecForDecoding(QTextCodec* codec)
 {
     _codecForDecoding = codec;
     QByteArray codecName = codecForDecoding();
@@ -524,17 +510,16 @@ void Network::setCodecForDecoding(QTextCodec *codec)
     emit configChanged();
 }
 
-
 // FIXME use server encoding if appropriate
-QString Network::decodeString(const QByteArray &text) const
+QString Network::decodeString(const QByteArray& text) const
 {
     if (_codecForDecoding)
         return ::decodeString(text, _codecForDecoding);
-    else return ::decodeString(text, _defaultCodecForDecoding);
+    else
+        return ::decodeString(text, _defaultCodecForDecoding);
 }
 
-
-QByteArray Network::encodeString(const QString &string) const
+QByteArray Network::encodeString(const QString& string) const
 {
     if (_codecForEncoding) {
         return _codecForEncoding->fromUnicode(string);
@@ -545,8 +530,7 @@ QByteArray Network::encodeString(const QString &string) const
     return string.toLatin1();
 }
 
-
-QString Network::decodeServerString(const QByteArray &text) const
+QString Network::decodeServerString(const QByteArray& text) const
 {
     if (_codecForServer)
         return ::decodeString(text, _codecForServer);
@@ -554,8 +538,7 @@ QString Network::decodeServerString(const QByteArray &text) const
         return ::decodeString(text, _defaultCodecForServer);
 }
 
-
-QByteArray Network::encodeServerString(const QString &string) const
+QByteArray Network::encodeServerString(const QString& string) const
 {
     if (_codecForServer) {
         return _codecForServer->fromUnicode(string);
@@ -566,11 +549,10 @@ QByteArray Network::encodeServerString(const QString &string) const
     return string.toLatin1();
 }
 
-
 // ====================
 //  Public Slots:
 // ====================
-void Network::setNetworkName(const QString &networkName)
+void Network::setNetworkName(const QString& networkName)
 {
     _networkName = networkName;
     SYNC(ARG(networkName))
@@ -578,14 +560,12 @@ void Network::setNetworkName(const QString &networkName)
     emit configChanged();
 }
 
-
-void Network::setCurrentServer(const QString &currentServer)
+void Network::setCurrentServer(const QString& currentServer)
 {
     _currentServer = currentServer;
     SYNC(ARG(currentServer))
     emit currentServerSet(currentServer);
 }
-
 
 void Network::setConnected(bool connected)
 {
@@ -602,18 +582,16 @@ void Network::setConnected(bool connected)
     emit connectedSet(connected);
 }
 
-
-//void Network::setConnectionState(ConnectionState state) {
+// void Network::setConnectionState(ConnectionState state) {
 void Network::setConnectionState(int state)
 {
     _connectionState = (ConnectionState)state;
-    //qDebug() << "netstate" << networkId() << networkName() << state;
+    // qDebug() << "netstate" << networkId() << networkName() << state;
     SYNC(ARG(state))
     emit connectionStateSet(_connectionState);
 }
 
-
-void Network::setMyNick(const QString &nickname)
+void Network::setMyNick(const QString& nickname)
 {
     _myNick = nickname;
     if (!_myNick.isEmpty() && !ircUser(myNick())) {
@@ -623,7 +601,6 @@ void Network::setMyNick(const QString &nickname)
     emit myNickSet(nickname);
 }
 
-
 void Network::setLatency(int latency)
 {
     if (_latency == latency)
@@ -631,7 +608,6 @@ void Network::setLatency(int latency)
     _latency = latency;
     SYNC(ARG(latency))
 }
-
 
 void Network::setIdentity(IdentityId id)
 {
@@ -641,14 +617,12 @@ void Network::setIdentity(IdentityId id)
     emit configChanged();
 }
 
-
-void Network::setServerList(const QVariantList &serverList)
+void Network::setServerList(const QVariantList& serverList)
 {
     _serverList = fromVariantList<Server>(serverList);
     SYNC(ARG(serverList))
     emit configChanged();
 }
-
 
 void Network::setUseRandomServer(bool use)
 {
@@ -657,14 +631,12 @@ void Network::setUseRandomServer(bool use)
     emit configChanged();
 }
 
-
-void Network::setPerform(const QStringList &perform)
+void Network::setPerform(const QStringList& perform)
 {
     _perform = perform;
     SYNC(ARG(perform))
     emit configChanged();
 }
-
 
 void Network::setUseAutoIdentify(bool use)
 {
@@ -673,22 +645,19 @@ void Network::setUseAutoIdentify(bool use)
     emit configChanged();
 }
 
-
-void Network::setAutoIdentifyService(const QString &service)
+void Network::setAutoIdentifyService(const QString& service)
 {
     _autoIdentifyService = service;
     SYNC(ARG(service))
     emit configChanged();
 }
 
-
-void Network::setAutoIdentifyPassword(const QString &password)
+void Network::setAutoIdentifyPassword(const QString& password)
 {
     _autoIdentifyPassword = password;
     SYNC(ARG(password))
     emit configChanged();
 }
-
 
 void Network::setUseSasl(bool use)
 {
@@ -697,22 +666,19 @@ void Network::setUseSasl(bool use)
     emit configChanged();
 }
 
-
-void Network::setSaslAccount(const QString &account)
+void Network::setSaslAccount(const QString& account)
 {
     _saslAccount = account;
     SYNC(ARG(account))
     emit configChanged();
 }
 
-
-void Network::setSaslPassword(const QString &password)
+void Network::setSaslPassword(const QString& password)
 {
     _saslPassword = password;
     SYNC(ARG(password))
     emit configChanged();
 }
-
 
 void Network::setUseAutoReconnect(bool use)
 {
@@ -721,14 +687,12 @@ void Network::setUseAutoReconnect(bool use)
     emit configChanged();
 }
 
-
 void Network::setAutoReconnectInterval(quint32 interval)
 {
     _autoReconnectInterval = interval;
     SYNC(ARG(interval))
     emit configChanged();
 }
-
 
 void Network::setAutoReconnectRetries(quint16 retries)
 {
@@ -737,7 +701,6 @@ void Network::setAutoReconnectRetries(quint16 retries)
     emit configChanged();
 }
 
-
 void Network::setUnlimitedReconnectRetries(bool unlimited)
 {
     _unlimitedReconnectRetries = unlimited;
@@ -745,14 +708,12 @@ void Network::setUnlimitedReconnectRetries(bool unlimited)
     emit configChanged();
 }
 
-
 void Network::setRejoinChannels(bool rejoin)
 {
     _rejoinChannels = rejoin;
     SYNC(ARG(rejoin))
     emit configChanged();
 }
-
 
 void Network::setUseCustomMessageRate(bool useCustomRate)
 {
@@ -764,14 +725,14 @@ void Network::setUseCustomMessageRate(bool useCustomRate)
     }
 }
 
-
 void Network::setMessageRateBurstSize(quint32 burstSize)
 {
     if (burstSize < 1) {
         // Can't go slower than one message at a time.  Also blocks old clients from trying to set
         // this to 0.
         qDebug() << "Received invalid setMessageRateBurstSize data - message burst size must be "
-                    "non-zero positive, given" << burstSize;
+                    "non-zero positive, given"
+                 << burstSize;
         return;
     }
     if (_messageRateBurstSize != burstSize) {
@@ -782,14 +743,14 @@ void Network::setMessageRateBurstSize(quint32 burstSize)
     }
 }
 
-
 void Network::setMessageRateDelay(quint32 messageDelay)
 {
     if (messageDelay == 0) {
         // Nonsensical to have no delay - just check the Unlimited box instead.  Also blocks old
         // clients from trying to set this to 0.
         qDebug() << "Received invalid setMessageRateDelay data - message delay must be non-zero "
-                    "positive, given" << messageDelay;
+                    "positive, given"
+                 << messageDelay;
         return;
     }
     if (_messageRateDelay != messageDelay) {
@@ -799,7 +760,6 @@ void Network::setMessageRateDelay(quint32 messageDelay)
         emit messageRateDelaySet(_messageRateDelay);
     }
 }
-
 
 void Network::setUnlimitedMessageRate(bool unlimitedRate)
 {
@@ -811,8 +771,7 @@ void Network::setUnlimitedMessageRate(bool unlimitedRate)
     }
 }
 
-
-void Network::addSupport(const QString &param, const QString &value)
+void Network::addSupport(const QString& param, const QString& value)
 {
     if (!_supports.contains(param)) {
         _supports[param] = value;
@@ -820,15 +779,13 @@ void Network::addSupport(const QString &param, const QString &value)
     }
 }
 
-
-void Network::removeSupport(const QString &param)
+void Network::removeSupport(const QString& param)
 {
     if (_supports.contains(param)) {
         _supports.remove(param);
         SYNC(ARG(param))
     }
 }
-
 
 QVariantMap Network::initSupports() const
 {
@@ -841,7 +798,7 @@ QVariantMap Network::initSupports() const
     return supports;
 }
 
-void Network::addCap(const QString &capability, const QString &value)
+void Network::addCap(const QString& capability, const QString& value)
 {
     // IRCv3 specs all use lowercase capability names
     QString _capLowercase = capability.toLower();
@@ -852,7 +809,7 @@ void Network::addCap(const QString &capability, const QString &value)
     }
 }
 
-void Network::acknowledgeCap(const QString &capability)
+void Network::acknowledgeCap(const QString& capability)
 {
     // IRCv3 specs all use lowercase capability names
     QString _capLowercase = capability.toLower();
@@ -863,7 +820,7 @@ void Network::acknowledgeCap(const QString &capability)
     }
 }
 
-void Network::removeCap(const QString &capability)
+void Network::removeCap(const QString& capability)
 {
     // IRCv3 specs all use lowercase capability names
     QString _capLowercase = capability.toLower();
@@ -890,7 +847,7 @@ void Network::clearCaps()
     // If performance issues arise, this can be converted to a more-efficient setup without breaking
     // protocol (in theory).
     QString _capLowercase;
-    foreach (const QString &capability, _caps) {
+    foreach (const QString& capability, _caps) {
         _capLowercase = capability.toLower();
         emit capRemoved(_capLowercase);
     }
@@ -912,7 +869,6 @@ QVariantMap Network::initCaps() const
     return caps;
 }
 
-
 // There's potentially a lot of users and channels, so it makes sense to optimize the format of this.
 // Rather than sending a thousand maps with identical keys, we convert this into one map containing lists
 // where each list index corresponds to a particular IrcUser. This saves sending the key names a thousand times.
@@ -926,8 +882,8 @@ QVariantMap Network::initIrcUsersAndChannels() const
 
     if (_ircUsers.count()) {
         QHash<QString, QVariantList> users;
-        QHash<QString, IrcUser *>::const_iterator it = _ircUsers.begin();
-        QHash<QString, IrcUser *>::const_iterator end = _ircUsers.end();
+        QHash<QString, IrcUser*>::const_iterator it = _ircUsers.begin();
+        QHash<QString, IrcUser*>::const_iterator end = _ircUsers.end();
         while (it != end) {
             QVariantMap map = it.value()->toVariantMap();
             // If the peer doesn't support LongTime, replace the lastAwayMessageTime field
@@ -954,17 +910,17 @@ QVariantMap Network::initIrcUsersAndChannels() const
         // Can't have a container with a value type != QVariant in a QVariant :(
         // However, working directly on a QVariantMap is awkward for appending, thus the detour via the hash above.
         QVariantMap userMap;
-        foreach(const QString &key, users.keys())
+        foreach (const QString& key, users.keys())
             userMap[key] = users[key];
         usersAndChannels["Users"] = userMap;
     }
 
     if (_ircChannels.count()) {
         QHash<QString, QVariantList> channels;
-        QHash<QString, IrcChannel *>::const_iterator it = _ircChannels.begin();
-        QHash<QString, IrcChannel *>::const_iterator end = _ircChannels.end();
+        QHash<QString, IrcChannel*>::const_iterator it = _ircChannels.begin();
+        QHash<QString, IrcChannel*>::const_iterator end = _ircChannels.end();
         while (it != end) {
-            const QVariantMap &map = it.value()->toVariantMap();
+            const QVariantMap& map = it.value()->toVariantMap();
             QVariantMap::const_iterator mapiter = map.begin();
             while (mapiter != map.end()) {
                 channels[mapiter.key()] << mapiter.value();
@@ -973,7 +929,7 @@ QVariantMap Network::initIrcUsersAndChannels() const
             ++it;
         }
         QVariantMap channelMap;
-        foreach(const QString &key, channels.keys())
+        foreach (const QString& key, channels.keys())
             channelMap[key] = channels[key];
         usersAndChannels["Channels"] = channelMap;
     }
@@ -981,24 +937,24 @@ QVariantMap Network::initIrcUsersAndChannels() const
     return usersAndChannels;
 }
 
-
-void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels)
+void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
 {
     Q_ASSERT(proxy());
     Q_ASSERT(proxy()->sourcePeer());
     if (isInitialized()) {
-        qWarning() << "Network" << networkId() << "received init data for users and channels although there already are known users or channels!";
+        qWarning() << "Network" << networkId()
+                   << "received init data for users and channels although there already are known users or channels!";
         return;
     }
 
     // toMap() and toList() are cheap, so we can avoid copying to lists...
     // However, we really have to make sure to never accidentally detach from the shared data!
 
-    const QVariantMap &users = usersAndChannels["Users"].toMap();
+    const QVariantMap& users = usersAndChannels["Users"].toMap();
 
     // sanity check
     int count = users["nick"].toList().count();
-    foreach(const QString &key, users.keys()) {
+    foreach (const QString& key, users.keys()) {
         if (users[key].toList().count() != count) {
             qWarning() << "Received invalid usersAndChannels init data, sizes of attribute lists don't match!";
             return;
@@ -1006,9 +962,9 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels)
     }
 
     // now create the individual IrcUsers
-    for(int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         QVariantMap map;
-        foreach(const QString &key, users.keys())
+        foreach (const QString& key, users.keys())
             map[key] = users[key].toList().at(i);
 
         // If the peer doesn't support LongTime, upconvert the lastAwayMessageTime field
@@ -1026,31 +982,30 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels)
             map["lastAwayMessageTime"] = lastAwayMessageTime;
         }
 
-        newIrcUser(map["nick"].toString(), map); // newIrcUser() properly handles the hostmask being just the nick
+        newIrcUser(map["nick"].toString(), map);  // newIrcUser() properly handles the hostmask being just the nick
     }
 
     // same thing for IrcChannels
-    const QVariantMap &channels = usersAndChannels["Channels"].toMap();
+    const QVariantMap& channels = usersAndChannels["Channels"].toMap();
 
     // sanity check
     count = channels["name"].toList().count();
-    foreach(const QString &key, channels.keys()) {
+    foreach (const QString& key, channels.keys()) {
         if (channels[key].toList().count() != count) {
             qWarning() << "Received invalid usersAndChannels init data, sizes of attribute lists don't match!";
             return;
         }
     }
     // now create the individual IrcChannels
-    for(int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         QVariantMap map;
-        foreach(const QString &key, channels.keys())
+        foreach (const QString& key, channels.keys())
             map[key] = channels[key].toList().at(i);
         newIrcChannel(map["name"].toString(), map);
     }
 }
 
-
-void Network::initSetSupports(const QVariantMap &supports)
+void Network::initSetSupports(const QVariantMap& supports)
 {
     QMapIterator<QString, QVariant> iter(supports);
     while (iter.hasNext()) {
@@ -1059,8 +1014,7 @@ void Network::initSetSupports(const QVariantMap &supports)
     }
 }
 
-
-void Network::initSetCaps(const QVariantMap &caps)
+void Network::initSetCaps(const QVariantMap& caps)
 {
     QMapIterator<QString, QVariant> iter(caps);
     while (iter.hasNext()) {
@@ -1069,11 +1023,10 @@ void Network::initSetCaps(const QVariantMap &caps)
     }
 }
 
-
-IrcUser *Network::updateNickFromMask(const QString &mask)
+IrcUser* Network::updateNickFromMask(const QString& mask)
 {
     QString nick(nickFromMask(mask).toLower());
-    IrcUser *ircuser;
+    IrcUser* ircuser;
 
     if (_ircUsers.contains(nick)) {
         ircuser = _ircUsers[nick];
@@ -1085,26 +1038,24 @@ IrcUser *Network::updateNickFromMask(const QString &mask)
     return ircuser;
 }
 
-
 void Network::ircUserNickChanged(QString newnick)
 {
-    QString oldnick = _ircUsers.key(qobject_cast<IrcUser *>(sender()));
+    QString oldnick = _ircUsers.key(qobject_cast<IrcUser*>(sender()));
 
     if (oldnick.isNull())
         return;
 
-    if (newnick.toLower() != oldnick) _ircUsers[newnick.toLower()] = _ircUsers.take(oldnick);
+    if (newnick.toLower() != oldnick)
+        _ircUsers[newnick.toLower()] = _ircUsers.take(oldnick);
 
     if (myNick().toLower() == oldnick)
         setMyNick(newnick);
 }
 
-
-void Network::emitConnectionError(const QString &errorMsg)
+void Network::emitConnectionError(const QString& errorMsg)
 {
     emit connectionError(errorMsg);
 }
-
 
 // ====================
 //  Private:
@@ -1154,13 +1105,11 @@ void Network::determinePrefixes() const
     }
 }
 
-
 /************************************************************************
  * NetworkInfo
  ************************************************************************/
 
-
-bool NetworkInfo::operator==(const NetworkInfo &other) const
+bool NetworkInfo::operator==(const NetworkInfo& other) const
 {
     return     networkName               == other.networkName
             && serverList                == other.serverList
@@ -1189,14 +1138,12 @@ bool NetworkInfo::operator==(const NetworkInfo &other) const
         ;
 }
 
-
-bool NetworkInfo::operator!=(const NetworkInfo &other) const
+bool NetworkInfo::operator!=(const NetworkInfo& other) const
 {
     return !(*this == other);
 }
 
-
-QDataStream &operator<<(QDataStream &out, const NetworkInfo &info)
+QDataStream& operator<<(QDataStream& out, const NetworkInfo& info)
 {
     QVariantMap i;
     i["NetworkName"]               = info.networkName;
@@ -1227,8 +1174,7 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info)
     return out;
 }
 
-
-QDataStream &operator>>(QDataStream &in, NetworkInfo &info)
+QDataStream& operator>>(QDataStream& in, NetworkInfo& info)
 {
     QVariantMap i;
     in >> i;
@@ -1259,27 +1205,23 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info)
     return in;
 }
 
-
-QDebug operator<<(QDebug dbg, const NetworkInfo &i)
+QDebug operator<<(QDebug dbg, const NetworkInfo& i)
 {
     dbg.nospace() << "(id = " << i.networkId << " name = " << i.networkName << " identity = " << i.identity
-    << " codecForServer = " << i.codecForServer << " codecForEncoding = " << i.codecForEncoding << " codecForDecoding = " << i.codecForDecoding
-    << " serverList = " << i.serverList << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform
-    << " useAutoIdentify = " << i.useAutoIdentify << " autoIdentifyService = " << i.autoIdentifyService << " autoIdentifyPassword = " << i.autoIdentifyPassword
-    << " useSasl = " << i.useSasl << " saslAccount = " << i.saslAccount << " saslPassword = " << i.saslPassword
-    << " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
-    << " autoReconnectRetries = " << i.autoReconnectRetries << " unlimitedReconnectRetries = " << i.unlimitedReconnectRetries
-    << " rejoinChannels = " << i.rejoinChannels
-    << " useCustomMessageRate = " << i.useCustomMessageRate
-    << " messageRateBurstSize = " << i.messageRateBurstSize
-    << " messageRateDelay = " << i.messageRateDelay
-    << " unlimitedMessageRate = " << i.unlimitedMessageRate
-    << ")";
+                  << " codecForServer = " << i.codecForServer << " codecForEncoding = " << i.codecForEncoding
+                  << " codecForDecoding = " << i.codecForDecoding << " serverList = " << i.serverList
+                  << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform << " useAutoIdentify = " << i.useAutoIdentify
+                  << " autoIdentifyService = " << i.autoIdentifyService << " autoIdentifyPassword = " << i.autoIdentifyPassword
+                  << " useSasl = " << i.useSasl << " saslAccount = " << i.saslAccount << " saslPassword = " << i.saslPassword
+                  << " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
+                  << " autoReconnectRetries = " << i.autoReconnectRetries << " unlimitedReconnectRetries = " << i.unlimitedReconnectRetries
+                  << " rejoinChannels = " << i.rejoinChannels << " useCustomMessageRate = " << i.useCustomMessageRate
+                  << " messageRateBurstSize = " << i.messageRateBurstSize << " messageRateDelay = " << i.messageRateDelay
+                  << " unlimitedMessageRate = " << i.unlimitedMessageRate << ")";
     return dbg.space();
 }
 
-
-QDataStream &operator<<(QDataStream &out, const Network::Server &server)
+QDataStream& operator<<(QDataStream& out, const Network::Server& server)
 {
     QVariantMap serverMap;
     serverMap["Host"] = server.host;
@@ -1298,8 +1240,7 @@ QDataStream &operator<<(QDataStream &out, const Network::Server &server)
     return out;
 }
 
-
-QDataStream &operator>>(QDataStream &in, Network::Server &server)
+QDataStream& operator>>(QDataStream& in, Network::Server& server)
 {
     QVariantMap serverMap;
     in >> serverMap;
@@ -1318,34 +1259,43 @@ QDataStream &operator>>(QDataStream &in, Network::Server &server)
     return in;
 }
 
-
-bool Network::Server::operator==(const Server &other) const
+bool Network::Server::operator==(const Server& other) const
 {
-    if (host != other.host) return false;
-    if (port != other.port) return false;
-    if (password != other.password) return false;
-    if (useSsl != other.useSsl) return false;
-    if (sslVerify != other.sslVerify) return false;
-    if (sslVersion != other.sslVersion) return false;
-    if (useProxy != other.useProxy) return false;
-    if (proxyType != other.proxyType) return false;
-    if (proxyHost != other.proxyHost) return false;
-    if (proxyPort != other.proxyPort) return false;
-    if (proxyUser != other.proxyUser) return false;
-    if (proxyPass != other.proxyPass) return false;
+    if (host != other.host)
+        return false;
+    if (port != other.port)
+        return false;
+    if (password != other.password)
+        return false;
+    if (useSsl != other.useSsl)
+        return false;
+    if (sslVerify != other.sslVerify)
+        return false;
+    if (sslVersion != other.sslVersion)
+        return false;
+    if (useProxy != other.useProxy)
+        return false;
+    if (proxyType != other.proxyType)
+        return false;
+    if (proxyHost != other.proxyHost)
+        return false;
+    if (proxyPort != other.proxyPort)
+        return false;
+    if (proxyUser != other.proxyUser)
+        return false;
+    if (proxyPass != other.proxyPass)
+        return false;
     return true;
 }
 
-
-bool Network::Server::operator!=(const Server &other) const
+bool Network::Server::operator!=(const Server& other) const
 {
     return !(*this == other);
 }
 
-
-QDebug operator<<(QDebug dbg, const Network::Server &server)
+QDebug operator<<(QDebug dbg, const Network::Server& server)
 {
-    dbg.nospace() << "Server(host = " << server.host << ":" << server.port << ", useSsl = " <<
-                     server.useSsl << ", sslVerify = " << server.sslVerify << ")";
+    dbg.nospace() << "Server(host = " << server.host << ":" << server.port << ", useSsl = " << server.useSsl
+                  << ", sslVerify = " << server.sslVerify << ")";
     return dbg.space();
 }

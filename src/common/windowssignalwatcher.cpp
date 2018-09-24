@@ -33,17 +33,17 @@
 //        condition variable once shutdown is complete...
 static BOOL WINAPI consoleCtrlHandler(DWORD ctrlType)
 {
-  switch (ctrlType) {
-  case CTRL_C_EVENT:     // Ctrl+C
-  case CTRL_CLOSE_EVENT: // Closing the console window
-      WindowsSignalWatcher::signalHandler(SIGTERM);
-      return TRUE;
-  default:
-      return FALSE;
-  }
+    switch (ctrlType) {
+    case CTRL_C_EVENT:      // Ctrl+C
+    case CTRL_CLOSE_EVENT:  // Closing the console window
+        WindowsSignalWatcher::signalHandler(SIGTERM);
+        return TRUE;
+    default:
+        return FALSE;
+    }
 }
 
-WindowsSignalWatcher::WindowsSignalWatcher(QObject *parent)
+WindowsSignalWatcher::WindowsSignalWatcher(QObject* parent)
     : AbstractSignalWatcher{parent}
     , Singleton<WindowsSignalWatcher>{this}
 {

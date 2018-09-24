@@ -22,7 +22,6 @@
 #define TASKBARNOTIFICATIONBACKEND_H_
 
 #include "abstractnotificationbackend.h"
-
 #include "settingspage.h"
 
 class QCheckBox;
@@ -33,15 +32,15 @@ class TaskbarNotificationBackend : public AbstractNotificationBackend
     Q_OBJECT
 
 public:
-    TaskbarNotificationBackend(QObject *parent = nullptr);
+    TaskbarNotificationBackend(QObject* parent = nullptr);
 
-    void notify(const Notification &) override;
+    void notify(const Notification&) override;
     void close(uint notificationId) override;
-    SettingsPage *createConfigWidget() const override;
+    SettingsPage* createConfigWidget() const override;
 
 private slots:
-    void enabledChanged(const QVariant &);
-    void timeoutChanged(const QVariant &);
+    void enabledChanged(const QVariant&);
+    void timeoutChanged(const QVariant&);
 
 private:
     class ConfigWidget;
@@ -50,13 +49,12 @@ private:
     int _timeout;
 };
 
-
 class TaskbarNotificationBackend::ConfigWidget : public SettingsPage
 {
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = nullptr);
+    ConfigWidget(QWidget* parent = nullptr);
     void save() override;
     void load() override;
     bool hasDefaults() const override;
@@ -66,12 +64,11 @@ private slots:
     void widgetChanged();
 
 private:
-    QCheckBox *enabledBox;
-    QSpinBox *timeoutBox;
+    QCheckBox* enabledBox;
+    QSpinBox* timeoutBox;
 
     bool enabled;
     int timeout;
 };
-
 
 #endif

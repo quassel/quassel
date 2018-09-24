@@ -22,8 +22,9 @@
 #define MAC_UTILS_H
 
 #include <QString>
+
 #include <CoreFoundation/CoreFoundation.h>
 
 QString CFStringToQString(CFStringRef str);
 
-#endif //MAC_UTILS_H
+#endif  // MAC_UTILS_H

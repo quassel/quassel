@@ -19,14 +19,19 @@
  ***************************************************************************/
 
 #include "netsplit.h"
-#include "network.h"
-#include "util.h"
 
 #include <QRegExp>
 
-Netsplit::Netsplit(Network *network, QObject *parent)
-    : QObject(parent),
-    _network(network), _quitMsg(""), _sentQuit(false), _joinCounter(0), _quitCounter(0)
+#include "network.h"
+#include "util.h"
+
+Netsplit::Netsplit(Network* network, QObject* parent)
+    : QObject(parent)
+    , _network(network)
+    , _quitMsg("")
+    , _sentQuit(false)
+    , _joinCounter(0)
+    , _quitCounter(0)
 {
     _discardTimer.setSingleShot(true);
     _joinTimer.setSingleShot(true);
@@ -41,12 +46,11 @@ Netsplit::Netsplit(Network *network, QObject *parent)
     _discardTimer.start(3600000);
 }
 
-
-void Netsplit::userQuit(const QString &sender, const QStringList &channels, const QString &msg)
+void Netsplit::userQuit(const QString& sender, const QStringList& channels, const QString& msg)
 {
     if (_quitMsg.isEmpty())
         _quitMsg = msg;
-    foreach(QString channel, channels) {
+    foreach (QString channel, channels) {
         _quits[channel].append(sender);
     }
     _quitCounter++;
@@ -54,13 +58,12 @@ void Netsplit::userQuit(const QString &sender, const QStringList &channels, cons
     _quitTimer.start(10000);
 }
 
-
-bool Netsplit::userJoined(const QString &sender, const QString &channel)
+bool Netsplit::userJoined(const QString& sender, const QString& channel)
 {
     if (!_quits.contains(channel))
         return false;
 
-    QStringList &users = _quits[channel];
+    QStringList& users = _quits[channel];
 
     QStringList::iterator userIter;
     const QString senderNick = nickFromMask(sender);
@@ -81,24 +84,22 @@ bool Netsplit::userJoined(const QString &sender, const QString &channel)
 
     _joinCounter++;
 
-    if (_quits.empty()) // all users joined already - no need to wait
+    if (_quits.empty())  // all users joined already - no need to wait
         _joinTimer.start(0);
-    else // wait 30s to finish the netsplit-join
+    else  // wait 30s to finish the netsplit-join
         _joinTimer.start(30000);
 
     return true;
 }
 
-
-bool Netsplit::userAlreadyJoined(const QString &sender, const QString &channel)
+bool Netsplit::userAlreadyJoined(const QString& sender, const QString& channel)
 {
     if (_joins.value(channel).first.contains(sender))
         return true;
     return false;
 }
 
-
-void Netsplit::addMode(const QString &sender, const QString &channel, const QString &mode)
+void Netsplit::addMode(const QString& sender, const QString& channel, const QString& mode)
 {
     if (!_joins.contains(channel))
         return;
@@ -108,8 +109,7 @@ void Netsplit::addMode(const QString &sender, const QString &channel, const QStr
     _joins[channel].second[idx].append(mode);
 }
 
-
-bool Netsplit::isNetsplit(const QString &quitMessage)
+bool Netsplit::isNetsplit(const QString& quitMessage)
 {
     // check if we find some common chars that disqualify the netsplit as such
     if (quitMessage.contains(':') || quitMessage.contains('/'))
@@ -124,7 +124,6 @@ bool Netsplit::isNetsplit(const QString &quitMessage)
     return false;
 }
 
-
 void Netsplit::joinTimeout()
 {
     if (!_sentQuit) {
@@ -132,7 +131,7 @@ void Netsplit::joinTimeout()
         quitTimeout();
     }
 
-    QHash<QString, QPair<QStringList, QStringList> >::iterator it;
+    QHash<QString, QPair<QStringList, QStringList>>::iterator it;
 
     /*
       Try to catch server jumpers.
@@ -142,7 +141,7 @@ void Netsplit::joinTimeout()
       A netsplit is assumed over only if at least 1/3 of all quits had their corresponding
       join again.
     */
-    if (_joinCounter < _quitCounter/3) {
+    if (_joinCounter < _quitCounter / 3) {
         for (it = _joins.begin(); it != _joins.end(); ++it)
             emit earlyJoin(network(), it.key(), it.value().first, it.value().second);
 
@@ -164,7 +163,6 @@ void Netsplit::joinTimeout()
     emit finished();
 }
 
-
 void Netsplit::quitTimeout()
 {
     // send netsplitQuit for every recorded channel
@@ -172,7 +170,7 @@ void Netsplit::quitTimeout()
     for (channelIter = _quits.begin(); channelIter != _quits.end(); ++channelIter) {
         QStringList usersToSend;
 
-        foreach(QString user, channelIter.value()) {
+        foreach (QString user, channelIter.value()) {
             if (!_quitsWithMessageSent.value(channelIter.key()).contains(user)) {
                 usersToSend << user;
                 _quitsWithMessageSent[channelIter.key()].append(user);

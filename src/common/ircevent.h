@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include <utility>
-
 #include "common-export.h"
+
+#include <utility>
 
 #include "networkevent.h"
 #include "util.h"
@@ -30,69 +30,63 @@
 class COMMON_EXPORT IrcEvent : public NetworkEvent
 {
 public:
-    explicit IrcEvent(EventManager::EventType type, Network *network, QString prefix, QStringList params = QStringList())
-        : NetworkEvent(type, network),
-        _prefix(std::move(prefix)),
-        _params(std::move(params))
+    explicit IrcEvent(EventManager::EventType type, Network* network, QString prefix, QStringList params = QStringList())
+        : NetworkEvent(type, network)
+        , _prefix(std::move(prefix))
+        , _params(std::move(params))
     {}
 
     inline QString prefix() const { return _prefix; }
-    inline void setPrefix(const QString &prefix) { _prefix = prefix; }
+    inline void setPrefix(const QString& prefix) { _prefix = prefix; }
 
     inline QString nick() const { return nickFromMask(prefix()); }
 
     inline QStringList params() const { return _params; }
-    inline void setParams(const QStringList &params) { _params = params; }
+    inline void setParams(const QStringList& params) { _params = params; }
 
-    static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
+    static Event* create(EventManager::EventType type, QVariantMap& map, Network* network);
 
 protected:
-    explicit IrcEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const override;
+    explicit IrcEvent(EventManager::EventType type, QVariantMap& map, Network* network);
+    void toVariantMap(QVariantMap& map) const override;
 
     inline QString className() const override { return "IrcEvent"; }
-    inline void debugInfo(QDebug &dbg) const override
+    inline void debugInfo(QDebug& dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
-        dbg << ", prefix = " << qPrintable(prefix())
-            << ", params = " << params();
+        dbg << ", prefix = " << qPrintable(prefix()) << ", params = " << params();
     }
-
 
 private:
     QString _prefix;
     QStringList _params;
 };
 
-
 class COMMON_EXPORT IrcEventNumeric : public IrcEvent
 {
 public:
-    explicit IrcEventNumeric(uint number, Network *network, const QString &prefix, QString target, const QStringList &params = QStringList())
-        : IrcEvent(EventManager::IrcEventNumeric, network, prefix, params),
-        _number(number),
-        _target(std::move(target))
+    explicit IrcEventNumeric(uint number, Network* network, const QString& prefix, QString target, const QStringList& params = QStringList())
+        : IrcEvent(EventManager::IrcEventNumeric, network, prefix, params)
+        , _number(number)
+        , _target(std::move(target))
     {}
 
     inline uint number() const { return _number; }
 
     inline QString target() const { return _target; }
-    inline void setTarget(const QString &target) { _target = target; }
+    inline void setTarget(const QString& target) { _target = target; }
 
 protected:
-    explicit IrcEventNumeric(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const override;
+    explicit IrcEventNumeric(EventManager::EventType type, QVariantMap& map, Network* network);
+    void toVariantMap(QVariantMap& map) const override;
 
     inline QString className() const override { return "IrcEventNumeric"; }
-    inline void debugInfo(QDebug &dbg) const override
+    inline void debugInfo(QDebug& dbg) const override
     {
         dbg << ", num = " << number();
         NetworkEvent::debugInfo(dbg);
-        dbg << ", target = " << qPrintable(target())
-            << ", prefix = " << qPrintable(prefix())
-            << ", params = " << params();
+        dbg << ", target = " << qPrintable(target()) << ", prefix = " << qPrintable(prefix()) << ", params = " << params();
     }
-
 
 private:
     uint _number;
@@ -101,39 +95,37 @@ private:
     friend class IrcEvent;
 };
 
-
 class COMMON_EXPORT IrcEventRawMessage : public IrcEvent
 {
 public:
-    explicit inline IrcEventRawMessage(EventManager::EventType type, Network *network,
-        QByteArray rawMessage, const QString &prefix, const QString &target,
-        const QDateTime &timestamp = QDateTime())
-        : IrcEvent(type, network, prefix, QStringList() << target),
-        _rawMessage(std::move(rawMessage))
+    explicit inline IrcEventRawMessage(EventManager::EventType type,
+                                       Network* network,
+                                       QByteArray rawMessage,
+                                       const QString& prefix,
+                                       const QString& target,
+                                       const QDateTime& timestamp = QDateTime())
+        : IrcEvent(type, network, prefix, QStringList() << target)
+        , _rawMessage(std::move(rawMessage))
     {
         setTimestamp(timestamp);
     }
 
-
     inline QString target() const { return params().at(0); }
-    inline void setTarget(const QString &target) { setParams(QStringList() << target); }
+    inline void setTarget(const QString& target) { setParams(QStringList() << target); }
 
     inline QByteArray rawMessage() const { return _rawMessage; }
-    inline void setRawMessage(const QByteArray &rawMessage) { _rawMessage = rawMessage; }
+    inline void setRawMessage(const QByteArray& rawMessage) { _rawMessage = rawMessage; }
 
 protected:
-    explicit IrcEventRawMessage(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const override;
+    explicit IrcEventRawMessage(EventManager::EventType type, QVariantMap& map, Network* network);
+    void toVariantMap(QVariantMap& map) const override;
 
     inline QString className() const override { return "IrcEventRawMessage"; }
-    inline void debugInfo(QDebug &dbg) const override
+    inline void debugInfo(QDebug& dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
-        dbg << ", target = " << qPrintable(target())
-            << ", prefix = " << qPrintable(prefix())
-            << ", msg = " << rawMessage();
+        dbg << ", target = " << qPrintable(target()) << ", prefix = " << qPrintable(prefix()) << ", msg = " << rawMessage();
     }
-
 
 private:
     QByteArray _rawMessage;

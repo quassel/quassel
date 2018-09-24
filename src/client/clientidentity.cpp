@@ -23,28 +23,22 @@
 #include "client.h"
 #include "signalproxy.h"
 
-CertIdentity::CertIdentity(IdentityId id, QObject *parent)
+CertIdentity::CertIdentity(IdentityId id, QObject* parent)
     : Identity(id, parent)
-{
-}
+{}
 
-
-CertIdentity::CertIdentity(const Identity &other, QObject *parent)
+CertIdentity::CertIdentity(const Identity& other, QObject* parent)
     : Identity(other, parent)
-{
-}
+{}
 
-
-CertIdentity::CertIdentity(const CertIdentity &other, QObject *parent)
+CertIdentity::CertIdentity(const CertIdentity& other, QObject* parent)
     : Identity(other, parent)
 #ifdef HAVE_SSL
     , _isDirty(other._isDirty)
     , _sslKey(other._sslKey)
     , _sslCert(other._sslCert)
 #endif
-{
-}
-
+{}
 
 #ifdef HAVE_SSL
 void CertIdentity::enableEditSsl(bool enable)
@@ -53,15 +47,14 @@ void CertIdentity::enableEditSsl(bool enable)
         return;
 
     _certManager = new ClientCertManager(id(), this);
-    if (isValid()) { // this means we are not a newly created Identity but have a proper Id
+    if (isValid()) {  // this means we are not a newly created Identity but have a proper Id
         Client::signalProxy()->synchronize(_certManager);
         connect(_certManager, &SyncableObject::updated, this, &CertIdentity::markClean);
         connect(_certManager, &SyncableObject::initDone, this, &CertIdentity::markClean);
     }
 }
 
-
-void CertIdentity::setSslKey(const QSslKey &key)
+void CertIdentity::setSslKey(const QSslKey& key)
 {
     if (key.toPem() == _sslKey.toPem())
         return;
@@ -69,15 +62,13 @@ void CertIdentity::setSslKey(const QSslKey &key)
     _isDirty = true;
 }
 
-
-void CertIdentity::setSslCert(const QSslCertificate &cert)
+void CertIdentity::setSslCert(const QSslCertificate& cert)
 {
     if (cert.toPem() == _sslCert.toPem())
         return;
     _sslCert = cert;
     _isDirty = true;
 }
-
 
 void CertIdentity::requestUpdateSslSettings()
 {
@@ -87,18 +78,16 @@ void CertIdentity::requestUpdateSslSettings()
     _certManager->requestUpdate(_certManager->toVariantMap());
 }
 
-
 void CertIdentity::markClean()
 {
     _isDirty = false;
     emit sslSettingsUpdated();
 }
 
-
 // ========================================
 //  ClientCertManager
 // ========================================
-void ClientCertManager::setSslKey(const QByteArray &encoded)
+void ClientCertManager::setSslKey(const QByteArray& encoded)
 {
     QSslKey key(encoded, QSsl::Rsa);
     if (key.isNull() && Client::isCoreFeatureEnabled(Quassel::Feature::EcdsaCertfpKeys))
@@ -108,10 +97,9 @@ void ClientCertManager::setSslKey(const QByteArray &encoded)
     _certIdentity->setSslKey(key);
 }
 
-
-void ClientCertManager::setSslCert(const QByteArray &encoded)
+void ClientCertManager::setSslCert(const QByteArray& encoded)
 {
     _certIdentity->setSslCert(QSslCertificate(encoded));
 }
 
-#endif // HAVE_SSL
+#endif  // HAVE_SSL

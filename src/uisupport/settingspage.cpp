@@ -20,25 +20,24 @@
 
 #include "settingspage.h"
 
+#include <utility>
+
 #include <QCheckBox>
 #include <QComboBox>
 #include <QSpinBox>
 #include <QVariant>
-#include <utility>
 
 #include "fontselector.h"
 #include "uisettings.h"
 #include "widgethelpers.h"
 
-SettingsPage::SettingsPage(QString category, QString title, QWidget *parent)
-    : QWidget(parent),
-    _category(std::move(category)),
-    _title(std::move(title)),
-    _changed(false),
-    _autoWidgetsChanged(false)
-{
-}
-
+SettingsPage::SettingsPage(QString category, QString title, QWidget* parent)
+    : QWidget(parent)
+    , _category(std::move(category))
+    , _title(std::move(title))
+    , _changed(false)
+    , _autoWidgetsChanged(false)
+{}
 
 void SettingsPage::setChangedState(bool hasChanged_)
 {
@@ -50,58 +49,49 @@ void SettingsPage::setChangedState(bool hasChanged_)
     }
 }
 
-
-void SettingsPage::load(QCheckBox *box, bool checked)
+void SettingsPage::load(QCheckBox* box, bool checked)
 {
     box->setProperty("storedValue", checked);
     box->setChecked(checked);
 }
 
-
-bool SettingsPage::hasChanged(QCheckBox *box)
+bool SettingsPage::hasChanged(QCheckBox* box)
 {
     return box->property("storedValue").toBool() != box->isChecked();
 }
 
-
-void SettingsPage::load(QComboBox *box, int index)
+void SettingsPage::load(QComboBox* box, int index)
 {
     box->setProperty("storedValue", index);
     box->setCurrentIndex(index);
 }
 
-
-bool SettingsPage::hasChanged(QComboBox *box)
+bool SettingsPage::hasChanged(QComboBox* box)
 {
     return box->property("storedValue").toInt() != box->currentIndex();
 }
 
-
-void SettingsPage::load(QSpinBox *box, int value)
+void SettingsPage::load(QSpinBox* box, int value)
 {
     box->setProperty("storedValue", value);
     box->setValue(value);
 }
 
-
-bool SettingsPage::hasChanged(QSpinBox *box)
+bool SettingsPage::hasChanged(QSpinBox* box)
 {
     return box->property("storedValue").toInt() != box->value();
 }
 
-
-void SettingsPage::load(FontSelector *box, QFont value)
+void SettingsPage::load(FontSelector* box, QFont value)
 {
     box->setProperty("storedValue", value);
     box->setSelectedFont(value);
 }
 
-
-bool SettingsPage::hasChanged(FontSelector *box)
+bool SettingsPage::hasChanged(FontSelector* box)
 {
     return box->property("storedValue").value<QFont>() != box->selectedFont();
 }
-
 
 /*** Auto child widget handling ***/
 
@@ -118,18 +108,16 @@ void SettingsPage::initAutoWidgets()
     }
 }
 
-
-void SettingsPage::findAutoWidgets(QObject *parent, QObjectList *autoList) const
+void SettingsPage::findAutoWidgets(QObject* parent, QObjectList* autoList) const
 {
-    foreach(QObject *child, parent->children()) {
+    foreach (QObject* child, parent->children()) {
         if (child->property("settingsKey").isValid())
             autoList->append(child);
         findAutoWidgets(child, autoList);
     }
 }
 
-
-QByteArray SettingsPage::autoWidgetPropertyName(QObject *widget) const
+QByteArray SettingsPage::autoWidgetPropertyName(QObject* widget) const
 {
     QByteArray prop;
     if (widget->inherits("ColorButton"))
@@ -150,8 +138,7 @@ QByteArray SettingsPage::autoWidgetPropertyName(QObject *widget) const
     return prop;
 }
 
-
-QString SettingsPage::autoWidgetSettingsKey(QObject *widget) const
+QString SettingsPage::autoWidgetSettingsKey(QObject* widget) const
 {
     QString key = widget->property("settingsKey").toString();
     if (key.isEmpty())
@@ -163,11 +150,10 @@ QString SettingsPage::autoWidgetSettingsKey(QObject *widget) const
     return key;
 }
 
-
 void SettingsPage::autoWidgetHasChanged()
 {
     bool changed_ = false;
-    foreach(QObject *widget, _autoWidgets) {
+    foreach (QObject* widget, _autoWidgets) {
         QVariant curValue = widget->property(autoWidgetPropertyName(widget));
         if (!curValue.isValid())
             qWarning() << "SettingsPage::autoWidgetHasChanged(): Unknown property";
@@ -186,11 +172,10 @@ void SettingsPage::autoWidgetHasChanged()
     }
 }
 
-
 void SettingsPage::load()
 {
     UiSettings s("");
-    foreach(QObject *widget, _autoWidgets) {
+    foreach (QObject* widget, _autoWidgets) {
         QString key = autoWidgetSettingsKey(widget);
         QVariant val;
         if (key.isEmpty())
@@ -208,11 +193,10 @@ void SettingsPage::load()
         emit changed(hasChanged());
 }
 
-
 void SettingsPage::save()
 {
     UiSettings s("");
-    foreach(QObject *widget, _autoWidgets) {
+    foreach (QObject* widget, _autoWidgets) {
         QString key = autoWidgetSettingsKey(widget);
         QVariant val = widget->property(autoWidgetPropertyName(widget));
         widget->setProperty("storedValue", val);
@@ -227,25 +211,22 @@ void SettingsPage::save()
         emit changed(hasChanged());
 }
 
-
 void SettingsPage::defaults()
 {
-    foreach(QObject *widget, _autoWidgets) {
+    foreach (QObject* widget, _autoWidgets) {
         QVariant val = widget->property("defaultValue");
         widget->setProperty(autoWidgetPropertyName(widget), val);
     }
     autoWidgetHasChanged();
 }
 
-
-QVariant SettingsPage::loadAutoWidgetValue(const QString &widgetName)
+QVariant SettingsPage::loadAutoWidgetValue(const QString& widgetName)
 {
     qWarning() << "Could not load value for SettingsPage widget" << widgetName;
     return QVariant();
 }
 
-
-void SettingsPage::saveAutoWidgetValue(const QString &widgetName, const QVariant &)
+void SettingsPage::saveAutoWidgetValue(const QString& widgetName, const QVariant&)
 {
     qWarning() << "Could not save value for SettingsPage widget" << widgetName;
 }

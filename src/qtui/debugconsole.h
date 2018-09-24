@@ -28,7 +28,7 @@ class DebugConsole : public QDialog
     Q_OBJECT
 
 public:
-    DebugConsole(QWidget *parent = nullptr);
+    DebugConsole(QWidget* parent = nullptr);
 
 public slots:
     void scriptResult(QString result);
@@ -42,6 +42,5 @@ private slots:
 private:
     Ui::DebugConsole ui;
 };
-
 
 #endif

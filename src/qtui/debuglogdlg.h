@@ -32,13 +32,13 @@ class DebugLogDlg : public QDialog
     Q_OBJECT
 
 public:
-    DebugLogDlg(QWidget *parent = nullptr);
+    DebugLogDlg(QWidget* parent = nullptr);
 
 private slots:
-    void logUpdated(const Logger::LogEntry &msg);
+    void logUpdated(const Logger::LogEntry& msg);
 
 private:
-    QString toString(const Logger::LogEntry &msg);
+    QString toString(const Logger::LogEntry& msg);
 
 private:
     Ui::DebugLogDlg ui;

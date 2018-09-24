@@ -18,7 +18,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "chatview.h"
 #include "columnhandleitem.h"
 
 #include <QApplication>
@@ -27,16 +26,18 @@
 #include <QPainter>
 #include <QPalette>
 
-ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
-    : QGraphicsObject(parent),
-    _width(w),
-    _boundingRect(-_width/2, 0, _width, 0),
-    _moving(false),
-    _offset(0),
-    _minXPos(0),
-    _maxXPos(0),
-    _opacity(0),
-    _animation(new QPropertyAnimation(this, "opacity", this))
+#include "chatview.h"
+
+ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem* parent)
+    : QGraphicsObject(parent)
+    , _width(w)
+    , _boundingRect(-_width / 2, 0, _width, 0)
+    , _moving(false)
+    , _offset(0)
+    , _minXPos(0)
+    , _maxXPos(0)
+    , _opacity(0)
+    , _animation(new QPropertyAnimation(this, "opacity", this))
 {
     setAcceptHoverEvents(true);
     setZValue(10);
@@ -49,7 +50,6 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
     _animation->setEasingCurve(QEasingCurve::InOutSine);
 }
 
-
 void ColumnHandleItem::setXPos(qreal xpos)
 {
     setPos(xpos, 0);
@@ -59,22 +59,19 @@ void ColumnHandleItem::setXPos(qreal xpos)
     emit positionChanged(xpos);
 }
 
-
 void ColumnHandleItem::setXLimits(qreal min, qreal max)
 {
     _minXPos = min;
     _maxXPos = max;
-    //if(x() < min) setPos(min, 0);
-    //else if(x() > max) setPos(max - width(), 0);
+    // if(x() < min) setPos(min, 0);
+    // else if(x() > max) setPos(max - width(), 0);
 }
 
-
-void ColumnHandleItem::sceneRectChanged(const QRectF &rect)
+void ColumnHandleItem::sceneRectChanged(const QRectF& rect)
 {
     prepareGeometryChange();
-    _boundingRect = QRectF(-_width/2, rect.y(), _width, rect.height());
+    _boundingRect = QRectF(-_width / 2, rect.y(), _width, rect.height());
 }
-
 
 void ColumnHandleItem::setOpacity(qreal opacity)
 {
@@ -82,8 +79,7 @@ void ColumnHandleItem::setOpacity(qreal opacity)
     update();
 }
 
-
-void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->buttons() & Qt::LeftButton && _moving) {
         qreal newx = event->scenePos().x() - _offset;
@@ -99,8 +95,7 @@ void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
-void ColumnHandleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void ColumnHandleItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->buttons() & Qt::LeftButton) {
         QApplication::setOverrideCursor(Qt::ClosedHandCursor);
@@ -113,8 +108,7 @@ void ColumnHandleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
-void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     if (_moving) {
         _moving = false;
@@ -130,8 +124,7 @@ void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
-void ColumnHandleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void ColumnHandleItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
     Q_UNUSED(event);
 
@@ -139,8 +132,7 @@ void ColumnHandleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     _animation->start();
 }
 
-
-void ColumnHandleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void ColumnHandleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
     Q_UNUSED(event);
 
@@ -148,8 +140,7 @@ void ColumnHandleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     _animation->start();
 }
 
-
-void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ColumnHandleItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);

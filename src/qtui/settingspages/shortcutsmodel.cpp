@@ -24,20 +24,20 @@
 #include "actioncollection.h"
 #include "util.h"
 
-ShortcutsModel::ShortcutsModel(const QHash<QString, ActionCollection *> &actionCollections, QObject *parent)
-    : QAbstractItemModel(parent),
-    _changedCount(0)
+ShortcutsModel::ShortcutsModel(const QHash<QString, ActionCollection*>& actionCollections, QObject* parent)
+    : QAbstractItemModel(parent)
+    , _changedCount(0)
 {
     for (int r = 0; r < actionCollections.values().count(); r++) {
-        ActionCollection *coll = actionCollections.values().at(r);
-        auto *item = new Item();
+        ActionCollection* coll = actionCollections.values().at(r);
+        auto* item = new Item();
         item->row = r;
         item->collection = coll;
         for (int i = 0; i < coll->actions().count(); i++) {
-            auto *action = qobject_cast<Action *>(coll->actions().at(i));
+            auto* action = qobject_cast<Action*>(coll->actions().at(i));
             if (!action)
                 continue;
-            auto *actionItem = new Item();
+            auto* actionItem = new Item();
             actionItem->parentItem = item;
             actionItem->row = i;
             actionItem->collection = coll;
@@ -49,19 +49,17 @@ ShortcutsModel::ShortcutsModel(const QHash<QString, ActionCollection *> &actionC
     }
 }
 
-
 ShortcutsModel::~ShortcutsModel()
 {
     qDeleteAll(_categoryItems);
 }
 
-
-QModelIndex ShortcutsModel::parent(const QModelIndex &child) const
+QModelIndex ShortcutsModel::parent(const QModelIndex& child) const
 {
     if (!child.isValid())
         return {};
 
-    auto *item = static_cast<Item *>(child.internalPointer());
+    auto* item = static_cast<Item*>(child.internalPointer());
     Q_ASSERT(item);
 
     if (!item->parentItem)
@@ -70,24 +68,22 @@ QModelIndex ShortcutsModel::parent(const QModelIndex &child) const
     return createIndex(item->parentItem->row, 0, item->parentItem);
 }
 
-
-QModelIndex ShortcutsModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex ShortcutsModel::index(int row, int column, const QModelIndex& parent) const
 {
     if (parent.isValid())
-        return createIndex(row, column, static_cast<Item *>(parent.internalPointer())->actionItems.at(row));
+        return createIndex(row, column, static_cast<Item*>(parent.internalPointer())->actionItems.at(row));
 
     // top level category item
     return createIndex(row, column, _categoryItems.at(row));
 }
 
-
-int ShortcutsModel::columnCount(const QModelIndex &parent) const
+int ShortcutsModel::columnCount(const QModelIndex& parent) const
 {
     return 2;
     if (!parent.isValid())
         return 2;
 
-    auto *item = static_cast<Item *>(parent.internalPointer());
+    auto* item = static_cast<Item*>(parent.internalPointer());
     Q_ASSERT(item);
 
     if (!item->parentItem)
@@ -96,13 +92,12 @@ int ShortcutsModel::columnCount(const QModelIndex &parent) const
     return 2;
 }
 
-
-int ShortcutsModel::rowCount(const QModelIndex &parent) const
+int ShortcutsModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid())
         return _categoryItems.count();
 
-    auto *item = static_cast<Item *>(parent.internalPointer());
+    auto* item = static_cast<Item*>(parent.internalPointer());
     Q_ASSERT(item);
 
     if (!item->parentItem)
@@ -110,7 +105,6 @@ int ShortcutsModel::rowCount(const QModelIndex &parent) const
 
     return 0;
 }
-
 
 QVariant ShortcutsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -126,13 +120,12 @@ QVariant ShortcutsModel::headerData(int section, Qt::Orientation orientation, in
     }
 }
 
-
-QVariant ShortcutsModel::data(const QModelIndex &index, int role) const
+QVariant ShortcutsModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid())
         return QVariant();
 
-    auto *item = static_cast<Item *>(index.internalPointer());
+    auto* item = static_cast<Item*>(index.internalPointer());
     Q_ASSERT(item);
 
     if (!item->parentItem) {
@@ -146,7 +139,7 @@ QVariant ShortcutsModel::data(const QModelIndex &index, int role) const
         }
     }
 
-    auto *action = qobject_cast<Action *>(item->action);
+    auto* action = qobject_cast<Action*>(item->action);
     Q_ASSERT(action);
 
     switch (role) {
@@ -166,7 +159,7 @@ QVariant ShortcutsModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     case ActionRole:
-        return QVariant::fromValue<QObject *>(action);
+        return QVariant::fromValue<QObject*>(action);
 
     case DefaultShortcutRole:
         return action->shortcut(Action::DefaultShortcut);
@@ -181,8 +174,7 @@ QVariant ShortcutsModel::data(const QModelIndex &index, int role) const
     }
 }
 
-
-bool ShortcutsModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool ShortcutsModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     if (role != ActiveShortcutRole)
         return false;
@@ -190,7 +182,7 @@ bool ShortcutsModel::setData(const QModelIndex &index, const QVariant &value, in
     if (!index.parent().isValid())
         return false;
 
-    auto *item = static_cast<Item *>(index.internalPointer());
+    auto* item = static_cast<Item*>(index.internalPointer());
     Q_ASSERT(item);
 
     QKeySequence newSeq = value.value<QKeySequence>();
@@ -212,26 +204,24 @@ bool ShortcutsModel::setData(const QModelIndex &index, const QVariant &value, in
     return true;
 }
 
-
 void ShortcutsModel::load()
 {
-    foreach(Item *catItem, _categoryItems) {
-        foreach(Item *actItem, catItem->actionItems) {
+    foreach (Item* catItem, _categoryItems) {
+        foreach (Item* actItem, catItem->actionItems) {
             actItem->shortcut = actItem->action->shortcut(Action::ActiveShortcut);
         }
     }
-    emit dataChanged(index(0, 1), index(rowCount()-1, 1));
+    emit dataChanged(index(0, 1), index(rowCount() - 1, 1));
     if (_changedCount != 0) {
         _changedCount = 0;
         emit changed(false);
     }
 }
 
-
 void ShortcutsModel::commit()
 {
-    foreach(Item *catItem, _categoryItems) {
-        foreach(Item *actItem, catItem->actionItems) {
+    foreach (Item* catItem, _categoryItems) {
+        foreach (Item* actItem, catItem->actionItems) {
             actItem->action->setShortcut(actItem->shortcut, Action::ActiveShortcut);
         }
     }
@@ -240,7 +230,6 @@ void ShortcutsModel::commit()
         emit changed(false);
     }
 }
-
 
 void ShortcutsModel::defaults()
 {

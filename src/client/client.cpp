@@ -20,6 +20,9 @@
 
 #include "client.h"
 
+#include <cstdio>
+#include <cstdlib>
+
 #include "abstractmessageprocessor.h"
 #include "abstractui.h"
 #include "bufferinfo.h"
@@ -29,11 +32,12 @@
 #include "bufferviewconfig.h"
 #include "bufferviewoverlay.h"
 #include "clientaliasmanager.h"
+#include "clientauthhandler.h"
 #include "clientbacklogmanager.h"
 #include "clientbufferviewmanager.h"
-#include "clientirclisthelper.h"
 #include "clientidentity.h"
 #include "clientignorelistmanager.h"
+#include "clientirclisthelper.h"
 #include "clienttransfermanager.h"
 #include "clientuserinputhandler.h"
 #include "coreaccountmodel.h"
@@ -50,27 +54,24 @@
 #include "signalproxy.h"
 #include "transfermodel.h"
 #include "util.h"
-#include "clientauthhandler.h"
 
-#include <cstdio>
-#include <cstdlib>
-
-Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
-    : QObject(parent), Singleton<Client>(this),
-    _signalProxy(new SignalProxy(SignalProxy::Client, this)),
-    _mainUi(std::move(ui)),
-    _networkModel(new NetworkModel(this)),
-    _bufferModel(new BufferModel(_networkModel)),
-    _backlogManager(new ClientBacklogManager(this)),
-    _bufferViewOverlay(new BufferViewOverlay(this)),
-    _coreInfo(new CoreInfo(this)),
-    _ircListHelper(new ClientIrcListHelper(this)),
-    _inputHandler(new ClientUserInputHandler(this)),
-    _transferModel(new TransferModel(this)),
-    _messageModel(_mainUi->createMessageModel(this)),
-    _messageProcessor(_mainUi->createMessageProcessor(this)),
-    _coreAccountModel(new CoreAccountModel(this)),
-    _coreConnection(new CoreConnection(this))
+Client::Client(std::unique_ptr<AbstractUi> ui, QObject* parent)
+    : QObject(parent)
+    , Singleton<Client>(this)
+    , _signalProxy(new SignalProxy(SignalProxy::Client, this))
+    , _mainUi(std::move(ui))
+    , _networkModel(new NetworkModel(this))
+    , _bufferModel(new BufferModel(_networkModel))
+    , _backlogManager(new ClientBacklogManager(this))
+    , _bufferViewOverlay(new BufferViewOverlay(this))
+    , _coreInfo(new CoreInfo(this))
+    , _ircListHelper(new ClientIrcListHelper(this))
+    , _inputHandler(new ClientUserInputHandler(this))
+    , _transferModel(new TransferModel(this))
+    , _messageModel(_mainUi->createMessageModel(this))
+    , _messageProcessor(_mainUi->createMessageProcessor(this))
+    , _coreAccountModel(new CoreAccountModel(this))
+    , _coreConnection(new CoreConnection(this))
 {
 #ifdef EMBED_DATA
     Q_INIT_RESOURCE(data);
@@ -86,27 +87,33 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     connect(backlogManager(), &ClientBacklogManager::messagesReceived, _messageModel, &MessageModel::messagesReceived);
     connect(coreConnection(), &CoreConnection::stateChanged, this, &Client::connectionStateChanged);
 
-    SignalProxy *p = signalProxy();
+    SignalProxy* p = signalProxy();
 
-    p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
+    p->attachSlot(SIGNAL(displayMsg(const Message&)), this, SLOT(recvMessage(const Message&)));
     p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
 
     p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), _networkModel, SLOT(bufferUpdated(BufferInfo)));
     p->attachSignal(inputHandler(), SIGNAL(sendInput(BufferInfo, QString)));
     p->attachSignal(this, SIGNAL(requestNetworkStates()));
 
-    p->attachSignal(this, SIGNAL(requestCreateIdentity(const Identity &, const QVariantMap &)), SIGNAL(createIdentity(const Identity &, const QVariantMap &)));
+    p->attachSignal(this,
+                    SIGNAL(requestCreateIdentity(const Identity&, const QVariantMap&)),
+                    SIGNAL(createIdentity(const Identity&, const QVariantMap&)));
     p->attachSignal(this, SIGNAL(requestRemoveIdentity(IdentityId)), SIGNAL(removeIdentity(IdentityId)));
-    p->attachSlot(SIGNAL(identityCreated(const Identity &)), this, SLOT(coreIdentityCreated(const Identity &)));
+    p->attachSlot(SIGNAL(identityCreated(const Identity&)), this, SLOT(coreIdentityCreated(const Identity&)));
     p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
 
-    p->attachSignal(this, SIGNAL(requestCreateNetwork(const NetworkInfo &, const QStringList &)), SIGNAL(createNetwork(const NetworkInfo &, const QStringList &)));
+    p->attachSignal(this,
+                    SIGNAL(requestCreateNetwork(const NetworkInfo&, const QStringList&)),
+                    SIGNAL(createNetwork(const NetworkInfo&, const QStringList&)));
     p->attachSignal(this, SIGNAL(requestRemoveNetwork(NetworkId)), SIGNAL(removeNetwork(NetworkId)));
     p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, SLOT(coreNetworkCreated(NetworkId)));
     p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
 
-    p->attachSignal(this, SIGNAL(requestPasswordChange(PeerPtr,QString,QString,QString)), SIGNAL(changePassword(PeerPtr,QString,QString,QString)));
-    p->attachSlot(SIGNAL(passwordChanged(PeerPtr,bool)), this, SLOT(corePasswordChanged(PeerPtr,bool)));
+    p->attachSignal(this,
+                    SIGNAL(requestPasswordChange(PeerPtr, QString, QString, QString)),
+                    SIGNAL(changePassword(PeerPtr, QString, QString, QString)));
+    p->attachSlot(SIGNAL(passwordChanged(PeerPtr, bool)), this, SLOT(corePasswordChanged(PeerPtr, bool)));
 
     p->attachSignal(this, SIGNAL(requestKickClient(int)), SIGNAL(kickClient(int)));
     p->attachSlot(SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
@@ -119,44 +126,37 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
     coreConnection()->init();
 }
 
-
 Client::~Client()
 {
     disconnectFromCore();
 }
 
-
-AbstractUi *Client::mainUi()
+AbstractUi* Client::mainUi()
 {
     return instance()->_mainUi.get();
 }
-
 
 bool Client::isCoreFeatureEnabled(Quassel::Feature feature)
 {
     return coreConnection()->peer() ? coreConnection()->peer()->hasFeature(feature) : false;
 }
 
-
 bool Client::isConnected()
 {
     return instance()->_connected;
 }
-
 
 bool Client::internalCore()
 {
     return currentCoreAccount().isInternal();
 }
 
-
 void Client::onDbUpgradeInProgress(bool inProgress)
 {
     emit dbUpgradeInProgress(inProgress);
 }
 
-
-void Client::onExitRequested(int exitCode, const QString &reason)
+void Client::onExitRequested(int exitCode, const QString& reason)
 {
     if (!reason.isEmpty()) {
         qCritical() << reason;
@@ -165,7 +165,6 @@ void Client::onExitRequested(int exitCode, const QString &reason)
     QCoreApplication::exit(exitCode);
 }
 
-
 /*** Network handling ***/
 
 QList<NetworkId> Client::networkIds()
@@ -173,29 +172,27 @@ QList<NetworkId> Client::networkIds()
     return instance()->_networks.keys();
 }
 
-
-const Network *Client::network(NetworkId networkid)
+const Network* Client::network(NetworkId networkid)
 {
-    if (instance()->_networks.contains(networkid)) return instance()->_networks[networkid];
-    else return nullptr;
+    if (instance()->_networks.contains(networkid))
+        return instance()->_networks[networkid];
+    else
+        return nullptr;
 }
 
-
-void Client::createNetwork(const NetworkInfo &info, const QStringList &persistentChannels)
+void Client::createNetwork(const NetworkInfo& info, const QStringList& persistentChannels)
 {
     emit instance()->requestCreateNetwork(info, persistentChannels);
 }
-
 
 void Client::removeNetwork(NetworkId id)
 {
     emit instance()->requestRemoveNetwork(id);
 }
 
-
-void Client::updateNetwork(const NetworkInfo &info)
+void Client::updateNetwork(const NetworkInfo& info)
 {
-    Network *netptr = instance()->_networks.value(info.networkId, 0);
+    Network* netptr = instance()->_networks.value(info.networkId, 0);
     if (!netptr) {
         qWarning() << "Update for unknown network requested:" << info;
         return;
@@ -203,8 +200,7 @@ void Client::updateNetwork(const NetworkInfo &info)
     netptr->requestSetNetworkInfo(info);
 }
 
-
-void Client::addNetwork(Network *net)
+void Client::addNetwork(Network* net)
 {
     net->setProxy(signalProxy());
     signalProxy()->synchronize(net);
@@ -214,27 +210,24 @@ void Client::addNetwork(Network *net)
     emit instance()->networkCreated(net->networkId());
 }
 
-
 void Client::coreNetworkCreated(NetworkId id)
 {
     if (_networks.contains(id)) {
         qWarning() << "Creation of already existing network requested!";
         return;
     }
-    auto *net = new Network(id, this);
+    auto* net = new Network(id, this);
     addNetwork(net);
 }
-
 
 void Client::coreNetworkRemoved(NetworkId id)
 {
     if (!_networks.contains(id))
         return;
-    Network *net = _networks.take(id);
+    Network* net = _networks.take(id);
     emit networkRemoved(net->networkId());
     net->deleteLater();
 }
-
 
 /*** Identity handling ***/
 
@@ -243,15 +236,15 @@ QList<IdentityId> Client::identityIds()
     return instance()->_identities.keys();
 }
 
-
-const Identity *Client::identity(IdentityId id)
+const Identity* Client::identity(IdentityId id)
 {
-    if (instance()->_identities.contains(id)) return instance()->_identities[id];
-    else return nullptr;
+    if (instance()->_identities.contains(id))
+        return instance()->_identities[id];
+    else
+        return nullptr;
 }
 
-
-void Client::createIdentity(const CertIdentity &id)
+void Client::createIdentity(const CertIdentity& id)
 {
     QVariantMap additional;
 #ifdef HAVE_SSL
@@ -261,10 +254,9 @@ void Client::createIdentity(const CertIdentity &id)
     emit instance()->requestCreateIdentity(id, additional);
 }
 
-
-void Client::updateIdentity(IdentityId id, const QVariantMap &ser)
+void Client::updateIdentity(IdentityId id, const QVariantMap& ser)
 {
-    Identity *idptr = instance()->_identities.value(id, 0);
+    Identity* idptr = instance()->_identities.value(id, 0);
     if (!idptr) {
         qWarning() << "Update for unknown identity requested:" << id;
         return;
@@ -272,17 +264,15 @@ void Client::updateIdentity(IdentityId id, const QVariantMap &ser)
     idptr->requestUpdate(ser);
 }
 
-
 void Client::removeIdentity(IdentityId id)
 {
     emit instance()->requestRemoveIdentity(id);
 }
 
-
-void Client::coreIdentityCreated(const Identity &other)
+void Client::coreIdentityCreated(const Identity& other)
 {
     if (!_identities.contains(other.id())) {
-        auto *identity = new Identity(other, this);
+        auto* identity = new Identity(other, this);
         _identities[other.id()] = identity;
         identity->setInitialized();
         signalProxy()->synchronize(identity);
@@ -293,20 +283,18 @@ void Client::coreIdentityCreated(const Identity &other)
     }
 }
 
-
 void Client::coreIdentityRemoved(IdentityId id)
 {
     if (_identities.contains(id)) {
         emit identityRemoved(id);
-        Identity *i = _identities.take(id);
+        Identity* i = _identities.take(id);
         i->deleteLater();
     }
 }
 
-
 /*** User input handling ***/
 
-void Client::userInput(const BufferInfo &bufferInfo, const QString &message)
+void Client::userInput(const BufferInfo& bufferInfo, const QString& message)
 {
     // we need to make sure that AliasManager is ready before processing input
     if (aliasManager() && aliasManager()->isInitialized())
@@ -315,7 +303,6 @@ void Client::userInput(const BufferInfo &bufferInfo, const QString &message)
         instance()->_userInputBuffer.append(qMakePair(bufferInfo, message));
 }
 
-
 void Client::sendBufferedUserInput()
 {
     for (int i = 0; i < _userInputBuffer.count(); i++)
@@ -323,7 +310,6 @@ void Client::sendBufferedUserInput()
 
     _userInputBuffer.clear();
 }
-
 
 /*** core connection stuff ***/
 
@@ -341,7 +327,6 @@ void Client::connectionStateChanged(CoreConnection::ConnectionState state)
     }
 }
 
-
 void Client::setSyncedToCore()
 {
     // create buffersyncer
@@ -358,7 +343,7 @@ void Client::setSyncedToCore()
     connect(bufferSyncer(), &BufferSyncer::highlightCountChanged, _networkModel, &NetworkModel::highlightCountChanged);
     connect(networkModel(), &NetworkModel::requestSetLastSeenMsg, bufferSyncer(), &BufferSyncer::requestSetLastSeenMsg);
 
-    SignalProxy *p = signalProxy();
+    SignalProxy* p = signalProxy();
     p->synchronize(bufferSyncer());
 
     // create a new BufferViewManager
@@ -387,21 +372,20 @@ void Client::setSyncedToCore()
     _highlightRuleManager = new HighlightRuleManager(this);
     p->synchronize(highlightRuleManager());
     // Listen to network removed events
-    connect(this, &Client::networkRemoved,
-        _highlightRuleManager, &HighlightRuleManager::networkRemoved);
+    connect(this, &Client::networkRemoved, _highlightRuleManager, &HighlightRuleManager::networkRemoved);
 
-/*  not ready yet
-    // create TransferManager and DccConfig if core supports them
-    Q_ASSERT(!_dccConfig);
-    Q_ASSERT(!_transferManager);
-    if (isCoreFeatureEnabled(Quassel::Feature::DccFileTransfer)) {
-        _dccConfig = new DccConfig(this);
-        p->synchronize(dccConfig());
-        _transferManager = new ClientTransferManager(this);
-        _transferModel->setManager(_transferManager);
-        p->synchronize(transferManager());
-    }
-*/
+    /*  not ready yet
+        // create TransferManager and DccConfig if core supports them
+        Q_ASSERT(!_dccConfig);
+        Q_ASSERT(!_transferManager);
+        if (isCoreFeatureEnabled(Quassel::Feature::DccFileTransfer)) {
+            _dccConfig = new DccConfig(this);
+            p->synchronize(dccConfig());
+            _transferManager = new ClientTransferManager(this);
+            _transferModel->setManager(_transferManager);
+            p->synchronize(transferManager());
+        }
+    */
 
     // trigger backlog request once all active bufferviews are initialized
     connect(bufferViewOverlay(), &BufferViewOverlay::initDone, this, &Client::finishConnectionInitialization);
@@ -431,12 +415,10 @@ void Client::finishConnectionInitialization()
     }
 }
 
-
 void Client::requestInitialBacklog()
 {
     _backlogManager->requestInitialBacklog();
 }
-
 
 void Client::requestLegacyCoreInfo()
 {
@@ -458,7 +440,6 @@ void Client::requestLegacyCoreInfo()
     }
 }
 
-
 void Client::disconnectFromCore()
 {
     if (!coreConnection()->isConnected())
@@ -466,7 +447,6 @@ void Client::disconnectFromCore()
 
     coreConnection()->disconnectFromCore();
 }
-
 
 void Client::setDisconnectedFromCore()
 {
@@ -526,9 +506,9 @@ void Client::setDisconnectedFromCore()
     _messageModel->clear();
     _networkModel->clear();
 
-    QHash<NetworkId, Network *>::iterator netIter = _networks.begin();
+    QHash<NetworkId, Network*>::iterator netIter = _networks.begin();
     while (netIter != _networks.end()) {
-        Network *net = netIter.value();
+        Network* net = netIter.value();
         emit networkRemoved(net->networkId());
         disconnect(net, &Network::destroyed, this, nullptr);
         netIter = _networks.erase(netIter);
@@ -536,10 +516,10 @@ void Client::setDisconnectedFromCore()
     }
     Q_ASSERT(_networks.isEmpty());
 
-    QHash<IdentityId, Identity *>::iterator idIter = _identities.begin();
+    QHash<IdentityId, Identity*>::iterator idIter = _identities.begin();
     while (idIter != _identities.end()) {
         emit identityRemoved(idIter.key());
-        Identity *id = idIter.value();
+        Identity* id = idIter.value();
         idIter = _identities.erase(idIter);
         id->deleteLater();
     }
@@ -551,13 +531,12 @@ void Client::setDisconnectedFromCore()
     }
 }
 
-
 /*** ***/
 
 void Client::networkDestroyed()
 {
-    auto *net = static_cast<Network *>(sender());
-    QHash<NetworkId, Network *>::iterator netIter = _networks.begin();
+    auto* net = static_cast<Network*>(sender());
+    QHash<NetworkId, Network*>::iterator netIter = _networks.begin();
     while (netIter != _networks.end()) {
         if (*netIter == net) {
             netIter = _networks.erase(netIter);
@@ -569,34 +548,29 @@ void Client::networkDestroyed()
     }
 }
 
-
 // Hmm... we never used this...
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/)
 {
-    //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
+    // recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 }
 
-
-void Client::recvMessage(const Message &msg)
+void Client::recvMessage(const Message& msg)
 {
     Message msg_ = msg;
     messageProcessor()->process(msg_);
 }
 
-
-void Client::setBufferLastSeenMsg(BufferId id, const MsgId &msgId)
+void Client::setBufferLastSeenMsg(BufferId id, const MsgId& msgId)
 {
     if (bufferSyncer())
         bufferSyncer()->requestSetLastSeenMsg(id, msgId);
 }
 
-
-void Client::setMarkerLine(BufferId id, const MsgId &msgId)
+void Client::setMarkerLine(BufferId id, const MsgId& msgId)
 {
     if (bufferSyncer())
         bufferSyncer()->requestSetMarkerLine(id, msgId);
 }
-
 
 MsgId Client::markerLine(BufferId id)
 {
@@ -605,21 +579,19 @@ MsgId Client::markerLine(BufferId id)
     return {};
 }
 
-
 void Client::removeBuffer(BufferId id)
 {
-    if (!bufferSyncer()) return;
+    if (!bufferSyncer())
+        return;
     bufferSyncer()->requestRemoveBuffer(id);
 }
 
-
-void Client::renameBuffer(BufferId bufferId, const QString &newName)
+void Client::renameBuffer(BufferId bufferId, const QString& newName)
 {
     if (!bufferSyncer())
         return;
     bufferSyncer()->requestRenameBuffer(bufferId, newName);
 }
-
 
 void Client::mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2)
 {
@@ -628,14 +600,12 @@ void Client::mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2)
     bufferSyncer()->requestMergeBuffersPermanently(bufferId1, bufferId2);
 }
 
-
 void Client::purgeKnownBufferIds()
 {
     if (!bufferSyncer())
         return;
     bufferSyncer()->requestPurgeBufferIds();
 }
-
 
 void Client::bufferRemoved(BufferId bufferId)
 {
@@ -656,15 +626,13 @@ void Client::bufferRemoved(BufferId bufferId)
     networkModel()->removeBuffer(bufferId);
 }
 
-
-void Client::bufferRenamed(BufferId bufferId, const QString &newName)
+void Client::bufferRenamed(BufferId bufferId, const QString& newName)
 {
     QModelIndex bufferIndex = networkModel()->bufferIndex(bufferId);
     if (bufferIndex.isValid()) {
         networkModel()->setData(bufferIndex, newName, Qt::DisplayRole);
     }
 }
-
 
 void Client::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2)
 {
@@ -673,33 +641,29 @@ void Client::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2)
     networkModel()->removeBuffer(bufferId2);
 }
 
-
 void Client::markBufferAsRead(BufferId id)
 {
     if (bufferSyncer() && id.isValid())
         bufferSyncer()->requestMarkBufferAsRead(id);
 }
 
-
 void Client::refreshLegacyCoreInfo()
 {
     instance()->requestLegacyCoreInfo();
 }
 
-
-void Client::changePassword(const QString &oldPassword, const QString &newPassword) {
+void Client::changePassword(const QString& oldPassword, const QString& newPassword)
+{
     CoreAccount account = currentCoreAccount();
     account.setPassword(newPassword);
     coreAccountModel()->createOrUpdateAccount(account);
     emit instance()->requestPasswordChange(nullptr, account.user(), oldPassword, newPassword);
 }
 
-
 void Client::kickClient(int peerId)
 {
     emit instance()->requestKickClient(peerId);
 }
-
 
 void Client::corePasswordChanged(PeerPtr, bool success)
 {

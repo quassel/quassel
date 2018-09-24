@@ -32,7 +32,7 @@ class AboutDlg : public QDialog
     Q_OBJECT
 
 public:
-    AboutDlg(QWidget *parent = nullptr);
+    AboutDlg(QWidget* parent = nullptr);
 
 private:
     Ui::AboutDlg ui;
@@ -42,8 +42,7 @@ private:
     QString contributors() const;
     QString thanksTo() const;
 
-    AboutData *_aboutData;
+    AboutData* _aboutData;
 };
-
 
 #endif

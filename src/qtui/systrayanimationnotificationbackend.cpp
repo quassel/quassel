@@ -26,15 +26,14 @@
 #include "qtui.h"
 #include "systemtray.h"
 
-SystrayAnimationNotificationBackend::SystrayAnimationNotificationBackend(QObject *parent)
+SystrayAnimationNotificationBackend::SystrayAnimationNotificationBackend(QObject* parent)
     : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
     notificationSettings.initAndNotify("Systray/Alert", this, &SystrayAnimationNotificationBackend::alertChanged, true);
 }
 
-
-void SystrayAnimationNotificationBackend::notify(const Notification &n)
+void SystrayAnimationNotificationBackend::notify(const Notification& n)
 {
     if (n.type != Highlight && n.type != PrivMsg)
         return;
@@ -43,29 +42,26 @@ void SystrayAnimationNotificationBackend::notify(const Notification &n)
         QtUi::mainWindow()->systemTray()->setAlert(true);
 }
 
-
 void SystrayAnimationNotificationBackend::close(uint notificationId)
 {
     Q_UNUSED(notificationId)
     QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
-
-void SystrayAnimationNotificationBackend::alertChanged(const QVariant &v)
+void SystrayAnimationNotificationBackend::alertChanged(const QVariant& v)
 {
     _alert = v.toBool();
 }
 
-
-SettingsPage *SystrayAnimationNotificationBackend::createConfigWidget() const
+SettingsPage* SystrayAnimationNotificationBackend::createConfigWidget() const
 {
     return new ConfigWidget();
 }
 
-
 /***************************************************************************/
 
-SystrayAnimationNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayAnimation", parent)
+SystrayAnimationNotificationBackend::ConfigWidget::ConfigWidget(QWidget* parent)
+    : SettingsPage("Internal", "SystrayAnimation", parent)
 {
     ui.setupUi(this);
     ui.enableAlert->setIcon(icon::get("dialog-information"));
@@ -75,14 +71,12 @@ SystrayAnimationNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
     initAutoWidgets();
 }
 
-
 QString SystrayAnimationNotificationBackend::ConfigWidget::settingsKey() const
 {
     return "Notification";
 }
 
-
-QVariant SystrayAnimationNotificationBackend::ConfigWidget::loadAutoWidgetValue(const QString &widgetName)
+QVariant SystrayAnimationNotificationBackend::ConfigWidget::loadAutoWidgetValue(const QString& widgetName)
 {
     if (widgetName == "attentionBehavior") {
         NotificationSettings s;
@@ -98,8 +92,7 @@ QVariant SystrayAnimationNotificationBackend::ConfigWidget::loadAutoWidgetValue(
     return SettingsPage::loadAutoWidgetValue(widgetName);
 }
 
-
-void SystrayAnimationNotificationBackend::ConfigWidget::saveAutoWidgetValue(const QString &widgetName, const QVariant &value)
+void SystrayAnimationNotificationBackend::ConfigWidget::saveAutoWidgetValue(const QString& widgetName, const QVariant& value)
 {
     if (widgetName == "attentionBehavior") {
         NotificationSettings s;

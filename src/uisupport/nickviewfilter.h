@@ -34,14 +34,14 @@ class UISUPPORT_EXPORT NickViewFilter : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    NickViewFilter(const BufferId &bufferId, NetworkModel *parent = nullptr);
+    NickViewFilter(const BufferId& bufferId, NetworkModel* parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const override;
-    QVariant icon(const QModelIndex &index) const;
+    QVariant data(const QModelIndex& index, int role) const override;
+    QVariant icon(const QModelIndex& index) const;
 
 protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
-    QVariant styleData(const QModelIndex &index, int role) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+    QVariant styleData(const QModelIndex& index, int role) const;
 
 private:
     BufferId _bufferId;

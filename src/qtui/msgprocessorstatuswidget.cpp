@@ -20,13 +20,12 @@
 
 #include "msgprocessorstatuswidget.h"
 
-MsgProcessorStatusWidget::MsgProcessorStatusWidget(QWidget *parent)
+MsgProcessorStatusWidget::MsgProcessorStatusWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
     hide();
 }
-
 
 void MsgProcessorStatusWidget::setProgress(int value, int max)
 {

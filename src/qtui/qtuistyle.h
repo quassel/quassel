@@ -21,15 +21,15 @@
 #ifndef QTUISTYLE_H_
 #define QTUISTYLE_H_
 
-#include "uistyle.h"
 #include "qtuisettings.h"
+#include "uistyle.h"
 
 class QtUiStyle : public UiStyle
 {
     Q_OBJECT
 
 public:
-    QtUiStyle(QObject *parent = nullptr);
+    QtUiStyle(QObject* parent = nullptr);
 
     virtual inline qreal firstColumnSeparator() const { return 6; }
     virtual inline qreal secondColumnSeparator() const { return 6; }
@@ -70,7 +70,7 @@ private slots:
     void updateShowSenderBrackets();
 
 private:
-    QString fontDescription(const QFont &font) const;
+    QString fontDescription(const QFont& font) const;
 
     /**
      * Generate a Qt stylesheet color string from a given setting
@@ -79,9 +79,9 @@ private:
      * @param[in] settings     UiSettings manager to search
      * @param[in] defaultColor Fallback color if not found; when unspecified default is black
      */
-    QString color(const QString &key, UiSettings &settings, const QColor &defaultColor = QColor()) const;
+    QString color(const QString& key, UiSettings& settings, const QColor& defaultColor = QColor()) const;
 
-    QString msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const;
+    QString msgTypeQss(const QString& msgType, const QString& key, UiSettings& settings) const;
 
     /**
      * Generates the Qss color palette stylesheet for sender colors
@@ -92,7 +92,7 @@ private:
      * @param[in] settings     Reference to current UI settings, used for loading color values
      * @return Quassel-theme-compatible Qss color palette
      */
-    QString senderPaletteQss(UiSettings &settings) const;
+    QString senderPaletteQss(UiSettings& settings) const;
 
     /**
      * Generate a snippet of Qss stylesheet for a given sender-hash index
@@ -104,7 +104,7 @@ private:
      * @param[in] includeNick  Also apply foreground color to Nick
      * @return Snippet of Quassel-theme-compatible Qss stylesheet
      */
-    QString senderQss(int i, const QString &messageType, bool includeNick = false) const;
+    QString senderQss(int i, const QString& messageType, bool includeNick = false) const;
 
     /**
      * Generate a snippet of Qss stylesheet for a given IRC nickname sender-hash index
@@ -116,8 +116,7 @@ private:
      */
     QString nickQss(int i) const;
 
-    QString chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const;
+    QString chatListItemQss(const QString& state, const QString& key, UiSettings& settings) const;
 };
-
 
 #endif

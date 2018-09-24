@@ -20,14 +20,16 @@
 
 #include "coreinfo.h"
 
-CoreInfo::CoreInfo(QObject *parent) : SyncableObject(parent) {}
+CoreInfo::CoreInfo(QObject* parent)
+    : SyncableObject(parent)
+{}
 
 QVariantMap CoreInfo::coreData() const
 {
     return _coreData;
 }
 
-void CoreInfo::setCoreData(const QVariantMap &coreData)
+void CoreInfo::setCoreData(const QVariantMap& coreData)
 {
     _coreData = coreData;
     SYNC(ARG(coreData));

@@ -18,31 +18,27 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "authhandler.h"
+
 #include <QHostAddress>
 
-#include "authhandler.h"
 #include "util.h"
 
-AuthHandler::AuthHandler(QObject *parent)
+AuthHandler::AuthHandler(QObject* parent)
     : QObject(parent)
-{
+{}
 
-}
-
-
-QTcpSocket *AuthHandler::socket() const
+QTcpSocket* AuthHandler::socket() const
 {
     return _socket;
 }
 
-
-void AuthHandler::setSocket(QTcpSocket *socket)
+void AuthHandler::setSocket(QTcpSocket* socket)
 {
     _socket = socket;
     connect(socket, selectOverload<QAbstractSocket::SocketError>(&QTcpSocket::error), this, &AuthHandler::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &AuthHandler::onSocketDisconnected);
 }
-
 
 bool AuthHandler::isLocal() const
 {
@@ -52,7 +48,6 @@ bool AuthHandler::isLocal() const
     }
     return false;
 }
-
 
 // Some errors (e.g. connection refused) don't trigger a disconnected() from the socket, so send this explicitly
 // (but make sure it's only sent once!)
@@ -68,7 +63,6 @@ void AuthHandler::onSocketError(QAbstractSocket::SocketError error)
     }
 }
 
-
 void AuthHandler::onSocketDisconnected()
 {
     if (!_disconnectedSent) {
@@ -77,12 +71,10 @@ void AuthHandler::onSocketDisconnected()
     }
 }
 
-
 void AuthHandler::invalidMessage()
 {
     qWarning() << Q_FUNC_INFO << "No handler for message!";
 }
-
 
 void AuthHandler::close()
 {

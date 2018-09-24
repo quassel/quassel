@@ -31,9 +31,9 @@ class CLIENT_EXPORT CertIdentity : public Identity
     Q_OBJECT
 
 public:
-    CertIdentity(IdentityId id = 0, QObject *parent = nullptr);
-    CertIdentity(const Identity &other, QObject *parent = nullptr);
-    CertIdentity(const CertIdentity &other, QObject *parent = nullptr);
+    CertIdentity(IdentityId id = 0, QObject* parent = nullptr);
+    CertIdentity(const Identity& other, QObject* parent = nullptr);
+    CertIdentity(const CertIdentity& other, QObject* parent = nullptr);
 
 #ifdef HAVE_SSL
     inline bool isDirty() const { return _isDirty; }
@@ -43,11 +43,11 @@ public:
 
 #ifdef HAVE_SSL
     void enableEditSsl(bool enable = true);
-    inline const QSslKey &sslKey() const { return _sslKey; }
-    inline const QSslCertificate &sslCert() const { return _sslCert; }
+    inline const QSslKey& sslKey() const { return _sslKey; }
+    inline const QSslCertificate& sslCert() const { return _sslCert; }
 
-    void setSslKey(const QSslKey &key);
-    void setSslCert(const QSslCertificate &cert);
+    void setSslKey(const QSslKey& key);
+    void setSslCert(const QSslCertificate& cert);
 
 public slots:
     void requestUpdateSslSettings();
@@ -59,13 +59,12 @@ private slots:
     void markClean();
 
 private:
-    ClientCertManager *_certManager{nullptr};
+    ClientCertManager* _certManager{nullptr};
     bool _isDirty{false};
     QSslKey _sslKey;
     QSslCertificate _sslCert;
-#endif //HAVE_SSL
+#endif  // HAVE_SSL
 };
-
 
 // ========================================
 //  ClientCertManager
@@ -77,17 +76,20 @@ class ClientCertManager : public CertManager
     Q_OBJECT
 
 public:
-    ClientCertManager(IdentityId id, CertIdentity *parent) : CertManager(id, parent), _certIdentity(parent) {}
+    ClientCertManager(IdentityId id, CertIdentity* parent)
+        : CertManager(id, parent)
+        , _certIdentity(parent)
+    {}
 
-    inline const QSslKey &sslKey() const override { return _certIdentity->sslKey(); }
-    inline const QSslCertificate &sslCert() const override { return _certIdentity->sslCert(); }
+    inline const QSslKey& sslKey() const override { return _certIdentity->sslKey(); }
+    inline const QSslCertificate& sslCert() const override { return _certIdentity->sslCert(); }
 
 public slots:
-    void setSslKey(const QByteArray &encoded) override;
-    void setSslCert(const QByteArray &encoded) override;
+    void setSslKey(const QByteArray& encoded) override;
+    void setSslCert(const QByteArray& encoded) override;
 
 private:
-    CertIdentity *_certIdentity;
+    CertIdentity* _certIdentity;
 };
 
-#endif //HAVE_SSL
+#endif  // HAVE_SSL

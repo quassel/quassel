@@ -22,24 +22,23 @@
 
 #include "networkmodel.h"
 
-
-BufferHotListFilter::BufferHotListFilter(QAbstractItemModel *source, QObject *parent)
+BufferHotListFilter::BufferHotListFilter(QAbstractItemModel* source, QObject* parent)
     : QSortFilterProxyModel(parent)
 {
     setSourceModel(source);
     setDynamicSortFilter(true);
-    sort(0, Qt::DescendingOrder); // enable sorting... this is "usually" triggered by a enabling setSortingEnabled(true) on a view;
+    sort(0, Qt::DescendingOrder);  // enable sorting... this is "usually" triggered by a enabling setSortingEnabled(true) on a view;
 }
 
 BufferId BufferHotListFilter::hottestBuffer()
 {
-  invalidate();
-  sort(0, Qt::DescendingOrder);
-  QModelIndex topIndex = index(0,0);
-  return data(topIndex, NetworkModel::BufferIdRole).value<BufferId>();
+    invalidate();
+    sort(0, Qt::DescendingOrder);
+    QModelIndex topIndex = index(0, 0);
+    return data(topIndex, NetworkModel::BufferIdRole).value<BufferId>();
 }
 
-bool BufferHotListFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool BufferHotListFilter::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
     Q_ASSERT(sourceModel());
     QModelIndex source_index = sourceModel()->index(source_row, 0, source_parent);
@@ -58,8 +57,7 @@ bool BufferHotListFilter::filterAcceptsRow(int source_row, const QModelIndex &so
     return true;
 }
 
-
-bool BufferHotListFilter::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+bool BufferHotListFilter::lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const
 {
     int leftActivity = sourceModel()->data(source_left, NetworkModel::BufferActivityRole).toInt();
     int rightActivity = sourceModel()->data(source_right, NetworkModel::BufferActivityRole).toInt();
@@ -68,9 +66,8 @@ bool BufferHotListFilter::lessThan(const QModelIndex &source_left, const QModelI
 
     MsgId leftUnreadMsgId = sourceModel()->data(source_left, NetworkModel::BufferFirstUnreadMsgIdRole).value<MsgId>();
     MsgId rightUnreadMsgId = sourceModel()->data(source_right, NetworkModel::BufferFirstUnreadMsgIdRole).value<MsgId>();
-    return leftUnreadMsgId > rightUnreadMsgId; // newer messages are treated to be "less"
+    return leftUnreadMsgId > rightUnreadMsgId;  // newer messages are treated to be "less"
 }
-
 
 // QVariant BufferHotListFilter::data(const QModelIndex &index, int role) const {
 //   QVariant d = QSortFilterProxyModel::data(index, role);

@@ -20,112 +20,109 @@
 
 #include "corebasichandler.h"
 
-#include "util.h"
 #include "logmessage.h"
+#include "util.h"
 
-CoreBasicHandler::CoreBasicHandler(CoreNetwork *parent)
-    : BasicHandler(parent),
-    _network(parent)
+CoreBasicHandler::CoreBasicHandler(CoreNetwork* parent)
+    : BasicHandler(parent)
+    , _network(parent)
 {
     connect(this, &CoreBasicHandler::displayMsg, network(), &CoreNetwork::onDisplayMsg);
     connect(this, &CoreBasicHandler::putRawLine, network(), &CoreNetwork::putRawLine);
-    connect(this,      selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, bool>(&CoreBasicHandler::putCmd),
-            network(), selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, bool>(&CoreNetwork::putCmd));
-    connect(this,      selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, bool>(&CoreBasicHandler::putCmd),
-            network(), selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, bool>(&CoreNetwork::putCmd));
+    connect(this,
+            selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, bool>(&CoreBasicHandler::putCmd),
+            network(),
+            selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, bool>(&CoreNetwork::putCmd));
+    connect(this,
+            selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, bool>(&CoreBasicHandler::putCmd),
+            network(),
+            selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, bool>(&CoreNetwork::putCmd));
 }
 
-
-QString CoreBasicHandler::serverDecode(const QByteArray &string)
+QString CoreBasicHandler::serverDecode(const QByteArray& string)
 {
     return network()->serverDecode(string);
 }
 
-
-QStringList CoreBasicHandler::serverDecode(const QList<QByteArray> &stringlist)
+QStringList CoreBasicHandler::serverDecode(const QList<QByteArray>& stringlist)
 {
     QStringList list;
-    foreach(QByteArray s, stringlist) list << network()->serverDecode(s);
+    foreach (QByteArray s, stringlist)
+        list << network()->serverDecode(s);
     return list;
 }
 
-
-QString CoreBasicHandler::channelDecode(const QString &bufferName, const QByteArray &string)
+QString CoreBasicHandler::channelDecode(const QString& bufferName, const QByteArray& string)
 {
     return network()->channelDecode(bufferName, string);
 }
 
-
-QStringList CoreBasicHandler::channelDecode(const QString &bufferName, const QList<QByteArray> &stringlist)
+QStringList CoreBasicHandler::channelDecode(const QString& bufferName, const QList<QByteArray>& stringlist)
 {
     QStringList list;
-    foreach(QByteArray s, stringlist) list << network()->channelDecode(bufferName, s);
+    foreach (QByteArray s, stringlist)
+        list << network()->channelDecode(bufferName, s);
     return list;
 }
 
-
-QString CoreBasicHandler::userDecode(const QString &userNick, const QByteArray &string)
+QString CoreBasicHandler::userDecode(const QString& userNick, const QByteArray& string)
 {
     return network()->userDecode(userNick, string);
 }
 
-
-QStringList CoreBasicHandler::userDecode(const QString &userNick, const QList<QByteArray> &stringlist)
+QStringList CoreBasicHandler::userDecode(const QString& userNick, const QList<QByteArray>& stringlist)
 {
     QStringList list;
-    foreach(QByteArray s, stringlist) list << network()->userDecode(userNick, s);
+    foreach (QByteArray s, stringlist)
+        list << network()->userDecode(userNick, s);
     return list;
 }
 
-
 /*** ***/
 
-QByteArray CoreBasicHandler::serverEncode(const QString &string)
+QByteArray CoreBasicHandler::serverEncode(const QString& string)
 {
     return network()->serverEncode(string);
 }
 
-
-QList<QByteArray> CoreBasicHandler::serverEncode(const QStringList &stringlist)
+QList<QByteArray> CoreBasicHandler::serverEncode(const QStringList& stringlist)
 {
     QList<QByteArray> list;
-    foreach(QString s, stringlist) list << network()->serverEncode(s);
+    foreach (QString s, stringlist)
+        list << network()->serverEncode(s);
     return list;
 }
 
-
-QByteArray CoreBasicHandler::channelEncode(const QString &bufferName, const QString &string)
+QByteArray CoreBasicHandler::channelEncode(const QString& bufferName, const QString& string)
 {
     return network()->channelEncode(bufferName, string);
 }
 
-
-QList<QByteArray> CoreBasicHandler::channelEncode(const QString &bufferName, const QStringList &stringlist)
+QList<QByteArray> CoreBasicHandler::channelEncode(const QString& bufferName, const QStringList& stringlist)
 {
     QList<QByteArray> list;
-    foreach(QString s, stringlist) list << network()->channelEncode(bufferName, s);
+    foreach (QString s, stringlist)
+        list << network()->channelEncode(bufferName, s);
     return list;
 }
 
-
-QByteArray CoreBasicHandler::userEncode(const QString &userNick, const QString &string)
+QByteArray CoreBasicHandler::userEncode(const QString& userNick, const QString& string)
 {
     return network()->userEncode(userNick, string);
 }
 
-
-QList<QByteArray> CoreBasicHandler::userEncode(const QString &userNick, const QStringList &stringlist)
+QList<QByteArray> CoreBasicHandler::userEncode(const QString& userNick, const QStringList& stringlist)
 {
     QList<QByteArray> list;
-    foreach(QString s, stringlist) list << network()->userEncode(userNick, s);
+    foreach (QString s, stringlist)
+        list << network()->userEncode(userNick, s);
     return list;
 }
-
 
 // ====================
 //  protected:
 // ====================
-BufferInfo::Type CoreBasicHandler::typeByTarget(const QString &target) const
+BufferInfo::Type CoreBasicHandler::typeByTarget(const QString& target) const
 {
     if (target.isEmpty())
         return BufferInfo::StatusBuffer;
@@ -136,8 +133,7 @@ BufferInfo::Type CoreBasicHandler::typeByTarget(const QString &target) const
     return BufferInfo::QueryBuffer;
 }
 
-
-void CoreBasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix, const bool prepend)
+void CoreBasicHandler::putCmd(const QString& cmd, const QByteArray& param, const QByteArray& prefix, const bool prepend)
 {
     QList<QByteArray> list;
     list << param;

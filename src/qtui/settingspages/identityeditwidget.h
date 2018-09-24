@@ -25,8 +25,8 @@
 #include "ui_nickeditdlg.h"
 
 #ifdef HAVE_SSL
-#include <QSslCertificate>
-#include <QSslKey>
+#    include <QSslCertificate>
+#    include <QSslKey>
 #endif
 
 #include "clientidentity.h"
@@ -36,16 +36,17 @@ class IdentityEditWidget : public QWidget
     Q_OBJECT
 
 public:
-    IdentityEditWidget(QWidget *parent = nullptr);
+    IdentityEditWidget(QWidget* parent = nullptr);
 
-    enum SslState {
+    enum SslState
+    {
         NoSsl,
         UnsecureSsl,
         AllowSsl
     };
 
-    void displayIdentity(CertIdentity *id, CertIdentity *saveId = nullptr);
-    void saveToIdentity(CertIdentity *id);
+    void displayIdentity(CertIdentity* id, CertIdentity* saveId = nullptr);
+    void saveToIdentity(CertIdentity* id);
 
 public slots:
     void setSslState(SslState state);
@@ -53,7 +54,7 @@ public slots:
 
 protected:
 #ifdef HAVE_SSL
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 #endif
 
 signals:
@@ -74,8 +75,8 @@ private slots:
     void setWidgetStates();
 
 #ifdef HAVE_SSL
-    void sslDragEnterEvent(QDragEnterEvent *event);
-    void sslDropEvent(QDropEvent *event, bool isCert);
+    void sslDragEnterEvent(QDragEnterEvent* event);
+    void sslDropEvent(QDropEvent* event, bool isCert);
 #endif
 
 private:
@@ -83,27 +84,26 @@ private:
     bool _editSsl;
 
 #ifdef HAVE_SSL
-    QSslKey keyByFilename(const QString &filename);
-    void showKeyState(const QSslKey &key);
-    QSslCertificate certByFilename(const QString &filename);
-    void showCertState(const QSslCertificate &cert);
+    QSslKey keyByFilename(const QString& filename);
+    void showKeyState(const QSslKey& key);
+    QSslCertificate certByFilename(const QString& filename);
+    void showCertState(const QSslCertificate& cert);
 #endif
 
     bool testHasChanged();
 };
-
 
 class NickEditDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    NickEditDlg(const QString &oldnick, QStringList existing = QStringList(), QWidget *parent = nullptr);
+    NickEditDlg(const QString& oldnick, QStringList existing = QStringList(), QWidget* parent = nullptr);
 
     QString nick() const;
 
 private slots:
-    void on_nickEdit_textChanged(const QString &);
+    void on_nickEdit_textChanged(const QString&);
 
 private:
     Ui::NickEditDlg ui;
@@ -112,5 +112,4 @@ private:
     QStringList existing;
 };
 
-
-#endif //IDENTITYEDITWIDGET_H
+#endif  // IDENTITYEDITWIDGET_H

@@ -36,11 +36,11 @@ class SessionThread : public QObject
     Q_OBJECT
 
 public:
-    SessionThread(UserId user, bool restoreState, bool strictIdentEnabled, QObject *parent = nullptr);
+    SessionThread(UserId user, bool restoreState, bool strictIdentEnabled, QObject* parent = nullptr);
     ~SessionThread() override;
 
 public slots:
-    void addClient(Peer *peer);
+    void addClient(Peer* peer);
     void shutdown();
 
 private slots:
@@ -50,13 +50,13 @@ private slots:
 signals:
     void initialized();
     void shutdownSession();
-    void shutdownComplete(SessionThread *);
+    void shutdownComplete(SessionThread*);
 
-    void addClientToWorker(Peer *peer);
+    void addClientToWorker(Peer* peer);
 
 private:
     QThread _sessionThread;
     bool _sessionInitialized{false};
 
-    std::vector<Peer *> _clientQueue;
+    std::vector<Peer*> _clientQueue;
 };

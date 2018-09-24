@@ -47,12 +47,14 @@ class ChatScene : public QGraphicsScene
     Q_OBJECT
 
 public:
-    enum CutoffMode {
+    enum CutoffMode
+    {
         CutoffLeft,
         CutoffRight
     };
 
-    enum ItemType {
+    enum ItemType
+    {
         ChatLineType = QGraphicsItem::UserType + 1,
         ChatItemType,
         TimestampChatItemType,
@@ -64,7 +66,8 @@ public:
         MarkerLineType
     };
 
-    enum ClickMode {
+    enum ClickMode
+    {
         NoClick,
         DragStartClick,
         SingleClick,
@@ -72,21 +75,21 @@ public:
         TripleClick
     };
 
-    ChatScene(QAbstractItemModel *model, QString idString, qreal width, ChatView *parent);
+    ChatScene(QAbstractItemModel* model, QString idString, qreal width, ChatView* parent);
 
-    inline QAbstractItemModel *model() const { return _model; }
-    inline MessageFilter *filter() const { return qobject_cast<MessageFilter *>(_model); }
+    inline QAbstractItemModel* model() const { return _model; }
+    inline MessageFilter* filter() const { return qobject_cast<MessageFilter*>(_model); }
     inline QString idString() const { return _idString; }
 
     int rowByScenePos(qreal y) const;
-    inline int rowByScenePos(const QPointF &pos) const { return rowByScenePos(pos.y()); }
+    inline int rowByScenePos(const QPointF& pos) const { return rowByScenePos(pos.y()); }
     ChatLineModel::ColumnType columnByScenePos(qreal x) const;
-    inline ChatLineModel::ColumnType columnByScenePos(const QPointF &pos) const { return columnByScenePos(pos.x()); }
+    inline ChatLineModel::ColumnType columnByScenePos(const QPointF& pos) const { return columnByScenePos(pos.x()); }
 
-    ChatView *chatView() const;
-    ChatItem *chatItemAt(const QPointF &pos) const;
-    inline ChatLine *chatLine(int row) const { return (row < _lines.count()) ? _lines.value(row) : 0; }
-    inline ChatLine *chatLine(const QModelIndex &index) const { return _lines.value(index.row()); }
+    ChatView* chatView() const;
+    ChatItem* chatItemAt(const QPointF& pos) const;
+    inline ChatLine* chatLine(int row) const { return (row < _lines.count()) ? _lines.value(row) : 0; }
+    inline ChatLine* chatLine(const QModelIndex& index) const { return _lines.value(index.row()); }
 
     //! Find the ChatLine belonging to a MsgId
     /** Searches for the ChatLine belonging to a MsgId. If there are more than one ChatLine with the same msgId,
@@ -99,18 +102,18 @@ public:
      *  \param ignoreDayChange Whether we ignore day change messages
      *  \return The ChatLine corresponding to the given MsgId
      */
-    ChatLine *chatLine(MsgId msgId, bool matchExact = true, bool ignoreDayChange = true) const;
+    ChatLine* chatLine(MsgId msgId, bool matchExact = true, bool ignoreDayChange = true) const;
 
-    inline ChatLine *lastLine() const { return _lines.count() ? _lines.last() : 0; }
+    inline ChatLine* lastLine() const { return _lines.count() ? _lines.last() : 0; }
 
-    inline MarkerLineItem *markerLine() const { return _markerLine; }
+    inline MarkerLineItem* markerLine() const { return _markerLine; }
 
     inline bool isSingleBufferScene() const { return _singleBufferId.isValid(); }
     inline BufferId singleBufferId() const { return _singleBufferId; }
-    bool containsBuffer(const BufferId &id) const;
+    bool containsBuffer(const BufferId& id) const;
 
-    ColumnHandleItem *firstColumnHandle() const;
-    ColumnHandleItem *secondColumnHandle() const;
+    ColumnHandleItem* firstColumnHandle() const;
+    ColumnHandleItem* secondColumnHandle() const;
 
     inline CutoffMode senderCutoffMode() const { return _cutoffMode; }
     inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
@@ -135,9 +138,9 @@ public:
     QString selection() const;
     bool hasSelection() const;
     bool hasGlobalSelection() const;
-    bool isPosOverSelection(const QPointF &) const;
+    bool isPosOverSelection(const QPointF&) const;
     bool isGloballySelecting() const;
-    void initiateDrag(QWidget *source);
+    void initiateDrag(QWidget* source);
 
     bool isScrollingAllowed() const;
 
@@ -153,40 +156,40 @@ public slots:
     void jumpToMarkerLine(bool requestBacklog);
 
     // these are used by the chatitems to notify the scene and manage selections
-    void setSelectingItem(ChatItem *item);
-    ChatItem *selectingItem() const { return _selectingItem; }
-    void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
+    void setSelectingItem(ChatItem* item);
+    ChatItem* selectingItem() const { return _selectingItem; }
+    void startGlobalSelection(ChatItem* item, const QPointF& itemPos);
     void clearGlobalSelection();
     void clearSelection();
     void selectionToClipboard(QClipboard::Mode = QClipboard::Clipboard);
-    void stringToClipboard(const QString &str, QClipboard::Mode = QClipboard::Clipboard);
+    void stringToClipboard(const QString& str, QClipboard::Mode = QClipboard::Clipboard);
 
     void webSearchOnSelection();
 
     void requestBacklog();
 
 #if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
-    void loadWebPreview(ChatItem *parentItem, const QUrl &url, const QRectF &urlRect);
-    void clearWebPreview(ChatItem *parentItem = nullptr);
+    void loadWebPreview(ChatItem* parentItem, const QUrl& url, const QRectF& urlRect);
+    void clearWebPreview(ChatItem* parentItem = nullptr);
 #endif
 
 signals:
-    void lastLineChanged(QGraphicsItem *item, qreal offset);
-    void layoutChanged(); // indicates changes to the scenerect due to resizing of the contentsitems
-    void mouseMoveWhileSelecting(const QPointF &scenePos);
+    void lastLineChanged(QGraphicsItem* item, qreal offset);
+    void layoutChanged();  // indicates changes to the scenerect due to resizing of the contentsitems
+    void mouseMoveWhileSelecting(const QPointF& scenePos);
 
 protected:
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    virtual void handleClick(Qt::MouseButton button, const QPointF &scenePos);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* contextMenuEvent) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    virtual void handleClick(Qt::MouseButton button, const QPointF& scenePos);
 
 protected slots:
-    void rowsInserted(const QModelIndex &, int, int);
-    void rowsAboutToBeRemoved(const QModelIndex &, int, int);
-    void dataChanged(const QModelIndex &, const QModelIndex &);
+    void rowsInserted(const QModelIndex&, int, int);
+    void rowsAboutToBeRemoved(const QModelIndex&, int, int);
+    void dataChanged(const QModelIndex&, const QModelIndex&);
 
 private slots:
     void firstHandlePositionChanged(qreal xpos);
@@ -226,24 +229,24 @@ private slots:
 
 private:
     void setHandleXLimits();
-    void updateSelection(const QPointF &pos);
+    void updateSelection(const QPointF& pos);
 
-    ChatView *_chatView;
+    ChatView* _chatView;
     QString _idString;
-    QAbstractItemModel *_model;
-    QList<ChatLine *> _lines;
+    QAbstractItemModel* _model;
+    QList<ChatLine*> _lines;
     BufferId _singleBufferId;
 
     // calls to QChatScene::sceneRect() are very expensive. As we manage the scenerect ourselves
     // we store the size in a member variable.
     QRectF _sceneRect;
-    int _firstLineRow; // the first row to display (aka: not a daychange msg)
+    int _firstLineRow;  // the first row to display (aka: not a daychange msg)
     void updateSceneRect(qreal width);
     inline void updateSceneRect() { updateSceneRect(_sceneRect.width()); }
-    void updateSceneRect(const QRectF &rect);
+    void updateSceneRect(const QRectF& rect);
     qreal _viewportHeight;
 
-    MarkerLineItem *_markerLine;
+    MarkerLineItem* _markerLine;
     bool _markerLineVisible, _markerLineValid, _markerLineJumpPending;
 
     ColumnHandleItem *_firstColHandle, *_secondColHandle;
@@ -253,7 +256,7 @@ private:
     /// Whether to re-add hidden brackets around sender for all message types
     bool _alwaysBracketSender;
 
-    ChatItem *_selectingItem;
+    ChatItem* _selectingItem;
     int _selectionStartCol, _selectionMinCol;
     int _selectionStart;
     int _selectionEnd;
@@ -270,31 +273,32 @@ private:
 
     bool _showSenderBrackets;  /// If true, show brackets around sender names
 
-    bool _useCustomTimestampFormat; /// If true, use the custom timestamp format
-    QString _timestampFormatString; /// Format of the timestamp string
-    bool _timestampHasBrackets;     /// If true, timestamp format has [brackets] of some sort
+    bool _useCustomTimestampFormat;  /// If true, use the custom timestamp format
+    QString _timestampFormatString;  /// Format of the timestamp string
+    bool _timestampHasBrackets;      /// If true, timestamp format has [brackets] of some sort
 
     static const int _webSearchSelectionTextMaxVisible = 24;
 
 #if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
-    struct WebPreview {
-        enum PreviewState {
+    struct WebPreview
+    {
+        enum PreviewState
+        {
             NoPreview,
             NewPreview,
             DelayPreview,
             ShowPreview,
             HidePreview
         };
-        ChatItem *parentItem{nullptr};
-        QGraphicsItem *previewItem{nullptr};
+        ChatItem* parentItem{nullptr};
+        QGraphicsItem* previewItem{nullptr};
         QUrl url;
         QRectF urlRect;
         PreviewState previewState{NoPreview};
         QTimer timer;
     };
     WebPreview webPreview;
-#endif // HAVE_WEBKIT || HAVE_WEBENGINE
+#endif  // HAVE_WEBKIT || HAVE_WEBENGINE
 };
-
 
 #endif

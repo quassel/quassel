@@ -40,10 +40,11 @@ class UISUPPORT_EXPORT NetworkModelController : public QObject
     Q_OBJECT
 
 public:
-    NetworkModelController(QObject *parent = nullptr);
+    NetworkModelController(QObject* parent = nullptr);
 
     // don't change enums without doublechecking masks etc. in code
-    enum ActionType {
+    enum ActionType
+    {
         // Network actions
         NetworkMask = 0x0f,
         NetworkConnect = 0x01,
@@ -117,10 +118,11 @@ public:
         HideBufferPermanently = 0x02000000
     };
 
-    inline Action *action(ActionType type) const;
+    inline Action* action(ActionType type) const;
 
 public:
-    enum ItemActiveState {
+    enum ItemActiveState
+    {
         InactiveState = 0x01,
         ActiveState = 0x02
     };
@@ -131,40 +133,39 @@ public slots:
     virtual void disconnectedFromCore() {}
 
 protected:
-    inline ActionCollection *actionCollection() const;
+    inline ActionCollection* actionCollection() const;
     inline QList<QModelIndex> indexList() const;
-    inline MessageFilter *messageFilter() const;
+    inline MessageFilter* messageFilter() const;
     inline QString contextItem() const;  ///< Channel name or nick to provide context menu for
 
-    void setIndexList(const QModelIndex &);
-    void setIndexList(const QList<QModelIndex> &);
-    void setMessageFilter(MessageFilter *);
-    void setContextItem(const QString &);
+    void setIndexList(const QModelIndex&);
+    void setIndexList(const QList<QModelIndex>&);
+    void setMessageFilter(MessageFilter*);
+    void setContextItem(const QString&);
 
     using ActionSlot = std::function<void(QAction*)>;
 
     template<typename Receiver, typename Slot>
-    ActionSlot buildActionSlot(Receiver *receiver, Slot slot)
+    ActionSlot buildActionSlot(Receiver* receiver, Slot slot)
     {
         static_assert(!std::is_same<Slot, const char*>::value, "Old-style slots not supported");
-        return [receiver, slot = std::move(slot)](QAction *action) {
-            (receiver->*slot)(action);
-        };
+        return [receiver, slot = std::move(slot)](QAction* action) { (receiver->*slot)(action); };
     }
 
     void setSlot(ActionSlot slot);
 
-    Action *registerAction(ActionType type, const QString &text, bool checkable = false);
-    Action *registerAction(NetworkModelController::ActionType type, const QIcon &icon, const QString &text, bool checkable = false);
-    bool checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
+    Action* registerAction(ActionType type, const QString& text, bool checkable = false);
+    Action* registerAction(NetworkModelController::ActionType type, const QIcon& icon, const QString& text, bool checkable = false);
+    bool checkRequirements(const QModelIndex& index,
+                           ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
 
-    QString nickName(const QModelIndex &index) const;
-    BufferId findQueryBuffer(const QModelIndex &index, const QString &predefinedNick = QString()) const;
-    BufferId findQueryBuffer(NetworkId, const QString &nickName) const;
-    void removeBuffers(const QModelIndexList &indexList);
+    QString nickName(const QModelIndex& index) const;
+    BufferId findQueryBuffer(const QModelIndex& index, const QString& predefinedNick = QString()) const;
+    BufferId findQueryBuffer(NetworkId, const QString& nickName) const;
+    void removeBuffers(const QModelIndexList& indexList);
 
 protected slots:
-    virtual void actionTriggered(QAction *);
+    virtual void actionTriggered(QAction*);
 
 signals:
     /**
@@ -176,32 +177,31 @@ signals:
      * @param channelFilters   Partial channel name to search for, or empty to show all
      * @param listImmediately  If true, immediately list channels, otherwise just show dialog
      */
-    void showChannelList(NetworkId, const QString &, bool);
+    void showChannelList(NetworkId, const QString&, bool);
     void showNetworkConfig(NetworkId);
     void showIgnoreList(QString);
 
 protected:
-    virtual void handleNetworkAction(ActionType, QAction *);
-    virtual void handleBufferAction(ActionType, QAction *);
-    virtual void handleHideAction(ActionType, QAction *);
-    virtual void handleNickAction(ActionType, QAction *action);
-    virtual void handleGeneralAction(ActionType, QAction *);
-    virtual void handleExternalAction(ActionType, QAction *);
+    virtual void handleNetworkAction(ActionType, QAction*);
+    virtual void handleBufferAction(ActionType, QAction*);
+    virtual void handleHideAction(ActionType, QAction*);
+    virtual void handleNickAction(ActionType, QAction* action);
+    virtual void handleGeneralAction(ActionType, QAction*);
+    virtual void handleExternalAction(ActionType, QAction*);
 
     class JoinDlg;
 
 private:
-    NetworkModel *_model;
+    NetworkModel* _model;
 
-    ActionCollection *_actionCollection;
-    QHash<ActionType, Action *> _actionByType;
+    ActionCollection* _actionCollection;
+    QHash<ActionType, Action*> _actionByType;
 
     QList<QModelIndex> _indexList;
-    MessageFilter *_messageFilter{nullptr};
-    QString _contextItem; ///< Channel name or nick to provide context menu for
+    MessageFilter* _messageFilter{nullptr};
+    QString _contextItem;  ///< Channel name or nick to provide context menu for
     ActionSlot _actionSlot;
 };
-
 
 //! Input dialog for joining a channel
 class NetworkModelController::JoinDlg : public QDialog
@@ -209,26 +209,40 @@ class NetworkModelController::JoinDlg : public QDialog
     Q_OBJECT
 
 public:
-    JoinDlg(const QModelIndex &index, QWidget *parent = nullptr);
+    JoinDlg(const QModelIndex& index, QWidget* parent = nullptr);
 
     QString channelName() const;
     QString channelPassword() const;
     NetworkId networkId() const;
 
 private slots:
-    void on_channel_textChanged(const QString &);
+    void on_channel_textChanged(const QString&);
 
 private:
-    QComboBox *networks;
-    QLineEdit *channel;
-    QLineEdit *password;
-    QDialogButtonBox *buttonBox;
+    QComboBox* networks;
+    QLineEdit* channel;
+    QLineEdit* password;
+    QDialogButtonBox* buttonBox;
 };
 
-
 // inlines
-ActionCollection *NetworkModelController::actionCollection() const { return _actionCollection; }
-Action *NetworkModelController::action(ActionType type) const { return _actionByType.value(type, 0); }
-QList<QModelIndex> NetworkModelController::indexList() const { return _indexList; }
-MessageFilter *NetworkModelController::messageFilter() const { return _messageFilter; }
-QString NetworkModelController::contextItem() const { return _contextItem; }
+ActionCollection* NetworkModelController::actionCollection() const
+{
+    return _actionCollection;
+}
+Action* NetworkModelController::action(ActionType type) const
+{
+    return _actionByType.value(type, 0);
+}
+QList<QModelIndex> NetworkModelController::indexList() const
+{
+    return _indexList;
+}
+MessageFilter* NetworkModelController::messageFilter() const
+{
+    return _messageFilter;
+}
+QString NetworkModelController::contextItem() const
+{
+    return _contextItem;
+}

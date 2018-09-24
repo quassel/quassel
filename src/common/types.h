@@ -22,13 +22,12 @@
 
 #include <type_traits>
 
+#include <QDataStream>
 #include <QDebug>
-#include <QString>
-#include <QVariant>
-#include <QDataStream>
-#include <QTextStream>
 #include <QHostAddress>
-#include <QDataStream>
+#include <QString>
+#include <QTextStream>
+#include <QVariant>
 
 class SignedId
 {
@@ -40,29 +39,52 @@ public:
     inline qint32 toInt() const { return id; }
     inline bool isValid() const { return id > 0; }
 
-    inline bool operator==(const SignedId &other) const { return id == other.id; }
-    inline bool operator!=(const SignedId &other) const { return id != other.id; }
-    inline bool operator<(const SignedId &other) const { return id < other.id; }
-    inline bool operator<=(const SignedId &other) const { return id <= other.id; }
-    inline bool operator>(const SignedId &other) const { return id > other.id; }
-    inline bool operator>=(const SignedId &other) const { return id >= other.id; }
+    inline bool operator==(const SignedId& other) const { return id == other.id; }
+    inline bool operator!=(const SignedId& other) const { return id != other.id; }
+    inline bool operator<(const SignedId& other) const { return id < other.id; }
+    inline bool operator<=(const SignedId& other) const { return id <= other.id; }
+    inline bool operator>(const SignedId& other) const { return id > other.id; }
+    inline bool operator>=(const SignedId& other) const { return id >= other.id; }
     inline bool operator==(int i) const { return id == i; }
     inline bool operator!=(int i) const { return id != i; }
     inline bool operator<(int i) const { return id < i; }
     inline bool operator>(int i) const { return id > i; }
     inline bool operator<=(int i) const { return id <= i; }
 
-    inline SignedId operator++(int) { id++; return *this; }
-    //inline operator int() const { return toInt(); } // no automatic conversion!
+    inline SignedId operator++(int)
+    {
+        id++;
+        return *this;
+    }
+    // inline operator int() const { return toInt(); } // no automatic conversion!
 
-    friend QDataStream &operator>>(QDataStream &in, SignedId &signedId);
+    friend QDataStream& operator>>(QDataStream& in, SignedId& signedId);
 };
 
-inline QDataStream &operator<<(QDataStream &out, const SignedId &signedId) { out << signedId.toInt(); return out; }
-inline QDataStream &operator>>(QDataStream &in, SignedId &signedId) { in >> signedId.id; return in; }
-inline QTextStream &operator<<(QTextStream &out, const SignedId &signedId) { out << QString::number(signedId.toInt()); return out; }
-inline QDebug operator<<(QDebug dbg, const SignedId &signedId) { dbg.space() << signedId.toInt(); return dbg; }
-inline uint qHash(const SignedId &id) { return qHash(id.toInt()); }
+inline QDataStream& operator<<(QDataStream& out, const SignedId& signedId)
+{
+    out << signedId.toInt();
+    return out;
+}
+inline QDataStream& operator>>(QDataStream& in, SignedId& signedId)
+{
+    in >> signedId.id;
+    return in;
+}
+inline QTextStream& operator<<(QTextStream& out, const SignedId& signedId)
+{
+    out << QString::number(signedId.toInt());
+    return out;
+}
+inline QDebug operator<<(QDebug dbg, const SignedId& signedId)
+{
+    dbg.space() << signedId.toInt();
+    return dbg;
+}
+inline uint qHash(const SignedId& id)
+{
+    return qHash(id.toInt());
+}
 
 class SignedId64
 {
@@ -74,57 +96,90 @@ public:
     inline qint64 toQint64() const { return id; }
     inline bool isValid() const { return id > 0; }
 
-    inline bool operator==(const SignedId64 &other) const { return id == other.id; }
-    inline bool operator!=(const SignedId64 &other) const { return id != other.id; }
-    inline bool operator<(const SignedId64 &other) const { return id < other.id; }
-    inline bool operator<=(const SignedId64 &other) const { return id <= other.id; }
-    inline bool operator>(const SignedId64 &other) const { return id > other.id; }
-    inline bool operator>=(const SignedId64 &other) const { return id >= other.id; }
+    inline bool operator==(const SignedId64& other) const { return id == other.id; }
+    inline bool operator!=(const SignedId64& other) const { return id != other.id; }
+    inline bool operator<(const SignedId64& other) const { return id < other.id; }
+    inline bool operator<=(const SignedId64& other) const { return id <= other.id; }
+    inline bool operator>(const SignedId64& other) const { return id > other.id; }
+    inline bool operator>=(const SignedId64& other) const { return id >= other.id; }
     inline bool operator==(qint64 i) const { return id == i; }
     inline bool operator!=(qint64 i) const { return id != i; }
     inline bool operator<(qint64 i) const { return id < i; }
     inline bool operator>(qint64 i) const { return id > i; }
     inline bool operator<=(qint64 i) const { return id <= i; }
 
-    inline SignedId64 operator++(int) { id++; return *this; }
-    //inline operator int() const { return toQint64(); } // no automatic conversion!
+    inline SignedId64 operator++(int)
+    {
+        id++;
+        return *this;
+    }
+    // inline operator int() const { return toQint64(); } // no automatic conversion!
 
-    friend QDataStream &operator>>(QDataStream &in, SignedId64 &signedId);
+    friend QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
 };
 
-QDataStream &operator<<(QDataStream &out, const SignedId64 &signedId);
-QDataStream &operator>>(QDataStream &in, SignedId64 &signedId);
-inline QTextStream &operator<<(QTextStream &out, const SignedId64 &signedId) { out << QString::number(signedId.toQint64()); return out; }
-inline QDebug operator<<(QDebug dbg, const SignedId64 &signedId) { dbg.space() << signedId.toQint64(); return dbg; }
-inline uint qHash(const SignedId64 &id) { return qHash(id.toQint64()); }
+QDataStream& operator<<(QDataStream& out, const SignedId64& signedId);
+QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
+inline QTextStream& operator<<(QTextStream& out, const SignedId64& signedId)
+{
+    out << QString::number(signedId.toQint64());
+    return out;
+}
+inline QDebug operator<<(QDebug dbg, const SignedId64& signedId)
+{
+    dbg.space() << signedId.toQint64();
+    return dbg;
+}
+inline uint qHash(const SignedId64& id)
+{
+    return qHash(id.toQint64());
+}
 
-struct UserId : public SignedId {
-    inline UserId(int _id = 0) : SignedId(_id) {}
-    //inline operator QVariant() const { return QVariant::fromValue<UserId>(*this); }  // no automatic conversion!
+struct UserId : public SignedId
+{
+    inline UserId(int _id = 0)
+        : SignedId(_id)
+    {}
+    // inline operator QVariant() const { return QVariant::fromValue<UserId>(*this); }  // no automatic conversion!
 };
 
-struct MsgId : public SignedId64 {
-    inline MsgId(qint64 _id = 0) : SignedId64(_id) {}
-    //inline operator QVariant() const { return QVariant::fromValue<MsgId>(*this); }
+struct MsgId : public SignedId64
+{
+    inline MsgId(qint64 _id = 0)
+        : SignedId64(_id)
+    {}
+    // inline operator QVariant() const { return QVariant::fromValue<MsgId>(*this); }
 };
 
-struct BufferId : public SignedId {
-    inline BufferId(int _id = 0) : SignedId(_id) {}
-    //inline operator QVariant() const { return QVariant::fromValue<BufferId>(*this); }
+struct BufferId : public SignedId
+{
+    inline BufferId(int _id = 0)
+        : SignedId(_id)
+    {}
+    // inline operator QVariant() const { return QVariant::fromValue<BufferId>(*this); }
 };
 
-struct NetworkId : public SignedId {
-    inline NetworkId(int _id = 0) : SignedId(_id) {}
-    //inline operator QVariant() const { return QVariant::fromValue<NetworkId>(*this); }
+struct NetworkId : public SignedId
+{
+    inline NetworkId(int _id = 0)
+        : SignedId(_id)
+    {}
+    // inline operator QVariant() const { return QVariant::fromValue<NetworkId>(*this); }
 };
 
-struct IdentityId : public SignedId {
-    inline IdentityId(int _id = 0) : SignedId(_id) {}
-    //inline operator QVariant() const { return QVariant::fromValue<IdentityId>(*this); }
+struct IdentityId : public SignedId
+{
+    inline IdentityId(int _id = 0)
+        : SignedId(_id)
+    {}
+    // inline operator QVariant() const { return QVariant::fromValue<IdentityId>(*this); }
 };
 
-struct AccountId : public SignedId {
-    inline AccountId(int _id = 0) : SignedId(_id) {}
+struct AccountId : public SignedId
+{
+    inline AccountId(int _id = 0)
+        : SignedId(_id)
+    {}
 };
 
 Q_DECLARE_METATYPE(UserId)
@@ -147,9 +202,9 @@ using BufferIdList = QList<BufferId>;
  * @param[in]     value Value to serialize
  * @returns A reference to the stream
  */
-template<typename T,
-         typename = typename std::enable_if<std::is_enum<T>::value>::type>
-QDataStream &operator<<(QDataStream &out, T value) {
+template<typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
+QDataStream& operator<<(QDataStream& out, T value)
+{
     out << static_cast<typename std::underlying_type<T>::type>(value);
     return out;
 }
@@ -161,9 +216,9 @@ QDataStream &operator<<(QDataStream &out, T value) {
  * @param[out]    value Value to deserialize into
  * @returns A reference to the stream
  */
-template<typename T,
-         typename = typename std::enable_if<std::is_enum<T>::value>::type>
-QDataStream &operator>>(QDataStream &in, T &value) {
+template<typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
+QDataStream& operator>>(QDataStream& in, T& value)
+{
     typename std::underlying_type<T>::type v;
     in >> v;
     value = static_cast<T>(v);
@@ -181,5 +236,7 @@ struct ExitException
     QString errorString;
 
     ExitException(int code = EXIT_FAILURE, QString error = {})
-        : exitCode(code), errorString(std::move(error)) {}
+        : exitCode(code)
+        , errorString(std::move(error))
+    {}
 };

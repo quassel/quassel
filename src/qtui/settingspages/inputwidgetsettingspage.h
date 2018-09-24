@@ -22,6 +22,7 @@
 #define INPUTLINESETTINGSPAGE_H_
 
 #include "settingspage.h"
+
 #include "ui_inputwidgetsettingspage.h"
 
 class InputWidgetSettingsPage : public SettingsPage
@@ -29,7 +30,7 @@ class InputWidgetSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    InputWidgetSettingsPage(QWidget *parent = nullptr);
+    InputWidgetSettingsPage(QWidget* parent = nullptr);
 
     inline bool hasDefaults() const override { return true; }
 
@@ -38,6 +39,5 @@ private:
 
     inline QString settingsKey() const override { return QString("InputWidget"); }
 };
-
 
 #endif

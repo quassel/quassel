@@ -22,15 +22,15 @@
 
 #include "corenetworkconfig.h"
 #include "coresession.h"
+#include "coreuserinputhandler.h"
 #include "ctcpevent.h"
 #include "messageevent.h"
-#include "coreuserinputhandler.h"
 
 const QByteArray XDELIM = "\001";
 
-CtcpParser::CtcpParser(CoreSession *coreSession, QObject *parent)
-    : QObject(parent),
-    _coreSession(coreSession)
+CtcpParser::CtcpParser(CoreSession* coreSession, QObject* parent)
+    : QObject(parent)
+    , _coreSession(coreSession)
 {
     QByteArray MQUOTE = QByteArray("\020");
     _ctcpMDequoteHash[MQUOTE + '0'] = QByteArray(1, '\000');
@@ -44,7 +44,6 @@ CtcpParser::CtcpParser(CoreSession *coreSession, QObject *parent)
     connect(this, &CtcpParser::newEvent, _coreSession->eventManager(), &EventManager::postEvent);
 }
 
-
 void CtcpParser::setStandardCtcp(bool enabled)
 {
     QByteArray XQUOTE = QByteArray(R"(\)");
@@ -55,21 +54,19 @@ void CtcpParser::setStandardCtcp(bool enabled)
     _ctcpXDelimDequoteHash[XQUOTE + QByteArray("a")] = XDELIM;
 }
 
-
-void CtcpParser::displayMsg(NetworkEvent *event, Message::Type msgType, const QString &msg, const QString &sender,
-    const QString &target, Message::Flags msgFlags)
+void CtcpParser::displayMsg(
+    NetworkEvent* event, Message::Type msgType, const QString& msg, const QString& sender, const QString& target, Message::Flags msgFlags)
 {
     if (event->testFlag(EventManager::Silent))
         return;
 
-    MessageEvent *msgEvent = new MessageEvent(msgType, event->network(), msg, sender, target, msgFlags);
+    MessageEvent* msgEvent = new MessageEvent(msgType, event->network(), msg, sender, target, msgFlags);
     msgEvent->setTimestamp(event->timestamp());
 
     emit newEvent(msgEvent);
 }
 
-
-QByteArray CtcpParser::lowLevelQuote(const QByteArray &message)
+QByteArray CtcpParser::lowLevelQuote(const QByteArray& message)
 {
     QByteArray quotedMessage = message;
 
@@ -86,8 +83,7 @@ QByteArray CtcpParser::lowLevelQuote(const QByteArray &message)
     return quotedMessage;
 }
 
-
-QByteArray CtcpParser::lowLevelDequote(const QByteArray &message)
+QByteArray CtcpParser::lowLevelDequote(const QByteArray& message)
 {
     QByteArray dequotedMessage;
     QByteArray messagepart;
@@ -96,7 +92,7 @@ QByteArray CtcpParser::lowLevelDequote(const QByteArray &message)
     // copy dequote Message
     for (int i = 0; i < message.size(); i++) {
         messagepart = message.mid(i, 1);
-        if (i+1 < message.size()) {
+        if (i + 1 < message.size()) {
             for (ctcpquote = _ctcpMDequoteHash.begin(); ctcpquote != _ctcpMDequoteHash.end(); ++ctcpquote) {
                 if (message.mid(i, 2) == ctcpquote.key()) {
                     messagepart = ctcpquote.value();
@@ -110,8 +106,7 @@ QByteArray CtcpParser::lowLevelDequote(const QByteArray &message)
     return dequotedMessage;
 }
 
-
-QByteArray CtcpParser::xdelimQuote(const QByteArray &message)
+QByteArray CtcpParser::xdelimQuote(const QByteArray& message)
 {
     QByteArray quotedMessage = message;
     QHash<QByteArray, QByteArray>::const_iterator quoteIter = _ctcpXDelimDequoteHash.constBegin();
@@ -122,8 +117,7 @@ QByteArray CtcpParser::xdelimQuote(const QByteArray &message)
     return quotedMessage;
 }
 
-
-QByteArray CtcpParser::xdelimDequote(const QByteArray &message)
+QByteArray CtcpParser::xdelimDequote(const QByteArray& message)
 {
     QByteArray dequotedMessage;
     QByteArray messagepart;
@@ -131,7 +125,7 @@ QByteArray CtcpParser::xdelimDequote(const QByteArray &message)
 
     for (int i = 0; i < message.size(); i++) {
         messagepart = message.mid(i, 1);
-        if (i+1 < message.size()) {
+        if (i + 1 < message.size()) {
             for (xdelimquote = _ctcpXDelimDequoteHash.begin(); xdelimquote != _ctcpXDelimDequoteHash.end(); ++xdelimquote) {
                 if (message.mid(i, 2) == xdelimquote.key()) {
                     messagepart = xdelimquote.value();
@@ -145,31 +139,24 @@ QByteArray CtcpParser::xdelimDequote(const QByteArray &message)
     return dequotedMessage;
 }
 
-
-void CtcpParser::processIrcEventRawNotice(IrcEventRawMessage *event)
+void CtcpParser::processIrcEventRawNotice(IrcEventRawMessage* event)
 {
     parse(event, Message::Notice);
 }
 
-
-void CtcpParser::processIrcEventRawPrivmsg(IrcEventRawMessage *event)
+void CtcpParser::processIrcEventRawPrivmsg(IrcEventRawMessage* event)
 {
     parse(event, Message::Plain);
 }
 
-
-void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype)
+void CtcpParser::parse(IrcEventRawMessage* e, Message::Type messagetype)
 {
-    //lowlevel message dequote
+    // lowlevel message dequote
     QByteArray dequotedMessage = lowLevelDequote(e->rawMessage());
 
-    CtcpEvent::CtcpType ctcptype = e->type() == EventManager::IrcEventRawNotice
-                                   ? CtcpEvent::Reply
-                                   : CtcpEvent::Query;
+    CtcpEvent::CtcpType ctcptype = e->type() == EventManager::IrcEventRawNotice ? CtcpEvent::Reply : CtcpEvent::Query;
 
-    Message::Flags flags = (ctcptype == CtcpEvent::Reply && !e->network()->isChannelName(e->target()))
-                           ? Message::Redirected
-                           : Message::None;
+    Message::Flags flags = (ctcptype == CtcpEvent::Reply && !e->network()->isChannelName(e->target())) ? Message::Redirected : Message::None;
 
     bool isStatusMsg = false;
 
@@ -203,14 +190,15 @@ void CtcpParser::parse(IrcEventRawMessage *e, Message::Type messagetype)
         parseSimple(e, messagetype, dequotedMessage, ctcptype, flags);
 }
 
-
 // only accept CTCPs in their simplest form, i.e. one ctcp, from start to
 // end, no text around it; not as per the 'specs', but makes people happier
-void CtcpParser::parseSimple(IrcEventRawMessage *e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
+void CtcpParser::parseSimple(
+    IrcEventRawMessage* e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
 {
-    if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.count() -1] != '\001') {
+    if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.count() - 1] != '\001') {
         displayMsg(e, messagetype, targetDecode(e, dequotedMessage), e->prefix(), e->target(), flags);
-    } else {
+    }
+    else {
         int spacePos;
         QString ctcpcmd, ctcpparam;
 
@@ -219,33 +207,49 @@ void CtcpParser::parseSimple(IrcEventRawMessage *e, Message::Type messagetype, Q
         if (spacePos != -1) {
             ctcpcmd = targetDecode(e, ctcp.left(spacePos));
             ctcpparam = targetDecode(e, ctcp.mid(spacePos + 1));
-        } else {
+        }
+        else {
             ctcpcmd = targetDecode(e, ctcp);
             ctcpparam = QString();
         }
         ctcpcmd = ctcpcmd.toUpper();
 
         // we don't want to block /me messages by the CTCP ignore list
-        if (ctcpcmd == QLatin1String("ACTION") || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
+        if (ctcpcmd == QLatin1String("ACTION")
+            || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
             QUuid uuid = QUuid::createUuid();
             _replies.insert(uuid, CtcpReply(coreNetwork(e), nickFromMask(e->prefix())));
-            CtcpEvent *event = new CtcpEvent(EventManager::CtcpEvent, e->network(), e->prefix(), e->target(),
-                ctcptype, ctcpcmd, ctcpparam, e->timestamp(), uuid);
+            CtcpEvent* event = new CtcpEvent(EventManager::CtcpEvent,
+                                             e->network(),
+                                             e->prefix(),
+                                             e->target(),
+                                             ctcptype,
+                                             ctcpcmd,
+                                             ctcpparam,
+                                             e->timestamp(),
+                                             uuid);
             emit newEvent(event);
-            CtcpEvent *flushEvent = new CtcpEvent(EventManager::CtcpEventFlush, e->network(), e->prefix(), e->target(),
-                ctcptype, "INVALID", QString(), e->timestamp(), uuid);
+            CtcpEvent* flushEvent = new CtcpEvent(EventManager::CtcpEventFlush,
+                                                  e->network(),
+                                                  e->prefix(),
+                                                  e->target(),
+                                                  ctcptype,
+                                                  "INVALID",
+                                                  QString(),
+                                                  e->timestamp(),
+                                                  uuid);
             emit newEvent(flushEvent);
         }
     }
 }
 
-
-void CtcpParser::parseStandard(IrcEventRawMessage *e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
+void CtcpParser::parseStandard(
+    IrcEventRawMessage* e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
 {
     QByteArray ctcp;
 
-    QList<CtcpEvent *> ctcpEvents;
-    QUuid uuid; // needed to group all replies together
+    QList<CtcpEvent*> ctcpEvents;
+    QUuid uuid;  // needed to group all replies together
 
     // extract tagged / extended data
     int xdelimPos = -1;
@@ -263,7 +267,7 @@ void CtcpParser::parseStandard(IrcEventRawMessage *e, Message::Type messagetype,
         ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
         dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);
 
-        //dispatch the ctcp command
+        // dispatch the ctcp command
         QString ctcpcmd = targetDecode(e, ctcp.left(spacePos));
         QString ctcpparam = targetDecode(e, ctcp.mid(spacePos + 1));
 
@@ -280,21 +284,36 @@ void CtcpParser::parseStandard(IrcEventRawMessage *e, Message::Type messagetype,
         ctcpcmd = ctcpcmd.toUpper();
 
         // we don't want to block /me messages by the CTCP ignore list
-        if (ctcpcmd == QLatin1String("ACTION") || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
+        if (ctcpcmd == QLatin1String("ACTION")
+            || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
             if (uuid.isNull())
                 uuid = QUuid::createUuid();
 
-            CtcpEvent *event = new CtcpEvent(EventManager::CtcpEvent, e->network(), e->prefix(), e->target(),
-                ctcptype, ctcpcmd, ctcpparam, e->timestamp(), uuid);
+            CtcpEvent* event = new CtcpEvent(EventManager::CtcpEvent,
+                                             e->network(),
+                                             e->prefix(),
+                                             e->target(),
+                                             ctcptype,
+                                             ctcpcmd,
+                                             ctcpparam,
+                                             e->timestamp(),
+                                             uuid);
             ctcpEvents << event;
         }
     }
     if (!ctcpEvents.isEmpty()) {
         _replies.insert(uuid, CtcpReply(coreNetwork(e), nickFromMask(e->prefix())));
-        CtcpEvent *flushEvent = new CtcpEvent(EventManager::CtcpEventFlush, e->network(), e->prefix(), e->target(),
-            ctcptype, "INVALID", QString(), e->timestamp(), uuid);
+        CtcpEvent* flushEvent = new CtcpEvent(EventManager::CtcpEventFlush,
+                                              e->network(),
+                                              e->prefix(),
+                                              e->target(),
+                                              ctcptype,
+                                              "INVALID",
+                                              QString(),
+                                              e->timestamp(),
+                                              uuid);
         ctcpEvents << flushEvent;
-        foreach(CtcpEvent *event, ctcpEvents) {
+        foreach (CtcpEvent* event, ctcpEvents) {
             emit newEvent(event);
         }
     }
@@ -303,17 +322,15 @@ void CtcpParser::parseStandard(IrcEventRawMessage *e, Message::Type messagetype,
         displayMsg(e, messagetype, targetDecode(e, dequotedMessage), e->prefix(), e->target(), flags);
 }
 
-
-void CtcpParser::sendCtcpEvent(CtcpEvent *e)
+void CtcpParser::sendCtcpEvent(CtcpEvent* e)
 {
-    CoreNetwork *net = coreNetwork(e);
+    CoreNetwork* net = coreNetwork(e);
     if (e->type() == EventManager::CtcpEvent) {
         QByteArray quotedReply;
         QString bufname = nickFromMask(e->prefix());
         if (e->ctcpType() == CtcpEvent::Query && !e->reply().isNull()) {
             if (_replies.contains(e->uuid()))
-                _replies[e->uuid()].replies << lowLevelQuote(pack(net->serverEncode(e->ctcpCmd()),
-                        net->userEncode(bufname, e->reply())));
+                _replies[e->uuid()].replies << lowLevelQuote(pack(net->serverEncode(e->ctcpCmd()), net->userEncode(bufname, e->reply())));
             else
                 // reply not caused by a request processed in here, so send it off immediately
                 reply(net, bufname, e->ctcpCmd(), e->reply());
@@ -326,8 +343,7 @@ void CtcpParser::sendCtcpEvent(CtcpEvent *e)
     }
 }
 
-
-QByteArray CtcpParser::pack(const QByteArray &ctcpTag, const QByteArray &message)
+QByteArray CtcpParser::pack(const QByteArray& ctcpTag, const QByteArray& message)
 {
     if (message.isEmpty())
         return XDELIM + ctcpTag + XDELIM;
@@ -335,28 +351,26 @@ QByteArray CtcpParser::pack(const QByteArray &ctcpTag, const QByteArray &message
     return XDELIM + ctcpTag + ' ' + xdelimQuote(message) + XDELIM;
 }
 
-
-void CtcpParser::query(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QString &message)
+void CtcpParser::query(CoreNetwork* net, const QString& bufname, const QString& ctcpTag, const QString& message)
 {
     QString cmd("PRIVMSG");
 
-    std::function<QList<QByteArray>(QString &)> cmdGenerator = [&] (QString &splitMsg) -> QList<QByteArray> {
-        return QList<QByteArray>() << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, splitMsg)));
+    std::function<QList<QByteArray>(QString&)> cmdGenerator = [&](QString& splitMsg) -> QList<QByteArray> {
+        return QList<QByteArray>() << net->serverEncode(bufname)
+                                   << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, splitMsg)));
     };
 
     net->putCmd(cmd, net->splitMessage(cmd, message, cmdGenerator));
 }
 
-
-void CtcpParser::reply(CoreNetwork *net, const QString &bufname, const QString &ctcpTag, const QString &message)
+void CtcpParser::reply(CoreNetwork* net, const QString& bufname, const QString& ctcpTag, const QString& message)
 {
     QList<QByteArray> params;
     params << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message)));
     net->putCmd("NOTICE", params);
 }
 
-
-void CtcpParser::packedReply(CoreNetwork *net, const QString &bufname, const QList<QByteArray> &replies)
+void CtcpParser::packedReply(CoreNetwork* net, const QString& bufname, const QList<QByteArray>& replies)
 {
     QList<QByteArray> params;
 

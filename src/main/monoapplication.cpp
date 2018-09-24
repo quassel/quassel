@@ -19,20 +19,19 @@
  ***************************************************************************/
 
 #include "monoapplication.h"
-#include "coreapplication.h"
+
 #include "client.h"
 #include "core.h"
+#include "coreapplication.h"
 #include "internalpeer.h"
 #include "logmessage.h"
 #include "qtui.h"
 
 class InternalPeer;
 
-MonolithicApplication::MonolithicApplication(int &argc, char **argv)
+MonolithicApplication::MonolithicApplication(int& argc, char** argv)
     : QtUiApplication(argc, argv)
-{
-}
-
+{}
 
 void MonolithicApplication::init()
 {
@@ -48,7 +47,6 @@ void MonolithicApplication::init()
     }
 }
 
-
 Quassel::QuitHandler MonolithicApplication::quitHandler()
 {
     return [this]() {
@@ -57,7 +55,6 @@ Quassel::QuitHandler MonolithicApplication::quitHandler()
         _client.release()->deleteLater();
     };
 }
-
 
 void MonolithicApplication::onClientDestroyed()
 {
@@ -70,7 +67,6 @@ void MonolithicApplication::onClientDestroyed()
     }
 }
 
-
 void MonolithicApplication::onCoreShutdown()
 {
     if (_core) {
@@ -82,7 +78,6 @@ void MonolithicApplication::onCoreShutdown()
         QCoreApplication::quit();
     }
 }
-
 
 void MonolithicApplication::startInternalCore()
 {
@@ -105,7 +100,6 @@ void MonolithicApplication::startInternalCore()
 
     _coreThread.start();
 }
-
 
 void MonolithicApplication::onConnectionRequest(QPointer<InternalPeer> peer)
 {

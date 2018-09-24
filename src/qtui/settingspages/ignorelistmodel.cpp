@@ -21,13 +21,13 @@
 #include "ignorelistmodel.h"
 
 #include <QDebug>
-#include <QStringList>
 #include <QPushButton>
+#include <QStringList>
 
 #include "client.h"
 #include "signalproxy.h"
 
-IgnoreListModel::IgnoreListModel(QObject *parent)
+IgnoreListModel::IgnoreListModel(QObject* parent)
     : QAbstractItemModel(parent)
 {
     // we need this signal for future connects to reset the data;
@@ -40,8 +40,7 @@ IgnoreListModel::IgnoreListModel(QObject *parent)
         emit modelReady(false);
 }
 
-
-QVariant IgnoreListModel::data(const QModelIndex &index, int role) const
+QVariant IgnoreListModel::data(const QModelIndex& index, int role) const
 {
     if (!_modelReady)
         return QVariant();
@@ -107,8 +106,7 @@ QVariant IgnoreListModel::data(const QModelIndex &index, int role) const
     }
 }
 
-
-bool IgnoreListModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool IgnoreListModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     if (!_modelReady)
         return false;
@@ -125,8 +123,7 @@ bool IgnoreListModel::setData(const QModelIndex &index, const QVariant &value, i
         cloneIgnoreListManager()[index.row()].setIsEnabled(newValue.toBool());
         return true;
     case 1:
-        cloneIgnoreListManager()[index.row()].setType(
-                    (IgnoreListManager::IgnoreType)newValue.toInt());
+        cloneIgnoreListManager()[index.row()].setType((IgnoreListManager::IgnoreType)newValue.toInt());
         return true;
     case 2:
         if (ignoreListManager().contains(newValue.toString())) {
@@ -141,20 +138,17 @@ bool IgnoreListModel::setData(const QModelIndex &index, const QVariant &value, i
     }
 }
 
-
-bool IgnoreListModel::newIgnoreRule(const IgnoreListManager::IgnoreListItem &item)
+bool IgnoreListModel::newIgnoreRule(const IgnoreListManager::IgnoreListItem& item)
 {
-    IgnoreListManager &manager = cloneIgnoreListManager();
+    IgnoreListManager& manager = cloneIgnoreListManager();
     if (manager.contains(item.contents()))
         return false;
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     // manager.addIgnoreListItem(item);
-    manager.addIgnoreListItem(item.type(), item.contents(), item.isRegEx(), item.strictness(),
-                              item.scope(), item.scopeRule(), item.isEnabled());
+    manager.addIgnoreListItem(item.type(), item.contents(), item.isRegEx(), item.strictness(), item.scope(), item.scopeRule(), item.isEnabled());
     endInsertRows();
     return true;
 }
-
 
 void IgnoreListModel::loadDefaults()
 {
@@ -179,20 +173,18 @@ void IgnoreListModel::loadDefaults()
     endInsertRows();*/
 }
 
-
 void IgnoreListModel::removeIgnoreRule(int index)
 {
     if (index < 0 || index >= rowCount())
         return;
 
-    IgnoreListManager &manager = cloneIgnoreListManager();
+    IgnoreListManager& manager = cloneIgnoreListManager();
     beginRemoveRows(QModelIndex(), index, index);
     manager.removeAt(index);
     endRemoveRows();
 }
 
-
-Qt::ItemFlags IgnoreListModel::flags(const QModelIndex &index) const
+Qt::ItemFlags IgnoreListModel::flags(const QModelIndex& index) const
 {
     if (!index.isValid()) {
         return Qt::ItemIsDropEnabled;
@@ -202,13 +194,10 @@ Qt::ItemFlags IgnoreListModel::flags(const QModelIndex &index) const
     }
 }
 
-
 QVariant IgnoreListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     QStringList header;
-    header << tr("Enabled")
-           << tr("Type")
-           << tr("Ignore Rule");
+    header << tr("Enabled") << tr("Type") << tr("Ignore Rule");
 
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return header[section];
@@ -216,8 +205,7 @@ QVariant IgnoreListModel::headerData(int section, Qt::Orientation orientation, i
     return QVariant();
 }
 
-
-QModelIndex IgnoreListModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex IgnoreListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (row >= rowCount() || column >= columnCount())
@@ -226,8 +214,7 @@ QModelIndex IgnoreListModel::index(int row, int column, const QModelIndex &paren
     return createIndex(row, column);
 }
 
-
-const IgnoreListManager &IgnoreListModel::ignoreListManager() const
+const IgnoreListManager& IgnoreListModel::ignoreListManager() const
 {
     if (_configChanged)
         return _clonedIgnoreListManager;
@@ -235,8 +222,7 @@ const IgnoreListManager &IgnoreListModel::ignoreListManager() const
         return *Client::ignoreListManager();
 }
 
-
-IgnoreListManager &IgnoreListModel::ignoreListManager()
+IgnoreListManager& IgnoreListModel::ignoreListManager()
 {
     if (_configChanged)
         return _clonedIgnoreListManager;
@@ -244,8 +230,7 @@ IgnoreListManager &IgnoreListModel::ignoreListManager()
         return *Client::ignoreListManager();
 }
 
-
-IgnoreListManager &IgnoreListModel::cloneIgnoreListManager()
+IgnoreListManager& IgnoreListModel::cloneIgnoreListManager()
 {
     if (!_configChanged) {
         _clonedIgnoreListManager = *Client::ignoreListManager();
@@ -254,7 +239,6 @@ IgnoreListManager &IgnoreListModel::cloneIgnoreListManager()
     }
     return _clonedIgnoreListManager;
 }
-
 
 void IgnoreListModel::revert()
 {
@@ -267,7 +251,6 @@ void IgnoreListModel::revert()
     endResetModel();
 }
 
-
 void IgnoreListModel::commit()
 {
     if (!_configChanged)
@@ -277,7 +260,6 @@ void IgnoreListModel::commit()
     revert();
 }
 
-
 void IgnoreListModel::initDone()
 {
     _modelReady = true;
@@ -285,7 +267,6 @@ void IgnoreListModel::initDone()
     endResetModel();
     emit modelReady(true);
 }
-
 
 void IgnoreListModel::clientConnected()
 {
@@ -295,7 +276,6 @@ void IgnoreListModel::clientConnected()
     else
         connect(Client::ignoreListManager(), &SyncableObject::initDone, this, &IgnoreListModel::initDone);
 }
-
 
 void IgnoreListModel::clientDisconnected()
 {
@@ -307,22 +287,19 @@ void IgnoreListModel::clientDisconnected()
     emit modelReady(false);
 }
 
-
-const IgnoreListManager::IgnoreListItem &IgnoreListModel::ignoreListItemAt(int row) const
+const IgnoreListManager::IgnoreListItem& IgnoreListModel::ignoreListItemAt(int row) const
 {
     return ignoreListManager()[row];
 }
 
-
 // FIXME use QModelIndex?
-void IgnoreListModel::setIgnoreListItemAt(int row, const IgnoreListManager::IgnoreListItem &item)
+void IgnoreListModel::setIgnoreListItemAt(int row, const IgnoreListManager::IgnoreListItem& item)
 {
     cloneIgnoreListManager()[row] = item;
     emit dataChanged(createIndex(row, 0), createIndex(row, 2));
 }
 
-
-const QModelIndex IgnoreListModel::indexOf(const QString &rule)
+const QModelIndex IgnoreListModel::indexOf(const QString& rule)
 {
     return createIndex(ignoreListManager().indexOf(rule), 2);
 }

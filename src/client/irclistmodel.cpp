@@ -22,13 +22,11 @@
 
 #include <QStringList>
 
-IrcListModel::IrcListModel(QObject *parent)
+IrcListModel::IrcListModel(QObject* parent)
     : QAbstractItemModel(parent)
-{
-}
+{}
 
-
-QVariant IrcListModel::data(const QModelIndex &index, int role) const
+QVariant IrcListModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount() || role != Qt::DisplayRole)
         return QVariant();
@@ -47,8 +45,7 @@ QVariant IrcListModel::data(const QModelIndex &index, int role) const
     }
 }
 
-
-Qt::ItemFlags IrcListModel::flags(const QModelIndex &index) const
+Qt::ItemFlags IrcListModel::flags(const QModelIndex& index) const
 {
     if (!index.isValid()) {
         return Qt::ItemIsDropEnabled;
@@ -58,13 +55,10 @@ Qt::ItemFlags IrcListModel::flags(const QModelIndex &index) const
     }
 }
 
-
 QVariant IrcListModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     QStringList header;
-    header << tr("Channel")
-           << tr("Users")
-           << tr("Topic");
+    header << tr("Channel") << tr("Users") << tr("Topic");
 
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return header[section];
@@ -72,8 +66,7 @@ QVariant IrcListModel::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-
-QModelIndex IrcListModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex IrcListModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     if (row >= rowCount() || column >= columnCount())
@@ -82,8 +75,7 @@ QModelIndex IrcListModel::index(int row, int column, const QModelIndex &parent) 
     return createIndex(row, column);
 }
 
-
-void IrcListModel::setChannelList(const QList<IrcListHelper::ChannelDescription> &channelList)
+void IrcListModel::setChannelList(const QList<IrcListHelper::ChannelDescription>& channelList)
 {
     if (rowCount() > 0) {
         beginRemoveRows(QModelIndex(), 0, _channelList.count() - 1);

@@ -22,29 +22,25 @@
 
 #include <QAbstractItemModel>
 #include <QAbstractProxyModel>
-
 #include <QDebug>
 
-SelectionModelSynchronizer::SelectionModelSynchronizer(QAbstractItemModel *parent)
-    : QObject(parent),
-    _model(parent),
-    _selectionModel(parent)
+SelectionModelSynchronizer::SelectionModelSynchronizer(QAbstractItemModel* parent)
+    : QObject(parent)
+    , _model(parent)
+    , _selectionModel(parent)
 {
-    connect(&_selectionModel, &QItemSelectionModel::currentChanged,
-        this, &SelectionModelSynchronizer::currentChanged);
-    connect(&_selectionModel, &QItemSelectionModel::selectionChanged,
-        this, &SelectionModelSynchronizer::selectionChanged);
+    connect(&_selectionModel, &QItemSelectionModel::currentChanged, this, &SelectionModelSynchronizer::currentChanged);
+    connect(&_selectionModel, &QItemSelectionModel::selectionChanged, this, &SelectionModelSynchronizer::selectionChanged);
 }
 
-
-bool SelectionModelSynchronizer::checkBaseModel(QItemSelectionModel *selectionModel)
+bool SelectionModelSynchronizer::checkBaseModel(QItemSelectionModel* selectionModel)
 {
     if (!selectionModel)
         return false;
 
-    const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = nullptr;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
+    const QAbstractItemModel* baseModel = selectionModel->model();
+    const QAbstractProxyModel* proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel*>(baseModel)) != nullptr) {
         baseModel = proxyModel->sourceModel();
         if (baseModel == model())
             break;
@@ -52,8 +48,7 @@ bool SelectionModelSynchronizer::checkBaseModel(QItemSelectionModel *selectionMo
     return baseModel == model();
 }
 
-
-void SelectionModelSynchronizer::synchronizeSelectionModel(QItemSelectionModel *selectionModel)
+void SelectionModelSynchronizer::synchronizeSelectionModel(QItemSelectionModel* selectionModel)
 {
     if (!checkBaseModel(selectionModel)) {
         qWarning() << "cannot Synchronize SelectionModel" << selectionModel << "which has a different baseModel()";
@@ -66,29 +61,25 @@ void SelectionModelSynchronizer::synchronizeSelectionModel(QItemSelectionModel *
         return;
     }
 
-    connect(selectionModel, &QItemSelectionModel::currentChanged,
-        this, &SelectionModelSynchronizer::syncedCurrentChanged);
-    connect(selectionModel, &QItemSelectionModel::selectionChanged,
-        this, &SelectionModelSynchronizer::syncedSelectionChanged);
+    connect(selectionModel, &QItemSelectionModel::currentChanged, this, &SelectionModelSynchronizer::syncedCurrentChanged);
+    connect(selectionModel, &QItemSelectionModel::selectionChanged, this, &SelectionModelSynchronizer::syncedSelectionChanged);
 
     connect(selectionModel, &QObject::destroyed, this, &SelectionModelSynchronizer::selectionModelDestroyed);
 
     _selectionModels << selectionModel;
 }
 
-
-void SelectionModelSynchronizer::removeSelectionModel(QItemSelectionModel *model)
+void SelectionModelSynchronizer::removeSelectionModel(QItemSelectionModel* model)
 {
     disconnect(model, nullptr, this, nullptr);
     disconnect(this, nullptr, model, nullptr);
     selectionModelDestroyed(model);
 }
 
-
-void SelectionModelSynchronizer::selectionModelDestroyed(QObject *object)
+void SelectionModelSynchronizer::selectionModelDestroyed(QObject* object)
 {
-    auto *model = static_cast<QItemSelectionModel *>(object);
-    QSet<QItemSelectionModel *>::iterator iter = _selectionModels.begin();
+    auto* model = static_cast<QItemSelectionModel*>(object);
+    QSet<QItemSelectionModel*>::iterator iter = _selectionModels.begin();
     while (iter != _selectionModels.end()) {
         if (*iter == model) {
             iter = _selectionModels.erase(iter);
@@ -99,23 +90,21 @@ void SelectionModelSynchronizer::selectionModelDestroyed(QObject *object)
     }
 }
 
-
-void SelectionModelSynchronizer::syncedCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
+void SelectionModelSynchronizer::syncedCurrentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
     Q_UNUSED(previous);
 
     if (!_changeCurrentEnabled)
         return;
 
-    auto *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
+    auto* selectionModel = qobject_cast<QItemSelectionModel*>(sender());
     Q_ASSERT(selectionModel);
     QModelIndex newSourceCurrent = mapToSource(current, selectionModel);
     if (newSourceCurrent.isValid() && newSourceCurrent != currentIndex())
         setCurrentIndex(newSourceCurrent);
 }
 
-
-void SelectionModelSynchronizer::syncedSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void SelectionModelSynchronizer::syncedSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     Q_UNUSED(selected);
     Q_UNUSED(deselected);
@@ -123,7 +112,7 @@ void SelectionModelSynchronizer::syncedSelectionChanged(const QItemSelection &se
     if (!_changeSelectionEnabled)
         return;
 
-    auto *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
+    auto* selectionModel = qobject_cast<QItemSelectionModel*>(sender());
     Q_ASSERT(selectionModel);
 
     QItemSelection mappedSelection = selectionModel->selection();
@@ -144,18 +133,17 @@ void SelectionModelSynchronizer::syncedSelectionChanged(const QItemSelection &se
     setCurrentSelection(mapSelectionToSource(mappedSelection, selectionModel));
 }
 
-
-QModelIndex SelectionModelSynchronizer::mapFromSource(const QModelIndex &sourceIndex, const QItemSelectionModel *selectionModel)
+QModelIndex SelectionModelSynchronizer::mapFromSource(const QModelIndex& sourceIndex, const QItemSelectionModel* selectionModel)
 {
     Q_ASSERT(selectionModel);
 
     QModelIndex mappedIndex = sourceIndex;
 
     // make a list of all involved proxies, wie have to traverse backwards
-    QList<const QAbstractProxyModel *> proxyModels;
-    const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = nullptr;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
+    QList<const QAbstractProxyModel*> proxyModels;
+    const QAbstractItemModel* baseModel = selectionModel->model();
+    const QAbstractProxyModel* proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel*>(baseModel)) != nullptr) {
         if (baseModel == model())
             break;
         proxyModels << proxyModel;
@@ -170,18 +158,18 @@ QModelIndex SelectionModelSynchronizer::mapFromSource(const QModelIndex &sourceI
     return mappedIndex;
 }
 
-
-QItemSelection SelectionModelSynchronizer::mapSelectionFromSource(const QItemSelection &sourceSelection, const QItemSelectionModel *selectionModel)
+QItemSelection SelectionModelSynchronizer::mapSelectionFromSource(const QItemSelection& sourceSelection,
+                                                                  const QItemSelectionModel* selectionModel)
 {
     Q_ASSERT(selectionModel);
 
     QItemSelection mappedSelection = sourceSelection;
 
     // make a list of all involved proxies, wie have to traverse backwards
-    QList<const QAbstractProxyModel *> proxyModels;
-    const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = nullptr;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
+    QList<const QAbstractProxyModel*> proxyModels;
+    const QAbstractItemModel* baseModel = selectionModel->model();
+    const QAbstractProxyModel* proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel*>(baseModel)) != nullptr) {
         if (baseModel == model())
             break;
         proxyModels << proxyModel;
@@ -195,15 +183,14 @@ QItemSelection SelectionModelSynchronizer::mapSelectionFromSource(const QItemSel
     return mappedSelection;
 }
 
-
-QModelIndex SelectionModelSynchronizer::mapToSource(const QModelIndex &index, QItemSelectionModel *selectionModel)
+QModelIndex SelectionModelSynchronizer::mapToSource(const QModelIndex& index, QItemSelectionModel* selectionModel)
 {
     Q_ASSERT(selectionModel);
 
     QModelIndex sourceIndex = index;
-    const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = nullptr;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
+    const QAbstractItemModel* baseModel = selectionModel->model();
+    const QAbstractProxyModel* proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel*>(baseModel)) != nullptr) {
         sourceIndex = proxyModel->mapToSource(sourceIndex);
         baseModel = proxyModel->sourceModel();
         if (baseModel == model())
@@ -212,15 +199,14 @@ QModelIndex SelectionModelSynchronizer::mapToSource(const QModelIndex &index, QI
     return sourceIndex;
 }
 
-
-QItemSelection SelectionModelSynchronizer::mapSelectionToSource(const QItemSelection &selection, QItemSelectionModel *selectionModel)
+QItemSelection SelectionModelSynchronizer::mapSelectionToSource(const QItemSelection& selection, QItemSelectionModel* selectionModel)
 {
     Q_ASSERT(selectionModel);
 
     QItemSelection sourceSelection = selection;
-    const QAbstractItemModel *baseModel = selectionModel->model();
-    const QAbstractProxyModel *proxyModel = nullptr;
-    while ((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != nullptr) {
+    const QAbstractItemModel* baseModel = selectionModel->model();
+    const QAbstractProxyModel* proxyModel = nullptr;
+    while ((proxyModel = qobject_cast<const QAbstractProxyModel*>(baseModel)) != nullptr) {
         sourceSelection = proxyModel->mapSelectionToSource(sourceSelection);
         baseModel = proxyModel->sourceModel();
         if (baseModel == model())
@@ -229,25 +215,22 @@ QItemSelection SelectionModelSynchronizer::mapSelectionToSource(const QItemSelec
     return sourceSelection;
 }
 
-
-void SelectionModelSynchronizer::setCurrentIndex(const QModelIndex &index)
+void SelectionModelSynchronizer::setCurrentIndex(const QModelIndex& index)
 {
     _selectionModel.setCurrentIndex(index, QItemSelectionModel::Current);
 }
 
-
-void SelectionModelSynchronizer::setCurrentSelection(const QItemSelection &selection)
+void SelectionModelSynchronizer::setCurrentSelection(const QItemSelection& selection)
 {
     _selectionModel.select(selection, QItemSelectionModel::ClearAndSelect);
 }
 
-
-void SelectionModelSynchronizer::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+void SelectionModelSynchronizer::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
     Q_UNUSED(previous);
 
     _changeCurrentEnabled = false;
-    QSet<QItemSelectionModel *>::iterator iter = _selectionModels.begin();
+    QSet<QItemSelectionModel*>::iterator iter = _selectionModels.begin();
     while (iter != _selectionModels.end()) {
         (*iter)->setCurrentIndex(mapFromSource(current, (*iter)), QItemSelectionModel::Current);
         ++iter;
@@ -257,19 +240,17 @@ void SelectionModelSynchronizer::currentChanged(const QModelIndex &current, cons
     // Trigger a dataChanged() signal from the base model to update all proxy models (e.g. filters).
     // Since signals are protected, we have to use invokeMethod for faking signal emission.
     if (previous.isValid()) {
-        QMetaObject::invokeMethod(model(), "dataChanged", Qt::DirectConnection,
-                                  Q_ARG(QModelIndex, previous), Q_ARG(QModelIndex, previous));
+        QMetaObject::invokeMethod(model(), "dataChanged", Qt::DirectConnection, Q_ARG(QModelIndex, previous), Q_ARG(QModelIndex, previous));
     }
 }
 
-
-void SelectionModelSynchronizer::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void SelectionModelSynchronizer::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     Q_UNUSED(selected);
     Q_UNUSED(deselected);
 
     _changeSelectionEnabled = false;
-    QSet<QItemSelectionModel *>::iterator iter = _selectionModels.begin();
+    QSet<QItemSelectionModel*>::iterator iter = _selectionModels.begin();
     while (iter != _selectionModels.end()) {
         (*iter)->select(mapSelectionFromSource(currentSelection(), (*iter)), QItemSelectionModel::ClearAndSelect);
         ++iter;

@@ -29,11 +29,11 @@ class UISUPPORT_EXPORT ClickableLabel : public QLabel
     Q_OBJECT
 
 public:
-    ClickableLabel(QWidget *parent = nullptr);
+    ClickableLabel(QWidget* parent = nullptr);
 
 signals:
     void clicked();
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 };

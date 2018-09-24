@@ -22,21 +22,23 @@
 
 #include <QDialog>
 
-#include "ui_coreinfodlg.h"
 #include "coreinfo.h"
 #include "coresessionwidget.h"
 
-class CoreInfoDlg : public QDialog {
-Q_OBJECT
+#include "ui_coreinfodlg.h"
+
+class CoreInfoDlg : public QDialog
+{
+    Q_OBJECT
 
 public:
-    explicit CoreInfoDlg(QWidget *parent = nullptr);
+    explicit CoreInfoDlg(QWidget* parent = nullptr);
 
 public slots:
-    void coreInfoChanged(const QVariantMap &);
+    void coreInfoChanged(const QVariantMap&);
 
 protected:
-    void timerEvent(QTimerEvent *) override { updateUptime(); }
+    void timerEvent(QTimerEvent*) override { updateUptime(); }
 
 private slots:
     /**
@@ -59,11 +61,11 @@ private slots:
     void disconnectClicked(int peerId);
 
     /**
-      * Event handler for core unspported Details button
-      */
+     * Event handler for core unspported Details button
+     */
     void on_coreUnsupportedDetails_clicked();
 
 private:
     Ui::CoreInfoDlg ui;
-    QMap<int, CoreSessionWidget *> _widgets;
+    QMap<int, CoreSessionWidget*> _widgets;
 };

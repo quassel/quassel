@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "sessionthread.h"
+
 #include <QPointer>
 #include <QTimer>
 
@@ -25,7 +27,6 @@
 #include "coresession.h"
 #include "internalpeer.h"
 #include "remotepeer.h"
-#include "sessionthread.h"
 #include "signalproxy.h"
 
 namespace {
@@ -39,8 +40,7 @@ public:
         : _userId{userId}
         , _restoreState{restoreState}
         , _strictIdentEnabled{strictIdentEnabled}
-    {
-    }
+    {}
 
 public slots:
     void initialize()
@@ -58,7 +58,7 @@ public slots:
         }
     }
 
-    void addClient(Peer *peer)
+    void addClient(Peer* peer)
     {
         if (!_session) {
             qWarning() << "Session not initialized!";
@@ -89,9 +89,9 @@ private:
     QPointer<CoreSession> _session;
 };
 
-}  // anon
+}  // namespace
 
-SessionThread::SessionThread(UserId uid, bool restoreState, bool strictIdentEnabled, QObject *parent)
+SessionThread::SessionThread(UserId uid, bool restoreState, bool strictIdentEnabled, QObject* parent)
     : QObject(parent)
 {
     auto worker = new Worker(uid, restoreState, strictIdentEnabled);
@@ -108,7 +108,6 @@ SessionThread::SessionThread(UserId uid, bool restoreState, bool strictIdentEnab
     QTimer::singleShot(0, &_sessionThread, SLOT(start()));
 }
 
-
 SessionThread::~SessionThread()
 {
     // shut down thread gracefully
@@ -116,17 +115,15 @@ SessionThread::~SessionThread()
     _sessionThread.wait(30000);
 }
 
-
 void SessionThread::shutdown()
 {
     emit shutdownSession();
 }
 
-
 void SessionThread::onSessionInitialized()
 {
     _sessionInitialized = true;
-    for (auto &&peer : _clientQueue) {
+    for (auto&& peer : _clientQueue) {
         peer->setParent(nullptr);
         peer->moveToThread(&_sessionThread);
         emit addClientToWorker(peer);
@@ -134,13 +131,12 @@ void SessionThread::onSessionInitialized()
     _clientQueue.clear();
 }
 
-
 void SessionThread::onSessionDestroyed()
 {
     emit shutdownComplete(this);
 }
 
-void SessionThread::addClient(Peer *peer)
+void SessionThread::addClient(Peer* peer)
 {
     if (_sessionInitialized) {
         peer->setParent(nullptr);

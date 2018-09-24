@@ -28,24 +28,21 @@
 
 int SqliteStorage::_maxRetryCount = 150;
 
-SqliteStorage::SqliteStorage(QObject *parent)
+SqliteStorage::SqliteStorage(QObject* parent)
     : AbstractSqlStorage(parent)
-{
-}
-
+{}
 
 bool SqliteStorage::isAvailable() const
 {
-    if (!QSqlDatabase::isDriverAvailable("QSQLITE")) return false;
+    if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
+        return false;
     return true;
 }
-
 
 QString SqliteStorage::backendId() const
 {
     return QString("SQLite");
 }
-
 
 QString SqliteStorage::displayName() const
 {
@@ -56,14 +53,12 @@ QString SqliteStorage::displayName() const
     return backendId();
 }
 
-
 QString SqliteStorage::description() const
 {
     return tr("SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized "
               "databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine "
               "it is running on, and if you only expect a few users to use your core.");
 }
-
 
 int SqliteStorage::installedSchemaVersion()
 {
@@ -80,7 +75,6 @@ int SqliteStorage::installedSchemaVersion()
 
     return AbstractSqlStorage::installedSchemaVersion();
 }
-
 
 bool SqliteStorage::updateSchemaVersion(int newVersion)
 {
@@ -99,7 +93,6 @@ bool SqliteStorage::updateSchemaVersion(int newVersion)
     return success;
 }
 
-
 bool SqliteStorage::setupSchemaVersion(int version)
 {
     // only used when there is a singlethread (during startup)
@@ -117,8 +110,7 @@ bool SqliteStorage::setupSchemaVersion(int version)
     return success;
 }
 
-
-UserId SqliteStorage::addUser(const QString &user, const QString &password, const QString &authenticator)
+UserId SqliteStorage::addUser(const QString& user, const QString& password, const QString& authenticator)
 {
     QSqlDatabase db = logDb();
     UserId uid;
@@ -136,7 +128,8 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password, cons
         query.bindValue(":authenticator", authenticator);
         lockForWrite();
         safeExec(query);
-        if (query.lastError().isValid() && query.lastError().number() == 19) { // user already exists - sadly 19 seems to be the general constraint violation error...
+        if (query.lastError().isValid()
+            && query.lastError().number() == 19) {  // user already exists - sadly 19 seems to be the general constraint violation error...
             db.rollback();
         }
         else {
@@ -151,8 +144,7 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password, cons
     return uid;
 }
 
-
-bool SqliteStorage::updateUser(UserId user, const QString &password)
+bool SqliteStorage::updateUser(UserId user, const QString& password)
 {
     QSqlDatabase db = logDb();
     bool success = false;
@@ -173,8 +165,7 @@ bool SqliteStorage::updateUser(UserId user, const QString &password)
     return success;
 }
 
-
-void SqliteStorage::renameUser(UserId user, const QString &newName)
+void SqliteStorage::renameUser(UserId user, const QString& newName)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -191,8 +182,7 @@ void SqliteStorage::renameUser(UserId user, const QString &newName)
     emit userRenamed(user, newName);
 }
 
-
-UserId SqliteStorage::validateUser(const QString &user, const QString &password)
+UserId SqliteStorage::validateUser(const QString& user, const QString& password)
 {
     UserId userId;
     QString hashedPassword;
@@ -221,8 +211,7 @@ UserId SqliteStorage::validateUser(const QString &user, const QString &password)
     return returnUserId;
 }
 
-
-UserId SqliteStorage::getUserId(const QString &username)
+UserId SqliteStorage::getUserId(const QString& username)
 {
     UserId userId;
 
@@ -283,7 +272,6 @@ UserId SqliteStorage::internalUser()
     return userId;
 }
 
-
 void SqliteStorage::delUser(UserId user)
 {
     QSqlDatabase db = logDb();
@@ -315,8 +303,7 @@ void SqliteStorage::delUser(UserId user)
     emit userRemoved(user);
 }
 
-
-void SqliteStorage::setUserSetting(UserId userId, const QString &settingName, const QVariant &data)
+void SqliteStorage::setUserSetting(UserId userId, const QString& settingName, const QVariant& data)
 {
     QByteArray rawData;
     QDataStream out(&rawData, QIODevice::WriteOnly);
@@ -347,8 +334,7 @@ void SqliteStorage::setUserSetting(UserId userId, const QString &settingName, co
     unlock();
 }
 
-
-QVariant SqliteStorage::getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData)
+QVariant SqliteStorage::getUserSetting(UserId userId, const QString& settingName, const QVariant& defaultData)
 {
     QVariant data = defaultData;
     {
@@ -370,8 +356,7 @@ QVariant SqliteStorage::getUserSetting(UserId userId, const QString &settingName
     return data;
 }
 
-
-void SqliteStorage::setCoreState(const QVariantList &data)
+void SqliteStorage::setCoreState(const QVariantList& data)
 {
     QByteArray rawData;
     QDataStream out(&rawData, QIODevice::WriteOnly);
@@ -400,8 +385,7 @@ void SqliteStorage::setCoreState(const QVariantList &data)
     unlock();
 }
 
-
-QVariantList SqliteStorage::getCoreState(const QVariantList &defaultData)
+QVariantList SqliteStorage::getCoreState(const QVariantList& defaultData)
 {
     QVariantList data;
     {
@@ -416,7 +400,8 @@ QVariantList SqliteStorage::getCoreState(const QVariantList &defaultData)
             QDataStream in(&rawData, QIODevice::ReadOnly);
             in.setVersion(QDataStream::Qt_4_2);
             in >> data;
-        } else {
+        }
+        else {
             data = defaultData;
         }
     }
@@ -424,8 +409,7 @@ QVariantList SqliteStorage::getCoreState(const QVariantList &defaultData)
     return data;
 }
 
-
-IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity &identity)
+IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity& identity)
 {
     IdentityId identityId;
 
@@ -476,7 +460,7 @@ IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity &identity)
 
             QSqlQuery insertNickQuery(db);
             insertNickQuery.prepare(queryString("insert_nick"));
-            foreach(QString nick, identity.nicks()) {
+            foreach (QString nick, identity.nicks()) {
                 insertNickQuery.bindValue(":identityid", identityId.toInt());
                 insertNickQuery.bindValue(":nick", nick);
                 safeExec(insertNickQuery);
@@ -489,8 +473,7 @@ IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity &identity)
     return identityId;
 }
 
-
-bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity &identity)
+bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity& identity)
 {
     QSqlDatabase db = logDb();
     bool error = false;
@@ -551,7 +534,7 @@ bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity &identity)
 
         QSqlQuery insertNickQuery(db);
         insertNickQuery.prepare(queryString("insert_nick"));
-        foreach(QString nick, identity.nicks()) {
+        foreach (QString nick, identity.nicks()) {
             insertNickQuery.bindValue(":identityid", identity.id().toInt());
             insertNickQuery.bindValue(":nick", nick);
             safeExec(insertNickQuery);
@@ -562,7 +545,6 @@ bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity &identity)
     unlock();
     return true;
 }
-
 
 void SqliteStorage::removeIdentity(UserId user, IdentityId identityId)
 {
@@ -601,7 +583,6 @@ void SqliteStorage::removeIdentity(UserId user, IdentityId identityId)
     }
     unlock();
 }
-
 
 QList<CoreIdentity> SqliteStorage::identities(UserId user)
 {
@@ -661,8 +642,7 @@ QList<CoreIdentity> SqliteStorage::identities(UserId user)
     return identities;
 }
 
-
-NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info)
+NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo& info)
 {
     NetworkId networkId;
 
@@ -693,7 +673,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info)
     {
         QSqlQuery insertServersQuery(db);
         insertServersQuery.prepare(queryString("insert_server"));
-        foreach(Network::Server server, info.serverList) {
+        foreach (Network::Server server, info.serverList) {
             insertServersQuery.bindValue(":userid", user.toInt());
             insertServersQuery.bindValue(":networkid", networkId.toInt());
             bindServerInfo(insertServersQuery, server);
@@ -714,8 +694,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info)
         return networkId;
 }
 
-
-void SqliteStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info)
+void SqliteStorage::bindNetworkInfo(QSqlQuery& query, const NetworkInfo& info)
 {
     query.bindValue(":networkname", info.networkName);
     query.bindValue(":identityid", info.identity.toInt());
@@ -744,8 +723,7 @@ void SqliteStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info)
         query.bindValue(":networkid", info.networkId.toInt());
 }
 
-
-void SqliteStorage::bindServerInfo(QSqlQuery &query, const Network::Server &server)
+void SqliteStorage::bindServerInfo(QSqlQuery& query, const Network::Server& server)
 {
     query.bindValue(":hostname", server.host);
     query.bindValue(":port", server.port);
@@ -761,8 +739,7 @@ void SqliteStorage::bindServerInfo(QSqlQuery &query, const Network::Server &serv
     query.bindValue(":sslverify", server.sslVerify ? 1 : 0);
 }
 
-
-bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info)
+bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo& info)
 {
     QSqlDatabase db = logDb();
     bool error = false;
@@ -804,7 +781,7 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info)
     {
         QSqlQuery insertServersQuery(db);
         insertServersQuery.prepare(queryString("insert_server"));
-        foreach(Network::Server server, info.serverList) {
+        foreach (Network::Server server, info.serverList) {
             insertServersQuery.bindValue(":userid", user.toInt());
             insertServersQuery.bindValue(":networkid", info.networkId.toInt());
             bindServerInfo(insertServersQuery, server);
@@ -822,8 +799,7 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info)
     return !error;
 }
 
-
-bool SqliteStorage::removeNetwork(UserId user, const NetworkId &networkId)
+bool SqliteStorage::removeNetwork(UserId user, const NetworkId& networkId)
 {
     QSqlDatabase db = logDb();
     bool error = false;
@@ -895,7 +871,6 @@ bool SqliteStorage::removeNetwork(UserId user, const NetworkId &networkId)
     unlock();
     return true;
 }
-
 
 QList<NetworkInfo> SqliteStorage::networks(UserId user)
 {
@@ -977,7 +952,6 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user)
     return nets;
 }
 
-
 QList<NetworkId> SqliteStorage::connectedNetworks(UserId user)
 {
     QList<NetworkId> connectedNets;
@@ -1002,8 +976,7 @@ QList<NetworkId> SqliteStorage::connectedNetworks(UserId user)
     return connectedNets;
 }
 
-
-void SqliteStorage::setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected)
+void SqliteStorage::setNetworkConnected(UserId user, const NetworkId& networkId, bool isConnected)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1023,8 +996,7 @@ void SqliteStorage::setNetworkConnected(UserId user, const NetworkId &networkId,
     unlock();
 }
 
-
-QHash<QString, QString> SqliteStorage::persistentChannels(UserId user, const NetworkId &networkId)
+QHash<QString, QString> SqliteStorage::persistentChannels(UserId user, const NetworkId& networkId)
 {
     QHash<QString, QString> persistentChans;
 
@@ -1047,8 +1019,7 @@ QHash<QString, QString> SqliteStorage::persistentChannels(UserId user, const Net
     return persistentChans;
 }
 
-
-void SqliteStorage::setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined)
+void SqliteStorage::setChannelPersistent(UserId user, const NetworkId& networkId, const QString& channel, bool isJoined)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1069,8 +1040,7 @@ void SqliteStorage::setChannelPersistent(UserId user, const NetworkId &networkId
     unlock();
 }
 
-
-void SqliteStorage::setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key)
+void SqliteStorage::setPersistentChannelKey(UserId user, const NetworkId& networkId, const QString& channel, const QString& key)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1090,7 +1060,6 @@ void SqliteStorage::setPersistentChannelKey(UserId user, const NetworkId &networ
     }
     unlock();
 }
-
 
 QString SqliteStorage::awayMessage(UserId user, NetworkId networkId)
 {
@@ -1116,8 +1085,7 @@ QString SqliteStorage::awayMessage(UserId user, NetworkId networkId)
     return awayMsg;
 }
 
-
-void SqliteStorage::setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg)
+void SqliteStorage::setAwayMessage(UserId user, NetworkId networkId, const QString& awayMsg)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1136,7 +1104,6 @@ void SqliteStorage::setAwayMessage(UserId user, NetworkId networkId, const QStri
     }
     unlock();
 }
-
 
 QString SqliteStorage::userModes(UserId user, NetworkId networkId)
 {
@@ -1162,8 +1129,7 @@ QString SqliteStorage::userModes(UserId user, NetworkId networkId)
     return modes;
 }
 
-
-void SqliteStorage::setUserModes(UserId user, NetworkId networkId, const QString &userModes)
+void SqliteStorage::setUserModes(UserId user, NetworkId networkId, const QString& userModes)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1183,8 +1149,7 @@ void SqliteStorage::setUserModes(UserId user, NetworkId networkId, const QString
     unlock();
 }
 
-
-BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer, bool create)
+BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId& networkId, BufferInfo::Type type, const QString& buffer, bool create)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1235,8 +1200,7 @@ BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId &networkId, Bu
     return bufferInfo;
 }
 
-
-BufferInfo SqliteStorage::getBufferInfo(UserId user, const BufferId &bufferId)
+BufferInfo SqliteStorage::getBufferInfo(UserId user, const BufferId& bufferId)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1252,7 +1216,11 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const BufferId &bufferId)
         safeExec(query);
 
         if (watchQuery(query) && query.first()) {
-            bufferInfo = BufferInfo(query.value(0).toInt(), query.value(1).toInt(), (BufferInfo::Type)query.value(2).toInt(), 0, query.value(4).toString());
+            bufferInfo = BufferInfo(query.value(0).toInt(),
+                                    query.value(1).toInt(),
+                                    (BufferInfo::Type)query.value(2).toInt(),
+                                    0,
+                                    query.value(4).toString());
             Q_ASSERT(!query.next());
         }
         db.commit();
@@ -1260,7 +1228,6 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const BufferId &bufferId)
     unlock();
     return bufferInfo;
 }
-
 
 QList<BufferInfo> SqliteStorage::requestBuffers(UserId user)
 {
@@ -1278,7 +1245,11 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user)
         safeExec(query);
         watchQuery(query);
         while (query.next()) {
-            bufferlist << BufferInfo(query.value(0).toInt(), query.value(1).toInt(), (BufferInfo::Type)query.value(2).toInt(), query.value(3).toInt(), query.value(4).toString());
+            bufferlist << BufferInfo(query.value(0).toInt(),
+                                     query.value(1).toInt(),
+                                     (BufferInfo::Type)query.value(2).toInt(),
+                                     query.value(3).toInt(),
+                                     query.value(4).toString());
         }
         db.commit();
     }
@@ -1286,7 +1257,6 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user)
 
     return bufferlist;
 }
-
 
 QList<BufferId> SqliteStorage::requestBufferIdsForNetwork(UserId user, NetworkId networkId)
 {
@@ -1314,8 +1284,7 @@ QList<BufferId> SqliteStorage::requestBufferIdsForNetwork(UserId user, NetworkId
     return bufferList;
 }
 
-
-bool SqliteStorage::removeBuffer(const UserId &user, const BufferId &bufferId)
+bool SqliteStorage::removeBuffer(const UserId& user, const BufferId& bufferId)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1358,8 +1327,7 @@ bool SqliteStorage::removeBuffer(const UserId &user, const BufferId &bufferId)
     return !error;
 }
 
-
-bool SqliteStorage::renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName)
+bool SqliteStorage::renameBuffer(const UserId& user, const BufferId& bufferId, const QString& newName)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1395,8 +1363,7 @@ bool SqliteStorage::renameBuffer(const UserId &user, const BufferId &bufferId, c
     return !error;
 }
 
-
-bool SqliteStorage::mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2)
+bool SqliteStorage::mergeBuffersPermanently(const UserId& user, const BufferId& bufferId1, const BufferId& bufferId2)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1452,8 +1419,7 @@ bool SqliteStorage::mergeBuffersPermanently(const UserId &user, const BufferId &
     return !error;
 }
 
-
-void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId)
+void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId& bufferId, const MsgId& msgId)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1472,7 +1438,6 @@ void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, 
     db.commit();
     unlock();
 }
-
 
 QHash<BufferId, MsgId> SqliteStorage::bufferLastSeenMsgIds(UserId user)
 {
@@ -1502,8 +1467,7 @@ QHash<BufferId, MsgId> SqliteStorage::bufferLastSeenMsgIds(UserId user)
     return lastSeenHash;
 }
 
-
-void SqliteStorage::setBufferMarkerLineMsg(UserId user, const BufferId &bufferId, const MsgId &msgId)
+void SqliteStorage::setBufferMarkerLineMsg(UserId user, const BufferId& bufferId, const MsgId& msgId)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1522,7 +1486,6 @@ void SqliteStorage::setBufferMarkerLineMsg(UserId user, const BufferId &bufferId
     db.commit();
     unlock();
 }
-
 
 QHash<BufferId, MsgId> SqliteStorage::bufferMarkerLineMsgIds(UserId user)
 {
@@ -1562,7 +1525,7 @@ void SqliteStorage::setBufferActivity(UserId user, BufferId bufferId, Message::T
         query.prepare(queryString("update_buffer_bufferactivity"));
         query.bindValue(":userid", user.toInt());
         query.bindValue(":bufferid", bufferId.toInt());
-        query.bindValue(":bufferactivity", (int) bufferActivity);
+        query.bindValue(":bufferactivity", (int)bufferActivity);
 
         lockForWrite();
         safeExec(query);
@@ -1571,7 +1534,6 @@ void SqliteStorage::setBufferActivity(UserId user, BufferId bufferId, Message::T
     db.commit();
     unlock();
 }
-
 
 QHash<BufferId, Message::Types> SqliteStorage::bufferActivities(UserId user)
 {
@@ -1601,7 +1563,6 @@ QHash<BufferId, Message::Types> SqliteStorage::bufferActivities(UserId user)
     return bufferActivityHash;
 }
 
-
 Message::Types SqliteStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMsgId)
 {
     QSqlDatabase db = logDb();
@@ -1625,7 +1586,7 @@ Message::Types SqliteStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMs
     return result;
 }
 
-QHash<QString, QByteArray> SqliteStorage::bufferCiphers(UserId user, const NetworkId &networkId)
+QHash<QString, QByteArray> SqliteStorage::bufferCiphers(UserId user, const NetworkId& networkId)
 {
     QHash<QString, QByteArray> bufferCiphers;
 
@@ -1648,7 +1609,7 @@ QHash<QString, QByteArray> SqliteStorage::bufferCiphers(UserId user, const Netwo
     return bufferCiphers;
 }
 
-void SqliteStorage::setBufferCipher(UserId user, const NetworkId &networkId, const QString &bufferName, const QByteArray &cipher)
+void SqliteStorage::setBufferCipher(UserId user, const NetworkId& networkId, const QString& bufferName, const QByteArray& cipher)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1689,7 +1650,6 @@ void SqliteStorage::setHighlightCount(UserId user, BufferId bufferId, int count)
     unlock();
 }
 
-
 QHash<BufferId, int> SqliteStorage::highlightCounts(UserId user)
 {
     QHash<BufferId, int> highlightCountHash;
@@ -1718,7 +1678,6 @@ QHash<BufferId, int> SqliteStorage::highlightCounts(UserId user)
     return highlightCountHash;
 }
 
-
 int SqliteStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
 {
     QSqlDatabase db = logDb();
@@ -1742,7 +1701,7 @@ int SqliteStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
     return result;
 }
 
-bool SqliteStorage::logMessage(Message &msg)
+bool SqliteStorage::logMessage(Message& msg)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1804,8 +1763,7 @@ bool SqliteStorage::logMessage(Message &msg)
     return !error;
 }
 
-
-bool SqliteStorage::logMessages(MessageList &msgs)
+bool SqliteStorage::logMessages(MessageList& msgs)
 {
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1816,8 +1774,8 @@ bool SqliteStorage::logMessages(MessageList &msgs)
         addSenderQuery.prepare(queryString("insert_sender"));
         lockForWrite();
         for (int i = 0; i < msgs.count(); i++) {
-            auto &msg = msgs.at(i);
-            SenderData sender = { msg.sender(), msg.realName(), msg.avatarUrl() };
+            auto& msg = msgs.at(i);
+            SenderData sender = {msg.sender(), msg.realName(), msg.avatarUrl()};
             if (senders.contains(sender))
                 continue;
             senders << sender;
@@ -1834,7 +1792,7 @@ bool SqliteStorage::logMessages(MessageList &msgs)
         QSqlQuery logMessageQuery(db);
         logMessageQuery.prepare(queryString("insert_message"));
         for (int i = 0; i < msgs.count(); i++) {
-            Message &msg = msgs[i];
+            Message& msg = msgs[i];
             // As of SQLite schema version 31, timestamps are stored in milliseconds instead of
             // seconds.  This nets us more precision as well as simplifying 64-bit time.
             logMessageQuery.bindValue(":time", msg.timestamp().toMSecsSinceEpoch());
@@ -1873,7 +1831,6 @@ bool SqliteStorage::logMessages(MessageList &msgs)
     return !error;
 }
 
-
 QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit)
 {
     QList<Message> messagelist;
@@ -1895,7 +1852,11 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
         safeExec(bufferInfoQuery);
         error = !watchQuery(bufferInfoQuery) || !bufferInfoQuery.first();
         if (!error) {
-            bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(), bufferInfoQuery.value(1).toInt(), (BufferInfo::Type)bufferInfoQuery.value(2).toInt(), 0, bufferInfoQuery.value(4).toString());
+            bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(),
+                                    bufferInfoQuery.value(1).toInt(),
+                                    (BufferInfo::Type)bufferInfoQuery.value(2).toInt(),
+                                    0,
+                                    bufferInfoQuery.value(4).toString());
             error = !bufferInfo.isValid();
         }
     }
@@ -1948,8 +1909,8 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
     return messagelist;
 }
 
-
-QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+QList<Message> SqliteStorage::requestMsgsFiltered(
+    UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
 {
     QList<Message> messagelist;
 
@@ -1970,7 +1931,11 @@ QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId
         safeExec(bufferInfoQuery);
         error = !watchQuery(bufferInfoQuery) || !bufferInfoQuery.first();
         if (!error) {
-            bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(), bufferInfoQuery.value(1).toInt(), (BufferInfo::Type)bufferInfoQuery.value(2).toInt(), 0, bufferInfoQuery.value(4).toString());
+            bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(),
+                                    bufferInfoQuery.value(1).toInt(),
+                                    (BufferInfo::Type)bufferInfoQuery.value(2).toInt(),
+                                    0,
+                                    bufferInfoQuery.value(4).toString());
             error = !bufferInfo.isValid();
         }
     }
@@ -2006,18 +1971,18 @@ QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId
 
         while (query.next()) {
             Message msg(
-                        // As of SQLite schema version 31, timestamps are stored in milliseconds
-                        // instead of seconds.  This nets us more precision as well as simplifying
-                        // 64-bit time.
-                        QDateTime::fromMSecsSinceEpoch(query.value(1).toLongLong()),
-                        bufferInfo,
-                        (Message::Type)query.value(2).toInt(),
-                        query.value(8).toString(),
-                        query.value(4).toString(),
-                        query.value(5).toString(),
-                        query.value(6).toString(),
-                        query.value(7).toString(),
-                        Message::Flags{query.value(3).toInt()});
+                // As of SQLite schema version 31, timestamps are stored in milliseconds
+                // instead of seconds.  This nets us more precision as well as simplifying
+                // 64-bit time.
+                QDateTime::fromMSecsSinceEpoch(query.value(1).toLongLong()),
+                bufferInfo,
+                (Message::Type)query.value(2).toInt(),
+                query.value(8).toString(),
+                query.value(4).toString(),
+                query.value(5).toString(),
+                query.value(6).toString(),
+                query.value(7).toString(),
+                Message::Flags{query.value(3).toInt()});
             msg.setMsgId(query.value(0).toLongLong());
             messagelist << msg;
         }
@@ -2027,7 +1992,6 @@ QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId
 
     return messagelist;
 }
-
 
 QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit)
 {
@@ -2046,7 +2010,11 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
         safeExec(bufferInfoQuery);
         watchQuery(bufferInfoQuery);
         while (bufferInfoQuery.next()) {
-            BufferInfo bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(), bufferInfoQuery.value(1).toInt(), (BufferInfo::Type)bufferInfoQuery.value(2).toInt(), bufferInfoQuery.value(3).toInt(), bufferInfoQuery.value(4).toString());
+            BufferInfo bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(),
+                                               bufferInfoQuery.value(1).toInt(),
+                                               (BufferInfo::Type)bufferInfoQuery.value(2).toInt(),
+                                               bufferInfoQuery.value(3).toInt(),
+                                               bufferInfoQuery.value(4).toString());
             bufferInfoHash[bufferInfo.bufferId()] = bufferInfo;
         }
 
@@ -2104,7 +2072,11 @@ QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, M
         safeExec(bufferInfoQuery);
         watchQuery(bufferInfoQuery);
         while (bufferInfoQuery.next()) {
-            BufferInfo bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(), bufferInfoQuery.value(1).toInt(), (BufferInfo::Type)bufferInfoQuery.value(2).toInt(), bufferInfoQuery.value(3).toInt(), bufferInfoQuery.value(4).toString());
+            BufferInfo bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(),
+                                               bufferInfoQuery.value(1).toInt(),
+                                               (BufferInfo::Type)bufferInfoQuery.value(2).toInt(),
+                                               bufferInfoQuery.value(3).toInt(),
+                                               bufferInfoQuery.value(4).toString());
             bufferInfoHash[bufferInfo.bufferId()] = bufferInfo;
         }
 
@@ -2129,18 +2101,18 @@ QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, M
 
         while (query.next()) {
             Message msg(
-                        // As of SQLite schema version 31, timestamps are stored in milliseconds
-                        // instead of seconds.  This nets us more precision as well as simplifying
-                        // 64-bit time.
-                        QDateTime::fromMSecsSinceEpoch(query.value(2).toLongLong()),
-                        bufferInfoHash[query.value(1).toInt()],
-                        (Message::Type)query.value(3).toInt(),
-                        query.value(9).toString(),
-                        query.value(5).toString(),
-                        query.value(6).toString(),
-                        query.value(7).toString(),
-                        query.value(8).toString(),
-                        Message::Flags{query.value(4).toInt()});
+                // As of SQLite schema version 31, timestamps are stored in milliseconds
+                // instead of seconds.  This nets us more precision as well as simplifying
+                // 64-bit time.
+                QDateTime::fromMSecsSinceEpoch(query.value(2).toLongLong()),
+                bufferInfoHash[query.value(1).toInt()],
+                (Message::Type)query.value(3).toInt(),
+                query.value(9).toString(),
+                query.value(5).toString(),
+                query.value(6).toString(),
+                query.value(7).toString(),
+                query.value(8).toString(),
+                Message::Flags{query.value(4).toInt()});
             msg.setMsgId(query.value(0).toLongLong());
             messagelist << msg;
         }
@@ -2172,14 +2144,12 @@ QMap<UserId, QString> SqliteStorage::getAllAuthUserNames()
     return authusernames;
 }
 
-
 QString SqliteStorage::backlogFile()
 {
     return Quassel::configDirPath() + "quassel-storage.sqlite";
 }
 
-
-bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount)
+bool SqliteStorage::safeExec(QSqlQuery& query, int retryCount)
 {
     query.exec();
 
@@ -2187,9 +2157,9 @@ bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount)
         return true;
 
     switch (query.lastError().number()) {
-    case 5: // SQLITE_BUSY         5   /* The database file is locked */
-        // fallthrough
-    case 6: // SQLITE_LOCKED       6   /* A table in the database is locked */
+    case 5:  // SQLITE_BUSY         5   /* The database file is locked */
+             // fallthrough
+    case 6:  // SQLITE_LOCKED       6   /* A table in the database is locked */
         if (retryCount < _maxRetryCount)
             return safeExec(query, retryCount + 1);
         break;
@@ -2199,15 +2169,12 @@ bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount)
     return false;
 }
 
-
 // ========================================
 //  SqliteMigration
 // ========================================
 SqliteMigrationReader::SqliteMigrationReader()
     : SqliteStorage()
-{
-}
-
+{}
 
 void SqliteMigrationReader::setMaxId(MigrationObject mo)
 {
@@ -2227,7 +2194,6 @@ void SqliteMigrationReader::setMaxId(MigrationObject mo)
     query.first();
     _maxId = query.value(0).toLongLong();
 }
-
 
 bool SqliteMigrationReader::prepareQuery(MigrationObject mo)
 {
@@ -2272,8 +2238,7 @@ bool SqliteMigrationReader::prepareQuery(MigrationObject mo)
     return exec();
 }
 
-
-bool SqliteMigrationReader::readMo(QuasselUserMO &user)
+bool SqliteMigrationReader::readMo(QuasselUserMO& user)
 {
     if (!next())
         return false;
@@ -2286,8 +2251,7 @@ bool SqliteMigrationReader::readMo(QuasselUserMO &user)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(IdentityMO &identity)
+bool SqliteMigrationReader::readMo(IdentityMO& identity)
 {
     if (!next())
         return false;
@@ -2316,8 +2280,7 @@ bool SqliteMigrationReader::readMo(IdentityMO &identity)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(IdentityNickMO &identityNick)
+bool SqliteMigrationReader::readMo(IdentityNickMO& identityNick)
 {
     if (!next())
         return false;
@@ -2328,8 +2291,7 @@ bool SqliteMigrationReader::readMo(IdentityNickMO &identityNick)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(NetworkMO &network)
+bool SqliteMigrationReader::readMo(NetworkMO& network)
 {
     if (!next())
         return false;
@@ -2367,8 +2329,7 @@ bool SqliteMigrationReader::readMo(NetworkMO &network)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(BufferMO &buffer)
+bool SqliteMigrationReader::readMo(BufferMO& buffer)
 {
     if (!next())
         return false;
@@ -2391,8 +2352,7 @@ bool SqliteMigrationReader::readMo(BufferMO &buffer)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(SenderMO &sender)
+bool SqliteMigrationReader::readMo(SenderMO& sender)
 {
     int skipSteps = 0;
     while (!next()) {
@@ -2415,8 +2375,7 @@ bool SqliteMigrationReader::readMo(SenderMO &sender)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(BacklogMO &backlog)
+bool SqliteMigrationReader::readMo(BacklogMO& backlog)
 {
     qint64 skipSteps = 0;
     while (!next()) {
@@ -2445,8 +2404,7 @@ bool SqliteMigrationReader::readMo(BacklogMO &backlog)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(IrcServerMO &ircserver)
+bool SqliteMigrationReader::readMo(IrcServerMO& ircserver)
 {
     if (!next())
         return false;
@@ -2469,8 +2427,7 @@ bool SqliteMigrationReader::readMo(IrcServerMO &ircserver)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(UserSettingMO &userSetting)
+bool SqliteMigrationReader::readMo(UserSettingMO& userSetting)
 {
     if (!next())
         return false;
@@ -2482,8 +2439,7 @@ bool SqliteMigrationReader::readMo(UserSettingMO &userSetting)
     return true;
 }
 
-
-bool SqliteMigrationReader::readMo(CoreStateMO &coreState)
+bool SqliteMigrationReader::readMo(CoreStateMO& coreState)
 {
     if (!next())
         return false;

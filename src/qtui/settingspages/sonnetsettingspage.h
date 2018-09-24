@@ -30,7 +30,7 @@ class SonnetSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    SonnetSettingsPage(QWidget *parent = nullptr);
+    SonnetSettingsPage(QWidget* parent = nullptr);
 
     bool hasDefaults() const override;
 
@@ -43,5 +43,5 @@ private slots:
     void widgetHasChanged();
 
 private:
-    Sonnet::ConfigWidget *_configWidget;
+    Sonnet::ConfigWidget* _configWidget;
 };

@@ -34,26 +34,26 @@
 #include "quassel.h"
 
 #ifdef HAVE_QCA2
-#  include "keyevent.h"
+#    include "keyevent.h"
 #endif
 
 // IRCv3 capabilities
 #include "irccap.h"
 
-CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession *session)
-    : BasicHandler("handleCtcp", session),
-    _coreSession(session)
+CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession* session)
+    : BasicHandler("handleCtcp", session)
+    , _coreSession(session)
 {
     connect(coreSession(), &CoreSession::networkDisconnected, this, &CoreSessionEventProcessor::destroyNetsplits);
     connect(this, &CoreSessionEventProcessor::newEvent, coreSession()->eventManager(), &EventManager::postEvent);
 }
 
-
-bool CoreSessionEventProcessor::checkParamCount(IrcEvent *e, int minParams)
+bool CoreSessionEventProcessor::checkParamCount(IrcEvent* e, int minParams)
 {
     if (e->params().count() < minParams) {
         if (e->type() == EventManager::IrcEventNumeric) {
-            qWarning() << "Command " << static_cast<IrcEventNumeric *>(e)->number() << " requires " << minParams << "params, got: " << e->params();
+            qWarning() << "Command " << static_cast<IrcEventNumeric*>(e)->number() << " requires " << minParams
+                       << "params, got: " << e->params();
         }
         else {
             QString name = coreSession()->eventManager()->enumName(e->type());
@@ -65,8 +65,7 @@ bool CoreSessionEventProcessor::checkParamCount(IrcEvent *e, int minParams)
     return true;
 }
 
-
-void CoreSessionEventProcessor::tryNextNick(NetworkEvent *e, const QString &errnick, bool erroneus)
+void CoreSessionEventProcessor::tryNextNick(NetworkEvent* e, const QString& errnick, bool erroneus)
 {
     QStringList desiredNicks = coreSession()->identity(e->network()->identity())->nicks();
     int nextNickIdx = desiredNicks.indexOf(errnick) + 1;
@@ -77,9 +76,13 @@ void CoreSessionEventProcessor::tryNextNick(NetworkEvent *e, const QString &errn
     else {
         if (erroneus) {
             // FIXME Make this an ErrorEvent or something like that, so it's translated in the client
-            MessageEvent *msgEvent = new MessageEvent(Message::Error, e->network(),
-                tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"),
-                QString(), QString(), Message::None, e->timestamp());
+            MessageEvent* msgEvent = new MessageEvent(Message::Error,
+                                                      e->network(),
+                                                      tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"),
+                                                      QString(),
+                                                      QString(),
+                                                      Message::None,
+                                                      e->timestamp());
             emit newEvent(msgEvent);
             return;
         }
@@ -91,15 +94,14 @@ void CoreSessionEventProcessor::tryNextNick(NetworkEvent *e, const QString &errn
     coreNetwork(e)->putRawLine("NICK " + coreNetwork(e)->encodeServerString(nextNick));
 }
 
-
-void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e)
+void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric* e)
 {
     switch (e->number()) {
     // SASL authentication replies
     // See: http://ircv3.net/specs/extensions/sasl-3.1.html
 
-    //case 900:  // RPL_LOGGEDIN
-    //case 901:  // RPL_LOGGEDOUT
+    // case 900:  // RPL_LOGGEDIN
+    // case 901:  // RPL_LOGGEDOUT
     // Don't use 900 or 901 for updating the local hostmask.  Unreal 3.2 gives it as the IP address
     // even when cloaked.
     // Every other reply should result in moving on
@@ -119,8 +121,7 @@ void CoreSessionEventProcessor::processIrcEventNumeric(IrcEventNumeric *e)
     }
 }
 
-
-void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -130,7 +131,7 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
         return;
     }
 
-    CoreNetwork *net = coreNetwork(e);
+    CoreNetwork* net = coreNetwork(e);
 
 #ifdef HAVE_SSL
     if (net->identityPtr()->sslCert().isNull()) {
@@ -144,13 +145,14 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent *e)
         saslData.prepend("AUTHENTICATE ");
         net->putRawLine(saslData);
 #ifdef HAVE_SSL
-    } else {
+    }
+    else {
         net->putRawLine("AUTHENTICATE +");
     }
 #endif
 }
 
-void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventCap(IrcEvent* e)
 {
     // Handle capability negotiation
     // See: http://ircv3.net/specs/core/capability-negotiation-3.2.html
@@ -160,7 +162,7 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
     if (!checkParamCount(e, 2))
         return;
 
-    CoreNetwork *coreNet = coreNetwork(e);
+    CoreNetwork* coreNet = coreNetwork(e);
     QString capCommand = e->params().at(1).trimmed().toUpper();
     if (capCommand == "LS" || capCommand == "NEW") {
         // Either we've gotten a list of capabilities, or new capabilities we may want
@@ -173,13 +175,15 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             // Middle of multi-line reply, ignore the asterisk
             capListFinished = false;
             availableCaps = e->params().at(3).split(' ');
-        } else {
+        }
+        else {
             // Single line reply
             capListFinished = true;
             if (e->params().count() >= 3) {
                 // Some capabilities are specified, add them
                 availableCaps = e->params().at(2).split(' ');
-            } else {
+            }
+            else {
                 // No capabilities available, add an empty list
                 availableCaps = QStringList();
             }
@@ -209,7 +213,8 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
         // Begin capability requests when capability listing complete
         if (capListFinished)
             coreNet->beginCapNegotiation();
-    } else if (capCommand == "ACK") {
+    }
+    else if (capCommand == "ACK") {
         // CAP ACK requires at least 3 parameters (no empty response allowed)
         if (!checkParamCount(e, 3)) {
             // If an invalid reply is sent, try to continue rather than getting stuck.
@@ -234,8 +239,7 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             acceptedCap = acceptedCaps[i].trimmed().toLower();
             // Mark this cap as accepted
             coreNet->acknowledgeCap(acceptedCap);
-            if (!capsRequireConfiguration &&
-                    coreNet->capsRequiringConfiguration.contains(acceptedCap)) {
+            if (!capsRequireConfiguration && coreNet->capsRequiringConfiguration.contains(acceptedCap)) {
                 capsRequireConfiguration = true;
                 // Some capabilities (e.g. SASL) require further messages to finish.  If so, do NOT
                 // send the next capability; it will be handled elsewhere in CoreNetwork.
@@ -247,7 +251,8 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
             // No additional configuration required, move on to the next capability
             coreNet->sendNextCap();
         }
-    } else if (capCommand == "NAK" || capCommand == "DEL") {
+    }
+    else if (capCommand == "NAK" || capCommand == "DEL") {
         // CAP NAK/DEL require at least 3 parameters (no empty response allowed)
         if (!checkParamCount(e, 3)) {
             if (capCommand == "NAK") {
@@ -299,23 +304,24 @@ void CoreSessionEventProcessor::processIrcEventCap(IrcEvent *e)
 /* IRCv3 account-notify
  * Log in:  ":nick!user@host ACCOUNT accountname"
  * Log out: ":nick!user@host ACCOUNT *" */
-void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
 
-    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
     if (ircuser) {
         // WHOX uses '0' to indicate logged-out, account-notify and extended-join uses '*'.
         // As '*' is used internally to represent logged-out, no need to handle that differently.
         ircuser->setAccount(e->params().at(0));
-    } else {
+    }
+    else {
         qDebug() << "Received account-notify data for unknown user" << e->prefix();
     }
 }
 
 /* IRCv3 away-notify - ":nick!user@host AWAY [:message]" */
-void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventAway(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -323,39 +329,42 @@ void CoreSessionEventProcessor::processIrcEventAway(IrcEvent *e)
     // that it counts as two parameters, but we shouldn't rely on that.
 
     // Nick is sent as part of parameters in order to split user/server decoding
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser) {
         // If two parameters are sent -and- the second parameter isn't empty, then user is away.
         // Otherwise, mark them as not away.
         if (e->params().count() >= 2 && !e->params().at(1).isEmpty()) {
             ircuser->setAway(true);
             ircuser->setAwayMessage(e->params().at(1));
-        } else {
+        }
+        else {
             ircuser->setAway(false);
         }
-    } else {
+    }
+    else {
         qDebug() << "Received away-notify data for unknown user" << e->params().at(0);
     }
 }
 
 /* IRCv3 chghost - ":nick!user@host CHGHOST newuser new.host.goes.here" */
-void CoreSessionEventProcessor::processIrcEventChghost(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventChghost(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
         return;
 
-    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
     if (ircuser) {
         // Update with new user/hostname information.  setUser/setHost handles checking what
         // actually changed.
         ircuser->setUser(e->params().at(0));
         ircuser->setHost(e->params().at(1));
-    } else {
+    }
+    else {
         qDebug() << "Received chghost data for unknown user" << e->prefix();
     }
 }
 
-void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent* e)
 {
     if (checkParamCount(e, 2)) {
         e->network()->updateNickFromMask(e->prefix());
@@ -363,26 +372,28 @@ void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent *e)
 }
 
 /*  JOIN: ":<nick!user@host> JOIN <channel>" */
-void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent* e)
 {
-    if (e->testFlag(EventManager::Fake)) // generated by handleEarlyNetsplitJoin
+    if (e->testFlag(EventManager::Fake))  // generated by handleEarlyNetsplitJoin
         return;
 
     if (!checkParamCount(e, 1))
         return;
 
-    CoreNetwork *net = coreNetwork(e);
+    CoreNetwork* net = coreNetwork(e);
     QString channel = e->params()[0];
-    IrcUser *ircuser = net->updateNickFromMask(e->prefix());
+    IrcUser* ircuser = net->updateNickFromMask(e->prefix());
 
     if (net->capEnabled(IrcCap::EXTENDED_JOIN)) {
         if (e->params().count() < 3) {
             // Some IRC servers don't send extended-join events in all situations.  Rather than
             // ignore the join entirely, treat it as a regular join with a debug-level log entry.
             // See:  https://github.com/inspircd/inspircd/issues/821
-            qDebug() << "extended-join requires 3 params, got:" << e->params() << ", handling as a "
+            qDebug() << "extended-join requires 3 params, got:" << e->params()
+                     << ", handling as a "
                         "regular join";
-        } else {
+        }
+        else {
             // If logged in, :nick!user@host JOIN #channelname accountname :Real Name
             // If logged out, :nick!user@host JOIN #channelname * :Real Name
             // See:  http://ircv3.net/specs/extensions/extended-join-3.1.html
@@ -396,7 +407,7 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
     // Else :nick!user@host JOIN #channelname
 
     bool handledByNetsplit = false;
-    foreach(Netsplit* n, _netsplits.value(e->network())) {
+    foreach (Netsplit* n, _netsplits.value(e->network())) {
         handledByNetsplit = n->userJoined(e->prefix(), channel);
         if (handledByNetsplit)
             break;
@@ -423,25 +434,23 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent *e)
         // Mark the message as Self
         e->setFlag(EventManager::Self);
         // FIXME use event
-        net->putRawLine(net->serverEncode("MODE " + channel)); // we want to know the modes of the channel we just joined, so we ask politely
+        net->putRawLine(net->serverEncode("MODE " + channel));  // we want to know the modes of the channel we just joined, so we ask politely
     }
 }
 
-
-void CoreSessionEventProcessor::lateProcessIrcEventKick(IrcEvent *e)
+void CoreSessionEventProcessor::lateProcessIrcEventKick(IrcEvent* e)
 {
     if (checkParamCount(e, 2)) {
         e->network()->updateNickFromMask(e->prefix());
-        IrcUser *victim = e->network()->ircUser(e->params().at(1));
+        IrcUser* victim = e->network()->ircUser(e->params().at(1));
         if (victim) {
             victim->partChannel(e->params().at(0));
-            //if(e->network()->isMe(victim)) e->network()->setKickedFromChannel(channel);
+            // if(e->network()->isMe(victim)) e->network()->setKickedFromChannel(channel);
         }
     }
 }
 
-
-void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
         return;
@@ -449,10 +458,10 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
     if (e->network()->isChannelName(e->params().first())) {
         // Channel Modes
 
-        IrcChannel *channel = e->network()->ircChannel(e->params()[0]);
+        IrcChannel* channel = e->network()->ircChannel(e->params()[0]);
         if (!channel) {
-            // we received mode information for a channel we're not in. that means probably we've just been kicked out or something like that
-            // anyways: we don't have a place to store the data --> discard the info.
+            // we received mode information for a channel we're not in. that means probably we've just been kicked out or something like
+            // that anyways: we don't have a place to store the data --> discard the info.
             return;
         }
 
@@ -472,15 +481,15 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
             if (e->network()->prefixModes().contains(mode)) {
                 // user channel modes (op, voice, etc...)
                 if (paramOffset < e->params().count()) {
-                    IrcUser *ircUser = e->network()->ircUser(e->params()[paramOffset]);
+                    IrcUser* ircUser = e->network()->ircUser(e->params()[paramOffset]);
                     if (!ircUser) {
                         qWarning() << Q_FUNC_INFO << "Unknown IrcUser:" << e->params()[paramOffset];
                     }
                     else {
                         if (add) {
                             bool handledByNetsplit = false;
-                            QHash<QString, Netsplit *> splits = _netsplits.value(e->network());
-                            foreach(Netsplit* n, _netsplits.value(e->network())) {
+                            QHash<QString, Netsplit*> splits = _netsplits.value(e->network());
+                            foreach (Netsplit* n, _netsplits.value(e->network())) {
                                 handledByNetsplit = n->userAlreadyJoined(ircUser->hostmask(), channel->name());
                                 if (handledByNetsplit) {
                                     n->addMode(ircUser->hostmask(), channel->name(), QString(mode));
@@ -522,7 +531,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
     }
     else {
         // pure User Modes
-        IrcUser *ircUser = e->network()->newIrcUser(e->params().first());
+        IrcUser* ircUser = e->network()->newIrcUser(e->params().first());
         QString modeString(e->params()[1]);
         QString addModes;
         QString removeModes;
@@ -554,11 +563,10 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent *e)
     }
 }
 
-
-void CoreSessionEventProcessor::processIrcEventNick(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventNick(IrcEvent* e)
 {
     if (checkParamCount(e, 1)) {
-        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+        IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
         if (!ircuser) {
             qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
             return;
@@ -573,11 +581,10 @@ void CoreSessionEventProcessor::processIrcEventNick(IrcEvent *e)
     }
 }
 
-
-void CoreSessionEventProcessor::lateProcessIrcEventNick(IrcEvent *e)
+void CoreSessionEventProcessor::lateProcessIrcEventNick(IrcEvent* e)
 {
     if (checkParamCount(e, 1)) {
-        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+        IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
         if (!ircuser) {
             qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
             return;
@@ -593,13 +600,12 @@ void CoreSessionEventProcessor::lateProcessIrcEventNick(IrcEvent *e)
     }
 }
 
-
-void CoreSessionEventProcessor::processIrcEventPart(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventPart(IrcEvent* e)
 {
     if (checkParamCount(e, 1)) {
-        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+        IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
         if (!ircuser) {
-            qWarning() << Q_FUNC_INFO<< "Unknown IrcUser!";
+            qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
             return;
         }
 
@@ -612,25 +618,23 @@ void CoreSessionEventProcessor::processIrcEventPart(IrcEvent *e)
     }
 }
 
-
-void CoreSessionEventProcessor::lateProcessIrcEventPart(IrcEvent *e)
+void CoreSessionEventProcessor::lateProcessIrcEventPart(IrcEvent* e)
 {
     if (checkParamCount(e, 1)) {
-        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+        IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
         if (!ircuser) {
-            qWarning() << Q_FUNC_INFO<< "Unknown IrcUser!";
+            qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
             return;
         }
         QString channel = e->params().at(0);
         ircuser->partChannel(channel);
         if (e->network()->isMe(ircuser)) {
-            qobject_cast<CoreNetwork *>(e->network())->setChannelParted(channel);
+            qobject_cast<CoreNetwork*>(e->network())->setChannelParted(channel);
         }
     }
 }
 
-
-void CoreSessionEventProcessor::processIrcEventPing(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventPing(IrcEvent* e)
 {
     QString param = e->params().count() ? e->params().first() : QString();
     // FIXME use events
@@ -638,8 +642,7 @@ void CoreSessionEventProcessor::processIrcEventPing(IrcEvent *e)
     coreNetwork(e)->putRawLine("PONG " + coreNetwork(e)->serverEncode(param), true);
 }
 
-
-void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventPong(IrcEvent* e)
 {
     // Ensure we get at least one parameter
     if (!checkParamCount(e, 1))
@@ -652,7 +655,8 @@ void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e)
         // Only one parameter received
         // :localhost PONG 02:43:49.565
         timestamp = e->params().at(0);
-    } else {
+    }
+    else {
         // Two parameters received, pick the second
         // :localhost PONG localhost :02:43:49.565
         timestamp = e->params().at(1);
@@ -672,8 +676,8 @@ void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e)
             // Add a message the first time it happens
             qDebug().nospace() << "Received PONG with valid timestamp, marking pong replies on "
                                   "network "
-                               << "\"" << qPrintable(e->network()->networkName()) << "\" (ID: "
-                               << qPrintable(QString::number(e->network()->networkId().toInt()))
+                               << "\"" << qPrintable(e->network()->networkName())
+                               << "\" (ID: " << qPrintable(QString::number(e->network()->networkId().toInt()))
                                << ") as usable for latency measurement";
         }
         // Remove pending flag
@@ -689,7 +693,8 @@ void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e)
 
         // Calculate latency from time difference, divided by 2 to account for round-trip time
         e->network()->setLatency(sendTime.msecsTo(QTime::currentTime()) / 2);
-    } else if (coreNetwork(e)->isPongReplyPending() && !coreNetwork(e)->isPongTimestampValid()) {
+    }
+    else if (coreNetwork(e)->isPongReplyPending() && !coreNetwork(e)->isPongTimestampValid()) {
         // There's an auto-PING reply pending and we've not yet received a PONG reply with a valid
         // timestamp.  It's possible this server will never respond with a valid timestamp, and thus
         // any automated PINGs will result in unwanted spamming of the server buffer.
@@ -701,17 +706,16 @@ void CoreSessionEventProcessor::processIrcEventPong(IrcEvent *e)
 
         // Log a message
         qDebug().nospace() << "Received PONG with invalid timestamp from network "
-                           << "\"" << qPrintable(e->network()->networkName()) << "\" (ID: "
-                           << qPrintable(QString::number(e->network()->networkId().toInt()))
+                           << "\"" << qPrintable(e->network()->networkName())
+                           << "\" (ID: " << qPrintable(QString::number(e->network()->networkId().toInt()))
                            << "), silencing, parameters are " << e->params();
     }
     // else: We're not expecting a PONG reply and timestamp is not valid, assume it's from the user
 }
 
-
-void CoreSessionEventProcessor::processIrcEventQuit(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventQuit(IrcEvent* e)
 {
-    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
     if (!ircuser)
         return;
 
@@ -726,16 +730,13 @@ void CoreSessionEventProcessor::processIrcEventQuit(IrcEvent *e)
 
     // check if netsplit
     if (Netsplit::isNetsplit(msg)) {
-        Netsplit *n;
+        Netsplit* n;
         if (!_netsplits[e->network()].contains(msg)) {
             n = new Netsplit(e->network(), this);
             connect(n, &Netsplit::finished, this, &CoreSessionEventProcessor::handleNetsplitFinished);
-            connect(n, &Netsplit::netsplitJoin,
-                this, &CoreSessionEventProcessor::handleNetsplitJoin);
-            connect(n, &Netsplit::netsplitQuit,
-                this, &CoreSessionEventProcessor::handleNetsplitQuit);
-            connect(n, &Netsplit::earlyJoin,
-                this, &CoreSessionEventProcessor::handleEarlyNetsplitJoin);
+            connect(n, &Netsplit::netsplitJoin, this, &CoreSessionEventProcessor::handleNetsplitJoin);
+            connect(n, &Netsplit::netsplitQuit, this, &CoreSessionEventProcessor::handleNetsplitQuit);
+            connect(n, &Netsplit::earlyJoin, this, &CoreSessionEventProcessor::handleEarlyNetsplitJoin);
             _netsplits[e->network()].insert(msg, n);
         }
         else {
@@ -748,31 +749,29 @@ void CoreSessionEventProcessor::processIrcEventQuit(IrcEvent *e)
     // normal quit is handled in lateProcessIrcEventQuit()
 }
 
-
-void CoreSessionEventProcessor::lateProcessIrcEventQuit(IrcEvent *e)
+void CoreSessionEventProcessor::lateProcessIrcEventQuit(IrcEvent* e)
 {
     if (e->testFlag(EventManager::Netsplit))
         return;
 
-    IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+    IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
     if (!ircuser)
         return;
 
     ircuser->quit();
 }
 
-
-void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent* e)
 {
     if (checkParamCount(e, 2)) {
-        IrcUser *ircuser = e->network()->updateNickFromMask(e->prefix());
+        IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
 
         if (e->network()->isMe(ircuser)) {
             // Mark the message as Self
             e->setFlag(EventManager::Self);
         }
 
-        IrcChannel *channel = e->network()->ircChannel(e->params().at(0));
+        IrcChannel* channel = e->network()->ircChannel(e->params().at(0));
         if (channel)
             channel->setTopic(e->params().at(1));
     }
@@ -781,7 +780,7 @@ void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent *e)
 /* ERROR - "ERROR :reason"
 Example:  ERROR :Closing Link: nickname[xxx.xxx.xxx.xxx] (Large base64 image paste.)
 See https://tools.ietf.org/html/rfc2812#section-3.7.4 */
-void CoreSessionEventProcessor::processIrcEventError(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEventError(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -793,54 +792,84 @@ void CoreSessionEventProcessor::processIrcEventError(IrcEvent *e)
     }
 }
 
-
 #ifdef HAVE_QCA2
-void CoreSessionEventProcessor::processKeyEvent(KeyEvent *e)
+void CoreSessionEventProcessor::processKeyEvent(KeyEvent* e)
 {
     if (!Cipher::neededFeaturesAvailable()) {
-        emit newEvent(new MessageEvent(Message::Error, e->network(), tr("Unable to perform key exchange, missing qca-ossl plugin."), e->prefix(), e->target(), Message::None, e->timestamp()));
+        emit newEvent(new MessageEvent(Message::Error,
+                                       e->network(),
+                                       tr("Unable to perform key exchange, missing qca-ossl plugin."),
+                                       e->prefix(),
+                                       e->target(),
+                                       Message::None,
+                                       e->timestamp()));
         return;
     }
-    auto *net = qobject_cast<CoreNetwork*>(e->network());
-    Cipher *c = net->cipher(e->target());
-    if (!c) // happens when there is no CoreIrcChannel for the target (i.e. never?)
+    auto* net = qobject_cast<CoreNetwork*>(e->network());
+    Cipher* c = net->cipher(e->target());
+    if (!c)  // happens when there is no CoreIrcChannel for the target (i.e. never?)
         return;
 
     if (e->exchangeType() == KeyEvent::Init) {
         QByteArray pubKey = c->parseInitKeyX(e->key());
         if (pubKey.isEmpty()) {
-            emit newEvent(new MessageEvent(Message::Error, e->network(), tr("Unable to parse the DH1080_INIT. Key exchange failed."), e->prefix(), e->target(), Message::None, e->timestamp()));
+            emit newEvent(new MessageEvent(Message::Error,
+                                           e->network(),
+                                           tr("Unable to parse the DH1080_INIT. Key exchange failed."),
+                                           e->prefix(),
+                                           e->target(),
+                                           Message::None,
+                                           e->timestamp()));
             return;
-        } else {
+        }
+        else {
             net->setCipherKey(e->target(), c->key());
-            emit newEvent(new MessageEvent(Message::Info, e->network(), tr("Your key is set and messages will be encrypted."), e->prefix(), e->target(), Message::None, e->timestamp()));
+            emit newEvent(new MessageEvent(Message::Info,
+                                           e->network(),
+                                           tr("Your key is set and messages will be encrypted."),
+                                           e->prefix(),
+                                           e->target(),
+                                           Message::None,
+                                           e->timestamp()));
             QList<QByteArray> p;
-            p << net->serverEncode(e->target()) << net->serverEncode("DH1080_FINISH ")+pubKey;
+            p << net->serverEncode(e->target()) << net->serverEncode("DH1080_FINISH ") + pubKey;
             net->putCmd("NOTICE", p);
         }
-    } else {
+    }
+    else {
         if (c->parseFinishKeyX(e->key())) {
             net->setCipherKey(e->target(), c->key());
-            emit newEvent(new MessageEvent(Message::Info, e->network(), tr("Your key is set and messages will be encrypted."), e->prefix(), e->target(), Message::None, e->timestamp()));
-        } else {
-            emit newEvent(new MessageEvent(Message::Info, e->network(), tr("Failed to parse DH1080_FINISH. Key exchange failed."), e->prefix(), e->target(), Message::None, e->timestamp()));
+            emit newEvent(new MessageEvent(Message::Info,
+                                           e->network(),
+                                           tr("Your key is set and messages will be encrypted."),
+                                           e->prefix(),
+                                           e->target(),
+                                           Message::None,
+                                           e->timestamp()));
+        }
+        else {
+            emit newEvent(new MessageEvent(Message::Info,
+                                           e->network(),
+                                           tr("Failed to parse DH1080_FINISH. Key exchange failed."),
+                                           e->prefix(),
+                                           e->target(),
+                                           Message::None,
+                                           e->timestamp()));
         }
     }
 }
 #endif
 
-
 /* RPL_WELCOME */
-void CoreSessionEventProcessor::processIrcEvent001(IrcEventNumeric *e)
+void CoreSessionEventProcessor::processIrcEvent001(IrcEventNumeric* e)
 {
     e->network()->setCurrentServer(e->prefix());
     e->network()->setMyNick(e->target());
 }
 
-
 /* RPL_ISUPPORT */
 // TODO Complete 005 handling, also use sensible defaults for non-sent stuff
-void CoreSessionEventProcessor::processIrcEvent005(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent005(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -856,34 +885,29 @@ void CoreSessionEventProcessor::processIrcEvent005(IrcEvent *e)
     e->network()->determinePrefixes();
 }
 
-
 /* RPL_UMODEIS - "<user_modes> [<user_mode_params>]" */
-void CoreSessionEventProcessor::processIrcEvent221(IrcEvent *)
+void CoreSessionEventProcessor::processIrcEvent221(IrcEvent*)
 {
     // TODO: save information in network object
 }
-
 
 /* RPL_STATSCONN - "Highest connection cout: 8000 (7999 clients)" */
-void CoreSessionEventProcessor::processIrcEvent250(IrcEvent *)
+void CoreSessionEventProcessor::processIrcEvent250(IrcEvent*)
 {
     // TODO: save information in network object
 }
-
 
 /* RPL_LOCALUSERS - "Current local user: 5024  Max: 7999 */
-void CoreSessionEventProcessor::processIrcEvent265(IrcEvent *)
+void CoreSessionEventProcessor::processIrcEvent265(IrcEvent*)
 {
     // TODO: save information in network object
 }
-
 
 /* RPL_GLOBALUSERS - "Current global users: 46093  Max: 47650" */
-void CoreSessionEventProcessor::processIrcEvent266(IrcEvent *)
+void CoreSessionEventProcessor::processIrcEvent266(IrcEvent*)
 {
     // TODO: save information in network object
 }
-
 
 /*
 WHOIS-Message:
@@ -899,26 +923,25 @@ WHOWAS-Message:
 */
 
 /* RPL_AWAY - "<nick> :<away message>" */
-void CoreSessionEventProcessor::processIrcEvent301(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent301(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
         return;
 
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser) {
         ircuser->setAway(true);
         ircuser->setAwayMessage(e->params().at(1));
         // lastAwayMessageTime is set in EventStringifier::processIrcEvent301(), no need to set it
         // here too
-        //ircuser->setLastAwayMessageTime(now);
+        // ircuser->setLastAwayMessageTime(now);
     }
 }
 
-
 /* RPL_UNAWAY - ":You are no longer marked as being away" */
-void CoreSessionEventProcessor::processIrcEvent305(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent305(IrcEvent* e)
 {
-    IrcUser *me = e->network()->me();
+    IrcUser* me = e->network()->me();
     if (me)
         me->setAway(false);
 
@@ -928,47 +951,43 @@ void CoreSessionEventProcessor::processIrcEvent305(IrcEvent *e)
     }
 }
 
-
 /* RPL_NOWAWAY - ":You have been marked as being away" */
-void CoreSessionEventProcessor::processIrcEvent306(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent306(IrcEvent* e)
 {
-    IrcUser *me = e->network()->me();
+    IrcUser* me = e->network()->me();
     if (me)
         me->setAway(true);
 }
 
-
 /* RPL_WHOISSERVICE - "<user> is registered nick" */
-void CoreSessionEventProcessor::processIrcEvent307(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent307(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
 
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser)
         ircuser->setWhoisServiceReply(e->params().join(" "));
 }
 
-
 /* RPL_SUSERHOST - "<user> is available for help." */
-void CoreSessionEventProcessor::processIrcEvent310(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent310(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
 
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser)
         ircuser->setSuserHost(e->params().join(" "));
 }
 
-
 /*  RPL_WHOISUSER - "<nick> <user> <host> * :<real name>" */
-void CoreSessionEventProcessor::processIrcEvent311(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent311(IrcEvent* e)
 {
     if (!checkParamCount(e, 3))
         return;
 
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser) {
         ircuser->setUser(e->params().at(1));
         ircuser->setHost(e->params().at(2));
@@ -976,33 +995,30 @@ void CoreSessionEventProcessor::processIrcEvent311(IrcEvent *e)
     }
 }
 
-
 /*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
-void CoreSessionEventProcessor::processIrcEvent312(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent312(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
         return;
 
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser)
         ircuser->setServer(e->params().at(1));
 }
 
-
 /*  RPL_WHOISOPERATOR - "<nick> :is an IRC operator" */
-void CoreSessionEventProcessor::processIrcEvent313(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent313(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
 
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser)
         ircuser->setIrcOperator(e->params().last());
 }
 
-
 /*  RPL_ENDOFWHO: "<name> :End of WHO list" */
-void CoreSessionEventProcessor::processIrcEvent315(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent315(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -1011,10 +1027,9 @@ void CoreSessionEventProcessor::processIrcEvent315(IrcEvent *e)
         e->setFlag(EventManager::Silent);
 }
 
-
 /*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle"
    (real life: "<nick> <integer> <integer> :seconds idle, signon time) */
-void CoreSessionEventProcessor::processIrcEvent317(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent317(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
         return;
@@ -1022,7 +1037,7 @@ void CoreSessionEventProcessor::processIrcEvent317(IrcEvent *e)
     QDateTime loginTime;
 
     int idleSecs = e->params()[1].toInt();
-    if (e->params().count() > 3) { // if we have more then 3 params we have the above mentioned "real life" situation
+    if (e->params().count() > 3) {  // if we have more then 3 params we have the above mentioned "real life" situation
         // Allow for 64-bit time
         qint64 logintime = e->params()[2].toLongLong();
         // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
@@ -1037,7 +1052,7 @@ void CoreSessionEventProcessor::processIrcEvent317(IrcEvent *e)
 #endif
     }
 
-    IrcUser *ircuser = e->network()->ircUser(e->params()[0]);
+    IrcUser* ircuser = e->network()->ircUser(e->params()[0]);
     if (ircuser) {
         ircuser->setIdleTime(e->timestamp().addSecs(-idleSecs));
         if (loginTime.isValid())
@@ -1045,9 +1060,8 @@ void CoreSessionEventProcessor::processIrcEvent317(IrcEvent *e)
     }
 }
 
-
 /* RPL_LIST -  "<channel> <# visible> :<topic>" */
-void CoreSessionEventProcessor::processIrcEvent322(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent322(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -1073,9 +1087,8 @@ void CoreSessionEventProcessor::processIrcEvent322(IrcEvent *e)
         e->stop();  // consumed by IrcListHelper, so don't further process/show this event
 }
 
-
 /* RPL_LISTEND ":End of LIST" */
-void CoreSessionEventProcessor::processIrcEvent323(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent323(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -1084,70 +1097,71 @@ void CoreSessionEventProcessor::processIrcEvent323(IrcEvent *e)
         e->stop();  // consumed by IrcListHelper, so don't further process/show this event
 }
 
-
 /* RPL_CHANNELMODEIS - "<channel> <mode> <mode params>" */
-void CoreSessionEventProcessor::processIrcEvent324(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent324(IrcEvent* e)
 {
     processIrcEventMode(e);
 }
 
-
 /*  RPL_WHOISACCOUNT - "<nick> <account> :is authed as" */
-void CoreSessionEventProcessor::processIrcEvent330(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent330(IrcEvent* e)
 {
     // Though the ":is authed as" remark should always be there, we should handle cases when it's
     // not included, too.
     if (!checkParamCount(e, 2))
         return;
 
-    IrcUser *ircuser = e->network()->ircUser(e->params().at(0));
+    IrcUser* ircuser = e->network()->ircUser(e->params().at(0));
     if (ircuser) {
         ircuser->setAccount(e->params().at(1));
     }
 }
 
-
 /* RPL_NOTOPIC */
-void CoreSessionEventProcessor::processIrcEvent331(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent331(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
 
-    IrcChannel *chan = e->network()->ircChannel(e->params()[0]);
+    IrcChannel* chan = e->network()->ircChannel(e->params()[0]);
     if (chan)
         chan->setTopic(QString());
 }
 
-
 /* RPL_TOPIC */
-void CoreSessionEventProcessor::processIrcEvent332(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent332(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
         return;
 
-    IrcChannel *chan = e->network()->ircChannel(e->params()[0]);
+    IrcChannel* chan = e->network()->ircChannel(e->params()[0]);
     if (chan)
         chan->setTopic(e->params()[1]);
 }
 
-
 /*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick>
               ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
-void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent352(IrcEvent* e)
 {
     if (!checkParamCount(e, 6))
         return;
 
     QString channel = e->params()[0];
-    IrcUser *ircuser = e->network()->ircUser(e->params()[4]);
+    IrcUser* ircuser = e->network()->ircUser(e->params()[4]);
     if (ircuser) {
         // Only process the WHO information if an IRC user exists.  Don't create an IRC user here;
         // there's no way to track when the user quits, which would leave a phantom IrcUser lying
         // around.
         // NOTE:  Whenever MONITOR support is introduced, the IrcUser will be created by an
         // RPL_MONONLINE numeric before any WHO commands are run.
-        processWhoInformation(e->network(), channel, ircuser, e->params()[3], e->params()[1],
-                e->params()[2], e->params()[5], e->params().last().section(" ", 1));
+        processWhoInformation(e->network(),
+                              channel,
+                              ircuser,
+                              e->params()[3],
+                              e->params()[1],
+                              e->params()[2],
+                              e->params()[5],
+                              e->params().last().section(" ", 1));
     }
 
     // Check if channel name has a who in progress.
@@ -1156,9 +1170,8 @@ void CoreSessionEventProcessor::processIrcEvent352(IrcEvent *e)
     }
 }
 
-
 /* RPL_NAMREPLY */
-void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
 {
     if (!checkParamCount(e, 3))
         return;
@@ -1167,7 +1180,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     // we don't use this information at the time beeing
     QString channelname = e->params()[1];
 
-    IrcChannel *channel = e->network()->ircChannel(channelname);
+    IrcChannel* channel = e->network()->ircChannel(channelname);
     if (!channel) {
         qWarning() << Q_FUNC_INFO << "Received unknown target channel:" << channelname;
         return;
@@ -1179,7 +1192,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
     bool _useCapMultiPrefix = coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX);
 
-    foreach(QString nick, e->params()[2].split(' ', QString::SkipEmptyParts)) {
+    foreach (QString nick, e->params()[2].split(' ', QString::SkipEmptyParts)) {
         QString mode;
 
         if (_useCapMultiPrefix) {
@@ -1194,7 +1207,8 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
                 // Remove this mode from the nick
                 nick = nick.remove(0, 1);
             }
-        } else if (e->network()->prefixes().contains(nick[0])) {
+        }
+        else if (e->network()->prefixes().contains(nick[0])) {
             // Multi-prefix is disabled and a mode prefix was found.
             mode = e->network()->prefixToMode(nick[0]);
             nick = nick.mid(1);
@@ -1212,7 +1226,6 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
     channel->joinIrcUsers(nicks, modes);
 }
 
-
 /*  RPL_WHOSPCRPL: "<yournick> 152 #<channel> ~<ident> <host> <servname> <nick>
                     ("H"/ "G") <account> :<realname>"
 <channel> is * if not specific to any channel
@@ -1220,7 +1233,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent *e)
 Follows HexChat's usage of 'whox'
 See https://github.com/hexchat/hexchat/blob/c874a9525c9b66f1d5ddcf6c4107d046eba7e2c5/src/common/proto-irc.c#L750
 And http://faerion.sourceforge.net/doc/irc/whox.var*/
-void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
+void CoreSessionEventProcessor::processIrcEvent354(IrcEvent* e)
 {
     // First only check if at least one parameter exists.  Otherwise, it'll stop the result from
     // being shown if the user chooses different parameters.
@@ -1238,15 +1251,14 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
         return;
 
     QString channel = e->params()[1];
-    IrcUser *ircuser = e->network()->ircUser(e->params()[5]);
+    IrcUser* ircuser = e->network()->ircUser(e->params()[5]);
     if (ircuser) {
         // Only process the WHO information if an IRC user exists.  Don't create an IRC user here;
         // there's no way to track when the user quits, which would leave a phantom IrcUser lying
         // around.
         // NOTE:  Whenever MONITOR support is introduced, the IrcUser will be created by an
         // RPL_MONONLINE numeric before any WHO commands are run.
-        processWhoInformation(e->network(), channel, ircuser, e->params()[4], e->params()[2],
-                e->params()[3], e->params()[6], e->params().last());
+        processWhoInformation(e->network(), channel, ircuser, e->params()[4], e->params()[2], e->params()[3], e->params()[6], e->params().last());
         // Don't use .section(" ", 1) with WHOX replies, for there's no hopcount to trim out
 
         // As part of IRCv3 account-notify, check account name
@@ -1255,7 +1267,8 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
         if (newAccount != "0") {
             // Account logged in, set account name
             ircuser->setAccount(newAccount);
-        } else {
+        }
+        else {
             // Account logged out, set account name to logged-out
             ircuser->setAccount("*");
         }
@@ -1267,10 +1280,14 @@ void CoreSessionEventProcessor::processIrcEvent354(IrcEvent *e)
     }
 }
 
-
-void CoreSessionEventProcessor::processWhoInformation (Network *net, const QString &targetChannel, IrcUser *ircUser,
-                            const QString &server, const QString &user, const QString &host,
-                            const QString &awayStateAndModes, const QString &realname)
+void CoreSessionEventProcessor::processWhoInformation(Network* net,
+                                                      const QString& targetChannel,
+                                                      IrcUser* ircUser,
+                                                      const QString& server,
+                                                      const QString& user,
+                                                      const QString& host,
+                                                      const QString& awayStateAndModes,
+                                                      const QString& realname)
 {
     ircUser->setUser(user);
     ircUser->setHost(host);
@@ -1301,7 +1318,7 @@ void CoreSessionEventProcessor::processWhoInformation (Network *net, const QStri
         if (!validModes.isEmpty()) {
             if (targetChannel != "*") {
                 // Channel-specific modes received, apply to given channel only
-                IrcChannel *ircChan = net->ircChannel(targetChannel);
+                IrcChannel* ircChan = net->ircChannel(targetChannel);
                 if (ircChan) {
                     // Do one mode at a time
                     // TODO Better way of syncing this without breaking protocol?
@@ -1309,7 +1326,8 @@ void CoreSessionEventProcessor::processWhoInformation (Network *net, const QStri
                         ircChan->addUserMode(ircUser, validModes.at(i));
                     }
                 }
-            } else {
+            }
+            else {
                 // Modes apply to the user everywhere
                 ircUser->addUserModes(validModes);
             }
@@ -1317,9 +1335,8 @@ void CoreSessionEventProcessor::processWhoInformation (Network *net, const QStri
     }
 }
 
-
 /* ERR_NOSUCHCHANNEL - "<channel name> :No such channel" */
-void CoreSessionEventProcessor::processIrcEvent403(IrcEventNumeric *e)
+void CoreSessionEventProcessor::processIrcEvent403(IrcEventNumeric* e)
 {
     // If this is the result of an AutoWho, hide it.  It's confusing to show to the user.
     // Though the ":No such channel" remark should always be there, we should handle cases when it's
@@ -1337,7 +1354,7 @@ void CoreSessionEventProcessor::processIrcEvent403(IrcEventNumeric *e)
 }
 
 /* ERR_ERRONEUSNICKNAME */
-void CoreSessionEventProcessor::processIrcEvent432(IrcEventNumeric *e)
+void CoreSessionEventProcessor::processIrcEvent432(IrcEventNumeric* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -1357,9 +1374,8 @@ void CoreSessionEventProcessor::processIrcEvent432(IrcEventNumeric *e)
     tryNextNick(e, errnick, true /* erroneus */);
 }
 
-
 /* ERR_NICKNAMEINUSE */
-void CoreSessionEventProcessor::processIrcEvent433(IrcEventNumeric *e)
+void CoreSessionEventProcessor::processIrcEvent433(IrcEventNumeric* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -1374,9 +1390,8 @@ void CoreSessionEventProcessor::processIrcEvent433(IrcEventNumeric *e)
     tryNextNick(e, errnick);
 }
 
-
 /* ERR_UNAVAILRESOURCE */
-void CoreSessionEventProcessor::processIrcEvent437(IrcEventNumeric *e)
+void CoreSessionEventProcessor::processIrcEvent437(IrcEventNumeric* e)
 {
     if (!checkParamCount(e, 1))
         return;
@@ -1392,7 +1407,6 @@ void CoreSessionEventProcessor::processIrcEvent437(IrcEventNumeric *e)
         tryNextNick(e, errnick);
 }
 
-
 /* template
 void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
   if(!checkParamCount(e, 1))
@@ -1403,25 +1417,22 @@ void CoreSessionEventProcessor::processIrcEvent(IrcEvent *e) {
 
 /* Handle signals from Netsplit objects  */
 
-void CoreSessionEventProcessor::handleNetsplitJoin(Network *net,
-    const QString &channel,
-    const QStringList &users,
-    const QStringList &modes,
-    const QString &quitMessage)
+void CoreSessionEventProcessor::handleNetsplitJoin(
+    Network* net, const QString& channel, const QStringList& users, const QStringList& modes, const QString& quitMessage)
 {
-    IrcChannel *ircChannel = net->ircChannel(channel);
+    IrcChannel* ircChannel = net->ircChannel(channel);
     if (!ircChannel) {
         return;
     }
-    QList<IrcUser *> ircUsers;
+    QList<IrcUser*> ircUsers;
     QStringList newModes = modes;
     QStringList newUsers = users;
 
-    foreach(const QString &user, users) {
-        IrcUser *iu = net->ircUser(nickFromMask(user));
+    foreach (const QString& user, users) {
+        IrcUser* iu = net->ircUser(nickFromMask(user));
         if (iu)
             ircUsers.append(iu);
-        else { // the user already quit
+        else {  // the user already quit
             int idx = users.indexOf(user);
             newUsers.removeAt(idx);
             newModes.removeAt(idx);
@@ -1429,36 +1440,34 @@ void CoreSessionEventProcessor::handleNetsplitJoin(Network *net,
     }
 
     ircChannel->joinIrcUsers(ircUsers, newModes);
-    NetworkSplitEvent *event = new NetworkSplitEvent(EventManager::NetworkSplitJoin, net, channel, newUsers, quitMessage);
+    NetworkSplitEvent* event = new NetworkSplitEvent(EventManager::NetworkSplitJoin, net, channel, newUsers, quitMessage);
     emit newEvent(event);
 }
 
-
-void CoreSessionEventProcessor::handleNetsplitQuit(Network *net, const QString &channel, const QStringList &users, const QString &quitMessage)
+void CoreSessionEventProcessor::handleNetsplitQuit(Network* net, const QString& channel, const QStringList& users, const QString& quitMessage)
 {
-    NetworkSplitEvent *event = new NetworkSplitEvent(EventManager::NetworkSplitQuit, net, channel, users, quitMessage);
+    NetworkSplitEvent* event = new NetworkSplitEvent(EventManager::NetworkSplitQuit, net, channel, users, quitMessage);
     emit newEvent(event);
-    foreach(QString user, users) {
-        IrcUser *iu = net->ircUser(nickFromMask(user));
+    foreach (QString user, users) {
+        IrcUser* iu = net->ircUser(nickFromMask(user));
         if (iu)
             iu->quit();
     }
 }
 
-
-void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network *net, const QString &channel, const QStringList &users, const QStringList &modes)
+void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network* net, const QString& channel, const QStringList& users, const QStringList& modes)
 {
-    IrcChannel *ircChannel = net->ircChannel(channel);
+    IrcChannel* ircChannel = net->ircChannel(channel);
     if (!ircChannel) {
         qDebug() << "handleEarlyNetsplitJoin(): channel " << channel << " invalid";
         return;
     }
-    QList<NetworkEvent *> events;
-    QList<IrcUser *> ircUsers;
+    QList<NetworkEvent*> events;
+    QList<IrcUser*> ircUsers;
     QStringList newModes = modes;
 
-    foreach(QString user, users) {
-        IrcUser *iu = net->updateNickFromMask(user);
+    foreach (QString user, users) {
+        IrcUser* iu = net->updateNickFromMask(user);
         if (iu) {
             ircUsers.append(iu);
             // fake event for scripts that consume join events
@@ -1469,41 +1478,38 @@ void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network *net, const QStr
         }
     }
     ircChannel->joinIrcUsers(ircUsers, newModes);
-    foreach(NetworkEvent *event, events) {
-        event->setFlag(EventManager::Fake); // ignore this in here!
+    foreach (NetworkEvent* event, events) {
+        event->setFlag(EventManager::Fake);  // ignore this in here!
         emit newEvent(event);
     }
 }
 
-
 void CoreSessionEventProcessor::handleNetsplitFinished()
 {
-    auto *n = qobject_cast<Netsplit *>(sender());
+    auto* n = qobject_cast<Netsplit*>(sender());
     Q_ASSERT(n);
-    QHash<QString, Netsplit *> splithash  = _netsplits.take(n->network());
+    QHash<QString, Netsplit*> splithash = _netsplits.take(n->network());
     splithash.remove(splithash.key(n));
     if (splithash.count())
         _netsplits[n->network()] = splithash;
     n->deleteLater();
 }
 
-
 void CoreSessionEventProcessor::destroyNetsplits(NetworkId netId)
 {
-    Network *net = coreSession()->network(netId);
+    Network* net = coreSession()->network(netId);
     if (!net)
         return;
 
-    QHash<QString, Netsplit *> splits = _netsplits.take(net);
+    QHash<QString, Netsplit*> splits = _netsplits.take(net);
     qDeleteAll(splits);
 }
-
 
 /*******************************/
 /******** CTCP HANDLING ********/
 /*******************************/
 
-void CoreSessionEventProcessor::processCtcpEvent(CtcpEvent *e)
+void CoreSessionEventProcessor::processCtcpEvent(CtcpEvent* e)
 {
     if (e->testFlag(EventManager::Self))
         return;  // ignore ctcp events generated by user input
@@ -1511,38 +1517,34 @@ void CoreSessionEventProcessor::processCtcpEvent(CtcpEvent *e)
     if (e->type() != EventManager::CtcpEvent || e->ctcpType() != CtcpEvent::Query)
         return;
 
-    handle(e->ctcpCmd(), Q_ARG(CtcpEvent *, e));
+    handle(e->ctcpCmd(), Q_ARG(CtcpEvent*, e));
 }
 
-
-void CoreSessionEventProcessor::defaultHandler(const QString &ctcpCmd, CtcpEvent *e)
+void CoreSessionEventProcessor::defaultHandler(const QString& ctcpCmd, CtcpEvent* e)
 {
     // This handler is only there to avoid warnings for unknown CTCPs
     Q_UNUSED(e);
     Q_UNUSED(ctcpCmd);
 }
 
-
-void CoreSessionEventProcessor::handleCtcpAction(CtcpEvent *e)
+void CoreSessionEventProcessor::handleCtcpAction(CtcpEvent* e)
 {
     // This handler is only there to feed CLIENTINFO
     Q_UNUSED(e);
 }
 
-
-void CoreSessionEventProcessor::handleCtcpClientinfo(CtcpEvent *e)
+void CoreSessionEventProcessor::handleCtcpClientinfo(CtcpEvent* e)
 {
     QStringList supportedHandlers;
-    foreach(QString handler, providesHandlers())
-    supportedHandlers << handler.toUpper();
+    foreach (QString handler, providesHandlers())
+        supportedHandlers << handler.toUpper();
     qSort(supportedHandlers);
     e->setReply(supportedHandlers.join(" "));
 }
 
-
 // http://www.irchelp.org/irchelp/rfc/ctcpspec.html
 // http://en.wikipedia.org/wiki/Direct_Client-to-Client
-void CoreSessionEventProcessor::handleCtcpDcc(CtcpEvent *e)
+void CoreSessionEventProcessor::handleCtcpDcc(CtcpEvent* e)
 {
     // DCC support is unfinished, experimental and potentially dangerous, so make it opt-in
     if (!Quassel::isOptionSet("enable-experimental-dcc")) {
@@ -1564,8 +1566,8 @@ void CoreSessionEventProcessor::handleCtcpDcc(CtcpEvent *e)
             QHostAddress address;
             quint16 port = params[3].toUShort();
             quint64 size = 0;
-            QString numIp = params[2]; // this is either IPv4 as a 32 bit value, or IPv6 (which always contains a colon)
-            if (numIp.contains(':')) { // IPv6
+            QString numIp = params[2];  // this is either IPv4 as a 32 bit value, or IPv6 (which always contains a colon)
+            if (numIp.contains(':')) {  // IPv6
                 if (!address.setAddress(numIp)) {
                     qWarning() << "Invalid IPv6:" << numIp;
                     return;
@@ -1575,39 +1577,48 @@ void CoreSessionEventProcessor::handleCtcpDcc(CtcpEvent *e)
                 address.setAddress(numIp.toUInt());
             }
 
-            if (port == 0) { // Reverse DCC is indicated by a 0 port
-                emit newEvent(new MessageEvent(Message::Error, e->network(), tr("Reverse DCC SEND not supported"), e->prefix(), e->target(), Message::None, e->timestamp()));
+            if (port == 0) {  // Reverse DCC is indicated by a 0 port
+                emit newEvent(new MessageEvent(Message::Error,
+                                               e->network(),
+                                               tr("Reverse DCC SEND not supported"),
+                                               e->prefix(),
+                                               e->target(),
+                                               Message::None,
+                                               e->timestamp()));
                 return;
             }
             if (port < 1024) {
-                qWarning() << "Privileged port requested:" << port; // FIXME ask user if this is ok
+                qWarning() << "Privileged port requested:" << port;  // FIXME ask user if this is ok
             }
 
-
-            if (params.count() > 4) { // filesize is optional
+            if (params.count() > 4) {  // filesize is optional
                 size = params[4].toULong();
             }
 
             // TODO: check if target is the right thing to use for the partner
-            CoreTransfer *transfer = new CoreTransfer(Transfer::Direction::Receive, e->target(), filename, address, port, size, this);
+            CoreTransfer* transfer = new CoreTransfer(Transfer::Direction::Receive, e->target(), filename, address, port, size, this);
             coreSession()->signalProxy()->synchronize(transfer);
             coreSession()->transferManager()->addTransfer(transfer);
         }
         else {
-            emit newEvent(new MessageEvent(Message::Error, e->network(), tr("DCC %1 not supported").arg(cmd), e->prefix(), e->target(), Message::None, e->timestamp()));
+            emit newEvent(new MessageEvent(Message::Error,
+                                           e->network(),
+                                           tr("DCC %1 not supported").arg(cmd),
+                                           e->prefix(),
+                                           e->target(),
+                                           Message::None,
+                                           e->timestamp()));
             return;
         }
     }
 }
 
-
-void CoreSessionEventProcessor::handleCtcpPing(CtcpEvent *e)
+void CoreSessionEventProcessor::handleCtcpPing(CtcpEvent* e)
 {
     e->setReply(e->param().isNull() ? "" : e->param());
 }
 
-
-void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent *e)
+void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent* e)
 {
     // Use the ISO standard to avoid locale-specific translated names
     // Include timezone offset data to show which timezone a user's in, otherwise we're providing
@@ -1615,16 +1626,15 @@ void CoreSessionEventProcessor::handleCtcpTime(CtcpEvent *e)
     e->setReply(formatDateTimeToOffsetISO(QDateTime::currentDateTime()));
 }
 
-
-void CoreSessionEventProcessor::handleCtcpVersion(CtcpEvent *e)
+void CoreSessionEventProcessor::handleCtcpVersion(CtcpEvent* e)
 {
     // Deliberately do not translate project name
     // Use the ISO standard to avoid locale-specific translated names
     // Use UTC time to provide a consistent string regardless of timezone
     // (Statistics tracking tools usually only group client versions by exact string matching)
     e->setReply(QString("Quassel IRC %1 (version date %2) -- https://www.quassel-irc.org")
-                .arg(Quassel::buildInfo().plainVersionString)
-                .arg(Quassel::buildInfo().commitDate.isEmpty() ?
-                      "unknown" : tryFormatUnixEpoch(Quassel::buildInfo().commitDate,
-                                                     Qt::DateFormat::ISODate, true)));
+                    .arg(Quassel::buildInfo().plainVersionString)
+                    .arg(Quassel::buildInfo().commitDate.isEmpty()
+                             ? "unknown"
+                             : tryFormatUnixEpoch(Quassel::buildInfo().commitDate, Qt::DateFormat::ISODate, true)));
 }

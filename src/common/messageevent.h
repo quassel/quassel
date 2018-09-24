@@ -32,13 +32,12 @@ class COMMON_EXPORT MessageEvent : public NetworkEvent
 {
 public:
     explicit MessageEvent(Message::Type msgType,
-        Network *network,
-        QString msg,
-        const QString &sender = QString(),
-        QString target = QString(),
-        Message::Flags msgFlags = Message::None,
-        const QDateTime &timestamp = QDateTime()
-        );
+                          Network* network,
+                          QString msg,
+                          const QString& sender = QString(),
+                          QString target = QString(),
+                          Message::Flags msgFlags = Message::None,
+                          const QDateTime& timestamp = QDateTime());
 
     inline Message::Type msgType() const { return _msgType; }
     inline void setMsgType(Message::Type type) { _msgType = type; }
@@ -54,27 +53,24 @@ public:
     inline void setMsgFlag(Message::Flag flag) { _msgFlags |= flag; }
     inline void setMsgFlags(Message::Flags flags) { _msgFlags = flags; }
 
-    static Event *create(EventManager::EventType type, QVariantMap &map, Network *network);
+    static Event* create(EventManager::EventType type, QVariantMap& map, Network* network);
 
 protected:
-    explicit MessageEvent(EventManager::EventType type, QVariantMap &map, Network *network);
-    void toVariantMap(QVariantMap &map) const override;
+    explicit MessageEvent(EventManager::EventType type, QVariantMap& map, Network* network);
+    void toVariantMap(QVariantMap& map) const override;
 
     inline QString className() const override { return "MessageEvent"; }
-    inline void debugInfo(QDebug &dbg) const override
+    inline void debugInfo(QDebug& dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
-        dbg.nospace() << ", sender = " << qPrintable(sender())
-                      << ", target = " << qPrintable(target())
-                      << ", text = " << text()
+        dbg.nospace() << ", sender = " << qPrintable(sender()) << ", target = " << qPrintable(target()) << ", text = " << text()
                       << ", msgtype = " << qPrintable(QString::number(msgType(), 16))
                       << ", buffertype = " << qPrintable(QString::number(bufferType(), 16))
                       << ", msgflags = " << qPrintable(QString::number(msgFlags(), 16));
     }
 
-
 private:
-    BufferInfo::Type bufferTypeByTarget(const QString &target) const;
+    BufferInfo::Type bufferTypeByTarget(const QString& target) const;
 
     Message::Type _msgType;
     BufferInfo::Type _bufferType;

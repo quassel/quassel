@@ -21,27 +21,32 @@
 #include "corebuffersyncer.h"
 
 #include "core.h"
-#include "coresession.h"
 #include "corenetwork.h"
+#include "coresession.h"
 #include "ircchannel.h"
 
 class PurgeEvent : public QEvent
 {
 public:
-    PurgeEvent() : QEvent(QEvent::User) {}
+    PurgeEvent()
+        : QEvent(QEvent::User)
+    {}
 };
 
-CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
-    : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), Core::bufferMarkerLineMsgIds(parent->user()), Core::bufferActivities(parent->user()), Core::highlightCounts(parent->user()), parent),
-    _coreSession(parent),
-    _purgeBuffers(false)
+CoreBufferSyncer::CoreBufferSyncer(CoreSession* parent)
+    : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()),
+                   Core::bufferMarkerLineMsgIds(parent->user()),
+                   Core::bufferActivities(parent->user()),
+                   Core::highlightCounts(parent->user()),
+                   parent)
+    , _coreSession(parent)
+    , _purgeBuffers(false)
 {
     connect(parent, &CoreSession::displayMsg, this, &CoreBufferSyncer::addBufferActivity);
     connect(parent, &CoreSession::displayMsg, this, &CoreBufferSyncer::addCoreHighlight);
 }
 
-
-void CoreBufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId)
+void CoreBufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId& msgId)
 {
     if (setLastSeenMsg(buffer, msgId)) {
         int activity = Core::bufferActivity(buffer, msgId);
@@ -54,35 +59,33 @@ void CoreBufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId
     }
 }
 
-
-void CoreBufferSyncer::requestSetMarkerLine(BufferId buffer, const MsgId &msgId)
+void CoreBufferSyncer::requestSetMarkerLine(BufferId buffer, const MsgId& msgId)
 {
     if (setMarkerLine(buffer, msgId))
         dirtyMarkerLineBuffers << buffer;
 }
 
-
 void CoreBufferSyncer::storeDirtyIds()
 {
     UserId userId = _coreSession->user();
     MsgId msgId;
-    foreach(BufferId bufferId, dirtyLastSeenBuffers) {
+    foreach (BufferId bufferId, dirtyLastSeenBuffers) {
         msgId = lastSeenMsg(bufferId);
         if (msgId.isValid())
             Core::setBufferLastSeenMsg(userId, bufferId, msgId);
     }
 
-    foreach(BufferId bufferId, dirtyMarkerLineBuffers) {
+    foreach (BufferId bufferId, dirtyMarkerLineBuffers) {
         msgId = markerLine(bufferId);
         if (msgId.isValid())
             Core::setBufferMarkerLineMsg(userId, bufferId, msgId);
     }
 
-    foreach(BufferId bufferId, dirtyActivities) {
+    foreach (BufferId bufferId, dirtyActivities) {
         Core::setBufferActivity(userId, bufferId, activity(bufferId));
     }
 
-    foreach(BufferId bufferId, dirtyHighlights) {
+    foreach (BufferId bufferId, dirtyHighlights) {
         Core::setHighlightCount(userId, bufferId, highlightCount(bufferId));
     }
 
@@ -91,7 +94,6 @@ void CoreBufferSyncer::storeDirtyIds()
     dirtyActivities.clear();
     dirtyHighlights.clear();
 }
-
 
 void CoreBufferSyncer::removeBuffer(BufferId bufferId)
 {
@@ -107,12 +109,12 @@ void CoreBufferSyncer::removeBuffer(BufferId bufferId)
     }
 
     if (bufferInfo.type() == BufferInfo::ChannelBuffer) {
-        CoreNetwork *net = _coreSession->network(bufferInfo.networkId());
+        CoreNetwork* net = _coreSession->network(bufferInfo.networkId());
         if (!net) {
             qWarning() << "CoreBufferSyncer::removeBuffer(): Received BufferInfo with unknown networkId!";
             return;
         }
-        IrcChannel *chan = net->ircChannel(bufferInfo.bufferName());
+        IrcChannel* chan = net->ircChannel(bufferInfo.bufferName());
         if (chan) {
             qWarning() << "CoreBufferSyncer::removeBuffer(): Unable to remove Buffer for joined Channel:" << bufferInfo.bufferName();
             return;
@@ -121,7 +123,6 @@ void CoreBufferSyncer::removeBuffer(BufferId bufferId)
     if (Core::removeBuffer(_coreSession->user(), bufferId))
         BufferSyncer::removeBuffer(bufferId);
 }
-
 
 void CoreBufferSyncer::renameBuffer(BufferId bufferId, QString newName)
 {
@@ -140,20 +141,21 @@ void CoreBufferSyncer::renameBuffer(BufferId bufferId, QString newName)
         BufferSyncer::renameBuffer(bufferId, newName);
 }
 
-
 void CoreBufferSyncer::mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2)
 {
     BufferInfo bufferInfo1 = Core::getBufferInfo(_coreSession->user(), bufferId1);
     BufferInfo bufferInfo2 = Core::getBufferInfo(_coreSession->user(), bufferId2);
     if (!bufferInfo1.isValid() || !bufferInfo2.isValid()) {
-        qWarning() << "CoreBufferSyncer::mergeBuffersPermanently(): invalid BufferIds:" << bufferId1 << bufferId2 << "for User:" << _coreSession->user();
+        qWarning() << "CoreBufferSyncer::mergeBuffersPermanently(): invalid BufferIds:" << bufferId1 << bufferId2
+                   << "for User:" << _coreSession->user();
         return;
     }
 
     if ((bufferInfo1.type() != BufferInfo::QueryBuffer && bufferInfo1.type() != BufferInfo::ChannelBuffer)
         || (bufferInfo2.type() != BufferInfo::QueryBuffer && bufferInfo2.type() != BufferInfo::ChannelBuffer)) {
-            qWarning() << "CoreBufferSyncer::mergeBuffersPermanently(): only QueryBuffers and/or ChannelBuffers can be merged!" << bufferId1 << bufferId2;
-            return;
+        qWarning() << "CoreBufferSyncer::mergeBuffersPermanently(): only QueryBuffers and/or ChannelBuffers can be merged!" << bufferId1
+                   << bufferId2;
+        return;
     }
 
     if (Core::mergeBuffersPermanently(_coreSession->user(), bufferId1, bufferId2)) {
@@ -161,8 +163,7 @@ void CoreBufferSyncer::mergeBuffersPermanently(BufferId bufferId1, BufferId buff
     }
 }
 
-
-void CoreBufferSyncer::customEvent(QEvent *event)
+void CoreBufferSyncer::customEvent(QEvent* event)
 {
     if (event->type() != QEvent::User)
         return;
@@ -170,7 +171,6 @@ void CoreBufferSyncer::customEvent(QEvent *event)
     purgeBufferIds();
     event->accept();
 }
-
 
 void CoreBufferSyncer::requestPurgeBufferIds()
 {
@@ -181,30 +181,31 @@ void CoreBufferSyncer::requestPurgeBufferIds()
     QCoreApplication::postEvent(this, new PurgeEvent());
 }
 
-
 void CoreBufferSyncer::purgeBufferIds()
 {
     _purgeBuffers = false;
     QList<BufferInfo> bufferInfos = Core::requestBuffers(_coreSession->user());
     QSet<BufferId> actualBuffers;
-    foreach(BufferInfo bufferInfo, bufferInfos) {
+    foreach (BufferInfo bufferInfo, bufferInfos) {
         actualBuffers << bufferInfo.bufferId();
     }
 
     QSet<BufferId> storedIds = lastSeenBufferIds().toSet() + markerLineBufferIds().toSet();
-    foreach(BufferId bufferId, storedIds) {
+    foreach (BufferId bufferId, storedIds) {
         if (!actualBuffers.contains(bufferId)) {
             BufferSyncer::removeBuffer(bufferId);
         }
     }
 }
 
-void CoreBufferSyncer::setBufferActivity(BufferId buffer, int activity) {
+void CoreBufferSyncer::setBufferActivity(BufferId buffer, int activity)
+{
     BufferSyncer::setBufferActivity(buffer, activity);
     dirtyActivities << buffer;
 }
 
-void CoreBufferSyncer::setHighlightCount(BufferId buffer, int highlightCount) {
+void CoreBufferSyncer::setHighlightCount(BufferId buffer, int highlightCount)
+{
     BufferSyncer::setHighlightCount(buffer, highlightCount);
     dirtyHighlights << buffer;
 }

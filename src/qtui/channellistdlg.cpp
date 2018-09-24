@@ -20,18 +20,18 @@
 
 #include "channellistdlg.h"
 
-#include <QHeaderView>
 #include <QHBoxLayout>
+#include <QHeaderView>
 #include <QSpacerItem>
 
 #include "client.h"
 #include "clientirclisthelper.h"
 #include "icon.h"
 
-ChannelListDlg::ChannelListDlg(QWidget *parent)
-    : QDialog(parent),
-    _ircListModel(this),
-    _sortFilter(this)
+ChannelListDlg::ChannelListDlg(QWidget* parent)
+    : QDialog(parent)
+    , _ircListModel(this)
+    , _sortFilter(this)
 {
     _sortFilter.setSourceModel(&_ircListModel);
     _sortFilter.setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -59,8 +59,7 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
     connect(ui.searchChannelsButton, &QAbstractButton::clicked, this, &ChannelListDlg::requestSearch);
     connect(ui.channelNameLineEdit, &QLineEdit::returnPressed, this, &ChannelListDlg::requestSearch);
     connect(ui.filterLineEdit, &QLineEdit::textChanged, &_sortFilter, &QSortFilterProxyModel::setFilterFixedString);
-    connect(Client::ircListHelper(), &ClientIrcListHelper::channelListReceived,
-        this, &ChannelListDlg::receiveChannelList);
+    connect(Client::ircListHelper(), &ClientIrcListHelper::channelListReceived, this, &ChannelListDlg::receiveChannelList);
     connect(Client::ircListHelper(), &ClientIrcListHelper::finishedListReported, this, &ChannelListDlg::reportFinishedList);
     connect(Client::ircListHelper(), &ClientIrcListHelper::errorReported, this, &ChannelListDlg::showError);
     connect(ui.channelListView, &QAbstractItemView::activated, this, &ChannelListDlg::joinChannel);
@@ -74,7 +73,6 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
     updateInputFocus();
 }
 
-
 void ChannelListDlg::setNetwork(NetworkId netId)
 {
     if (_netId == netId)
@@ -85,15 +83,13 @@ void ChannelListDlg::setNetwork(NetworkId netId)
     showFilterLine(false);
 }
 
-
-void ChannelListDlg::setChannelFilters(const QString &channelFilters)
+void ChannelListDlg::setChannelFilters(const QString& channelFilters)
 {
     // Enable advanced mode if searching
     setAdvancedMode(!channelFilters.isEmpty());
     // Set channel search text after setting advanced mode so it's not cleared
     ui.channelNameLineEdit->setText(channelFilters.trimmed());
 }
-
 
 void ChannelListDlg::requestSearch()
 {
@@ -110,8 +106,9 @@ void ChannelListDlg::requestSearch()
     Client::ircListHelper()->requestChannelList(_netId, channelFilters);
 }
 
-
-void ChannelListDlg::receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList)
+void ChannelListDlg::receiveChannelList(const NetworkId& netId,
+                                        const QStringList& channelFilters,
+                                        const QList<IrcListHelper::ChannelDescription>& channelList)
 {
     Q_UNUSED(channelFilters)
     if (netId != _netId)
@@ -124,7 +121,6 @@ void ChannelListDlg::receiveChannelList(const NetworkId &netId, const QStringLis
     updateInputFocus();
 }
 
-
 void ChannelListDlg::showFilterLine(bool show)
 {
     ui.line->setVisible(show);
@@ -132,13 +128,11 @@ void ChannelListDlg::showFilterLine(bool show)
     ui.filterLineEdit->setVisible(show);
 }
 
-
 void ChannelListDlg::enableQuery(bool enable)
 {
     ui.channelNameLineEdit->setEnabled(enable);
     ui.searchChannelsButton->setEnabled(enable);
 }
-
 
 void ChannelListDlg::setAdvancedMode(bool advanced)
 {
@@ -165,18 +159,17 @@ void ChannelListDlg::setAdvancedMode(bool advanced)
     ui.searchPatternLabel->setVisible(advanced);
 }
 
-
 void ChannelListDlg::updateInputFocus()
 {
     // Update keyboard focus to match what options are available.  Prioritize the channel name
     // editor as one likely won't need to filter when already limiting the list.
     if (ui.channelNameLineEdit->isVisible()) {
         ui.channelNameLineEdit->setFocus();
-    } else if (ui.filterLineEdit->isVisible()) {
+    }
+    else if (ui.filterLineEdit->isVisible()) {
         ui.filterLineEdit->setFocus();
     }
 }
-
 
 void ChannelListDlg::showErrors(bool show)
 {
@@ -187,22 +180,20 @@ void ChannelListDlg::showErrors(bool show)
     ui.errorTextEdit->setVisible(show);
 }
 
-
 void ChannelListDlg::reportFinishedList()
 {
     _listFinished = true;
 }
 
-
-void ChannelListDlg::showError(const QString &error)
+void ChannelListDlg::showError(const QString& error)
 {
     showErrors(true);
     ui.errorTextEdit->moveCursor(QTextCursor::End);
     ui.errorTextEdit->insertPlainText(error + "\n");
 }
 
-
-void ChannelListDlg::joinChannel(const QModelIndex &index)
+void ChannelListDlg::joinChannel(const QModelIndex& index)
 {
-    Client::instance()->userInput(BufferInfo::fakeStatusBuffer(_netId), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
+    Client::instance()->userInput(BufferInfo::fakeStatusBuffer(_netId),
+                                  QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
 }

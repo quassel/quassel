@@ -28,7 +28,7 @@
 #include <vector>
 
 #ifdef HAVE_KDE
-#  include <KXmlGui/KActionCollection>
+#    include <KXmlGui/KActionCollection>
 #endif
 
 #include <QDebug>
@@ -56,7 +56,7 @@ public:
     using ActionCollectionParent::ActionCollectionParent;
 
     // Convenience function that takes a list of Actions
-    void addActions(const std::vector<std::pair<QString, Action *>> &actions);
+    void addActions(const std::vector<std::pair<QString, Action*>>& actions);
 
 // Everything else is defined in KActionCollection
 #ifndef HAVE_KDE
@@ -67,15 +67,15 @@ public:
     /** Not that this only adds all current actions in the collection to that widget;
      *  subsequently added actions won't be added automatically.
      */
-    void associateWidget(QWidget *widget) const;
+    void associateWidget(QWidget* widget) const;
 
     /// Associate all actions in this collection to the given \a widget.
     /** Subsequently added actions will be automagically associated with this widget as well.
      */
-    void addAssociatedWidget(QWidget *widget);
+    void addAssociatedWidget(QWidget* widget);
 
-    void removeAssociatedWidget(QWidget *widget);
-    QList<QWidget *> associatedWidgets() const;
+    void removeAssociatedWidget(QWidget* widget);
+    QList<QWidget*> associatedWidgets() const;
     void clearAssociatedWidgets();
 
     void readSettings();
@@ -84,34 +84,34 @@ public:
     int count() const;
     bool isEmpty() const;
 
-    QAction *action(int index) const;
-    QAction *action(const QString &name) const;
-    QList<QAction *> actions() const;
+    QAction* action(int index) const;
+    QAction* action(const QString& name) const;
+    QList<QAction*> actions() const;
 
-    QAction *addAction(const QString &name, QAction *action);
-    void removeAction(QAction *action);
-    QAction *takeAction(QAction *action);
+    QAction* addAction(const QString& name, QAction* action);
+    void removeAction(QAction* action);
+    QAction* takeAction(QAction* action);
 
 signals:
-    void inserted(QAction *action);
-    void actionHovered(QAction *action);
-    void actionTriggered(QAction *action);
+    void inserted(QAction* action);
+    void actionHovered(QAction* action);
+    void actionTriggered(QAction* action);
 
 protected slots:
-    void connectNotify(const QMetaMethod &signal) override;
+    void connectNotify(const QMetaMethod& signal) override;
     virtual void slotActionTriggered();
 
 private slots:
     void slotActionHovered();
-    void actionDestroyed(QObject *);
-    void associatedWidgetDestroyed(QObject *);
+    void actionDestroyed(QObject*);
+    void associatedWidgetDestroyed(QObject*);
 
 private:
-    bool unlistAction(QAction *);
+    bool unlistAction(QAction*);
 
-    QMap<QString, QAction *> _actionByName;
-    QList<QAction *> _actions;
-    QList<QWidget *> _associatedWidgets;
+    QMap<QString, QAction*> _actionByName;
+    QList<QAction*> _actions;
+    QList<QWidget*> _associatedWidgets;
 
     bool _connectHovered{false};
     bool _connectTriggered{false};

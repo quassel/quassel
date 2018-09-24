@@ -20,51 +20,47 @@
 
 #include "nicklistwidget.h"
 
-#include "nickview.h"
-#include "client.h"
-#include "networkmodel.h"
-#include "buffermodel.h"
-#include "nickviewfilter.h"
-#include "qtuisettings.h"
-
+#include <QAbstractButton>
 #include <QAction>
 #include <QDebug>
 #include <QEvent>
-#include <QAbstractButton>
 
-NickListWidget::NickListWidget(QWidget *parent)
+#include "buffermodel.h"
+#include "client.h"
+#include "networkmodel.h"
+#include "nickview.h"
+#include "nickviewfilter.h"
+#include "qtuisettings.h"
+
+NickListWidget::NickListWidget(QWidget* parent)
     : AbstractItemView(parent)
 {
     ui.setupUi(this);
 }
 
-
-QDockWidget *NickListWidget::dock() const
+QDockWidget* NickListWidget::dock() const
 {
-    auto *dock = qobject_cast<QDockWidget *>(parent());
+    auto* dock = qobject_cast<QDockWidget*>(parent());
     if (dock)
         return dock;
     else
         return nullptr;
 }
 
-
-void NickListWidget::hideEvent(QHideEvent *event)
+void NickListWidget::hideEvent(QHideEvent* event)
 {
     emit nickSelectionChanged(QModelIndexList());
     AbstractItemView::hideEvent(event);
 }
 
-
-void NickListWidget::showEvent(QShowEvent *event)
+void NickListWidget::showEvent(QShowEvent* event)
 {
-    auto *view = qobject_cast<NickView *>(ui.stackedWidget->currentWidget());
+    auto* view = qobject_cast<NickView*>(ui.stackedWidget->currentWidget());
     if (view)
         emit nickSelectionChanged(view->selectedIndexes());
 
     AbstractItemView::showEvent(event);
 }
-
 
 void NickListWidget::showWidget(bool visible)
 {
@@ -73,7 +69,7 @@ void NickListWidget::showWidget(bool visible)
 
     QModelIndex currentIndex = selectionModel()->currentIndex();
     if (currentIndex.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer) {
-        QDockWidget *dock_ = dock();
+        QDockWidget* dock_ = dock();
         if (!dock_)
             return;
 
@@ -87,7 +83,7 @@ void NickListWidget::showWidget(bool visible)
 void NickListWidget::setVisible(bool visible)
 {
     QWidget::setVisible(visible);
-    QDockWidget *dock_ = dock();
+    QDockWidget* dock_ = dock();
     if (!dock_)
         return;
 
@@ -97,8 +93,7 @@ void NickListWidget::setVisible(bool visible)
         dock_->close();
 }
 
-
-void NickListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+void NickListWidget::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
     BufferInfo::Type bufferType = (BufferInfo::Type)current.data(NetworkModel::BufferTypeRole).toInt();
     BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
@@ -111,31 +106,31 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
     }
 
     // See NickListDock::NickListDock() below
-//   if(bufferType != BufferInfo::ChannelBuffer) {
-//     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
-//     QDockWidget *dock_ = dock();
-//     if(dock_) {
-//       dock_->close();
-//     }
-//     return;
-//   } else {
-//     QDockWidget *dock_ = dock();
-//     if(dock_ && dock_->toggleViewAction()->isChecked()) {
-//       dock_->show();
-//     }
-//   }
+    //   if(bufferType != BufferInfo::ChannelBuffer) {
+    //     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+    //     QDockWidget *dock_ = dock();
+    //     if(dock_) {
+    //       dock_->close();
+    //     }
+    //     return;
+    //   } else {
+    //     QDockWidget *dock_ = dock();
+    //     if(dock_ && dock_->toggleViewAction()->isChecked()) {
+    //       dock_->show();
+    //     }
+    //   }
 
     if (newBufferId == oldBufferId)
         return;
 
-    NickView *view;
+    NickView* view;
     if (nickViews.contains(newBufferId)) {
         view = nickViews.value(newBufferId);
         ui.stackedWidget->setCurrentWidget(view);
     }
     else {
         view = new NickView(this);
-        auto *filter = new NickViewFilter(newBufferId, Client::networkModel());
+        auto* filter = new NickViewFilter(newBufferId, Client::networkModel());
         view->setModel(filter);
         QModelIndex source_current = Client::bufferModel()->mapToSource(current);
         view->setRootIndex(filter->mapFromSource(source_current));
@@ -147,10 +142,9 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
     emit nickSelectionChanged(view->selectedIndexes());
 }
 
-
 void NickListWidget::onNickSelectionChanged()
 {
-    auto *view = qobject_cast<NickView *>(sender());
+    auto* view = qobject_cast<NickView*>(sender());
     Q_ASSERT(view);
     if (view != ui.stackedWidget->currentWidget()) {
         qDebug() << "Nick selection of hidden view changed!";
@@ -159,23 +153,22 @@ void NickListWidget::onNickSelectionChanged()
     emit nickSelectionChanged(view->selectedIndexes());
 }
 
-
-void NickListWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void NickListWidget::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 {
     Q_ASSERT(model());
     if (!parent.isValid()) {
         // ok this means that whole networks are about to be removed
         // we can't determine which buffers are affect, so we hope that all nets are removed
         // this is the most common case (for example disconnecting from the core or terminating the clint)
-        NickView *nickView;
-        QHash<BufferId, NickView *>::iterator iter = nickViews.begin();
+        NickView* nickView;
+        QHash<BufferId, NickView*>::iterator iter = nickViews.begin();
         while (iter != nickViews.end()) {
             nickView = *iter;
             iter = nickViews.erase(iter);
             ui.stackedWidget->removeWidget(nickView);
-            QAbstractItemModel *model = nickView->model();
+            QAbstractItemModel* model = nickView->model();
             nickView->setModel(nullptr);
-            if (auto *filter = qobject_cast<QSortFilterProxyModel *>(model))
+            if (auto* filter = qobject_cast<QSortFilterProxyModel*>(model))
                 filter->setSourceModel(nullptr);
             model->deleteLater();
             nickView->deleteLater();
@@ -194,54 +187,52 @@ void NickListWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, 
     }
 }
 
-
 void NickListWidget::removeBuffer(BufferId bufferId)
 {
     if (!nickViews.contains(bufferId))
         return;
 
-    NickView *view = nickViews.take(bufferId);
+    NickView* view = nickViews.take(bufferId);
     ui.stackedWidget->removeWidget(view);
-    QAbstractItemModel *model = view->model();
+    QAbstractItemModel* model = view->model();
     view->setModel(nullptr);
-    if (auto *filter = qobject_cast<QSortFilterProxyModel *>(model))
+    if (auto* filter = qobject_cast<QSortFilterProxyModel*>(model))
         filter->setSourceModel(nullptr);
     model->deleteLater();
     view->deleteLater();
 }
 
-
 QSize NickListWidget::sizeHint() const
 {
-    QWidget *currentWidget = ui.stackedWidget->currentWidget();
+    QWidget* currentWidget = ui.stackedWidget->currentWidget();
     if (!currentWidget || currentWidget == ui.emptyPage)
         return {100, height()};
     else
         return currentWidget->sizeHint();
 }
 
-
 // ==============================
 //  NickList Dock
 // ==============================
-NickListDock::NickListDock(const QString &title, QWidget *parent)
+NickListDock::NickListDock(const QString& title, QWidget* parent)
     : QDockWidget(title, parent)
 {
     // THIS STUFF IS NEEDED FOR NICKLIST AUTOHIDE...
     // AS THIS BRINGS LOTS OF FUCKUPS WITH IT IT'S DEACTIVATED FOR NOW...
 
-//   QAction *toggleView = toggleViewAction();
-//   disconnect(toggleView, SIGNAL(triggered(bool)), this, 0);
-//   toggleView->setChecked(QtUiSettings().value("ShowNickList", QVariant(true)).toBool());
+    //   QAction *toggleView = toggleViewAction();
+    //   disconnect(toggleView, SIGNAL(triggered(bool)), this, 0);
+    //   toggleView->setChecked(QtUiSettings().value("ShowNickList", QVariant(true)).toBool());
 
-//   // reconnecting the closebuttons clicked signal to the action
-//   foreach(QAbstractButton *button, findChildren<QAbstractButton *>()) {
-//     if(disconnect(button, SIGNAL(clicked()), this, SLOT(close())))
-//       connect(button, SIGNAL(clicked()), toggleView, SLOT(trigger()));
-//   }
+    //   // reconnecting the closebuttons clicked signal to the action
+    //   foreach(QAbstractButton *button, findChildren<QAbstractButton *>()) {
+    //     if(disconnect(button, SIGNAL(clicked()), this, SLOT(close())))
+    //       connect(button, SIGNAL(clicked()), toggleView, SLOT(trigger()));
+    //   }
 }
 
-void NickListDock::setLocked(bool locked) {
+void NickListDock::setLocked(bool locked)
+{
     if (locked) {
         setFeatures(nullptr);
     }

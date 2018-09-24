@@ -24,22 +24,23 @@
 #include "graphicalui.h"
 
 #include "actioncollection.h"
-#include "uisettings.h"
 #include "contextmenuactionprovider.h"
 #include "toolbaractionprovider.h"
+#include "uisettings.h"
 
 #ifdef Q_WS_X11
-#  include <QX11Info>
+#    include <QX11Info>
 #endif
 
-QWidget *GraphicalUi::_mainWidget = nullptr;
-QHash<QString, ActionCollection *> GraphicalUi::_actionCollections;
-ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = nullptr;
-ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = nullptr;
-UiStyle *GraphicalUi::_uiStyle = nullptr;
+QWidget* GraphicalUi::_mainWidget = nullptr;
+QHash<QString, ActionCollection*> GraphicalUi::_actionCollections;
+ContextMenuActionProvider* GraphicalUi::_contextMenuActionProvider = nullptr;
+ToolBarActionProvider* GraphicalUi::_toolBarActionProvider = nullptr;
+UiStyle* GraphicalUi::_uiStyle = nullptr;
 
-
-GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent), Singleton<GraphicalUi>(this)
+GraphicalUi::GraphicalUi(QObject* parent)
+    : AbstractUi(parent)
+    , Singleton<GraphicalUi>(this)
 {
     Q_INIT_RESOURCE(pics);
     Q_INIT_RESOURCE(hicolor_icons);
@@ -56,7 +57,6 @@ GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent), Singleton<Graphi
 #endif
 }
 
-
 void GraphicalUi::init()
 {
 #ifdef Q_OS_WIN
@@ -64,12 +64,11 @@ void GraphicalUi::init()
 #endif
 }
 
-
-ActionCollection *GraphicalUi::actionCollection(const QString &category, const QString &translatedCategory)
+ActionCollection* GraphicalUi::actionCollection(const QString& category, const QString& translatedCategory)
 {
     if (_actionCollections.contains(category))
         return _actionCollections.value(category);
-    auto *coll = new ActionCollection(_mainWidget);
+    auto* coll = new ActionCollection(_mainWidget);
 
     if (!translatedCategory.isEmpty())
         coll->setProperty("Category", translatedCategory);
@@ -82,52 +81,44 @@ ActionCollection *GraphicalUi::actionCollection(const QString &category, const Q
     return coll;
 }
 
-
-QHash<QString, ActionCollection *> GraphicalUi::actionCollections()
+QHash<QString, ActionCollection*> GraphicalUi::actionCollections()
 {
     return _actionCollections;
 }
 
-
 void GraphicalUi::loadShortcuts()
 {
-    foreach(ActionCollection *coll, actionCollections())
-    coll->readSettings();
+    foreach (ActionCollection* coll, actionCollections())
+        coll->readSettings();
 }
-
 
 void GraphicalUi::saveShortcuts()
 {
     ShortcutSettings s;
     s.clear();
-    foreach(ActionCollection *coll, actionCollections())
-    coll->writeSettings();
+    foreach (ActionCollection* coll, actionCollections())
+        coll->writeSettings();
 }
 
-
-void GraphicalUi::setMainWidget(QWidget *widget)
+void GraphicalUi::setMainWidget(QWidget* widget)
 {
     _mainWidget = widget;
 }
 
-
-void GraphicalUi::setContextMenuActionProvider(ContextMenuActionProvider *provider)
+void GraphicalUi::setContextMenuActionProvider(ContextMenuActionProvider* provider)
 {
     _contextMenuActionProvider = provider;
 }
 
-
-void GraphicalUi::setToolBarActionProvider(ToolBarActionProvider *provider)
+void GraphicalUi::setToolBarActionProvider(ToolBarActionProvider* provider)
 {
     _toolBarActionProvider = provider;
 }
 
-
-void GraphicalUi::setUiStyle(UiStyle *style)
+void GraphicalUi::setUiStyle(UiStyle* style)
 {
     _uiStyle = style;
 }
-
 
 void GraphicalUi::disconnectedFromCore()
 {
@@ -136,8 +127,7 @@ void GraphicalUi::disconnectedFromCore()
     AbstractUi::disconnectedFromCore();
 }
 
-
-bool GraphicalUi::eventFilter(QObject *obj, QEvent *event)
+bool GraphicalUi::eventFilter(QObject* obj, QEvent* event)
 {
 #ifdef Q_OS_WIN
     if (obj == mainWidget() && event->type() == QEvent::ActivationChange) {
@@ -146,7 +136,6 @@ bool GraphicalUi::eventFilter(QObject *obj, QEvent *event)
 #endif
     return AbstractUi::eventFilter(obj, event);
 }
-
 
 // NOTE: Window activation stuff seems to work just fine in Plasma 5 without requiring X11 hacks.
 // TODO: Evaluate cleaning all this up once we can get rid of Qt4/KDE4
@@ -189,12 +178,10 @@ bool GraphicalUi::checkMainWidgetVisibility(bool perform)
     return true;
 }
 
-
 bool GraphicalUi::isMainWidgetVisible()
 {
     return !instance()->checkMainWidgetVisibility(false);
 }
-
 
 void GraphicalUi::minimizeRestore(bool show)
 {
@@ -203,7 +190,6 @@ void GraphicalUi::minimizeRestore(bool show)
     else
         hideMainWidget();
 }
-
 
 void GraphicalUi::activateMainWidget()
 {
@@ -228,7 +214,6 @@ void GraphicalUi::activateMainWidget()
 #endif
 }
 
-
 void GraphicalUi::hideMainWidget()
 {
     if (instance()->isHidingMainWidgetAllowed())
@@ -238,7 +223,6 @@ void GraphicalUi::hideMainWidget()
         mainWidget()->hide();
 #endif
 }
-
 
 void GraphicalUi::toggleMainWidget()
 {

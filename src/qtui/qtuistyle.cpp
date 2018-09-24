@@ -18,14 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "chatviewsettings.h"
 #include "qtuistyle.h"
 
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
 
-QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent)
+#include "chatviewsettings.h"
+
+QtUiStyle::QtUiStyle(QObject* parent)
+    : UiStyle(parent)
 {
     ChatViewSettings s;
     s.initAndNotify("UseCustomTimestampFormat", this, &QtUiStyle::updateUseCustomTimestampFormat);
@@ -36,7 +38,6 @@ QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent)
     // If no style sheet exists, generate it on first run.
     initializeSettingsQss();
 }
-
 
 void QtUiStyle::updateUseCustomTimestampFormat()
 {
@@ -62,7 +63,6 @@ void QtUiStyle::updateShowSenderBrackets()
     enableSenderBrackets(s.showSenderBrackets());
 }
 
-
 void QtUiStyle::initializeSettingsQss()
 {
     QFileInfo settingsQss(Quassel::configDirPath() + "settings.qss");
@@ -79,7 +79,7 @@ void QtUiStyle::generateSettingsQss() const
 {
     QFile settingsQss(Quassel::configDirPath() + "settings.qss");
 
-    if (!settingsQss.open(QFile::WriteOnly|QFile::Truncate)) {
+    if (!settingsQss.open(QFile::WriteOnly | QFile::Truncate)) {
         qWarning() << "Could not open" << settingsQss.fileName() << "for writing!";
         return;
     }
@@ -99,34 +99,23 @@ void QtUiStyle::generateSettingsQss() const
     if (s.value("UseChatViewColors").toBool()) {
         out << "\n// Custom ChatView Colors\n"
 
-        // markerline is special in that it always used to use a gradient, so we keep this behavior even with the new implementation
-        << "Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 " << color("MarkerLine", s) << ", stop: 0.1 transparent); }\n"
-        << "ChatView { background: " << color("ChatViewBackground", s) << "; }\n\n"
-        << "ChatLine[label=\"highlight\"] {\n"
-        << "  foreground: " << color("Highlight", s) << ";\n"
-        << "  background: " << color("HighlightBackground", s) << ";\n"
-        << "}\n\n"
-        << "ChatLine::timestamp { foreground: " << color("Timestamp", s) << "; }\n\n"
+            // markerline is special in that it always used to use a gradient, so we keep this behavior even with the new implementation
+            << "Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 " << color("MarkerLine", s)
+            << ", stop: 0.1 transparent); }\n"
+            << "ChatView { background: " << color("ChatViewBackground", s) << "; }\n\n"
+            << "ChatLine[label=\"highlight\"] {\n"
+            << "  foreground: " << color("Highlight", s) << ";\n"
+            << "  background: " << color("HighlightBackground", s) << ";\n"
+            << "}\n\n"
+            << "ChatLine::timestamp { foreground: " << color("Timestamp", s) << "; }\n\n"
 
-        << msgTypeQss("plain", "ChannelMsg", s)
-        << msgTypeQss("notice", "ServerMsg", s)
-        << msgTypeQss("action", "ActionMsg", s)
-        << msgTypeQss("nick", "CommandMsg", s)
-        << msgTypeQss("mode", "CommandMsg", s)
-        << msgTypeQss("join", "CommandMsg", s)
-        << msgTypeQss("part", "CommandMsg", s)
-        << msgTypeQss("quit", "CommandMsg", s)
-        << msgTypeQss("kick", "CommandMsg", s)
-        << msgTypeQss("kill", "CommandMsg", s)
-        << msgTypeQss("server", "ServerMsg", s)
-        << msgTypeQss("info", "ServerMsg", s)
-        << msgTypeQss("error", "ErrorMsg", s)
-        << msgTypeQss("daychange", "ServerMsg", s)
-        << msgTypeQss("topic", "CommandMsg", s)
-        << msgTypeQss("netsplit-join", "CommandMsg", s)
-        << msgTypeQss("netsplit-quit", "CommandMsg", s)
-        << msgTypeQss("invite", "CommandMsg", s)
-        << "\n";
+            << msgTypeQss("plain", "ChannelMsg", s) << msgTypeQss("notice", "ServerMsg", s) << msgTypeQss("action", "ActionMsg", s)
+            << msgTypeQss("nick", "CommandMsg", s) << msgTypeQss("mode", "CommandMsg", s) << msgTypeQss("join", "CommandMsg", s)
+            << msgTypeQss("part", "CommandMsg", s) << msgTypeQss("quit", "CommandMsg", s) << msgTypeQss("kick", "CommandMsg", s)
+            << msgTypeQss("kill", "CommandMsg", s) << msgTypeQss("server", "ServerMsg", s) << msgTypeQss("info", "ServerMsg", s)
+            << msgTypeQss("error", "ErrorMsg", s) << msgTypeQss("daychange", "ServerMsg", s) << msgTypeQss("topic", "CommandMsg", s)
+            << msgTypeQss("netsplit-join", "CommandMsg", s) << msgTypeQss("netsplit-quit", "CommandMsg", s)
+            << msgTypeQss("invite", "CommandMsg", s) << "\n";
     }
 
     if (s.value("UseSenderColors", true).toBool()) {
@@ -166,7 +155,6 @@ void QtUiStyle::generateSettingsQss() const
             for (int i = 0; i < defaultSenderColors.count(); i++)
                 out << nickQss(i);
         }
-
     }
 
     // ItemViews
@@ -184,10 +172,8 @@ void QtUiStyle::generateSettingsQss() const
     if (uiColors.value("UseBufferViewColors").toBool()) {
         out << "\n// BufferView Colors\n"
             << "ChatListItem { foreground: " << color("DefaultBuffer", uiColors) << "; }\n"
-            << chatListItemQss("inactive", "InactiveBuffer", uiColors)
-            << chatListItemQss("channel-event", "ActiveBuffer", uiColors)
-            << chatListItemQss("unread-message", "UnreadBuffer", uiColors)
-            << chatListItemQss("highlighted", "HighlightedBuffer", uiColors);
+            << chatListItemQss("inactive", "InactiveBuffer", uiColors) << chatListItemQss("channel-event", "ActiveBuffer", uiColors)
+            << chatListItemQss("unread-message", "UnreadBuffer", uiColors) << chatListItemQss("highlighted", "HighlightedBuffer", uiColors);
     }
 
     if (uiColors.value("UseNickViewColors").toBool()) {
@@ -200,83 +186,75 @@ void QtUiStyle::generateSettingsQss() const
     settingsQss.close();
 }
 
-
-QString QtUiStyle::color(const QString &key, UiSettings &settings, const QColor &defaultColor) const
+QString QtUiStyle::color(const QString& key, UiSettings& settings, const QColor& defaultColor) const
 {
     return settings.value(key, defaultColor).value<QColor>().name();
 }
 
-
-QString QtUiStyle::fontDescription(const QFont &font) const
+QString QtUiStyle::fontDescription(const QFont& font) const
 {
     QFont::Style style = font.style();
     int weight = font.weight();
 
     return QString("font: %1 %2 %3pt \"%4\"")
-        .arg(style == QFont::StyleItalic  ? "italic"  :
-             style == QFont::StyleOblique ? "oblique" :
-                                            "normal")
+        .arg(style == QFont::StyleItalic ? "italic" : style == QFont::StyleOblique ? "oblique" : "normal")
         .arg(100 * qBound(1, (weight * 8 + 50) / 100, 9))
         .arg(font.pointSize())
         .arg(font.family());
 }
 
-
-QString QtUiStyle::msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const
+QString QtUiStyle::msgTypeQss(const QString& msgType, const QString& key, UiSettings& settings) const
 {
     return QString("ChatLine#%1 { foreground: %2; }\n").arg(msgType, color(key, settings));
 }
 
-
-QString QtUiStyle::senderPaletteQss(UiSettings &settings) const
+QString QtUiStyle::senderPaletteQss(UiSettings& settings) const
 {
     QString result;
     result += "Palette {\n";
 
     // Generate entries for sender-color-self
-    result += QString("    sender-color-self: %1;\n")
-              .arg(color("SenderSelf", settings, defaultSenderColorSelf));
+    result += QString("    sender-color-self: %1;\n").arg(color("SenderSelf", settings, defaultSenderColorSelf));
 
     // Generate entries for sender-color-HASH
     for (int i = 0; i < defaultSenderColors.count(); i++) {
         QString dez = QString::number(i);
-        if (dez.length() == 1) dez.prepend('0');
-        result += QString("    sender-color-0%1: %2;\n")
-                .arg(QString::number(i, 16), color("Sender"+dez, settings, defaultSenderColors[i]));
+        if (dez.length() == 1)
+            dez.prepend('0');
+        result += QString("    sender-color-0%1: %2;\n").arg(QString::number(i, 16), color("Sender" + dez, settings, defaultSenderColors[i]));
     }
     result += "}\n\n";
     return result;
 }
 
-
-QString QtUiStyle::senderQss(int i, const QString &messageType, bool includeNick) const
+QString QtUiStyle::senderQss(int i, const QString& messageType, bool includeNick) const
 {
     QString dez = QString::number(i);
-    if (dez.length() == 1) dez.prepend('0');
+    if (dez.length() == 1)
+        dez.prepend('0');
 
     if (includeNick) {
         // Include the nickname in the color rules
         return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: palette(sender-color-0%2); }\n"
                        "ChatLine::nick#%1[sender=\"0%2\"]   { foreground: palette(sender-color-0%2); }\n")
-                .arg(messageType, QString::number(i, 16));
-    } else {
+            .arg(messageType, QString::number(i, 16));
+    }
+    else {
         return QString("ChatLine::sender#%1[sender=\"0%2\"] { foreground: palette(sender-color-0%2); }\n")
-                .arg(messageType, QString::number(i, 16));
+            .arg(messageType, QString::number(i, 16));
     }
 }
-
 
 QString QtUiStyle::nickQss(int i) const
 {
     QString dez = QString::number(i);
-    if (dez.length() == 1) dez.prepend('0');
+    if (dez.length() == 1)
+        dez.prepend('0');
 
-    return QString("ChatLine::nick[sender=\"0%1\"]   { foreground: palette(sender-color-0%1); }\n")
-            .arg(QString::number(i, 16));
+    return QString("ChatLine::nick[sender=\"0%1\"]   { foreground: palette(sender-color-0%1); }\n").arg(QString::number(i, 16));
 }
 
-
-QString QtUiStyle::chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const
+QString QtUiStyle::chatListItemQss(const QString& state, const QString& key, UiSettings& settings) const
 {
     return QString("ChatListItem[state=\"%1\"] { foreground: %2; }\n").arg(state, color(key, settings));
 }

@@ -22,6 +22,7 @@
 
 #include "dccconfig.h"
 #include "settingspage.h"
+
 #include "ui_dccsettingspage.h"
 
 /**
@@ -37,7 +38,7 @@ public:
      *
      * @param[in] parent QObject parent
      */
-    DccSettingsPage(QWidget *parent = nullptr);
+    DccSettingsPage(QWidget* parent = nullptr);
 
     /// See base class docs
     bool hasDefaults() const override;
@@ -61,11 +62,11 @@ private:
      *
      * @param[in] config The client's config. Must be be valid or a nullptr.
      */
-    void setClientConfig(DccConfig *config);
+    void setClientConfig(DccConfig* config);
 
     // See base class docs
-    QVariant loadAutoWidgetValue(const QString &widgetName) override;
-    void saveAutoWidgetValue(const QString &widgetName, const QVariant &value) override;
+    QVariant loadAutoWidgetValue(const QString& widgetName) override;
+    void saveAutoWidgetValue(const QString& widgetName, const QVariant& value) override;
 
 private slots:
     /**
@@ -84,7 +85,7 @@ private slots:
     void onClientConfigChanged();
 
 private:
-    Ui::DccSettingsPage ui;              ///< The UI object
-    DccConfig *_clientConfig {nullptr};  ///< Pointer to the client's config (nullptr if not synchronized/available)
-    DccConfig _localConfig;              ///< Local config reflecting the widget states
+    Ui::DccSettingsPage ui;             ///< The UI object
+    DccConfig* _clientConfig{nullptr};  ///< Pointer to the client's config (nullptr if not synchronized/available)
+    DccConfig _localConfig;             ///< Local config reflecting the widget states
 };

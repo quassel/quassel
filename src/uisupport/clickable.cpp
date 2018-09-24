@@ -18,15 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "clickable.h"
+
 #include <QDesktopServices>
 #include <QModelIndex>
 #include <QUrl>
 
 #include "buffermodel.h"
-#include "clickable.h"
 #include "client.h"
 
-void Clickable::activate(NetworkId networkId, const QString &text) const
+void Clickable::activate(NetworkId networkId, const QString& text) const
 {
     if (!isValid())
         return;
@@ -47,10 +48,9 @@ void Clickable::activate(NetworkId networkId, const QString &text) const
     }
 }
 
-
 // NOTE: This method is not threadsafe and not reentrant!
 //       (RegExps are not constant while matching, and they are static here for efficiency)
-ClickableList ClickableList::fromString(const QString &str)
+ClickableList ClickableList::fromString(const QString& str)
 {
     // For matching URLs
     static QString scheme(R"((?:(?:mailto:|(?:[+.-]?\w)+://)|www(?=\.\S+\.)))");
@@ -70,13 +70,13 @@ ClickableList ClickableList::fromString(const QString &str)
         // TODO: Nicks, we'll need a filtering for only matching known nicknames further down if we do this
     };
 
-    static const int regExpCount = 2; // number of regexps in the array above
+    static const int regExpCount = 2;  // number of regexps in the array above
 
-    qint16 matches[] = { 0, 0, 0 };
-    qint16 matchEnd[] = { 0, 0, 0 };
+    qint16 matches[] = {0, 0, 0};
+    qint16 matchEnd[] = {0, 0, 0};
 
     ClickableList result;
-    //QString str = data(ChatLineModel::DisplayRole).toString();
+    // QString str = data(ChatLineModel::DisplayRole).toString();
 
     qint16 idx = 0;
     qint16 minidx;
@@ -86,10 +86,12 @@ ClickableList ClickableList::fromString(const QString &str)
         type = -1;
         minidx = str.length();
         for (int i = 0; i < regExpCount; i++) {
-            if (matches[i] < 0 || matchEnd[i] > str.length()) continue;
+            if (matches[i] < 0 || matchEnd[i] > str.length())
+                continue;
             if (idx >= matchEnd[i]) {
                 matches[i] = regExp[i].indexIn(str, qMax(matchEnd[i], idx));
-                if (matches[i] >= 0) matchEnd[i] = matches[i] + regExp[i].cap(1).length();
+                if (matches[i] >= 0)
+                    matchEnd[i] = matches[i] + regExp[i].cap(1).length();
             }
             if (matches[i] >= 0 && matches[i] < minidx) {
                 minidx = matches[i];
@@ -99,7 +101,7 @@ ClickableList ClickableList::fromString(const QString &str)
         if (type >= 0) {
             idx = matchEnd[type];
             QString match = str.mid(matches[type], matchEnd[type] - matches[type]);
-            if (type == Clickable::Url && str.at(idx-1) == ')') { // special case: closing paren only matches if we had an open one
+            if (type == Clickable::Url && str.at(idx - 1) == ')') {  // special case: closing paren only matches if we had an open one
                 if (!match.contains('(')) {
                     matchEnd[type]--;
                     match.chop(1);
@@ -112,15 +114,13 @@ ClickableList ClickableList::fromString(const QString &str)
             }
             result.emplace_back((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]);
         }
-    }
-    while (type >= 0);
+    } while (type >= 0);
     return result;
 }
 
-
 Clickable ClickableList::atCursorPos(int idx)
 {
-    foreach(const Clickable &click, *this) {
+    foreach (const Clickable& click, *this) {
         if (idx >= click.start() && idx < click.start() + click.length())
             return click;
     }

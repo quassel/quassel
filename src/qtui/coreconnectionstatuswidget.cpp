@@ -24,9 +24,9 @@
 #include "icon.h"
 #include "signalproxy.h"
 
-CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connection, QWidget *parent)
-    : QWidget(parent),
-    _coreConnection(connection)
+CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection* connection, QWidget* parent)
+    : QWidget(parent)
+    , _coreConnection(connection)
 {
     ui.setupUi(this);
     ui.lagLabel->hide();
@@ -43,10 +43,9 @@ CoreConnectionStatusWidget::CoreConnectionStatusWidget(CoreConnection *connectio
     connect(coreConnection(), &CoreConnection::lagUpdated, this, &CoreConnectionStatusWidget::updateLag);
 }
 
-
 void CoreConnectionStatusWidget::update()
 {
-    CoreConnection *conn = coreConnection();
+    CoreConnection* conn = coreConnection();
     if (conn->progressMaximum() >= 0) {
         ui.progressBar->setMinimum(conn->progressMinimum());
         ui.progressBar->setMaximum(conn->progressMaximum());
@@ -58,7 +57,6 @@ void CoreConnectionStatusWidget::update()
 
     ui.messageLabel->setText(conn->progressText());
 }
-
 
 void CoreConnectionStatusWidget::updateLag(int msecs)
 {
@@ -73,7 +71,6 @@ void CoreConnectionStatusWidget::updateLag(int msecs)
             ui.lagLabel->hide();
     }
 }
-
 
 void CoreConnectionStatusWidget::connectionStateChanged(CoreConnection::ConnectionState state)
 {
@@ -91,7 +88,6 @@ void CoreConnectionStatusWidget::connectionStateChanged(CoreConnection::Connecti
     else
         ui.sslLabel->hide();
 }
-
 
 void CoreConnectionStatusWidget::progressRangeChanged(int min, int max)
 {

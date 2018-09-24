@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include "ui_bufferwidget.h"
-
 #include "abstractbuffercontainer.h"
+
+#include "ui_bufferwidget.h"
 
 class QGraphicsItem;
 class ChatView;
@@ -34,42 +34,42 @@ class BufferWidget : public AbstractBufferContainer
     Q_OBJECT
 
 public:
-    BufferWidget(QWidget *parent);
+    BufferWidget(QWidget* parent);
     ~BufferWidget() override;
 
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
-    inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
-    void addActionsToMenu(QMenu *, const QPointF &pos);
+    inline ChatViewSearchBar* searchBar() const { return ui.searchBar; }
+    void addActionsToMenu(QMenu*, const QPointF& pos);
     virtual inline bool autoMarkerLineOnLostFocus() const { return _autoMarkerLineOnLostFocus; }
 
 public slots:
-    virtual void setMarkerLine(ChatView *view = nullptr, bool allowGoingBack = true);
-    virtual void jumpToMarkerLine(ChatView *view = nullptr, bool requestBacklog = true);
+    virtual void setMarkerLine(ChatView* view = nullptr, bool allowGoingBack = true);
+    virtual void jumpToMarkerLine(ChatView* view = nullptr, bool requestBacklog = true);
 
 protected:
-    AbstractChatView *createChatView(BufferId) override;
+    AbstractChatView* createChatView(BufferId) override;
     void removeChatView(BufferId) override;
     inline bool autoMarkerLine() const override { return _autoMarkerLine; }
 
 protected slots:
-    void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
+    void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
     void showChatView(BufferId) override;
 
 private slots:
-    void scrollToHighlight(QGraphicsItem *highlightItem);
+    void scrollToHighlight(QGraphicsItem* highlightItem);
     void zoomIn();
     void zoomOut();
     void zoomOriginal();
 
-    void setAutoMarkerLine(const QVariant &);
-    void setAutoMarkerLineOnLostFocus(const QVariant &);
+    void setAutoMarkerLine(const QVariant&);
+    void setAutoMarkerLineOnLostFocus(const QVariant&);
 
 private:
     Ui::BufferWidget ui;
-    QHash<BufferId, QWidget *> _chatViews;
+    QHash<BufferId, QWidget*> _chatViews;
 
-    ChatViewSearchController *_chatViewSearchController;
+    ChatViewSearchController* _chatViewSearchController;
 
     bool _autoMarkerLine;
     bool _autoMarkerLineOnLostFocus;

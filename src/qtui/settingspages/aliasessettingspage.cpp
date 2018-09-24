@@ -25,7 +25,7 @@
 
 #include "icon.h"
 
-AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
+AliasesSettingsPage::AliasesSettingsPage(QWidget* parent)
     : SettingsPage(tr("IRC"), tr("Aliases"), parent)
 {
     ui.setupUi(this);
@@ -49,19 +49,16 @@ AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
     enableDialog(_aliasesModel.isReady());
 }
 
-
 void AliasesSettingsPage::load()
 {
     if (_aliasesModel.hasConfigChanged())
         _aliasesModel.revert();
 }
 
-
 void AliasesSettingsPage::defaults()
 {
     _aliasesModel.loadDefaults();
 }
-
 
 void AliasesSettingsPage::save()
 {
@@ -69,14 +66,12 @@ void AliasesSettingsPage::save()
         _aliasesModel.commit();
 }
 
-
 void AliasesSettingsPage::enableDialog(bool enabled)
 {
     ui.newAliasButton->setEnabled(enabled);
     ui.deleteAliasButton->setEnabled(enabled);
     setEnabled(enabled);
 }
-
 
 void AliasesSettingsPage::deleteSelectedAlias()
 {

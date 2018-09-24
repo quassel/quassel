@@ -25,14 +25,13 @@
 #include "client.h"
 #include "irclistmodel.h"
 
-QVariantList ClientIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters)
+QVariantList ClientIrcListHelper::requestChannelList(const NetworkId& netId, const QStringList& channelFilters)
 {
     _netId = netId;
     return IrcListHelper::requestChannelList(netId, channelFilters);
 }
 
-
-void ClientIrcListHelper::receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QVariantList &channels)
+void ClientIrcListHelper::receiveChannelList(const NetworkId& netId, const QStringList& channelFilters, const QVariantList& channels)
 {
     QVariantList::const_iterator iter = channels.constBegin();
     QVariantList::const_iterator iterEnd = channels.constEnd();
@@ -48,8 +47,7 @@ void ClientIrcListHelper::receiveChannelList(const NetworkId &netId, const QStri
     emit channelListReceived(netId, channelFilters, channelList);
 }
 
-
-void ClientIrcListHelper::reportFinishedList(const NetworkId &netId)
+void ClientIrcListHelper::reportFinishedList(const NetworkId& netId)
 {
     if (_netId == netId) {
         requestChannelList(netId, QStringList());

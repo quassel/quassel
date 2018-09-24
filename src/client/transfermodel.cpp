@@ -25,27 +25,23 @@
 #include "transfermanager.h"
 
 namespace {
-    constexpr int colCount{8};
+constexpr int colCount{8};
 }
-
 
 int TransferModel::rowCount(const QModelIndex& index) const
 {
     return index.isValid() ? 0 : _transferIds.size();
 }
 
-
 int TransferModel::columnCount(const QModelIndex& index) const
 {
     return index.isValid() ? 0 : colCount;
 }
 
-
 QVariant TransferModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    static std::array<QString, colCount> headers = {{
-        tr("Type"), tr("File"), tr("Status"), tr("Progress"), tr("Transferred"), tr("Speed"), tr("Peer"), tr("Peer Address")
-    }};
+    static std::array<QString, colCount> headers = {
+        {tr("Type"), tr("File"), tr("Status"), tr("Progress"), tr("Transferred"), tr("Speed"), tr("Peer"), tr("Peer Address")}};
 
     if (section < 0 || section >= columnCount() || orientation != Qt::Horizontal)
         return {};
@@ -58,7 +54,6 @@ QVariant TransferModel::headerData(int section, Qt::Orientation orientation, int
         return {};
     }
 }
-
 
 QVariant TransferModel::data(const QModelIndex& index, int role) const
 {
@@ -76,21 +71,21 @@ QVariant TransferModel::data(const QModelIndex& index, int role) const
     switch (role) {
     case Qt::DisplayRole:
         switch (index.column()) {
-        case 0: // Type
+        case 0:  // Type
             return t->direction() == Transfer::Direction::Send ? tr("Send") : tr("Receive");
-        case 1: // File
+        case 1:  // File
             return t->fileName();
-        case 2: // Status
+        case 2:  // Status
             return t->prettyStatus();
-        case 3: // Progress
+        case 3:  // Progress
             return (t->transferred() / t->fileSize()) * 100;
-        case 4: // Transferred
-            return t->transferred(); // TODO: use pretty units and show total
-        case 5: // Speed
-            return "n/a"; // TODO: fixme
-        case 6: // Peer
+        case 4:                       // Transferred
+            return t->transferred();  // TODO: use pretty units and show total
+        case 5:                       // Speed
+            return "n/a";             // TODO: fixme
+        case 6:                       // Peer
             return t->nick();
-        case 7: // Peer Address
+        case 7:  // Peer Address
             return QString("%1.%2").arg(t->address().toString(), t->port());
         }
         break;
@@ -102,8 +97,7 @@ QVariant TransferModel::data(const QModelIndex& index, int role) const
     return {};
 }
 
-
-void TransferModel::setManager(const TransferManager *manager)
+void TransferModel::setManager(const TransferManager* manager)
 {
     if (_manager) {
         disconnect(_manager, nullptr, this, nullptr);
@@ -116,14 +110,13 @@ void TransferModel::setManager(const TransferManager *manager)
     if (_manager) {
         connect(manager, &TransferManager::transferAdded, this, &TransferModel::onTransferAdded);
         connect(manager, &TransferManager::transferRemoved, this, &TransferModel::onTransferRemoved);
-        for (auto &&transferId : _manager->transferIds()) {
+        for (auto&& transferId : _manager->transferIds()) {
             onTransferAdded(transferId);
         }
     }
 }
 
-
-void TransferModel::onTransferAdded(const QUuid &transferId)
+void TransferModel::onTransferAdded(const QUuid& transferId)
 {
     auto transfer = _manager->transfer(transferId);
     if (!transfer) {
@@ -146,8 +139,7 @@ void TransferModel::onTransferAdded(const QUuid &transferId)
     endInsertRows();
 }
 
-
-void TransferModel::onTransferRemoved(const QUuid &transferId)
+void TransferModel::onTransferRemoved(const QUuid& transferId)
 {
     // Check if the transfer object still exists, which means we still should disconnect
     auto transfer = _manager->transfer(transferId);
@@ -164,10 +156,9 @@ void TransferModel::onTransferRemoved(const QUuid &transferId)
     }
 }
 
-
 void TransferModel::onTransferDataChanged()
 {
-    auto transfer = qobject_cast<Transfer *>(sender());
+    auto transfer = qobject_cast<Transfer*>(sender());
     if (!transfer)
         return;
 

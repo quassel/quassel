@@ -34,15 +34,15 @@ class CLIENT_EXPORT BufferViewOverlay : public QObject
     Q_OBJECT
 
 public:
-    BufferViewOverlay(QObject *parent = nullptr);
+    BufferViewOverlay(QObject* parent = nullptr);
 
-    inline const QSet<int> &bufferViewIds() { return _bufferViewIds; }
+    inline const QSet<int>& bufferViewIds() { return _bufferViewIds; }
     bool allNetworks();
 
-    const QSet<NetworkId> &networkIds();
-    const QSet<BufferId> &bufferIds();
-    const QSet<BufferId> &removedBufferIds();
-    const QSet<BufferId> &tempRemovedBufferIds();
+    const QSet<NetworkId>& networkIds();
+    const QSet<BufferId>& bufferIds();
+    const QSet<BufferId>& removedBufferIds();
+    const QSet<BufferId>& tempRemovedBufferIds();
 
     int allowedBufferTypes();
     int minimumActivity();
@@ -65,15 +65,15 @@ signals:
     void initDone();
 
 protected:
-    void customEvent(QEvent *event) override;
+    void customEvent(QEvent* event) override;
 
 private slots:
     void viewInitialized();
-    void viewInitialized(BufferViewConfig *config);
+    void viewInitialized(BufferViewConfig* config);
 
 private:
     void updateHelper();
-    QSet<BufferId> filterBuffersByConfig(const QList<BufferId> &buffers, const BufferViewConfig *config);
+    QSet<BufferId> filterBuffersByConfig(const QList<BufferId>& buffers, const BufferViewConfig* config);
 
     bool _aboutToUpdate{false};
 

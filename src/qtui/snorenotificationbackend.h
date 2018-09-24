@@ -21,39 +21,38 @@
 #ifndef SNORENOTIFICATIONBACKEND_H_
 #define SNORENOTIFICATIONBACKEND_H_
 
-#include "abstractnotificationbackend.h"
+#include <libsnore/notification/notification.h>
+#include <libsnore/snore.h>
 
+#include "abstractnotificationbackend.h"
 #include "settingspage.h"
 
 #include "ui_snorentificationconfigwidget.h"
 
-#include <libsnore/snore.h>
-#include <libsnore/notification/notification.h>
-
 class SystrayNotificationBackend;
 
-class SnoreNotificationBackend : public AbstractNotificationBackend {
+class SnoreNotificationBackend : public AbstractNotificationBackend
+{
     Q_OBJECT
 public:
-    SnoreNotificationBackend (QObject *parent);
+    SnoreNotificationBackend(QObject* parent);
     ~SnoreNotificationBackend();
 
-    void notify(const Notification &);
+    void notify(const Notification&);
     void close(uint notificationId);
 
-    virtual SettingsPage *createConfigWidget() const;
+    virtual SettingsPage* createConfigWidget() const;
 
 public slots:
     void actionInvoked(Snore::Notification);
 
 private slots:
-    void setTraybackend(const QVariant &b);
+    void setTraybackend(const QVariant& b);
 
 private:
-
     class ConfigWidget;
 #ifndef HAVE_KDE
-    SystrayNotificationBackend * m_systrayBackend = nullptr;
+    SystrayNotificationBackend* m_systrayBackend = nullptr;
 #endif
     QHash<uint, uint> m_notificationIds;
     Snore::Icon m_icon;
@@ -61,11 +60,12 @@ private:
     Snore::Alert m_alert;
 };
 
-class SnoreNotificationBackend::ConfigWidget : public SettingsPage {
+class SnoreNotificationBackend::ConfigWidget : public SettingsPage
+{
     Q_OBJECT
 
 public:
-    ConfigWidget(QWidget *parent = 0);
+    ConfigWidget(QWidget* parent = 0);
 
     bool hasDefaults() const;
     void defaults();

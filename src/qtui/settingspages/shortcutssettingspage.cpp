@@ -18,9 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <QTimer>
-
 #include "shortcutssettingspage.h"
+
+#include <QTimer>
 
 #include "action.h"
 #include "actioncollection.h"
@@ -28,27 +28,26 @@
 #include "shortcutsmodel.h"
 #include "util.h"
 
-ShortcutsFilter::ShortcutsFilter(QObject *parent) : QSortFilterProxyModel(parent)
+ShortcutsFilter::ShortcutsFilter(QObject* parent)
+    : QSortFilterProxyModel(parent)
 {
     setDynamicSortFilter(true);
 }
 
-
-void ShortcutsFilter::setFilterString(const QString &filterString)
+void ShortcutsFilter::setFilterString(const QString& filterString)
 {
     _filterString = filterString;
     invalidateFilter();
 }
 
-
-bool ShortcutsFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool ShortcutsFilter::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
     if (!source_parent.isValid())
         return true;
 
     QModelIndex index = source_parent.model()->index(source_row, 0, source_parent);
     Q_ASSERT(index.isValid());
-    if (!qobject_cast<Action *>(index.data(ShortcutsModel::ActionRole).value<QObject *>())->isShortcutConfigurable())
+    if (!qobject_cast<Action*>(index.data(ShortcutsModel::ActionRole).value<QObject*>())->isShortcutConfigurable())
         return false;
 
     for (int col = 0; col < source_parent.model()->columnCount(source_parent); col++) {
@@ -58,13 +57,12 @@ bool ShortcutsFilter::filterAcceptsRow(int source_row, const QModelIndex &source
     return false;
 }
 
-
 /****************************************************************************/
 
-ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollection *> &actionCollections, QWidget *parent)
-    : SettingsPage(tr("Interface"), tr("Shortcuts"), parent),
-    _shortcutsModel(new ShortcutsModel(actionCollections, this)),
-    _shortcutsFilter(new ShortcutsFilter(this))
+ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollection*>& actionCollections, QWidget* parent)
+    : SettingsPage(tr("Interface"), tr("Shortcuts"), parent)
+    , _shortcutsModel(new ShortcutsModel(actionCollections, this))
+    , _shortcutsFilter(new ShortcutsFilter(this))
 {
     ui.setupUi(this);
 
@@ -90,7 +88,6 @@ ShortcutsSettingsPage::ShortcutsSettingsPage(const QHash<QString, ActionCollecti
     QTimer::singleShot(0, ui.searchEdit, [widget = ui.searchEdit]() { widget->setFocus(); });
 }
 
-
 void ShortcutsSettingsPage::setWidgetStates()
 {
     if (ui.shortcutsView->currentIndex().isValid() && ui.shortcutsView->currentIndex().parent().isValid()) {
@@ -115,14 +112,12 @@ void ShortcutsSettingsPage::setWidgetStates()
     }
 }
 
-
-void ShortcutsSettingsPage::on_searchEdit_textChanged(const QString &text)
+void ShortcutsSettingsPage::on_searchEdit_textChanged(const QString& text)
 {
     _shortcutsFilter->setFilterString(text);
 }
 
-
-void ShortcutsSettingsPage::keySequenceChanged(const QKeySequence &seq, const QModelIndex &conflicting)
+void ShortcutsSettingsPage::keySequenceChanged(const QKeySequence& seq, const QModelIndex& conflicting)
 {
     if (conflicting.isValid())
         _shortcutsModel->setData(conflicting, QKeySequence(), ShortcutsModel::ActiveShortcutRole);
@@ -132,7 +127,6 @@ void ShortcutsSettingsPage::keySequenceChanged(const QKeySequence &seq, const QM
     _shortcutsModel->setData(rowIdx, seq, ShortcutsModel::ActiveShortcutRole);
     setWidgetStates();
 }
-
 
 void ShortcutsSettingsPage::toggledCustomOrDefault()
 {
@@ -151,7 +145,6 @@ void ShortcutsSettingsPage::toggledCustomOrDefault()
     setWidgetStates();
 }
 
-
 void ShortcutsSettingsPage::save()
 {
     _shortcutsModel->commit();
@@ -159,14 +152,12 @@ void ShortcutsSettingsPage::save()
     SettingsPage::save();
 }
 
-
 void ShortcutsSettingsPage::load()
 {
     _shortcutsModel->load();
 
     SettingsPage::load();
 }
-
 
 void ShortcutsSettingsPage::defaults()
 {

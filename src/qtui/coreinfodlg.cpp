@@ -27,12 +27,13 @@
 #include "icon.h"
 #include "util.h"
 
-CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
+CoreInfoDlg::CoreInfoDlg(QWidget* parent)
+    : QDialog(parent)
+{
     ui.setupUi(this);
 
     // Listen for resynchronization events (pre-0.13 cores only)
-    connect(Client::instance(), &Client::coreInfoResynchronized,
-            this, &CoreInfoDlg::coreInfoResynchronized);
+    connect(Client::instance(), &Client::coreInfoResynchronized, this, &CoreInfoDlg::coreInfoResynchronized);
 
     // Update legacy core info for Quassel cores earlier than 0.13.  This does nothing on modern
     // cores.
@@ -48,8 +49,8 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent) : QDialog(parent) {
     startTimer(1000);
 }
 
-
-void CoreInfoDlg::refreshLegacyCoreInfo() {
+void CoreInfoDlg::refreshLegacyCoreInfo()
+{
     if (!Client::isConnected() || Client::isCoreFeatureEnabled(Quassel::Feature::SyncedCoreInfo)) {
         // If we're not connected, or the core supports SyncedCoreInfo (0.13+), bail out
         return;
@@ -63,36 +64,37 @@ void CoreInfoDlg::refreshLegacyCoreInfo() {
     QTimer::singleShot(15 * 1000, this, &CoreInfoDlg::refreshLegacyCoreInfo);
 }
 
-
-void CoreInfoDlg::coreInfoResynchronized() {
+void CoreInfoDlg::coreInfoResynchronized()
+{
     // CoreInfo object has been recreated, or this is the first time the dialog's been shown
 
-    CoreInfo *coreInfo = Client::coreInfo();
+    CoreInfo* coreInfo = Client::coreInfo();
     // Listen for changes to core information
-    connect(coreInfo, &CoreInfo::coreDataChanged,
-            this, &CoreInfoDlg::coreInfoChanged);
+    connect(coreInfo, &CoreInfo::coreDataChanged, this, &CoreInfoDlg::coreInfoChanged);
 
     // Update with any known core information set before connecting the signal.  This is needed for
     // both modern (0.13+) and legacy cores.
     coreInfoChanged(coreInfo->coreData());
 }
 
-
-void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
-    if(coreInfo.isEmpty()) {
+void CoreInfoDlg::coreInfoChanged(const QVariantMap& coreInfo)
+{
+    if (coreInfo.isEmpty()) {
         // We're missing data for some reason
         if (Client::isConnected()) {
             // Core info is entirely empty despite being connected.  Something's probably wrong.
             ui.labelCoreVersion->setText(tr("Unknown"));
             ui.labelCoreVersionDate->setText(tr("Unknown"));
-        } else {
+        }
+        else {
             // We're disconnected.  Mark as such.
             ui.labelCoreVersion->setText(tr("Disconnected from core"));
             ui.labelCoreVersionDate->setText(tr("Not available"));
         }
         ui.labelClientCount->setNum(0);
         // Don't return, allow the code below to remove any existing session widgets
-    } else {
+    }
+    else {
         ui.labelCoreVersion->setText(coreInfo["quasselVersion"].toString());
         // "BuildDate" for compatibility
         if (coreInfo["quasselBuildDate"].toString().isEmpty()) {
@@ -100,15 +102,14 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
         }
         else {
             ui.labelCoreVersionDate->setText(
-                        tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString(),
-                        Qt::DateFormat::DefaultLocaleShortDate));
+                tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString(), Qt::DateFormat::DefaultLocaleShortDate));
         }
         ui.labelClientCount->setNum(coreInfo["sessionConnectedClients"].toInt());
     }
 
     auto coreSessionSupported = false;
     auto ids = _widgets.keys();
-    for (const auto &peerData : coreInfo["sessionConnectedClientData"].toList()) {
+    for (const auto& peerData : coreInfo["sessionConnectedClientData"].toList()) {
         coreSessionSupported = true;
 
         auto peerMap = peerData.toMap();
@@ -117,7 +118,7 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
         ids.removeAll(peerId);
 
         bool isNew = false;
-        CoreSessionWidget *coreSessionWidget = _widgets[peerId];
+        CoreSessionWidget* coreSessionWidget = _widgets[peerId];
         if (coreSessionWidget == nullptr) {
             coreSessionWidget = new CoreSessionWidget(ui.coreSessionScrollContainer);
             isNew = true;
@@ -127,13 +128,12 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
             _widgets[peerId] = coreSessionWidget;
             // Add this to the end of the session list, but before the default layout stretch item.
             // The layout stretch item should never be removed, so count should always be >= 1.
-            ui.coreSessionContainer->insertWidget(ui.coreSessionContainer->count() - 1,
-                                                  coreSessionWidget, 0, Qt::AlignTop);
+            ui.coreSessionContainer->insertWidget(ui.coreSessionContainer->count() - 1, coreSessionWidget, 0, Qt::AlignTop);
             connect(coreSessionWidget, &CoreSessionWidget::disconnectClicked, this, &CoreInfoDlg::disconnectClicked);
         }
     }
 
-    for (const auto &key : ids) {
+    for (const auto& key : ids) {
         delete _widgets[key];
         _widgets.remove(key);
     }
@@ -141,24 +141,25 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap &coreInfo) {
     ui.coreSessionScrollArea->setVisible(coreSessionSupported);
 
     // Hide the information bar when core sessions are supported or when disconnected
-    ui.coreUnsupportedWidget->setVisible(
-                !(coreSessionSupported || Client::isConnected() == false));
+    ui.coreUnsupportedWidget->setVisible(!(coreSessionSupported || Client::isConnected() == false));
 
     // Update uptime for immediate display, don't wait for the timer
     updateUptime();
 }
 
-
-void CoreInfoDlg::updateUptime() {
-    CoreInfo *coreInfo = Client::coreInfo();
+void CoreInfoDlg::updateUptime()
+{
+    CoreInfo* coreInfo = Client::coreInfo();
 
     if (!Client::isConnected()) {
         // Not connected, don't bother trying to calculate the uptime
         ui.labelUptime->setText(tr("Not available"));
-    } else if (coreInfo->coreData().isEmpty()) {
+    }
+    else if (coreInfo->coreData().isEmpty()) {
         // Core info is entirely empty despite being connected.  Something's probably wrong.
         ui.labelUptime->setText(tr("Unknown"));
-    } else {
+    }
+    else {
         // Connected, format the uptime for display
         QDateTime startTime = coreInfo->at("startTime").toDateTime();
 
@@ -170,18 +171,18 @@ void CoreInfoDlg::updateUptime() {
         int64_t upmins = uptime / 60;
         uptime %= 60;
 
-        QString uptimeText = tr("%n Day(s)", "", updays) +
-                             tr(" %1:%2:%3 (since %4)")
-                                     .arg(uphours, 2, 10, QChar('0'))
-                                     .arg(upmins, 2, 10, QChar('0'))
-                                     .arg(uptime, 2, 10, QChar('0'))
-                                     .arg(startTime.toLocalTime()
-                                          .toString(Qt::DefaultLocaleShortDate));
+        QString uptimeText = tr("%n Day(s)", "", updays)
+                             + tr(" %1:%2:%3 (since %4)")
+                                   .arg(uphours, 2, 10, QChar('0'))
+                                   .arg(upmins, 2, 10, QChar('0'))
+                                   .arg(uptime, 2, 10, QChar('0'))
+                                   .arg(startTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
         ui.labelUptime->setText(uptimeText);
     }
 }
 
-void CoreInfoDlg::disconnectClicked(int peerId) {
+void CoreInfoDlg::disconnectClicked(int peerId)
+{
     Client::kickClient(peerId);
 }
 
@@ -189,8 +190,8 @@ void CoreInfoDlg::on_coreUnsupportedDetails_clicked()
 {
     QMessageBox::warning(this,
                          tr("Active sessions unsupported"),
-                         QString("<p><b>%1</b></p></br><p>%2</p>"
-                                 ).arg(tr("Your Quassel core is too old to show active sessions"),
-                                       tr("You need a Quassel core v0.13.0 or newer to view and "
-                                          "disconnect other connected clients.")));
+                         QString("<p><b>%1</b></p></br><p>%2</p>")
+                             .arg(tr("Your Quassel core is too old to show active sessions"),
+                                  tr("You need a Quassel core v0.13.0 or newer to view and "
+                                     "disconnect other connected clients.")));
 }

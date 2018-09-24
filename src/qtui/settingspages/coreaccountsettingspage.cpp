@@ -26,10 +26,10 @@
 #include "icon.h"
 #include "util.h"
 
-CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
-    : SettingsPage(tr("Remote Cores"), QString(), parent),
-    _lastAccountId(0),
-    _lastAutoConnectId(0)
+CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget* parent)
+    : SettingsPage(tr("Remote Cores"), QString(), parent)
+    , _lastAccountId(0)
+    , _lastAutoConnectId(0)
 {
     ui.setupUi(this);
     initAutoWidgets();
@@ -51,12 +51,10 @@ CoreAccountSettingsPage::CoreAccountSettingsPage(QWidget *parent)
     setWidgetStates();
 }
 
-
 void CoreAccountSettingsPage::setStandAlone(bool standalone)
 {
     _standalone = standalone;
 }
-
 
 void CoreAccountSettingsPage::load()
 {
@@ -85,7 +83,6 @@ void CoreAccountSettingsPage::load()
     setChangedState(false);
 }
 
-
 void CoreAccountSettingsPage::save()
 {
     SettingsPage::save();
@@ -97,10 +94,9 @@ void CoreAccountSettingsPage::save()
     ui.autoConnectAccount->setProperty("storedValue", ui.autoConnectAccount->currentIndex());
 }
 
-
 // TODO: Qt 4.6 - replace by proper rowsMoved() semantics
 // NOTE: This is the filtered model
-void CoreAccountSettingsPage::rowsAboutToBeRemoved(const QModelIndex &index, int start, int end)
+void CoreAccountSettingsPage::rowsAboutToBeRemoved(const QModelIndex& index, int start, int end)
 {
     _lastAutoConnectId = _lastAccountId = 0;
     if (index.isValid() || start != end)
@@ -114,8 +110,7 @@ void CoreAccountSettingsPage::rowsAboutToBeRemoved(const QModelIndex &index, int
         _lastAutoConnectId = id;
 }
 
-
-void CoreAccountSettingsPage::rowsInserted(const QModelIndex &index, int start, int end)
+void CoreAccountSettingsPage::rowsInserted(const QModelIndex& index, int start, int end)
 {
     if (index.isValid() || start != end)
         return;
@@ -129,7 +124,6 @@ void CoreAccountSettingsPage::rowsInserted(const QModelIndex &index, int start, 
     _lastAccountId = _lastAutoConnectId = 0;
 }
 
-
 AccountId CoreAccountSettingsPage::selectedAccount() const
 {
     QModelIndex index = ui.accountView->currentIndex();
@@ -138,14 +132,12 @@ AccountId CoreAccountSettingsPage::selectedAccount() const
     return index.data(CoreAccountModel::AccountIdRole).value<AccountId>();
 }
 
-
 void CoreAccountSettingsPage::setSelectedAccount(AccountId accId)
 {
     QModelIndex index = filteredModel()->mapFromSource(model()->accountIndex(accId));
     if (index.isValid())
         ui.accountView->setCurrentIndex(index);
 }
-
 
 void CoreAccountSettingsPage::on_addAccountButton_clicked()
 {
@@ -157,7 +149,6 @@ void CoreAccountSettingsPage::on_addAccountButton_clicked()
     }
 }
 
-
 void CoreAccountSettingsPage::on_editAccountButton_clicked()
 {
     QModelIndex idx = ui.accountView->selectionModel()->currentIndex();
@@ -167,8 +158,7 @@ void CoreAccountSettingsPage::on_editAccountButton_clicked()
     editAccount(idx);
 }
 
-
-void CoreAccountSettingsPage::editAccount(const QModelIndex &index)
+void CoreAccountSettingsPage::editAccount(const QModelIndex& index)
 {
     if (!index.isValid())
         return;
@@ -180,7 +170,6 @@ void CoreAccountSettingsPage::editAccount(const QModelIndex &index)
         widgetHasChanged();
     }
 }
-
 
 void CoreAccountSettingsPage::on_deleteAccountButton_clicked()
 {
@@ -194,8 +183,7 @@ void CoreAccountSettingsPage::on_deleteAccountButton_clicked()
     }
 }
 
-
-void CoreAccountSettingsPage::on_accountView_doubleClicked(const QModelIndex &index)
+void CoreAccountSettingsPage::on_accountView_doubleClicked(const QModelIndex& index)
 {
     if (!index.isValid())
         return;
@@ -206,7 +194,6 @@ void CoreAccountSettingsPage::on_accountView_doubleClicked(const QModelIndex &in
         editAccount(index);
 }
 
-
 void CoreAccountSettingsPage::setWidgetStates()
 {
     AccountId accId = selectedAccount();
@@ -216,18 +203,15 @@ void CoreAccountSettingsPage::setWidgetStates()
     ui.deleteAccountButton->setEnabled(editable);
 }
 
-
 void CoreAccountSettingsPage::widgetHasChanged()
 {
     setChangedState(testHasChanged());
     setWidgetStates();
 }
 
-
 bool CoreAccountSettingsPage::testHasChanged()
 {
-    if (ui.autoConnectAccount->currentIndex() !=
-            ui.autoConnectAccount->property("storedValue").toInt()) {
+    if (ui.autoConnectAccount->currentIndex() != ui.autoConnectAccount->property("storedValue").toInt()) {
         return true;
     }
     if (*model() != *Client::coreAccountModel()) {
@@ -237,11 +221,10 @@ bool CoreAccountSettingsPage::testHasChanged()
     return false;
 }
 
-
 /*****************************************************************************************
  * CoreAccountEditDlg
  *****************************************************************************************/
-CoreAccountEditDlg::CoreAccountEditDlg(const CoreAccount &acct, QWidget *parent)
+CoreAccountEditDlg::CoreAccountEditDlg(const CoreAccount& acct, QWidget* parent)
     : QDialog(parent)
 {
     ui.setupUi(this);
@@ -295,7 +278,6 @@ CoreAccountEditDlg::CoreAccountEditDlg(const CoreAccount &acct, QWidget *parent)
         setWindowTitle(tr("Add Core Account"));
 }
 
-
 CoreAccount CoreAccountEditDlg::account()
 {
     _account.setAccountName(ui.accountName->text().trimmed());
@@ -309,17 +291,16 @@ CoreAccount CoreAccountEditDlg::account()
     int checkedId = ui.buttonGroupProxyType->checkedId();
 
     switch (checkedId) {
-    case NoProxy: // QNetworkProxy::NoProxy
+    case NoProxy:  // QNetworkProxy::NoProxy
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         _account.setProxyType(proxyType);
         break;
-    case SystemProxy: // QNetworkProxy::DefaultProxy:
+    case SystemProxy:  // QNetworkProxy::DefaultProxy:
         QNetworkProxyFactory::setUseSystemConfiguration(true);
         _account.setProxyType(QNetworkProxy::DefaultProxy);
         break;
-    case ManualProxy: // QNetworkProxy::Socks5Proxy || QNetworkProxy::HttpProxy
-        proxyType = ui.proxyType->currentIndex() == 0 ?
-                    QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
+    case ManualProxy:  // QNetworkProxy::Socks5Proxy || QNetworkProxy::HttpProxy
+        proxyType = ui.proxyType->currentIndex() == 0 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         _account.setProxyHostName(ui.proxyHostName->text().trimmed());
         _account.setProxyPort(ui.proxyPort->value());
@@ -333,31 +314,25 @@ CoreAccount CoreAccountEditDlg::account()
     return _account;
 }
 
-
 void CoreAccountEditDlg::setWidgetStates()
 {
-    bool ok = !ui.accountName->text().trimmed().isEmpty()
-              && !ui.user->text().trimmed().isEmpty()
-              && !ui.hostName->text().isEmpty();
+    bool ok = !ui.accountName->text().trimmed().isEmpty() && !ui.user->text().trimmed().isEmpty() && !ui.hostName->text().isEmpty();
     ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ok);
 }
 
-
-void CoreAccountEditDlg::on_hostName_textChanged(const QString &text)
+void CoreAccountEditDlg::on_hostName_textChanged(const QString& text)
 {
     Q_UNUSED(text);
     setWidgetStates();
 }
 
-
-void CoreAccountEditDlg::on_accountName_textChanged(const QString &text)
+void CoreAccountEditDlg::on_accountName_textChanged(const QString& text)
 {
     Q_UNUSED(text);
     setWidgetStates();
 }
 
-
-void CoreAccountEditDlg::on_user_textChanged(const QString &text)
+void CoreAccountEditDlg::on_user_textChanged(const QString& text)
 {
     Q_UNUSED(text)
     setWidgetStates();
@@ -372,19 +347,18 @@ void CoreAccountEditDlg::on_radioButtonManualProxy_toggled(bool checked)
     ui.proxyPassword->setEnabled(checked);
 }
 
-
 /*****************************************************************************************
  * FilteredCoreAccountModel
  *****************************************************************************************/
 
-FilteredCoreAccountModel::FilteredCoreAccountModel(CoreAccountModel *model, QObject *parent) : QSortFilterProxyModel(parent)
+FilteredCoreAccountModel::FilteredCoreAccountModel(CoreAccountModel* model, QObject* parent)
+    : QSortFilterProxyModel(parent)
 {
     _internalAccount = model->internalAccount();
     setSourceModel(model);
 }
 
-
-bool FilteredCoreAccountModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool FilteredCoreAccountModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
 {
     if (Quassel::runMode() == Quassel::Monolithic)
         return true;

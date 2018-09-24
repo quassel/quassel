@@ -22,9 +22,9 @@
 
 #include "common-export.h"
 
+#include "message.h"
 #include "syncableobject.h"
 #include "types.h"
-#include "message.h"
 
 class COMMON_EXPORT BufferSyncer : public SyncableObject
 {
@@ -32,21 +32,27 @@ class COMMON_EXPORT BufferSyncer : public SyncableObject
     SYNCABLE_OBJECT
 
 public:
-    explicit BufferSyncer(QObject *parent);
-    explicit BufferSyncer(QHash<BufferId, MsgId> lastSeenMsg, QHash<BufferId, MsgId> markerLines, QHash<BufferId, Message::Types> activities, QHash<BufferId, int> highlightCounts, QObject *parent);
+    explicit BufferSyncer(QObject* parent);
+    explicit BufferSyncer(QHash<BufferId, MsgId> lastSeenMsg,
+                          QHash<BufferId, MsgId> markerLines,
+                          QHash<BufferId, Message::Types> activities,
+                          QHash<BufferId, int> highlightCounts,
+                          QObject* parent);
 
     MsgId lastSeenMsg(BufferId buffer) const;
     MsgId markerLine(BufferId buffer) const;
     Message::Types activity(BufferId buffer) const;
     int highlightCount(BufferId buffer) const;
 
-    void markActivitiesChanged() {
+    void markActivitiesChanged()
+    {
         for (auto buffer : _bufferActivities.keys()) {
             emit bufferActivityChanged(buffer, activity(buffer));
         }
     }
 
-    void markHighlightCountsChanged() {
+    void markHighlightCountsChanged()
+    {
         for (auto buffer : _highlightCounts.keys()) {
             emit highlightCountChanged(buffer, highlightCount(buffer));
         }
@@ -54,28 +60,33 @@ public:
 
 public slots:
     QVariantList initLastSeenMsg() const;
-    void initSetLastSeenMsg(const QVariantList &);
+    void initSetLastSeenMsg(const QVariantList&);
 
     QVariantList initMarkerLines() const;
-    void initSetMarkerLines(const QVariantList &);
+    void initSetMarkerLines(const QVariantList&);
 
     QVariantList initActivities() const;
-    void initSetActivities(const QVariantList &);
+    void initSetActivities(const QVariantList&);
 
     QVariantList initHighlightCounts() const;
-    void initSetHighlightCounts(const QVariantList &);
+    void initSetHighlightCounts(const QVariantList&);
 
-    virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
-    virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId &msgId) { REQUEST(ARG(buffer), ARG(msgId)) setMarkerLine(buffer, msgId); }
+    virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId& msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
+    virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId& msgId)
+    {
+        REQUEST(ARG(buffer), ARG(msgId)) setMarkerLine(buffer, msgId);
+    }
 
-    virtual inline void setBufferActivity(BufferId buffer, int activity) {
+    virtual inline void setBufferActivity(BufferId buffer, int activity)
+    {
         auto flags = Message::Types(activity);
         SYNC(ARG(buffer), ARG(activity));
         _bufferActivities[buffer] = flags;
         emit bufferActivityChanged(buffer, flags);
     }
 
-    virtual inline void setHighlightCount(BufferId buffer, int count) {
+    virtual inline void setHighlightCount(BufferId buffer, int count)
+    {
         SYNC(ARG(buffer), ARG(count));
         _highlightCounts[buffer] = count;
         emit highlightCountChanged(buffer, count);
@@ -85,7 +96,10 @@ public slots:
     virtual void removeBuffer(BufferId buffer);
 
     virtual inline void requestRenameBuffer(BufferId buffer, QString newName) { REQUEST(ARG(buffer), ARG(newName)) }
-    virtual inline void renameBuffer(BufferId buffer, QString newName) { SYNC(ARG(buffer), ARG(newName)) emit bufferRenamed(buffer, newName); }
+    virtual inline void renameBuffer(BufferId buffer, QString newName)
+    {
+        SYNC(ARG(buffer), ARG(newName)) emit bufferRenamed(buffer, newName);
+    }
 
     virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { emit REQUEST(ARG(buffer1), ARG(buffer2)) }
     virtual void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2);
@@ -96,8 +110,8 @@ public slots:
     virtual inline void markBufferAsRead(BufferId buffer) { SYNC(ARG(buffer)) emit bufferMarkedAsRead(buffer); }
 
 signals:
-    void lastSeenMsgSet(BufferId buffer, const MsgId &msgId);
-    void markerLineSet(BufferId buffer, const MsgId &msgId);
+    void lastSeenMsgSet(BufferId buffer, const MsgId& msgId);
+    void markerLineSet(BufferId buffer, const MsgId& msgId);
     void bufferRemoved(BufferId buffer);
     void bufferRenamed(BufferId buffer, QString newName);
     void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
@@ -106,8 +120,8 @@ signals:
     void highlightCountChanged(BufferId, int);
 
 protected slots:
-    bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);
-    bool setMarkerLine(BufferId buffer, const MsgId &msgId);
+    bool setLastSeenMsg(BufferId buffer, const MsgId& msgId);
+    bool setMarkerLine(BufferId buffer, const MsgId& msgId);
 
 protected:
     inline QList<BufferId> lastSeenBufferIds() const { return _lastSeenMsg.keys(); }

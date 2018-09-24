@@ -23,7 +23,7 @@
 #include "icon.h"
 #include "networkssettingspage.h"
 
-SimpleNetworkEditor::SimpleNetworkEditor(QWidget *parent)
+SimpleNetworkEditor::SimpleNetworkEditor(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
@@ -37,7 +37,6 @@ SimpleNetworkEditor::SimpleNetworkEditor(QWidget *parent)
     connect(ui.networkNameEdit, &QLineEdit::textEdited, this, &SimpleNetworkEditor::widgetHasChanged);
     connect(ui.channelList, &QTextEdit::textChanged, this, &SimpleNetworkEditor::widgetHasChanged);
 }
-
 
 void SimpleNetworkEditor::setWidgetStates()
 {
@@ -55,14 +54,13 @@ void SimpleNetworkEditor::setWidgetStates()
     }
 }
 
-
-void SimpleNetworkEditor::displayNetworkInfo(const NetworkInfo &networkInfo)
+void SimpleNetworkEditor::displayNetworkInfo(const NetworkInfo& networkInfo)
 {
     _networkInfo = networkInfo;
 
     ui.serverList->clear();
-    foreach(Network::Server server, _networkInfo.serverList) {
-        QListWidgetItem *item = new QListWidgetItem(QString("%1:%2").arg(server.host).arg(server.port));
+    foreach (Network::Server server, _networkInfo.serverList) {
+        QListWidgetItem* item = new QListWidgetItem(QString("%1:%2").arg(server.host).arg(server.port));
         if (server.useSsl)
             item->setIcon(icon::get("document-encrypt"));
         ui.serverList->addItem(item);
@@ -72,31 +70,26 @@ void SimpleNetworkEditor::displayNetworkInfo(const NetworkInfo &networkInfo)
     setWidgetStates();
 }
 
-
-void SimpleNetworkEditor::saveToNetworkInfo(NetworkInfo &networkInfo)
+void SimpleNetworkEditor::saveToNetworkInfo(NetworkInfo& networkInfo)
 {
     _networkInfo.networkName = ui.networkNameEdit->text();
     networkInfo = _networkInfo;
 }
 
-
 QStringList SimpleNetworkEditor::defaultChannels() const
 {
-    return ui.channelList->toPlainText().split("\n",  QString::SkipEmptyParts);
+    return ui.channelList->toPlainText().split("\n", QString::SkipEmptyParts);
 }
 
-
-void SimpleNetworkEditor::setDefaultChannels(const QStringList &channels)
+void SimpleNetworkEditor::setDefaultChannels(const QStringList& channels)
 {
     ui.channelList->setPlainText(channels.join("\n"));
 }
-
 
 void SimpleNetworkEditor::on_serverList_itemSelectionChanged()
 {
     setWidgetStates();
 }
-
 
 void SimpleNetworkEditor::on_addServer_clicked()
 {
@@ -108,7 +101,6 @@ void SimpleNetworkEditor::on_addServer_clicked()
         emit widgetHasChanged();
     }
 }
-
 
 void SimpleNetworkEditor::on_editServer_clicked()
 {
@@ -122,7 +114,6 @@ void SimpleNetworkEditor::on_editServer_clicked()
     }
 }
 
-
 void SimpleNetworkEditor::on_deleteServer_clicked()
 {
     int cur = ui.serverList->currentRow();
@@ -131,7 +122,6 @@ void SimpleNetworkEditor::on_deleteServer_clicked()
     ui.serverList->setCurrentRow(qMin(cur, ui.serverList->count() - 1));
     emit widgetHasChanged();
 }
-
 
 void SimpleNetworkEditor::on_upServer_clicked()
 {
@@ -142,7 +132,6 @@ void SimpleNetworkEditor::on_upServer_clicked()
     ui.serverList->setCurrentRow(cur - 1);
     emit widgetHasChanged();
 }
-
 
 void SimpleNetworkEditor::on_downServer_clicked()
 {

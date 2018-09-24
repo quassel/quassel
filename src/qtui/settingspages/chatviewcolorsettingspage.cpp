@@ -25,14 +25,13 @@
 #include "qtui.h"
 #include "qtuistyle.h"
 
-ChatViewColorSettingsPage::ChatViewColorSettingsPage(QWidget *parent) :
-    SettingsPage(tr("Interface"), tr("Chat View Colors"), parent)
+ChatViewColorSettingsPage::ChatViewColorSettingsPage(QWidget* parent)
+    : SettingsPage(tr("Interface"), tr("Chat View Colors"), parent)
 {
     ui.setupUi(this);
 
     initAutoWidgets();
 }
-
 
 void ChatViewColorSettingsPage::save()
 {

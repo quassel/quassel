@@ -35,15 +35,17 @@ namespace detail {
  * QObject should always be deleted by calling deleteLater() on them, so the event loop can
  * perform necessary cleanups.
  */
-struct DeferredDeleter {
+struct DeferredDeleter
+{
     /// Deletes the given QObject
-    void operator()(QObject *object) const {
+    void operator()(QObject* object) const
+    {
         if (object)
             object->deleteLater();
     }
 };
 
-} // detail
+}  // namespace detail
 
 /**
  * Unique pointer for QObjects with deferred deletion
@@ -52,7 +54,6 @@ struct DeferredDeleter {
  */
 template<typename T>
 using DeferredUniquePtr = std::unique_ptr<T, detail::DeferredDeleter>;
-
 
 /**
  * Helper function for creating a DeferredUniquePtr
@@ -65,13 +66,12 @@ using DeferredUniquePtr = std::unique_ptr<T, detail::DeferredDeleter>;
  * @param[in] args Constructor arguments
  * @returns A DeferredUniquePtr holding a new instance of T
  */
-template<typename T, typename ...Args>
+template<typename T, typename... Args>
 DeferredUniquePtr<T> makeDeferredUnique(Args... args)
 {
     static_assert(std::is_base_of<QObject, T>::value, "Type must inherit from QObject");
     return DeferredUniquePtr<T>(new T(std::forward<Args>(args)...));
 }
-
 
 /**
  * Shared pointer for QObjects with deferred deletion
@@ -80,7 +80,6 @@ DeferredUniquePtr<T> makeDeferredUnique(Args... args)
  */
 template<typename T>
 using DeferredSharedPtr = std::shared_ptr<T>;
-
 
 /**
  * Helper function for creating a DeferredSharedPtr
@@ -93,7 +92,7 @@ using DeferredSharedPtr = std::shared_ptr<T>;
  * @param[in] args Constructor arguments
  * @returns A DeferredSharedPtr holding a new instance of T
  */
-template<typename T, typename ...Args>
+template<typename T, typename... Args>
 DeferredSharedPtr<T> makeDeferredShared(Args... args)
 {
     static_assert(std::is_base_of<QObject, T>::value, "Type must inherit from QObject");

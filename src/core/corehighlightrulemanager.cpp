@@ -25,7 +25,7 @@
 
 constexpr auto settingsKey = "HighlightRuleList";
 
-CoreHighlightRuleManager::CoreHighlightRuleManager(CoreSession *session)
+CoreHighlightRuleManager::CoreHighlightRuleManager(CoreSession* session)
     : HighlightRuleManager(session)
     , _coreSession{session}
 {
@@ -44,9 +44,7 @@ void CoreHighlightRuleManager::save()
     Core::setUserSetting(_coreSession->user(), settingsKey, toVariantMap());
 }
 
-bool CoreHighlightRuleManager::match(const RawMessage &msg, const QString &currentNick,
-                                     const QStringList &identityNicks)
+bool CoreHighlightRuleManager::match(const RawMessage& msg, const QString& currentNick, const QStringList& identityNicks)
 {
-    return match(msg.networkId, msg.text, msg.sender, msg.type, msg.flags, msg.target, currentNick,
-                 identityNicks);
+    return match(msg.networkId, msg.text, msg.sender, msg.type, msg.flags, msg.target, currentNick, identityNicks);
 }

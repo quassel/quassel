@@ -30,15 +30,14 @@ class MainPage : public QWidget
     Q_OBJECT
 
 public:
-    MainPage(QWidget *parent = nullptr);
+    MainPage(QWidget* parent = nullptr);
 
 private slots:
     void showCoreConnectionDlg();
     void coreConnectionStateChanged();
 
 private:
-    QPushButton *_connectButton;
+    QPushButton* _connectButton;
 };
-
 
 #endif

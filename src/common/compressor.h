@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include <zlib.h>
-
 #include <QObject>
+
+#include <zlib.h>
 
 class QTcpSocket;
 
@@ -31,33 +31,36 @@ class Compressor : public QObject
     Q_OBJECT
 
 public:
-    enum CompressionLevel {
+    enum CompressionLevel
+    {
         NoCompression,
         DefaultCompression,
         BestCompression,
         BestSpeed
     };
 
-    enum Error {
+    enum Error
+    {
         NoError,
         StreamError,
         DeviceError
     };
 
-    enum WriteBufferHint {
+    enum WriteBufferHint
+    {
         NoFlush,
         Flush
     };
 
-    Compressor(QTcpSocket *socket, CompressionLevel level, QObject *parent = nullptr);
+    Compressor(QTcpSocket* socket, CompressionLevel level, QObject* parent = nullptr);
     ~Compressor() override;
 
     CompressionLevel compressionLevel() const { return _level; }
 
     qint64 bytesAvailable() const;
 
-    qint64 read(char *data, qint64 maxSize);
-    qint64 write(const char *data, qint64 count, WriteBufferHint flush = Flush);
+    qint64 read(char* data, qint64 maxSize);
+    qint64 write(const char* data, qint64 count, WriteBufferHint flush = Flush);
 
     void flush();
 
@@ -73,7 +76,7 @@ private:
     void writeData();
 
 private:
-    QTcpSocket *_socket;
+    QTcpSocket* _socket;
     CompressionLevel _level;
 
     QByteArray _readBuffer;

@@ -30,38 +30,35 @@
 #include "quassel.h"
 
 int AbstractSqlStorage::_nextConnectionId = 0;
-AbstractSqlStorage::AbstractSqlStorage(QObject *parent)
+AbstractSqlStorage::AbstractSqlStorage(QObject* parent)
     : Storage(parent)
-{
-}
-
+{}
 
 AbstractSqlStorage::~AbstractSqlStorage()
 {
     // disconnect the connections, so their deletion is no longer interessting for us
-    QHash<QThread *, Connection *>::iterator conIter;
+    QHash<QThread*, Connection*>::iterator conIter;
     for (conIter = _connectionPool.begin(); conIter != _connectionPool.end(); ++conIter) {
         QSqlDatabase::removeDatabase(conIter.value()->name());
         disconnect(conIter.value(), nullptr, this, nullptr);
     }
 }
 
-
 QSqlDatabase AbstractSqlStorage::logDb()
 {
     if (!_connectionPool.contains(QThread::currentThread()))
         addConnectionToPool();
 
-    QSqlDatabase db = QSqlDatabase::database(_connectionPool[QThread::currentThread()]->name(),false);
+    QSqlDatabase db = QSqlDatabase::database(_connectionPool[QThread::currentThread()]->name(), false);
 
     if (!db.isOpen()) {
-        qWarning() << "Database connection" << displayName() << "for thread" << QThread::currentThread() << "was lost, attempting to reconnect...";
+        qWarning() << "Database connection" << displayName() << "for thread" << QThread::currentThread()
+                   << "was lost, attempting to reconnect...";
         dbConnect(db);
     }
 
     return db;
 }
-
 
 void AbstractSqlStorage::addConnectionToPool()
 {
@@ -71,11 +68,11 @@ void AbstractSqlStorage::addConnectionToPool()
     if (_connectionPool.contains(QThread::currentThread()))
         return;
 
-    QThread *currentThread = QThread::currentThread();
+    QThread* currentThread = QThread::currentThread();
 
     int connectionId = _nextConnectionId++;
 
-    Connection *connection = new Connection(QLatin1String(QString("quassel_%1_con_%2").arg(driverName()).arg(connectionId).toLatin1()));
+    Connection* connection = new Connection(QLatin1String(QString("quassel_%1_con_%2").arg(driverName()).arg(connectionId).toLatin1()));
     connection->moveToThread(currentThread);
     connect(this, &QObject::destroyed, connection, &QObject::deleteLater);
     connect(currentThread, &QObject::destroyed, connection, &QObject::deleteLater);
@@ -99,8 +96,7 @@ void AbstractSqlStorage::addConnectionToPool()
     dbConnect(db);
 }
 
-
-void AbstractSqlStorage::dbConnect(QSqlDatabase &db)
+void AbstractSqlStorage::dbConnect(QSqlDatabase& db)
 {
     if (!db.open()) {
         quWarning() << "Unable to open database" << displayName() << "for thread" << QThread::currentThread();
@@ -114,10 +110,7 @@ void AbstractSqlStorage::dbConnect(QSqlDatabase &db)
     }
 }
 
-
-Storage::State AbstractSqlStorage::init(const QVariantMap &settings,
-                                        const QProcessEnvironment &environment,
-                                        bool loadFromEnvironment)
+Storage::State AbstractSqlStorage::init(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment)
 {
     setConnectionProperties(settings, environment, loadFromEnvironment);
 
@@ -139,8 +132,9 @@ Storage::State AbstractSqlStorage::init(const QVariantMap &settings,
 
     if (installedSchemaVersion() < schemaVersion()) {
         quInfo() << qPrintable(tr("Installed database schema (version %1) is not up to date. Upgrading to "
-                                  "version %2...  This may take a while for major upgrades."
-                                 ).arg(installedSchemaVersion()).arg(schemaVersion()));
+                                  "version %2...  This may take a while for major upgrades.")
+                                   .arg(installedSchemaVersion())
+                                   .arg(schemaVersion()));
         emit dbUpgradeInProgress(true);
         auto upgradeResult = upgradeDb();
         emit dbUpgradeInProgress(false);
@@ -157,8 +151,7 @@ Storage::State AbstractSqlStorage::init(const QVariantMap &settings,
     return IsReady;
 }
 
-
-QString AbstractSqlStorage::queryString(const QString &queryName, int version)
+QString AbstractSqlStorage::queryString(const QString& queryName, int version)
 {
     QFileInfo queryInfo;
 
@@ -168,10 +161,10 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version)
         // Use the current SQL schema, not a versioned request
         queryInfo = QFileInfo(QString(":/SQL/%1/%2.sql").arg(displayName()).arg(queryName));
         // If version is needed later, get it via version = schemaVersion();
-    } else {
+    }
+    else {
         // Use the specified schema version, not the general folder
-        queryInfo = QFileInfo(QString(":/SQL/%1/version/%2/%3.sql")
-                              .arg(displayName()).arg(version).arg(queryName));
+        queryInfo = QFileInfo(QString(":/SQL/%1/version/%2/%3.sql").arg(displayName()).arg(version).arg(queryName));
     }
 
     if (!queryInfo.exists() || !queryInfo.isFile() || !queryInfo.isReadable()) {
@@ -188,21 +181,18 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version)
     return query.trimmed();
 }
 
-
 QStringList AbstractSqlStorage::setupQueries()
 {
     QStringList queries;
     // The current schema is stored in the root folder, including setup scripts.
     QDir dir = QDir(QString(":/SQL/%1/").arg(displayName()));
-    foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
+    foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
         queries << queryString(fileInfo.baseName());
     }
     return queries;
 }
 
-
-bool AbstractSqlStorage::setup(const QVariantMap &settings, const QProcessEnvironment &environment,
-                               bool loadFromEnvironment)
+bool AbstractSqlStorage::setup(const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment)
 {
     setConnectionProperties(settings, environment, loadFromEnvironment);
     QSqlDatabase db = logDb();
@@ -212,7 +202,7 @@ bool AbstractSqlStorage::setup(const QVariantMap &settings, const QProcessEnviro
     }
 
     db.transaction();
-    foreach(QString queryString, setupQueries()) {
+    foreach (QString queryString, setupQueries()) {
         QSqlQuery query = db.exec(queryString);
         if (!watchQuery(query)) {
             qCritical() << "Unable to setup Logging Backend!";
@@ -228,18 +218,16 @@ bool AbstractSqlStorage::setup(const QVariantMap &settings, const QProcessEnviro
     return success;
 }
 
-
 QStringList AbstractSqlStorage::upgradeQueries(int version)
 {
     QStringList queries;
     // Upgrade queries are stored in the 'version/##' subfolders.
     QDir dir = QDir(QString(":/SQL/%1/version/%2/").arg(displayName()).arg(version));
-    foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
+    foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
         queries << queryString(fileInfo.baseName(), version);
     }
     return queries;
 }
-
 
 bool AbstractSqlStorage::upgradeDb()
 {
@@ -253,12 +241,11 @@ bool AbstractSqlStorage::upgradeDb()
     // any database modifications that might not be allowed in a transaction.
 
     for (int ver = installedSchemaVersion() + 1; ver <= schemaVersion(); ver++) {
-        foreach(QString queryString, upgradeQueries(ver)) {
+        foreach (QString queryString, upgradeQueries(ver)) {
             QSqlQuery query = db.exec(queryString);
             if (!watchQuery(query)) {
                 // Individual upgrade query failed, bail out
-                qCritical() << "Unable to upgrade Logging Backend!  Upgrade query in schema version"
-                            << ver << "failed.";
+                qCritical() << "Unable to upgrade Logging Backend!  Upgrade query in schema version" << ver << "failed.";
                 return false;
             }
         }
@@ -272,8 +259,7 @@ bool AbstractSqlStorage::upgradeDb()
         // version.
         if (!updateSchemaVersion(ver)) {
             // Updating the schema version failed, bail out
-            qCritical() << "Unable to upgrade Logging Backend!  Setting schema version"
-                        << ver << "failed.";
+            qCritical() << "Unable to upgrade Logging Backend!  Setting schema version" << ver << "failed.";
             return false;
         }
     }
@@ -282,15 +268,13 @@ bool AbstractSqlStorage::upgradeDb()
     // logging (though setting schema version really should not fail).
     if (!updateSchemaVersion(schemaVersion())) {
         // Updating the final schema version failed, bail out
-        qCritical() << "Unable to upgrade Logging Backend!  Setting final schema version"
-                    << schemaVersion() << "failed.";
+        qCritical() << "Unable to upgrade Logging Backend!  Setting final schema version" << schemaVersion() << "failed.";
         return false;
     }
 
     // If we made it here, everything seems to have worked!
     return true;
 }
-
 
 int AbstractSqlStorage::schemaVersion()
 {
@@ -303,7 +287,7 @@ int AbstractSqlStorage::schemaVersion()
     bool ok;
     // Schema versions are stored in the 'version/##' subfolders.
     QDir dir = QDir(QString(":/SQL/%1/version/").arg(displayName()));
-    foreach(QFileInfo fileInfo, dir.entryInfoList()) {
+    foreach (QFileInfo fileInfo, dir.entryInfoList()) {
         if (!fileInfo.isDir())
             continue;
 
@@ -317,8 +301,7 @@ int AbstractSqlStorage::schemaVersion()
     return _schemaVersion;
 }
 
-
-bool AbstractSqlStorage::watchQuery(QSqlQuery &query)
+bool AbstractSqlStorage::watchQuery(QSqlQuery& query)
 {
     bool queryError = query.lastError().isValid();
     if (queryError || _debug) {
@@ -339,7 +322,7 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery &query)
                     field.clear();
                 else
                     field.setValue(iter.value());
-                value =  query.driver()->formatValue(field);
+                value = query.driver()->formatValue(field);
             }
             else {
                 switch (iter.value().type()) {
@@ -366,23 +349,19 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery &query)
     return true;
 }
 
-
 void AbstractSqlStorage::connectionDestroyed()
 {
     QMutexLocker locker(&_connectionPoolMutex);
     _connectionPool.remove(sender()->thread());
 }
 
-
 // ========================================
 //  AbstractSqlStorage::Connection
 // ========================================
-AbstractSqlStorage::Connection::Connection(const QString &name, QObject *parent)
-    : QObject(parent),
-    _name(name.toLatin1())
-{
-}
-
+AbstractSqlStorage::Connection::Connection(const QString& name, QObject* parent)
+    : QObject(parent)
+    , _name(name.toLatin1())
+{}
 
 AbstractSqlStorage::Connection::~Connection()
 {
@@ -396,18 +375,16 @@ AbstractSqlStorage::Connection::~Connection()
     QSqlDatabase::removeDatabase(name());
 }
 
-
 // ========================================
 //  AbstractSqlMigrator
 // ========================================
 
-void AbstractSqlMigrator::newQuery(const QString &query, QSqlDatabase db)
+void AbstractSqlMigrator::newQuery(const QString& query, QSqlDatabase db)
 {
     Q_ASSERT(!_query);
     _query = new QSqlQuery(db);
     _query->prepare(query);
 }
-
 
 void AbstractSqlMigrator::resetQuery()
 {
@@ -415,14 +392,12 @@ void AbstractSqlMigrator::resetQuery()
     _query = nullptr;
 }
 
-
 bool AbstractSqlMigrator::exec()
 {
     Q_ASSERT(_query);
     _query->exec();
     return !_query->lastError().isValid();
 }
-
 
 QString AbstractSqlMigrator::migrationObject(MigrationObject moType)
 {
@@ -451,7 +426,6 @@ QString AbstractSqlMigrator::migrationObject(MigrationObject moType)
     return QString();
 }
 
-
 QVariantList AbstractSqlMigrator::boundValues()
 {
     QVariantList values;
@@ -465,7 +439,6 @@ QVariantList AbstractSqlMigrator::boundValues()
     return values;
 }
 
-
 void AbstractSqlMigrator::dumpStatus()
 {
     qWarning() << "  executed Query:";
@@ -474,21 +447,18 @@ void AbstractSqlMigrator::dumpStatus()
     QList<QVariant> list = boundValues();
     for (int i = 0; i < list.size(); ++i)
         qWarning() << i << ": " << list.at(i).toString().toLatin1().data();
-    qWarning() << "  Error Number:"   << lastError().number();
-    qWarning() << "  Error Message:"   << lastError().text();
+    qWarning() << "  Error Number:" << lastError().number();
+    qWarning() << "  Error Message:" << lastError().text();
 }
-
 
 // ========================================
 //  AbstractSqlMigrationReader
 // ========================================
 AbstractSqlMigrationReader::AbstractSqlMigrationReader()
     : AbstractSqlMigrator()
-{
-}
+{}
 
-
-bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer)
+bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter* writer)
 {
     if (!transaction()) {
         qWarning() << "AbstractSqlMigrationReader::migrateTo(): unable to start reader's transaction!";
@@ -496,7 +466,7 @@ bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer)
     }
     if (!writer->transaction()) {
         qWarning() << "AbstractSqlMigrationReader::migrateTo(): unable to start writer's transaction!";
-        rollback(); // close the reader transaction;
+        rollback();  // close the reader transaction;
         return false;
     }
 
@@ -548,8 +518,7 @@ bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer)
     return finalizeMigration();
 }
 
-
-void AbstractSqlMigrationReader::abortMigration(const QString &errorMsg)
+void AbstractSqlMigrationReader::abortMigration(const QString& errorMsg)
 {
     qWarning() << "Migration Failed!";
     if (!errorMsg.isNull()) {
@@ -570,7 +539,6 @@ void AbstractSqlMigrationReader::abortMigration(const QString &errorMsg)
     _writer = nullptr;
 }
 
-
 bool AbstractSqlMigrationReader::finalizeMigration()
 {
     resetQuery();
@@ -585,19 +553,20 @@ bool AbstractSqlMigrationReader::finalizeMigration()
     return true;
 }
 
-
 template<typename T>
-bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo)
+bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T& mo)
 {
     resetQuery();
     _writer->resetQuery();
 
     if (!prepareQuery(moType)) {
-        abortMigration(QString("AbstractSqlMigrationReader::migrateTo(): unable to prepare reader query of type %1!").arg(AbstractSqlMigrator::migrationObject(moType)));
+        abortMigration(QString("AbstractSqlMigrationReader::migrateTo(): unable to prepare reader query of type %1!")
+                           .arg(AbstractSqlMigrator::migrationObject(moType)));
         return false;
     }
     if (!_writer->prepareQuery(moType)) {
-        abortMigration(QString("AbstractSqlMigrationReader::migrateTo(): unable to prepare writer query of type %1!").arg(AbstractSqlMigrator::migrationObject(moType)));
+        abortMigration(QString("AbstractSqlMigrationReader::migrateTo(): unable to prepare writer query of type %1!")
+                           .arg(AbstractSqlMigrator::migrationObject(moType)));
         return false;
     }
 
@@ -608,7 +577,8 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo)
 
     while (readMo(mo)) {
         if (!_writer->writeMo(mo)) {
-            abortMigration(QString("AbstractSqlMigrationReader::transferMo(): unable to transfer Migratable Object of type %1!").arg(AbstractSqlMigrator::migrationObject(moType)));
+            abortMigration(QString("AbstractSqlMigrationReader::transferMo(): unable to transfer Migratable Object of type %1!")
+                               .arg(AbstractSqlMigrator::migrationObject(moType)));
             return false;
         }
         i++;
@@ -626,12 +596,12 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo)
     return true;
 }
 
-uint qHash(const SenderData &key) {
+uint qHash(const SenderData& key)
+{
     return qHash(QString(key.sender + "\n" + key.realname + "\n" + key.avatarurl));
 }
 
-bool operator==(const SenderData &a, const SenderData &b) {
-    return a.sender == b.sender &&
-        a.realname == b.realname &&
-        a.avatarurl == b.avatarurl;
+bool operator==(const SenderData& a, const SenderData& b)
+{
+    return a.sender == b.sender && a.realname == b.realname && a.avatarurl == b.avatarurl;
 }

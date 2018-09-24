@@ -31,7 +31,7 @@ class ClientTransfer : public Transfer
     Q_OBJECT
 
 public:
-    ClientTransfer(const QUuid &uuid, QObject *parent = nullptr);
+    ClientTransfer(const QUuid& uuid, QObject* parent = nullptr);
 
     QString savePath() const;
 
@@ -39,11 +39,11 @@ public:
 
 public slots:
     // called on the client side
-    void accept(const QString &savePath) const override;
+    void accept(const QString& savePath) const override;
     void reject() const override;
 
 private slots:
-    void dataReceived(PeerPtr peer, const QByteArray &data) override;
+    void dataReceived(PeerPtr peer, const QByteArray& data) override;
     void onStatusChanged(Transfer::Status status);
 
 private:
@@ -51,5 +51,5 @@ private:
 
     mutable QString _savePath;
 
-    QFile *_file;
+    QFile* _file;
 };

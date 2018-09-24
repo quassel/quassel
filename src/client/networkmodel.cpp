@@ -20,27 +20,28 @@
 
 #include "networkmodel.h"
 
+#include <utility>
+
 #include <QAbstractItemView>
 #include <QMimeData>
-#include <utility>
 
 #include "buffermodel.h"
 #include "buffersettings.h"
+#include "buffersyncer.h"
 #include "client.h"
 #include "clientignorelistmanager.h"
 #include "clientsettings.h"
 #include "ircchannel.h"
 #include "network.h"
 #include "signalproxy.h"
-#include "buffersyncer.h"
 
 /*****************************************
-*  Network Items
-*****************************************/
-NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
-    : PropertyMapItem(parent),
-    _networkId(netid),
-    _statusBufferItem(nullptr)
+ *  Network Items
+ *****************************************/
+NetworkItem::NetworkItem(const NetworkId& netid, AbstractTreeItem* parent)
+    : PropertyMapItem(parent)
+    , _networkId(netid)
+    , _statusBufferItem(nullptr)
 {
     // DO NOT EMIT dataChanged() DIRECTLY IN NetworkItem
     // use networkDataChanged() instead. Otherwise you will end up in a infinite loop
@@ -50,13 +51,11 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
     connect(this, &NetworkItem::beginRemoveChilds, this, &NetworkItem::onBeginRemoveChilds);
 }
 
-
 QStringList NetworkItem::propertyOrder() const
 {
     static QStringList order{"networkName", "currentServer", "nickCount"};
     return order;
 }
-
 
 QVariant NetworkItem::data(int column, int role) const
 {
@@ -80,7 +79,7 @@ QVariant NetworkItem::data(int column, int role) const
     }
 }
 
-QString NetworkItem::escapeHTML(const QString &string, bool useNonbreakingSpaces)
+QString NetworkItem::escapeHTML(const QString& string, bool useNonbreakingSpaces)
 {
     // QString.replace() doesn't guarantee the source string will remain constant.
     // Use a local variable to avoid compiler errors.
@@ -88,14 +87,13 @@ QString NetworkItem::escapeHTML(const QString &string, bool useNonbreakingSpaces
     return (useNonbreakingSpaces ? formattedString.replace(" ", "&nbsp;") : formattedString);
 }
 
-
 // FIXME shouldn't we check the bufferItemCache here?
-BufferItem *NetworkItem::findBufferItem(BufferId bufferId)
+BufferItem* NetworkItem::findBufferItem(BufferId bufferId)
 {
-    BufferItem *bufferItem = nullptr;
+    BufferItem* bufferItem = nullptr;
 
     for (int i = 0; i < childCount(); i++) {
-        bufferItem = qobject_cast<BufferItem *>(child(i));
+        bufferItem = qobject_cast<BufferItem*>(child(i));
         if (!bufferItem)
             continue;
         if (bufferItem->bufferId() == bufferId)
@@ -104,10 +102,9 @@ BufferItem *NetworkItem::findBufferItem(BufferId bufferId)
     return nullptr;
 }
 
-
-BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo)
+BufferItem* NetworkItem::bufferItem(const BufferInfo& bufferInfo)
 {
-    BufferItem *bufferItem = findBufferItem(bufferInfo);
+    BufferItem* bufferItem = findBufferItem(bufferInfo);
     if (bufferItem)
         return bufferItem;
 
@@ -133,61 +130,48 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo)
 
     // postprocess... this is necessary because Qt doesn't seem to like adding children which already have children on their own
     switch (bufferInfo.type()) {
-    case BufferInfo::ChannelBuffer:
-    {
-        auto *channelBufferItem = static_cast<ChannelBufferItem *>(bufferItem);
+    case BufferInfo::ChannelBuffer: {
+        auto* channelBufferItem = static_cast<ChannelBufferItem*>(bufferItem);
         if (_network) {
-            IrcChannel *ircChannel = _network->ircChannel(bufferInfo.bufferName());
+            IrcChannel* ircChannel = _network->ircChannel(bufferInfo.bufferName());
             if (ircChannel)
                 channelBufferItem->attachIrcChannel(ircChannel);
         }
-    }
-    break;
+    } break;
     default:
         break;
     }
 
-    BufferSyncer *bufferSyncer = Client::bufferSyncer();
+    BufferSyncer* bufferSyncer = Client::bufferSyncer();
     if (bufferSyncer) {
-        bufferItem->addActivity(
-                bufferSyncer->activity(bufferItem->bufferId()),
-                bufferSyncer->highlightCount(bufferItem->bufferId()) > 0
-        );
+        bufferItem->addActivity(bufferSyncer->activity(bufferItem->bufferId()), bufferSyncer->highlightCount(bufferItem->bufferId()) > 0);
     }
 
     return bufferItem;
 }
 
-
-void NetworkItem::attachNetwork(Network *network)
+void NetworkItem::attachNetwork(Network* network)
 {
     if (!network)
         return;
 
     _network = network;
 
-    connect(network, &Network::networkNameSet,
-        this, &NetworkItem::setNetworkName);
-    connect(network, &Network::currentServerSet,
-        this, &NetworkItem::setCurrentServer);
-    connect(network, &Network::ircChannelAdded,
-        this, &NetworkItem::attachIrcChannel);
-    connect(network, &Network::ircUserAdded,
-        this, &NetworkItem::attachIrcUser);
-    connect(network, &Network::connectedSet,
-        this, [this]() { emit networkDataChanged(); });
-    connect(network, &QObject::destroyed,
-        this, &NetworkItem::onNetworkDestroyed);
+    connect(network, &Network::networkNameSet, this, &NetworkItem::setNetworkName);
+    connect(network, &Network::currentServerSet, this, &NetworkItem::setCurrentServer);
+    connect(network, &Network::ircChannelAdded, this, &NetworkItem::attachIrcChannel);
+    connect(network, &Network::ircUserAdded, this, &NetworkItem::attachIrcUser);
+    connect(network, &Network::connectedSet, this, [this]() { emit networkDataChanged(); });
+    connect(network, &QObject::destroyed, this, &NetworkItem::onNetworkDestroyed);
 
     emit networkDataChanged();
 }
 
-
-void NetworkItem::attachIrcChannel(IrcChannel *ircChannel)
+void NetworkItem::attachIrcChannel(IrcChannel* ircChannel)
 {
-    ChannelBufferItem *channelItem;
+    ChannelBufferItem* channelItem;
     for (int i = 0; i < childCount(); i++) {
-        channelItem = qobject_cast<ChannelBufferItem *>(child(i));
+        channelItem = qobject_cast<ChannelBufferItem*>(child(i));
         if (!channelItem)
             continue;
 
@@ -198,12 +182,11 @@ void NetworkItem::attachIrcChannel(IrcChannel *ircChannel)
     }
 }
 
-
-void NetworkItem::attachIrcUser(IrcUser *ircUser)
+void NetworkItem::attachIrcUser(IrcUser* ircUser)
 {
-    QueryBufferItem *queryItem = nullptr;
+    QueryBufferItem* queryItem = nullptr;
     for (int i = 0; i < childCount(); i++) {
-        queryItem = qobject_cast<QueryBufferItem *>(child(i));
+        queryItem = qobject_cast<QueryBufferItem*>(child(i));
         if (!queryItem)
             continue;
 
@@ -214,26 +197,23 @@ void NetworkItem::attachIrcUser(IrcUser *ircUser)
     }
 }
 
-
-void NetworkItem::setNetworkName(const QString &networkName)
+void NetworkItem::setNetworkName(const QString& networkName)
 {
     Q_UNUSED(networkName);
     emit networkDataChanged(0);
 }
 
-
-void NetworkItem::setCurrentServer(const QString &serverName)
+void NetworkItem::setCurrentServer(const QString& serverName)
 {
     Q_UNUSED(serverName);
     emit networkDataChanged(1);
 }
 
-
 QString NetworkItem::toolTip(int column) const
 {
     Q_UNUSED(column);
     QString strTooltip;
-    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    QTextStream tooltip(&strTooltip, QIODevice::WriteOnly);
     tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Function to add a row to the tooltip table
@@ -252,25 +232,24 @@ QString NetworkItem::toolTip(int column) const
             addRow(tr("Lag"), NetworkItem::escapeHTML(tr("%1 msecs").arg(_network->latency()), true), true);
 
         tooltip << "</table>";
-    } else {
+    }
+    else {
         tooltip << "<p class='italic' align='center'>" << tr("Not connected") << "</p>";
     }
     tooltip << "</qt>";
     return strTooltip;
 }
 
-
 void NetworkItem::onBeginRemoveChilds(int start, int end)
 {
     for (int i = start; i <= end; i++) {
-        auto *statusBufferItem = qobject_cast<StatusBufferItem *>(child(i));
+        auto* statusBufferItem = qobject_cast<StatusBufferItem*>(child(i));
         if (statusBufferItem) {
             _statusBufferItem = nullptr;
             break;
         }
     }
 }
-
 
 void NetworkItem::onNetworkDestroyed()
 {
@@ -279,25 +258,22 @@ void NetworkItem::onNetworkDestroyed()
     removeAllChilds();
 }
 
-
 /*****************************************
-*  Fancy Buffer Items
-*****************************************/
-BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
-    : PropertyMapItem(parent),
-    _bufferInfo(std::move(bufferInfo)),
-    _activity(BufferInfo::NoActivity)
+ *  Fancy Buffer Items
+ *****************************************/
+BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem* parent)
+    : PropertyMapItem(parent)
+    , _bufferInfo(std::move(bufferInfo))
+    , _activity(BufferInfo::NoActivity)
 {
     setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 }
-
 
 QStringList BufferItem::propertyOrder() const
 {
     static QStringList order{"bufferName", "topic", "nickCount"};
     return order;
 }
-
 
 void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level)
 {
@@ -307,13 +283,13 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level)
     }
 }
 
-
 void BufferItem::clearActivityLevel()
 {
     if (Client::isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync)) {
         // If the core handles activity sync, clear only the highlight flag
         _activity &= ~BufferInfo::Highlight;
-    } else {
+    }
+    else {
         _activity = BufferInfo::NoActivity;
     }
     _firstUnreadMsgId = MsgId();
@@ -326,8 +302,7 @@ void BufferItem::clearActivityLevel()
     emit dataChanged();
 }
 
-
-void BufferItem::updateActivityLevel(const Message &msg)
+void BufferItem::updateActivityLevel(const Message& msg)
 {
     // If the core handles activity, and this message is not a highlight, ignore this
     if (Client::isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync) && !msg.flags().testFlag(Message::Highlight)) {
@@ -338,11 +313,10 @@ void BufferItem::updateActivityLevel(const Message &msg)
         return;
     }
 
-    if (msg.flags() & Message::Self)    // don't update activity for our own messages
+    if (msg.flags() & Message::Self)  // don't update activity for our own messages
         return;
 
-    if (Client::ignoreListManager()
-        && Client::ignoreListManager()->match(msg, qobject_cast<NetworkItem *>(parent())->networkName()))
+    if (Client::ignoreListManager() && Client::ignoreListManager()->match(msg, qobject_cast<NetworkItem*>(parent())->networkName()))
         return;
 
     if (msg.msgId() <= lastSeenMsgId())
@@ -358,7 +332,8 @@ void BufferItem::updateActivityLevel(const Message &msg)
     // If the core handles activities, ignore types
     if (Client::isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync)) {
         type = Message::Types();
-    } else {
+    }
+    else {
         type = msg.type();
     }
 
@@ -367,7 +342,8 @@ void BufferItem::updateActivityLevel(const Message &msg)
     }
 }
 
-void BufferItem::setActivity(Message::Types type, bool highlight) {
+void BufferItem::setActivity(Message::Types type, bool highlight)
+{
     BufferInfo::ActivityLevel oldLevel = activityLevel();
 
     _activity &= BufferInfo::Highlight;
@@ -378,7 +354,8 @@ void BufferItem::setActivity(Message::Types type, bool highlight) {
     }
 }
 
-bool BufferItem::addActivity(Message::Types type, bool highlight) {
+bool BufferItem::addActivity(Message::Types type, bool highlight)
+{
     auto oldActivity = activityLevel();
 
     if (type != Message::Types())
@@ -392,7 +369,6 @@ bool BufferItem::addActivity(Message::Types type, bool highlight) {
 
     return oldActivity != _activity;
 }
-
 
 QVariant BufferItem::data(int column, int role) const
 {
@@ -420,8 +396,7 @@ QVariant BufferItem::data(int column, int role) const
     }
 }
 
-
-bool BufferItem::setData(int column, const QVariant &value, int role)
+bool BufferItem::setData(int column, const QVariant& value, int role)
 {
     switch (role) {
     case NetworkModel::BufferActivityRole:
@@ -433,13 +408,11 @@ bool BufferItem::setData(int column, const QVariant &value, int role)
     return true;
 }
 
-
-void BufferItem::setBufferName(const QString &name)
+void BufferItem::setBufferName(const QString& name)
 {
     _bufferInfo = BufferInfo(_bufferInfo.bufferId(), _bufferInfo.networkId(), _bufferInfo.type(), _bufferInfo.groupId(), name);
     emit dataChanged(0);
 }
-
 
 void BufferItem::setLastSeenMsgId(MsgId msgId)
 {
@@ -454,19 +427,16 @@ void BufferItem::setLastSeenMsgId(MsgId msgId)
     setActivityLevel(BufferInfo::NoActivity);
 }
 
-
 void BufferItem::setMarkerLineMsgId(MsgId msgId)
 {
     _markerLineMsgId = msgId;
     emit dataChanged();
 }
 
-
 bool BufferItem::isCurrentBuffer() const
 {
     return _bufferInfo.bufferId() == Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
 }
-
 
 QString BufferItem::toolTip(int column) const
 {
@@ -474,43 +444,38 @@ QString BufferItem::toolTip(int column) const
     return tr("<p> %1 - %2 </p>").arg(bufferInfo().bufferId().toInt()).arg(bufferName());
 }
 
-
 /*****************************************
-*  StatusBufferItem
-*****************************************/
-StatusBufferItem::StatusBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent)
+ *  StatusBufferItem
+ *****************************************/
+StatusBufferItem::StatusBufferItem(const BufferInfo& bufferInfo, NetworkItem* parent)
     : BufferItem(bufferInfo, parent)
-{
-}
-
+{}
 
 QString StatusBufferItem::toolTip(int column) const
 {
-    auto *networkItem = qobject_cast<NetworkItem *>(parent());
+    auto* networkItem = qobject_cast<NetworkItem*>(parent());
     if (networkItem)
         return networkItem->toolTip(column);
     else
         return QString();
 }
 
-
 /*****************************************
-*  QueryBufferItem
-*****************************************/
-QueryBufferItem::QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent)
-    : BufferItem(bufferInfo, parent),
-    _ircUser(nullptr)
+ *  QueryBufferItem
+ *****************************************/
+QueryBufferItem::QueryBufferItem(const BufferInfo& bufferInfo, NetworkItem* parent)
+    : BufferItem(bufferInfo, parent)
+    , _ircUser(nullptr)
 {
     setFlags(flags() | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
 
-    const Network *net = Client::network(bufferInfo.networkId());
+    const Network* net = Client::network(bufferInfo.networkId());
     if (!net)
         return;
 
-    IrcUser *ircUser = net->ircUser(bufferInfo.bufferName());
+    IrcUser* ircUser = net->ircUser(bufferInfo.bufferName());
     setIrcUser(ircUser);
 }
-
 
 QVariant QueryBufferItem::data(int column, int role) const
 {
@@ -518,7 +483,7 @@ QVariant QueryBufferItem::data(int column, int role) const
     case Qt::EditRole:
         return BufferItem::data(column, Qt::DisplayRole);
     case NetworkModel::IrcUserRole:
-        return QVariant::fromValue<QObject *>(_ircUser);
+        return QVariant::fromValue<QObject*>(_ircUser);
     case NetworkModel::UserAwayRole:
         return (bool)_ircUser ? _ircUser->isAway() : false;
     default:
@@ -526,15 +491,13 @@ QVariant QueryBufferItem::data(int column, int role) const
     }
 }
 
-
-bool QueryBufferItem::setData(int column, const QVariant &value, int role)
+bool QueryBufferItem::setData(int column, const QVariant& value, int role)
 {
     if (column != 0)
         return BufferItem::setData(column, value, role);
 
     switch (role) {
-    case Qt::EditRole:
-    {
+    case Qt::EditRole: {
         QString newName = value.toString();
 
         // Sanity check - buffer names must not contain newlines!
@@ -549,30 +512,27 @@ bool QueryBufferItem::setData(int column, const QVariant &value, int role)
         else {
             return false;
         }
-    }
-    break;
+    } break;
     default:
         return BufferItem::setData(column, value, role);
     }
 }
 
-
-void QueryBufferItem::setBufferName(const QString &name)
+void QueryBufferItem::setBufferName(const QString& name)
 {
     BufferItem::setBufferName(name);
     NetworkId netId = data(0, NetworkModel::NetworkIdRole).value<NetworkId>();
-    const Network *net = Client::network(netId);
+    const Network* net = Client::network(netId);
     if (net)
         setIrcUser(net->ircUser(name));
 }
-
 
 QString QueryBufferItem::toolTip(int column) const
 {
     // pretty much code duplication of IrcUserItem::toolTip() but inheritance won't solve this...
     Q_UNUSED(column);
     QString strTooltip;
-    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    QTextStream tooltip(&strTooltip, QIODevice::WriteOnly);
     tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Keep track of whether or not information has been added
@@ -584,7 +544,8 @@ QString QueryBufferItem::toolTip(int column) const
     if (!_ircUser) {
         // User seems to be offline, let the no information message be added below
         tooltip << "</p>";
-    } else {
+    }
+    else {
         // Function to add a row to the tooltip table
         auto addRow = [&](const QString& key, const QString& value, bool condition) {
             if (condition) {
@@ -595,7 +556,7 @@ QString QueryBufferItem::toolTip(int column) const
 
         // User information is available
         if (_ircUser->userModes() != "") {
-            //TODO Translate user Modes and add them to the table below and in IrcUserItem::toolTip
+            // TODO Translate user Modes and add them to the table below and in IrcUserItem::toolTip
             tooltip << " (" << _ircUser->userModes() << ")";
         }
         tooltip << "</p>";
@@ -610,16 +571,13 @@ QString QueryBufferItem::toolTip(int column) const
             }
             addRow(NetworkItem::escapeHTML(tr("Away message"), true), awayMessageHTML, true);
         }
-        addRow(tr("Realname"),
-               NetworkItem::escapeHTML(_ircUser->realName()),
-               !_ircUser->realName().isEmpty());
+        addRow(tr("Realname"), NetworkItem::escapeHTML(_ircUser->realName()), !_ircUser->realName().isEmpty());
         // suserHost may return "<nick> is available for help", which should be translated.
         // See https://www.alien.net.au/irc/irc2numerics.html
-        if(_ircUser->suserHost().endsWith("available for help")) {
-            addRow(NetworkItem::escapeHTML(tr("Help status"), true),
-                   NetworkItem::escapeHTML(tr("Available for help")),
-                   true);
-        } else {
+        if (_ircUser->suserHost().endsWith("available for help")) {
+            addRow(NetworkItem::escapeHTML(tr("Help status"), true), NetworkItem::escapeHTML(tr("Available for help")), true);
+        }
+        else {
             addRow(NetworkItem::escapeHTML(tr("Service status"), true),
                    NetworkItem::escapeHTML(_ircUser->suserHost()),
                    !_ircUser->suserHost().isEmpty());
@@ -627,7 +585,7 @@ QString QueryBufferItem::toolTip(int column) const
 
         // Keep track of whether or not the account information's been added.  Don't show it twice.
         bool accountAdded = false;
-        if(!_ircUser->account().isEmpty()) {
+        if (!_ircUser->account().isEmpty()) {
             // IRCv3 account-notify is supported by the core and IRC server.
             // Assume logged out (seems to be more common)
             QString accountHTML = QString("<p class='italic'>%1</p>").arg(tr("Not logged in"));
@@ -636,22 +594,19 @@ QString QueryBufferItem::toolTip(int column) const
             if (_ircUser->account() != "*") {
                 accountHTML = NetworkItem::escapeHTML(_ircUser->account());
             }
-            addRow(NetworkItem::escapeHTML(tr("Account"), true),
-                   accountHTML,
-                   true);
+            addRow(NetworkItem::escapeHTML(tr("Account"), true), accountHTML, true);
             // Mark the row as added
             accountAdded = true;
         }
         // whoisServiceReply may return "<nick> is identified for this nick", which should be translated.
         // See https://www.alien.net.au/irc/irc2numerics.html
-        if(_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
-            addRow(NetworkItem::escapeHTML(tr("Account"), true),
-                   NetworkItem::escapeHTML(tr("Identified for this nick")),
-                   !accountAdded);
+        if (_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
+            addRow(NetworkItem::escapeHTML(tr("Account"), true), NetworkItem::escapeHTML(tr("Identified for this nick")), !accountAdded);
             // Don't add the account row again if information's already added via account-notify
             // Not used further down...
             // accountAdded = true;
-        } else {
+        }
+        else {
             addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
                    NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
                    !_ircUser->whoisServiceReply().isEmpty());
@@ -687,8 +642,7 @@ QString QueryBufferItem::toolTip(int column) const
     return strTooltip;
 }
 
-
-void QueryBufferItem::setIrcUser(IrcUser *ircUser)
+void QueryBufferItem::setIrcUser(IrcUser* ircUser)
 {
     if (_ircUser == ircUser)
         return;
@@ -707,7 +661,6 @@ void QueryBufferItem::setIrcUser(IrcUser *ircUser)
     _ircUser = ircUser;
     emit dataChanged();
 }
-
 
 void QueryBufferItem::removeIrcUser()
 {
@@ -729,34 +682,31 @@ void QueryBufferItem::removeIrcUser()
     }
 }
 
-
 /*****************************************
-*  ChannelBufferItem
-*****************************************/
-ChannelBufferItem::ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent)
-    : BufferItem(bufferInfo, parent),
-    _ircChannel(nullptr)
+ *  ChannelBufferItem
+ *****************************************/
+ChannelBufferItem::ChannelBufferItem(const BufferInfo& bufferInfo, AbstractTreeItem* parent)
+    : BufferItem(bufferInfo, parent)
+    , _ircChannel(nullptr)
 {
     setFlags(flags() | Qt::ItemIsDropEnabled);
 }
-
 
 QVariant ChannelBufferItem::data(int column, int role) const
 {
     switch (role) {
     case NetworkModel::IrcChannelRole:
-        return QVariant::fromValue<QObject *>(_ircChannel);
+        return QVariant::fromValue<QObject*>(_ircChannel);
     default:
         return BufferItem::data(column, role);
     }
 }
 
-
 QString ChannelBufferItem::toolTip(int column) const
 {
     Q_UNUSED(column);
     QString strTooltip;
-    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    QTextStream tooltip(&strTooltip, QIODevice::WriteOnly);
     tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Function to add a row to the tooltip table
@@ -774,7 +724,7 @@ QString ChannelBufferItem::toolTip(int column) const
         addRow(tr("Users"), QString::number(nickCount()), true);
 
         if (_ircChannel) {
-            QString channelMode = _ircChannel->channelModeString(); // channelModeString is compiled on the fly -> thus cache the result
+            QString channelMode = _ircChannel->channelModeString();  // channelModeString is compiled on the fly -> thus cache the result
             if (!channelMode.isEmpty())
                 addRow(tr("Mode"), channelMode, true);
         }
@@ -791,7 +741,8 @@ QString ChannelBufferItem::toolTip(int column) const
         }
 
         tooltip << "</table>";
-    } else {
+    }
+    else {
         tooltip << "<p class='italic' align='center'>" << tr("Not active, double-click to join") << "</p>";
     }
 
@@ -799,8 +750,7 @@ QString ChannelBufferItem::toolTip(int column) const
     return strTooltip;
 }
 
-
-void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel)
+void ChannelBufferItem::attachIrcChannel(IrcChannel* ircChannel)
 {
     if (_ircChannel) {
         qWarning() << Q_FUNC_INFO << "IrcChannel already set; cleanup failed!?";
@@ -825,7 +775,7 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel)
     emit dataChanged();
 }
 
-QString ChannelBufferItem::nickChannelModes(const QString &nick) const
+QString ChannelBufferItem::nickChannelModes(const QString& nick) const
 {
     if (!_ircChannel) {
         qDebug() << Q_FUNC_INFO << "IrcChannel not set, can't get user modes";
@@ -834,7 +784,6 @@ QString ChannelBufferItem::nickChannelModes(const QString &nick) const
 
     return _ircChannel->userModes(nick);
 }
-
 
 void ChannelBufferItem::ircChannelParted()
 {
@@ -845,7 +794,6 @@ void ChannelBufferItem::ircChannelParted()
     removeAllChilds();
 }
 
-
 void ChannelBufferItem::ircChannelDestroyed()
 {
     if (_ircChannel) {
@@ -855,20 +803,18 @@ void ChannelBufferItem::ircChannelDestroyed()
     }
 }
 
-
-void ChannelBufferItem::join(const QList<IrcUser *> &ircUsers)
+void ChannelBufferItem::join(const QList<IrcUser*>& ircUsers)
 {
     addUsersToCategory(ircUsers);
     emit dataChanged(2);
 }
 
-
-UserCategoryItem *ChannelBufferItem::findCategoryItem(int categoryId)
+UserCategoryItem* ChannelBufferItem::findCategoryItem(int categoryId)
 {
-    UserCategoryItem *categoryItem = nullptr;
+    UserCategoryItem* categoryItem = nullptr;
 
     for (int i = 0; i < childCount(); i++) {
-        categoryItem = qobject_cast<UserCategoryItem *>(child(i));
+        categoryItem = qobject_cast<UserCategoryItem*>(child(i));
         if (!categoryItem)
             continue;
         if (categoryItem->categoryId() == categoryId)
@@ -877,42 +823,39 @@ UserCategoryItem *ChannelBufferItem::findCategoryItem(int categoryId)
     return nullptr;
 }
 
-
-void ChannelBufferItem::addUserToCategory(IrcUser *ircUser)
+void ChannelBufferItem::addUserToCategory(IrcUser* ircUser)
 {
-    addUsersToCategory(QList<IrcUser *>() << ircUser);
+    addUsersToCategory(QList<IrcUser*>() << ircUser);
 }
 
-
-void ChannelBufferItem::addUsersToCategory(const QList<IrcUser *> &ircUsers)
+void ChannelBufferItem::addUsersToCategory(const QList<IrcUser*>& ircUsers)
 {
     Q_ASSERT(_ircChannel);
 
-    QHash<UserCategoryItem *, QList<IrcUser *> > categories;
+    QHash<UserCategoryItem*, QList<IrcUser*>> categories;
 
     int categoryId = -1;
-    UserCategoryItem *categoryItem = nullptr;
+    UserCategoryItem* categoryItem = nullptr;
 
-    foreach(IrcUser *ircUser, ircUsers) {
+    foreach (IrcUser* ircUser, ircUsers) {
         categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
         categoryItem = findCategoryItem(categoryId);
         if (!categoryItem) {
             categoryItem = new UserCategoryItem(categoryId, this);
-            categories[categoryItem] = QList<IrcUser *>();
+            categories[categoryItem] = QList<IrcUser*>();
             newChild(categoryItem);
         }
         categories[categoryItem] << ircUser;
     }
 
-    QHash<UserCategoryItem *, QList<IrcUser *> >::const_iterator catIter = categories.constBegin();
+    QHash<UserCategoryItem*, QList<IrcUser*>>::const_iterator catIter = categories.constBegin();
     while (catIter != categories.constEnd()) {
         catIter.key()->addUsers(catIter.value());
         ++catIter;
     }
 }
 
-
-void ChannelBufferItem::part(IrcUser *ircUser)
+void ChannelBufferItem::part(IrcUser* ircUser)
 {
     if (!ircUser) {
         qWarning() << bufferName() << "ChannelBufferItem::part(): unknown User" << ircUser;
@@ -924,8 +867,7 @@ void ChannelBufferItem::part(IrcUser *ircUser)
     emit dataChanged(2);
 }
 
-
-void ChannelBufferItem::removeUserFromCategory(IrcUser *ircUser)
+void ChannelBufferItem::removeUserFromCategory(IrcUser* ircUser)
 {
     if (!_ircChannel) {
         // If we parted the channel there might still be some ircUsers connected.
@@ -934,9 +876,9 @@ void ChannelBufferItem::removeUserFromCategory(IrcUser *ircUser)
         return;
     }
 
-    UserCategoryItem *categoryItem = nullptr;
+    UserCategoryItem* categoryItem = nullptr;
     for (int i = 0; i < childCount(); i++) {
-        categoryItem = qobject_cast<UserCategoryItem *>(child(i));
+        categoryItem = qobject_cast<UserCategoryItem*>(child(i));
         if (categoryItem->removeUser(ircUser)) {
             if (categoryItem->childCount() == 0)
                 removeChild(i);
@@ -945,17 +887,16 @@ void ChannelBufferItem::removeUserFromCategory(IrcUser *ircUser)
     }
 }
 
-
-void ChannelBufferItem::userModeChanged(IrcUser *ircUser)
+void ChannelBufferItem::userModeChanged(IrcUser* ircUser)
 {
     Q_ASSERT(_ircChannel);
 
     int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
-    UserCategoryItem *categoryItem = findCategoryItem(categoryId);
+    UserCategoryItem* categoryItem = findCategoryItem(categoryId);
 
     if (categoryItem) {
         if (categoryItem->findIrcUser(ircUser)) {
-            return; // already in the right category;
+            return;  // already in the right category;
         }
     }
     else {
@@ -964,11 +905,11 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser)
     }
 
     // find the item that needs reparenting
-    IrcUserItem *ircUserItem = nullptr;
+    IrcUserItem* ircUserItem = nullptr;
     for (int i = 0; i < childCount(); i++) {
-        auto *oldCategoryItem = qobject_cast<UserCategoryItem *>(child(i));
+        auto* oldCategoryItem = qobject_cast<UserCategoryItem*>(child(i));
         Q_ASSERT(oldCategoryItem);
-        IrcUserItem *userItem = oldCategoryItem->findIrcUser(ircUser);
+        IrcUserItem* userItem = oldCategoryItem->findIrcUser(ircUser);
         if (userItem) {
             ircUserItem = userItem;
             break;
@@ -982,30 +923,27 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser)
     ircUserItem->reParent(categoryItem);
 }
 
-
 /*****************************************
-*  User Category Items (like @vh etc.)
-*****************************************/
+ *  User Category Items (like @vh etc.)
+ *****************************************/
 // we hardcode this even though we have PREFIX in network... but that wouldn't help with mapping modes to
 // category strings anyway.
 const QList<QChar> UserCategoryItem::categories = QList<QChar>() << 'q' << 'a' << 'o' << 'h' << 'v';
 
-UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
-    : PropertyMapItem(parent),
-    _category(category)
+UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem* parent)
+    : PropertyMapItem(parent)
+    , _category(category)
 {
     setFlags(Qt::ItemIsEnabled);
     setTreeItemFlags(AbstractTreeItem::DeleteOnLastChildRemoved);
     setObjectName(parent->data(0, Qt::DisplayRole).toString() + "/" + QString::number(category));
 }
 
-
 QStringList UserCategoryItem::propertyOrder() const
 {
     static QStringList order{"categoryName"};
     return order;
 }
-
 
 // caching this makes no sense, since we display the user number dynamically
 QString UserCategoryItem::categoryName() const
@@ -1027,13 +965,12 @@ QString UserCategoryItem::categoryName() const
     }
 }
 
-
-IrcUserItem *UserCategoryItem::findIrcUser(IrcUser *ircUser)
+IrcUserItem* UserCategoryItem::findIrcUser(IrcUser* ircUser)
 {
-    IrcUserItem *userItem = nullptr;
+    IrcUserItem* userItem = nullptr;
 
     for (int i = 0; i < childCount(); i++) {
-        userItem = qobject_cast<IrcUserItem *>(child(i));
+        userItem = qobject_cast<IrcUserItem*>(child(i));
         if (!userItem)
             continue;
         if (userItem->ircUser() == ircUser)
@@ -1042,20 +979,18 @@ IrcUserItem *UserCategoryItem::findIrcUser(IrcUser *ircUser)
     return nullptr;
 }
 
-
-void UserCategoryItem::addUsers(const QList<IrcUser *> &ircUsers)
+void UserCategoryItem::addUsers(const QList<IrcUser*>& ircUsers)
 {
-    QList<AbstractTreeItem *> userItems;
-    foreach(IrcUser *ircUser, ircUsers)
-    userItems << new IrcUserItem(ircUser, this);
+    QList<AbstractTreeItem*> userItems;
+    foreach (IrcUser* ircUser, ircUsers)
+        userItems << new IrcUserItem(ircUser, this);
     newChilds(userItems);
     emit dataChanged(0);
 }
 
-
-bool UserCategoryItem::removeUser(IrcUser *ircUser)
+bool UserCategoryItem::removeUser(IrcUser* ircUser)
 {
-    IrcUserItem *userItem = findIrcUser(ircUser);
+    IrcUserItem* userItem = findIrcUser(ircUser);
     auto success = (bool)userItem;
     if (success) {
         removeChild(userItem);
@@ -1064,8 +999,7 @@ bool UserCategoryItem::removeUser(IrcUser *ircUser)
     return success;
 }
 
-
-int UserCategoryItem::categoryFromModes(const QString &modes)
+int UserCategoryItem::categoryFromModes(const QString& modes)
 {
     for (int i = 0; i < categories.count(); i++) {
         if (modes.contains(categories[i]))
@@ -1073,7 +1007,6 @@ int UserCategoryItem::categoryFromModes(const QString &modes)
     }
     return categories.count();
 }
-
 
 QVariant UserCategoryItem::data(int column, int role) const
 {
@@ -1095,13 +1028,12 @@ QVariant UserCategoryItem::data(int column, int role) const
     }
 }
 
-
 /*****************************************
-*  Irc User Items
-*****************************************/
-IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
-    : PropertyMapItem(parent),
-    _ircUser(ircUser)
+ *  Irc User Items
+ *****************************************/
+IrcUserItem::IrcUserItem(IrcUser* ircUser, AbstractTreeItem* parent)
+    : PropertyMapItem(parent)
+    , _ircUser(ircUser)
 {
     setObjectName(ircUser->nick());
     connect(ircUser, &IrcUser::quited, this, &IrcUserItem::ircUserQuited);
@@ -1109,13 +1041,11 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
     connect(ircUser, &IrcUser::awaySet, this, [this]() { emit dataChanged(); });
 }
 
-
 QStringList IrcUserItem::propertyOrder() const
 {
     static QStringList order{"nickName"};
     return order;
 }
-
 
 QVariant IrcUserItem::data(int column, int role) const
 {
@@ -1133,7 +1063,7 @@ QVariant IrcUserItem::data(int column, int role) const
     case NetworkModel::IrcChannelRole:
         return parent()->data(column, role);
     case NetworkModel::IrcUserRole:
-        return QVariant::fromValue<QObject *>(_ircUser.data());
+        return QVariant::fromValue<QObject*>(_ircUser.data());
     case NetworkModel::UserAwayRole:
         return (bool)_ircUser ? _ircUser->isAway() : false;
     default:
@@ -1141,12 +1071,11 @@ QVariant IrcUserItem::data(int column, int role) const
     }
 }
 
-
 QString IrcUserItem::toolTip(int column) const
 {
     Q_UNUSED(column);
     QString strTooltip;
-    QTextStream tooltip( &strTooltip, QIODevice::WriteOnly );
+    QTextStream tooltip(&strTooltip, QIODevice::WriteOnly);
     tooltip << "<qt><style>.bold { font-weight: bold; } .italic { font-style: italic; }</style>";
 
     // Keep track of whether or not information has been added
@@ -1155,23 +1084,20 @@ QString IrcUserItem::toolTip(int column) const
     // Use bufferName() for QueryBufferItem, nickName() for IrcUserItem
     tooltip << "<p class='bold' align='center'>" << NetworkItem::escapeHTML(nickName(), true);
     if (_ircUser->userModes() != "") {
-        //TODO: Translate user Modes and add them to the table below and in QueryBufferItem::toolTip
+        // TODO: Translate user Modes and add them to the table below and in QueryBufferItem::toolTip
         tooltip << " (" << _ircUser->userModes() << ")";
     }
     tooltip << "</p>";
 
     auto addRow = [&](const QString& key, const QString& value, bool condition) {
-        if (condition)
-        {
+        if (condition) {
             tooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
             infoAdded = true;
         }
     };
 
     tooltip << "<table cellspacing='5' cellpadding='0'>";
-    addRow(tr("Modes"),
-           NetworkItem::escapeHTML(channelModes()),
-           !channelModes().isEmpty());
+    addRow(tr("Modes"), NetworkItem::escapeHTML(channelModes()), !channelModes().isEmpty());
     if (_ircUser->isAway()) {
         QString awayMessageHTML = QString("<p class='italic'>%1</p>").arg(tr("Unknown"));
 
@@ -1181,17 +1107,14 @@ QString IrcUserItem::toolTip(int column) const
         }
         addRow(NetworkItem::escapeHTML(tr("Away message"), true), awayMessageHTML, true);
     }
-    addRow(tr("Realname"),
-           NetworkItem::escapeHTML(_ircUser->realName()),
-           !_ircUser->realName().isEmpty());
+    addRow(tr("Realname"), NetworkItem::escapeHTML(_ircUser->realName()), !_ircUser->realName().isEmpty());
 
     // suserHost may return "<nick> is available for help", which should be translated.
     // See https://www.alien.net.au/irc/irc2numerics.html
-    if(_ircUser->suserHost().endsWith("available for help")) {
-        addRow(NetworkItem::escapeHTML(tr("Help status"), true),
-               NetworkItem::escapeHTML(tr("Available for help")),
-               true);
-    } else {
+    if (_ircUser->suserHost().endsWith("available for help")) {
+        addRow(NetworkItem::escapeHTML(tr("Help status"), true), NetworkItem::escapeHTML(tr("Available for help")), true);
+    }
+    else {
         addRow(NetworkItem::escapeHTML(tr("Service status"), true),
                NetworkItem::escapeHTML(_ircUser->suserHost()),
                !_ircUser->suserHost().isEmpty());
@@ -1199,7 +1122,7 @@ QString IrcUserItem::toolTip(int column) const
 
     // Keep track of whether or not the account information's been added.  Don't show it twice.
     bool accountAdded = false;
-    if(!_ircUser->account().isEmpty()) {
+    if (!_ircUser->account().isEmpty()) {
         // IRCv3 account-notify is supported by the core and IRC server.
         // Assume logged out (seems to be more common)
         QString accountHTML = QString("<p class='italic'>%1</p>").arg(tr("Not logged in"));
@@ -1208,22 +1131,19 @@ QString IrcUserItem::toolTip(int column) const
         if (_ircUser->account() != "*") {
             accountHTML = NetworkItem::escapeHTML(_ircUser->account());
         }
-        addRow(NetworkItem::escapeHTML(tr("Account"), true),
-               accountHTML,
-               true);
+        addRow(NetworkItem::escapeHTML(tr("Account"), true), accountHTML, true);
         // Mark the row as added
         accountAdded = true;
     }
     // whoisServiceReply may return "<nick> is identified for this nick", which should be translated.
     // See https://www.alien.net.au/irc/irc2numerics.html
-    if(_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
-        addRow(NetworkItem::escapeHTML(tr("Account"), true),
-               NetworkItem::escapeHTML(tr("Identified for this nick")),
-               !accountAdded);
+    if (_ircUser->whoisServiceReply().endsWith("identified for this nick")) {
+        addRow(NetworkItem::escapeHTML(tr("Account"), true), NetworkItem::escapeHTML(tr("Identified for this nick")), !accountAdded);
         // Don't add the account row again if information's already added via account-notify
         // Not used further down...
         // accountAdded = true;
-    } else {
+    }
+    else {
         addRow(NetworkItem::escapeHTML(tr("Service Reply"), true),
                NetworkItem::escapeHTML(_ircUser->whoisServiceReply()),
                !_ircUser->whoisServiceReply().isEmpty());
@@ -1262,22 +1182,21 @@ QString IrcUserItem::channelModes() const
 {
     // IrcUserItems are parented to UserCategoryItem, which are parented to ChannelBufferItem.
     // We want the channel buffer item in order to get the channel-specific user modes.
-    auto *category = qobject_cast<UserCategoryItem *>(parent());
+    auto* category = qobject_cast<UserCategoryItem*>(parent());
     if (!category)
         return QString();
 
-    auto *channel = qobject_cast<ChannelBufferItem *>(category->parent());
+    auto* channel = qobject_cast<ChannelBufferItem*>(category->parent());
     if (!channel)
         return QString();
 
     return channel->nickChannelModes(nickName());
 }
 
-
 /*****************************************
  * NetworkModel
  *****************************************/
-NetworkModel::NetworkModel(QObject *parent)
+NetworkModel::NetworkModel(QObject* parent)
     : TreeModel(NetworkModel::defaultHeader(), parent)
 {
     connect(this, &NetworkModel::rowsInserted, this, &NetworkModel::checkForNewBuffers);
@@ -1290,7 +1209,6 @@ NetworkModel::NetworkModel(QObject *parent)
     messageRedirectionSettingsChanged();
 }
 
-
 QList<QVariant> NetworkModel::defaultHeader()
 {
     QList<QVariant> data;
@@ -1298,18 +1216,16 @@ QList<QVariant> NetworkModel::defaultHeader()
     return data;
 }
 
-
-bool NetworkModel::isBufferIndex(const QModelIndex &index) const
+bool NetworkModel::isBufferIndex(const QModelIndex& index) const
 {
     return index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType;
 }
 
-
 int NetworkModel::networkRow(NetworkId networkId) const
 {
-    NetworkItem *netItem = nullptr;
+    NetworkItem* netItem = nullptr;
     for (int i = 0; i < rootItem->childCount(); i++) {
-        netItem = qobject_cast<NetworkItem *>(rootItem->child(i));
+        netItem = qobject_cast<NetworkItem*>(rootItem->child(i));
         if (!netItem)
             continue;
         if (netItem->networkId() == networkId)
@@ -1318,30 +1234,27 @@ int NetworkModel::networkRow(NetworkId networkId) const
     return -1;
 }
 
-
 QModelIndex NetworkModel::networkIndex(NetworkId networkId)
 {
     int netRow = networkRow(networkId);
     if (netRow == -1)
         return {};
     else
-        return indexByItem(qobject_cast<NetworkItem *>(rootItem->child(netRow)));
+        return indexByItem(qobject_cast<NetworkItem*>(rootItem->child(netRow)));
 }
 
-
-NetworkItem *NetworkModel::findNetworkItem(NetworkId networkId) const
+NetworkItem* NetworkModel::findNetworkItem(NetworkId networkId) const
 {
     int netRow = networkRow(networkId);
     if (netRow == -1)
         return nullptr;
     else
-        return qobject_cast<NetworkItem *>(rootItem->child(netRow));
+        return qobject_cast<NetworkItem*>(rootItem->child(netRow));
 }
 
-
-NetworkItem *NetworkModel::networkItem(NetworkId networkId)
+NetworkItem* NetworkModel::networkItem(NetworkId networkId)
 {
-    NetworkItem *netItem = findNetworkItem(networkId);
+    NetworkItem* netItem = findNetworkItem(networkId);
 
     if (netItem == nullptr) {
         netItem = new NetworkItem(networkId, rootItem);
@@ -1350,15 +1263,13 @@ NetworkItem *NetworkModel::networkItem(NetworkId networkId)
     return netItem;
 }
 
-
-void NetworkModel::networkRemoved(const NetworkId &networkId)
+void NetworkModel::networkRemoved(const NetworkId& networkId)
 {
     int netRow = networkRow(networkId);
     if (netRow != -1) {
         rootItem->removeChild(netRow);
     }
 }
-
 
 QModelIndex NetworkModel::bufferIndex(BufferId bufferId)
 {
@@ -1368,8 +1279,7 @@ QModelIndex NetworkModel::bufferIndex(BufferId bufferId)
     return indexByItem(_bufferItemCache[bufferId]);
 }
 
-
-BufferItem *NetworkModel::findBufferItem(BufferId bufferId) const
+BufferItem* NetworkModel::findBufferItem(BufferId bufferId) const
 {
     if (_bufferItemCache.contains(bufferId))
         return _bufferItemCache[bufferId];
@@ -1377,16 +1287,14 @@ BufferItem *NetworkModel::findBufferItem(BufferId bufferId) const
         return nullptr;
 }
 
-
-BufferItem *NetworkModel::bufferItem(const BufferInfo &bufferInfo)
+BufferItem* NetworkModel::bufferItem(const BufferInfo& bufferInfo)
 {
     if (_bufferItemCache.contains(bufferInfo.bufferId()))
         return _bufferItemCache[bufferInfo.bufferId()];
 
-    NetworkItem *netItem = networkItem(bufferInfo.networkId());
+    NetworkItem* netItem = networkItem(bufferInfo.networkId());
     return netItem->bufferItem(bufferInfo);
 }
-
 
 QStringList NetworkModel::mimeTypes() const
 {
@@ -1398,16 +1306,14 @@ QStringList NetworkModel::mimeTypes() const
     return types;
 }
 
-
-bool NetworkModel::mimeContainsBufferList(const QMimeData *mimeData)
+bool NetworkModel::mimeContainsBufferList(const QMimeData* mimeData)
 {
     return mimeData->hasFormat("application/Quassel/BufferItemList");
 }
 
-
-QList<QPair<NetworkId, BufferId> > NetworkModel::mimeDataToBufferList(const QMimeData *mimeData)
+QList<QPair<NetworkId, BufferId>> NetworkModel::mimeDataToBufferList(const QMimeData* mimeData)
 {
-    QList<QPair<NetworkId, BufferId> > bufferList;
+    QList<QPair<NetworkId, BufferId>> bufferList;
 
     if (!mimeContainsBufferList(mimeData))
         return bufferList;
@@ -1415,7 +1321,7 @@ QList<QPair<NetworkId, BufferId> > NetworkModel::mimeDataToBufferList(const QMim
     QStringList rawBufferList = QString::fromLatin1(mimeData->data("application/Quassel/BufferItemList")).split(",");
     NetworkId networkId;
     BufferId bufferUid;
-    foreach(QString rawBuffer, rawBufferList) {
+    foreach (QString rawBuffer, rawBufferList) {
         if (!rawBuffer.contains(":"))
             continue;
         networkId = rawBuffer.section(":", 0, 0).toInt();
@@ -1425,14 +1331,13 @@ QList<QPair<NetworkId, BufferId> > NetworkModel::mimeDataToBufferList(const QMim
     return bufferList;
 }
 
-
-QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const
+QMimeData* NetworkModel::mimeData(const QModelIndexList& indexes) const
 {
-    auto *mimeData = new QMimeData();
+    auto* mimeData = new QMimeData();
 
     QStringList bufferlist;
     QString netid, uid, bufferid;
-    foreach(QModelIndex index, indexes) {
+    foreach (QModelIndex index, indexes) {
         netid = QString::number(index.data(NetworkIdRole).value<NetworkId>().toInt());
         uid = QString::number(index.data(BufferIdRole).value<BufferId>().toInt());
         bufferid = QString("%1:%2").arg(netid).arg(uid);
@@ -1445,31 +1350,27 @@ QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
-
-void NetworkModel::attachNetwork(Network *net)
+void NetworkModel::attachNetwork(Network* net)
 {
-    NetworkItem *netItem = networkItem(net->networkId());
+    NetworkItem* netItem = networkItem(net->networkId());
     netItem->attachNetwork(net);
 }
 
-
 void NetworkModel::bufferUpdated(BufferInfo bufferInfo)
 {
-    BufferItem *bufItem = bufferItem(bufferInfo);
+    BufferItem* bufItem = bufferItem(bufferInfo);
     QModelIndex itemindex = indexByItem(bufItem);
     emit dataChanged(itemindex, itemindex);
 }
 
-
 void NetworkModel::removeBuffer(BufferId bufferId)
 {
-    BufferItem *buffItem = findBufferItem(bufferId);
+    BufferItem* buffItem = findBufferItem(bufferId);
     if (!buffItem)
         return;
 
     buffItem->parent()->removeChild(buffItem);
 }
-
 
 MsgId NetworkModel::lastSeenMsgId(BufferId bufferId) const
 {
@@ -1479,7 +1380,6 @@ MsgId NetworkModel::lastSeenMsgId(BufferId bufferId) const
     return _bufferItemCache[bufferId]->lastSeenMsgId();
 }
 
-
 MsgId NetworkModel::markerLineMsgId(BufferId bufferId) const
 {
     if (!_bufferItemCache.contains(bufferId))
@@ -1488,11 +1388,10 @@ MsgId NetworkModel::markerLineMsgId(BufferId bufferId) const
     return _bufferItemCache[bufferId]->markerLineMsgId();
 }
 
-
 // FIXME we always seem to use this (expensive) non-const version
-MsgId NetworkModel::lastSeenMsgId(const BufferId &bufferId)
+MsgId NetworkModel::lastSeenMsgId(const BufferId& bufferId)
 {
-    BufferItem *bufferItem = findBufferItem(bufferId);
+    BufferItem* bufferItem = findBufferItem(bufferId);
     if (!bufferItem) {
         qDebug() << "NetworkModel::lastSeenMsgId(): buffer is unknown:" << bufferId;
         Client::purgeKnownBufferIds();
@@ -1501,10 +1400,9 @@ MsgId NetworkModel::lastSeenMsgId(const BufferId &bufferId)
     return bufferItem->lastSeenMsgId();
 }
 
-
-void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId)
+void NetworkModel::setLastSeenMsgId(const BufferId& bufferId, const MsgId& msgId)
 {
-    BufferItem *bufferItem = findBufferItem(bufferId);
+    BufferItem* bufferItem = findBufferItem(bufferId);
     if (!bufferItem) {
         qDebug() << "NetworkModel::setLastSeenMsgId(): buffer is unknown:" << bufferId;
         Client::purgeKnownBufferIds();
@@ -1514,10 +1412,9 @@ void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId
     emit lastSeenMsgSet(bufferId, msgId);
 }
 
-
-void NetworkModel::setMarkerLineMsgId(const BufferId &bufferId, const MsgId &msgId)
+void NetworkModel::setMarkerLineMsgId(const BufferId& bufferId, const MsgId& msgId)
 {
-    BufferItem *bufferItem = findBufferItem(bufferId);
+    BufferItem* bufferItem = findBufferItem(bufferId);
     if (!bufferItem) {
         qDebug() << "NetworkModel::setMarkerLineMsgId(): buffer is unknown:" << bufferId;
         Client::purgeKnownBufferIds();
@@ -1527,8 +1424,7 @@ void NetworkModel::setMarkerLineMsgId(const BufferId &bufferId, const MsgId &msg
     emit markerLineSet(bufferId, msgId);
 }
 
-
-void NetworkModel::updateBufferActivity(Message &msg)
+void NetworkModel::updateBufferActivity(Message& msg)
 {
     int redirectionTarget = 0;
     switch (msg.type()) {
@@ -1552,8 +1448,8 @@ void NetworkModel::updateBufferActivity(Message &msg)
     case Message::Plain:
     case Message::Action:
         if (bufferType(msg.bufferId()) == BufferInfo::ChannelBuffer) {
-            const Network *net = Client::network(msg.bufferInfo().networkId());
-            IrcUser *user = net ? net->ircUser(nickFromMask(msg.sender())) : nullptr;
+            const Network* net = Client::network(msg.bufferInfo().networkId());
+            IrcUser* user = net ? net->ircUser(nickFromMask(msg.sender())) : nullptr;
             if (user)
                 user->setLastChannelActivity(msg.bufferId(), msg.timestamp());
         }
@@ -1567,7 +1463,7 @@ void NetworkModel::updateBufferActivity(Message &msg)
             updateBufferActivity(bufferItem(msg.bufferInfo()), msg);
 
         if (redirectionTarget & BufferSettings::StatusBuffer) {
-            const NetworkItem *netItem = findNetworkItem(msg.bufferInfo().networkId());
+            const NetworkItem* netItem = findNetworkItem(msg.bufferInfo().networkId());
             if (netItem) {
                 updateBufferActivity(netItem->statusBufferItem(), msg);
             }
@@ -1579,8 +1475,7 @@ void NetworkModel::updateBufferActivity(Message &msg)
     }
 }
 
-
-void NetworkModel::updateBufferActivity(BufferItem *bufferItem, const Message &msg)
+void NetworkModel::updateBufferActivity(BufferItem* bufferItem, const Message& msg)
 {
     if (!bufferItem)
         return;
@@ -1590,10 +1485,9 @@ void NetworkModel::updateBufferActivity(BufferItem *bufferItem, const Message &m
         emit requestSetLastSeenMsg(bufferItem->bufferId(), msg.msgId());
 }
 
-
-void NetworkModel::setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel level)
+void NetworkModel::setBufferActivity(const BufferId& bufferId, BufferInfo::ActivityLevel level)
 {
-    BufferItem *bufferItem = findBufferItem(bufferId);
+    BufferItem* bufferItem = findBufferItem(bufferId);
     if (!bufferItem) {
         qDebug() << "NetworkModel::setBufferActivity(): buffer is unknown:" << bufferId;
         return;
@@ -1601,10 +1495,9 @@ void NetworkModel::setBufferActivity(const BufferId &bufferId, BufferInfo::Activ
     bufferItem->setActivityLevel(level);
 }
 
-
-void NetworkModel::clearBufferActivity(const BufferId &bufferId)
+void NetworkModel::clearBufferActivity(const BufferId& bufferId)
 {
-    BufferItem *bufferItem = findBufferItem(bufferId);
+    BufferItem* bufferItem = findBufferItem(bufferId);
     if (!bufferItem) {
         qDebug() << "NetworkModel::clearBufferActivity(): buffer is unknown:" << bufferId;
         return;
@@ -1612,8 +1505,7 @@ void NetworkModel::clearBufferActivity(const BufferId &bufferId)
     bufferItem->clearActivityLevel();
 }
 
-
-const Network *NetworkModel::networkByIndex(const QModelIndex &index) const
+const Network* NetworkModel::networkByIndex(const QModelIndex& index) const
 {
     QVariant netVariant = index.data(NetworkIdRole);
     if (!netVariant.isValid())
@@ -1623,8 +1515,7 @@ const Network *NetworkModel::networkByIndex(const QModelIndex &index) const
     return Client::network(networkId);
 }
 
-
-void NetworkModel::checkForRemovedBuffers(const QModelIndex &parent, int start, int end)
+void NetworkModel::checkForRemovedBuffers(const QModelIndex& parent, int start, int end)
 {
     if (parent.data(ItemTypeRole) != NetworkItemType)
         return;
@@ -1634,18 +1525,16 @@ void NetworkModel::checkForRemovedBuffers(const QModelIndex &parent, int start, 
     }
 }
 
-
-void NetworkModel::checkForNewBuffers(const QModelIndex &parent, int start, int end)
+void NetworkModel::checkForNewBuffers(const QModelIndex& parent, int start, int end)
 {
     if (parent.data(ItemTypeRole) != NetworkItemType)
         return;
 
     for (int row = start; row <= end; row++) {
         QModelIndex child = parent.child(row, 0);
-        _bufferItemCache[child.data(BufferIdRole).value < BufferId > ()] = static_cast<BufferItem *>(child.internalPointer());
+        _bufferItemCache[child.data(BufferIdRole).value<BufferId>()] = static_cast<BufferItem*>(child.internalPointer());
     }
 }
-
 
 QString NetworkModel::bufferName(BufferId bufferId) const
 {
@@ -1655,7 +1544,6 @@ QString NetworkModel::bufferName(BufferId bufferId) const
     return _bufferItemCache[bufferId]->bufferName();
 }
 
-
 BufferInfo::Type NetworkModel::bufferType(BufferId bufferId) const
 {
     if (!_bufferItemCache.contains(bufferId))
@@ -1663,7 +1551,6 @@ BufferInfo::Type NetworkModel::bufferType(BufferId bufferId) const
 
     return _bufferItemCache[bufferId]->bufferType();
 }
-
 
 BufferInfo NetworkModel::bufferInfo(BufferId bufferId) const
 {
@@ -1673,52 +1560,48 @@ BufferInfo NetworkModel::bufferInfo(BufferId bufferId) const
     return _bufferItemCache[bufferId]->bufferInfo();
 }
 
-
 NetworkId NetworkModel::networkId(BufferId bufferId) const
 {
     if (!_bufferItemCache.contains(bufferId))
         return {};
 
-    auto *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
+    auto* netItem = qobject_cast<NetworkItem*>(_bufferItemCache[bufferId]->parent());
     if (netItem)
         return netItem->networkId();
     else
         return {};
 }
 
-
 QString NetworkModel::networkName(BufferId bufferId) const
 {
     if (!_bufferItemCache.contains(bufferId))
         return QString();
 
-    auto *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
+    auto* netItem = qobject_cast<NetworkItem*>(_bufferItemCache[bufferId]->parent());
     if (netItem)
         return netItem->networkName();
     else
         return QString();
 }
 
-
-BufferId NetworkModel::bufferId(NetworkId networkId, const QString &bufferName, Qt::CaseSensitivity cs) const
+BufferId NetworkModel::bufferId(NetworkId networkId, const QString& bufferName, Qt::CaseSensitivity cs) const
 {
-    const NetworkItem *netItem = findNetworkItem(networkId);
+    const NetworkItem* netItem = findNetworkItem(networkId);
     if (!netItem)
         return {};
 
     for (int i = 0; i < netItem->childCount(); i++) {
-        auto *bufferItem = qobject_cast<BufferItem *>(netItem->child(i));
+        auto* bufferItem = qobject_cast<BufferItem*>(netItem->child(i));
         if (bufferItem && !bufferItem->bufferName().compare(bufferName, cs))
             return bufferItem->bufferId();
     }
     return {};
 }
 
-
-void NetworkModel::sortBufferIds(QList<BufferId> &bufferIds) const
+void NetworkModel::sortBufferIds(QList<BufferId>& bufferIds) const
 {
-    QList<BufferItem *> bufferItems;
-    foreach(BufferId bufferId, bufferIds) {
+    QList<BufferItem*> bufferItems;
+    foreach (BufferId bufferId, bufferIds) {
         if (_bufferItemCache.contains(bufferId))
             bufferItems << _bufferItemCache[bufferId];
     }
@@ -1726,11 +1609,10 @@ void NetworkModel::sortBufferIds(QList<BufferId> &bufferIds) const
     qSort(bufferItems.begin(), bufferItems.end(), bufferItemLessThan);
 
     bufferIds.clear();
-    foreach(BufferItem *bufferItem, bufferItems) {
+    foreach (BufferItem* bufferItem, bufferItems) {
         bufferIds << bufferItem->bufferId();
     }
 }
-
 
 QList<BufferId> NetworkModel::allBufferIdsSorted() const
 {
@@ -1739,8 +1621,7 @@ QList<BufferId> NetworkModel::allBufferIdsSorted() const
     return bufferIds;
 }
 
-
-bool NetworkModel::bufferItemLessThan(const BufferItem *left, const BufferItem *right)
+bool NetworkModel::bufferItemLessThan(const BufferItem* left, const BufferItem* right)
 {
     int leftType = left->bufferType();
     int rightType = right->bufferType();
@@ -1751,7 +1632,6 @@ bool NetworkModel::bufferItemLessThan(const BufferItem *left, const BufferItem *
         return QString::compare(left->bufferName(), right->bufferName(), Qt::CaseInsensitive) < 0;
 }
 
-
 void NetworkModel::messageRedirectionSettingsChanged()
 {
     BufferSettings bufferSettings;
@@ -1761,7 +1641,8 @@ void NetworkModel::messageRedirectionSettingsChanged()
     _errorMsgsTarget = bufferSettings.errorMsgsTarget();
 }
 
-void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types activity) {
+void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types activity)
+{
     auto _bufferItem = findBufferItem(bufferId);
     if (!_bufferItem) {
         qDebug() << "NetworkModel::bufferActivityChanged(): buffer is unknown:" << bufferId;
@@ -1773,7 +1654,8 @@ void NetworkModel::bufferActivityChanged(BufferId bufferId, const Message::Types
     _bufferItem->setActivity(activityVisibleTypesIntersection, false);
 }
 
-void NetworkModel::highlightCountChanged(BufferId bufferId, int count) {
+void NetworkModel::highlightCountChanged(BufferId bufferId, int count)
+{
     auto _bufferItem = findBufferItem(bufferId);
     if (!_bufferItem) {
         qDebug() << "NetworkModel::highlightCountChanged(): buffer is unknown:" << bufferId;

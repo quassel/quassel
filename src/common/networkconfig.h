@@ -38,8 +38,8 @@ class COMMON_EXPORT NetworkConfig : public SyncableObject
     Q_PROPERTY(int autoWhoDelay READ autoWhoDelay WRITE setAutoWhoDelay)
     Q_PROPERTY(bool standardCtcp READ standardCtcp WRITE setStandardCtcp)
 
-public :
-    NetworkConfig(const QString &objectName = "GlobalNetworkConfig", QObject *parent = nullptr);
+public:
+    NetworkConfig(const QString& objectName = "GlobalNetworkConfig", QObject* parent = nullptr);
 
 public slots:
     inline bool pingTimeoutEnabled() const { return _pingTimeoutEnabled; }
@@ -72,25 +72,24 @@ public slots:
 
     inline bool standardCtcp() const { return _standardCtcp; }
     void setStandardCtcp(bool);
-    virtual inline void requestSetStandardCtcp(bool b) { REQUEST(ARG(b)) }
+    virtual inline void requestSetStandardCtcp(bool b){REQUEST(ARG(b))}
 
-signals:
-    void pingTimeoutEnabledSet(bool);
+    signals : void pingTimeoutEnabledSet(bool);
     void pingIntervalSet(int);
-//   void maxPingCountSet(int);
+    //   void maxPingCountSet(int);
     void autoWhoEnabledSet(bool);
     void autoWhoIntervalSet(int);
-//   void autoWhoNickLimitSet(int);
+    //   void autoWhoNickLimitSet(int);
     void autoWhoDelaySet(int);
     void standardCtcpSet(bool);
 
-//   void setPingTimeoutEnabledRequested(bool);
-//   void setPingIntervalRequested(int);
-//   void setMaxPingCountRequested(int);
-//   void setAutoWhoEnabledRequested(bool);
-//   void setAutoWhoIntervalRequested(int);
-//   void setAutoWhoNickLimitRequested(int);
-//   void setAutoWhoDelayRequested(int);
+    //   void setPingTimeoutEnabledRequested(bool);
+    //   void setPingIntervalRequested(int);
+    //   void setMaxPingCountRequested(int);
+    //   void setAutoWhoEnabledRequested(bool);
+    //   void setAutoWhoIntervalRequested(int);
+    //   void setAutoWhoNickLimitRequested(int);
+    //   void setAutoWhoDelayRequested(int);
 
 private:
     bool _pingTimeoutEnabled{true};

@@ -24,10 +24,10 @@
 #include "corenetwork.h"
 #include "coresession.h"
 
-CoreAliasManager::CoreAliasManager(CoreSession *parent)
+CoreAliasManager::CoreAliasManager(CoreSession* parent)
     : AliasManager(parent)
 {
-    auto *session = qobject_cast<CoreSession *>(parent);
+    auto* session = qobject_cast<CoreSession*>(parent);
     if (!session) {
         qWarning() << "CoreAliasManager: unable to load Aliases. Parent is not a Coresession!";
         loadDefaults();
@@ -42,10 +42,9 @@ CoreAliasManager::CoreAliasManager(CoreSession *parent)
     connect(this, &SyncableObject::updatedRemotely, this, &CoreAliasManager::save);
 }
 
-
 void CoreAliasManager::save() const
 {
-    auto *session = qobject_cast<CoreSession *>(parent());
+    auto* session = qobject_cast<CoreSession*>(parent());
     if (!session) {
         qWarning() << "CoreAliasManager: unable to save Aliases. Parent is not a Coresession!";
         return;
@@ -54,16 +53,14 @@ void CoreAliasManager::save() const
     Core::setUserSetting(session->user(), "Aliases", initAliases());
 }
 
-
-const Network *CoreAliasManager::network(NetworkId id) const
+const Network* CoreAliasManager::network(NetworkId id) const
 {
-    return qobject_cast<CoreSession *>(parent())->network(id);
+    return qobject_cast<CoreSession*>(parent())->network(id);
 }
-
 
 void CoreAliasManager::loadDefaults()
 {
-    foreach(Alias alias, AliasManager::defaults()) {
+    foreach (Alias alias, AliasManager::defaults()) {
         addAlias(alias.name, alias.expansion);
     }
 }

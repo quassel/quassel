@@ -20,16 +20,17 @@
 
 #include "qtmultimedianotificationbackend.h"
 
+#include <memory>
+
 #include <QFileDialog>
 #include <QUrl>
-#include <memory>
 
 #include "clientsettings.h"
 #include "icon.h"
 #include "mainwin.h"
 #include "qtui.h"
 
-QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject *parent)
+QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject* parent)
     : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
@@ -41,8 +42,7 @@ QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject *parent
     _enabled = notificationSettings.value("QtMultimedia/Enabled", true).toBool();
 }
 
-
-void QtMultimediaNotificationBackend::notify(const Notification &notification)
+void QtMultimediaNotificationBackend::notify(const Notification& notification)
 {
     if (_enabled && (notification.type == Highlight || notification.type == PrivMsg)) {
         if (_media && _media->availability() == QMultimedia::Available) {
@@ -54,32 +54,27 @@ void QtMultimediaNotificationBackend::notify(const Notification &notification)
     }
 }
 
-
 void QtMultimediaNotificationBackend::close(uint notificationId)
 {
     Q_UNUSED(notificationId);
 }
 
-
-void QtMultimediaNotificationBackend::enabledChanged(const QVariant &v)
+void QtMultimediaNotificationBackend::enabledChanged(const QVariant& v)
 {
     _enabled = v.toBool();
 }
 
-
-void QtMultimediaNotificationBackend::audioFileChanged(const QVariant &v)
+void QtMultimediaNotificationBackend::audioFileChanged(const QVariant& v)
 {
     createMediaObject(v.toString());
 }
 
-
-SettingsPage *QtMultimediaNotificationBackend::createConfigWidget() const
+SettingsPage* QtMultimediaNotificationBackend::createConfigWidget() const
 {
     return new ConfigWidget();
 }
 
-
-void QtMultimediaNotificationBackend::createMediaObject(const QString &file)
+void QtMultimediaNotificationBackend::createMediaObject(const QString& file)
 {
     if (file.isEmpty()) {
         _media.reset();
@@ -90,10 +85,9 @@ void QtMultimediaNotificationBackend::createMediaObject(const QString &file)
     _media->setMedia(QUrl::fromLocalFile(file));
 }
 
-
 /***************************************************************************/
 
-QtMultimediaNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
+QtMultimediaNotificationBackend::ConfigWidget::ConfigWidget(QWidget* parent)
     : SettingsPage("Internal", "QtMultimediaNotification", parent)
 {
     ui.setupUi(this);
@@ -107,10 +101,9 @@ QtMultimediaNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent)
     connect(ui.filename, &QLineEdit::textChanged, this, &ConfigWidget::widgetChanged);
 }
 
-
 void QtMultimediaNotificationBackend::ConfigWidget::widgetChanged()
 {
-    if (! _audioAvailable) {
+    if (!_audioAvailable) {
         ui.play->setEnabled(ui.enabled->isChecked());
         ui.open->setEnabled(false);
         ui.filename->setEnabled(false);
@@ -126,12 +119,10 @@ void QtMultimediaNotificationBackend::ConfigWidget::widgetChanged()
     }
 }
 
-
 bool QtMultimediaNotificationBackend::ConfigWidget::hasDefaults() const
 {
     return true;
 }
-
 
 void QtMultimediaNotificationBackend::ConfigWidget::defaults()
 {
@@ -139,7 +130,6 @@ void QtMultimediaNotificationBackend::ConfigWidget::defaults()
     ui.filename->setText({});
     widgetChanged();
 }
-
 
 void QtMultimediaNotificationBackend::ConfigWidget::load()
 {
@@ -153,7 +143,6 @@ void QtMultimediaNotificationBackend::ConfigWidget::load()
     setChangedState(false);
 }
 
-
 void QtMultimediaNotificationBackend::ConfigWidget::save()
 {
     NotificationSettings s;
@@ -161,7 +150,6 @@ void QtMultimediaNotificationBackend::ConfigWidget::save()
     s.setValue("QtMultimedia/AudioFile", ui.filename->text());
     load();
 }
-
 
 void QtMultimediaNotificationBackend::ConfigWidget::on_open_clicked()
 {
@@ -172,7 +160,6 @@ void QtMultimediaNotificationBackend::ConfigWidget::on_open_clicked()
         widgetChanged();
     }
 }
-
 
 void QtMultimediaNotificationBackend::ConfigWidget::on_play_clicked()
 {

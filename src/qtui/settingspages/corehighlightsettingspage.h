@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <QVariantList>
 #include <QTableWidgetItem>
+#include <QVariantList>
 
 #include "highlightrulemanager.h"
 #include "settingspage.h"
@@ -33,7 +33,7 @@ class CoreHighlightSettingsPage : public SettingsPage
     Q_OBJECT
 
 public:
-    explicit CoreHighlightSettingsPage(QWidget *parent = nullptr);
+    explicit CoreHighlightSettingsPage(QWidget* parent = nullptr);
 
     bool hasDefaults() const override;
 
@@ -49,18 +49,29 @@ public slots:
 private slots:
     void coreConnectionStateChanged(bool state);
     void widgetHasChanged();
-    void addNewHighlightRow(bool enable = true, int id = -1, const QString &name = tr("highlight rule"), bool regex = false,
-                            bool cs = false, const QString &sender = "", const QString &chanName = "",
+    void addNewHighlightRow(bool enable = true,
+                            int id = -1,
+                            const QString& name = tr("highlight rule"),
+                            bool regex = false,
+                            bool cs = false,
+                            const QString& sender = "",
+                            const QString& chanName = "",
                             bool self = false);
-    void addNewIgnoredRow(bool enable = true, int id = -1, const QString &name = tr("highlight rule"), bool regex = false,
-                          bool cs = false, const QString &sender = "", const QString &chanName = "", bool self = false);
+    void addNewIgnoredRow(bool enable = true,
+                          int id = -1,
+                          const QString& name = tr("highlight rule"),
+                          bool regex = false,
+                          bool cs = false,
+                          const QString& sender = "",
+                          const QString& chanName = "",
+                          bool self = false);
     void removeSelectedHighlightRows();
     void removeSelectedIgnoredRows();
     void highlightNicksChanged(int index);
-    void selectHighlightRow(QTableWidgetItem *item);
-    void selectIgnoredRow(QTableWidgetItem *item);
-    void highlightTableChanged(QTableWidgetItem *item);
-    void ignoredTableChanged(QTableWidgetItem *item);
+    void selectHighlightRow(QTableWidgetItem* item);
+    void selectIgnoredRow(QTableWidgetItem* item);
+    void highlightTableChanged(QTableWidgetItem* item);
+    void ignoredTableChanged(QTableWidgetItem* item);
 
     /** Import local Highlight rules into the Core Highlight rules
      *
@@ -79,7 +90,8 @@ private:
     HighlightRuleManager::HighlightRuleList highlightList;
     HighlightRuleManager::HighlightRuleList ignoredList;
 
-    enum column {
+    enum column
+    {
         EnableColumn = 0,
         NameColumn = 1,
         RegExColumn = 2,
@@ -92,7 +104,7 @@ private:
     void emptyHighlightTable();
     void emptyIgnoredTable();
 
-    void setupRuleTable(QTableWidget *highlightTable) const;
+    void setupRuleTable(QTableWidget* highlightTable) const;
 
     /**
      * Get tooltip for the specified rule table column
@@ -112,8 +124,8 @@ private:
      * @param senderWidget  Sender name
      * @param chanWidget    Channel name
      */
-    void setupTableTooltips(QWidget *enableWidget, QWidget *nameWidget, QWidget *regExWidget,
-                            QWidget *csWidget, QWidget *senderWidget, QWidget *chanWidget) const;
+    void setupTableTooltips(
+        QWidget* enableWidget, QWidget* nameWidget, QWidget* regExWidget, QWidget* csWidget, QWidget* senderWidget, QWidget* chanWidget) const;
 
     /**
      * Setup tooltips and "What's this?" prompts for table entries
@@ -125,9 +137,12 @@ private:
      * @param senderWidget  Sender name
      * @param chanWidget    Channel name
      */
-    void setupTableTooltips(QTableWidgetItem *enableWidget, QTableWidgetItem *nameWidget,
-                            QTableWidgetItem *regExWidget, QTableWidgetItem *csWidget,
-                            QTableWidgetItem *senderWidget, QTableWidgetItem *chanWidget) const;
+    void setupTableTooltips(QTableWidgetItem* enableWidget,
+                            QTableWidgetItem* nameWidget,
+                            QTableWidgetItem* regExWidget,
+                            QTableWidgetItem* csWidget,
+                            QTableWidgetItem* senderWidget,
+                            QTableWidgetItem* chanWidget) const;
 
     /** Update the UI to show core support for highlights
      *

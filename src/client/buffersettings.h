@@ -27,17 +27,18 @@
 class CLIENT_EXPORT BufferSettings : public ClientSettings
 {
 public:
-    enum RedirectTarget {
+    enum RedirectTarget
+    {
         DefaultBuffer = 0x01,
-        StatusBuffer  = 0x02,
+        StatusBuffer = 0x02,
         CurrentBuffer = 0x04
     };
 
-    BufferSettings(const QString &idString = "__default__");
+    BufferSettings(const QString& idString = "__default__");
     BufferSettings(BufferId bufferId);
 
-    void setValue(const QString &key, const QVariant &data);
-    QVariant value(const QString &key, const QVariant &def = {}) const;
+    void setValue(const QString& key, const QVariant& data);
+    QVariant value(const QString& key, const QVariant& def = {}) const;
 
     // Message Filter (default and per view)
     bool hasFilter() const;

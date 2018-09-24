@@ -18,21 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "sslinfodlg.h"
+
 #include <QDateTime>
 #include <QHostAddress>
 #include <QSslCipher>
 #include <QSslSocket>
 
-#include "sslinfodlg.h"
 #include "util.h"
 
 // ========================================
 //  SslInfoDlg
 // ========================================
 
-SslInfoDlg::SslInfoDlg(const QSslSocket *socket, QWidget *parent)
-    : QDialog(parent),
-    _socket(socket)
+SslInfoDlg::SslInfoDlg(const QSslSocket* socket, QWidget* parent)
+    : QDialog(parent)
+    , _socket(socket)
 {
     ui.setupUi(this);
 
@@ -44,11 +45,10 @@ SslInfoDlg::SslInfoDlg(const QSslSocket *socket, QWidget *parent)
     ui.protocol->setText(cipher.protocolString());
 
     connect(ui.certificateChain, selectOverload<int>(&QComboBox::currentIndexChanged), this, &SslInfoDlg::setCurrentCert);
-    foreach(const QSslCertificate &cert, socket->peerCertificateChain()) {
+    foreach (const QSslCertificate& cert, socket->peerCertificateChain()) {
         ui.certificateChain->addItem(subjectInfo(cert, QSslCertificate::CommonName));
     }
 }
-
 
 void SslInfoDlg::setCurrentCert(int index)
 {
@@ -71,27 +71,27 @@ void SslInfoDlg::setCurrentCert(int index)
         ui.trusted->setText(tr("Yes"));
     else {
         QString errorString = tr("No, for the following reasons:<ul>");
-        foreach(const QSslError &error, socket()->sslErrors())
-        errorString += "<li>" + error.errorString() + "</li>";
+        foreach (const QSslError& error, socket()->sslErrors())
+            errorString += "<li>" + error.errorString() + "</li>";
         errorString += "</ul>";
         ui.trusted->setText(errorString);
     }
 
-    ui.validity->setText(tr("%1 to %2").arg(cert.effectiveDate().date().toString(Qt::ISODate), cert.expiryDate().date().toString(Qt::ISODate)));
+    ui.validity->setText(
+        tr("%1 to %2").arg(cert.effectiveDate().date().toString(Qt::ISODate), cert.expiryDate().date().toString(Qt::ISODate)));
     ui.md5Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Md5)));
     ui.sha1Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Sha1)));
     ui.sha256Digest->setText(prettyDigest(cert.digest(QCryptographicHash::Sha256)));
 }
 
 // in Qt5, subjectInfo returns a QStringList(); turn this into a comma-separated string instead
-QString SslInfoDlg::subjectInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const
+QString SslInfoDlg::subjectInfo(const QSslCertificate& cert, QSslCertificate::SubjectInfo subjectInfo) const
 {
     return cert.subjectInfo(subjectInfo).join(", ");
 }
 
-
 // same here
-QString SslInfoDlg::issuerInfo(const QSslCertificate &cert, QSslCertificate::SubjectInfo subjectInfo) const
+QString SslInfoDlg::issuerInfo(const QSslCertificate& cert, QSslCertificate::SubjectInfo subjectInfo) const
 {
     return cert.issuerInfo(subjectInfo).join(", ");
 }

@@ -18,17 +18,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "execwrapper.h"
+
 #include <QFile>
 #include <QTextCodec>
-
-#include "execwrapper.h"
 
 #include "client.h"
 #include "messagemodel.h"
 #include "quassel.h"
 #include "util.h"
 
-ExecWrapper::ExecWrapper(QObject *parent) : QObject(parent)
+ExecWrapper::ExecWrapper(QObject* parent)
+    : QObject(parent)
 {
     connect(&_process, &QProcess::readyReadStandardOutput, this, &ExecWrapper::processReadStdout);
     connect(&_process, &QProcess::readyReadStandardError, this, &ExecWrapper::processReadStderr);
@@ -39,8 +40,7 @@ ExecWrapper::ExecWrapper(QObject *parent) : QObject(parent)
     connect(this, &ExecWrapper::error, this, &ExecWrapper::postStderr);
 }
 
-
-void ExecWrapper::start(const BufferInfo &info, const QString &command)
+void ExecWrapper::start(const BufferInfo& info, const QString& command)
 {
     _bufferInfo = info;
     QString params;
@@ -59,7 +59,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command)
         emit error(tr(R"(Name "%1" is invalid: ../ or ..\ are not allowed!)").arg(_scriptName));
 
     else {
-        foreach(QString scriptDir, Quassel::scriptDirPaths()) {
+        foreach (QString scriptDir, Quassel::scriptDirPaths()) {
             QString fileName = scriptDir + _scriptName;
             if (!QFile::exists(fileName))
                 continue;
@@ -70,23 +70,20 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command)
         emit error(tr("Could not find script \"%1\"").arg(_scriptName));
     }
 
-    deleteLater(); // self-destruct
+    deleteLater();  // self-destruct
 }
 
-
-void ExecWrapper::postStdout(const QString &msg)
+void ExecWrapper::postStdout(const QString& msg)
 {
     if (_bufferInfo.isValid())
         Client::userInput(_bufferInfo, msg);
 }
 
-
-void ExecWrapper::postStderr(const QString &msg)
+void ExecWrapper::postStderr(const QString& msg)
 {
     if (_bufferInfo.isValid())
         Client::messageModel()->insertErrorMessage(_bufferInfo, msg);
 }
-
 
 void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status)
 {
@@ -96,15 +93,14 @@ void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status)
 
     // empty buffers
     if (!_stdoutBuffer.isEmpty())
-        foreach(QString msg, _stdoutBuffer.split('\n'))
-        emit output(msg);
+        foreach (QString msg, _stdoutBuffer.split('\n'))
+            emit output(msg);
     if (!_stderrBuffer.isEmpty())
-        foreach(QString msg, _stderrBuffer.split('\n'))
-        emit error(msg);
+        foreach (QString msg, _stderrBuffer.split('\n'))
+            emit error(msg);
 
     deleteLater();
 }
-
 
 void ExecWrapper::processError(QProcess::ProcessError err)
 {
@@ -117,7 +113,6 @@ void ExecWrapper::processError(QProcess::ProcessError err)
         deleteLater();
 }
 
-
 void ExecWrapper::processReadStdout()
 {
     QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput());
@@ -129,7 +124,6 @@ void ExecWrapper::processReadStdout()
         _stdoutBuffer = _stdoutBuffer.mid(idx + 1);
     }
 }
-
 
 void ExecWrapper::processReadStderr()
 {

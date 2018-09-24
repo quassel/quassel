@@ -32,7 +32,7 @@ public:
     using TransferManager::TransferManager;
 
 private slots:
-    void setTransferIds(const QList<QUuid> &transferIds) override;
-    void onCoreTransferAdded(const QUuid &uuid) override;
+    void setTransferIds(const QList<QUuid>& transferIds) override;
+    void onCoreTransferAdded(const QUuid& uuid) override;
     void onTransferInitDone();
 };

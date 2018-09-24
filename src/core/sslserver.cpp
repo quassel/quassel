@@ -21,48 +21,48 @@
 #include "sslserver.h"
 
 #ifdef HAVE_SSL
-#  include <QSslSocket>
+#    include <QSslSocket>
 #endif
 
 #include <QDateTime>
 
-#include "quassel.h"
 #include "logmessage.h"
+#include "quassel.h"
 
 #ifdef HAVE_SSL
 
-SslServer::SslServer(QObject *parent)
+SslServer::SslServer(QObject* parent)
     : QTcpServer(parent)
 {
     // Keep track if the SSL warning has been mentioned at least once before
     static bool sslWarningShown = false;
 
-    if(Quassel::isOptionSet("ssl-cert")) {
+    if (Quassel::isOptionSet("ssl-cert")) {
         _sslCertPath = Quassel::optionValue("ssl-cert");
-    } else {
+    }
+    else {
         _sslCertPath = Quassel::configDirPath() + "quasselCert.pem";
     }
 
-    if(Quassel::isOptionSet("ssl-key")) {
+    if (Quassel::isOptionSet("ssl-key")) {
         _sslKeyPath = Quassel::optionValue("ssl-key");
-    } else {
+    }
+    else {
         _sslKeyPath = _sslCertPath;
     }
 
     // Initialize the certificates for first-time usage
     if (!loadCerts()) {
         if (!sslWarningShown) {
-            quWarning()
-            << "SslServer: Unable to set certificate file\n"
-            << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            quWarning() << "SslServer: Unable to set certificate file\n"
+                        << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+                        << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
             sslWarningShown = true;
         }
     }
 }
 
-
-QTcpSocket *SslServer::nextPendingConnection()
+QTcpSocket* SslServer::nextPendingConnection()
 {
     if (_pendingConnections.isEmpty())
         return nullptr;
@@ -70,10 +70,9 @@ QTcpSocket *SslServer::nextPendingConnection()
         return _pendingConnections.takeFirst();
 }
 
-
 void SslServer::incomingConnection(qintptr socketDescriptor)
 {
-    auto *serverSocket = new QSslSocket(this);
+    auto* serverSocket = new QSslSocket(this);
     if (serverSocket->setSocketDescriptor(socketDescriptor)) {
         if (isCertValid()) {
             serverSocket->setLocalCertificate(_cert);
@@ -88,38 +87,35 @@ void SslServer::incomingConnection(qintptr socketDescriptor)
     }
 }
 
-
 bool SslServer::loadCerts()
 {
     // Load the certificates specified in the path.  If needed, other prep work can be done here.
     return setCertificate(_sslCertPath, _sslKeyPath);
 }
 
-
 bool SslServer::reloadCerts()
 {
     if (loadCerts()) {
         return true;
-    } else {
+    }
+    else {
         // Reloading certificates currently only occur in response to a request.  Always print an
         // error if something goes wrong, in order to simplify checking if it's working.
         if (isCertValid()) {
-            quWarning()
-            << "SslServer: Unable to reload certificate file, reverting\n"
-            << "          Quassel Core will use the previous key to provide SSL for client connections.\n"
-            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
-        } else {
-            quWarning()
-            << "SslServer: Unable to reload certificate file\n"
-            << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-            << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+            quWarning() << "SslServer: Unable to reload certificate file, reverting\n"
+                        << "          Quassel Core will use the previous key to provide SSL for client connections.\n"
+                        << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+        }
+        else {
+            quWarning() << "SslServer: Unable to reload certificate file\n"
+                        << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+                        << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
         }
         return false;
     }
 }
 
-
-bool SslServer::setCertificate(const QString &path, const QString &keyPath)
+bool SslServer::setCertificate(const QString& path, const QString& keyPath)
 {
     // Don't reset _isCertValid here, in case an older but valid certificate is still loaded.
     // Use temporary variables in order to avoid overwriting the existing certificates until
@@ -138,9 +134,7 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
     }
 
     if (!certFile.open(QIODevice::ReadOnly)) {
-        quWarning()
-        << "SslServer: Failed to open certificate file" << qPrintable(path)
-        << "error:" << certFile.error();
+        quWarning() << "SslServer: Failed to open certificate file" << qPrintable(path) << "error:" << certFile.error();
         return false;
     }
 
@@ -152,7 +146,7 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
     }
 
     untestedCert = certList[0];
-    certList.removeFirst(); // remove server cert
+    certList.removeFirst();  // remove server cert
 
     // store CA and intermediates certs
     untestedCA = certList;
@@ -163,23 +157,22 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
     }
 
     // load key from keyPath if it differs from path, otherwise load key from path
-    if(path != keyPath) {
+    if (path != keyPath) {
         QFile keyFile(keyPath);
-        if(!keyFile.exists()) {
+        if (!keyFile.exists()) {
             quWarning() << "SslServer: Key file" << qPrintable(keyPath) << "does not exist";
             return false;
         }
 
         if (!keyFile.open(QIODevice::ReadOnly)) {
-            quWarning()
-            << "SslServer: Failed to open key file" << qPrintable(keyPath)
-            << "error:" << keyFile.error();
+            quWarning() << "SslServer: Failed to open key file" << qPrintable(keyPath) << "error:" << keyFile.error();
             return false;
         }
 
         untestedKey = loadKey(&keyFile);
         keyFile.close();
-    } else {
+    }
+    else {
         untestedKey = loadKey(&certFile);
     }
 
@@ -217,8 +210,7 @@ bool SslServer::setCertificate(const QString &path, const QString &keyPath)
     return _isCertValid;
 }
 
-
-QSslKey SslServer::loadKey(QFile *keyFile)
+QSslKey SslServer::loadKey(QFile* keyFile)
 {
     QSslKey key;
     key = QSslKey(keyFile, QSsl::Rsa);
@@ -232,5 +224,4 @@ QSslKey SslServer::loadKey(QFile *keyFile)
     return key;
 }
 
-
-#endif // HAVE_SSL
+#endif  // HAVE_SSL

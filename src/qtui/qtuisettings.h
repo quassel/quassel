@@ -26,23 +26,21 @@ class QtUiSettings : public UiSettings
 {
 public:
     QtUiSettings();
-    QtUiSettings(const QString &subGroup);
+    QtUiSettings(const QString& subGroup);
 };
-
 
 class QtUiStyleSettings : public UiSettings
 {
 public:
     QtUiStyleSettings();
-    QtUiStyleSettings(const QString &subGroup);
+    QtUiStyleSettings(const QString& subGroup);
 };
-
 
 class WarningsSettings : public UiSettings
 {
 public:
     WarningsSettings();
 
-    bool showWarning(const QString &key) const;
-    void setShowWarning(const QString &key, bool show);
+    bool showWarning(const QString& key) const;
+    void setShowWarning(const QString& key, bool show);
 };

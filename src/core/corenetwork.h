@@ -20,29 +20,29 @@
 
 #pragma once
 
-#include "network.h"
 #include "coreircchannel.h"
 #include "coreircuser.h"
+#include "network.h"
 
 // IRCv3 capabilities
-#include "irccap.h"
-
 #include <QTimer>
 
+#include "irccap.h"
+
 #ifdef HAVE_SSL
-# include <QSslSocket>
-# include <QSslError>
+#    include <QSslError>
+#    include <QSslSocket>
 #else
-# include <QTcpSocket>
+#    include <QTcpSocket>
 #endif
 
 #ifdef HAVE_QCA2
-#  include "cipher.h"
+#    include "cipher.h"
 #endif
 
-#include "coresession.h"
-
 #include <functional>
+
+#include "coresession.h"
 
 class CoreIdentity;
 class CoreUserInputHandler;
@@ -54,38 +54,38 @@ class CoreNetwork : public Network
     Q_OBJECT
 
 public:
-    CoreNetwork(const NetworkId &networkid, CoreSession *session);
+    CoreNetwork(const NetworkId& networkid, CoreSession* session);
     ~CoreNetwork() override;
 
-    inline CoreIdentity *identityPtr() const { return coreSession()->identity(identity()); }
-    inline CoreSession *coreSession() const { return _coreSession; }
-    inline CoreNetworkConfig *networkConfig() const { return coreSession()->networkConfig(); }
+    inline CoreIdentity* identityPtr() const { return coreSession()->identity(identity()); }
+    inline CoreSession* coreSession() const { return _coreSession; }
+    inline CoreNetworkConfig* networkConfig() const { return coreSession()->networkConfig(); }
 
-    inline CoreUserInputHandler *userInputHandler() const { return _userInputHandler; }
-    inline CoreIgnoreListManager *ignoreListManager() { return coreSession()->ignoreListManager(); }
+    inline CoreUserInputHandler* userInputHandler() const { return _userInputHandler; }
+    inline CoreIgnoreListManager* ignoreListManager() { return coreSession()->ignoreListManager(); }
 
     //! Decode a string using the server (network) decoding.
-    inline QString serverDecode(const QByteArray &string) const { return decodeServerString(string); }
+    inline QString serverDecode(const QByteArray& string) const { return decodeServerString(string); }
 
     //! Decode a string using a channel-specific encoding if one is set (and use the standard encoding else).
-    QString channelDecode(const QString &channelName, const QByteArray &string) const;
+    QString channelDecode(const QString& channelName, const QByteArray& string) const;
 
     //! Decode a string using an IrcUser-specific encoding, if one exists (using the standaed encoding else).
-    QString userDecode(const QString &userNick, const QByteArray &string) const;
+    QString userDecode(const QString& userNick, const QByteArray& string) const;
 
     //! Encode a string using the server (network) encoding.
-    inline QByteArray serverEncode(const QString &string) const { return encodeServerString(string); }
+    inline QByteArray serverEncode(const QString& string) const { return encodeServerString(string); }
 
     //! Encode a string using the channel-specific encoding, if set, and use the standard encoding else.
-    QByteArray channelEncode(const QString &channelName, const QString &string) const;
+    QByteArray channelEncode(const QString& channelName, const QString& string) const;
 
     //! Encode a string using the user-specific encoding, if set, and use the standard encoding else.
-    QByteArray userEncode(const QString &userNick, const QString &string) const;
+    QByteArray userEncode(const QString& userNick, const QString& string) const;
 
-    inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
+    inline QString channelKey(const QString& channel) const { return _channelKeys.value(channel.toLower(), QString()); }
 
-    inline QByteArray readChannelCipherKey(const QString &channel) const { return _cipherKeys.value(channel.toLower()); }
-    inline void storeChannelCipherKey(const QString &channel, const QByteArray &key) { _cipherKeys[channel.toLower()] = key; }
+    inline QByteArray readChannelCipherKey(const QString& channel) const { return _cipherKeys.value(channel.toLower()); }
+    inline void storeChannelCipherKey(const QString& channel, const QByteArray& key) { _cipherKeys[channel.toLower()] = key; }
 
     /**
      * Checks if the given target has an automatic WHO in progress
@@ -93,10 +93,7 @@ public:
      * @param name Channel or nickname
      * @return True if an automatic WHO is in progress, otherwise false
      */
-    inline bool isAutoWhoInProgress(const QString &name) const
-    {
-        return _autoWhoPending.value(name.toLower(), 0);
-    }
+    inline bool isAutoWhoInProgress(const QString& name) const { return _autoWhoPending.value(name.toLower(), 0); }
 
     inline UserId userId() const { return _coreSession->user(); }
 
@@ -135,7 +132,9 @@ public:
      */
     inline bool isPongReplyPending() const { return _pongReplyPending; }
 
-    QList<QList<QByteArray>> splitMessage(const QString &cmd, const QString &message, const std::function<QList<QByteArray>(QString &)> &cmdGenerator);
+    QList<QList<QByteArray>> splitMessage(const QString& cmd,
+                                          const QString& message,
+                                          const std::function<QList<QByteArray>(QString&)>& cmdGenerator);
 
     // IRCv3 capability negotiation
 
@@ -154,7 +153,7 @@ public:
      *
      * @param[in] capability Name of the capability
      */
-    void queueCap(const QString &capability);
+    void queueCap(const QString& capability);
 
     /**
      * Begins capability negotiation if capabilities are queued, otherwise returns.
@@ -197,16 +196,14 @@ public:
      *
      * See: http://ircv3.net/specs/extensions/sasl-3.2.html
      */
-    const QStringList capsRequiringConfiguration = QStringList {
-        IrcCap::SASL
-    };
+    const QStringList capsRequiringConfiguration = QStringList{IrcCap::SASL};
 
 public slots:
-    void setMyNick(const QString &mynick) override;
+    void setMyNick(const QString& mynick) override;
 
     void requestConnect() const override;
     void requestDisconnect() const override;
-    void requestSetNetworkInfo(const NetworkInfo &info) override;
+    void requestSetNetworkInfo(const NetworkInfo& info) override;
 
     void setUseAutoReconnect(bool) override;
     void setAutoReconnectInterval(quint32) override;
@@ -242,7 +239,7 @@ public slots:
      * @param reason          Reason for quitting, defaulting to the user-configured quit reason
      * @param withReconnect   Reconnect to the network after disconnecting (e.g. ping timeout)
      */
-    void disconnectFromIrc(bool requested = true, const QString &reason = QString(), bool withReconnect = false);
+    void disconnectFromIrc(bool requested = true, const QString& reason = QString(), bool withReconnect = false);
 
     /**
      * Forcibly close the IRC server socket, waiting for it to close.
@@ -255,7 +252,7 @@ public slots:
      */
     bool forceDisconnect(int msecs = 1000);
 
-    void userInput(const BufferInfo &bufferInfo, QString msg);
+    void userInput(const BufferInfo& bufferInfo, QString msg);
 
     /**
      * Sends the raw (encoded) line, adding to the queue if needed, optionally with higher priority.
@@ -268,7 +265,7 @@ public slots:
      * PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putRawLine(const QByteArray &input, bool prepend = false);
+    void putRawLine(const QByteArray& input, bool prepend = false);
 
     /**
      * Sends the command with encoded parameters, with optional prefix or high priority.
@@ -283,7 +280,7 @@ public slots:
      * maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = {}, bool prepend = false);
+    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, bool prepend = false);
 
     /**
      * Sends the command for each set of encoded parameters, with optional prefix or high priority.
@@ -302,19 +299,19 @@ public slots:
      * cannot maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = {}, bool prependAll = false);
+    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, bool prependAll = false);
 
-    void setChannelJoined(const QString &channel);
-    void setChannelParted(const QString &channel);
-    void addChannelKey(const QString &channel, const QString &key);
-    void removeChannelKey(const QString &channel);
+    void setChannelJoined(const QString& channel);
+    void setChannelParted(const QString& channel);
+    void addChannelKey(const QString& channel, const QString& key);
+    void removeChannelKey(const QString& channel);
 
     // Blowfish stuff
 #ifdef HAVE_QCA2
-    Cipher *cipher(const QString &recipient);
-    QByteArray cipherKey(const QString &recipient) const;
-    void setCipherKey(const QString &recipient, const QByteArray &key);
-    bool cipherUsesCBC(const QString &target);
+    Cipher* cipher(const QString& recipient);
+    QByteArray cipherKey(const QString& recipient) const;
+    void setCipherKey(const QString& recipient, const QByteArray& key);
+    bool cipherUsesCBC(const QString& target);
 #endif
 
     // Custom rate limiting (can be connected to signals)
@@ -360,7 +357,7 @@ public slots:
      *
      * @param[in] capability Name of the capability
      */
-    void serverCapAdded(const QString &capability);
+    void serverCapAdded(const QString& capability);
 
     /**
      * Indicates a capability was acknowledged (enabled by the IRC server).
@@ -369,7 +366,7 @@ public slots:
      *
      * @param[in] capability Name of the capability
      */
-    void serverCapAcknowledged(const QString &capability);
+    void serverCapAcknowledged(const QString& capability);
 
     /**
      * Indicates a capability was removed from the list of available capabilities.
@@ -378,7 +375,7 @@ public slots:
      *
      * @param[in] capability Name of the capability
      */
-    void serverCapRemoved(const QString &capability);
+    void serverCapRemoved(const QString& capability);
 
     /**
      * Sends the next capability from the queue.
@@ -400,7 +397,7 @@ public slots:
      *
      * @param[in] name Channel or nickname
      */
-    void queueAutoWhoOneshot(const QString &name);
+    void queueAutoWhoOneshot(const QString& name);
 
     /**
      * Checks if the given target has an automatic WHO in progress, and sets it as done if so
@@ -408,9 +405,9 @@ public slots:
      * @param name Channel or nickname
      * @return True if an automatic WHO is in progress (and should be silenced), otherwise false
      */
-    bool setAutoWhoDone(const QString &name);
+    bool setAutoWhoDone(const QString& name);
 
-    void updateIssuedModes(const QString &requestedModes);
+    void updateIssuedModes(const QString& requestedModes);
     void updatePersistentModes(QString addModes, QString removeModes);
     void resetPersistentModes();
 
@@ -423,35 +420,50 @@ public slots:
      */
     inline void resetPongReplyPending() { _pongReplyPending = false; }
 
-    void onDisplayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender, Message::Flags flags)
+    void onDisplayMsg(Message::Type msgType,
+                      BufferInfo::Type bufferType,
+                      const QString& target,
+                      const QString& text,
+                      const QString& sender,
+                      Message::Flags flags)
     {
         emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
     }
 
-
 signals:
     void recvRawServerMsg(QString);
     void displayStatusMsg(QString);
-    void displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender, Message::Flags flags);
+    void displayMsg(
+        NetworkId, Message::Type, BufferInfo::Type, const QString& target, const QString& text, const QString& sender, Message::Flags flags);
     void disconnected(NetworkId networkId);
-    void connectionError(const QString &errorMsg);
+    void connectionError(const QString& errorMsg);
 
     void quitRequested(NetworkId networkId);
-    void sslErrors(const QVariant &errorData);
+    void sslErrors(const QVariant& errorData);
 
-    void newEvent(Event *event);
-    void socketInitialized(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId);
-    void socketDisconnected(const CoreIdentity *identity, const QHostAddress &localAddress, quint16 localPort, const QHostAddress &peerAddress, quint16 peerPort, qint64 socketId);
+    void newEvent(Event* event);
+    void socketInitialized(const CoreIdentity* identity,
+                           const QHostAddress& localAddress,
+                           quint16 localPort,
+                           const QHostAddress& peerAddress,
+                           quint16 peerPort,
+                           qint64 socketId);
+    void socketDisconnected(const CoreIdentity* identity,
+                            const QHostAddress& localAddress,
+                            quint16 localPort,
+                            const QHostAddress& peerAddress,
+                            quint16 peerPort,
+                            qint64 socketId);
 
 protected:
-    inline IrcChannel *ircChannelFactory(const QString &channelname) override { return new CoreIrcChannel(channelname, this); }
-    inline IrcUser *ircUserFactory(const QString &hostmask) override { return new CoreIrcUser(hostmask, this); }
+    inline IrcChannel* ircChannelFactory(const QString& channelname) override { return new CoreIrcChannel(channelname, this); }
+    inline IrcUser* ircUserFactory(const QString& hostmask) override { return new CoreIrcUser(hostmask, this); }
 
 protected slots:
     // TODO: remove cached cipher keys, when appropriate
-    //virtual void removeIrcUser(IrcUser *ircuser);
-    //virtual void removeIrcChannel(IrcChannel *ircChannel);
-    //virtual void removeChansAndUsers();
+    // virtual void removeIrcUser(IrcUser *ircuser);
+    // virtual void removeIrcChannel(IrcChannel *ircChannel);
+    // virtual void removeChansAndUsers();
 
 private slots:
     void onSocketHasData();
@@ -473,7 +485,7 @@ private slots:
     void startAutoWhoCycle();
 
 #ifdef HAVE_SSL
-    void onSslErrors(const QList<QSslError> &errors);
+    void onSslErrors(const QList<QSslError>& errors);
 #endif
 
     /**
@@ -495,24 +507,24 @@ private slots:
      */
     void fillBucketAndProcessQueue();
 
-    void writeToSocket(const QByteArray &data);
+    void writeToSocket(const QByteArray& data);
 
 private:
     void showMessage(Message::Type msgType,
                      BufferInfo::Type bufferType,
-                     const QString &target,
-                     const QString &text,
-                     const QString &sender = "",
+                     const QString& target,
+                     const QString& text,
+                     const QString& sender = "",
                      Message::Flags flags = Message::None)
     {
         emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
     }
 
 private:
-    CoreSession *_coreSession;
+    CoreSession* _coreSession;
 
-    bool _debugLogRawIrc;     ///< If true, include raw IRC socket messages in the debug log
-    qint32 _debugLogRawNetId; ///< Network ID for logging raw IRC socket messages, or -1 for all
+    bool _debugLogRawIrc;      ///< If true, include raw IRC socket messages in the debug log
+    qint32 _debugLogRawNetId;  ///< Network ID for logging raw IRC socket messages, or -1 for all
 
 #ifdef HAVE_SSL
     QSslSocket socket;
@@ -521,9 +533,9 @@ private:
 #endif
     qint64 _socketId{0};
 
-    CoreUserInputHandler *_userInputHandler;
+    CoreUserInputHandler* _userInputHandler;
 
-    QHash<QString, QString> _channelKeys; // stores persistent channels and their passwords, if any
+    QHash<QString, QString> _channelKeys;  // stores persistent channels and their passwords, if any
 
     QTimer _autoReconnectTimer;
     int _autoReconnectCount;
@@ -552,7 +564,7 @@ private:
     bool _pongTimestampValid = false;  ///< If true, IRC server responds to PING by quoting in PONG
     // This tracks whether or not a server responds to PING with a PONG of what was sent, or if it
     // does something else.  If false, PING reply hiding should be more aggressive.
-    bool _pongReplyPending = false;    ///< If true, at least one PING sent without a PONG reply
+    bool _pongReplyPending = false;  ///< If true, at least one PING sent without a PONG reply
 
     QStringList _autoWhoQueue;
     QHash<QString, int> _autoWhoPending;
@@ -570,9 +582,9 @@ private:
     // If this happens, we need a way to retry each capability individually in order to avoid having
     // one failing capability (e.g. SASL) block all other capabilities.
 
-    bool _capNegotiationActive;         /// Whether or not full capability negotiation was started
+    bool _capNegotiationActive;  /// Whether or not full capability negotiation was started
     // Avoid displaying repeat "negotiation finished" messages
-    bool _capInitialNegotiationEnded;   /// Whether or not initial capability negotiation finished
+    bool _capInitialNegotiationEnded;  /// Whether or not initial capability negotiation finished
     // Avoid sending repeat "CAP END" replies when registration is already ended
 
     /**
@@ -597,13 +609,13 @@ private:
 
     QTimer _tokenBucketTimer;
     // No need for int type as one cannot travel into the past (at least not yet, Doc)
-    quint32 _messageDelay;       /// Token refill speed in ms
-    quint32 _burstSize;          /// Size of the token bucket
-    quint32 _tokenBucket;        /// The virtual bucket that holds the tokens
-    QList<QByteArray> _msgQueue; /// Queue of messages waiting to be sent
-    bool _skipMessageRates;      /// If true, skip all message rate limits
+    quint32 _messageDelay;        /// Token refill speed in ms
+    quint32 _burstSize;           /// Size of the token bucket
+    quint32 _tokenBucket;         /// The virtual bucket that holds the tokens
+    QList<QByteArray> _msgQueue;  /// Queue of messages waiting to be sent
+    bool _skipMessageRates;       /// If true, skip all message rate limits
 
-    QString _requestedUserModes; // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
+    QString _requestedUserModes;  // 2 strings separated by a '-' character. first part are requested modes to add, the second to remove
 
     // List of blowfish keys for channels
     QHash<QString, QByteArray> _cipherKeys;

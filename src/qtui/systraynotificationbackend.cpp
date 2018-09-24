@@ -33,24 +33,27 @@
 #include "qtui.h"
 #include "systemtray.h"
 
-SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
+SystrayNotificationBackend::SystrayNotificationBackend(QObject* parent)
     : AbstractNotificationBackend(parent)
 {
     NotificationSettings notificationSettings;
     notificationSettings.initAndNotify("Systray/ShowBubble", this, &SystrayNotificationBackend::showBubbleChanged, true);
 
-    connect(QtUi::mainWindow()->systemTray(), &SystemTray::messageClicked,
-            this, selectOverload<uint>(&SystrayNotificationBackend::onNotificationActivated));
-    connect(QtUi::mainWindow()->systemTray(), &SystemTray::activated,
-            this, selectOverload<SystemTray::ActivationReason>(&SystrayNotificationBackend::onNotificationActivated));
+    connect(QtUi::mainWindow()->systemTray(),
+            &SystemTray::messageClicked,
+            this,
+            selectOverload<uint>(&SystrayNotificationBackend::onNotificationActivated));
+    connect(QtUi::mainWindow()->systemTray(),
+            &SystemTray::activated,
+            this,
+            selectOverload<SystemTray::ActivationReason>(&SystrayNotificationBackend::onNotificationActivated));
 
     QApplication::instance()->installEventFilter(this);
 
     updateToolTip();
 }
 
-
-void SystrayNotificationBackend::notify(const Notification &n)
+void SystrayNotificationBackend::notify(const Notification& n)
 {
     if (n.type != Highlight && n.type != PrivMsg)
         return;
@@ -64,7 +67,6 @@ void SystrayNotificationBackend::notify(const Notification &n)
 
     updateToolTip();
 }
-
 
 void SystrayNotificationBackend::close(uint notificationId)
 {
@@ -81,7 +83,6 @@ void SystrayNotificationBackend::close(uint notificationId)
     updateToolTip();
 }
 
-
 void SystrayNotificationBackend::onNotificationActivated(uint notificationId)
 {
     if (!_blockActivation) {
@@ -93,11 +94,10 @@ void SystrayNotificationBackend::onNotificationActivated(uint notificationId)
                 emit activated(notificationId);
                 break;
             }
-        ++i;
+            ++i;
         }
     }
 }
-
 
 void SystrayNotificationBackend::onNotificationActivated(SystemTray::ActivationReason reason)
 {
@@ -111,9 +111,8 @@ void SystrayNotificationBackend::onNotificationActivated(SystemTray::ActivationR
     }
 }
 
-
 // moving the mouse or releasing the button means that we're not dealing with a double activation
-bool SystrayNotificationBackend::eventFilter(QObject *obj, QEvent *event)
+bool SystrayNotificationBackend::eventFilter(QObject* obj, QEvent* event)
 {
     if (event->type() == QEvent::MouseMove || event->type() == QEvent::MouseButtonRelease) {
         _blockActivation = false;
@@ -121,37 +120,34 @@ bool SystrayNotificationBackend::eventFilter(QObject *obj, QEvent *event)
     return AbstractNotificationBackend::eventFilter(obj, event);
 }
 
-
-void SystrayNotificationBackend::showBubbleChanged(const QVariant &v)
+void SystrayNotificationBackend::showBubbleChanged(const QVariant& v)
 {
     _showBubble = v.toBool();
 }
 
-
 void SystrayNotificationBackend::updateToolTip()
 {
     QtUi::mainWindow()->systemTray()->setToolTip("Quassel IRC",
-        _notifications.count() ? tr("%n pending highlight(s)", "", _notifications.count()) : QString());
+                                                 _notifications.count() ? tr("%n pending highlight(s)", "", _notifications.count())
+                                                                        : QString());
 }
 
-
-SettingsPage *SystrayNotificationBackend::createConfigWidget() const
+SettingsPage* SystrayNotificationBackend::createConfigWidget() const
 {
     return new ConfigWidget();
 }
 
-
 /***************************************************************************/
 
-SystrayNotificationBackend::ConfigWidget::ConfigWidget(QWidget *parent) : SettingsPage("Internal", "SystrayNotification", parent)
+SystrayNotificationBackend::ConfigWidget::ConfigWidget(QWidget* parent)
+    : SettingsPage("Internal", "SystrayNotification", parent)
 {
     _showBubbleBox = new QCheckBox(tr("Show a message in a popup"));
     _showBubbleBox->setIcon(icon::get("dialog-information"));
     connect(_showBubbleBox, &QAbstractButton::toggled, this, &ConfigWidget::widgetChanged);
-    auto *layout = new QHBoxLayout(this);
+    auto* layout = new QHBoxLayout(this);
     layout->addWidget(_showBubbleBox);
 }
-
 
 void SystrayNotificationBackend::ConfigWidget::widgetChanged()
 {
@@ -160,19 +156,16 @@ void SystrayNotificationBackend::ConfigWidget::widgetChanged()
         setChangedState(changed);
 }
 
-
 bool SystrayNotificationBackend::ConfigWidget::hasDefaults() const
 {
     return true;
 }
-
 
 void SystrayNotificationBackend::ConfigWidget::defaults()
 {
     _showBubbleBox->setChecked(false);
     widgetChanged();
 }
-
 
 void SystrayNotificationBackend::ConfigWidget::load()
 {
@@ -181,7 +174,6 @@ void SystrayNotificationBackend::ConfigWidget::load()
     _showBubbleBox->setChecked(_showBubble);
     setChangedState(false);
 }
-
 
 void SystrayNotificationBackend::ConfigWidget::save()
 {

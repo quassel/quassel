@@ -21,14 +21,15 @@
 #ifndef IGNORELISTSETTINGSPAGE_H
 #define IGNORELISTSETTINGSPAGE_H
 
-#include <QStyledItemDelegate>
 #include <QButtonGroup>
+#include <QStyledItemDelegate>
 
-#include "settingspage.h"
-#include "ui_ignorelistsettingspage.h"
-#include "ui_ignorelisteditdlg.h"
-#include "ignorelistmodel.h"
 #include "clientignorelistmanager.h"
+#include "ignorelistmodel.h"
+#include "settingspage.h"
+
+#include "ui_ignorelisteditdlg.h"
+#include "ui_ignorelistsettingspage.h"
 
 class QEvent;
 class QPainter;
@@ -40,20 +41,19 @@ class IgnoreListDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    IgnoreListDelegate(QWidget *parent = nullptr) : QStyledItemDelegate(parent) {}
-    void paint(QPainter *painter, const QStyleOptionViewItem &option,
-        const QModelIndex &index) const override;
-    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-        const QModelIndex &index) override;
+    IgnoreListDelegate(QWidget* parent = nullptr)
+        : QStyledItemDelegate(parent)
+    {}
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index) override;
 };
-
 
 class IgnoreListEditDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent = nullptr, bool enabled = false);
+    IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem& item, QWidget* parent = nullptr, bool enabled = false);
     inline IgnoreListManager::IgnoreListItem ignoreListItem() { return _ignoreListItem; }
     void enableOkButton(bool state);
 
@@ -71,35 +71,33 @@ private:
     QButtonGroup _scopeButtonGroup;
 };
 
-
 class IgnoreListSettingsPage : public SettingsPage
 {
     Q_OBJECT
 
 public:
-    IgnoreListSettingsPage(QWidget *parent = nullptr);
+    IgnoreListSettingsPage(QWidget* parent = nullptr);
     ~IgnoreListSettingsPage() override;
     inline bool hasDefaults() const override { return false; }
     inline bool needsCoreConnection() const override { return true; }
-    void editIgnoreRule(const QString &ignoreRule);
+    void editIgnoreRule(const QString& ignoreRule);
 
 public slots:
     void save() override;
     void load() override;
     void defaults() override;
-    void newIgnoreRule(const QString &rule = {});
+    void newIgnoreRule(const QString& rule = {});
 
 private slots:
     void enableDialog(bool);
     void deleteSelectedIgnoreRule();
     void editSelectedIgnoreRule();
-    void selectionChanged(const QItemSelection &selection, const QItemSelection &);
+    void selectionChanged(const QItemSelection& selection, const QItemSelection&);
 
 private:
-    IgnoreListDelegate *_delegate;
+    IgnoreListDelegate* _delegate;
     Ui::IgnoreListSettingsPage ui;
     IgnoreListModel _ignoreListModel;
 };
 
-
-#endif //IGNORELISTSETTINGSPAGE_H
+#endif  // IGNORELISTSETTINGSPAGE_H

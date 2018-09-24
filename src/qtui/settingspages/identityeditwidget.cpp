@@ -25,14 +25,14 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMimeData>
-#include <QUrl>
 #include <QStandardPaths>
+#include <QUrl>
 
 #include "client.h"
 #include "icon.h"
 #include "util.h"
 
-IdentityEditWidget::IdentityEditWidget(QWidget *parent)
+IdentityEditWidget::IdentityEditWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
@@ -65,8 +65,8 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     connect(ui.continueUnsecured, &QAbstractButton::clicked, this, &IdentityEditWidget::requestEditSsl);
 
     // we would need this if we enabled drag and drop in the nicklist...
-    //connect(ui.nicknameList, &QListWidget::rowsInserted, this, &IdentityEditWidget::setWidgetStates);
-    //connect(ui.nicknameList->model(), &NickListModel::rowsInserted, this, IdentityEditWidget::nicklistHasChanged);
+    // connect(ui.nicknameList, &QListWidget::rowsInserted, this, &IdentityEditWidget::setWidgetStates);
+    // connect(ui.nicknameList->model(), &NickListModel::rowsInserted, this, IdentityEditWidget::nicklistHasChanged);
 
     // disabling unused stuff
     ui.autoAwayEnabled->hide();
@@ -85,25 +85,26 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
     if (Client::isCoreFeatureEnabled(Quassel::Feature::AwayFormatTimestamp)) {
         // Core allows formatting %%timestamp%% messages in away strings.  Update tooltips.
         QString strFormatTooltip;
-        QTextStream formatTooltip( &strFormatTooltip, QIODevice::WriteOnly );
+        QTextStream formatTooltip(&strFormatTooltip, QIODevice::WriteOnly);
         formatTooltip << "<qt><style>.bold { font-weight: bold; } "
                          ".italic { font-style: italic; }</style>";
 
         // Function to add a row to the tooltip table
         auto addRow = [&](const QString& key, const QString& value, bool condition) {
             if (condition) {
-                formatTooltip << "<tr><td class='bold' align='right'>"
-                        << key << "</td><td>" << value << "</td></tr>";
+                formatTooltip << "<tr><td class='bold' align='right'>" << key << "</td><td>" << value << "</td></tr>";
             }
         };
 
         // Original tooltip goes here
         formatTooltip << "<p>%1</p>";
         // New timestamp formatting guide here
-        formatTooltip << "<p>" << tr("You can add date/time to this message "
-                               "using the syntax: "
-                               "<br/>%%<span class='italic'>&lt;format&gt;</span>%%, where "
-                               "<span class='italic'>&lt;format&gt;</span> is:") << "</p>";
+        formatTooltip << "<p>"
+                      << tr("You can add date/time to this message "
+                            "using the syntax: "
+                            "<br/>%%<span class='italic'>&lt;format&gt;</span>%%, where "
+                            "<span class='italic'>&lt;format&gt;</span> is:")
+                      << "</p>";
         formatTooltip << "<table cellspacing='5' cellpadding='0'>";
         addRow("hh", tr("the hour"), true);
         addRow("mm", tr("the minutes"), true);
@@ -114,24 +115,25 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
         addRow("t", tr("current timezone"), true);
         formatTooltip << "</table>";
         formatTooltip << "<p>" << tr("Example: Away since %%hh:mm%% on %%dd.MM%%.") << "</p>";
-        formatTooltip << "<p>" << tr("%%%% without anything inside represents %%.  Other format "
-                                     "codes are available.") << "</p>";
+        formatTooltip << "<p>"
+                      << tr("%%%% without anything inside represents %%.  Other format "
+                            "codes are available.")
+                      << "</p>";
         formatTooltip << "</qt>";
 
         // Split up the message to allow re-using translations:
         // [Original tool-tip]  [Timestamp format message]
         ui.awayReason->setToolTip(strFormatTooltip.arg(ui.awayReason->toolTip()));
         ui.detachAwayEnabled->setToolTip(strFormatTooltip.arg(ui.detachAwayEnabled->toolTip()));
-    } // else: Do nothing, leave the original translated string
+    }  // else: Do nothing, leave the original translated string
 }
-
 
 void IdentityEditWidget::setWidgetStates()
 {
     if (ui.nicknameList->selectedItems().count()) {
         ui.renameNick->setEnabled(true);
         ui.nickUp->setEnabled(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]) > 0);
-        ui.nickDown->setEnabled(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]) < ui.nicknameList->count()-1);
+        ui.nickDown->setEnabled(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]) < ui.nicknameList->count() - 1);
     }
     else {
         ui.renameNick->setDisabled(true);
@@ -141,8 +143,7 @@ void IdentityEditWidget::setWidgetStates()
     ui.deleteNick->setEnabled(ui.nicknameList->count() > 1);
 }
 
-
-void IdentityEditWidget::displayIdentity(CertIdentity *id, CertIdentity *saveId)
+void IdentityEditWidget::displayIdentity(CertIdentity* id, CertIdentity* saveId)
 {
     if (saveId) {
         saveToIdentity(saveId);
@@ -154,10 +155,11 @@ void IdentityEditWidget::displayIdentity(CertIdentity *id, CertIdentity *saveId)
     ui.realName->setText(id->realName());
     ui.nicknameList->clear();
     ui.nicknameList->addItems(id->nicks());
-    //for(int i = 0; i < ui.nicknameList->count(); i++) {
+    // for(int i = 0; i < ui.nicknameList->count(); i++) {
     //  ui.nicknameList->item(i)->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsEnabled);
     //}
-    if (ui.nicknameList->count()) ui.nicknameList->setCurrentRow(0);
+    if (ui.nicknameList->count())
+        ui.nicknameList->setCurrentRow(0);
     ui.awayNick->setText(id->awayNick());
     ui.awayReason->setText(id->awayReason());
     ui.autoAwayEnabled->setChecked(id->autoAwayEnabled());
@@ -176,8 +178,7 @@ void IdentityEditWidget::displayIdentity(CertIdentity *id, CertIdentity *saveId)
 #endif
 }
 
-
-void IdentityEditWidget::saveToIdentity(CertIdentity *id)
+void IdentityEditWidget::saveToIdentity(CertIdentity* id)
 {
     QRegExp linebreaks = QRegExp("[\\r\\n]");
     id->setRealName(ui.realName->text());
@@ -202,76 +203,76 @@ void IdentityEditWidget::saveToIdentity(CertIdentity *id)
     id->setPartReason(ui.partReason->text().remove(linebreaks));
     id->setQuitReason(ui.quitReason->text().remove(linebreaks));
 #ifdef HAVE_SSL
-    id->setSslKey(QSslKey(ui.keyTypeLabel->property("sslKey").toByteArray(), (QSsl::KeyAlgorithm)(ui.keyTypeLabel->property("sslKeyType").toInt())));
+    id->setSslKey(
+        QSslKey(ui.keyTypeLabel->property("sslKey").toByteArray(), (QSsl::KeyAlgorithm)(ui.keyTypeLabel->property("sslKeyType").toInt())));
     id->setSslCert(QSslCertificate(ui.certOrgLabel->property("sslCert").toByteArray()));
 #endif
 }
 
-
 void IdentityEditWidget::on_addNick_clicked()
 {
     QStringList existing;
-    for (int i = 0; i < ui.nicknameList->count(); i++) existing << ui.nicknameList->item(i)->text();
+    for (int i = 0; i < ui.nicknameList->count(); i++)
+        existing << ui.nicknameList->item(i)->text();
     NickEditDlg dlg(QString(), existing, this);
     if (dlg.exec() == QDialog::Accepted) {
         ui.nicknameList->addItem(dlg.nick());
-        ui.nicknameList->setCurrentRow(ui.nicknameList->count()-1);
+        ui.nicknameList->setCurrentRow(ui.nicknameList->count() - 1);
         setWidgetStates();
         emit widgetHasChanged();
     }
 }
-
 
 void IdentityEditWidget::on_deleteNick_clicked()
 {
     // no confirmation, since a nickname is really nothing hard to recreate
     if (ui.nicknameList->selectedItems().count()) {
         delete ui.nicknameList->takeItem(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]));
-        ui.nicknameList->setCurrentRow(qMin(ui.nicknameList->currentRow()+1, ui.nicknameList->count()-1));
+        ui.nicknameList->setCurrentRow(qMin(ui.nicknameList->currentRow() + 1, ui.nicknameList->count() - 1));
         setWidgetStates();
         emit widgetHasChanged();
     }
 }
 
-
 void IdentityEditWidget::on_renameNick_clicked()
 {
-    if (!ui.nicknameList->selectedItems().count()) return;
+    if (!ui.nicknameList->selectedItems().count())
+        return;
     QString old = ui.nicknameList->selectedItems()[0]->text();
     QStringList existing;
-    for (int i = 0; i < ui.nicknameList->count(); i++) existing << ui.nicknameList->item(i)->text();
+    for (int i = 0; i < ui.nicknameList->count(); i++)
+        existing << ui.nicknameList->item(i)->text();
     NickEditDlg dlg(old, existing, this);
     if (dlg.exec() == QDialog::Accepted) {
         ui.nicknameList->selectedItems()[0]->setText(dlg.nick());
     }
 }
 
-
 void IdentityEditWidget::on_nickUp_clicked()
 {
-    if (!ui.nicknameList->selectedItems().count()) return;
+    if (!ui.nicknameList->selectedItems().count())
+        return;
     int row = ui.nicknameList->row(ui.nicknameList->selectedItems()[0]);
     if (row > 0) {
-        ui.nicknameList->insertItem(row-1, ui.nicknameList->takeItem(row));
-        ui.nicknameList->setCurrentRow(row-1);
+        ui.nicknameList->insertItem(row - 1, ui.nicknameList->takeItem(row));
+        ui.nicknameList->setCurrentRow(row - 1);
         setWidgetStates();
         emit widgetHasChanged();
     }
 }
-
 
 void IdentityEditWidget::on_nickDown_clicked()
 {
-    if (!ui.nicknameList->selectedItems().count()) return;
+    if (!ui.nicknameList->selectedItems().count())
+        return;
     int row = ui.nicknameList->row(ui.nicknameList->selectedItems()[0]);
-    if (row < ui.nicknameList->count()-1) {
-        ui.nicknameList->insertItem(row+1, ui.nicknameList->takeItem(row));
-        ui.nicknameList->setCurrentRow(row+1);
+    if (row < ui.nicknameList->count() - 1) {
+        ui.nicknameList->insertItem(row + 1, ui.nicknameList->takeItem(row));
+        ui.nicknameList->setCurrentRow(row + 1);
         setWidgetStates();
         emit widgetHasChanged();
     }
 }
-
 
 void IdentityEditWidget::showAdvanced(bool advanced)
 {
@@ -288,7 +289,6 @@ void IdentityEditWidget::showAdvanced(bool advanced)
     }
 }
 
-
 void IdentityEditWidget::setSslState(SslState state)
 {
     switch (state) {
@@ -304,25 +304,23 @@ void IdentityEditWidget::setSslState(SslState state)
     }
 }
 
-
 #ifdef HAVE_SSL
-bool IdentityEditWidget::eventFilter(QObject *watched, QEvent *event)
+bool IdentityEditWidget::eventFilter(QObject* watched, QEvent* event)
 {
     bool isCert = (watched == ui.sslCertGroupBox);
     switch (event->type()) {
     case QEvent::DragEnter:
-        sslDragEnterEvent(static_cast<QDragEnterEvent *>(event));
+        sslDragEnterEvent(static_cast<QDragEnterEvent*>(event));
         return true;
     case QEvent::Drop:
-        sslDropEvent(static_cast<QDropEvent *>(event), isCert);
+        sslDropEvent(static_cast<QDropEvent*>(event), isCert);
         return true;
     default:
         return false;
     }
 }
 
-
-void IdentityEditWidget::sslDragEnterEvent(QDragEnterEvent *event)
+void IdentityEditWidget::sslDragEnterEvent(QDragEnterEvent* event)
 {
     if (event->mimeData()->hasFormat("text/uri-list") || event->mimeData()->hasFormat("text/uri")) {
         event->setDropAction(Qt::CopyAction);
@@ -330,8 +328,7 @@ void IdentityEditWidget::sslDragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-
-void IdentityEditWidget::sslDropEvent(QDropEvent *event, bool isCert)
+void IdentityEditWidget::sslDropEvent(QDropEvent* event, bool isCert)
 {
     QByteArray rawUris;
     if (event->mimeData()->hasFormat("text/uri-list"))
@@ -356,20 +353,19 @@ void IdentityEditWidget::sslDropEvent(QDropEvent *event, bool isCert)
     emit widgetHasChanged();
 }
 
-
 void IdentityEditWidget::on_clearOrLoadKeyButton_clicked()
 {
     QSslKey key;
 
     if (ui.keyTypeLabel->property("sslKey").toByteArray().isEmpty())
-        key = keyByFilename(QFileDialog::getOpenFileName(this, tr("Load a Key"), QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
+        key = keyByFilename(
+            QFileDialog::getOpenFileName(this, tr("Load a Key"), QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
 
     showKeyState(key);
     emit widgetHasChanged();
 }
 
-
-QSslKey IdentityEditWidget::keyByFilename(const QString &filename)
+QSslKey IdentityEditWidget::keyByFilename(const QString& filename)
 {
     QSslKey key;
 
@@ -386,17 +382,22 @@ QSslKey IdentityEditWidget::keyByFilename(const QString &filename)
                 goto returnKey;
         }
     }
-    QMessageBox::information(this, tr("Failed to read key"), tr("Failed to read the key file. It is either incompatible or invalid. Note that the key file must not have a passphrase."));
+    QMessageBox::information(
+        this,
+        tr("Failed to read key"),
+        tr("Failed to read the key file. It is either incompatible or invalid. Note that the key file must not have a passphrase."));
 returnKey:
-    if(!key.isNull() && key.algorithm() == QSsl::KeyAlgorithm::Ec && !Client::isCoreFeatureEnabled(Quassel::Feature::EcdsaCertfpKeys)) {
-        QMessageBox::information(this, tr("Core does not support ECDSA keys"), tr("You loaded an ECDSA key, but the core does not support ECDSA keys. Please contact the core administrator."));
+    if (!key.isNull() && key.algorithm() == QSsl::KeyAlgorithm::Ec && !Client::isCoreFeatureEnabled(Quassel::Feature::EcdsaCertfpKeys)) {
+        QMessageBox::
+            information(this,
+                        tr("Core does not support ECDSA keys"),
+                        tr("You loaded an ECDSA key, but the core does not support ECDSA keys. Please contact the core administrator."));
         key.clear();
     }
     return key;
 }
 
-
-void IdentityEditWidget::showKeyState(const QSslKey &key)
+void IdentityEditWidget::showKeyState(const QSslKey& key)
 {
     if (key.isNull()) {
         ui.keyTypeLabel->setText(tr("No Key loaded"));
@@ -422,19 +423,18 @@ void IdentityEditWidget::showKeyState(const QSslKey &key)
     ui.keyTypeLabel->setProperty("sslKeyType", (int)key.algorithm());
 }
 
-
 void IdentityEditWidget::on_clearOrLoadCertButton_clicked()
 {
     QSslCertificate cert;
 
     if (ui.certOrgLabel->property("sslCert").toByteArray().isEmpty())
-        cert = certByFilename(QFileDialog::getOpenFileName(this, tr("Load a Certificate"), QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
+        cert = certByFilename(
+            QFileDialog::getOpenFileName(this, tr("Load a Certificate"), QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
     showCertState(cert);
     emit widgetHasChanged();
 }
 
-
-QSslCertificate IdentityEditWidget::certByFilename(const QString &filename)
+QSslCertificate IdentityEditWidget::certByFilename(const QString& filename)
 {
     QSslCertificate cert;
     QFile certFile(filename);
@@ -450,8 +450,7 @@ QSslCertificate IdentityEditWidget::certByFilename(const QString &filename)
     return cert;
 }
 
-
-void IdentityEditWidget::showCertState(const QSslCertificate &cert)
+void IdentityEditWidget::showCertState(const QSslCertificate& cert)
 {
     if (cert.isNull()) {
         ui.certOrgLabel->setText(tr("No Certificate loaded"));
@@ -466,5 +465,4 @@ void IdentityEditWidget::showCertState(const QSslCertificate &cert)
     ui.certOrgLabel->setProperty("sslCert", cert.toPem());
 }
 
-
-#endif //HAVE_SSL
+#endif  // HAVE_SSL

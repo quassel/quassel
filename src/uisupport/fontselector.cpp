@@ -18,18 +18,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "fontselector.h"
+
 #include <QEvent>
 #include <QFontDialog>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 
-#include "fontselector.h"
-
-FontSelector::FontSelector(QWidget *parent) : QWidget(parent)
+FontSelector::FontSelector(QWidget* parent)
+    : QWidget(parent)
 {
-    auto *layout = new QHBoxLayout(this);
-    QPushButton *chooseButton = new QPushButton(tr("Choose..."), this);
+    auto* layout = new QHBoxLayout(this);
+    QPushButton* chooseButton = new QPushButton(tr("Choose..."), this);
     connect(chooseButton, &QAbstractButton::clicked, this, &FontSelector::chooseFont);
 
     layout->addWidget(_demo = new QLabel("Font"));
@@ -42,15 +43,13 @@ FontSelector::FontSelector(QWidget *parent) : QWidget(parent)
     _font = font();
 }
 
-
-void FontSelector::setSelectedFont(const QFont &font)
+void FontSelector::setSelectedFont(const QFont& font)
 {
     _font = font;
     _demo->setText(QString("%1 %2pt").arg(font.family()).arg(font.pointSize()));
     _demo->setFont(font);
     emit fontChanged(font);
 }
-
 
 void FontSelector::chooseFont()
 {
@@ -61,8 +60,7 @@ void FontSelector::chooseFont()
     }
 }
 
-
-void FontSelector::changeEvent(QEvent *e)
+void FontSelector::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::StyleChange) {
         _demo->setFont(_font);

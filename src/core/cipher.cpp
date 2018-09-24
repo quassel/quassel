@@ -13,22 +13,27 @@
 */
 
 #include "cipher.h"
+
 #include "logmessage.h"
 
 Cipher::Cipher()
 {
-    m_primeNum = QCA::BigInteger("12745216229761186769575009943944198619149164746831579719941140425076456621824834322853258804883232842877311723249782818608677050956745409379781245497526069657222703636504651898833151008222772087491045206203033063108075098874712912417029101508315117935752962862335062591404043092163187352352197487303798807791605274487594646923");
+    m_primeNum = QCA::BigInteger(
+        "1274521622976118676957500994394419861914916474683157971994114042507645662182483432285325880488323284287731172324978281860867705095"
+        "6745409379781245497526069657222703636504651898833151008222772087491045206203033063108075098874712912417029101508315117935752962862"
+        "335062591404043092163187352352197487303798807791605274487594646923");
     setType("blowfish");
 }
 
-
 Cipher::Cipher(QByteArray key, QString cipherType)
 {
-    m_primeNum = QCA::BigInteger("12745216229761186769575009943944198619149164746831579719941140425076456621824834322853258804883232842877311723249782818608677050956745409379781245497526069657222703636504651898833151008222772087491045206203033063108075098874712912417029101508315117935752962862335062591404043092163187352352197487303798807791605274487594646923");
+    m_primeNum = QCA::BigInteger(
+        "1274521622976118676957500994394419861914916474683157971994114042507645662182483432285325880488323284287731172324978281860867705095"
+        "6745409379781245497526069657222703636504651898833151008222772087491045206203033063108075098874712912417029101508315117935752962862"
+        "335062591404043092163187352352197487303798807791605274487594646923");
     setKey(key);
     setType(cipherType);
 }
-
 
 bool Cipher::setKey(QByteArray key)
 {
@@ -37,102 +42,88 @@ bool Cipher::setKey(QByteArray key)
         return false;
     }
 
-    if (key.mid(0, 4).toLower() == "ecb:")
-    {
+    if (key.mid(0, 4).toLower() == "ecb:") {
         m_cbc = false;
         m_key = key.mid(4);
     }
-    //strip cbc: if included
-    else if (key.mid(0, 4).toLower() == "cbc:")
-    {
+    // strip cbc: if included
+    else if (key.mid(0, 4).toLower() == "cbc:") {
         m_cbc = true;
         m_key = key.mid(4);
     }
-    else
-    {
-//    if(Preferences::self()->encryptionType())
-//      m_cbc = true;
-//    else
-//    default to CBC
+    else {
+        //    if(Preferences::self()->encryptionType())
+        //      m_cbc = true;
+        //    else
+        //    default to CBC
         m_cbc = true;
         m_key = key;
     }
     return true;
 }
 
-
-bool Cipher::setType(const QString &type)
+bool Cipher::setType(const QString& type)
 {
-    //TODO check QCA::isSupported()
+    // TODO check QCA::isSupported()
     m_type = type;
     return true;
 }
 
-
 QByteArray Cipher::decrypt(QByteArray cipherText)
 {
     QByteArray pfx = "";
-    bool error = false; // used to flag non cbc, seems like good practice not to parse w/o regard for set encryption type
+    bool error = false;  // used to flag non cbc, seems like good practice not to parse w/o regard for set encryption type
 
-    //if we get cbc
-    if (cipherText.mid(0, 5) == "+OK *")
-    {
-        //if we have cbc
+    // if we get cbc
+    if (cipherText.mid(0, 5) == "+OK *") {
+        // if we have cbc
         if (m_cbc)
             cipherText = cipherText.mid(5);
-        //if we don't
-        else
-        {
+        // if we don't
+        else {
             cipherText = cipherText.mid(5);
             pfx = "ERROR_NONECB: ";
             error = true;
         }
     }
-    //if we get ecb
-    else if (cipherText.mid(0, 4) == "+OK " || cipherText.mid(0, 5) == "mcps ")
-    {
-        //if we had cbc
-        if (m_cbc)
-        {
+    // if we get ecb
+    else if (cipherText.mid(0, 4) == "+OK " || cipherText.mid(0, 5) == "mcps ") {
+        // if we had cbc
+        if (m_cbc) {
             cipherText = (cipherText.mid(0, 4) == "+OK ") ? cipherText.mid(4) : cipherText.mid(5);
             pfx = "ERROR_NONCBC: ";
             error = true;
         }
-        //if we don't
-        else
-        {
+        // if we don't
+        else {
             if (cipherText.mid(0, 4) == "+OK ")
                 cipherText = cipherText.mid(4);
             else
                 cipherText = cipherText.mid(5);
         }
     }
-    //all other cases we fail
+    // all other cases we fail
     else
         return cipherText;
 
     QByteArray temp;
     // (if cbc and no error we parse cbc) || (if ecb and error we parse cbc)
-    if ((m_cbc && !error) || (!m_cbc && error))
-    {
+    if ((m_cbc && !error) || (!m_cbc && error)) {
         temp = blowfishCBC(cipherText, false);
 
-        if (temp == cipherText)
-        {
+        if (temp == cipherText) {
             // kDebug("Decryption from CBC Failed");
-            return cipherText+' '+'\n';
+            return cipherText + ' ' + '\n';
         }
         else
             cipherText = temp;
     }
-    else
-    {
+    else {
         temp = blowfishECB(cipherText, false);
 
-        if (temp == cipherText)
-        {
+        if (temp == cipherText) {
             // kDebug("Decryption from ECB Failed");
-            return cipherText+' '+'\n';
+            return cipherText + ' ' + '\n';
         }
         else
             cipherText = temp;
@@ -141,10 +132,9 @@ QByteArray Cipher::decrypt(QByteArray cipherText)
     // don't hate me for the mircryption reference there.
     if (cipherText.at(0) == 1)
         pfx = "\x0";
-    cipherText = pfx+cipherText+' '+'\n'; // FIXME(??) why is there an added space here?
+    cipherText = pfx + cipherText + ' ' + '\n';  // FIXME(??) why is there an added space here?
     return cipherText;
 }
-
 
 QByteArray Cipher::initKeyExchange()
 {
@@ -156,21 +146,19 @@ QByteArray Cipher::initKeyExchange()
 
     QByteArray publicKey = m_tempKey.toPublicKey().toDH().y().toArray().toByteArray();
 
-    //remove leading 0
+    // remove leading 0
     if (publicKey.length() > 135 && publicKey.at(0) == '\0')
         publicKey = publicKey.mid(1);
 
     return publicKey.toBase64().append('A');
 }
 
-
 QByteArray Cipher::parseInitKeyX(QByteArray key)
 {
     QCA::Initializer init;
     bool isCBC = false;
 
-    if (key.endsWith(" CBC"))
-    {
+    if (key.endsWith(" CBC")) {
         isCBC = true;
         key.chop(4);
     }
@@ -187,7 +175,7 @@ QByteArray Cipher::parseInitKeyX(QByteArray key)
 
     QByteArray publicKey = privateKey.y().toArray().toByteArray();
 
-    //remove leading 0
+    // remove leading 0
     if (publicKey.length() > 135 && publicKey.at(0) == '\0')
         publicKey = publicKey.mid(1);
 
@@ -199,8 +187,9 @@ QByteArray Cipher::parseInitKeyX(QByteArray key)
     QByteArray sharedKey = privateKey.deriveKey(remotePub).toByteArray();
     sharedKey = QCA::Hash("sha256").hash(sharedKey).toByteArray().toBase64();
 
-    //remove trailing = because mircryption and fish think it's a swell idea.
-    while (sharedKey.endsWith('=')) sharedKey.chop(1);
+    // remove trailing = because mircryption and fish think it's a swell idea.
+    while (sharedKey.endsWith('='))
+        sharedKey.chop(1);
 
     if (isCBC)
         sharedKey.prepend("cbc:");
@@ -212,7 +201,6 @@ QByteArray Cipher::parseInitKeyX(QByteArray key)
 
     return publicKey.toBase64().append('A');
 }
-
 
 bool Cipher::parseFinishKeyX(QByteArray key)
 {
@@ -235,34 +223,33 @@ bool Cipher::parseFinishKeyX(QByteArray key)
     QByteArray sharedKey = m_tempKey.deriveKey(remotePub).toByteArray();
     sharedKey = QCA::Hash("sha256").hash(sharedKey).toByteArray().toBase64();
 
-    //remove trailng = because mircryption and fish think it's a swell idea.
-    while (sharedKey.endsWith('=')) sharedKey.chop(1);
+    // remove trailng = because mircryption and fish think it's a swell idea.
+    while (sharedKey.endsWith('='))
+        sharedKey.chop(1);
 
     bool success = setKey(sharedKey);
 
     return success;
 }
 
-
 QByteArray Cipher::decryptTopic(QByteArray cipherText)
 {
-    if (cipherText.mid(0, 4) == "+OK ") // FiSH style topic
+    if (cipherText.mid(0, 4) == "+OK ")  // FiSH style topic
         cipherText = cipherText.mid(4);
     else if (cipherText.left(5) == "«m«")
-        cipherText = cipherText.mid(5, cipherText.length()-10);
+        cipherText = cipherText.mid(5, cipherText.length() - 10);
     else
         return cipherText;
 
     QByteArray temp;
-    //TODO currently no backwards sanity checks for topic, it seems to use different standards
-    //if somebody figures them out they can enable it and add "ERROR_NONECB/CBC" warnings
+    // TODO currently no backwards sanity checks for topic, it seems to use different standards
+    // if somebody figures them out they can enable it and add "ERROR_NONECB/CBC" warnings
     if (m_cbc)
         temp = blowfishCBC(cipherText.mid(1), false);
     else
         temp = blowfishECB(cipherText, false);
 
-    if (temp == cipherText)
-    {
+    if (temp == cipherText) {
         return cipherText;
     }
     else
@@ -274,31 +261,26 @@ QByteArray Cipher::decryptTopic(QByteArray cipherText)
     return cipherText;
 }
 
-
-bool Cipher::encrypt(QByteArray &cipherText)
+bool Cipher::encrypt(QByteArray& cipherText)
 {
-    if (cipherText.left(3) == "+p ") //don't encode if...?
+    if (cipherText.left(3) == "+p ")  // don't encode if...?
         cipherText = cipherText.mid(3);
-    else
-    {
-        if (m_cbc) //encode in ecb or cbc decide how to determine later
+    else {
+        if (m_cbc)  // encode in ecb or cbc decide how to determine later
         {
             QByteArray temp = blowfishCBC(cipherText, true);
 
-            if (temp == cipherText)
-            {
+            if (temp == cipherText) {
                 // kDebug("CBC Encoding Failed");
                 return false;
             }
 
             cipherText = "+OK *" + temp;
         }
-        else
-        {
+        else {
             QByteArray temp = blowfishECB(cipherText, true);
 
-            if (temp == cipherText)
-            {
+            if (temp == cipherText) {
                 // kDebug("ECB Encoding Failed");
                 return false;
             }
@@ -309,27 +291,26 @@ bool Cipher::encrypt(QByteArray &cipherText)
     return true;
 }
 
-
-//THE BELOW WORKS AKA DO NOT TOUCH UNLESS YOU KNOW WHAT YOU'RE DOING
+// THE BELOW WORKS AKA DO NOT TOUCH UNLESS YOU KNOW WHAT YOU'RE DOING
 QByteArray Cipher::blowfishCBC(QByteArray cipherText, bool direction)
 {
     QCA::Initializer init;
     QByteArray temp = cipherText;
-    if (direction)
-    {
+    if (direction) {
         // make sure cipherText is an interval of 8 bits. We do this before so that we
         // know there's at least 8 bytes to en/decryption this ensures QCA doesn't fail
-        while ((temp.length() % 8) != 0) temp.append('\0');
+        while ((temp.length() % 8) != 0)
+            temp.append('\0');
 
         QCA::InitializationVector iv(8);
-        temp.prepend(iv.toByteArray()); // prefix with 8bits of IV for mircryptions *CUSTOM* cbc implementation
+        temp.prepend(iv.toByteArray());  // prefix with 8bits of IV for mircryptions *CUSTOM* cbc implementation
     }
-    else
-    {
+    else {
         temp = QByteArray::fromBase64(temp);
-        //supposedly nescessary if we get a truncated message also allows for decryption of 'crazy'
-        //en/decoding clients that use STANDARDIZED PADDING TECHNIQUES
-        while ((temp.length() % 8) != 0) temp.append('\0');
+        // supposedly nescessary if we get a truncated message also allows for decryption of 'crazy'
+        // en/decoding clients that use STANDARDIZED PADDING TECHNIQUES
+        while ((temp.length() % 8) != 0)
+            temp.append('\0');
     }
 
     QCA::Direction dir = (direction) ? QCA::Encode : QCA::Decode;
@@ -340,33 +321,32 @@ QByteArray Cipher::blowfishCBC(QByteArray cipherText, bool direction)
     if (!cipher.ok())
         return cipherText;
 
-    if (direction) //send in base64
+    if (direction)  // send in base64
         temp2 = temp2.toBase64();
-    else //cut off the 8bits of IV
+    else  // cut off the 8bits of IV
         temp2 = temp2.remove(0, 8);
 
     return temp2;
 }
-
 
 QByteArray Cipher::blowfishECB(QByteArray cipherText, bool direction)
 {
     QCA::Initializer init;
     QByteArray temp = cipherText;
 
-    //do padding ourselves
-    if (direction)
-    {
-        while ((temp.length() % 8) != 0) temp.append('\0');
+    // do padding ourselves
+    if (direction) {
+        while ((temp.length() % 8) != 0)
+            temp.append('\0');
     }
-    else
-    {
+    else {
         // ECB Blowfish encodes in blocks of 12 chars, so anything else is malformed input
         if ((temp.length() % 12) != 0)
             return cipherText;
 
         temp = b64ToByte(temp);
-        while ((temp.length() % 8) != 0) temp.append('\0');
+        while ((temp.length() % 8) != 0)
+            temp.append('\0');
     }
 
     QCA::Direction dir = (direction) ? QCA::Encode : QCA::Decode;
@@ -388,8 +368,7 @@ QByteArray Cipher::blowfishECB(QByteArray cipherText, bool direction)
     return temp2;
 }
 
-
-//Custom non RFC 2045 compliant Base64 enc/dec code for mircryption / FiSH compatibility
+// Custom non RFC 2045 compliant Base64 enc/dec code for mircryption / FiSH compatibility
 QByteArray Cipher::byteToB64(QByteArray text)
 {
     int left = 0;
@@ -400,29 +379,45 @@ QByteArray Cipher::byteToB64(QByteArray text)
     QByteArray encoded;
     while (k < (text.length() - 1)) {
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         left = v << 24;
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         left += v << 16;
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         left += v << 8;
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         left += v;
 
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         right = v << 24;
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         right += v << 16;
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         right += v << 8;
         k++;
-        v = text.at(k); if (v < 0) v += 256;
+        v = text.at(k);
+        if (v < 0)
+            v += 256;
         right += v;
 
         for (int i = 0; i < 6; i++) {
@@ -430,7 +425,7 @@ QByteArray Cipher::byteToB64(QByteArray text)
             right = right >> 6;
         }
 
-        //TODO make sure the .toLatin1 doesn't break anything
+        // TODO make sure the .toLatin1 doesn't break anything
         for (int i = 0; i < 6; i++) {
             encoded.append(base64.at(left & 0x3F).toLatin1());
             left = left >> 6;
@@ -438,7 +433,6 @@ QByteArray Cipher::byteToB64(QByteArray text)
     }
     return encoded;
 }
-
 
 QByteArray Cipher::b64ToByte(QByteArray text)
 {
@@ -467,20 +461,23 @@ QByteArray Cipher::b64ToByte(QByteArray text)
         for (int i = 0; i < 4; i++) {
             w = ((left & (0xFF << ((3 - i) * 8))));
             z = w >> ((3 - i) * 8);
-            if (z < 0) { z = z + 256; }
+            if (z < 0) {
+                z = z + 256;
+            }
             decoded.append(z);
         }
 
         for (int i = 0; i < 4; i++) {
             w = ((right & (0xFF << ((3 - i) * 8))));
             z = w >> ((3 - i) * 8);
-            if (z < 0) { z = z + 256; }
+            if (z < 0) {
+                z = z + 256;
+            }
             decoded.append(z);
         }
     }
     return decoded;
 }
-
 
 bool Cipher::neededFeaturesAvailable()
 {

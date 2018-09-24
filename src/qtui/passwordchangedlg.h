@@ -29,7 +29,7 @@ class PasswordChangeDlg : public QDialog
     Q_OBJECT
 
 public:
-    PasswordChangeDlg(QWidget *parent = nullptr);
+    PasswordChangeDlg(QWidget* parent = nullptr);
 
 private slots:
     void inputChanged();

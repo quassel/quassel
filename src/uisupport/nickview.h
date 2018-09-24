@@ -32,10 +32,10 @@ class UISUPPORT_EXPORT NickView : public TreeViewTouch
     Q_OBJECT
 
 public:
-    NickView(QWidget *parent = nullptr);
+    NickView(QWidget* parent = nullptr);
 
 protected:
-    void rowsInserted(const QModelIndex &parent, int start, int end) override;
+    void rowsInserted(const QModelIndex& parent, int start, int end) override;
 
     //! This reimplementation ensures that the current index is first in list
     QModelIndexList selectedIndexes() const override;
@@ -43,15 +43,15 @@ protected:
     void unanimatedExpandAll();
 
 public slots:
-    void setModel(QAbstractItemModel *model) override;
-    void setRootIndex(const QModelIndex &index) override;
+    void setModel(QAbstractItemModel* model) override;
+    void setRootIndex(const QModelIndex& index) override;
     void init();
-    void showContextMenu(const QPoint &pos);
-    void startQuery(const QModelIndex &modelIndex);
+    void showContextMenu(const QPoint& pos);
+    void startQuery(const QModelIndex& modelIndex);
 
 signals:
     void selectionUpdated();
 
 private:
-    friend class NickListWidget; // needs selectedIndexes()
+    friend class NickListWidget;  // needs selectedIndexes()
 };

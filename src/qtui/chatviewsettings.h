@@ -31,16 +31,17 @@ class ChatViewSettings : public QtUiSettings
 public:
     Q_ENUMS(OperationMode)
 public:
-    enum OperationMode {
+    enum OperationMode
+    {
         InvalidMode = 0,
         OptIn = 1,
         OptOut = 2
     };
     Q_DECLARE_FLAGS(OperationModes, OperationMode)
 
-    ChatViewSettings(const QString &id = "__default__");
-    ChatViewSettings(ChatScene *scene);
-    ChatViewSettings(ChatView *view);
+    ChatViewSettings(const QString& id = "__default__");
+    ChatViewSettings(ChatScene* scene);
+    ChatViewSettings(ChatView* view);
 
     bool showWebPreview() const;
     void enableWebPreview(bool enabled);
@@ -71,7 +72,7 @@ public:
      *
      * @param[in] format String representing timestamp format, e.g. "[hh:mm:ss]" or " hh:mm:ss"
      */
-    void setTimestampFormatString(const QString &format);
+    void setTimestampFormatString(const QString& format);
 
     /**
      * Gets how prefix modes are shown before sender names
@@ -94,7 +95,7 @@ public:
     void enableSenderBrackets(bool enabled);
 
     QString webSearchUrlFormatString() const;
-    void setWebSearchUrlFormatString(const QString &format);
+    void setWebSearchUrlFormatString(const QString& format);
 };
 
 Q_DECLARE_METATYPE(ChatViewSettings::OperationMode)

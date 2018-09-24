@@ -20,27 +20,24 @@
 
 #include "flatproxymodel.h"
 
-#include <QItemSelection>
 #include <QDebug>
+#include <QItemSelection>
 
-FlatProxyModel::FlatProxyModel(QObject *parent)
+FlatProxyModel::FlatProxyModel(QObject* parent)
     : QAbstractProxyModel(parent)
-{
-}
+{}
 
-
-QModelIndex FlatProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
+QModelIndex FlatProxyModel::mapFromSource(const QModelIndex& sourceIndex) const
 {
     if (!sourceIndex.isValid())
         return {};
 
-    SourceItem *sourceItem = sourceToInternal(sourceIndex);
+    SourceItem* sourceItem = sourceToInternal(sourceIndex);
     Q_ASSERT(sourceItem);
     return createIndex(sourceItem->pos(), sourceIndex.column(), sourceItem);
 }
 
-
-QModelIndex FlatProxyModel::mapToSource(const QModelIndex &proxyIndex) const
+QModelIndex FlatProxyModel::mapToSource(const QModelIndex& proxyIndex) const
 {
     if (!proxyIndex.isValid())
         return {};
@@ -50,7 +47,7 @@ QModelIndex FlatProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 
     int row = proxyIndex.row();
     QModelIndex sourceParent;
-    SourceItem *sourceItem = _rootSourceItem->findChild(row);
+    SourceItem* sourceItem = _rootSourceItem->findChild(row);
     while (sourceItem) {
         if (sourceItem->pos() == row) {
             return sourceModel()->index(sourceItem->sourceRow(), proxyIndex.column(), sourceParent);
@@ -63,11 +60,10 @@ QModelIndex FlatProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 
     qWarning() << "FlatProxyModel::mapToSource(): couldn't find source index for" << proxyIndex;
     Q_ASSERT(false);
-    return {}; // make compilers happy :)
+    return {};  // make compilers happy :)
 }
 
-
-bool FlatProxyModel::_RangeRect::operator<(const FlatProxyModel::_RangeRect &other) const
+bool FlatProxyModel::_RangeRect::operator<(const FlatProxyModel::_RangeRect& other) const
 {
     if (left != other.left)
         return left < other.left;
@@ -82,20 +78,19 @@ bool FlatProxyModel::_RangeRect::operator<(const FlatProxyModel::_RangeRect &oth
     return bottom < other.bottom;
 }
 
-
-QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection &sourceSelection) const
+QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection& sourceSelection) const
 {
     QList<_RangeRect> newRanges;
-    QHash<QModelIndex, SourceItem *> itemLookup;
+    QHash<QModelIndex, SourceItem*> itemLookup;
     // basics steps of the loop:
     // 1. convert each source ItemSelectionRange to a mapped Range (internal one for easier post processing)
     // 2. insert it into the list of previously mapped Ranges sorted by top location
     for (int i = 0; i < sourceSelection.count(); i++) {
-        const QItemSelectionRange &currentRange = sourceSelection[i];
+        const QItemSelectionRange& currentRange = sourceSelection[i];
         QModelIndex currentParent = currentRange.topLeft().parent();
         Q_ASSERT(currentParent == currentRange.bottomRight().parent());
 
-        SourceItem *parentItem = nullptr;
+        SourceItem* parentItem = nullptr;
         if (!itemLookup.contains(currentParent)) {
             parentItem = sourceToInternal(currentParent);
             itemLookup[currentParent] = parentItem;
@@ -104,16 +99,19 @@ QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection &sour
             parentItem = itemLookup[currentParent];
         }
 
-        _RangeRect newRange = { currentRange.topLeft().column(), currentRange.bottomRight().column(),
-                                currentRange.topLeft().row(), currentRange.bottomRight().row(),
-                                parentItem->child(currentRange.topLeft().row()), parentItem->child(currentRange.bottomRight().row()) };
+        _RangeRect newRange = {currentRange.topLeft().column(),
+                               currentRange.bottomRight().column(),
+                               currentRange.topLeft().row(),
+                               currentRange.bottomRight().row(),
+                               parentItem->child(currentRange.topLeft().row()),
+                               parentItem->child(currentRange.bottomRight().row())};
 
         if (newRanges.isEmpty()) {
             newRanges << newRange;
             continue;
         }
 
-        _RangeRect &first = newRanges[0];
+        _RangeRect& first = newRanges[0];
         if (newRange < first) {
             newRanges.prepend(newRange);
             continue;
@@ -121,8 +119,8 @@ QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection &sour
 
         bool inserted = false;
         for (int j = 0; j < newRanges.count() - 1; j++) {
-            _RangeRect &a = newRanges[j];
-            _RangeRect &b = newRanges[j + 1];
+            _RangeRect& a = newRanges[j];
+            _RangeRect& b = newRanges[j + 1];
 
             if (a < newRange && newRange < b) {
                 newRanges[j + 1] = newRange;
@@ -133,7 +131,7 @@ QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection &sour
         if (inserted)
             continue;
 
-        _RangeRect &last = newRanges[newRanges.count() - 1];
+        _RangeRect& last = newRanges[newRanges.count() - 1];
         if (last < newRange) {
             newRanges.append(newRange);
             continue;
@@ -144,8 +142,8 @@ QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection &sour
 
     // we've got a sorted list of ranges now. so we can easily check if there is a possibility to merge
     for (int i = newRanges.count() - 1; i > 0; i--) {
-        _RangeRect &a = newRanges[i - 1];
-        _RangeRect &b = newRanges[i];
+        _RangeRect& a = newRanges[i - 1];
+        _RangeRect& b = newRanges[i];
         if (a.left != b.left || a.right != b.right)
             continue;
 
@@ -157,29 +155,28 @@ QItemSelection FlatProxyModel::mapSelectionFromSource(const QItemSelection &sour
         if (b.bottom > a.bottom) {
             a.bottom = b.bottom;
             a.bottomItem = b.bottomItem;
-        } // otherwise b is totally enclosed in a -> nothing to do but drop b.
+        }  // otherwise b is totally enclosed in a -> nothing to do but drop b.
         newRanges.removeAt(i);
     }
 
     QItemSelection proxySelection;
     for (int i = 0; i < newRanges.count(); i++) {
-        _RangeRect &r = newRanges[i];
+        _RangeRect& r = newRanges[i];
         proxySelection << QItemSelectionRange(createIndex(r.top, r.left, r.topItem), createIndex(r.bottom, r.right, r.bottomItem));
     }
     return proxySelection;
 }
 
-
-QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxySelection) const
+QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection& proxySelection) const
 {
     QItemSelection sourceSelection;
 
     for (int i = 0; i < proxySelection.count(); i++) {
-        const QItemSelectionRange &range = proxySelection[i];
+        const QItemSelectionRange& range = proxySelection[i];
 
-        SourceItem *topLeftItem = nullptr;
-        SourceItem *bottomRightItem = nullptr;
-        auto *currentItem = static_cast<SourceItem *>(range.topLeft().internalPointer());
+        SourceItem* topLeftItem = nullptr;
+        SourceItem* bottomRightItem = nullptr;
+        auto* currentItem = static_cast<SourceItem*>(range.topLeft().internalPointer());
         int row = range.topLeft().row();
         int left = range.topLeft().column();
         int right = range.bottomRight().column();
@@ -193,7 +190,8 @@ QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxyS
             }
             else {
                 Q_ASSERT(topLeftItem && bottomRightItem);
-                sourceSelection << QItemSelectionRange(mapToSource(createIndex(topLeftItem->pos(), left, topLeftItem)), mapToSource(createIndex(bottomRightItem->pos(), right, bottomRightItem)));
+                sourceSelection << QItemSelectionRange(mapToSource(createIndex(topLeftItem->pos(), left, topLeftItem)),
+                                                       mapToSource(createIndex(bottomRightItem->pos(), right, bottomRightItem)));
                 topLeftItem = nullptr;
                 bottomRightItem = nullptr;
             }
@@ -203,16 +201,16 @@ QItemSelection FlatProxyModel::mapSelectionToSource(const QItemSelection &proxyS
             row++;
         }
 
-        if (topLeftItem && bottomRightItem) { // there should be one range left.
-            sourceSelection << QItemSelectionRange(mapToSource(createIndex(topLeftItem->pos(), left, topLeftItem)), mapToSource(createIndex(bottomRightItem->pos(), right, bottomRightItem)));
+        if (topLeftItem && bottomRightItem) {  // there should be one range left.
+            sourceSelection << QItemSelectionRange(mapToSource(createIndex(topLeftItem->pos(), left, topLeftItem)),
+                                                   mapToSource(createIndex(bottomRightItem->pos(), right, bottomRightItem)));
         }
     }
 
     return sourceSelection;
 }
 
-
-void FlatProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
+void FlatProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
 {
     if (QAbstractProxyModel::sourceModel()) {
         disconnect(QAbstractProxyModel::sourceModel(), nullptr, this, nullptr);
@@ -226,48 +224,35 @@ void FlatProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     emit layoutChanged();
 
     if (sourceModel) {
-        connect(sourceModel, &QAbstractItemModel::columnsAboutToBeInserted,
-            this, &FlatProxyModel::on_columnsAboutToBeInserted);
-        connect(sourceModel, &QAbstractItemModel::columnsAboutToBeRemoved,
-            this, &FlatProxyModel::on_columnsAboutToBeRemoved);
-        connect(sourceModel, &QAbstractItemModel::columnsInserted,
-            this, &FlatProxyModel::on_columnsInserted);
-        connect(sourceModel, &QAbstractItemModel::columnsRemoved,
-            this, &FlatProxyModel::on_columnsRemoved);
+        connect(sourceModel, &QAbstractItemModel::columnsAboutToBeInserted, this, &FlatProxyModel::on_columnsAboutToBeInserted);
+        connect(sourceModel, &QAbstractItemModel::columnsAboutToBeRemoved, this, &FlatProxyModel::on_columnsAboutToBeRemoved);
+        connect(sourceModel, &QAbstractItemModel::columnsInserted, this, &FlatProxyModel::on_columnsInserted);
+        connect(sourceModel, &QAbstractItemModel::columnsRemoved, this, &FlatProxyModel::on_columnsRemoved);
 
-        connect(sourceModel, &QAbstractItemModel::dataChanged,
-            this, &FlatProxyModel::on_dataChanged);
+        connect(sourceModel, &QAbstractItemModel::dataChanged, this, &FlatProxyModel::on_dataChanged);
         // on_headerDataChanged(Qt::Orientation orientation, int first, int last)
 
-        connect(sourceModel, &QAbstractItemModel::layoutAboutToBeChanged,
-            this, &FlatProxyModel::on_layoutAboutToBeChanged);
-        connect(sourceModel, &QAbstractItemModel::layoutChanged,
-            this, &FlatProxyModel::on_layoutChanged);
+        connect(sourceModel, &QAbstractItemModel::layoutAboutToBeChanged, this, &FlatProxyModel::on_layoutAboutToBeChanged);
+        connect(sourceModel, &QAbstractItemModel::layoutChanged, this, &FlatProxyModel::on_layoutChanged);
 
-        connect(sourceModel, &QAbstractItemModel::modelAboutToBeReset,
-            this, &FlatProxyModel::on_modelAboutToBeReset);
+        connect(sourceModel, &QAbstractItemModel::modelAboutToBeReset, this, &FlatProxyModel::on_modelAboutToBeReset);
         // void on_modelReset()
 
-        connect(sourceModel, &QAbstractItemModel::rowsAboutToBeInserted,
-            this, &FlatProxyModel::on_rowsAboutToBeInserted);
-        connect(sourceModel, &QAbstractItemModel::rowsAboutToBeRemoved,
-            this, &FlatProxyModel::on_rowsAboutToBeRemoved);
-        connect(sourceModel, &QAbstractItemModel::rowsInserted,
-            this, &FlatProxyModel::on_rowsInserted);
-        connect(sourceModel, &QAbstractItemModel::rowsRemoved,
-            this, &FlatProxyModel::on_rowsRemoved);
+        connect(sourceModel, &QAbstractItemModel::rowsAboutToBeInserted, this, &FlatProxyModel::on_rowsAboutToBeInserted);
+        connect(sourceModel, &QAbstractItemModel::rowsAboutToBeRemoved, this, &FlatProxyModel::on_rowsAboutToBeRemoved);
+        connect(sourceModel, &QAbstractItemModel::rowsInserted, this, &FlatProxyModel::on_rowsInserted);
+        connect(sourceModel, &QAbstractItemModel::rowsRemoved, this, &FlatProxyModel::on_rowsRemoved);
     }
 }
 
-
-void FlatProxyModel::insertSubTree(const QModelIndex &source_idx, bool emitInsert)
+void FlatProxyModel::insertSubTree(const QModelIndex& source_idx, bool emitInsert)
 {
-    SourceItem *newSubTree = new SourceItem(source_idx.row(), sourceToInternal(sourceModel()->parent(source_idx)));
+    SourceItem* newSubTree = new SourceItem(source_idx.row(), sourceToInternal(sourceModel()->parent(source_idx)));
 
     if (newSubTree->parent()) {
         newSubTree->setPos(newSubTree->parent()->pos() + source_idx.row() + 1);
     }
-    SourceItem *lastItem = insertSubTreeHelper(newSubTree, newSubTree, source_idx);
+    SourceItem* lastItem = insertSubTreeHelper(newSubTree, newSubTree, source_idx);
 
     Q_ASSERT(lastItem);
     Q_ASSERT(lastItem->next() == nullptr);
@@ -277,7 +262,7 @@ void FlatProxyModel::insertSubTree(const QModelIndex &source_idx, bool emitInser
 
     if (newSubTree->parent()) {
         if (newSubTree->parent()->childCount() > source_idx.row()) {
-            SourceItem *next = newSubTree->parent()->child(source_idx.row());
+            SourceItem* next = newSubTree->parent()->child(source_idx.row());
             lastItem->setNext(next);
             int nextPos = lastItem->pos() + 1;
             while (next) {
@@ -287,7 +272,7 @@ void FlatProxyModel::insertSubTree(const QModelIndex &source_idx, bool emitInser
             }
         }
         if (source_idx.row() > 0) {
-            SourceItem *previous = newSubTree->parent()->child(source_idx.row() - 1);
+            SourceItem* previous = newSubTree->parent()->child(source_idx.row() - 1);
             while (previous->childCount() > 0) {
                 previous = previous->child(previous->childCount() - 1);
             }
@@ -305,11 +290,10 @@ void FlatProxyModel::insertSubTree(const QModelIndex &source_idx, bool emitInser
         endInsertRows();
 }
 
-
-FlatProxyModel::SourceItem *FlatProxyModel::insertSubTreeHelper(SourceItem *parentItem, SourceItem *lastItem_, const QModelIndex &source_idx)
+FlatProxyModel::SourceItem* FlatProxyModel::insertSubTreeHelper(SourceItem* parentItem, SourceItem* lastItem_, const QModelIndex& source_idx)
 {
-    SourceItem *lastItem = lastItem_;
-    SourceItem *newItem = nullptr;
+    SourceItem* lastItem = lastItem_;
+    SourceItem* newItem = nullptr;
     for (int row = 0; row < sourceModel()->rowCount(source_idx); row++) {
         newItem = new SourceItem(row, parentItem);
         newItem->setPos(lastItem->pos() + 1);
@@ -319,14 +303,13 @@ FlatProxyModel::SourceItem *FlatProxyModel::insertSubTreeHelper(SourceItem *pare
     return lastItem;
 }
 
-
-void FlatProxyModel::removeSubTree(const QModelIndex &source_idx, bool emitRemove)
+void FlatProxyModel::removeSubTree(const QModelIndex& source_idx, bool emitRemove)
 {
-    SourceItem *sourceItem = sourceToInternal(source_idx);
+    SourceItem* sourceItem = sourceToInternal(source_idx);
     if (!sourceItem)
         return;
 
-    SourceItem *prevItem = sourceItem->parent();
+    SourceItem* prevItem = sourceItem->parent();
     if (sourceItem->sourceRow() > 0) {
         prevItem = prevItem->child(sourceItem->sourceRow() - 1);
         while (prevItem->childCount() > 0) {
@@ -334,7 +317,7 @@ void FlatProxyModel::removeSubTree(const QModelIndex &source_idx, bool emitRemov
         }
     }
 
-    SourceItem *lastItem = sourceItem;
+    SourceItem* lastItem = sourceItem;
     while (lastItem->childCount() > 0) {
         lastItem = lastItem->child(lastItem->childCount() - 1);
     }
@@ -348,7 +331,7 @@ void FlatProxyModel::removeSubTree(const QModelIndex &source_idx, bool emitRemov
         nextPos = prevItem->pos() + 1;
     }
 
-    SourceItem *nextItem = lastItem->next();
+    SourceItem* nextItem = lastItem->next();
     while (nextItem) {
         nextItem->setPos(nextPos);
         nextPos++;
@@ -362,8 +345,7 @@ void FlatProxyModel::removeSubTree(const QModelIndex &source_idx, bool emitRemov
         endRemoveRows();
 }
 
-
-QModelIndex FlatProxyModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex FlatProxyModel::index(int row, int column, const QModelIndex& parent) const
 {
     if (parent.isValid()) {
         qWarning() << "FlatProxyModel::index() called with valid parent:" << parent;
@@ -375,7 +357,7 @@ QModelIndex FlatProxyModel::index(int row, int column, const QModelIndex &parent
         return {};
     }
 
-    SourceItem *item = _rootSourceItem;
+    SourceItem* item = _rootSourceItem;
     while (item->pos() != row) {
         item = item->findChild(row);
         if (!item) {
@@ -388,16 +370,14 @@ QModelIndex FlatProxyModel::index(int row, int column, const QModelIndex &parent
     return createIndex(row, column, item);
 }
 
-
-QModelIndex FlatProxyModel::parent(const QModelIndex &index) const
+QModelIndex FlatProxyModel::parent(const QModelIndex& index) const
 {
     Q_UNUSED(index)
     // this is a flat model
     return {};
 }
 
-
-int FlatProxyModel::rowCount(const QModelIndex &index) const
+int FlatProxyModel::rowCount(const QModelIndex& index) const
 {
     if (!_rootSourceItem)
         return 0;
@@ -405,15 +385,14 @@ int FlatProxyModel::rowCount(const QModelIndex &index) const
     if (index.isValid())
         return 0;
 
-    SourceItem *item = _rootSourceItem;
+    SourceItem* item = _rootSourceItem;
     while (item->childCount() > 0) {
         item = item->child(item->childCount() - 1);
     }
     return item->pos() + 1;
 }
 
-
-int FlatProxyModel::columnCount(const QModelIndex &index) const
+int FlatProxyModel::columnCount(const QModelIndex& index) const
 {
     Q_UNUSED(index)
     if (!sourceModel()) {
@@ -424,8 +403,7 @@ int FlatProxyModel::columnCount(const QModelIndex &index) const
     }
 }
 
-
-FlatProxyModel::SourceItem *FlatProxyModel::sourceToInternal(const QModelIndex &sourceIndex) const
+FlatProxyModel::SourceItem* FlatProxyModel::sourceToInternal(const QModelIndex& sourceIndex) const
 {
     QList<int> childPath;
     for (QModelIndex idx = sourceIndex; idx.isValid(); idx = sourceModel()->parent(idx)) {
@@ -434,29 +412,26 @@ FlatProxyModel::SourceItem *FlatProxyModel::sourceToInternal(const QModelIndex &
 
     Q_ASSERT(!sourceIndex.isValid() || !childPath.isEmpty());
 
-    SourceItem *item = _rootSourceItem;
+    SourceItem* item = _rootSourceItem;
     for (int i = 0; i < childPath.count(); i++) {
         item = item->child(childPath[i]);
     }
     return item;
 }
 
-
-void FlatProxyModel::on_columnsAboutToBeInserted(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_columnsAboutToBeInserted(const QModelIndex& parent, int start, int end)
 {
     Q_UNUSED(parent);
     beginInsertColumns(QModelIndex(), start, end);
 }
 
-
-void FlatProxyModel::on_columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_columnsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 {
     Q_UNUSED(parent);
     beginRemoveColumns(QModelIndex(), start, end);
 }
 
-
-void FlatProxyModel::on_columnsInserted(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_columnsInserted(const QModelIndex& parent, int start, int end)
 {
     Q_UNUSED(parent);
     Q_UNUSED(start);
@@ -464,8 +439,7 @@ void FlatProxyModel::on_columnsInserted(const QModelIndex &parent, int start, in
     endInsertColumns();
 }
 
-
-void FlatProxyModel::on_columnsRemoved(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_columnsRemoved(const QModelIndex& parent, int start, int end)
 {
     Q_UNUSED(parent);
     Q_UNUSED(start);
@@ -473,21 +447,21 @@ void FlatProxyModel::on_columnsRemoved(const QModelIndex &parent, int start, int
     endRemoveRows();
 }
 
-
-void FlatProxyModel::on_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void FlatProxyModel::on_dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)
 {
     Q_ASSERT(sourceModel());
     Q_ASSERT(sourceModel()->parent(topLeft) == sourceModel()->parent(bottomRight));
 
-    SourceItem *topLeftItem = sourceToInternal(topLeft);
+    SourceItem* topLeftItem = sourceToInternal(topLeft);
     Q_ASSERT(topLeftItem);
     Q_ASSERT(topLeftItem->parent()->childCount() > bottomRight.row());
 
     QModelIndex proxyTopLeft = createIndex(topLeftItem->pos(), topLeft.column(), topLeftItem);
-    QModelIndex proxyBottomRight = createIndex(topLeftItem->pos() + bottomRight.row() - topLeft.row(), bottomRight.column(), topLeftItem->parent()->child(bottomRight.row()));
+    QModelIndex proxyBottomRight = createIndex(topLeftItem->pos() + bottomRight.row() - topLeft.row(),
+                                               bottomRight.column(),
+                                               topLeftItem->parent()->child(bottomRight.row()));
     emit dataChanged(proxyTopLeft, proxyBottomRight);
 }
-
 
 void FlatProxyModel::on_layoutAboutToBeChanged()
 {
@@ -495,25 +469,23 @@ void FlatProxyModel::on_layoutAboutToBeChanged()
     removeSubTree(QModelIndex(), false /* don't emit removeRows() */);
 }
 
-
 void FlatProxyModel::on_layoutChanged()
 {
     insertSubTree(QModelIndex(), false /* don't emit insertRows() */);
     emit layoutChanged();
 }
 
-
-void FlatProxyModel::on_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_rowsAboutToBeInserted(const QModelIndex& parent, int start, int end)
 {
     Q_ASSERT(sourceModel());
     Q_ASSERT(_rootSourceItem);
 
-    SourceItem *sourceItem = sourceToInternal(parent);
+    SourceItem* sourceItem = sourceToInternal(parent);
     Q_ASSERT(sourceItem);
 
     beginInsertRows(QModelIndex(), sourceItem->pos() + start + 1, sourceItem->pos() + end + 1);
 
-    SourceItem *prevItem = sourceItem;
+    SourceItem* prevItem = sourceItem;
     if (start > 0) {
         prevItem = sourceItem->child(start - 1);
         while (prevItem->childCount() > 0) {
@@ -522,9 +494,9 @@ void FlatProxyModel::on_rowsAboutToBeInserted(const QModelIndex &parent, int sta
     }
     Q_ASSERT(prevItem);
 
-    SourceItem *nextItem = prevItem->next();
+    SourceItem* nextItem = prevItem->next();
 
-    SourceItem *newItem = nullptr;
+    SourceItem* newItem = nullptr;
     int newPos = prevItem->pos() + 1;
     for (int row = start; row <= end; row++) {
         newItem = new SourceItem(row, sourceItem);
@@ -542,31 +514,30 @@ void FlatProxyModel::on_rowsAboutToBeInserted(const QModelIndex &parent, int sta
     }
 }
 
-
-void FlatProxyModel::on_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 {
     Q_ASSERT(sourceModel());
     Q_ASSERT(_rootSourceItem);
 
-    SourceItem *sourceItem = sourceToInternal(parent);
+    SourceItem* sourceItem = sourceToInternal(parent);
     beginRemoveRows(QModelIndex(), sourceItem->pos() + start + 1, sourceItem->pos() + end + 1);
 
     // sanity check - if that check fails our indexes would be messed up
     for (int row = start; row <= end; row++) {
         if (sourceItem->child(row)->childCount() > 0) {
-            qWarning() << "on_rowsAboutToBeRemoved(): sourceModel() removed rows which have children on their own!" << sourceModel()->index(row, 0, parent);
+            qWarning() << "on_rowsAboutToBeRemoved(): sourceModel() removed rows which have children on their own!"
+                       << sourceModel()->index(row, 0, parent);
             Q_ASSERT(false);
         }
     }
 }
 
-
-void FlatProxyModel::on_rowsInserted(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_rowsInserted(const QModelIndex& parent, int start, int end)
 {
     Q_ASSERT(sourceModel());
     Q_ASSERT(_rootSourceItem);
 
-    SourceItem *sourceItem = sourceToInternal(parent);
+    SourceItem* sourceItem = sourceToInternal(parent);
     Q_ASSERT(sourceItem);
     Q_UNUSED(sourceItem);
 
@@ -582,16 +553,15 @@ void FlatProxyModel::on_rowsInserted(const QModelIndex &parent, int start, int e
     endInsertRows();
 }
 
-
-void FlatProxyModel::on_rowsRemoved(const QModelIndex &parent, int start, int end)
+void FlatProxyModel::on_rowsRemoved(const QModelIndex& parent, int start, int end)
 {
     Q_ASSERT(sourceModel());
     Q_ASSERT(_rootSourceItem);
 
-    SourceItem *sourceItem = sourceToInternal(parent);
+    SourceItem* sourceItem = sourceToInternal(parent);
     Q_ASSERT(sourceItem);
 
-    SourceItem *prevItem = sourceItem;
+    SourceItem* prevItem = sourceItem;
     if (start > 0) {
         prevItem = sourceItem->child(start - 1);
         while (prevItem->childCount() > 0) {
@@ -600,7 +570,7 @@ void FlatProxyModel::on_rowsRemoved(const QModelIndex &parent, int start, int en
     }
     Q_ASSERT(prevItem);
 
-    SourceItem *nextItem = sourceItem->child(end)->next();
+    SourceItem* nextItem = sourceItem->child(end)->next();
 
     int newPos = prevItem->pos() + 1;
     prevItem->setNext(nextItem);
@@ -611,7 +581,7 @@ void FlatProxyModel::on_rowsRemoved(const QModelIndex &parent, int start, int en
         nextItem = nextItem->next();
     }
 
-    SourceItem *childItem;
+    SourceItem* childItem;
     for (int row = start; row <= end; row++) {
         childItem = sourceItem->_childs.takeAt(start);
         delete childItem;
@@ -619,7 +589,6 @@ void FlatProxyModel::on_rowsRemoved(const QModelIndex &parent, int start, int en
 
     endRemoveRows();
 }
-
 
 // integrity Tets
 void FlatProxyModel::linkTest() const
@@ -629,7 +598,7 @@ void FlatProxyModel::linkTest() const
         return;
 
     int pos = -1;
-    SourceItem *item = _rootSourceItem;
+    SourceItem* item = _rootSourceItem;
     while (true) {
         qDebug() << item << ":" << item->pos() << "==" << pos;
         Q_ASSERT(item->pos() == pos);
@@ -652,7 +621,6 @@ void FlatProxyModel::linkTest() const
     qDebug() << "success!";
 }
 
-
 void FlatProxyModel::completenessTest() const
 {
     qDebug() << "Checking FlatProxyModel for Completeness:";
@@ -661,13 +629,12 @@ void FlatProxyModel::completenessTest() const
     qDebug() << "success!";
 }
 
-
-void FlatProxyModel::checkChildCount(const QModelIndex &index, const SourceItem *item, int &pos) const
+void FlatProxyModel::checkChildCount(const QModelIndex& index, const SourceItem* item, int& pos) const
 {
     if (!sourceModel())
         return;
 
-    qDebug() << index  << "(Item:" << item << "):" << sourceModel()->rowCount(index) << "==" << item->childCount();
+    qDebug() << index << "(Item:" << item << "):" << sourceModel()->rowCount(index) << "==" << item->childCount();
     qDebug() << "ProxyPos:" << item->pos() << "==" << pos;
     Q_ASSERT(sourceModel()->rowCount(index) == item->childCount());
 
@@ -677,18 +644,16 @@ void FlatProxyModel::checkChildCount(const QModelIndex &index, const SourceItem 
     }
 }
 
-
 // ========================================
 //  SourceItem
 // ========================================
-FlatProxyModel::SourceItem::SourceItem(int row, SourceItem *parent)
+FlatProxyModel::SourceItem::SourceItem(int row, SourceItem* parent)
     : _parent(parent)
 {
     if (parent) {
         parent->_childs.insert(row, this);
     }
 }
-
 
 FlatProxyModel::SourceItem::~SourceItem()
 {
@@ -698,17 +663,15 @@ FlatProxyModel::SourceItem::~SourceItem()
     _childs.clear();
 }
 
-
 int FlatProxyModel::SourceItem::sourceRow() const
 {
     if (!parent())
         return -1;
     else
-        return parent()->_childs.indexOf(const_cast<FlatProxyModel::SourceItem *>(this));
+        return parent()->_childs.indexOf(const_cast<FlatProxyModel::SourceItem*>(this));
 }
 
-
-FlatProxyModel::SourceItem *FlatProxyModel::SourceItem::findChild(int proxyPos) const
+FlatProxyModel::SourceItem* FlatProxyModel::SourceItem::findChild(int proxyPos) const
 {
     Q_ASSERT(proxyPos > pos());
     Q_ASSERT(_childs.count() > 0);

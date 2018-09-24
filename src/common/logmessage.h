@@ -40,20 +40,20 @@ public:
     ~LogMessage();
 
     template<typename T>
-    LogMessage &operator<<(const T &value) {
+    LogMessage& operator<<(const T& value)
+    {
         _stream << value << " ";
         return *this;
     }
 
-    LogMessage &operator<<(const QStringList &t);
-    LogMessage &operator<<(bool t);
+    LogMessage& operator<<(const QStringList& t);
+    LogMessage& operator<<(bool t);
 
 private:
     QTextStream _stream;
     QString _buffer;
     Logger::LogLevel _logLevel;
 };
-
 
 // The only reason for LogMessage and the helpers below to exist is the fact that Qt versions
 // prior to 5.5 did not support the Info level.
@@ -67,9 +67,10 @@ private:
 class quInfo : public LogMessage
 {
 public:
-    quInfo() : LogMessage(Logger::LogLevel::Info) {}
+    quInfo()
+        : LogMessage(Logger::LogLevel::Info)
+    {}
 };
-
 
 /**
  * Creates a warning-level log message.
@@ -79,9 +80,10 @@ public:
 class quWarning : public LogMessage
 {
 public:
-    quWarning() : LogMessage(Logger::LogLevel::Warning) {}
+    quWarning()
+        : LogMessage(Logger::LogLevel::Warning)
+    {}
 };
-
 
 /**
  * Creates an error-level log message.
@@ -91,5 +93,7 @@ public:
 class quError : public LogMessage
 {
 public:
-    quError() : LogMessage(Logger::LogLevel::Error) {}
+    quError()
+        : LogMessage(Logger::LogLevel::Error)
+    {}
 };

@@ -28,12 +28,13 @@ class PreviewBufferView : public BufferView
     Q_OBJECT
 
 public:
-    PreviewBufferView(QWidget *parent = nullptr) : BufferView(parent) {}
+    PreviewBufferView(QWidget* parent = nullptr)
+        : BufferView(parent)
+    {}
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override { QTreeView::keyPressEvent(event); }
-    void contextMenuEvent(QContextMenuEvent *) override {}
+    void keyPressEvent(QKeyEvent* event) override { QTreeView::keyPressEvent(event); }
+    void contextMenuEvent(QContextMenuEvent*) override {}
 };
 
-
-#endif //PREVIEWBUFFERVIEW_H
+#endif  // PREVIEWBUFFERVIEW_H

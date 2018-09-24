@@ -39,9 +39,9 @@
 
 const int leftMargin = 3;
 
-InputWidget::InputWidget(QWidget *parent)
-    : AbstractItemView(parent),
-    _networkId(0)
+InputWidget::InputWidget(QWidget* parent)
+    : AbstractItemView(parent)
+    , _networkId(0)
 {
     ui.setupUi(this);
     connect(ui.ownNick, selectOverload<const QString&>(&QComboBox::activated), this, &InputWidget::changeNick);
@@ -75,8 +75,9 @@ InputWidget::InputWidget(QWidget *parent)
     _colorFillMenu = new QMenu();
 
     QStringList names;
-    names << tr("White") << tr("Black") << tr("Dark blue") << tr("Dark green") << tr("Red") << tr("Dark red") << tr("Dark magenta")  << tr("Orange")
-          << tr("Yellow") << tr("Green") << tr("Dark cyan") << tr("Cyan") << tr("Blue") << tr("Magenta") << tr("Dark gray") << tr("Light gray");
+    names << tr("White") << tr("Black") << tr("Dark blue") << tr("Dark green") << tr("Red") << tr("Dark red") << tr("Dark magenta")
+          << tr("Orange") << tr("Yellow") << tr("Green") << tr("Dark cyan") << tr("Cyan") << tr("Blue") << tr("Magenta") << tr("Dark gray")
+          << tr("Light gray");
 
     QPixmap pix(16, 16);
     for (int i = 0; i < inputLine()->mircColorMap().count(); i++) {
@@ -127,15 +128,19 @@ InputWidget::InputWidget(QWidget *parent)
     s.initAndNotify("EnableLineWrap", this, &InputWidget::setLineWrapEnabled, true);
     s.initAndNotify("EnableMultiLine", this, &InputWidget::setMultiLineEnabled, true);
 
-    ActionCollection *coll = QtUi::actionCollection();
-    coll->addAction("FocusInputLine", new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL + Qt::Key_L)});
+    ActionCollection* coll = QtUi::actionCollection();
+    coll->addAction("FocusInputLine",
+                    new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL + Qt::Key_L)});
 
-    connect(inputLine(), &MultiLineEdit::textEntered, this, &InputWidget::onTextEntered, Qt::QueuedConnection); // make sure the line is already reset, bug #984
+    connect(inputLine(),
+            &MultiLineEdit::textEntered,
+            this,
+            &InputWidget::onTextEntered,
+            Qt::QueuedConnection);  // make sure the line is already reset, bug #984
     connect(inputLine(), &QTextEdit::currentCharFormatChanged, this, &InputWidget::currentCharFormatChanged);
 }
 
-
-void InputWidget::setUseCustomFont(const QVariant &v)
+void InputWidget::setUseCustomFont(const QVariant& v)
 {
     if (v.toBool()) {
         UiStyleSettings fs("Fonts");
@@ -145,8 +150,7 @@ void InputWidget::setUseCustomFont(const QVariant &v)
         setCustomFont(QFont());
 }
 
-
-void InputWidget::setCustomFont(const QVariant &v)
+void InputWidget::setCustomFont(const QVariant& v)
 {
     QFont font = v.value<QFont>();
     if (font.family().isEmpty())
@@ -159,66 +163,57 @@ void InputWidget::setCustomFont(const QVariant &v)
     ui.inputEdit->setCustomFont(font);
 }
 
-
-void InputWidget::setEnableEmacsMode(const QVariant &v)
+void InputWidget::setEnableEmacsMode(const QVariant& v)
 {
     ui.inputEdit->setEmacsMode(v.toBool());
 }
 
-
-void InputWidget::setShowNickSelector(const QVariant &v)
+void InputWidget::setShowNickSelector(const QVariant& v)
 {
     ui.ownNick->setVisible(v.toBool());
 }
 
-
-void InputWidget::setShowStyleButtons(const QVariant &v)
+void InputWidget::setShowStyleButtons(const QVariant& v)
 {
     ui.showStyleButton->setVisible(v.toBool());
 }
 
-
-void InputWidget::setEnablePerChatHistory(const QVariant &v)
+void InputWidget::setEnablePerChatHistory(const QVariant& v)
 {
     _perChatHistory = v.toBool();
 }
 
-
-void InputWidget::setMaxLines(const QVariant &v)
+void InputWidget::setMaxLines(const QVariant& v)
 {
     ui.inputEdit->setMaxHeight(v.toInt());
 }
 
-
-void InputWidget::setScrollBarsEnabled(const QVariant &v)
+void InputWidget::setScrollBarsEnabled(const QVariant& v)
 {
     ui.inputEdit->setScrollBarsEnabled(v.toBool());
 }
 
-
-void InputWidget::setLineWrapEnabled(const QVariant &v)
+void InputWidget::setLineWrapEnabled(const QVariant& v)
 {
     ui.inputEdit->setLineWrapEnabled(v.toBool());
 }
 
-
-void InputWidget::setMultiLineEnabled(const QVariant &v)
+void InputWidget::setMultiLineEnabled(const QVariant& v)
 {
     ui.inputEdit->setMode(v.toBool() ? MultiLineEdit::MultiLine : MultiLineEdit::SingleLine);
 }
 
-
-bool InputWidget::eventFilter(QObject *watched, QEvent *event)
+bool InputWidget::eventFilter(QObject* watched, QEvent* event)
 {
     if (event->type() != QEvent::KeyPress)
         return false;
 
-    auto *keyEvent = static_cast<QKeyEvent *>(event);
+    auto* keyEvent = static_cast<QKeyEvent*>(event);
 
     // keys from BufferView should be sent to (and focus) the input line
-    auto *view = qobject_cast<BufferView *>(watched);
+    auto* view = qobject_cast<BufferView*>(watched);
     if (view) {
-        if (keyEvent->text().length() == 1 && !(keyEvent->modifiers() & (Qt::ControlModifier ^ Qt::AltModifier))) { // normal key press
+        if (keyEvent->text().length() == 1 && !(keyEvent->modifiers() & (Qt::ControlModifier ^ Qt::AltModifier))) {  // normal key press
             QChar c = keyEvent->text().at(0);
             if (c.isLetterOrNumber() || c.isSpace() || c.isPunct() || c.isSymbol()) {
                 setFocus();
@@ -230,7 +225,7 @@ bool InputWidget::eventFilter(QObject *watched, QEvent *event)
     }
     else if (watched == ui.inputEdit) {
         if (keyEvent->matches(QKeySequence::Find)) {
-            QAction *act = GraphicalUi::actionCollection()->action("ToggleSearchBar");
+            QAction* act = GraphicalUi::actionCollection()->action("ToggleSearchBar");
             if (act) {
                 act->toggle();
                 return true;
@@ -241,20 +236,19 @@ bool InputWidget::eventFilter(QObject *watched, QEvent *event)
     return false;
 }
 
-
-void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+void InputWidget::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
     BufferId currentBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
     BufferId previousBufferId = previous.data(NetworkModel::BufferIdRole).value<BufferId>();
 
     if (_perChatHistory) {
-        //backup
+        // backup
         historyMap[previousBufferId].history = inputLine()->history();
         historyMap[previousBufferId].tempHistory = inputLine()->tempHistory();
         historyMap[previousBufferId].idx = inputLine()->idx();
         historyMap[previousBufferId].inputLine = inputLine()->html();
 
-        //restore
+        // restore
         inputLine()->setHistory(historyMap[currentBufferId].history);
         inputLine()->setTempHistory(historyMap[currentBufferId].tempHistory);
         inputLine()->setIdx(historyMap[currentBufferId].idx);
@@ -263,7 +257,7 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
 
         // FIXME this really should be in MultiLineEdit (and the const int on top removed)
         QTextBlockFormat format = inputLine()->textCursor().blockFormat();
-        format.setLeftMargin(leftMargin); // we want a little space between the frame and the contents
+        format.setLeftMargin(leftMargin);  // we want a little space between the frame and the contents
         inputLine()->textCursor().setBlockFormat(format);
     }
 
@@ -276,8 +270,7 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
     updateEnabledState();
 }
 
-
-void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void InputWidget::dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)
 {
     QItemSelectionRange changedArea(topLeft, bottomRight);
     if (changedArea.contains(selectionModel()->currentIndex())) {
@@ -285,11 +278,13 @@ void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
 
         bool encrypted = false;
 
-        auto *chan = qobject_cast<IrcChannel *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcChannelRole).value<QObject *>());
+        auto* chan = qobject_cast<IrcChannel*>(
+            Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcChannelRole).value<QObject*>());
         if (chan)
             encrypted = chan->encrypted();
 
-        auto *user = qobject_cast<IrcUser *>(Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcUserRole).value<QObject *>());
+        auto* user = qobject_cast<IrcUser*>(
+            Client::bufferModel()->data(selectionModel()->currentIndex(), NetworkModel::IrcUserRole).value<QObject*>());
         if (user)
             encrypted = user->encrypted();
 
@@ -300,8 +295,7 @@ void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
     }
 }
 
-
-void InputWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void InputWidget::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
 {
     NetworkId networkId;
     QModelIndex child;
@@ -317,7 +311,6 @@ void InputWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int
         }
     }
 }
-
 
 void InputWidget::updateEnabledState()
 {
@@ -340,18 +333,15 @@ void InputWidget::updateEnabledState()
 #endif
 }
 
-
-const Network *InputWidget::currentNetwork() const
+const Network* InputWidget::currentNetwork() const
 {
     return Client::network(_networkId);
 }
-
 
 BufferInfo InputWidget::currentBufferInfo() const
 {
     return selectionModel()->currentIndex().data(NetworkModel::BufferInfoRole).value<BufferInfo>();
 }
-
 
 void InputWidget::applyFormatActiveColor()
 {
@@ -361,7 +351,6 @@ void InputWidget::applyFormatActiveColor()
     colorChosen(ui.textcolorButton->defaultAction());
 }
 
-
 void InputWidget::applyFormatActiveColorFill()
 {
     if (!ui.highlightcolorButton->defaultAction()) {
@@ -370,24 +359,20 @@ void InputWidget::applyFormatActiveColorFill()
     colorHighlightChosen(ui.highlightcolorButton->defaultAction());
 }
 
-
 void InputWidget::toggleFormatBold()
 {
     setFormatBold(!ui.boldButton->isChecked());
 }
-
 
 void InputWidget::toggleFormatItalic()
 {
     setFormatItalic(!ui.italicButton->isChecked());
 }
 
-
 void InputWidget::toggleFormatUnderline()
 {
     setFormatUnderline(!ui.underlineButton->isChecked());
 }
-
 
 void InputWidget::clearFormat()
 {
@@ -395,13 +380,12 @@ void InputWidget::clearFormat()
     setFormatClear(false);
 }
 
-
 void InputWidget::setNetwork(NetworkId networkId)
 {
     if (_networkId == networkId)
         return;
 
-    const Network *previousNet = Client::network(_networkId);
+    const Network* previousNet = Client::network(_networkId);
     if (previousNet) {
         disconnect(previousNet, nullptr, this, nullptr);
         if (previousNet->me())
@@ -410,7 +394,7 @@ void InputWidget::setNetwork(NetworkId networkId)
 
     _networkId = networkId;
 
-    const Network *network = Client::network(networkId);
+    const Network* network = Client::network(networkId);
     if (network) {
         connect(network, &Network::identitySet, this, &InputWidget::setIdentity);
         connectMyIrcUser();
@@ -422,10 +406,9 @@ void InputWidget::setNetwork(NetworkId networkId)
     }
 }
 
-
 void InputWidget::connectMyIrcUser()
 {
-    const Network *network = currentNetwork();
+    const Network* network = currentNetwork();
     if (network->me()) {
         connect(network->me(), &IrcUser::nickSet, this, &InputWidget::updateNickSelector);
         connect(network->me(), &IrcUser::userModesSet, this, &InputWidget::updateNickSelector);
@@ -440,19 +423,18 @@ void InputWidget::connectMyIrcUser()
     }
 }
 
-
 void InputWidget::setIdentity(IdentityId identityId)
 {
     if (_identityId == identityId)
         return;
 
-    const Identity *previousIdentity = Client::identity(_identityId);
+    const Identity* previousIdentity = Client::identity(_identityId);
     if (previousIdentity)
         disconnect(previousIdentity, nullptr, this, nullptr);
 
     _identityId = identityId;
 
-    const Identity *identity = Client::identity(identityId);
+    const Identity* identity = Client::identity(identityId);
     if (identity) {
         connect(identity, &Identity::nicksSet, this, &InputWidget::updateNickSelector);
     }
@@ -462,18 +444,18 @@ void InputWidget::setIdentity(IdentityId identityId)
     updateNickSelector();
 }
 
-
 void InputWidget::updateNickSelector() const
 {
     ui.ownNick->clear();
 
-    const Network *net = currentNetwork();
+    const Network* net = currentNetwork();
     if (!net)
         return;
 
-    const Identity *identity = Client::identity(net->identity());
+    const Identity* identity = Client::identity(net->identity());
     if (!identity) {
-        qWarning() << "InputWidget::updateNickSelector(): can't find Identity for Network" << net->networkId() << "IdentityId:" << net->identity();
+        qWarning() << "InputWidget::updateNickSelector(): can't find Identity for Network" << net->networkId()
+                   << "IdentityId:" << net->identity();
         return;
     }
 
@@ -487,7 +469,7 @@ void InputWidget::updateNickSelector() const
     if (nicks.isEmpty())
         return;
 
-    IrcUser *me = net->me();
+    IrcUser* me = net->me();
     if (me) {
         nicks[nickIdx] = net->myNick();
         if (!me->userModes().isEmpty())
@@ -502,10 +484,9 @@ void InputWidget::updateNickSelector() const
     ui.ownNick->setCurrentIndex(nickIdx);
 }
 
-
-void InputWidget::changeNick(const QString &newNick) const
+void InputWidget::changeNick(const QString& newNick) const
 {
-    const Network *net = currentNetwork();
+    const Network* net = currentNetwork();
     if (!net || net->isMyNick(newNick))
         return;
 
@@ -515,8 +496,7 @@ void InputWidget::changeNick(const QString &newNick) const
     Client::userInput(BufferInfo::fakeStatusBuffer(net->networkId()), QString("/NICK %1").arg(newNick));
 }
 
-
-void InputWidget::onTextEntered(const QString &text)
+void InputWidget::onTextEntered(const QString& text)
 {
     Client::userInput(currentBufferInfo(), text);
 
@@ -524,7 +504,6 @@ void InputWidget::onTextEntered(const QString &text)
     // TODO: Offer a way to convert pasted text to mIRC formatting codes
     setFormatClear(true);
 }
-
 
 void InputWidget::setFormatClear(const bool global)
 {
@@ -537,7 +516,8 @@ void InputWidget::setFormatClear(const bool global)
     fmt.clearBackground();
     if (global) {
         inputLine()->setCurrentCharFormat(fmt);
-    } else {
+    }
+    else {
         setFormatOnSelection(fmt);
     }
 
@@ -546,7 +526,6 @@ void InputWidget::setFormatClear(const bool global)
     ui.italicButton->setChecked(false);
     ui.underlineButton->setChecked(false);
 }
-
 
 void InputWidget::setFormatBold(const bool bold)
 {
@@ -558,7 +537,6 @@ void InputWidget::setFormatBold(const bool bold)
     ui.boldButton->setChecked(bold);
 }
 
-
 void InputWidget::setFormatItalic(const bool italic)
 {
     // Apply formatting
@@ -568,7 +546,6 @@ void InputWidget::setFormatItalic(const bool italic)
     // Make sure UI state follows
     ui.italicButton->setChecked(italic);
 }
-
 
 void InputWidget::setFormatUnderline(const bool underline)
 {
@@ -580,22 +557,19 @@ void InputWidget::setFormatUnderline(const bool underline)
     ui.underlineButton->setChecked(underline);
 }
 
-
-void InputWidget::mergeFormatOnSelection(const QTextCharFormat &format)
+void InputWidget::mergeFormatOnSelection(const QTextCharFormat& format)
 {
     QTextCursor cursor = inputLine()->textCursor();
     cursor.mergeCharFormat(format);
     inputLine()->mergeCurrentCharFormat(format);
 }
 
-
-void InputWidget::setFormatOnSelection(const QTextCharFormat &format)
+void InputWidget::setFormatOnSelection(const QTextCharFormat& format)
 {
     QTextCursor cursor = inputLine()->textCursor();
     cursor.setCharFormat(format);
     inputLine()->setCurrentCharFormat(format);
 }
-
 
 QTextCharFormat InputWidget::getFormatOfWordOrSelection()
 {
@@ -603,53 +577,47 @@ QTextCharFormat InputWidget::getFormatOfWordOrSelection()
     return cursor.charFormat();
 }
 
-
 void InputWidget::setStyleOptionsExpanded(bool expanded)
 {
     ui.styleFrame->setVisible(expanded);
     if (expanded) {
         ui.showStyleButton->setArrowType(Qt::LeftArrow);
         ui.showStyleButton->setToolTip(tr("Hide formatting options"));
-    } else {
+    }
+    else {
         ui.showStyleButton->setArrowType(Qt::RightArrow);
         ui.showStyleButton->setToolTip(tr("Show formatting options"));
     }
 }
 
-
-void InputWidget::currentCharFormatChanged(const QTextCharFormat &format)
+void InputWidget::currentCharFormatChanged(const QTextCharFormat& format)
 {
     fontChanged(format.font());
 }
-
 
 void InputWidget::on_boldButton_clicked(bool checked)
 {
     setFormatBold(checked);
 }
 
-
 void InputWidget::on_underlineButton_clicked(bool checked)
 {
     setFormatUnderline(checked);
 }
-
 
 void InputWidget::on_italicButton_clicked(bool checked)
 {
     setFormatItalic(checked);
 }
 
-
-void InputWidget::fontChanged(const QFont &f)
+void InputWidget::fontChanged(const QFont& f)
 {
     ui.boldButton->setChecked(f.bold());
     ui.italicButton->setChecked(f.italic());
     ui.underlineButton->setChecked(f.underline());
 }
 
-
-void InputWidget::colorChosen(QAction *action)
+void InputWidget::colorChosen(QAction* action)
 {
     QTextCharFormat fmt;
     QColor color;
@@ -668,8 +636,7 @@ void InputWidget::colorChosen(QAction *action)
     ui.textcolorButton->setIcon(createColorToolButtonIcon(icon::get("format-text-color"), color));
 }
 
-
-void InputWidget::colorHighlightChosen(QAction *action)
+void InputWidget::colorHighlightChosen(QAction* action)
 {
     QTextCharFormat fmt;
     QColor color;
@@ -688,14 +655,12 @@ void InputWidget::colorHighlightChosen(QAction *action)
     ui.highlightcolorButton->setIcon(createColorToolButtonIcon(icon::get("format-fill-color"), color));
 }
 
-
 void InputWidget::on_showStyleButton_toggled(bool checked)
 {
     setStyleOptionsExpanded(checked);
 }
 
-
-QIcon InputWidget::createColorToolButtonIcon(const QIcon &icon, const QColor &color)
+QIcon InputWidget::createColorToolButtonIcon(const QIcon& icon, const QColor& color)
 {
     QPixmap pixmap(16, 16);
     pixmap.fill(Qt::transparent);
@@ -709,15 +674,12 @@ QIcon InputWidget::createColorToolButtonIcon(const QIcon &icon, const QColor &co
     return QIcon(pixmap);
 }
 
-
 // MOUSE WHEEL FILTER
-MouseWheelFilter::MouseWheelFilter(QObject *parent)
+MouseWheelFilter::MouseWheelFilter(QObject* parent)
     : QObject(parent)
-{
-}
+{}
 
-
-bool MouseWheelFilter::eventFilter(QObject *obj, QEvent *event)
+bool MouseWheelFilter::eventFilter(QObject* obj, QEvent* event)
 {
     if (event->type() != QEvent::Wheel)
         return QObject::eventFilter(obj, event);

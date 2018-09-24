@@ -21,13 +21,13 @@
 #ifndef CHANNELLISTDLG_H
 #define CHANNELLISTDLG_H
 
-#include "ui_channellistdlg.h"
+#include <QSortFilterProxyModel>
 
 #include "irclisthelper.h"
 #include "irclistmodel.h"
 #include "types.h"
 
-#include <QSortFilterProxyModel>
+#include "ui_channellistdlg.h"
 
 class QSpacerItem;
 
@@ -36,7 +36,7 @@ class ChannelListDlg : public QDialog
     Q_OBJECT
 
 public:
-    ChannelListDlg(QWidget *parent = nullptr);
+    ChannelListDlg(QWidget* parent = nullptr);
 
     void setNetwork(NetworkId netId);
 
@@ -48,7 +48,7 @@ public:
      *
      * @param channelFilters Partial channel name to search for, or empty to not filter by name
      */
-    void setChannelFilters(const QString &channelFilters);
+    void setChannelFilters(const QString& channelFilters);
 
 public slots:
     /**
@@ -57,13 +57,15 @@ public slots:
     void requestSearch();
 
 protected slots:
-    void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
+    void receiveChannelList(const NetworkId& netId,
+                            const QStringList& channelFilters,
+                            const QList<IrcListHelper::ChannelDescription>& channelList);
     void reportFinishedList();
-    void joinChannel(const QModelIndex &);
+    void joinChannel(const QModelIndex&);
 
 private slots:
     inline void toggleMode() { setAdvancedMode(!_advancedMode); }
-    void showError(const QString &error);
+    void showError(const QString& error);
 
 private:
     void showFilterLine(bool show);
@@ -82,9 +84,8 @@ private:
     NetworkId _netId;
     IrcListModel _ircListModel;
     QSortFilterProxyModel _sortFilter;
-    QSpacerItem *_simpleModeSpacer{nullptr};
+    QSpacerItem* _simpleModeSpacer{nullptr};
     bool _advancedMode{false};
 };
 
-
-#endif //CHANNELLIST_H
+#endif  // CHANNELLIST_H

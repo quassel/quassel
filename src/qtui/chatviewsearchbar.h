@@ -21,10 +21,10 @@
 #ifndef CHATVIEWSEARCHBAR_H
 #define CHATVIEWSEARCHBAR_H
 
-#include "ui_chatviewsearchbar.h"
-
-#include <QWidget>
 #include <QTimer>
+#include <QWidget>
+
+#include "ui_chatviewsearchbar.h"
 
 class QAction;
 
@@ -33,21 +33,21 @@ class ChatViewSearchBar : public QWidget
     Q_OBJECT
 
 public:
-    ChatViewSearchBar(QWidget *parent = nullptr);
+    ChatViewSearchBar(QWidget* parent = nullptr);
 
-    inline QLineEdit *searchEditLine() const { return ui.searchEditLine; }
-    inline QCheckBox *caseSensitiveBox() const { return ui.caseSensitiveBox; }
-    inline QCheckBox *searchSendersBox() const { return ui.searchSendersBox; }
-    inline QCheckBox *searchMsgsBox() const { return ui.searchMsgsBox; }
-    inline QCheckBox *searchOnlyRegularMsgsBox() const { return ui.searchOnlyRegularMsgsBox; }
-    inline QToolButton *searchUpButton() const { return ui.searchUpButton; }
-    inline QToolButton *searchDownButton() const { return ui.searchDownButton; }
+    inline QLineEdit* searchEditLine() const { return ui.searchEditLine; }
+    inline QCheckBox* caseSensitiveBox() const { return ui.caseSensitiveBox; }
+    inline QCheckBox* searchSendersBox() const { return ui.searchSendersBox; }
+    inline QCheckBox* searchMsgsBox() const { return ui.searchMsgsBox; }
+    inline QCheckBox* searchOnlyRegularMsgsBox() const { return ui.searchOnlyRegularMsgsBox; }
+    inline QToolButton* searchUpButton() const { return ui.searchUpButton; }
+    inline QToolButton* searchDownButton() const { return ui.searchDownButton; }
 
 public slots:
     void setVisible(bool) override;
 
 signals:
-    void searchChanged(const QString &);
+    void searchChanged(const QString&);
     void hidden();
 
 private slots:
@@ -59,5 +59,4 @@ private:
     QTimer _searchDelayTimer;
 };
 
-
-#endif //CHATVIEWSEARCHBAR_H
+#endif  // CHATVIEWSEARCHBAR_H

@@ -21,8 +21,8 @@
 #include "eventmanager.h"
 
 #include <QCoreApplication>
-#include <QEvent>
 #include <QDebug>
+#include <QEvent>
 
 #include "event.h"
 #include "ircevent.h"
@@ -33,20 +33,19 @@
 class QueuedQuasselEvent : public QEvent
 {
 public:
-    QueuedQuasselEvent(Event *event)
-        : QEvent(QEvent::User), event(event) {}
-    Event *event;
+    QueuedQuasselEvent(Event* event)
+        : QEvent(QEvent::User)
+        , event(event)
+    {}
+    Event* event;
 };
-
 
 // ============================================================
 //  EventManager
 // ============================================================
-EventManager::EventManager(QObject *parent)
+EventManager::EventManager(QObject* parent)
     : QObject(parent)
-{
-}
-
+{}
 
 QMetaEnum EventManager::eventEnum()
 {
@@ -59,41 +58,35 @@ QMetaEnum EventManager::eventEnum()
     return _enum;
 }
 
-
-EventManager::EventType EventManager::eventTypeByName(const QString &name)
+EventManager::EventType EventManager::eventTypeByName(const QString& name)
 {
     int val = eventEnum().keyToValue(name.toLatin1());
     return (val == -1) ? Invalid : static_cast<EventType>(val);
 }
 
-
-EventManager::EventType EventManager::eventGroupByName(const QString &name)
+EventManager::EventType EventManager::eventGroupByName(const QString& name)
 {
     EventType type = eventTypeByName(name);
     return type == Invalid ? Invalid : static_cast<EventType>(type & EventGroupMask);
 }
-
 
 QString EventManager::enumName(EventType type)
 {
     return eventEnum().valueToKey(type);
 }
 
-
 QString EventManager::enumName(int type)
 {
     return eventEnum().valueToKey(type);
 }
 
-
-Event *EventManager::createEvent(const QVariantMap &map)
+Event* EventManager::createEvent(const QVariantMap& map)
 {
     QVariantMap m = map;
 
-    Network *net = networkById(m.take("network").toInt());
+    Network* net = networkById(m.take("network").toInt());
     return Event::fromVariantMap(m, net);
 }
-
 
 /* NOTE:
    Registering and calling handlers works fine even if they specify a subclass of Event as their parameter.
@@ -109,20 +102,20 @@ Event *EventManager::createEvent(const QVariantMap &map)
    with the actual class. Possibly (optionally) using rtti...
 */
 
-int EventManager::findEventType(const QString &methodSignature_, const QString &methodPrefix) const
+int EventManager::findEventType(const QString& methodSignature_, const QString& methodPrefix) const
 {
     if (!methodSignature_.startsWith(methodPrefix))
         return -1;
 
     QString methodSignature = methodSignature_;
 
-    methodSignature = methodSignature.section('(', 0, 0); // chop the attribute list
-    methodSignature = methodSignature.mid(methodPrefix.length()); // strip prefix
+    methodSignature = methodSignature.section('(', 0, 0);          // chop the attribute list
+    methodSignature = methodSignature.mid(methodPrefix.length());  // strip prefix
 
     int eventType = -1;
 
     // special handling for numeric IrcEvents: IrcEvent042 gets mapped to IrcEventNumeric + 42
-    if (methodSignature.length() == 8+3 && methodSignature.startsWith("IrcEvent")) {
+    if (methodSignature.length() == 8 + 3 && methodSignature.startsWith("IrcEvent")) {
         int num = methodSignature.right(3).toUInt();
         if (num > 0) {
             QString numericSig = methodSignature.left(methodSignature.length() - 3) + "Numeric";
@@ -144,8 +137,7 @@ int EventManager::findEventType(const QString &methodSignature_, const QString &
     return eventType;
 }
 
-
-void EventManager::registerObject(QObject *object, Priority priority, const QString &methodPrefix, const QString &filterPrefix)
+void EventManager::registerObject(QObject* object, Priority priority, const QString& methodPrefix, const QString& filterPrefix)
 {
     for (int i = object->metaObject()->methodOffset(); i < object->metaObject()->methodCount(); i++) {
         QString methodSignature = object->metaObject()->method(i).methodSignature();
@@ -153,37 +145,33 @@ void EventManager::registerObject(QObject *object, Priority priority, const QStr
         if (eventType > 0) {
             Handler handler(object, i, priority);
             registeredHandlers()[eventType].append(handler);
-            //qDebug() << "Registered event handler for" << methodSignature << "in" << object;
+            // qDebug() << "Registered event handler for" << methodSignature << "in" << object;
         }
         eventType = findEventType(methodSignature, filterPrefix);
         if (eventType > 0) {
             Handler handler(object, i, priority);
             registeredFilters()[eventType].append(handler);
-            //qDebug() << "Registered event filterer for" << methodSignature << "in" << object;
+            // qDebug() << "Registered event filterer for" << methodSignature << "in" << object;
         }
     }
 }
 
-
-void EventManager::registerEventFilter(EventType event, QObject *object, const char *slot)
+void EventManager::registerEventFilter(EventType event, QObject* object, const char* slot)
 {
     registerEventHandler(QList<EventType>() << event, object, slot, NormalPriority, true);
 }
 
-
-void EventManager::registerEventFilter(QList<EventType> events, QObject *object, const char *slot)
+void EventManager::registerEventFilter(QList<EventType> events, QObject* object, const char* slot)
 {
     registerEventHandler(events, object, slot, NormalPriority, true);
 }
 
-
-void EventManager::registerEventHandler(EventType event, QObject *object, const char *slot, Priority priority, bool isFilter)
+void EventManager::registerEventHandler(EventType event, QObject* object, const char* slot, Priority priority, bool isFilter)
 {
     registerEventHandler(QList<EventType>() << event, object, slot, priority, isFilter);
 }
 
-
-void EventManager::registerEventHandler(QList<EventType> events, QObject *object, const char *slot, Priority priority, bool isFilter)
+void EventManager::registerEventHandler(QList<EventType> events, QObject* object, const char* slot, Priority priority, bool isFilter)
 {
     int methodIndex = object->metaObject()->indexOfMethod(slot);
     if (methodIndex < 0) {
@@ -191,7 +179,7 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject *object
         return;
     }
     Handler handler(object, methodIndex, priority);
-    foreach(EventType event, events) {
+    foreach (EventType event, events) {
         if (isFilter) {
             registeredFilters()[event].append(handler);
             qDebug() << "Registered event filter for" << event << "in" << object;
@@ -203,11 +191,10 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject *object
     }
 }
 
-
-void EventManager::postEvent(Event *event)
+void EventManager::postEvent(Event* event)
 {
     if (sender() && sender()->thread() != this->thread()) {
-        auto *queuedEvent = new QueuedQuasselEvent(event);
+        auto* queuedEvent = new QueuedQuasselEvent(event);
         QCoreApplication::postEvent(this, queuedEvent);
     }
     else {
@@ -219,18 +206,16 @@ void EventManager::postEvent(Event *event)
     }
 }
 
-
-void EventManager::customEvent(QEvent *event)
+void EventManager::customEvent(QEvent* event)
 {
     if (event->type() == QEvent::User) {
-        auto *queuedEvent = static_cast<QueuedQuasselEvent *>(event);
+        auto* queuedEvent = static_cast<QueuedQuasselEvent*>(event);
         processEvent(queuedEvent->event);
         event->accept();
     }
 }
 
-
-void EventManager::processEvent(Event *event)
+void EventManager::processEvent(Event* event)
 {
     Q_ASSERT(_eventQueue.isEmpty());
     dispatchEvent(event);
@@ -241,24 +226,23 @@ void EventManager::processEvent(Event *event)
     }
 }
 
-
-void EventManager::dispatchEvent(Event *event)
+void EventManager::dispatchEvent(Event* event)
 {
-    //qDebug() << "Dispatching" << event;
+    // qDebug() << "Dispatching" << event;
 
     // we try handlers from specialized to generic by masking the enum
 
     // build a list sorted by priorities that contains all eligible handlers
     QList<Handler> handlers;
-    QHash<QObject *, Handler> filters;
-    QSet<QObject *> ignored;
+    QHash<QObject*, Handler> filters;
+    QSet<QObject*> ignored;
     uint type = event->type();
 
     bool checkDupes = false;
 
     // special handling for numeric IrcEvents
     if ((type & ~IrcEventNumericMask) == IrcEventNumeric) {
-        auto *numEvent = static_cast< ::IrcEventNumeric *>(event);
+        auto* numEvent = static_cast<::IrcEventNumeric*>(event);
         if (!numEvent)
             qWarning() << "Invalid event type for IrcEventNumeric!";
         else {
@@ -284,24 +268,24 @@ void EventManager::dispatchEvent(Event *event)
     // now dispatch the event
     QList<Handler>::const_iterator it;
     for (it = handlers.begin(); it != handlers.end() && !event->isStopped(); ++it) {
-        QObject *obj = it->object;
+        QObject* obj = it->object;
 
-        if (ignored.contains(obj)) // object has filtered the event
+        if (ignored.contains(obj))  // object has filtered the event
             continue;
 
-        if (filters.contains(obj)) { // we have a filter, so let's check if we want to deliver the event
+        if (filters.contains(obj)) {  // we have a filter, so let's check if we want to deliver the event
             Handler filter = filters.value(obj);
             bool result = false;
-            void *param[] = { Q_RETURN_ARG(bool, result).data(), Q_ARG(Event *, event).data() };
+            void* param[] = {Q_RETURN_ARG(bool, result).data(), Q_ARG(Event*, event).data()};
             obj->qt_metacall(QMetaObject::InvokeMetaMethod, filter.methodIndex, param);
             if (!result) {
                 ignored.insert(obj);
-                continue; // mmmh, event filter told us to not accept
+                continue;  // mmmh, event filter told us to not accept
             }
         }
 
         // finally, deliverance!
-        void *param[] = { nullptr, Q_ARG(Event *, event).data() };
+        void* param[] = {nullptr, Q_ARG(Event*, event).data()};
         obj->qt_metacall(QMetaObject::InvokeMetaMethod, it->methodIndex, param);
     }
 
@@ -309,10 +293,9 @@ void EventManager::dispatchEvent(Event *event)
     delete event;
 }
 
-
-void EventManager::insertHandlers(const QList<Handler> &newHandlers, QList<Handler> &existing, bool checkDupes)
+void EventManager::insertHandlers(const QList<Handler>& newHandlers, QList<Handler>& existing, bool checkDupes)
 {
-    foreach(const Handler &handler, newHandlers) {
+    foreach (const Handler& handler, newHandlers) {
         if (existing.isEmpty())
             existing.append(handler);
         else {
@@ -336,16 +319,14 @@ void EventManager::insertHandlers(const QList<Handler> &newHandlers, QList<Handl
     }
 }
 
-
 // priority is ignored, and only the first (should be most specialized) filter is being used
 // fun things could happen if you used the registerEventFilter() methods in the wrong order though
-void EventManager::insertFilters(const QList<Handler> &newFilters, QHash<QObject *, Handler> &existing)
+void EventManager::insertFilters(const QList<Handler>& newFilters, QHash<QObject*, Handler>& existing)
 {
-    foreach(const Handler &filter, newFilters) {
+    foreach (const Handler& filter, newFilters) {
         if (!existing.contains(filter.object))
             existing[filter.object] = filter;
     }
 }
-
 
 QMetaEnum EventManager::_enum;

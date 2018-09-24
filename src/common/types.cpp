@@ -18,28 +18,33 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "peer.h"
 #include "types.h"
 
-QDataStream &operator<<(QDataStream &out, const SignedId64 &signedId) {
+#include "peer.h"
+
+QDataStream& operator<<(QDataStream& out, const SignedId64& signedId)
+{
     Q_ASSERT(SignalProxy::current());
     Q_ASSERT(SignalProxy::current()->targetPeer());
 
     if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongMessageId)) {
         out << signedId.toQint64();
-    } else {
-        out << (qint32) signedId.toQint64();
+    }
+    else {
+        out << (qint32)signedId.toQint64();
     }
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, SignedId64 &signedId) {
+QDataStream& operator>>(QDataStream& in, SignedId64& signedId)
+{
     Q_ASSERT(SignalProxy::current());
     Q_ASSERT(SignalProxy::current()->sourcePeer());
 
     if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongMessageId)) {
         in >> signedId.id;
-    } else {
+    }
+    else {
         qint32 id;
         in >> id;
         signedId.id = id;

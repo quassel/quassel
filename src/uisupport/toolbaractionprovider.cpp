@@ -25,7 +25,7 @@
 
 #include "icon.h"
 
-ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
+ToolBarActionProvider::ToolBarActionProvider(QObject* parent)
     : NetworkModelController(parent)
 {
     registerAction(NetworkConnectAllWithDropdown, icon::get("network-connect"), tr("Connect"))->setToolTip(tr("Connect to IRC"));
@@ -36,8 +36,8 @@ ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
     registerAction(BufferPart, icon::get("irc-close-channel"), tr("Part"))->setToolTip(tr("Leave currently selected channel"));
     registerAction(JoinChannel, icon::get("irc-join-channel"), tr("Join"))->setToolTip(tr("Join a channel"));
 
-    registerAction(NickQuery, icon::get("mail-message-new"), tr("Query"))->setToolTip(tr("Start a private conversation")); // fix icon
-    registerAction(NickWhois, icon::get("im-user"), tr("Whois"))->setToolTip(tr("Request user information")); // fix icon
+    registerAction(NickQuery, icon::get("mail-message-new"), tr("Query"))->setToolTip(tr("Start a private conversation"));  // fix icon
+    registerAction(NickWhois, icon::get("im-user"), tr("Whois"))->setToolTip(tr("Request user information"));               // fix icon
 
     registerAction(NickOp, icon::get("irc-operator"), tr("Op"))->setToolTip(tr("Give operator privileges to user"));
     registerAction(NickDeop, icon::get("irc-remove-operator"), tr("Deop"))->setToolTip(tr("Take operator privileges from user"));
@@ -67,7 +67,6 @@ ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
     updateStates();
 }
 
-
 void ToolBarActionProvider::disconnectedFromCore()
 {
     _currentBuffer = QModelIndex();
@@ -75,16 +74,14 @@ void ToolBarActionProvider::disconnectedFromCore()
     NetworkModelController::disconnectedFromCore();
 }
 
-
 void ToolBarActionProvider::updateStates()
 {
-    action(BufferPart)->setEnabled(_currentBuffer.isValid()
-        && _currentBuffer.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer
-        && _currentBuffer.data(NetworkModel::ItemActiveRole).toBool());
+    action(BufferPart)
+        ->setEnabled(_currentBuffer.isValid() && _currentBuffer.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer
+                     && _currentBuffer.data(NetworkModel::ItemActiveRole).toBool());
 }
 
-
-void ToolBarActionProvider::addActions(QToolBar *bar, ToolBarType type)
+void ToolBarActionProvider::addActions(QToolBar* bar, ToolBarType type)
 {
     switch (type) {
     case MainToolBar:
@@ -110,54 +107,47 @@ void ToolBarActionProvider::addActions(QToolBar *bar, ToolBarType type)
     }
 }
 
-
-void ToolBarActionProvider::onCurrentBufferChanged(const QModelIndex &index)
+void ToolBarActionProvider::onCurrentBufferChanged(const QModelIndex& index)
 {
     _currentBuffer = index;
     updateStates();
 }
 
-
-void ToolBarActionProvider::onNickSelectionChanged(const QModelIndexList &indexList)
+void ToolBarActionProvider::onNickSelectionChanged(const QModelIndexList& indexList)
 {
     _selectedNicks = indexList;
     updateStates();
 }
 
-
 // override those to set indexes right
-void ToolBarActionProvider::handleNetworkAction(ActionType type, QAction *action)
+void ToolBarActionProvider::handleNetworkAction(ActionType type, QAction* action)
 {
     setIndexList(_currentBuffer);
     NetworkModelController::handleNetworkAction(type, action);
 }
 
-
-void ToolBarActionProvider::handleBufferAction(ActionType type, QAction *action)
+void ToolBarActionProvider::handleBufferAction(ActionType type, QAction* action)
 {
     setIndexList(_currentBuffer);
     NetworkModelController::handleBufferAction(type, action);
 }
 
-
-void ToolBarActionProvider::handleNickAction(ActionType type, QAction *action)
+void ToolBarActionProvider::handleNickAction(ActionType type, QAction* action)
 {
     setIndexList(_selectedNicks);
     NetworkModelController::handleNickAction(type, action);
 }
 
-
-void ToolBarActionProvider::handleGeneralAction(ActionType type, QAction *action)
+void ToolBarActionProvider::handleGeneralAction(ActionType type, QAction* action)
 {
     setIndexList(_currentBuffer);
     NetworkModelController::handleGeneralAction(type, action);
 }
 
-
 void ToolBarActionProvider::networkCreated(NetworkId id)
 {
-    const Network *net = Client::network(id);
-    Action *act = new Action(net->networkName(), this);
+    const Network* net = Client::network(id);
+    Action* act = new Action(net->networkName(), this);
     _networkActions[id] = act;
     act->setObjectName(QString("NetworkAction-%1").arg(id.toInt()));
     act->setData(QVariant::fromValue<NetworkId>(id));
@@ -166,35 +156,33 @@ void ToolBarActionProvider::networkCreated(NetworkId id)
     networkUpdated(net);
 }
 
-
 void ToolBarActionProvider::networkRemoved(NetworkId id)
 {
-    Action *act = _networkActions.take(id);
+    Action* act = _networkActions.take(id);
     if (act)
         act->deleteLater();
 }
 
-
-void ToolBarActionProvider::networkUpdated(const Network *net)
+void ToolBarActionProvider::networkUpdated(const Network* net)
 {
     if (!net)
-        net = qobject_cast<const Network *>(sender());
+        net = qobject_cast<const Network*>(sender());
     if (!net)
         return;
-    Action *act = _networkActions.value(net->networkId());
+    Action* act = _networkActions.value(net->networkId());
     if (!act)
         return;
 
     _networksConnectMenu->removeAction(act);
     _networksDisconnectMenu->removeAction(act);
 
-    QMenu *newMenu = net->connectionState() != Network::Disconnected ? _networksDisconnectMenu : _networksConnectMenu;
+    QMenu* newMenu = net->connectionState() != Network::Disconnected ? _networksDisconnectMenu : _networksConnectMenu;
     act->setText(net->networkName());
 
     const int lastidx = newMenu->actions().count() - 2;
-    QAction *beforeAction = newMenu->actions().at(lastidx);
+    QAction* beforeAction = newMenu->actions().at(lastidx);
     for (int i = 0; i < newMenu->actions().count() - 2; i++) {
-        QAction *action = newMenu->actions().at(i);
+        QAction* action = newMenu->actions().at(i);
         if (net->networkName().localeAwareCompare(action->text()) < 0) {
             beforeAction = action;
             break;
@@ -207,19 +195,19 @@ void ToolBarActionProvider::networkUpdated(const Network *net)
     action(JoinChannel)->setEnabled(_networksDisconnectMenu->actions().count() > 2);
 }
 
-
 void ToolBarActionProvider::connectOrDisconnectNet()
 {
-    auto *act = qobject_cast<QAction *>(sender());
+    auto* act = qobject_cast<QAction*>(sender());
     if (!act)
         return;
-    const Network *net = Client::network(act->data().value<NetworkId>());
+    const Network* net = Client::network(act->data().value<NetworkId>());
     if (!net)
         return;
 
-    if (net->connectionState() == Network::Disconnected) net->requestConnect();
-    else net->requestDisconnect();
+    if (net->connectionState() == Network::Disconnected)
+        net->requestConnect();
+    else
+        net->requestDisconnect();
 }
 
-
-//void ToolBarActionProvider::
+// void ToolBarActionProvider::

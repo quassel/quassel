@@ -28,9 +28,9 @@
 #include <QSessionManager>
 
 #include "client.h"
+#include "qtuisettings.h"
 #include "quassel.h"
 #include "uisettings.h"
-#include "qtuisettings.h"
 
 class QtUi;
 
@@ -39,15 +39,15 @@ class QTUI_EXPORT QtUiApplication : public QApplication
     Q_OBJECT
 
 public:
-    QtUiApplication(int &, char **);
+    QtUiApplication(int&, char**);
 
     virtual void init();
 
     void resumeSessionIfPossible();
     inline bool isAboutToQuit() const { return _aboutToQuit; }
 
-    void commitData(QSessionManager &manager);
-    void saveState(QSessionManager &manager);
+    void commitData(QSessionManager& manager);
+    void saveState(QSessionManager& manager);
 
 protected:
     virtual Quassel::QuitHandler quitHandler();

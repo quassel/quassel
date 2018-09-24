@@ -27,14 +27,14 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QKeyEvent>
 #include <QHBoxLayout>
+#include <QKeyEvent>
 #include <QMessageBox>
 #include <QToolButton>
 
 // This defines the unicode symbols for special keys (kCommandUnicode and friends)
 #ifdef Q_OS_MAC
-#  include <Carbon/Carbon.h>
+#    include <Carbon/Carbon.h>
 #endif
 
 #include "action.h"
@@ -42,17 +42,15 @@
 #include "icon.h"
 #include "keysequencewidget.h"
 
-KeySequenceButton::KeySequenceButton(KeySequenceWidget *d_, QWidget *parent)
-    : QPushButton(parent),
-    d(d_)
-{
-}
+KeySequenceButton::KeySequenceButton(KeySequenceWidget* d_, QWidget* parent)
+    : QPushButton(parent)
+    , d(d_)
+{}
 
-
-bool KeySequenceButton::event(QEvent *e)
+bool KeySequenceButton::event(QEvent* e)
 {
     if (d->isRecording() && e->type() == QEvent::KeyPress) {
-        keyPressEvent(static_cast<QKeyEvent *>(e));
+        keyPressEvent(static_cast<QKeyEvent*>(e));
         return true;
     }
 
@@ -68,24 +66,21 @@ bool KeySequenceButton::event(QEvent *e)
     return QPushButton::event(e);
 }
 
-
-void KeySequenceButton::keyPressEvent(QKeyEvent *e)
+void KeySequenceButton::keyPressEvent(QKeyEvent* e)
 {
     int keyQt = e->key();
     if (keyQt == -1) {
         // Qt sometimes returns garbage keycodes, I observed -1, if it doesn't know a key.
         // We cannot do anything useful with those (several keys have -1, indistinguishable)
         // and QKeySequence.toString() will also yield a garbage string.
-        QMessageBox::information(this,
-            tr("The key you just pressed is not supported by Qt."),
-            tr("Unsupported Key"));
+        QMessageBox::information(this, tr("The key you just pressed is not supported by Qt."), tr("Unsupported Key"));
         return d->cancelRecording();
     }
 
     uint newModifiers = e->modifiers() & (Qt::SHIFT | Qt::CTRL | Qt::ALT | Qt::META);
 
-    //don't have the return or space key appear as first key of the sequence when they
-    //were pressed to start editing - catch and them and imitate their effect
+    // don't have the return or space key appear as first key of the sequence when they
+    // were pressed to start editing - catch and them and imitate their effect
     if (!d->isRecording() && ((keyQt == Qt::Key_Return || keyQt == Qt::Key_Space))) {
         d->startRecording();
         d->_modifierKeys = newModifiers;
@@ -101,13 +96,13 @@ void KeySequenceButton::keyPressEvent(QKeyEvent *e)
     d->_modifierKeys = newModifiers;
 
     switch (keyQt) {
-    case Qt::Key_AltGr: //or else we get unicode salad
+    case Qt::Key_AltGr:  // or else we get unicode salad
         return;
     case Qt::Key_Shift:
     case Qt::Key_Control:
     case Qt::Key_Alt:
     case Qt::Key_Meta:
-    case Qt::Key_Menu: //unused (yes, but why?)
+    case Qt::Key_Menu:  // unused (yes, but why?)
         d->updateShortcutDisplay();
         break;
 
@@ -136,8 +131,7 @@ void KeySequenceButton::keyPressEvent(QKeyEvent *e)
     }
 }
 
-
-void KeySequenceButton::keyReleaseEvent(QKeyEvent *e)
+void KeySequenceButton::keyReleaseEvent(QKeyEvent* e)
 {
     if (e->key() == -1) {
         // ignore garbage, see keyPressEvent()
@@ -158,19 +152,19 @@ void KeySequenceButton::keyReleaseEvent(QKeyEvent *e)
     }
 }
 
-
 /******************************************************************************/
 
-KeySequenceWidget::KeySequenceWidget(QWidget *parent)
+KeySequenceWidget::KeySequenceWidget(QWidget* parent)
     : QWidget(parent)
 {
-    auto *layout = new QHBoxLayout(this);
+    auto* layout = new QHBoxLayout(this);
     layout->setMargin(0);
 
     _keyButton = new KeySequenceButton(this, this);
     _keyButton->setFocusPolicy(Qt::StrongFocus);
     _keyButton->setIcon(icon::get("configure"));
-    _keyButton->setToolTip(tr("Click on the button, then enter the shortcut like you would in the program.\nExample for Ctrl+a: hold the Ctrl key and press a."));
+    _keyButton->setToolTip(tr(
+        "Click on the button, then enter the shortcut like you would in the program.\nExample for Ctrl+a: hold the Ctrl key and press a."));
     layout->addWidget(_keyButton);
 
     _clearButton = new QToolButton(this);
@@ -189,17 +183,15 @@ KeySequenceWidget::KeySequenceWidget(QWidget *parent)
     connect(_clearButton, &QAbstractButton::clicked, this, &KeySequenceWidget::clicked);
 }
 
-
-void KeySequenceWidget::setModel(ShortcutsModel *model)
+void KeySequenceWidget::setModel(ShortcutsModel* model)
 {
     Q_ASSERT(!_shortcutsModel);
     _shortcutsModel = model;
 }
 
-
 bool KeySequenceWidget::isOkWhenModifierless(int keyQt) const
 {
-    //this whole function is a hack, but especially the first line of code
+    // this whole function is a hack, but especially the first line of code
     if (QKeySequence(keyQt).toString().length() == 1)
         return false;
 
@@ -207,7 +199,7 @@ bool KeySequenceWidget::isOkWhenModifierless(int keyQt) const
     case Qt::Key_Return:
     case Qt::Key_Space:
     case Qt::Key_Tab:
-    case Qt::Key_Backtab: //does this ever happen?
+    case Qt::Key_Backtab:  // does this ever happen?
     case Qt::Key_Backspace:
     case Qt::Key_Delete:
         return false;
@@ -215,7 +207,6 @@ bool KeySequenceWidget::isOkWhenModifierless(int keyQt) const
         return true;
     }
 }
-
 
 bool KeySequenceWidget::isShiftAsModifierAllowed(int keyQt) const
 {
@@ -254,7 +245,6 @@ bool KeySequenceWidget::isShiftAsModifierAllowed(int keyQt) const
     }
 }
 
-
 void KeySequenceWidget::updateShortcutDisplay()
 {
     QString s = _keySequence.toString(QKeySequence::NativeText);
@@ -263,15 +253,23 @@ void KeySequenceWidget::updateShortcutDisplay()
     if (_isRecording) {
         if (_modifierKeys) {
 #ifdef Q_OS_MAC
-            if (_modifierKeys & Qt::META) s += QChar(kControlUnicode);
-            if (_modifierKeys & Qt::ALT) s += QChar(kOptionUnicode);
-            if (_modifierKeys & Qt::SHIFT) s += QChar(kShiftUnicode);
-            if (_modifierKeys & Qt::CTRL) s += QChar(kCommandUnicode);
+            if (_modifierKeys & Qt::META)
+                s += QChar(kControlUnicode);
+            if (_modifierKeys & Qt::ALT)
+                s += QChar(kOptionUnicode);
+            if (_modifierKeys & Qt::SHIFT)
+                s += QChar(kShiftUnicode);
+            if (_modifierKeys & Qt::CTRL)
+                s += QChar(kCommandUnicode);
 #else
-            if (_modifierKeys & Qt::META) s += tr("Meta", "Meta key") + '+';
-            if (_modifierKeys & Qt::CTRL) s += tr("Ctrl", "Ctrl key") + '+';
-            if (_modifierKeys & Qt::ALT) s += tr("Alt", "Alt key") + '+';
-            if (_modifierKeys & Qt::SHIFT) s += tr("Shift", "Shift key") + '+';
+            if (_modifierKeys & Qt::META)
+                s += tr("Meta", "Meta key") + '+';
+            if (_modifierKeys & Qt::CTRL)
+                s += tr("Ctrl", "Ctrl key") + '+';
+            if (_modifierKeys & Qt::ALT)
+                s += tr("Alt", "Alt key") + '+';
+            if (_modifierKeys & Qt::SHIFT)
+                s += tr("Shift", "Shift key") + '+';
 #endif
         }
         else {
@@ -290,7 +288,6 @@ void KeySequenceWidget::updateShortcutDisplay()
     _keyButton->setText(s);
 }
 
-
 void KeySequenceWidget::startRecording()
 {
     _modifierKeys = 0;
@@ -307,7 +304,6 @@ void KeySequenceWidget::startRecording()
     _keyButton->setDown(true);
     updateShortcutDisplay();
 }
-
 
 void KeySequenceWidget::doneRecording()
 {
@@ -331,15 +327,13 @@ void KeySequenceWidget::doneRecording()
     updateShortcutDisplay();
 }
 
-
 void KeySequenceWidget::cancelRecording()
 {
     _keySequence = _oldKeySequence;
     doneRecording();
 }
 
-
-void KeySequenceWidget::setKeySequence(const QKeySequence &seq)
+void KeySequenceWidget::setKeySequence(const QKeySequence& seq)
 {
     // oldKeySequence holds the key sequence before recording started, if setKeySequence()
     // is called while not recording then set oldKeySequence to the existing sequence so
@@ -353,7 +347,6 @@ void KeySequenceWidget::setKeySequence(const QKeySequence &seq)
     doneRecording();
 }
 
-
 void KeySequenceWidget::clear()
 {
     setKeySequence(QKeySequence());
@@ -361,8 +354,7 @@ void KeySequenceWidget::clear()
     emit keySequenceChanged(QKeySequence());
 }
 
-
-bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence &seq)
+bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence& seq)
 {
     if (seq.isEmpty())
         return true;
@@ -377,18 +369,21 @@ bool KeySequenceWidget::isKeySequenceAvailable(const QKeySequence &seq)
                 continue;
 
             if (!actIdx.data(ShortcutsModel::IsConfigurableRole).toBool()) {
-                QMessageBox::warning(this, tr("Shortcut Conflict"),
-                    tr("The \"%1\" shortcut is already in use, and cannot be configured.\nPlease choose another one.").arg(seq.toString(QKeySequence::NativeText)),
-                    QMessageBox::Ok);
+                QMessageBox::warning(this,
+                                     tr("Shortcut Conflict"),
+                                     tr("The \"%1\" shortcut is already in use, and cannot be configured.\nPlease choose another one.")
+                                         .arg(seq.toString(QKeySequence::NativeText)),
+                                     QMessageBox::Ok);
                 return false;
             }
 
-            QMessageBox box(QMessageBox::Warning, tr("Shortcut Conflict"),
-                (tr("The \"%1\" shortcut is ambiguous with the shortcut for the following action:")
-                 + "<br><ul><li>%2</li></ul><br>"
-                 + tr("Do you want to reassign this shortcut to the selected action?")
-                ).arg(seq.toString(QKeySequence::NativeText), actIdx.data().toString()),
-                QMessageBox::Cancel, this);
+            QMessageBox box(QMessageBox::Warning,
+                            tr("Shortcut Conflict"),
+                            (tr("The \"%1\" shortcut is ambiguous with the shortcut for the following action:")
+                             + "<br><ul><li>%2</li></ul><br>" + tr("Do you want to reassign this shortcut to the selected action?"))
+                                .arg(seq.toString(QKeySequence::NativeText), actIdx.data().toString()),
+                            QMessageBox::Cancel,
+                            this);
             box.addButton(tr("Reassign"), QMessageBox::AcceptRole);
             if (box.exec() == QMessageBox::Cancel)
                 return false;
