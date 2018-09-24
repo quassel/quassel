@@ -2,12 +2,7 @@
 # Translators:
 # Adolfo Jayme-Barrientos, 2013
 # Daniel Albers <daniel@lbe.rs>, 2012
-# Daniel Albers <daniel@lbers.com>, 2011
-# Daniel Albers <daniel@lbe.rs>, 2012
-# Javier Llorente <javier@opensuse.org>, 2011
-# enjolras <yo@miguelrevilla.com>, 2012
 # Javier Llorente <javier@opensuse.org>, 2011,2016-2018
-# Javier Llorente <javier@opensuse.org>, 2011
 # Jonathan Farnham <jonathan@haitu-yu.com>, 2013
 # Rafael Belmonte <EagleScreen@gmail.com>, 2009,2011
 # enjolras <yo@miguelrevilla.com>, 2012

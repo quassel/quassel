@@ -1,6 +1,5 @@
 # 
 # Translators:
-# Raju Devidas Vindane <rajuvindane@gmail.com>, 2013
 # Raju Devidas Vindane <rajuvindane@gmail.com>, 2013-2016
 msgid ""
 msgstr ""

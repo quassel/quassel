@@ -1,8 +1,6 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011
-# Jaroslav Lichtblau <dragonlord@seznam.cz>, 2015-2016
-# Jaroslav Lichtblau <dragonlord@seznam.cz>, 2014
+# Jaroslav Lichtblau <dragonlord@seznam.cz>, 2014-2016
 # scarabeus <scarabeus@gentoo.org>, 2009-2010
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012
 # Vít Pelčák, 2012-2013

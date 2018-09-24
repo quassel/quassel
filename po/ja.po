@@ -1,6 +1,5 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011
 # Daniel E. Moctezuma <democtezuma@gmail.com>, 2010
 msgid ""
 msgstr ""

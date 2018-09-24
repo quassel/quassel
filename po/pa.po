@@ -1,8 +1,6 @@
 # 
 # Translators:
-# A S Alam <aalam@users.sf.net>, 2013
-# A S Alam <apreet.alam@gmail.com>, 2014-2016
-# A S Alam <alam.yellow@gmail.com>, 2014-2016
+# A S Alam <alam.yellow@gmail.com>, 2013-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"

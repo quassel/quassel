@@ -1,19 +1,11 @@
 # 
 # Translators:
 # contradictioned <contradictioned@googlemail.com>, 2014
-# Daniel Albers <daniel@lbe.rs>, 2012-2013
-# Daniel Albers <daniel@lbers.com>, 2011-2012
-# Daniel Albers <daniel@lbers.com>, 2011-2012
+# Daniel Albers <daniel@lbe.rs>, 2011-2013
 # Felix Kaechele <felix@fetzig.org>, 2013
-# Felix Kaechele <felix@fetzig.org>, 2013
-# m4yer <m4yer+quassel@minad.de>, 2012
-# m4yer <m4yer+quassel@minad.de>, 2012
-# Martin Mayer <m4yer@minad.de>, Michael Groh <brot@minad.de>, 2009-2010
-# Martin Mayer <m4yer@minad.de>, Michael Groh <brot@minad.de>, 2009-2010
+# Martin Mayer <m4yer@minad.de>, 2009-2010,2012
+# Michael Groh <brot@minad.de>, 2009-2010
 # Sebastian Meyer <transifex@netzvieh.de>, 2015
-# Tobias Frei <tobias@freiwuppertal.de>, 2012
-# Tobias Frei <tobias@freiwuppertal.de>, 2012
-# Tobias Frei <tobias@freiwuppertal.de>, 2012
 # Tobias Frei <tobias@freiwuppertal.de>, 2012
 msgid ""
 msgstr ""

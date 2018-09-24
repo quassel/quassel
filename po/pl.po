@@ -2,7 +2,6 @@
 # Translators:
 # derpella <matwa@poczta.pl>, 2012
 # Marcin Jabrzyk <marcin.jabrzyk@gmail.com>, 2013
-# derpella <matwa@poczta.pl>, 2012
 # Miłosz Rachwał <transifex@milek7.pl>, 2018
 msgid ""
 msgstr ""

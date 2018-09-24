@@ -1,7 +1,5 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011
-# Vitor <droider.pc@gmail.com>, 2018
 # Vitor Luis <ptirc@protonmail.com>, 2018
 # Zé <mmodem00@gmail.com>, 2010
 msgid ""

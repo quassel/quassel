@@ -1,9 +1,5 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011
-# leonfeng <chaofeng111@gmail.com>, 2010
-# leonfeng <chaofeng111@qq.com>, 2010
-# leonfeng <chaofeng111@qq.com>, 2010
 # leonfeng <chaofeng111@qq.com>, 2010
 msgid ""
 msgstr ""

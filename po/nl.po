@@ -1,11 +1,7 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbe.rs>, 2012
-# Daniel Albers <daniel@lbers.com>, 2011
 # Joep Seuren <joepseuren1@gmail.com>, 2018
 # redmar <redmar@ubuntu-nl.org>, 2010
-# simonphilips <simon.philips@gmail.com>, 2012
-# simonphilips <simon.philips@gmail.com>, 2012
 # simonphilips <simon.philips@gmail.com>, 2012
 msgid ""
 msgstr ""

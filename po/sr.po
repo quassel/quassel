@@ -1,7 +1,6 @@
 # 
 # Translators:
 # Jovan Jojkić <jovanjojkic@gmail.com>, 2013
-# Jovan Jojkić <jovanjojkic@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"

@@ -1,9 +1,6 @@
 # 
 # Translators:
 # Andrei Stepanov, 2016
-# Daniel Albers <daniel@lbers.com>, 2011
-# sfionov <fionov@gmail.com>, 2012
-# sfionov <fionov@gmail.com>, 2012
 # sfionov <fionov@gmail.com>, 2012
 # Svetlana Tkachenko <svetlana@members.fsf.org>, 2018
 # Viktor Suprun <popsul1993@gmail.com>, 2016

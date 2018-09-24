@@ -1,7 +1,6 @@
 # 
 # Translators:
 # Andrej Mernik <andrejm@ubuntu.si>, 2014-2016
-# Daniel Albers <daniel@lbers.com>, 2011
 # Jure Repinc <jlp@holodeck1.com>, 2009-2010
 msgid ""
 msgstr ""

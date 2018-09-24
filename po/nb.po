@@ -1,12 +1,7 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbe.rs>, 2012
-# Daniel Albers <daniel@lbers.com>, 2011
-# sandsmark <inactive+sandsmark@transifex.com>, 2013
-# sandsmark <inactive+sandsmark@transifex.com>, 2012
-# Terje Andersen <terander@guard.zapto.org>, 2009
-# Terje Andersen <teranders@gmail.com>, 2011
-# Thorbjørn Bruarøy, 2014,2017
+# sandsmark <inactive+sandsmark@transifex.com>, 2012-2013
+# Terje Andersen <teranders@gmail.com>, 2009,2011
 # Thorbjørn Bruarøy, 2014,2017
 msgid ""
 msgstr ""

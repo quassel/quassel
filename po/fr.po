@@ -1,16 +1,9 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbe.rs>, 2012
-# Daniel Albers <daniel@lbers.com>, 2011
 # Dorian <munto@free.fr>, 2012
-# GrecKo <gr3cko@gmail.com>, 2011
 # GrecKo <gr3cko@gmail.com>, 2011
 # Guillaume Gay <guillaume.gay@gmail.com>, 2013
-# Dorian <munto@free.fr>, 2012
-# Vlavv <vlavv2@gmail.com>, 2014
-# Vlavv <vlavv2@gmail.com>, 2015
-# Vlavv <vlavv2@gmail.com>, 2015
-# Zoddo <transifex.com-1+2018-02-06-after-spam@zoddo.fr>, 2016
+# Vlavv <vlavv2@gmail.com>, 2014-2015
 # Zoddo <transifex.com-1+2018-02-06-after-spam@zoddo.fr>, 2016
 msgid ""
 msgstr ""

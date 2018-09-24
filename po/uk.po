@@ -1,8 +1,6 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011
-# Yuri Chornoivan <yurchor@gmail.com>, 2010
-# Yuri Chornoivan <yurchor@ukr.net>, 2011-2016
+# Yuri Chornoivan <yurchor@ukr.net>, 2010-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"

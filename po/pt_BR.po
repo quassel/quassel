@@ -2,10 +2,6 @@
 # Translators:
 # André Gondim <andregondim@ubuntu.com>, 2010
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2014,2016
-# Daniel Albers <daniel@lbe.rs>, 2012
-# Daniel Albers <daniel@lbers.com>, 2011
-# Pedro Araujo <pedroaraujo@colorlesscube.com>, 2013
-# Pedro Araujo <pedroaraujo@colorlesscube.com>, 2013
 # Pedro Araujo <pedroaraujo@colorlesscube.com>, 2013
 msgid ""
 msgstr ""

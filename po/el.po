@@ -1,19 +1,11 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011
-# differentreality <differentreality@gmail.com>, 2012
 # differentreality <differentreality@gmail.com>, 2012
 # Kostas Koudaras <warlordfff@gmail.com>, 2012
 # Stefanos Sofroniou <inactive+_stefanos_@transifex.com>, 2010
-# Stefanos Sofroniou <inactive+_stefanos_@transifex.com>, 2010
-# tampakrap <tampakrap@gmail.com>, 2012
-# tampakrap <tampakrap@gmail.com>, 2012
 # tampakrap <tampakrap@gmail.com>, 2012
 # Theofilos Intzoglou <int.teo@gmail.com>, 2012
 # Kostas Koudaras <warlordfff@gmail.com>, 2012
-# Kostas Koudaras <warlordfff@gmail.com>, 2012
-# Kostas Koudaras <warlordfff@gmail.com>, 2012
-# Γιάννης Ανθυμίδης, 2013
 # Γιάννης Ανθυμίδης, 2013
 msgid ""
 msgstr ""

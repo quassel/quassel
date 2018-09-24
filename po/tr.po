@@ -1,10 +1,7 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbers.com>, 2011
 # Demiray Muhterem <mdemiray@msn.com>, 2015
 # H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2010
-# zeugma <sunder67@hotmail.com>, 2013
-# Volkan Gezer <volkangezer@gmail.com>, 2013
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2016
 # zeugma <sunder67@hotmail.com>, 2013
 msgid ""

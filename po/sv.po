@@ -1,7 +1,5 @@
 # 
 # Translators:
-# Daniel Albers <daniel@lbe.rs>, 2012
-# Daniel Albers <daniel@lbers.com>, 2011
 # Daniel Nylander <po@danielnylander.se>, 2010-2011
 msgid ""
 msgstr ""

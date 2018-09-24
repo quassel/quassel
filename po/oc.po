@@ -1,9 +1,6 @@
 # 
 # Translators:
 # Cédric Valmary <cvalmary@yahoo.fr>, 2010
-# Cédric Valmary <cvalmary@yahoo.fr>, 2010
-# Daniel Albers <daniel@lbers.com>, 2011-2012
-# Daniel Albers <daniel@lbers.com>, 2011-2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Quassel IRC\n"

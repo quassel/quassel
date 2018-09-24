@@ -1,10 +1,6 @@
 # 
 # Translators:
 # Condex <elgomaisa@gmail.com>, 2010,2012
-# Daniel Albers <daniel@lbers.com>, 2011
-# Condex <elgomaisa@gmail.com>, 2010
-# Condex <elgomaisa@gmail.com>, 2012
-# Miguel Anxo Bouzada <mbouzada@gmail.com>, 2011
 # Miguel Anxo Bouzada <mbouzada@gmail.com>, 2011
 msgid ""
 msgstr ""
