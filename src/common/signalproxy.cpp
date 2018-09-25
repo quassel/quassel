@@ -475,8 +475,11 @@ void SignalProxy::synchronize(SyncableObject *obj)
 
 void SignalProxy::detachObject(QObject *obj)
 {
-    detachSignals(obj);
-    detachSlots(obj);
+    // Don't try to connect SignalProxy from itself on shutdown
+    if (obj != this) {
+        detachSignals(obj);
+        detachSlots(obj);
+    }
 }
 
 
