@@ -36,6 +36,7 @@ SettingsPage::SettingsPage(const QString &category, const QString &title, QWidge
     _changed(false),
     _autoWidgetsChanged(false)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 
