@@ -93,7 +93,7 @@ private:
 
 private:
     SignalProxy *_proxy{nullptr};
-    bool _isOpen{false};
+    bool _isOpen{true};
 };
 
 Q_DECLARE_METATYPE(QPointer<InternalPeer>)

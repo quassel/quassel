@@ -67,7 +67,7 @@ quint16 InternalPeer::port() const
 
 bool InternalPeer::isOpen() const
 {
-    return true;
+    return _isOpen;
 }
 
 
@@ -85,9 +85,8 @@ bool InternalPeer::isLocal() const
 
 void InternalPeer::close(const QString &reason)
 {
-    // FIXME
-    Q_UNUSED(reason)
-    qWarning() << "closing not implemented!";
+    Q_UNUSED(reason);
+    _isOpen = false;
 }
 
 
@@ -116,6 +115,7 @@ void InternalPeer::setSignalProxy(::SignalProxy *proxy)
 
     if (proxy && !_proxy) {
         _proxy = proxy;
+        _isOpen = true;
         return;
     }
 
