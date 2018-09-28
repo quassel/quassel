@@ -67,22 +67,10 @@ public:
 // ==============================
 //  Core
 // ==============================
-Core *Core::_instance{nullptr};
-
-Core *Core::instance()
-{
-    return _instance;
-}
-
 
 Core::Core()
+    : Singleton<Core>{this}
 {
-    if (_instance) {
-        qWarning() << "Recreating core instance!";
-        delete _instance;
-    }
-    _instance = this;
-
     // Parent all QObject-derived attributes, so when the Core instance gets moved into another
     // thread, they get moved with it
     _server.setParent(this);
@@ -97,7 +85,6 @@ Core::~Core()
     qDeleteAll(_connectingClients);
     qDeleteAll(_sessions);
     syncStorage();
-    _instance = nullptr;
 }
 
 
