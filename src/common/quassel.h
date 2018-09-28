@@ -32,12 +32,13 @@
 #include <QStringList>
 
 #include "abstractcliparser.h"
+#include "singleton.h"
 
 class QFile;
 
 class Logger;
 
-class Quassel : public QObject
+class Quassel : public QObject, public Singleton<Quassel>
 {
     // TODO Qt5: Use Q_GADGET
     Q_OBJECT
@@ -146,7 +147,7 @@ public:
 
     class Features;
 
-    static Quassel *instance();
+    Quassel();
 
     /**
      * Provides access to the Logger instance.
@@ -206,7 +207,6 @@ signals:
 
 protected:
     static bool init();
-    static void destroy();
 
     static void setRunMode(Quassel::RunMode runMode);
 
@@ -219,7 +219,6 @@ protected:
     friend class MonolithicApplication;
 
 private:
-    Quassel();
     void setupEnvironment();
     void registerMetaTypes();
 

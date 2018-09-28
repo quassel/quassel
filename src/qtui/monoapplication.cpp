@@ -59,7 +59,6 @@ MonolithicApplication::~MonolithicApplication()
     Client::destroy();
     _coreThread.quit();
     _coreThread.wait();
-    Quassel::destroy();
 }
 
 

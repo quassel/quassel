@@ -36,7 +36,6 @@ CoreApplication::CoreApplication(int &argc, char **argv)
 CoreApplication::~CoreApplication()
 {
     _core.reset();
-    Quassel::destroy();
 }
 
 

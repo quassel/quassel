@@ -54,15 +54,9 @@
 
 #include "../../version.h"
 
-Quassel *Quassel::instance()
-{
-    static Quassel instance;
-    return &instance;
-}
-
-
 Quassel::Quassel()
-    : _logger{new Logger{this}}
+    : Singleton<Quassel>{this}
+    , _logger{new Logger{this}}
 {
 }
 
@@ -126,11 +120,6 @@ bool Quassel::init()
 
     // Don't keep a debug log on the core
     return instance()->logger()->setup(runMode() != RunMode::CoreOnly);
-}
-
-
-void Quassel::destroy()
-{
 }
 
 
