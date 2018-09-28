@@ -198,9 +198,25 @@ public:
 
     using QuitHandler = std::function<void()>;
 
+    /**
+     * Registers a handler that is called when the application is supposed to quit.
+     *
+     * @note If multiple handlers are registered, they are processed in order of registration.
+     * @note If any handler is registered, quit() will not call QCoreApplication::quit(). It relies
+     *       on one of the handlers doing so, instead.
+     * @param quitHandler Handler to register
+     */
     static void registerQuitHandler(QuitHandler quitHandler);
 
     const QString &coreDumpFileName();
+
+public slots:
+    /**
+     * Requests to quit the application.
+     *
+     * Calls any registered quit handlers. If no handlers are registered, calls QCoreApplication::quit().
+     */
+    void quit();
 
 signals:
     void messageLogged(const QDateTime &timeStamp, const QString &msg);
@@ -232,13 +248,6 @@ private:
      */
     bool reloadConfig();
 
-    /**
-     * Requests to quit the application.
-     *
-     * Calls any registered quit handlers. If no handlers are registered, calls QCoreApplication::quit().
-     */
-    void quit();
-
     void logBacktrace(const QString &filename);
 
     static void handleSignal(int signal);
@@ -248,6 +257,7 @@ private:
     RunMode _runMode;
     bool _initialized{false};
     bool _handleCrashes{true};
+    bool _quitting{false};
 
     QString _coreDumpFileName;
     QString _configDirPath;

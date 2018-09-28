@@ -136,12 +136,17 @@ void Quassel::registerQuitHandler(QuitHandler handler)
 
 void Quassel::quit()
 {
-    if (_quitHandlers.empty()) {
-        QCoreApplication::quit();
-    }
-    else {
-        for (auto &&handler : _quitHandlers) {
-            handler();
+    // Protect against multiple invocations (e.g. triggered by MainWin::closeEvent())
+    if (!_quitting) {
+        _quitting = true;
+        if (_quitHandlers.empty()) {
+            QCoreApplication::quit();
+        }
+        else {
+            // Note: We expect one of the registered handlers to call QCoreApplication::quit()
+            for (auto &&handler : _quitHandlers) {
+                handler();
+            }
         }
     }
 }
