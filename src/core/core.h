@@ -44,6 +44,7 @@
 #include "message.h"
 #include "oidentdconfiggenerator.h"
 #include "sessionthread.h"
+#include "singleton.h"
 #include "storage.h"
 #include "types.h"
 
@@ -58,13 +59,11 @@ struct NetworkInfo;
 class AbstractSqlMigrationReader;
 class AbstractSqlMigrationWriter;
 
-class Core : public QObject
+class Core : public QObject, public Singleton<Core>
 {
     Q_OBJECT
 
 public:
-    static Core *instance();
-
     Core();
     ~Core() override;
 
