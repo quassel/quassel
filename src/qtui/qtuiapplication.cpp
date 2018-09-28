@@ -125,7 +125,6 @@ void QtUiApplication::init()
 QtUiApplication::~QtUiApplication()
 {
     Client::destroy();
-    Quassel::destroy();
 }
 
 
