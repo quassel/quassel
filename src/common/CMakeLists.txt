@@ -40,6 +40,7 @@ set(SOURCES
     remotepeer.cpp
     settings.cpp
     signalproxy.cpp
+    singleton.h
     syncableobject.cpp
     transfer.cpp
     transfermanager.cpp
