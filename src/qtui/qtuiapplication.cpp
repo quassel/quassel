@@ -29,7 +29,6 @@
 #endif
 
 #include "chatviewsettings.h"
-#include "client.h"
 #include "cliparser.h"
 #include "mainwin.h"
 #include "qtui.h"
@@ -110,28 +109,32 @@ void QtUiApplication::init()
         throw ExitException{EXIT_FAILURE, tr("Could not load or upgrade client settings!")};
     }
 
-    Client::init(QtUi::instance());
+    _client.reset(new Client(std::unique_ptr<QtUi>(new QtUi())));  // TODO C++14: std::make_unique
 
     // Init UI only after the event loop has started
     // TODO Qt5: Make this a lambda
     QTimer::singleShot(0, this, SLOT(initUi()));
-
-    Quassel::registerQuitHandler([]() {
-        QtUi::mainWindow()->quit();
-    });
-}
-
-
-QtUiApplication::~QtUiApplication()
-{
-    Client::destroy();
 }
 
 
 void QtUiApplication::initUi()
 {
     QtUi::instance()->init();
+
+    // Needs to happen after UI init, so the MainWin quit handler is registered first
+    Quassel::registerQuitHandler(quitHandler());
+
     resumeSessionIfPossible();
+}
+
+
+Quassel::QuitHandler QtUiApplication::quitHandler()
+{
+    // Wait until the Client instance is destroyed before quitting the event loop
+    return [this]() {
+        connect(_client.get(), SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
+        _client.release()->deleteLater();
+    };
 }
 
 

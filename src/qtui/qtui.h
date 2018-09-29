@@ -49,7 +49,8 @@ class QtUi : public GraphicalUi
     Q_OBJECT
 
 public:
-    ~QtUi();
+    QtUi();
+    ~QtUi() override;
 
     MessageModel *createMessageModel(QObject *parent) override;
     AbstractMessageProcessor *createMessageProcessor(QObject *parent) override;
@@ -122,17 +123,16 @@ private slots:
     void useSystemTrayChanged(const QVariant &);
 
 private:
-    QtUi();
-
     /**
      * Sets up icon theme handling.
      */
     void setupIconTheme();
 
 private:
-    static MainWin *_mainWin;
     static QList<AbstractNotificationBackend *> _notificationBackends;
     static QList<AbstractNotificationBackend::Notification> _notifications;
+
+    std::unique_ptr<MainWin> _mainWin;
 
     QString _systemIconTheme;
 
@@ -144,4 +144,4 @@ private:
 };
 
 QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle *>(uiStyle()); }
-MainWin *QtUi::mainWindow() { return _mainWin; }
+MainWin *QtUi::mainWindow() { return instance()->_mainWin.get(); }

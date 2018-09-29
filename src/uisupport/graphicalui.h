@@ -22,6 +22,7 @@
 #define GRAPHICALUI_H_
 
 #include "abstractui.h"
+#include "singleton.h"
 
 class ActionCollection;
 class ContextMenuActionProvider;
@@ -35,7 +36,7 @@ class UiStyle;
 #include <Carbon/Carbon.h>
 #endif
 
-class GraphicalUi : public AbstractUi
+class GraphicalUi : public AbstractUi, protected Singleton<GraphicalUi>
 {
     Q_OBJECT
 
@@ -109,8 +110,6 @@ protected slots:
     virtual void disconnectedFromCore();
 
 private:
-    static GraphicalUi *instance();
-
     static QWidget *_mainWidget;
     static QHash<QString, ActionCollection *> _actionCollections;
     static ContextMenuActionProvider *_contextMenuActionProvider;

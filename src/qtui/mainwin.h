@@ -68,7 +68,6 @@ class MainWin
 
 public:
     MainWin(QWidget *parent = 0);
-    virtual ~MainWin();
 
     void init();
 
@@ -101,9 +100,6 @@ public slots:
     void showMigrationWarning(bool show);
 
     void onExitRequested(const QString &reason);
-
-    //! Quit application
-    void quit();
 
 protected:
     void closeEvent(QCloseEvent *event);

@@ -55,47 +55,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-QPointer<Client> Client::instanceptr = 0;
-
-/*** Initialization/destruction ***/
-
-bool Client::instanceExists()
-{
-    return instanceptr;
-}
-
-
-Client *Client::instance()
-{
-    if (!instanceptr)
-        instanceptr = new Client();
-    return instanceptr;
-}
-
-
-void Client::destroy()
-{
-    if (instanceptr) {
-        delete instanceptr->mainUi();
-        instanceptr->deleteLater();
-        instanceptr = 0;
-    }
-}
-
-
-void Client::init(AbstractUi *ui)
-{
-    instance()->_mainUi = ui;
-    instance()->init();
-}
-
-
-Client::Client(QObject *parent)
-    : QObject(parent),
+Client::Client(std::unique_ptr<AbstractUi> ui, QObject *parent)
+    : QObject(parent), Singleton<Client>(this),
     _signalProxy(new SignalProxy(SignalProxy::Client, this)),
-    _mainUi(0),
-    _networkModel(0),
-    _bufferModel(0),
+    _mainUi(std::move(ui)),
+    _networkModel(new NetworkModel(this)),
+    _bufferModel(new BufferModel(_networkModel)),
     _bufferSyncer(0),
     _aliasManager(0),
     _backlogManager(new ClientBacklogManager(this)),
@@ -104,39 +69,28 @@ Client::Client(QObject *parent)
     _coreInfo(new CoreInfo(this)),
     _dccConfig(0),
     _ircListHelper(new ClientIrcListHelper(this)),
-    _inputHandler(0),
+    _inputHandler(new ClientUserInputHandler(this)),
     _networkConfig(0),
     _ignoreListManager(0),
     _highlightRuleManager(0),
     _transferManager(0),
     _transferModel(new TransferModel(this)),
-    _messageModel(0),
-    _messageProcessor(0),
+    _messageModel(_mainUi->createMessageModel(this)),
+    _messageProcessor(_mainUi->createMessageProcessor(this)),
     _coreAccountModel(new CoreAccountModel(this)),
     _coreConnection(new CoreConnection(this)),
     _connected(false)
 {
-    _signalProxy->synchronize(_ircListHelper);
-}
+    //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
+    connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
+    connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
+    connect(this, SIGNAL(disconnected()), mainUi(), SLOT(disconnectedFromCore()));
 
+    connect(this, SIGNAL(networkRemoved(NetworkId)), _networkModel, SLOT(networkRemoved(NetworkId)));
+    connect(this, SIGNAL(networkRemoved(NetworkId)), _messageProcessor, SLOT(networkRemoved(NetworkId)));
 
-Client::~Client()
-{
-    disconnectFromCore();
-}
-
-
-void Client::init()
-{
-    _networkModel = new NetworkModel(this);
-
-    connect(this, SIGNAL(networkRemoved(NetworkId)),
-        _networkModel, SLOT(networkRemoved(NetworkId)));
-
-    _bufferModel = new BufferModel(_networkModel);
-    _messageModel = mainUi()->createMessageModel(this);
-    _messageProcessor = mainUi()->createMessageProcessor(this);
-    _inputHandler = new ClientUserInputHandler(this);
+    connect(backlogManager(), SIGNAL(messagesReceived(BufferId, int)), _messageModel, SLOT(messagesReceived(BufferId, int)));
+    connect(coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), SLOT(connectionStateChanged(CoreConnection::ConnectionState)));
 
     SignalProxy *p = signalProxy();
 
@@ -163,34 +117,24 @@ void Client::init()
     p->attachSignal(this, SIGNAL(requestKickClient(int)), SIGNAL(kickClient(int)));
     p->attachSlot(SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
 
-    //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
-    connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
-    connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
-    connect(this, SIGNAL(disconnected()), mainUi(), SLOT(disconnectedFromCore()));
-
-    // Listen to network removed events
-    connect(this, SIGNAL(networkRemoved(NetworkId)),
-        _messageProcessor, SLOT(networkRemoved(NetworkId)));
-
-    // attach backlog manager
     p->synchronize(backlogManager());
-    connect(backlogManager(), SIGNAL(messagesReceived(BufferId, int)), _messageModel, SLOT(messagesReceived(BufferId, int)));
+    p->synchronize(coreInfo());
+    p->synchronize(_ircListHelper);
 
     coreAccountModel()->load();
-
-    // Attach CoreInfo
-    p->synchronize(coreInfo());
-
-    connect(coreConnection(), SIGNAL(stateChanged(CoreConnection::ConnectionState)), SLOT(connectionStateChanged(CoreConnection::ConnectionState)));
     coreConnection()->init();
 }
 
 
-/*** public static methods ***/
+Client::~Client()
+{
+    disconnectFromCore();
+}
+
 
 AbstractUi *Client::mainUi()
 {
-    return instance()->_mainUi;
+    return instance()->_mainUi.get();
 }
 
 

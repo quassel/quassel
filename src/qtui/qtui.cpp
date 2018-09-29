@@ -40,23 +40,13 @@
 #include "types.h"
 #include "util.h"
 
-MainWin *QtUi::_mainWin = nullptr;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
 QList<AbstractNotificationBackend::Notification> QtUi::_notifications;
-
-namespace {
-
-QtUi *_instance{nullptr};
-
-}
 
 
 QtUi *QtUi::instance()
 {
-    if (!_instance) {
-        _instance = new QtUi();
-    }
-    return _instance;
+    return static_cast<QtUi*>(GraphicalUi::instance());
 }
 
 
@@ -64,44 +54,40 @@ QtUi::QtUi()
     : GraphicalUi()
     , _systemIconTheme{QIcon::themeName()}
 {
+    QtUiSettings uiSettings;
+    Quassel::loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
+
     if (Quassel::isOptionSet("icontheme")) {
         _systemIconTheme = Quassel::optionValue("icontheme");
         QIcon::setThemeName(_systemIconTheme);
     }
-
-    QtUiSettings uiSettings;
-    Quassel::loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
-
     setupIconTheme();
-
     QApplication::setWindowIcon(icon::get("quassel"));
 
-    setContextMenuActionProvider(new ContextMenuActionProvider(this));
-    setToolBarActionProvider(new ToolBarActionProvider(this));
-
     setUiStyle(new QtUiStyle(this));
-    _mainWin = new MainWin();
-
-    setMainWidget(_mainWin);
-
-    connect(_mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
-    connect(_mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
-    connect(Client::instance(), SIGNAL(bufferMarkedAsRead(BufferId)), SLOT(closeNotifications(BufferId)));
 }
 
 
 QtUi::~QtUi()
 {
     unregisterAllNotificationBackends();
-    delete _mainWin;
-    _mainWin = nullptr;
-    _instance = nullptr;
 }
 
 
 void QtUi::init()
 {
+    setContextMenuActionProvider(new ContextMenuActionProvider(this));
+    setToolBarActionProvider(new ToolBarActionProvider(this));
+
+    _mainWin.reset(new MainWin());  // TODO C++14: std::make_unique
+    setMainWidget(_mainWin.get());
+
+    connect(_mainWin.get(), SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
+    connect(_mainWin.get(), SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
+    connect(Client::instance(), SIGNAL(bufferMarkedAsRead(BufferId)), SLOT(closeNotifications(BufferId)));
+
     _mainWin->init();
+
     QtUiSettings uiSettings;
     uiSettings.initAndNotify("UseSystemTrayIcon", this, SLOT(useSystemTrayChanged(QVariant)), true);
 
