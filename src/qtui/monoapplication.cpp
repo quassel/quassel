@@ -65,6 +65,18 @@ Quassel::QuitHandler MonolithicApplication::quitHandler()
 void MonolithicApplication::onClientDestroyed()
 {
     if (_core) {
+        connect(_core, SIGNAL(shutdownComplete()), this, SLOT(onCoreShutdown()));
+        _core->shutdown();
+    }
+    else {
+        QCoreApplication::quit();
+    }
+}
+
+
+void MonolithicApplication::onCoreShutdown()
+{
+    if (_core) {
         connect(_core, SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
         _coreThread.quit();
         _coreThread.wait();

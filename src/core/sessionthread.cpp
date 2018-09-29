@@ -18,6 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QPointer>
+#include <QTimer>
+
 #include "core.h"
 #include "coresession.h"
 #include "internalpeer.h"
@@ -25,107 +28,128 @@
 #include "sessionthread.h"
 #include "signalproxy.h"
 
-SessionThread::SessionThread(UserId uid, bool restoreState, bool strictIdentEnabled, QObject *parent)
-    : QThread(parent),
-    _session(0),
-    _user(uid),
-    _sessionInitialized(false),
-    _restoreState(restoreState),
-    _strictIdentEnabled(strictIdentEnabled)
+namespace {
+
+class Worker : public QObject
 {
-    connect(this, SIGNAL(initialized()), this, SLOT(setSessionInitialized()));
+    Q_OBJECT
+
+public:
+    Worker(UserId userId, bool restoreState, bool strictIdentEnabled)
+        : _userId{userId}
+        , _restoreState{restoreState}
+        , _strictIdentEnabled{strictIdentEnabled}
+    {
+    }
+
+public slots:
+    void initialize()
+    {
+        _session = new CoreSession{_userId, _restoreState, _strictIdentEnabled, this};
+        connect(_session, SIGNAL(destroyed()), QThread::currentThread(), SLOT(quit()));
+        connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));
+        emit initialized();
+    }
+
+    void shutdown()
+    {
+        if (_session) {
+            _session->shutdown();
+        }
+    }
+
+    void addClient(Peer *peer)
+    {
+        if (!_session) {
+            qWarning() << "Session not initialized!";
+            return;
+        }
+
+        auto remotePeer = qobject_cast<RemotePeer*>(peer);
+        if (remotePeer) {
+            _session->addClient(remotePeer);
+            return;
+        }
+        auto internalPeer = qobject_cast<InternalPeer*>(peer);
+        if (internalPeer) {
+            _session->addClient(internalPeer);
+            return;
+        }
+
+        qWarning() << "SessionThread::addClient() received invalid peer!" << peer;
+    }
+
+signals:
+    void initialized();
+
+private:
+    UserId _userId;
+    bool _restoreState;
+    bool _strictIdentEnabled;  ///< Whether or not strict ident mode is enabled, locking users' idents to Quassel username
+    QPointer<CoreSession> _session;
+};
+
+}  // anon
+
+SessionThread::SessionThread(UserId uid, bool restoreState, bool strictIdentEnabled, QObject *parent)
+    : QObject(parent)
+{
+    auto worker = new Worker(uid, restoreState, strictIdentEnabled);
+    worker->moveToThread(&_sessionThread);
+    connect(&_sessionThread, SIGNAL(started()), worker, SLOT(initialize()));
+    connect(&_sessionThread, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    connect(worker, SIGNAL(initialized()), this, SLOT(onSessionInitialized()));
+    connect(worker, SIGNAL(destroyed()), this, SLOT(onSessionDestroyed()));
+
+    connect(this, SIGNAL(addClientToWorker(Peer*)), worker, SLOT(addClient(Peer*)));
+    connect(this, SIGNAL(shutdownSession()), worker, SLOT(shutdown()));
+
+    // Defer thread start through the event loop, so the SessionThread instance is fully constructed before
+    QTimer::singleShot(0, &_sessionThread, SLOT(start()));
 }
 
 
 SessionThread::~SessionThread()
 {
     // shut down thread gracefully
-    quit();
-    wait();
+    _sessionThread.quit();
+    _sessionThread.wait(30000);
 }
 
 
-CoreSession *SessionThread::session()
+void SessionThread::shutdown()
 {
-    return _session;
+    emit shutdownSession();
 }
 
 
-UserId SessionThread::user()
-{
-    return _user;
-}
-
-
-bool SessionThread::isSessionInitialized()
-{
-    return _sessionInitialized;
-}
-
-
-void SessionThread::setSessionInitialized()
+void SessionThread::onSessionInitialized()
 {
     _sessionInitialized = true;
-    foreach(QObject *peer, clientQueue) {
-        addClientToSession(peer);
+    for (auto &&peer : _clientQueue) {
+        peer->setParent(nullptr);
+        peer->moveToThread(&_sessionThread);
+        emit addClientToWorker(peer);
     }
-    clientQueue.clear();
+    _clientQueue.clear();
 }
 
 
-// this and the following related methods are executed in the Core thread!
-void SessionThread::addClient(QObject *peer)
+void SessionThread::onSessionDestroyed()
 {
-    if (isSessionInitialized()) {
-        addClientToSession(peer);
+    emit shutdownComplete(this);
+}
+
+void SessionThread::addClient(Peer *peer)
+{
+    if (_sessionInitialized) {
+        peer->setParent(nullptr);
+        peer->moveToThread(&_sessionThread);
+        emit addClientToWorker(peer);
     }
     else {
-        clientQueue.append(peer);
+        _clientQueue.push_back(peer);
     }
 }
 
-
-void SessionThread::addClientToSession(QObject *peer)
-{
-    RemotePeer *remote = qobject_cast<RemotePeer *>(peer);
-    if (remote) {
-        addRemoteClientToSession(remote);
-        return;
-    }
-
-    InternalPeer *internal = qobject_cast<InternalPeer *>(peer);
-    if (internal) {
-        addInternalClientToSession(internal);
-        return;
-    }
-
-    qWarning() << "SessionThread::addClient() received invalid peer!" << peer;
-}
-
-
-void SessionThread::addRemoteClientToSession(RemotePeer *remotePeer)
-{
-    remotePeer->setParent(0);
-    remotePeer->moveToThread(session()->thread());
-    emit addRemoteClient(remotePeer);
-}
-
-
-void SessionThread::addInternalClientToSession(InternalPeer *internalPeer)
-{
-    internalPeer->setParent(0);
-    internalPeer->moveToThread(session()->thread());
-    emit addInternalClient(internalPeer);
-}
-
-
-void SessionThread::run()
-{
-    _session = new CoreSession(user(), _restoreState, _strictIdentEnabled);
-    connect(this, SIGNAL(addRemoteClient(RemotePeer*)), _session, SLOT(addClient(RemotePeer*)));
-    connect(this, SIGNAL(addInternalClient(InternalPeer*)), _session, SLOT(addClient(InternalPeer*)));
-    connect(_session, SIGNAL(sessionState(Protocol::SessionState)), Core::instance(), SIGNAL(sessionState(Protocol::SessionState)));
-    emit initialized();
-    exec();
-    delete _session;
-}
+#include "sessionthread.moc"

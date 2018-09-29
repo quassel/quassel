@@ -63,7 +63,6 @@ class CoreSession : public QObject
 
 public:
     CoreSession(UserId, bool restoreState, bool strictIdentEnabled, QObject *parent = 0);
-    ~CoreSession();
 
     QList<BufferInfo> buffers() const;
     inline UserId user() const { return _user; }
@@ -111,6 +110,11 @@ public:
 public slots:
     void addClient(RemotePeer *peer);
     void addClient(InternalPeer *peer);
+
+    /**
+     * Shuts down the session and deletes itself afterwards.
+     */
+    void shutdown();
 
     void msgFromClient(BufferInfo, QString message);
 

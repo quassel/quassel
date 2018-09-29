@@ -69,6 +69,12 @@ public:
 
     void init();
 
+    /**
+     * Shuts down active core sessions, saves state and emits the shutdownComplete() signal afterwards.
+     */
+    void shutdown();
+
+
     /*** Storage access ***/
     // These methods are threadsafe.
 
@@ -704,6 +710,9 @@ signals:
     //! Emitted when a fatal error was encountered during async initialization
     void exitRequested(int exitCode, const QString &reason);
 
+    //! Emitted once core shutdown is complete
+    void shutdownComplete();
+
 public slots:
     void initAsync();
 
@@ -746,6 +755,8 @@ private slots:
     void setupClientSession(RemotePeer *, UserId);
 
     bool changeUserPass(const QString &username);
+
+    void onSessionShutdown(SessionThread *session);
 
 private:
     SessionThread *sessionForUser(UserId userId, bool restoreState = false);

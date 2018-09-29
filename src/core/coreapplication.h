@@ -24,6 +24,7 @@
 
 #include <QCoreApplication>
 
+#include "core.h"
 #include "quassel.h"
 
 class Core;
@@ -31,11 +32,14 @@ class Core;
 class CoreApplication : public QCoreApplication
 {
     Q_OBJECT
+
 public:
     CoreApplication(int &argc, char **argv);
-    ~CoreApplication() override;
 
     void init();
+
+private slots:
+    void onShutdownComplete();
 
 private:
     std::unique_ptr<Core> _core;
