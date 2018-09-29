@@ -18,9 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "core.h"
 #include "coreapplication.h"
-
 
 CoreApplication::CoreApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv)
@@ -30,12 +28,10 @@ CoreApplication::CoreApplication(int &argc, char **argv)
 #endif /* Q_OS_MAC */
 
     Quassel::setRunMode(Quassel::CoreOnly);
-}
-
-
-CoreApplication::~CoreApplication()
-{
-    _core.reset();
+    Quassel::registerQuitHandler([this]() {
+        connect(_core.get(), SIGNAL(shutdownComplete()), this, SLOT(onShutdownComplete()));
+        _core->shutdown();
+    });
 }
 
 
@@ -47,4 +43,11 @@ void CoreApplication::init()
 
     _core.reset(new Core{}); // FIXME C++14: std::make_unique
     _core->init();
+}
+
+
+void CoreApplication::onShutdownComplete()
+{
+    connect(_core.get(), SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
+    _core.release()->deleteLater();
 }

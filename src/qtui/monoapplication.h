@@ -46,6 +46,7 @@ signals:
 private slots:
     void onConnectionRequest(QPointer<InternalPeer> peer);
     void onClientDestroyed();
+    void onCoreShutdown();
 
 private:
     void startInternalCore();

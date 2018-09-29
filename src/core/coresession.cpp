@@ -154,7 +154,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
 }
 
 
-CoreSession::~CoreSession()
+void CoreSession::shutdown()
 {
     saveSessionState();
 
@@ -200,6 +200,11 @@ CoreSession::~CoreSession()
         // Delete the network now that it's closed
         delete net;
     }
+
+    _networks.clear();
+
+    // Suicide
+    deleteLater();
 }
 
 

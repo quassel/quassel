@@ -18,20 +18,20 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef SESSIONTHREAD_H
-#define SESSIONTHREAD_H
+#pragma once
 
-#include <QMutex>
+#include <memory>
+
 #include <QThread>
 
 #include "types.h"
 
 class CoreSession;
+class Peer;
 class InternalPeer;
 class RemotePeer;
-class QIODevice;
 
-class SessionThread : public QThread
+class SessionThread : public QObject
 {
     Q_OBJECT
 
@@ -39,39 +39,24 @@ public:
     SessionThread(UserId user, bool restoreState, bool strictIdentEnabled, QObject *parent = 0);
     ~SessionThread();
 
-    void run();
-
-    CoreSession *session();
-    UserId user();
-
 public slots:
-    void addClient(QObject *peer);
+    void addClient(Peer *peer);
+    void shutdown();
 
 private slots:
-    void setSessionInitialized();
+    void onSessionInitialized();
+    void onSessionDestroyed();
 
 signals:
     void initialized();
-    void shutdown();
+    void shutdownSession();
+    void shutdownComplete(SessionThread *);
 
-    void addRemoteClient(RemotePeer *peer);
-    void addInternalClient(InternalPeer *peer);
+    void addClientToWorker(Peer *peer);
 
 private:
-    CoreSession *_session;
-    UserId _user;
-    QList<QObject *> clientQueue;
-    bool _sessionInitialized;
-    bool _restoreState;
+    QThread _sessionThread;
+    bool _sessionInitialized{false};
 
-    /// Whether or not strict ident mode is enabled, locking users' idents to Quassel username
-    bool _strictIdentEnabled;
-
-    bool isSessionInitialized();
-    void addClientToSession(QObject *peer);
-    void addRemoteClientToSession(RemotePeer *remotePeer);
-    void addInternalClientToSession(InternalPeer *internalPeer);
+    std::vector<Peer *> _clientQueue;
 };
-
-
-#endif
