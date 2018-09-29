@@ -18,9 +18,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORESESSION_H
-#define CORESESSION_H
+#pragma once
 
+#include <QHash>
+#include <QSet>
 #include <QString>
 #include <QVariant>
 
@@ -213,6 +214,8 @@ private slots:
 
     void saveSessionState() const;
 
+    void onNetworkDisconnected(NetworkId networkId);
+
 private:
     void processMessages();
 
@@ -229,10 +232,10 @@ private:
 
     SignalProxy *_signalProxy;
     CoreAliasManager _aliasManager;
-    // QHash<NetworkId, NetworkConnection *> _connections;
-    QHash<NetworkId, CoreNetwork *> _networks;
-    //  QHash<NetworkId, CoreNetwork *> _networksToRemove;
+
     QHash<IdentityId, CoreIdentity *> _identities;
+    QHash<NetworkId, CoreNetwork *> _networks;
+    QSet<NetworkId> _networksPendingDisconnect;
 
     CoreBufferSyncer *_bufferSyncer;
     CoreBacklogManager *_backlogManager;
@@ -290,5 +293,3 @@ struct RawMessage {
     RawMessage(NetworkId networkId, Message::Type type, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender, Message::Flags flags)
         : networkId(networkId), type(type), bufferType(bufferType), target(target), text(text), sender(sender), flags(flags) {}
 };
-
-#endif
