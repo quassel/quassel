@@ -122,23 +122,12 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
 
 CoreNetwork::~CoreNetwork()
 {
-    // Request a proper disconnect, but don't count as user-requested disconnect
-    if (socketConnected()) {
-        // Only try if the socket's fully connected (not initializing or disconnecting).
-        // Force an immediate disconnect, jumping the command queue.  Ensures the proper QUIT is
-        // shown even if other messages are queued.
-        disconnectFromIrc(false, QString(), false, true);
-        // Process the putCmd events that trigger the quit.  Without this, shutting down the core
-        // results in abrubtly closing the socket rather than sending the QUIT as expected.
-        QCoreApplication::processEvents();
-        // Wait briefly for each network to disconnect.  Sometimes it takes a little while to send.
-        if (!forceDisconnect()) {
-            qWarning() << "Timed out quitting network" << networkName() <<
-                          "(user ID " << userId() << ")";
-        }
+    // Ensure we don't get any more signals from the socket while shutting down
+    disconnect(&socket, nullptr, this, nullptr);
+    if (!forceDisconnect()) {
+        qWarning() << QString{"Could not disconnect from network %1 (network ID: %2, user ID: %3)"}
+                      .arg(networkName()).arg(networkId().toInt()).arg(userId().toInt());
     }
-    disconnect(&socket, 0, this, 0); // this keeps the socket from triggering events during clean up
-    delete _userInputHandler;
 }
 
 
@@ -150,8 +139,10 @@ bool CoreNetwork::forceDisconnect(int msecs)
     }
     // Request a socket-level disconnect if not already happened
     socket.disconnectFromHost();
-    // Return the result of waiting for disconnect; true if successful, otherwise false
-    return socket.waitForDisconnected(msecs);
+    if (socket.state() != QAbstractSocket::UnconnectedState) {
+        return socket.waitForDisconnected(msecs);
+    }
+    return true;
 }
 
 
@@ -197,6 +188,10 @@ QByteArray CoreNetwork::userEncode(const QString &userNick, const QString &strin
 
 void CoreNetwork::connectToIrc(bool reconnecting)
 {
+    if (_shuttingDown) {
+        return;
+    }
+
     if (Core::instance()->identServer()) {
         _socketId = Core::instance()->identServer()->addWaitingSocket();
     }
@@ -287,8 +282,7 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 }
 
 
-void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool withReconnect,
-                                    bool forceImmediate)
+void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool withReconnect)
 {
     // Disconnecting from the network, should expect a socket close or error
     _disconnectExpected = true;
@@ -316,17 +310,35 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
     displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason));
     if (socket.state() == QAbstractSocket::UnconnectedState) {
         socketDisconnected();
-    } else {
+    }
+    else {
         if (socket.state() == QAbstractSocket::ConnectedState) {
-            userInputHandler()->issueQuit(_quitReason, forceImmediate);
-        } else {
+            // If shutting down, prioritize the QUIT command
+            userInputHandler()->issueQuit(_quitReason, _shuttingDown);
+        }
+        else {
             socket.close();
         }
-        if (requested || withReconnect) {
-            // the irc server has 10 seconds to close the socket
+        if (socket.state() != QAbstractSocket::UnconnectedState) {
+            // Wait for up to 10 seconds for the socket to close cleanly, then it will be forcefully aborted
             _socketCloseTimer.start(10000);
         }
     }
+}
+
+
+void CoreNetwork::socketCloseTimeout()
+{
+    qWarning() << QString{"Timed out quitting network %1 (network ID: %2, user ID: %3)"}
+                  .arg(networkName()).arg(networkId().toInt()).arg(userId().toInt());
+    socket.abort();
+}
+
+
+void CoreNetwork::shutdown()
+{
+    _shuttingDown = true;
+    disconnectFromIrc(false, {}, false);
 }
 
 
@@ -1506,6 +1518,9 @@ Network::Server CoreNetwork::usedServer() const
 
 void CoreNetwork::requestConnect() const
 {
+    if (_shuttingDown) {
+        return;
+    }
     if (connectionState() != Disconnected) {
         qWarning() << "Requesting connect while already being connected!";
         return;
@@ -1516,6 +1531,9 @@ void CoreNetwork::requestConnect() const
 
 void CoreNetwork::requestDisconnect() const
 {
+    if (_shuttingDown) {
+        return;
+    }
     if (connectionState() == Disconnected) {
         qWarning() << "Requesting disconnect while not being connected!";
         return;
