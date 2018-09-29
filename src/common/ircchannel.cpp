@@ -61,7 +61,7 @@ bool IrcChannel::isKnownUser(IrcUser *ircuser) const
     }
 
     if (!_userModes.contains(ircuser)) {
-        qWarning() << "Channel" << name() << "received data for unknown User" << ircuser->nick();
+        // This can happen e.g. when disconnecting from a network, so don't log a warning
         return false;
     }
 
