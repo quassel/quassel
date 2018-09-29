@@ -53,12 +53,25 @@ void MonolithicApplication::init()
 }
 
 
-MonolithicApplication::~MonolithicApplication()
+Quassel::QuitHandler MonolithicApplication::quitHandler()
 {
-    // Client needs to be destroyed first
-    Client::destroy();
-    _coreThread.quit();
-    _coreThread.wait();
+    return [this]() {
+        connect(_client.get(), SIGNAL(destroyed()), this, SLOT(onClientDestroyed()));
+        _client.release()->deleteLater();
+    };
+}
+
+
+void MonolithicApplication::onClientDestroyed()
+{
+    if (_core) {
+        connect(_core, SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
+        _coreThread.quit();
+        _coreThread.wait();
+    }
+    else {
+        QCoreApplication::quit();
+    }
 }
 
 

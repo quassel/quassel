@@ -305,21 +305,17 @@ void MainWin::init()
     // restore locked state of docks
     QtUi::actionCollection("General")->action("LockLayout")->setChecked(s.value("LockLayout", false).toBool());
 
+    Quassel::registerQuitHandler([this]() {
+        QtUiSettings s;
+        saveStateToSettings(s);
+        saveLayout();
+        // Close all open dialogs and the MainWin, so we can safely kill the Client instance afterwards
+        // Note: This does not quit the application, as quitOnLastWindowClosed is set to false.
+        //       We rely on another quit handler to be registered that actually quits the application.
+        qApp->closeAllWindows();
+    });
+
     QTimer::singleShot(0, this, SLOT(doAutoConnect()));
-}
-
-
-MainWin::~MainWin()
-{
-}
-
-
-void MainWin::quit()
-{
-    QtUiSettings s;
-    saveStateToSettings(s);
-    saveLayout();
-    QApplication::quit();
 }
 
 
@@ -416,7 +412,7 @@ void MainWin::setupActions()
     //
     // See https://doc.qt.io/qt-5/qkeysequence.html
     coll->addAction("Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll,
-            this, SLOT(quit()), Qt::CTRL + Qt::Key_Q));
+            Quassel::instance(), SLOT(quit()), Qt::CTRL + Qt::Key_Q));
 
     // View
     coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll,
@@ -1731,7 +1727,7 @@ void MainWin::closeEvent(QCloseEvent *event)
     else if(!_aboutToQuit) {
         _aboutToQuit = true;
         event->accept();
-        quit();
+        Quassel::instance()->quit();
     }
     else {
         event->ignore();

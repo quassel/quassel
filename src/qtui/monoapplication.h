@@ -34,15 +34,18 @@ class MonolithicApplication : public QtUiApplication
 
 public:
     MonolithicApplication(int &, char **);
-    ~MonolithicApplication() override;
 
     void init() override;
+
+protected:
+    Quassel::QuitHandler quitHandler() override;
 
 signals:
     void connectInternalPeer(QPointer<InternalPeer> peer);
 
 private slots:
     void onConnectionRequest(QPointer<InternalPeer> peer);
+    void onClientDestroyed();
 
 private:
     void startInternalCore();

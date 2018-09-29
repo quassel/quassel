@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <QList>
 #include <QPointer>
 
@@ -29,6 +31,7 @@
 #include "coreconnection.h"
 #include "highlightrulemanager.h"
 #include "quassel.h"
+#include "singleton.h"
 #include "types.h"
 
 class Message;
@@ -63,7 +66,7 @@ class TransferModel;
 
 struct NetworkInfo;
 
-class Client : public QObject
+class Client : public QObject, public Singleton<Client>
 {
     Q_OBJECT
 
@@ -73,10 +76,9 @@ public:
         RemoteCore
     };
 
-    static bool instanceExists();
-    static Client *instance();
-    static void destroy();
-    static void init(AbstractUi *);
+    Client(std::unique_ptr<AbstractUi>, QObject *parent = nullptr);
+    ~Client() override;
+
     static AbstractUi *mainUi();
 
     static QList<NetworkId> networkIds();
@@ -292,10 +294,6 @@ private slots:
     void sendBufferedUserInput();
 
 private:
-    Client(QObject *parent = 0);
-    virtual ~Client();
-    void init();
-
     void requestInitialBacklog();
 
     /**
@@ -311,10 +309,8 @@ private:
 
     static void addNetwork(Network *);
 
-    static QPointer<Client> instanceptr;
-
     SignalProxy *_signalProxy;
-    AbstractUi *_mainUi;
+    std::unique_ptr<AbstractUi> _mainUi;
     NetworkModel *_networkModel;
     BufferModel *_bufferModel;
     BufferSyncer *_bufferSyncer;

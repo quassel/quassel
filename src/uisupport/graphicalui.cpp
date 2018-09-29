@@ -43,23 +43,9 @@ ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
 UiStyle *GraphicalUi::_uiStyle = 0;
 bool GraphicalUi::_onAllDesktops = false;
 
-namespace {
 
-GraphicalUi *_instance{nullptr};
-
-}
-
-
-GraphicalUi *GraphicalUi::instance() {
-    return _instance;
-}
-
-
-GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent)
+GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent), Singleton<GraphicalUi>(this)
 {
-    Q_ASSERT(!_instance);
-    _instance = this;
-
 #ifdef Q_OS_WIN
     _dwTickCount = 0;
 #endif
