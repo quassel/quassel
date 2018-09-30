@@ -200,6 +200,7 @@ function(quassel_add_test _target)
     list(APPEND ARG_LIBRARIES
         Qt5::Test
         Quassel::Common
+        Quassel::Test::Global
         Quassel::Test::Main
     )
 
