@@ -43,4 +43,16 @@ bool InvocationSpy::wait(std::chrono::milliseconds timeout)
     return result;
 }
 
+// -----------------------------------------------------------------------------------------------------------------------------------------
+
+bool SignalSpy::wait(std::chrono::milliseconds timeout)
+{
+    bool result = InvocationSpy::wait(timeout);
+    for (auto&& connection : _connections) {
+        QObject::disconnect(connection);
+    }
+    _connections.clear();
+    return result;
+}
+
 }  // namespace test
