@@ -1,6 +1,7 @@
 quassel_add_module(Test::Global EXPORT NOINSTALL)
 
 target_sources(${TARGET} PRIVATE
+    printers.cpp
     testglobal.h
 )
 
