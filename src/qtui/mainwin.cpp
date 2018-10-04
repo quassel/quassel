@@ -819,13 +819,12 @@ void MainWin::changeActiveBufferView(int bufferViewId)
 void MainWin::showPasswordChangeDlg()
 {
     if(Client::isCoreFeatureEnabled(Quassel::Feature::PasswordChange)) {
-        PasswordChangeDlg dlg(this);
-        dlg.exec();
+        PasswordChangeDlg{}.exec();
     }
     else {
         QMessageBox box(QMessageBox::Warning, tr("Feature Not Supported"),
                         tr("<b>Your Quassel Core does not support this feature</b>"),
-                        QMessageBox::Ok, this);
+                        QMessageBox::Ok);
         box.setInformativeText(tr("You need a Quassel Core v0.12.0 or newer in order to be able to remotely change your password."));
         box.exec();
     }
@@ -861,7 +860,7 @@ void MainWin::onExitRequested(const QString &reason)
         QMessageBox box(QMessageBox::Critical,
                         tr("Fatal error"),
                         "<b>" + tr("Quassel encountered a fatal error and is terminated.") + "</b>",
-                        QMessageBox::Ok, this);
+                        QMessageBox::Ok);
         box.setInformativeText("<p>" + tr("Reason:<em>") + " " + reason + "</em>");
         box.exec();
     }
@@ -938,22 +937,19 @@ void MainWin::hideCurrentBuffer()
 
 void MainWin::showNotificationsDlg()
 {
-    SettingsPageDlg dlg(new NotificationsSettingsPage(this), this);
-    dlg.exec();
+    SettingsPageDlg{new NotificationsSettingsPage{}}.exec();
 }
 
 
 void MainWin::on_actionConfigureNetworks_triggered()
 {
-    SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
-    dlg.exec();
+    SettingsPageDlg{new NetworksSettingsPage{}}.exec();
 }
 
 
 void MainWin::on_actionConfigureViews_triggered()
 {
-    SettingsPageDlg dlg(new BufferViewSettingsPage(this), this);
-    dlg.exec();
+    SettingsPageDlg{new BufferViewSettingsPage{}}.exec();
 }
 
 
@@ -1389,7 +1385,7 @@ void MainWin::setDisconnectedState()
 void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, const QString &errorMessage)
 {
     Q_UNUSED(errorMessage)
-    CoreConnectAuthDlg dlg(account, this);
+    CoreConnectAuthDlg dlg(account);
     *valid = (dlg.exec() == QDialog::Accepted);
 }
 
@@ -1397,7 +1393,7 @@ void MainWin::userAuthenticationRequired(CoreAccount *account, bool *valid, cons
 void MainWin::handleNoSslInClient(bool *accepted)
 {
     QMessageBox box(QMessageBox::Warning, tr("Unencrypted Connection"), tr("<b>Your client does not support SSL encryption</b>"),
-        QMessageBox::Ignore|QMessageBox::Cancel, this);
+        QMessageBox::Ignore|QMessageBox::Cancel);
     box.setInformativeText(tr("Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."));
     box.setDefaultButton(QMessageBox::Ignore);
     *accepted = box.exec() == QMessageBox::Ignore;
@@ -1407,7 +1403,7 @@ void MainWin::handleNoSslInClient(bool *accepted)
 void MainWin::handleNoSslInCore(bool *accepted)
 {
     QMessageBox box(QMessageBox::Warning, tr("Unencrypted Connection"), tr("<b>Your core does not support SSL encryption</b>"),
-        QMessageBox::Ignore|QMessageBox::Cancel, this);
+        QMessageBox::Ignore|QMessageBox::Cancel);
     box.setInformativeText(tr("Sensitive data, like passwords, will be transmitted unencrypted to your Quassel core."));
     box.setDefaultButton(QMessageBox::Ignore);
     *accepted = box.exec() == QMessageBox::Ignore;
@@ -1426,7 +1422,7 @@ void MainWin::handleSslErrors(const QSslSocket *socket, bool *accepted, bool *pe
     QMessageBox box(QMessageBox::Warning,
         tr("Untrusted Security Certificate"),
         tr("<b>The SSL certificate provided by the core at %1 is untrusted for the following reasons:</b>").arg(socket->peerName()),
-        QMessageBox::Cancel, this);
+        QMessageBox::Cancel);
     box.setInformativeText(errorString);
     box.addButton(tr("Continue"), QMessageBox::AcceptRole);
     box.setDefaultButton(box.addButton(tr("Show Certificate"), QMessageBox::HelpRole));
@@ -1436,7 +1432,7 @@ void MainWin::handleSslErrors(const QSslSocket *socket, bool *accepted, bool *pe
         box.exec();
         role = box.buttonRole(box.clickedButton());
         if (role == QMessageBox::HelpRole) {
-            SslInfoDlg dlg(socket, this);
+            SslInfoDlg dlg(socket);
             dlg.exec();
         }
     }
@@ -1447,7 +1443,7 @@ void MainWin::handleSslErrors(const QSslSocket *socket, bool *accepted, bool *pe
         QMessageBox box2(QMessageBox::Warning,
             tr("Untrusted Security Certificate"),
             tr("Would you like to accept this certificate forever without being prompted?"),
-            0, this);
+            0);
         box2.setDefaultButton(box2.addButton(tr("Current Session Only"), QMessageBox::NoRole));
         box2.addButton(tr("Forever"), QMessageBox::YesRole);
         box2.exec();
@@ -1466,7 +1462,7 @@ void MainWin::handleCoreConnectionError(const QString &error)
 
 void MainWin::showCoreConnectionDlg()
 {
-    CoreConnectDlg dlg(this);
+    CoreConnectDlg dlg;
     if (dlg.exec() == QDialog::Accepted) {
         AccountId accId = dlg.selectedAccount();
         if (accId.isValid())
@@ -1494,7 +1490,7 @@ void MainWin::showChannelList(NetworkId netId, const QString &channelFilters, bo
             // on the client homescreen when no networks are connected.
             QMessageBox box(QMessageBox::Information, tr("No network selected"),
                             QString("<b>%1</b>").arg(tr("No network selected")),
-                            QMessageBox::Ok, this);
+                            QMessageBox::Ok);
             box.setInformativeText(tr("Select a network before trying to view the channel list."));
             box.exec();
             return;
@@ -1516,7 +1512,7 @@ void MainWin::showChannelList(NetworkId netId, const QString &channelFilters, bo
 
 void MainWin::showNetworkConfig(NetworkId netId)
 {
-    SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
+    SettingsPageDlg dlg{new NetworksSettingsPage{}};
     if (netId.isValid())
         qobject_cast<NetworksSettingsPage *>(dlg.currentPage())->bufferList_Open(netId);
     dlg.exec();
@@ -1525,7 +1521,7 @@ void MainWin::showNetworkConfig(NetworkId netId)
 
 void MainWin::showIgnoreList(QString newRule)
 {
-    SettingsPageDlg dlg(new IgnoreListSettingsPage(this), this);
+    SettingsPageDlg dlg{new IgnoreListSettingsPage{}};
     // prepare config dialog for new rule
     if (!newRule.isEmpty())
         qobject_cast<IgnoreListSettingsPage *>(dlg.currentPage())->editIgnoreRule(newRule);
@@ -1535,7 +1531,7 @@ void MainWin::showIgnoreList(QString newRule)
 
 void MainWin::showCoreInfoDlg()
 {
-    CoreInfoDlg(this).exec();
+    CoreInfoDlg{}.exec();
 }
 
 
@@ -1560,7 +1556,7 @@ void MainWin::awayLogDestroyed()
 
 void MainWin::showSettingsDlg()
 {
-    SettingsDlg *dlg = new SettingsDlg();
+    SettingsDlg *dlg = new SettingsDlg(this);
 
     //Category: Interface
     dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
@@ -1599,20 +1595,19 @@ void MainWin::showSettingsDlg()
 
 void MainWin::showAboutDlg()
 {
-    AboutDlg(this).exec();
+    AboutDlg{}.exec();
 }
 
 
 void MainWin::showShortcutsDlg()
 {
 #ifdef HAVE_KDE
-    KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed, this);
+    KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed);
     foreach(KActionCollection *coll, QtUi::actionCollections())
     dlg.addCollection(coll, coll->property("Category").toString());
     dlg.configure(true);
 #else
-    SettingsPageDlg dlg(new ShortcutsSettingsPage(QtUi::actionCollections(), this), this);
-    dlg.exec();
+    SettingsPageDlg{new ShortcutsSettingsPage{QtUi::actionCollections()}}.exec();
 #endif
 }
 
