@@ -18,32 +18,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coreapplication.h"
+#pragma once
 
-CoreApplication::CoreApplication(int &argc, char **argv)
-    : QCoreApplication(argc, argv)
+#include <QObject>
+
+#include "abstractsignalwatcher.h"
+#include "singleton.h"
+
+class WindowsSignalWatcher : public AbstractSignalWatcher, private Singleton<WindowsSignalWatcher>
 {
-    Quassel::setRunMode(Quassel::CoreOnly);
-    Quassel::registerQuitHandler([this]() {
-        connect(_core.get(), SIGNAL(shutdownComplete()), this, SLOT(onShutdownComplete()));
-        _core->shutdown();
-    });
-}
+    Q_OBJECT
 
+public:
+    WindowsSignalWatcher(QObject *parent = nullptr);
 
-void CoreApplication::init()
-{
-    if (!Quassel::init()) {
-        throw ExitException{EXIT_FAILURE, tr("Could not initialize Quassel!")};
-    }
-
-    _core.reset(new Core{}); // FIXME C++14: std::make_unique
-    _core->init();
-}
-
-
-void CoreApplication::onShutdownComplete()
-{
-    connect(_core.get(), SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
-    _core.release()->deleteLater();
-}
+    static void signalHandler(int signal);
+};

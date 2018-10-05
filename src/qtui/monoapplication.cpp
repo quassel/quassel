@@ -23,6 +23,7 @@
 #include "client.h"
 #include "core.h"
 #include "internalpeer.h"
+#include "logmessage.h"
 #include "qtui.h"
 
 class InternalPeer;
@@ -30,10 +31,6 @@ class InternalPeer;
 MonolithicApplication::MonolithicApplication(int &argc, char **argv)
     : QtUiApplication(argc, argv)
 {
-#if defined(HAVE_KDE4) || defined(Q_OS_MAC)
-    Quassel::disableCrashHandler();
-#endif /* HAVE_KDE4 || Q_OS_MAC */
-
     Quassel::setRunMode(Quassel::Monolithic);
 }
 
@@ -56,6 +53,7 @@ void MonolithicApplication::init()
 Quassel::QuitHandler MonolithicApplication::quitHandler()
 {
     return [this]() {
+        quInfo() << "Client shutting down...";
         connect(_client.get(), SIGNAL(destroyed()), this, SLOT(onClientDestroyed()));
         _client.release()->deleteLater();
     };

@@ -32,6 +32,7 @@
 #include <QStringList>
 
 #include "abstractcliparser.h"
+#include "abstractsignalwatcher.h"
 #include "singleton.h"
 
 class QFile;
@@ -228,7 +229,6 @@ protected:
 
     static void setDataDirPaths(const QStringList &paths);
     static QStringList findDataDirPaths();
-    static void disableCrashHandler();
 
     friend class CoreApplication;
     friend class QtUiApplication;
@@ -237,6 +237,7 @@ protected:
 private:
     void setupEnvironment();
     void registerMetaTypes();
+    void setupSignalHandling();
 
     /**
      * Requests a reload of relevant runtime configuration.
@@ -250,13 +251,13 @@ private:
 
     void logBacktrace(const QString &filename);
 
-    static void handleSignal(int signal);
+private slots:
+    void handleSignal(AbstractSignalWatcher::Action action);
 
 private:
     BuildInfo _buildInfo;
     RunMode _runMode;
     bool _initialized{false};
-    bool _handleCrashes{true};
     bool _quitting{false};
 
     QString _coreDumpFileName;
@@ -267,6 +268,7 @@ private:
     std::shared_ptr<AbstractCliParser> _cliParser;
 
     Logger *_logger;
+    AbstractSignalWatcher *_signalWatcher{nullptr};
 
     std::vector<ReloadHandler> _reloadHandlers;
     std::vector<QuitHandler> _quitHandlers;

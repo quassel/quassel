@@ -1,6 +1,7 @@
 # Builds the common module
 
 set(SOURCES
+    abstractsignalwatcher.h
     aliasmanager.cpp
     authhandler.cpp
     backlogmanager.cpp
@@ -87,13 +88,13 @@ if (APPLE)
 endif()
 
 if (WIN32)
-    set(SOURCES ${SOURCES} logbacktrace_win.cpp)
+    set(SOURCES ${SOURCES} logbacktrace_win.cpp windowssignalwatcher.cpp)
 else()
     if (EXECINFO_FOUND)
         add_definitions(-DHAVE_EXECINFO)
         include_directories(${EXECINFO_INCLUDES})
     endif()
-    set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
+    set(SOURCES ${SOURCES} logbacktrace_unix.cpp posixsignalwatcher.cpp)
 endif()
 
 qt_add_resources(SOURCES ${COMMON_RCS})

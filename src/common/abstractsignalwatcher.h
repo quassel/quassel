@@ -18,32 +18,34 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coreapplication.h"
+#pragma once
 
-CoreApplication::CoreApplication(int &argc, char **argv)
-    : QCoreApplication(argc, argv)
+#include <QMetaType>
+#include <QObject>
+
+/**
+ * Interface for watching external, asynchronous events like POSIX signals.
+ *
+ * Abstracts the platform-specific details away, since we're only interested
+ * in the action to take.
+ */
+class AbstractSignalWatcher : public QObject
 {
-    Quassel::setRunMode(Quassel::CoreOnly);
-    Quassel::registerQuitHandler([this]() {
-        connect(_core.get(), SIGNAL(shutdownComplete()), this, SLOT(onShutdownComplete()));
-        _core->shutdown();
-    });
-}
+    Q_OBJECT
 
+public:
+    enum class Action
+    {
+        Reload,      ///< Configuration should be reloaded (e.g. SIGHUP)
+        Terminate,   ///< Application should be terminated (e.g. SIGTERM)
+        HandleCrash  ///< Application is crashing (e.g. SIGSEGV)
+    };
 
-void CoreApplication::init()
-{
-    if (!Quassel::init()) {
-        throw ExitException{EXIT_FAILURE, tr("Could not initialize Quassel!")};
-    }
+    using QObject::QObject;
 
-    _core.reset(new Core{}); // FIXME C++14: std::make_unique
-    _core->init();
-}
+signals:
+    /// An event/signal was received and the given action should be taken
+    void handleSignal(AbstractSignalWatcher::Action action);
+};
 
-
-void CoreApplication::onShutdownComplete()
-{
-    connect(_core.get(), SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
-    _core.release()->deleteLater();
-}
+Q_DECLARE_METATYPE(AbstractSignalWatcher::Action)
