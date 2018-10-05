@@ -30,6 +30,7 @@
 
 #include "chatviewsettings.h"
 #include "cliparser.h"
+#include "logmessage.h"
 #include "mainwin.h"
 #include "qtui.h"
 #include "qtuisettings.h"
@@ -81,10 +82,6 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 
 #endif /* HAVE_KDE4 */
 
-#if defined(HAVE_KDE4) || defined(Q_OS_MAC)
-    Quassel::disableCrashHandler();
-#endif /* HAVE_KDE4 || Q_OS_MAC */
-
     Quassel::setRunMode(Quassel::ClientOnly);
 
 #if QT_VERSION >= 0x050000
@@ -132,6 +129,7 @@ Quassel::QuitHandler QtUiApplication::quitHandler()
 {
     // Wait until the Client instance is destroyed before quitting the event loop
     return [this]() {
+        quInfo() << "Client shutting down...";
         connect(_client.get(), SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
         _client.release()->deleteLater();
     };

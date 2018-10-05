@@ -18,32 +18,35 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "coreapplication.h"
+#pragma once
 
-CoreApplication::CoreApplication(int &argc, char **argv)
-    : QCoreApplication(argc, argv)
+#include <QObject>
+
+#include "abstractsignalwatcher.h"
+
+class QSocketNotifier;
+
+/**
+ * Signal watcher/handler for POSIX systems.
+ *
+ * Uses a local socket to notify the main thread in a safe way.
+ */
+class PosixSignalWatcher : public AbstractSignalWatcher
 {
-    Quassel::setRunMode(Quassel::CoreOnly);
-    Quassel::registerQuitHandler([this]() {
-        connect(_core.get(), SIGNAL(shutdownComplete()), this, SLOT(onShutdownComplete()));
-        _core->shutdown();
-    });
-}
+    Q_OBJECT
 
+public:
+    PosixSignalWatcher(QObject *parent = nullptr);
 
-void CoreApplication::init()
-{
-    if (!Quassel::init()) {
-        throw ExitException{EXIT_FAILURE, tr("Could not initialize Quassel!")};
-    }
+private:
+    static void signalHandler(int signal);
 
-    _core.reset(new Core{}); // FIXME C++14: std::make_unique
-    _core->init();
-}
+    void registerSignal(int signal);
 
+private slots:
+    void onNotify(int sockfd);
 
-void CoreApplication::onShutdownComplete()
-{
-    connect(_core.get(), SIGNAL(destroyed()), QCoreApplication::instance(), SLOT(quit()));
-    _core.release()->deleteLater();
-}
+private:
+    static int _sockpair[2];
+    QSocketNotifier *_notifier{nullptr};
+};
