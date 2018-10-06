@@ -438,6 +438,30 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QMod
 {
     BufferId leftBufferId = sourceModel()->data(source_left, NetworkModel::BufferIdRole).value<BufferId>();
     BufferId rightBufferId = sourceModel()->data(source_right, NetworkModel::BufferIdRole).value<BufferId>();
+    // If filtering, prioritize relevant items first
+    if (!_filterString.isEmpty()) {
+        // Get names of the buffers
+        QString leftBufferName = sourceModel()->data(source_left, NetworkModel::BufferInfoRole)
+                .value<BufferInfo>().bufferName();
+        QString rightBufferName = sourceModel()->data(source_right, NetworkModel::BufferInfoRole)
+                .value<BufferInfo>().bufferName();
+        // Check if there's any differences across types, most important first
+        if ((QString::compare(leftBufferName, _filterString, Qt::CaseInsensitive) == 0)
+                != (QString::compare(rightBufferName, _filterString, Qt::CaseInsensitive) == 0)) {
+            // One of these buffers is an exact match with the filter string, while the other isn't
+            // Prioritize whichever one is the exact match
+            // (If left buffer is exact, return true to set it as less than right)
+            return (QString::compare(leftBufferName, _filterString, Qt::CaseInsensitive) == 0);
+        }
+        else if (leftBufferName.startsWith(_filterString, Qt::CaseInsensitive)
+                != rightBufferName.startsWith(_filterString, Qt::CaseInsensitive)) {
+            // One of these buffers starts with the filter string, while the other doesn't
+            // Prioritize whichever one starts with the filter string
+            // (If left buffer starts with, return true to set it as less than right)
+            return leftBufferName.startsWith(_filterString, Qt::CaseInsensitive);
+        }
+        // Otherwise, do the normal sorting (sorting happens within each priority bracket)
+    }
     if (config()) {
         int leftPos = config()->bufferList().indexOf(leftBufferId);
         int rightPos = config()->bufferList().indexOf(rightBufferId);
