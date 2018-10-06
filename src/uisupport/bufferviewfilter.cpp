@@ -49,6 +49,8 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
     setSourceModel(model);
 
     setDynamicSortFilter(true);
+    // Sort case-insensitively (primarily for network names; channels/nicks handled elsewhere)
+    setSortCaseSensitivity(Qt::CaseInsensitive);
 
     _enableEditMode.setCheckable(true);
     _enableEditMode.setChecked(_editMode);
