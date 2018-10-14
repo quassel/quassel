@@ -25,7 +25,6 @@
 #endif
 
 #include "core.h"
-#include "logmessage.h"
 
 using namespace Protocol;
 
@@ -167,7 +166,7 @@ void CoreAuthHandler::handle(const RegisterClient& msg)
         useSsl = _connectionFeatures & Protocol::Encryption;
 
     if (Quassel::isOptionSet("require-ssl") && !useSsl && !_peer->isLocal()) {
-        quInfo() << qPrintable(tr("SSL required but non-SSL connection attempt from %1").arg(socket()->peerAddress().toString()));
+        qInfo() << qPrintable(tr("SSL required but non-SSL connection attempt from %1").arg(socket()->peerAddress().toString()));
         _peer->dispatch(ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
         _peer->close();
         return;
@@ -204,7 +203,7 @@ void CoreAuthHandler::handle(const SetupData& msg)
     // The default parameter to authenticator is Database.
     // Maybe this should be hardcoded elsewhere, i.e. as a define.
     QString authenticator = msg.authenticator;
-    quInfo() << "[" << authenticator << "]";
+    qInfo() << "[" << authenticator << "]";
     if (authenticator.trimmed().isEmpty()) {
         authenticator = QString("Database");
     }
@@ -237,27 +236,27 @@ void CoreAuthHandler::handle(const Login& msg)
     }
 
     if (uid == 0) {
-        quInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
+        qInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
         _peer->dispatch(LoginFailed(tr(
             "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.")));
         return;
     }
     _peer->dispatch(LoginSuccess());
 
-    quInfo() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).")
-                               .arg(socket()->peerAddress().toString(), msg.user, QString::number(uid.toInt())));
+    qInfo() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).")
+                          .arg(socket()->peerAddress().toString(), msg.user, QString::number(uid.toInt())));
 
     const auto& clientFeatures = _peer->features();
     auto unsupported = clientFeatures.toStringList(false);
     if (!unsupported.isEmpty()) {
         if (unsupported.contains("NoFeatures"))
-            quInfo() << qPrintable(tr("Client does not support extended features."));
+            qInfo() << qPrintable(tr("Client does not support extended features."));
         else
-            quInfo() << qPrintable(tr("Client does not support the following features: %1").arg(unsupported.join(", ")));
+            qInfo() << qPrintable(tr("Client does not support the following features: %1").arg(unsupported.join(", ")));
     }
 
     if (!clientFeatures.unknownFeatures().isEmpty()) {
-        quInfo() << qPrintable(tr("Client supports unknown features: %1").arg(clientFeatures.unknownFeatures().join(", ")));
+        qInfo() << qPrintable(tr("Client supports unknown features: %1").arg(clientFeatures.unknownFeatures().join(", ")));
     }
 
     disconnect(socket(), nullptr, this, nullptr);

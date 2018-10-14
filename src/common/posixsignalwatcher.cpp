@@ -32,8 +32,6 @@
 #include <QDebug>
 #include <QSocketNotifier>
 
-#include "logmessage.h"
-
 int PosixSignalWatcher::_sockpair[2];
 
 PosixSignalWatcher::PosixSignalWatcher(QObject* parent)
@@ -88,7 +86,7 @@ void PosixSignalWatcher::onNotify(int sockfd)
     int signal;
     auto bytes = ::read(sockfd, &signal, sizeof(signal));
     Q_UNUSED(bytes)
-    quInfo() << "Caught signal" << signal;
+    qInfo() << "Caught signal" << signal;
 
     switch (signal) {
     case SIGHUP:

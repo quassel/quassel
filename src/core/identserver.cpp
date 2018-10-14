@@ -23,7 +23,6 @@
 #include <limits>
 
 #include "corenetwork.h"
-#include "logmessage.h"
 
 IdentServer::IdentServer(QObject* parent)
     : QObject(parent)
@@ -38,19 +37,19 @@ bool IdentServer::startListening()
 
     bool success = false;
     if (_v6server.listen(QHostAddress("::1"), port)) {
-        quInfo() << qPrintable(tr("Listening for identd clients on IPv6 %1 port %2").arg("::1").arg(_v6server.serverPort()));
+        qInfo() << qPrintable(tr("Listening for identd clients on IPv6 %1 port %2").arg("::1").arg(_v6server.serverPort()));
 
         success = true;
     }
 
     if (_server.listen(QHostAddress("127.0.0.1"), port)) {
-        quInfo() << qPrintable(tr("Listening for identd clients on IPv4 %1 port %2").arg("127.0.0.1").arg(_server.serverPort()));
+        qInfo() << qPrintable(tr("Listening for identd clients on IPv4 %1 port %2").arg("127.0.0.1").arg(_server.serverPort()));
 
         success = true;
     }
 
     if (!success) {
-        quError() << qPrintable(tr("Identd could not open any network interfaces to listen on! No identd functionality will be available"));
+        qWarning() << qPrintable(tr("Identd could not open any network interfaces to listen on! No identd functionality will be available"));
     }
 
     return success;
@@ -71,9 +70,9 @@ void IdentServer::stopListening(const QString& msg)
 
     if (wasListening) {
         if (msg.isEmpty())
-            quInfo() << "No longer listening for identd clients.";
+            qInfo() << "No longer listening for identd clients.";
         else
-            quInfo() << qPrintable(msg);
+            qInfo() << qPrintable(msg);
     }
 }
 

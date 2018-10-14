@@ -26,7 +26,6 @@
 #include <QSqlField>
 #include <QSqlQuery>
 
-#include "logmessage.h"
 #include "quassel.h"
 
 int AbstractSqlStorage::_nextConnectionId = 0;
@@ -99,12 +98,12 @@ void AbstractSqlStorage::addConnectionToPool()
 void AbstractSqlStorage::dbConnect(QSqlDatabase& db)
 {
     if (!db.open()) {
-        quWarning() << "Unable to open database" << displayName() << "for thread" << QThread::currentThread();
-        quWarning() << "-" << db.lastError().text();
+        qWarning() << "Unable to open database" << displayName() << "for thread" << QThread::currentThread();
+        qWarning() << "-" << db.lastError().text();
     }
     else {
         if (!initDbSession(db)) {
-            quWarning() << "Unable to initialize database" << displayName() << "for thread" << QThread::currentThread();
+            qWarning() << "Unable to initialize database" << displayName() << "for thread" << QThread::currentThread();
             db.close();
         }
     }
@@ -131,7 +130,7 @@ Storage::State AbstractSqlStorage::init(const QVariantMap& settings, const QProc
     }
 
     if (installedSchemaVersion() < schemaVersion()) {
-        quInfo() << qPrintable(tr("Installed database schema (version %1) is not up to date. Upgrading to "
+        qInfo() << qPrintable(tr("Installed database schema (version %1) is not up to date. Upgrading to "
                                   "version %2...  This may take a while for major upgrades.")
                                    .arg(installedSchemaVersion())
                                    .arg(schemaVersion()));
@@ -144,10 +143,10 @@ Storage::State AbstractSqlStorage::init(const QVariantMap& settings, const QProc
         }
         // Add a message when migration succeeds to avoid confusing folks by implying the schema upgrade failed if
         // later functionality does not work.
-        quInfo() << qPrintable(tr("Installed database schema successfully upgraded to version %1.").arg(schemaVersion()));
+        qInfo() << qPrintable(tr("Installed database schema successfully upgraded to version %1.").arg(schemaVersion()));
     }
 
-    quInfo() << qPrintable(displayName()) << "storage backend is ready. Schema version:" << installedSchemaVersion();
+    qInfo() << qPrintable(displayName()) << "storage backend is ready. Schema version:" << installedSchemaVersion();
     return IsReady;
 }
 

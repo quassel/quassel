@@ -24,7 +24,6 @@
 #include "core.h"
 #include "coreapplication.h"
 #include "internalpeer.h"
-#include "logmessage.h"
 #include "qtui.h"
 
 class InternalPeer;
@@ -50,7 +49,7 @@ void MonolithicApplication::init()
 Quassel::QuitHandler MonolithicApplication::quitHandler()
 {
     return [this]() {
-        quInfo() << "Client shutting down...";
+        qInfo() << "Client shutting down...";
         connect(_client.get(), &QObject::destroyed, this, &MonolithicApplication::onClientDestroyed);
         _client.release()->deleteLater();
     };

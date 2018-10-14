@@ -30,7 +30,6 @@
 
 #include "client.h"
 #include "clientsettings.h"
-#include "logmessage.h"
 #include "peerfactory.h"
 #include "util.h"
 
@@ -324,10 +323,10 @@ void ClientAuthHandler::onConnectionReady()
     const auto& coreFeatures = _peer->features();
     auto unsupported = coreFeatures.toStringList(false);
     if (!unsupported.isEmpty()) {
-        quInfo() << qPrintable(tr("Core does not support the following features: %1").arg(unsupported.join(", ")));
+        qInfo() << qPrintable(tr("Core does not support the following features: %1").arg(unsupported.join(", ")));
     }
     if (!coreFeatures.unknownFeatures().isEmpty()) {
-        quInfo() << qPrintable(tr("Core supports unknown features: %1").arg(coreFeatures.unknownFeatures().join(", ")));
+        qInfo() << qPrintable(tr("Core supports unknown features: %1").arg(coreFeatures.unknownFeatures().join(", ")));
     }
 
     emit connectionReady();

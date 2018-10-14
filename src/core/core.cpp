@@ -28,7 +28,6 @@
 #include "coresession.h"
 #include "coresettings.h"
 #include "internalpeer.h"
-#include "logmessage.h"
 #include "network.h"
 #include "postgresqlstorage.h"
 #include "quassel.h"
@@ -185,7 +184,7 @@ void Core::init()
                 throw ExitException{EXIT_FAILURE, tr("Cannot write quasselcore configuration; probably a permission problem.")};
             }
 
-            quInfo() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
+            qInfo() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
         }
     }
     else {
@@ -257,7 +256,7 @@ void Core::initAsync()
 
 void Core::shutdown()
 {
-    quInfo() << "Core shutting down...";
+    qInfo() << "Core shutting down...";
 
     saveState();
 
@@ -281,7 +280,7 @@ void Core::onSessionShutdown(SessionThread* session)
 {
     _sessions.take(_sessions.key(session))->deleteLater();
     if (_sessions.isEmpty()) {
-        quInfo() << "Core shutdown complete!";
+        qInfo() << "Core shutdown complete!";
         emit shutdownComplete();
     }
 }
@@ -301,11 +300,11 @@ void Core::saveState()
 void Core::restoreState()
 {
     if (!_configured) {
-        quWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
+        qWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
         return;
     }
     if (_sessions.count()) {
-        quWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
+        qWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
         return;
     }
 
@@ -313,7 +312,7 @@ void Core::restoreState()
     /* We don't check, since we are at the first version since switching to Git
     uint statever = s.coreState().toMap()["CoreStateVersion"].toUInt();
     if(statever < 1) {
-      quWarning() << qPrintable(tr("Core state too old, ignoring..."));
+      qWarning() << qPrintable(tr("Core state too old, ignoring..."));
       return;
     }
     */
@@ -322,7 +321,7 @@ void Core::restoreState()
     QVariantList activeSessions = instance()->_storage->getCoreState(activeSessionsFallback);
 
     if (activeSessions.count() > 0) {
-        quInfo() << "Restoring previous core state...";
+        qInfo() << "Restoring previous core state...";
         for (auto&& v : activeSessions) {
             UserId user = v.value<UserId>();
             sessionForUser(user, true);
@@ -360,7 +359,7 @@ QString Core::setupCore(const QString& adminUser,
             return tr("Could not setup storage!");
         }
 
-        quInfo() << "Selected authenticator:" << authenticator;
+        qInfo() << "Selected authenticator:" << authenticator;
         if (!(_configured = initAuthenticator(authenticator, authSetupData, {}, false, true))) {
             return tr("Could not setup authenticator!");
         }
@@ -376,7 +375,7 @@ QString Core::setupCore(const QString& adminUser,
     }
     saveAuthenticatorSettings(authenticator, authSetupData);
 
-    quInfo() << qPrintable(tr("Creating admin user..."));
+    qInfo() << qPrintable(tr("Creating admin user..."));
     _storage->addUser(adminUser, adminPassword);
     cacheSysIdent();
     startListening();  // TODO check when we need this
@@ -430,7 +429,7 @@ bool Core::initStorage(
     const QString& backend, const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment, bool setup)
 {
     if (backend.isEmpty()) {
-        quWarning() << "No storage backend selected!";
+        qWarning() << "No storage backend selected!";
         return false;
     }
 
@@ -525,7 +524,7 @@ bool Core::initAuthenticator(
     const QString& backend, const QVariantMap& settings, const QProcessEnvironment& environment, bool loadFromEnvironment, bool setup)
 {
     if (backend.isEmpty()) {
-        quWarning() << "No authenticator selected!";
+        qWarning() << "No authenticator selected!";
         return false;
     }
 
@@ -636,29 +635,27 @@ bool Core::startListening()
                 switch (addr.protocol()) {
                 case QAbstractSocket::IPv6Protocol:
                     if (_v6server.listen(addr, port)) {
-                        quInfo() << qPrintable(tr("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
-                                                   .arg(addr.toString())
-                                                   .arg(_v6server.serverPort())
-                                                   .arg(Quassel::buildInfo().protocolVersion));
+                        qInfo() << qPrintable(tr("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
+                                              .arg(addr.toString())
+                                              .arg(_v6server.serverPort())
+                                              .arg(Quassel::buildInfo().protocolVersion));
                         success = true;
                     }
                     else
-                        quWarning() << qPrintable(
-                            tr("Could not open IPv6 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_v6server.errorString()));
+                        qWarning() << qPrintable(tr("Could not open IPv6 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_v6server.errorString()));
                     break;
                 case QAbstractSocket::IPv4Protocol:
                     if (_server.listen(addr, port)) {
-                        quInfo() << qPrintable(tr("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
-                                                   .arg(addr.toString())
-                                                   .arg(_server.serverPort())
-                                                   .arg(Quassel::buildInfo().protocolVersion));
+                        qInfo() << qPrintable(tr("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
+                                              .arg(addr.toString())
+                                              .arg(_server.serverPort())
+                                              .arg(Quassel::buildInfo().protocolVersion));
                         success = true;
                     }
                     else {
                         // if v6 succeeded on Any, the port will be already in use - don't display the error then
                         if (!success || _server.serverError() != QAbstractSocket::AddressInUseError)
-                            quWarning() << qPrintable(
-                                tr("Could not open IPv4 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_server.errorString()));
+                            qWarning() << qPrintable(tr("Could not open IPv4 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_server.errorString()));
                     }
                     break;
                 default:
@@ -669,7 +666,7 @@ bool Core::startListening()
         }
     }
     if (!success)
-        quError() << qPrintable(tr("Could not open any network interfaces to listen on!"));
+        qCritical() << qPrintable(tr("Could not open any network interfaces to listen on!"));
 
     if (_identServer) {
         _identServer->startListening();
@@ -695,9 +692,9 @@ void Core::stopListening(const QString& reason)
     }
     if (wasListening) {
         if (reason.isEmpty())
-            quInfo() << "No longer listening for GUI clients.";
+            qInfo() << "No longer listening for GUI clients.";
         else
-            quInfo() << qPrintable(reason);
+            qInfo() << qPrintable(reason);
     }
 }
 
@@ -715,7 +712,7 @@ void Core::incomingConnection()
         connect(handler, &AuthHandler::socketError, this, &Core::socketError);
         connect(handler, &CoreAuthHandler::handshakeComplete, this, &Core::setupClientSession);
 
-        quInfo() << qPrintable(tr("Client connected from")) << qPrintable(socket->peerAddress().toString());
+        qInfo() << qPrintable(tr("Client connected from")) << qPrintable(socket->peerAddress().toString());
 
         if (!_configured) {
             stopListening(tr("Closing server for basic setup."));
@@ -729,7 +726,7 @@ void Core::clientDisconnected()
     auto* handler = qobject_cast<CoreAuthHandler*>(sender());
     Q_ASSERT(handler);
 
-    quInfo() << qPrintable(tr("Non-authed client disconnected:")) << qPrintable(handler->socket()->peerAddress().toString());
+    qInfo() << qPrintable(tr("Non-authed client disconnected:")) << qPrintable(handler->socket()->peerAddress().toString());
     _connectingClients.remove(handler);
     handler->deleteLater();
 
@@ -802,13 +799,13 @@ void Core::setupInternalClientSession(QPointer<InternalPeer> clientPeer)
         uid = _storage->internalUser();
     }
     else {
-        quWarning() << "Core::setupInternalClientSession(): You're trying to run monolithic Quassel with an unusable Backend! Go fix it!";
+        qWarning() << "Core::setupInternalClientSession(): You're trying to run monolithic Quassel with an unusable Backend! Go fix it!";
         emit exitRequested(EXIT_FAILURE, tr("Cannot setup storage backend."));
         return;
     }
 
     if (!clientPeer) {
-        quWarning() << "Client peer went away, not starting a session";
+        qWarning() << "Client peer went away, not starting a session";
         return;
     }
 
@@ -831,7 +828,7 @@ SessionThread* Core::sessionForUser(UserId uid, bool restore)
 
 void Core::socketError(QAbstractSocket::SocketError err, const QString& errorString)
 {
-    quWarning() << QString("Socket error %1: %2").arg(err).arg(errorString);
+    qWarning() << QString("Socket error %1: %2").arg(err).arg(errorString);
 }
 
 QVariantList Core::backendInfo()
@@ -892,8 +889,8 @@ bool Core::selectBackend(const QString& backend)
                        _registeredStorageBackends.end(),
                        std::back_inserter(backends),
                        [](const DeferredSharedPtr<Storage>& backend) { return backend->displayName(); });
-        quWarning() << qPrintable(tr("Unsupported storage backend: %1").arg(backend));
-        quWarning() << qPrintable(tr("Supported backends are:")) << qPrintable(backends.join(", "));
+        qWarning() << qPrintable(tr("Unsupported storage backend: %1").arg(backend));
+        qWarning() << qPrintable(tr("Supported backends are:")) << qPrintable(backends.join(", "));
         return false;
     }
 
@@ -905,27 +902,27 @@ bool Core::selectBackend(const QString& backend)
         if (!saveBackendSettings(backend, settings)) {
             qCritical() << qPrintable(QString("Could not save backend settings, probably a permission problem."));
         }
-        quWarning() << qPrintable(tr("Switched storage backend to: %1").arg(backend));
-        quWarning() << qPrintable(tr("Backend already initialized. Skipping Migration..."));
+        qWarning() << qPrintable(tr("Switched storage backend to: %1").arg(backend));
+        qWarning() << qPrintable(tr("Backend already initialized. Skipping Migration..."));
         return true;
     case Storage::NotAvailable:
         qCritical() << qPrintable(tr("Storage backend is not available: %1").arg(backend));
         return false;
     case Storage::NeedsSetup:
         if (!storage->setup(settings)) {
-            quWarning() << qPrintable(tr("Unable to setup storage backend: %1").arg(backend));
+            qWarning() << qPrintable(tr("Unable to setup storage backend: %1").arg(backend));
             return false;
         }
 
         if (storage->init(settings) != Storage::IsReady) {
-            quWarning() << qPrintable(tr("Unable to initialize storage backend: %1").arg(backend));
+            qWarning() << qPrintable(tr("Unable to initialize storage backend: %1").arg(backend));
             return false;
         }
 
         if (!saveBackendSettings(backend, settings)) {
             qCritical() << qPrintable(QString("Could not save backend settings, probably a permission problem."));
         }
-        quWarning() << qPrintable(tr("Switched storage backend to: %1").arg(backend));
+        qWarning() << qPrintable(tr("Switched storage backend to: %1").arg(backend));
         break;
     }
 
@@ -945,19 +942,19 @@ bool Core::selectBackend(const QString& backend)
             }
             return true;
         }
-        quWarning() << qPrintable(tr("Unable to migrate storage backend! (No migration writer for %1)").arg(backend));
+        qWarning() << qPrintable(tr("Unable to migrate storage backend! (No migration writer for %1)").arg(backend));
         return false;
     }
 
     // inform the user why we cannot merge
     if (!_storage) {
-        quWarning() << qPrintable(tr("No currently active storage backend. Skipping migration..."));
+        qWarning() << qPrintable(tr("No currently active storage backend. Skipping migration..."));
     }
     else if (!reader) {
-        quWarning() << qPrintable(tr("Currently active storage backend does not support migration: %1").arg(_storage->displayName()));
+        qWarning() << qPrintable(tr("Currently active storage backend does not support migration: %1").arg(_storage->displayName()));
     }
     if (writer) {
-        quWarning() << qPrintable(tr("New storage backend does not support migration: %1").arg(backend));
+        qWarning() << qPrintable(tr("New storage backend does not support migration: %1").arg(backend));
     }
 
     // so we were unable to merge, but let's create a user \o/
@@ -979,8 +976,8 @@ bool Core::selectAuthenticator(const QString& backend)
                        _registeredAuthenticators.end(),
                        std::back_inserter(authenticators),
                        [](const DeferredSharedPtr<Authenticator>& authenticator) { return authenticator->displayName(); });
-        quWarning() << qPrintable(tr("Unsupported authenticator: %1").arg(backend));
-        quWarning() << qPrintable(tr("Supported authenticators are:")) << qPrintable(authenticators.join(", "));
+        qWarning() << qPrintable(tr("Unsupported authenticator: %1").arg(backend));
+        qWarning() << qPrintable(tr("Supported authenticators are:")) << qPrintable(authenticators.join(", "));
         return false;
     }
 
@@ -990,24 +987,24 @@ bool Core::selectAuthenticator(const QString& backend)
     switch (state) {
     case Authenticator::IsReady:
         saveAuthenticatorSettings(backend, settings);
-        quWarning() << qPrintable(tr("Switched authenticator to: %1").arg(backend));
+        qWarning() << qPrintable(tr("Switched authenticator to: %1").arg(backend));
         return true;
     case Authenticator::NotAvailable:
         qCritical() << qPrintable(tr("Authenticator is not available: %1").arg(backend));
         return false;
     case Authenticator::NeedsSetup:
         if (!auther->setup(settings)) {
-            quWarning() << qPrintable(tr("Unable to setup authenticator: %1").arg(backend));
+            qWarning() << qPrintable(tr("Unable to setup authenticator: %1").arg(backend));
             return false;
         }
 
         if (auther->init(settings) != Authenticator::IsReady) {
-            quWarning() << qPrintable(tr("Unable to initialize authenticator: %1").arg(backend));
+            qWarning() << qPrintable(tr("Unable to initialize authenticator: %1").arg(backend));
             return false;
         }
 
         saveAuthenticatorSettings(backend, settings);
-        quWarning() << qPrintable(tr("Switched authenticator to: %1").arg(backend));
+        qWarning() << qPrintable(tr("Switched authenticator to: %1").arg(backend));
     }
 
     _authenticator = std::move(auther);
@@ -1035,11 +1032,11 @@ bool Core::createUser()
     enableStdInEcho();
 
     if (password != password2) {
-        quWarning() << "Passwords don't match!";
+        qWarning() << "Passwords don't match!";
         return false;
     }
     if (password.isEmpty()) {
-        quWarning() << "Password is empty!";
+        qWarning() << "Password is empty!";
         return false;
     }
 
@@ -1048,7 +1045,7 @@ bool Core::createUser()
         return true;
     }
     else {
-        quWarning() << "Unable to add user:" << qPrintable(username);
+        qWarning() << "Unable to add user:" << qPrintable(username);
         return false;
     }
 }
@@ -1082,11 +1079,11 @@ bool Core::changeUserPass(const QString& username)
     enableStdInEcho();
 
     if (password != password2) {
-        quWarning() << "Passwords don't match!";
+        qWarning() << "Passwords don't match!";
         return false;
     }
     if (password.isEmpty()) {
-        quWarning() << "Password is empty!";
+        qWarning() << "Password is empty!";
         return false;
     }
 
@@ -1095,7 +1092,7 @@ bool Core::changeUserPass(const QString& username)
         return true;
     }
     else {
-        quWarning() << "Failed to change password!";
+        qWarning() << "Failed to change password!";
         return false;
     }
 }
