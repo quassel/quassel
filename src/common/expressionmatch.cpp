@@ -25,8 +25,6 @@
 #include <QString>
 #include <QStringList>
 
-#include "logmessage.h"
-
 ExpressionMatch::ExpressionMatch(const QString& expression, MatchMode mode, bool caseSensitive)
 {
     // Store the original parameters for later reference
@@ -379,7 +377,7 @@ void ExpressionMatch::cacheRegEx()
         // level as ideally someone's not just going to leave a broken match rule around.  For
         // MatchRegEx, they probably need to fix their regex rule.  For the other modes, there's
         // probably a bug in the parsing routines (which should also be fixed).
-        quInfo() << "Could not parse expression match rule" << _sourceExpression << "(match mode:" << (int)_sourceMode
+        qInfo() << "Could not parse expression match rule" << _sourceExpression << "(match mode:" << (int)_sourceMode
                  << "), this rule will be ignored";
     }
 }

@@ -20,7 +20,6 @@
 
 #include "corebasichandler.h"
 
-#include "logmessage.h"
 #include "util.h"
 
 CoreBasicHandler::CoreBasicHandler(CoreNetwork* parent)

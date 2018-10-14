@@ -28,7 +28,6 @@
 #include "ctcpevent.h"
 #include "ircevent.h"
 #include "ircuser.h"
-#include "logmessage.h"
 #include "messageevent.h"
 #include "netsplit.h"
 #include "quassel.h"
@@ -1548,7 +1547,7 @@ void CoreSessionEventProcessor::handleCtcpDcc(CtcpEvent* e)
 {
     // DCC support is unfinished, experimental and potentially dangerous, so make it opt-in
     if (!Quassel::isOptionSet("enable-experimental-dcc")) {
-        quInfo() << "DCC disabled, start core with --enable-experimental-dcc if you really want to try it out";
+        qInfo() << "DCC disabled, start core with --enable-experimental-dcc if you really want to try it out";
         return;
     }
 

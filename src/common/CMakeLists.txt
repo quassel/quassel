@@ -27,7 +27,6 @@ target_sources(${TARGET} PRIVATE
     irclisthelper.cpp
     ircuser.cpp
     logger.cpp
-    logmessage.cpp
     message.cpp
     messageevent.cpp
     network.cpp

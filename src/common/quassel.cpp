@@ -37,7 +37,6 @@
 #include "bufferinfo.h"
 #include "identity.h"
 #include "logger.h"
-#include "logmessage.h"
 #include "message.h"
 #include "network.h"
 #include "peer.h"
@@ -99,7 +98,7 @@ void Quassel::quit()
     // Protect against multiple invocations (e.g. triggered by MainWin::closeEvent())
     if (!_quitting) {
         _quitting = true;
-        quInfo() << "Quitting...";
+        qInfo() << "Quitting...";
         if (_quitHandlers.empty()) {
             QCoreApplication::quit();
         }
@@ -291,9 +290,9 @@ void Quassel::handleSignal(AbstractSignalWatcher::Action action)
     case AbstractSignalWatcher::Action::Reload:
         // Most applications use this as the 'configuration reload' command, e.g. nginx uses it for graceful reloading of processes.
         if (!_reloadHandlers.empty()) {
-            quInfo() << "Reloading configuration";
+            qInfo() << "Reloading configuration";
             if (reloadConfig()) {
-                quInfo() << "Successfully reloaded configuration";
+                qInfo() << "Successfully reloaded configuration";
             }
         }
         break;
@@ -302,7 +301,7 @@ void Quassel::handleSignal(AbstractSignalWatcher::Action action)
             quit();
         }
         else {
-            quInfo() << "Already shutting down, ignoring signal";
+            qInfo() << "Already shutting down, ignoring signal";
         }
         break;
     case AbstractSignalWatcher::Action::HandleCrash:

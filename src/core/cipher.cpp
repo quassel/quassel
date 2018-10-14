@@ -14,8 +14,6 @@
 
 #include "cipher.h"
 
-#include "logmessage.h"
-
 Cipher::Cipher()
 {
     m_primeNum = QCA::BigInteger(

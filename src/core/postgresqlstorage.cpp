@@ -22,7 +22,6 @@
 
 #include <QtSql>
 
-#include "logmessage.h"
 #include "network.h"
 #include "quassel.h"
 
@@ -46,7 +45,7 @@ std::unique_ptr<AbstractSqlMigrationWriter> PostgreSqlStorage::createMigrationWr
 bool PostgreSqlStorage::isAvailable() const
 {
     if (!QSqlDatabase::isDriverAvailable("QPSQL")) {
-        quWarning() << qPrintable(tr("PostgreSQL driver plugin not available for Qt. Installed drivers:"))
+        qWarning() << qPrintable(tr("PostgreSQL driver plugin not available for Qt. Installed drivers:"))
                     << qPrintable(QSqlDatabase::drivers().join(", "));
         return false;
     }
@@ -92,7 +91,7 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase& db)
         // as this is the expected behavior.
         // If it is a newer version, switch to legacy mode.
 
-        quWarning() << "Switching Postgres to legacy mode. (set standard conforming strings to off)";
+        qWarning() << "Switching Postgres to legacy mode. (set standard conforming strings to off)";
         // If the following calls fail, it is a legacy DB anyways, so it doesn't matter
         // and no need to check the outcome.
         db.exec("set standard_conforming_strings = off");
@@ -106,14 +105,14 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase& db)
             if (query.lastError().isValid()) {
                 // We cannot enable standard conforming strings...
                 // since Quassel does no escaping by itself, this would yield a major vulnerability.
-                quError() << "Failed to enable standard_conforming_strings for the Postgres db!";
+                qCritical() << "Failed to enable standard_conforming_strings for the Postgres db!";
                 return false;
             }
         }
         break;
     default:
         // The slash got replaced with 0 or more than 2 slashes! o_O
-        quError() << "Your version of Qt does something _VERY_ strange to slashes in QSqlQueries! You should consult your trusted doctor!";
+        qCritical() << "Your version of Qt does something _VERY_ strange to slashes in QSqlQueries! You should consult your trusted doctor!";
         return false;
         break;
     }
@@ -121,7 +120,7 @@ bool PostgreSqlStorage::initDbSession(QSqlDatabase& db)
     // Set the PostgreSQL session timezone to UTC, since we want timestamps stored in UTC
     QSqlQuery tzQuery = db.exec("SET timezone = 'UTC'");
     if (tzQuery.lastError().isValid()) {
-        quError() << "Failed to set timezone to UTC!";
+        qCritical() << "Failed to set timezone to UTC!";
         return false;
     }
 

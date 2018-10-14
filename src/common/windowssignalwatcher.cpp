@@ -25,8 +25,6 @@
 
 #include <QDebug>
 
-#include "logmessage.h"
-
 // This handler is called by Windows in a different thread when a console event happens
 // FIXME: When the console window is closed, the application is supposedly terminated as soon as
 //        this handler returns. We may want to block and wait for the main thread so set some
@@ -66,7 +64,7 @@ WindowsSignalWatcher::WindowsSignalWatcher(QObject* parent)
 
 void WindowsSignalWatcher::signalHandler(int signal)
 {
-    quInfo() << "Caught signal" << signal;
+    qInfo() << "Caught signal" << signal;
 
     switch (signal) {
     case SIGINT:

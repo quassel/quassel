@@ -28,7 +28,6 @@
 
 #include "ldapauthenticator.h"
 
-#include "logmessage.h"
 #include "network.h"
 #include "quassel.h"
 
@@ -152,11 +151,11 @@ Authenticator::State LdapAuthenticator::init(const QVariantMap& settings, const 
 
     bool status = ldapConnect();
     if (!status) {
-        quInfo() << qPrintable(backendId()) << "authenticator cannot connect.";
+        qInfo() << qPrintable(backendId()) << "authenticator cannot connect.";
         return NotAvailable;
     }
 
-    quInfo() << qPrintable(backendId()) << "authenticator is ready.";
+    qInfo() << qPrintable(backendId()) << "authenticator is ready.";
     return IsReady;
 }
 
@@ -177,7 +176,7 @@ bool LdapAuthenticator::ldapConnect()
     serverURIArray = serverURI.toLocal8Bit();
     res = ldap_initialize(&_connection, serverURIArray);
 
-    quInfo() << "LDAP: Connecting to" << serverURI;
+    qInfo() << "LDAP: Connecting to" << serverURI;
 
     if (res != LDAP_SUCCESS) {
         qWarning() << "Could not connect to LDAP server:" << ldap_err2string(res);

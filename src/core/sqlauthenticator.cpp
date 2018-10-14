@@ -21,7 +21,6 @@
 #include "sqlauthenticator.h"
 
 #include "core.h"
-#include "logmessage.h"
 #include "network.h"
 #include "quassel.h"
 
@@ -76,6 +75,6 @@ Authenticator::State SqlAuthenticator::init(const QVariantMap& settings, const Q
     // TODO: FIXME: this should check if the storage provider is ready, but I don't
     // know if there's an exposed way to do that at the moment.
 
-    quInfo() << qPrintable(backendId()) << "authenticator is ready.";
+    qInfo() << qPrintable(backendId()) << "authenticator is ready.";
     return IsReady;
 }

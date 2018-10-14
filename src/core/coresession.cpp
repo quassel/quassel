@@ -44,7 +44,6 @@
 #include "ircchannel.h"
 #include "ircparser.h"
 #include "ircuser.h"
-#include "logmessage.h"
 #include "messageevent.h"
 #include "remotepeer.h"
 #include "storage.h"
@@ -272,7 +271,7 @@ void CoreSession::removeClient(Peer* peer)
 {
     auto* p = qobject_cast<RemotePeer*>(peer);
     if (p)
-        quInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
+        qInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
     _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
 }
 
