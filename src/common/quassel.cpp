@@ -65,45 +65,13 @@ bool Quassel::init()
     if (instance()->_initialized)
         return true;  // allow multiple invocations because of MonolithicApplication
 
-#if 0
-    // Setup signal handling
-    // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
-    signal(SIGTERM, handleSignal);
-    signal(SIGINT, handleSignal);
-#ifndef Q_OS_WIN
-    // SIGHUP is used to reload configuration (i.e. SSL certificates)
-    // Windows does not support SIGHUP
-    signal(SIGHUP, handleSignal);
-#endif
-
-    if (instance()->_handleCrashes) {
-        // we have crashhandler for win32 and unix (based on execinfo).
-#if defined(Q_OS_WIN) || defined(HAVE_EXECINFO)
-# ifndef Q_OS_WIN
-        // we only handle crashes ourselves if coredumps are disabled
-        struct rlimit *limit = (rlimit *)malloc(sizeof(struct rlimit));
-        int rc = getrlimit(RLIMIT_CORE, limit);
-
-        if (rc == -1 || !((long)limit->rlim_cur > 0 || limit->rlim_cur == RLIM_INFINITY)) {
-# endif /* Q_OS_WIN */
-            signal(SIGABRT, handleSignal);
-            signal(SIGSEGV, handleSignal);
-# ifndef Q_OS_WIN
-            signal(SIGBUS, handleSignal);
-        }
-        free(limit);
-# endif /* Q_OS_WIN */
-#endif /* Q_OS_WIN || HAVE_EXECINFO */
-    }
-#endif
-
-    instance()->setupSignalHandling();
-
-    instance()->_initialized = true;
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
+    instance()->setupSignalHandling();
     instance()->setupEnvironment();
     instance()->registerMetaTypes();
+
+    instance()->_initialized = true;
 
     Network::setDefaultCodecForServer("UTF-8");
     Network::setDefaultCodecForEncoding("UTF-8");
@@ -333,6 +301,7 @@ void Quassel::setupSignalHandling()
 #endif
     connect(_signalWatcher, SIGNAL(handleSignal(AbstractSignalWatcher::Action)), this, SLOT(handleSignal(AbstractSignalWatcher::Action)));
 }
+
 
 void Quassel::handleSignal(AbstractSignalWatcher::Action action)
 {
