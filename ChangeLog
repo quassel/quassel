@@ -26,6 +26,7 @@ NOTE²: Database migration may take a long time (hours for big databases),
 * UI improvements
   - Improve ChatView color settings
   - Improve default sender colors, and make configurable by palette in QSS
+  - Fix font weight parsing and other issues in QSS
   - Settings dialog improvements (tree width, changed state for several pages)
   - Chat list filter/search
   - Shortcuts for formatting options
@@ -35,6 +36,7 @@ NOTE²: Database migration may take a long time (hours for big databases),
   - Make /list open the channel list dialog, including advanced search for channels
   - Spell checking via Sonnet if KDE Frameworks integration is enabled
   - Support $i:ident, $i:identd, and $i:account in aliases
+  - Use system locale for date/time formatting
   - Many other UI improvements and polish (tooltips, tool bars, menus...)
 * Completely revamp icon theme support
   - Fix icon loading on many platforms (requires newer Qt)
@@ -57,11 +59,15 @@ NOTE²: Database migration may take a long time (hours for big databases),
   - Use UTF-8 server encoding by default (instead of ISO-8859-1, changeable via network settings)
   - Internal identd (may require port forwarding rules)
   - Strict ident mode (always sends user name)
+  - Provide CTCP timestamps in ISO 8601 format
+  - AutoWho-related fixes, properly support away-notify (removes workaround for non-compliant servers)
+  - Command line debug options for showing raw IRC messages
 * Security improvements
   - Improved SSL certificate handling
   - Add command line options for SSL certificate/key paths
   - Use SHA-512 to store the core certificate digest
   - Persist blowfish keys for encrypted channels
+  - Use CBC by default, like other clients (instead of ECB)
 * Move functionality core side (useful for mobile clients)
   - Handle buffer activity, highlights, ignore rules core-side
   - Improved ignore rule support
@@ -71,6 +77,9 @@ NOTE²: Database migration may take a long time (hours for big databases),
   - System proxy support for the client
   - Allow disconnecting other clients via "Core Info" dialog (if supported by client)
   - LDAP authentication backend for core users (--select-authenticator)
+* Regular expressions
+  - Unify regex handling (may affect old ignore rules, see release announcement for details)
+  - Cache many frequently used regexes to improve performance
 * Database changes
   - Use 64 bit timestamps to avoid the Y2038 problem, use millisecond precision
   - Use 64 bit message IDs to support giant backlogs (requires 0.13+ core and client)
@@ -87,7 +96,10 @@ NOTE²: Database migration may take a long time (hours for big databases),
   - Slightly reformat console output so it's better readable
 * Settings versioning (allows upgrading from older versions, too)
 * Multithread the monolithic client, to keep UI responsive even under load
+* Properly shutdown client and core on exit
+* Fix POSIX signal handling, support console events on Windows
 * Build system improvements
+* Code fixes for issues found in static analysis
 * Many smaller fixes and quality-of-life improvements
 * Update inxi script to 3.0.18 (now requires Perl to be installed)
 * Translation updates
