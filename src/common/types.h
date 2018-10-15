@@ -225,6 +225,16 @@ QDataStream& operator>>(QDataStream& in, T& value)
     return in;
 }
 
+// STL-compliant hash functor for Qt types
+template<typename T>
+struct Hash
+{
+    uint operator()(const T& t) const
+    {
+        return qHash(t);
+    }
+};
+
 // Exceptions
 
 /**
