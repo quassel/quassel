@@ -66,7 +66,7 @@ bool tryConnectChangedSignal(const QObject* widget, const Receiver* receiver, Sl
     // If *alreadyConnected is true, just returns false to prevent multiple connections.
     static const auto tryConnect = [](const QObject* object, auto sig, auto receiver, auto slot, bool* alreadyConnected) {
         if (!*alreadyConnected) {
-            auto widget = qobject_cast<const typename MemberFunction<decltype(sig)>::ClassType*>(object);
+            auto widget = qobject_cast<const typename FunctionTraits<decltype(sig)>::ClassType*>(object);
             if (widget) {
                 *alreadyConnected = QObject::connect(widget, sig, receiver, slot);
                 return *alreadyConnected;
