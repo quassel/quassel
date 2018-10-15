@@ -32,20 +32,26 @@ template<typename Func>
 struct FuncHelper : public FuncHelper<decltype(&Func::operator())>
 {};
 
-// Overload for member function with const call operator
-template<typename C, typename R, typename... Args>
-struct FuncHelper<R (C::*)(Args...) const> : public FuncHelper<R (C::*)(Args...)>
-{};
-
-// Overload for member function with non-const call operator
-template<typename C, typename R, typename... Args>
-struct FuncHelper<R (C::*)(Args...)>
+// Overload for free function
+template<typename R, typename... Args>
+struct FuncHelper<R(*)(Args...)>
 {
-    using ClassType = C;
     using FunctionType = std::function<R(Args...)>;
     using ReturnType = R;
     using ArgsTuple = std::tuple<Args...>;
 };
+
+// Overload for member function with non-const call operator
+template<typename C, typename R, typename... Args>
+struct FuncHelper<R(C::*)(Args...)> : public FuncHelper<R(*)(Args...)>
+{
+    using ClassType = C;
+};
+
+// Overload for member function with const call operator
+template<typename C, typename R, typename... Args>
+struct FuncHelper<R(C::*)(Args...) const> : public FuncHelper<R(C::*)(Args...)>
+{};
 
 /// @endcond
 
@@ -55,4 +61,4 @@ struct FuncHelper<R (C::*)(Args...)>
  * Provides traits for the given callable.
  */
 template<typename Callable>
-using MemberFunction = detail::FuncHelper<Callable>;
+using FunctionTraits = detail::FuncHelper<Callable>;
