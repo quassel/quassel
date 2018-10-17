@@ -195,7 +195,7 @@ void Identity::setId(IdentityId _id)
     _identityId = _id;
     SYNC(ARG(_id))
     emit idSet(_id);
-    renameObject(QString::number(id().toInt()));
+    setObjectName(QString::number(id().toInt()));
 }
 
 void Identity::setIdentityName(const QString& identityName)

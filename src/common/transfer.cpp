@@ -59,7 +59,7 @@ void Transfer::init()
     }();
     Q_UNUSED(regTypes);
 
-    renameObject(QString("Transfer/%1").arg(_uuid.toString()));
+    setObjectName(QString("Transfer/%1").arg(_uuid.toString()));
     setAllowClientUpdates(true);
 }
 

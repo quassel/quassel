@@ -27,20 +27,29 @@
 #include "util.h"
 
 SyncableObject::SyncableObject(QObject* parent)
-    : QObject(parent)
+    : SyncableObject(QString{}, parent)
 {}
 
 SyncableObject::SyncableObject(const QString& objectName, QObject* parent)
     : QObject(parent)
 {
+    _objectName = objectName;
     setObjectName(objectName);
+
+    connect(this, &QObject::objectNameChanged, this, [this](auto&& newName) {
+        for (auto&& proxy : _signalProxies) {
+            proxy->renameObject(this, newName, _objectName);
+        }
+        _objectName = newName;
+    });
 }
 
 SyncableObject::SyncableObject(const SyncableObject& other, QObject* parent)
-    : QObject(parent)
-    , _initialized(other._initialized)
-    , _allowClientUpdates(other._allowClientUpdates)
-{}
+    : SyncableObject(QString{}, parent)
+{
+    _initialized = other._initialized;
+    _allowClientUpdates = other._allowClientUpdates;
+}
 
 SyncableObject::~SyncableObject()
 {
@@ -154,17 +163,6 @@ bool SyncableObject::setInitValue(const QString& property, const QVariant& value
 
     QGenericArgument param(value.typeName(), value.constData());
     return QMetaObject::invokeMethod(this, handlername.toLatin1(), param);
-}
-
-void SyncableObject::renameObject(const QString& newName)
-{
-    const QString oldName = objectName();
-    if (oldName != newName) {
-        setObjectName(newName);
-        foreach (SignalProxy* proxy, _signalProxies) {
-            proxy->renameObject(this, newName, oldName);
-        }
-    }
 }
 
 void SyncableObject::update(const QVariantMap& properties)

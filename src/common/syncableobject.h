@@ -94,7 +94,6 @@ public slots:
 protected:
     void sync_call__(SignalProxy::ProxyMode modeType, const char* funcname, ...) const;
 
-    void renameObject(const QString& newName);
     SyncableObject& operator=(const SyncableObject& other);
 
 signals:
@@ -108,6 +107,8 @@ private:
 
     bool setInitValue(const QString& property, const QVariant& value);
 
+private:
+    QString _objectName;
     bool _initialized{false};
     bool _allowClientUpdates{false};
 
