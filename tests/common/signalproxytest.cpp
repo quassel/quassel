@@ -65,20 +65,32 @@ public:
     using Data = std::pair<int, QString>;
     using Spy = ValueSpy<Data>;
 
-    ProxyObject(Spy* spy)
+    ProxyObject(Spy* spy, Peer* expectedPeer)
         : _spy{spy}
+        , _expectedPeer{expectedPeer}
     {}
 
 signals:
     void sendData(int, const QString&);
     void sendMoreData(int, const QString&);
+    void sendToFunctor(int, const QString&);
 
 public slots:
-    void receiveData(int i, const QString& s) { _spy->notify(std::make_pair(i, s)); }
-    void receiveExtraData(int i, const QString& s) { _spy->notify(std::make_pair(-i, s.toUpper())); }
+    void receiveData(int i, const QString& s)
+    {
+        EXPECT_EQ(_expectedPeer, SignalProxy::current()->sourcePeer());
+        _spy->notify(std::make_pair(i, s));
+    }
+
+    void receiveExtraData(int i, const QString& s)
+    {
+        EXPECT_EQ(_expectedPeer, SignalProxy::current()->sourcePeer());
+        _spy->notify(std::make_pair(-i, s.toUpper()));
+    }
 
 private:
     Spy* _spy;
+    Peer* _expectedPeer;
 };
 
 TEST_F(SignalProxyTest, attachSignal)
@@ -91,8 +103,8 @@ TEST_F(SignalProxyTest, attachSignal)
     }
 
     ProxyObject::Spy clientSpy, serverSpy;
-    ProxyObject clientObject{&clientSpy};
-    ProxyObject serverObject{&serverSpy};
+    ProxyObject clientObject{&clientSpy, _clientPeer};
+    ProxyObject serverObject{&serverSpy, _serverPeer};
 
     // Deliberately not normalize some of the macro invocations
     _clientProxy.attachSignal(&clientObject, SIGNAL(sendData(int, const QString&)));
