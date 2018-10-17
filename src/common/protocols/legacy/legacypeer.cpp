@@ -394,8 +394,8 @@ void LegacyPeer::handlePackedFunc(const QVariant& packedFunc)
             qWarning() << Q_FUNC_INFO << "Received empty RPC call!";
             return;
         }
-        QByteArray slotName = params.takeFirst().toByteArray();
-        handle(Protocol::RpcCall(slotName, params));
+        QByteArray signalName = params.takeFirst().toByteArray();
+        handle(Protocol::RpcCall(signalName, params));
         break;
     }
     case InitRequest: {
@@ -457,7 +457,7 @@ void LegacyPeer::dispatch(const Protocol::SyncMessage& msg)
 
 void LegacyPeer::dispatch(const Protocol::RpcCall& msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.slotName << msg.params);
+    dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.signalName << msg.params);
 }
 
 void LegacyPeer::dispatch(const Protocol::InitRequest& msg)

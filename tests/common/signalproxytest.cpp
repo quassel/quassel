@@ -100,6 +100,7 @@ TEST_F(SignalProxyTest, attachSignal)
         EXPECT_CALL(*_clientPeer, Dispatches(RpcCall(Eq(SIGNAL(sendData(int,QString))), ElementsAre(42, "Hello"))));
         EXPECT_CALL(*_clientPeer, Dispatches(RpcCall(Eq(SIGNAL(sendExtraData(int,QString))), ElementsAre(42, "Hello"))));
         EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("2sendData(int,QString)"), ElementsAre(23, "World"))));
+        EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("2sendToFunctor(int,QString)"), ElementsAre(17, "Hi Universe"))));
     }
 
     ProxyObject::Spy clientSpy, serverSpy;
@@ -107,14 +108,21 @@ TEST_F(SignalProxyTest, attachSignal)
     ProxyObject serverObject{&serverSpy, _serverPeer};
 
     // Deliberately not normalize some of the macro invocations
-    _clientProxy.attachSignal(&clientObject, SIGNAL(sendData(int, const QString&)));
-    _serverProxy.attachSlot(SIGNAL(sendData(int,QString)), &serverObject, SLOT(receiveData(int, const QString&)));
+    _clientProxy.attachSignal(&clientObject, &ProxyObject::sendData);
+    _serverProxy.attachSlot(SIGNAL(sendData(int,QString)), &serverObject, &ProxyObject::receiveData);
 
-    _clientProxy.attachSignal(&clientObject, SIGNAL(sendMoreData(int,QString)), SIGNAL(sendExtraData(int,QString)));
-    _serverProxy.attachSlot(SIGNAL(sendExtraData(int, const QString&)), &serverObject, SLOT(receiveExtraData(int,QString)));
+    _clientProxy.attachSignal(&clientObject, &ProxyObject::sendMoreData, SIGNAL(sendExtraData(int, const QString&)));
+    _serverProxy.attachSlot(SIGNAL(sendExtraData(int, const QString&)), &serverObject, &ProxyObject::receiveExtraData);
 
-    _serverProxy.attachSignal(&serverObject, SIGNAL(sendData(int,QString)));
-    _clientProxy.attachSlot(SIGNAL(sendData(int, const QString&)), &clientObject, SLOT(receiveData(int,QString)));
+    _serverProxy.attachSignal(&serverObject, &ProxyObject::sendData);
+    //_clientProxy.attachSlot(SIGNAL(sendData(int, const QString&)), &clientObject, SLOT(receiveData(int,QString)));
+    _clientProxy.attachSlot(SIGNAL(sendData(int, const QString&)), &clientObject, &ProxyObject::receiveData);
+
+    _serverProxy.attachSignal(&serverObject, &ProxyObject::sendToFunctor);
+    _clientProxy.attachSlot(SIGNAL(sendToFunctor(int, const QString&)), this, [this, &clientSpy](int i, const QString& s) {
+        EXPECT_EQ(_clientPeer, SignalProxy::current()->sourcePeer());
+        clientSpy.notify(std::make_pair(i, s));
+    });
 
     emit clientObject.sendData(42, "Hello");
     ASSERT_TRUE(serverSpy.wait());
@@ -127,6 +135,10 @@ TEST_F(SignalProxyTest, attachSignal)
     emit serverObject.sendData(23, "World");
     ASSERT_TRUE(clientSpy.wait());
     EXPECT_EQ(ProxyObject::Data(23, "World"), clientSpy.value());
+
+    emit serverObject.sendToFunctor(17, "Hi Universe");
+    ASSERT_TRUE(clientSpy.wait());
+    EXPECT_EQ(ProxyObject::Data(17, "Hi Universe"), clientSpy.value());
 }
 
 // -----------------------------------------------------------------------------------------------------------------------------------------

@@ -58,7 +58,7 @@ void PrintTo(const ProtocolMessage& msg, std::ostream* os)
 
         void operator()(const Protocol::RpcCall& rpcCall) const
         {
-            *_os << "RpcCall{slotName = " << PrintToString(rpcCall.slotName)
+            *_os << "RpcCall{signalName = " << PrintToString(rpcCall.signalName)
                  << ", params = " << PrintToString(rpcCall.params)
                  << "}";
         }
@@ -157,7 +157,7 @@ struct SyncMessageExpectation
 
 struct RpcCallExpectation
 {
-    Matcher<QByteArray> slotName;
+    Matcher<QByteArray> signalName;
     Matcher<QVariantList> params;
 };
 
@@ -221,7 +221,7 @@ public:
                 ADD_FAILURE() << "Did not expect an RpcCall!";
                 return true;
             }
-            EXPECT_THAT(rpcCall.slotName, e->slotName);
+            EXPECT_THAT(rpcCall.signalName, e->signalName);
             EXPECT_THAT(rpcCall.params, e->params);
             return true;
         }
@@ -279,9 +279,9 @@ Matcher<const ProtocolMessage&> SyncMessage(Matcher<QByteArray> className, Match
     return MakeMatcher(new ProtocolMessageMatcher{SyncMessageExpectation{std::move(className), std::move(objectName), std::move(slotName), std::move(params)}});
 }
 
-Matcher<const ProtocolMessage&> RpcCall(Matcher<QByteArray> slotName, Matcher<QVariantList> params)
+Matcher<const ProtocolMessage&> RpcCall(Matcher<QByteArray> signalName, Matcher<QVariantList> params)
 {
-    return MakeMatcher(new ProtocolMessageMatcher{RpcCallExpectation{std::move(slotName), std::move(params)}});
+    return MakeMatcher(new ProtocolMessageMatcher{RpcCallExpectation{std::move(signalName), std::move(params)}});
 }
 
 Matcher<const ProtocolMessage&> InitRequest(Matcher<QByteArray> className, Matcher<QString> objectName)

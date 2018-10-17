@@ -90,7 +90,7 @@ TEST_UTIL_EXPORT ::testing::Matcher<const ProtocolMessage&> SyncMessage(
         ::testing::Matcher<QVariantList> params);
 
 TEST_UTIL_EXPORT ::testing::Matcher<const ProtocolMessage&> RpcCall(
-        ::testing::Matcher<QByteArray> slotName,
+        ::testing::Matcher<QByteArray> signalName,
         ::testing::Matcher<QVariantList> params);
 
 TEST_UTIL_EXPORT ::testing::Matcher<const ProtocolMessage&> InitRequest(

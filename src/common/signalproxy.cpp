@@ -18,6 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <algorithm>
 #include <utility>
 
 #include <QCoreApplication>
@@ -48,130 +49,6 @@ public:
     {}
     Peer* peer;
 };
-
-// ==================================================
-//  SignalRelay
-// ==================================================
-class SignalProxy::SignalRelay : public QObject
-{
-    /* Q_OBJECT is not necessary or even allowed, because we implement
-       qt_metacall ourselves (and don't use any other features of the meta
-       object system)
-    */
-public:
-    SignalRelay(SignalProxy* parent)
-        : QObject(parent)
-        , _proxy(parent)
-    {}
-    inline SignalProxy* proxy() const { return _proxy; }
-
-    int qt_metacall(QMetaObject::Call _c, int _id, void** _a) override;
-
-    void attachSignal(QObject* sender, int signalId, const QByteArray& funcName);
-    void detachSignal(QObject* sender, int signalId = -1);
-
-private:
-    struct Signal
-    {
-        QObject* sender{nullptr};
-        int signalId{-1};
-        QByteArray signature;
-        Signal(QObject* sender, int sigId, QByteArray signature)
-            : sender(sender)
-            , signalId(sigId)
-            , signature(std::move(signature))
-        {}
-        Signal() = default;
-    };
-
-    SignalProxy* _proxy;
-    QHash<int, Signal> _slots;
-};
-
-void SignalProxy::SignalRelay::attachSignal(QObject* sender, int signalId, const QByteArray& funcName)
-{
-    // we ride without safetybelts here... all checking for valid method etc pp has to be done by the caller
-    // all connected methodIds are offset by the standard methodCount of QObject
-    int slotId;
-    for (int i = 0;; i++) {
-        if (!_slots.contains(i)) {
-            slotId = i;
-            break;
-        }
-    }
-
-    QByteArray fn;
-    if (!funcName.isEmpty()) {
-        fn = QMetaObject::normalizedSignature(funcName);
-    }
-    else {
-        fn = SIGNAL(fakeMethodSignature());
-        fn = fn.replace("fakeMethodSignature()", sender->metaObject()->method(signalId).methodSignature());
-    }
-
-    _slots[slotId] = Signal(sender, signalId, fn);
-
-    QMetaObject::connect(sender, signalId, this, QObject::staticMetaObject.methodCount() + slotId);
-}
-
-void SignalProxy::SignalRelay::detachSignal(QObject* sender, int signalId)
-{
-    QHash<int, Signal>::iterator slotIter = _slots.begin();
-    while (slotIter != _slots.end()) {
-        if (slotIter->sender == sender && (signalId == -1 || slotIter->signalId == signalId)) {
-            slotIter = _slots.erase(slotIter);
-            if (signalId != -1)
-                break;
-        }
-        else {
-            ++slotIter;
-        }
-    }
-}
-
-int SignalProxy::SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void** _a)
-{
-    _id = QObject::qt_metacall(_c, _id, _a);
-    if (_id < 0)
-        return _id;
-
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_slots.contains(_id)) {
-            QObject* caller = sender();
-
-            SignalProxy::ExtendedMetaObject* eMeta = proxy()->extendedMetaObject(caller->metaObject());
-            Q_ASSERT(eMeta);
-
-            const Signal& signal = _slots[_id];
-
-            QVariantList params;
-
-            const QList<int>& argTypes = eMeta->argTypes(signal.signalId);
-            for (int i = 0; i < argTypes.size(); i++) {
-                if (argTypes[i] == 0) {
-                    qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal"
-                               << QString("%1::%2")
-                                      .arg(caller->metaObject()->className())
-                                      .arg(caller->metaObject()->method(signal.signalId).methodSignature().constData());
-                    qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
-                    return _id;
-                }
-                params << QVariant(argTypes[i], _a[i + 1]);
-            }
-
-            if (proxy()->_restrictMessageTarget) {
-                for (auto peer : proxy()->_restrictedTargets) {
-                    if (peer != nullptr)
-                        proxy()->dispatch(peer, RpcCall(signal.signature, params));
-                }
-            }
-            else
-                proxy()->dispatch(RpcCall(signal.signature, params));
-        }
-        _id -= _slots.count();
-    }
-    return _id;
-}
 
 // ==================================================
 //  SignalProxy
@@ -211,6 +88,9 @@ SignalProxy::~SignalProxy()
 
     removeAllPeers();
 
+    // Ensure that we don't try to clean up while destroying ourselves
+    disconnect(this, &QObject::destroyed, this, &SignalProxy::detachSlotObjects);
+
     _current = nullptr;
 }
 
@@ -237,7 +117,6 @@ void SignalProxy::init()
 {
     _heartBeatInterval = 0;
     _maxHeartBeatCount = 0;
-    _signalRelay = new SignalRelay(this);
     setHeartBeatInterval(30);
     setMaxHeartBeatCount(2);
     _secure = false;
@@ -249,7 +128,7 @@ void SignalProxy::initServer() {}
 
 void SignalProxy::initClient()
 {
-    attachSlot("__objectRenamed__", this, SLOT(objectRenamed(QByteArray, QString, QString)));
+    attachSlot("__objectRenamed__", this, &SignalProxy::objectRenamed);
 }
 
 void SignalProxy::setHeartBeatInterval(int secs)
@@ -405,41 +284,24 @@ SignalProxy::ExtendedMetaObject* SignalProxy::createExtendedMetaObject(const QMe
     return _extendedMetaObjects[meta];
 }
 
-bool SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& sigName)
+void SignalProxy::attachSlotObject(const QByteArray& signalName, std::unique_ptr<SlotObjectBase> slotObject)
 {
-    const QMetaObject* meta = sender->metaObject();
-    QByteArray sig(meta->normalizedSignature(signal).mid(1));
-    int methodId = meta->indexOfMethod(sig.constData());
-    if (methodId == -1 || meta->method(methodId).methodType() != QMetaMethod::Signal) {
-        qWarning() << "SignalProxy::attachSignal(): No such signal" << signal;
-        return false;
-    }
+    // Remove all attached slots related to the context upon its destruction
+    connect(slotObject->context(), &QObject::destroyed, this, &SignalProxy::detachSlotObjects, Qt::UniqueConnection);
 
-    createExtendedMetaObject(meta);
-    _signalRelay->attachSignal(sender, methodId, sigName);
-
-    disconnect(sender, &QObject::destroyed, this, &SignalProxy::detachObject);
-    connect(sender, &QObject::destroyed, this, &SignalProxy::detachObject);
-    return true;
+    _attachedSlots.emplace(QMetaObject::normalizedSignature(signalName.constData()), std::move(slotObject));
 }
 
-bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const char* slot)
+void SignalProxy::detachSlotObjects(const QObject *context)
 {
-    const QMetaObject* meta = recv->metaObject();
-    int methodId = meta->indexOfMethod(meta->normalizedSignature(slot).mid(1));
-    if (methodId == -1 || meta->method(methodId).methodType() == QMetaMethod::Method) {
-        qWarning() << "SignalProxy::attachSlot(): No such slot" << slot;
-        return false;
+    for (auto&& it = _attachedSlots.begin(); it != _attachedSlots.end(); ) {
+        if (it->second->context() == context) {
+            it = _attachedSlots.erase(it);
+        }
+        else {
+            ++it;
+        }
     }
-
-    createExtendedMetaObject(meta);
-
-    QByteArray funcName = QMetaObject::normalizedSignature(sigName.constData());
-    _attachedSlots.insert(funcName, qMakePair(recv, methodId));
-
-    disconnect(recv, &QObject::destroyed, this, &SignalProxy::detachObject);
-    connect(recv, &QObject::destroyed, this, &SignalProxy::detachObject);
-    return true;
 }
 
 void SignalProxy::synchronize(SyncableObject* obj)
@@ -464,32 +326,6 @@ void SignalProxy::synchronize(SyncableObject* obj)
     obj->synchronize(this);
 }
 
-void SignalProxy::detachObject(QObject* obj)
-{
-    // Don't try to connect SignalProxy from itself on shutdown
-    if (obj != this) {
-        detachSignals(obj);
-        detachSlots(obj);
-    }
-}
-
-void SignalProxy::detachSignals(QObject* sender)
-{
-    _signalRelay->detachSignal(sender);
-}
-
-void SignalProxy::detachSlots(QObject* receiver)
-{
-    SlotHash::iterator slotIter = _attachedSlots.begin();
-    while (slotIter != _attachedSlots.end()) {
-        if (slotIter.value().first == receiver) {
-            slotIter = _attachedSlots.erase(slotIter);
-        }
-        else
-            ++slotIter;
-    }
-}
-
 void SignalProxy::stopSynchronize(SyncableObject* obj)
 {
     // we can't use a className here, since it might be effed up, if we receive the call as a result of a decon
@@ -503,6 +339,19 @@ void SignalProxy::stopSynchronize(SyncableObject* obj)
         ++classIter;
     }
     obj->stopSynchronize(this);
+}
+
+void SignalProxy::dispatchSignal(QByteArray sigName, QVariantList params)
+{
+    RpcCall rpcCall{std::move(sigName), std::move(params)};
+    if (_restrictMessageTarget) {
+        for (auto&& peer : _restrictedTargets) {
+            dispatch(peer, rpcCall);
+        }
+    }
+    else {
+        dispatch(rpcCall);
+    }
 }
 
 template<class T>
@@ -576,6 +425,18 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
     invokeSlot(receiver, eMeta->updatedRemotelyId());
 }
 
+void SignalProxy::handle(Peer* peer, const RpcCall& rpcCall)
+{
+    Q_UNUSED(peer)
+
+    auto range = _attachedSlots.equal_range(rpcCall.signalName);
+    std::for_each(range.first, range.second, [&rpcCall](const auto& p) {
+        if (!p.second->invoke(rpcCall.params)) {
+            qWarning() << "Could not invoke slot for remote signal" << rpcCall.signalName;
+        }
+    });
+}
+
 void SignalProxy::handle(Peer* peer, const InitRequest& initRequest)
 {
     if (!_syncSlave.contains(initRequest.className)) {
@@ -611,22 +472,6 @@ void SignalProxy::handle(Peer* peer, const InitData& initData)
 
     SyncableObject* obj = _syncSlave[initData.className][initData.objectName];
     setInitData(obj, initData.initData);
-}
-
-void SignalProxy::handle(Peer* peer, const RpcCall& rpcCall)
-{
-    QObject* receiver;
-    int methodId;
-    SlotHash::const_iterator slot = _attachedSlots.constFind(rpcCall.slotName);
-    while (slot != _attachedSlots.constEnd() && slot.key() == rpcCall.slotName) {
-        receiver = (*slot).first;
-        methodId = (*slot).second;
-        if (!invokeSlot(receiver, methodId, rpcCall.params, peer)) {
-            ExtendedMetaObject* eMeta = extendedMetaObject(receiver);
-            qWarning("SignalProxy::handleSignal(): invokeMethod for \"%s\" failed ", eMeta->methodName(methodId).constData());
-        }
-        ++slot;
-    }
 }
 
 bool SignalProxy::invokeSlot(QObject* receiver, int methodId, const QVariantList& params, QVariant& returnValue, Peer* peer)
@@ -789,7 +634,7 @@ void SignalProxy::dumpProxyStats()
 
     qDebug() << this;
     qDebug() << "              Proxy Mode:" << mode;
-    qDebug() << "          attached Slots:" << _attachedSlots.count();
+    qDebug() << "          attached Slots:" << _attachedSlots.size();
     qDebug() << " number of synced Slaves:" << slaveCount;
     qDebug() << "number of Classes cached:" << _extendedMetaObjects.count();
 }
@@ -868,9 +713,19 @@ void SignalProxy::setTargetPeer(Peer* targetPeer)
     _targetPeer = targetPeer;
 }
 
-// ==================================================
-//  ExtendedMetaObject
-// ==================================================
+// ---- SlotObjectBase ---------------------------------------------------------------------------------------------------------------------
+
+SignalProxy::SlotObjectBase::SlotObjectBase(const QObject* context)
+    : _context{context}
+{}
+
+const QObject* SignalProxy::SlotObjectBase::context() const
+{
+    return _context;
+}
+
+//  ---- ExtendedMetaObject ----------------------------------------------------------------------------------------------------------------
+
 SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject* meta, bool checkConflicts)
     : _meta(meta)
     , _updatedRemotelyId(_meta->indexOfSignal("updatedRemotely()"))

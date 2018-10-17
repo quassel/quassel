@@ -328,8 +328,8 @@ void DataStreamPeer::handlePackedFunc(const QVariantList& packedFunc)
             qWarning() << Q_FUNC_INFO << "Received empty RPC call!";
             return;
         }
-        QByteArray slotName = params.takeFirst().toByteArray();
-        handle(Protocol::RpcCall(slotName, params));
+        QByteArray signalName = params.takeFirst().toByteArray();
+        handle(Protocol::RpcCall(signalName, params));
         break;
     }
     case InitRequest: {
@@ -383,7 +383,7 @@ void DataStreamPeer::dispatch(const Protocol::SyncMessage& msg)
 
 void DataStreamPeer::dispatch(const Protocol::RpcCall& msg)
 {
-    dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.slotName << msg.params);
+    dispatchPackedFunc(QVariantList() << (qint16)RpcCall << msg.signalName << msg.params);
 }
 
 void DataStreamPeer::dispatch(const Protocol::InitRequest& msg)

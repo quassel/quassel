@@ -90,29 +90,25 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     connect(p, &SignalProxy::connected, this, &CoreSession::clientsConnected);
     connect(p, &SignalProxy::disconnected, this, &CoreSession::clientsDisconnected);
 
-    p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
-    p->attachSignal(this, SIGNAL(displayMsg(Message)));
-    p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));
+    p->attachSlot(SIGNAL(sendInput(BufferInfo,QString)), this, &CoreSession::msgFromClient);
+    p->attachSignal(this, &CoreSession::displayMsg);
+    p->attachSignal(this, &CoreSession::displayStatusMsg);
 
-    p->attachSignal(this, SIGNAL(identityCreated(const Identity&)));
-    p->attachSignal(this, SIGNAL(identityRemoved(IdentityId)));
-    p->attachSlot(SIGNAL(createIdentity(const Identity&, const QVariantMap&)),
-                  this,
-                  SLOT(createIdentity(const Identity&, const QVariantMap&)));
-    p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, SLOT(removeIdentity(IdentityId)));
+    p->attachSignal(this, &CoreSession::identityCreated);
+    p->attachSignal(this, &CoreSession::identityRemoved);
+    p->attachSlot(SIGNAL(createIdentity(Identity,QVariantMap)), this, selectOverload<const Identity&, const QVariantMap&>(&CoreSession::createIdentity));
+    p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, &CoreSession::removeIdentity);
 
-    p->attachSignal(this, SIGNAL(networkCreated(NetworkId)));
-    p->attachSignal(this, SIGNAL(networkRemoved(NetworkId)));
-    p->attachSlot(SIGNAL(createNetwork(const NetworkInfo&, const QStringList&)),
-                  this,
-                  SLOT(createNetwork(const NetworkInfo&, const QStringList&)));
-    p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, SLOT(removeNetwork(NetworkId)));
+    p->attachSignal(this, &CoreSession::networkCreated);
+    p->attachSignal(this, &CoreSession::networkRemoved);
+    p->attachSlot(SIGNAL(createNetwork(NetworkInfo,QStringList)), this,&CoreSession::createNetwork);
+    p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, &CoreSession::removeNetwork);
 
-    p->attachSlot(SIGNAL(changePassword(PeerPtr, QString, QString, QString)), this, SLOT(changePassword(PeerPtr, QString, QString, QString)));
-    p->attachSignal(this, SIGNAL(passwordChanged(PeerPtr, bool)));
+    p->attachSlot(SIGNAL(changePassword(PeerPtr,QString,QString,QString)), this, &CoreSession::changePassword);
+    p->attachSignal(this, &CoreSession::passwordChanged);
 
-    p->attachSlot(SIGNAL(kickClient(int)), this, SLOT(kickClient(int)));
-    p->attachSignal(this, SIGNAL(disconnectFromCore()));
+    p->attachSlot(SIGNAL(kickClient(int)), this, &CoreSession::kickClient);
+    p->attachSignal(this, &CoreSession::disconnectFromCore);
 
     QVariantMap data;
     data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
@@ -518,8 +514,8 @@ Protocol::SessionState CoreSession::sessionState() const
 
 void CoreSession::initScriptEngine()
 {
-    signalProxy()->attachSlot(SIGNAL(scriptRequest(QString)), this, SLOT(scriptRequest(QString)));
-    signalProxy()->attachSignal(this, SIGNAL(scriptResult(QString)));
+    signalProxy()->attachSlot(SIGNAL(scriptRequest(QString)), this, &CoreSession::scriptRequest);
+    signalProxy()->attachSignal(this, &CoreSession::scriptResult);
 
     // FIXME
     // QScriptValue storage_ = scriptEngine->newQObject(storage);
