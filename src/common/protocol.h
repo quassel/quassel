@@ -206,12 +206,12 @@ struct SyncMessage : public SignalProxyMessage
 struct RpcCall : public SignalProxyMessage
 {
     RpcCall() = default;
-    RpcCall(QByteArray slotName, QVariantList params)
-        : slotName(std::move(slotName))
+    RpcCall(QByteArray signalName, QVariantList params)
+        : signalName(std::move(signalName))
         , params(std::move(params))
     {}
 
-    QByteArray slotName;
+    QByteArray signalName;
     QVariantList params;
 };
 

@@ -89,34 +89,28 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject* parent)
 
     SignalProxy* p = signalProxy();
 
-    p->attachSlot(SIGNAL(displayMsg(const Message&)), this, SLOT(recvMessage(const Message&)));
-    p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
+    p->attachSlot(SIGNAL(displayMsg(Message)), this, &Client::recvMessage);
+    p->attachSlot(SIGNAL(displayStatusMsg(QString,QString)), this, &Client::recvStatusMsg);
 
-    p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), _networkModel, SLOT(bufferUpdated(BufferInfo)));
-    p->attachSignal(inputHandler(), SIGNAL(sendInput(BufferInfo, QString)));
-    p->attachSignal(this, SIGNAL(requestNetworkStates()));
+    p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), _networkModel, &NetworkModel::bufferUpdated);
+    p->attachSignal(inputHandler(), &ClientUserInputHandler::sendInput);
+    p->attachSignal(this, &Client::requestNetworkStates);
 
-    p->attachSignal(this,
-                    SIGNAL(requestCreateIdentity(const Identity&, const QVariantMap&)),
-                    SIGNAL(createIdentity(const Identity&, const QVariantMap&)));
-    p->attachSignal(this, SIGNAL(requestRemoveIdentity(IdentityId)), SIGNAL(removeIdentity(IdentityId)));
-    p->attachSlot(SIGNAL(identityCreated(const Identity&)), this, SLOT(coreIdentityCreated(const Identity&)));
-    p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
+    p->attachSignal(this, &Client::requestCreateIdentity, SIGNAL(createIdentity(Identity,QVariantMap)));
+    p->attachSignal(this, &Client::requestRemoveIdentity, SIGNAL(removeIdentity(IdentityId)));
+    p->attachSlot(SIGNAL(identityCreated(Identity)), this, &Client::coreIdentityCreated);
+    p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, &Client::coreIdentityRemoved);
 
-    p->attachSignal(this,
-                    SIGNAL(requestCreateNetwork(const NetworkInfo&, const QStringList&)),
-                    SIGNAL(createNetwork(const NetworkInfo&, const QStringList&)));
-    p->attachSignal(this, SIGNAL(requestRemoveNetwork(NetworkId)), SIGNAL(removeNetwork(NetworkId)));
-    p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, SLOT(coreNetworkCreated(NetworkId)));
-    p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
+    p->attachSignal(this, &Client::requestCreateNetwork, SIGNAL(createNetwork(NetworkInfo,QStringList)));
+    p->attachSignal(this, &Client::requestRemoveNetwork, SIGNAL(removeNetwork(NetworkId)));
+    p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, &Client::coreNetworkCreated);
+    p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, &Client::coreNetworkRemoved);
 
-    p->attachSignal(this,
-                    SIGNAL(requestPasswordChange(PeerPtr, QString, QString, QString)),
-                    SIGNAL(changePassword(PeerPtr, QString, QString, QString)));
-    p->attachSlot(SIGNAL(passwordChanged(PeerPtr, bool)), this, SLOT(corePasswordChanged(PeerPtr, bool)));
+    p->attachSignal(this, &Client::requestPasswordChange, SIGNAL(changePassword(PeerPtr,QString,QString,QString)));
+    p->attachSlot(SIGNAL(passwordChanged(PeerPtr,bool)), this, &Client::corePasswordChanged);
 
-    p->attachSignal(this, SIGNAL(requestKickClient(int)), SIGNAL(kickClient(int)));
-    p->attachSlot(SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
+    p->attachSignal(this, &Client::requestKickClient, SIGNAL(kickClient(int)));
+    p->attachSlot(SIGNAL(disconnectFromCore()), this, &Client::disconnectFromCore);
 
     p->synchronize(backlogManager());
     p->synchronize(coreInfo());

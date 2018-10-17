@@ -24,11 +24,20 @@
 
 #include <functional>
 #include <initializer_list>
+#include <memory>
+#include <type_traits>
+#include <unordered_map>
+#include <utility>
 
+#include <QDebug>
 #include <QEvent>
+#include <QMetaMethod>
 #include <QSet>
+#include <QThread>
 
+#include "funchelpers.h"
 #include "protocol.h"
+#include "types.h"
 
 struct QMetaObject;
 class QIODevice;
@@ -40,7 +49,9 @@ class COMMON_EXPORT SignalProxy : public QObject
 {
     Q_OBJECT
 
-    class SignalRelay;
+    template<typename Slot, typename Callable = typename FunctionTraits<Slot>::FunctionType>
+    class SlotObject;
+    class SlotObjectBase;
 
 public:
     enum ProxyMode
@@ -68,8 +79,65 @@ public:
 
     bool addPeer(Peer* peer);
 
-    bool attachSignal(QObject* sender, const char* signal, const QByteArray& sigName = QByteArray());
-    bool attachSlot(const QByteArray& sigName, QObject* recv, const char* slot);
+    /**
+     * Attaches a signal for remote emission.
+     *
+     * After calling this method, whenever the sender emits the given signal, an RpcCall message is sent to connected peers.
+     * On the other end, a slot can be attached to handle this message by calling attachSlot().
+
+     * By default, the signal name being sent is as if the SIGNAL() macro had been used, i.e. the normalized signature prefixed with a '2'.
+     * This can be overridden by explicitly providing the signalName argument.
+     *
+     * @sa attachSlot
+     *
+     * @param sender The sender of the signal
+     * @param signal The signal itself (given as a member function pointer)
+     * @param signalName Optional string to be used instead of the actual signal name. Will be normalized.
+     * @returns true if attaching the signal was successful
+     */
+    template<typename Signal>
+    bool attachSignal(const typename FunctionTraits<Signal>::ClassType* sender, Signal signal, const QByteArray& signalName = {});
+
+    /**
+     * Attaches a slot to a remote signal.
+     *
+     * After calling this method, upon receipt of an RpcCall message with a signalName matching the signalName parameter, the given slot
+     * is called with the parameters contained in the message. This is intended to be used in conjunction with attachSignal() on the other
+     * end of the connection.
+     *
+     * Normally, the signalName should be given using the SIGNAL() macro; it will be normalized automatically.
+     *
+     * @sa attachSignal
+     *
+     * @param signalName Name of the signal as stored in the RpcCall message
+     * @param receiver Receiver of the signal
+     * @param slot     Slot to be called (given as a member function pointer)
+     * @returns true if attaching the slot was successful
+     */
+    template<typename Slot, typename = std::enable_if_t<std::is_member_function_pointer<Slot>::value>>
+    bool attachSlot(const QByteArray& signalName, typename FunctionTraits<Slot>::ClassType* receiver, Slot slot);
+
+    /**
+     * @overload
+     *
+     * Attaches a functor to a remote signal.
+     *
+     * After calling this method, upon receipt of an RpcCall message with a signalName matching the signalName parameter, the given functor
+     * is invoked with the parameters contained in the message. This is intended to be used in conjunction with attachSignal() on the other
+     * end of the connection. This overload can be used, for example, with a lambda that accepts arguments matching the RpcCall parameter
+     * list.
+     *
+     * The context parameter controls the lifetime of the connection; if the context is deleted, the functor is deleted as well.
+     *
+     * @sa attachSignal
+     *
+     * @param signalName Name of the signal as stored in the RpcCall message
+     * @param context QObject context controlling the lifetime of the callable
+     * @param slot    The functor to be invoked
+     * @returns true if attaching the functor was successful
+     */
+    template<typename Slot, typename = std::enable_if_t<!std::is_member_function_pointer<Slot>::value>>
+    bool attachSlot(const QByteArray& signalName, const QObject* context, Slot slot);
 
     void synchronize(SyncableObject* obj);
     void stopSynchronize(SyncableObject* obj);
@@ -129,11 +197,6 @@ public:
     Peer* targetPeer();
     void setTargetPeer(Peer* targetPeer);
 
-public slots:
-    void detachObject(QObject* obj);
-    void detachSignals(QObject* sender);
-    void detachSlots(QObject* receiver);
-
 protected:
     void customEvent(QEvent* event) override;
     void sync_call__(const SyncableObject* obj, ProxyMode modeType, const char* funcname, va_list ap);
@@ -169,6 +232,29 @@ private:
 
     int nextPeerId() { return _lastPeerId++; }
 
+    /**
+     * Attaches a SlotObject for the given signal name.
+     *
+     * @param signalName Signal name to be associated with the SlotObject
+     * @param slotObject The SlotObject instance to be invoked for incoming and matching RpcCall messages
+     */
+    void attachSlotObject(const QByteArray& signalName, std::unique_ptr<SlotObjectBase> slotObject);
+
+    /**
+     * Deletes all SlotObjects associated with the given context.
+     *
+     * @param context The context
+     */
+    void detachSlotObjects(const QObject* context);
+
+    /**
+     * Dispatches an RpcMessage for the given signal and parameters.
+     *
+     * @param signalName The signal
+     * @param params     The parameters
+     */
+    void dispatchSignal(QByteArray signalName, QVariantList params);
+
     template<class T>
     void dispatch(const T& protoMessage);
     template<class T>
@@ -194,18 +280,13 @@ private:
 
     static void disconnectDevice(QIODevice* dev, const QString& reason = QString());
 
+private:
     QHash<int, Peer*> _peerMap;
 
     // containg a list of argtypes for fast access
     QHash<const QMetaObject*, ExtendedMetaObject*> _extendedMetaObjects;
 
-    // SignalRelay for all manually attached signals
-    SignalRelay* _signalRelay;
-
-    // RPC function -> (object, slot ID)
-    using MethodId = QPair<QObject*, int>;
-    using SlotHash = QMultiHash<QByteArray, MethodId>;
-    SlotHash _attachedSlots;
+    std::unordered_multimap<QByteArray, std::unique_ptr<SlotObjectBase>, Hash<QByteArray>> _attachedSlots;  ///< Attached slot objects
 
     // slaves for sync
     using ObjectId = QHash<QString, SyncableObject*>;
@@ -225,9 +306,127 @@ private:
     Peer* _sourcePeer = nullptr;
     Peer* _targetPeer = nullptr;
 
-    friend class SignalRelay;
     friend class SyncableObject;
     friend class Peer;
+};
+
+// ---- Template function implementations ---------------------------------------
+
+template<typename Signal>
+bool SignalProxy::attachSignal(const typename FunctionTraits<Signal>::ClassType* sender, Signal signal, const QByteArray& signalName)
+{
+    static_assert(std::is_member_function_pointer<Signal>::value, "Signal must be given as member function pointer");
+
+    // Determine the signalName to be stored in the RpcCall
+    QByteArray name;
+    if (signalName.isEmpty()) {
+        auto method = QMetaMethod::fromSignal(signal);
+        if (!method.isValid()) {
+            qWarning().nospace() << Q_FUNC_INFO << ": Function pointer is not a signal";
+            return false;
+        }
+        name = "2" + method.methodSignature();  // SIGNAL() prefixes the signature with "2"
+    }
+    else {
+        name = QMetaObject::normalizedSignature(signalName.constData());
+    }
+
+    // Upon signal emission, marshall the signal's arguments into a QVariantList and dispatch an RpcCall message
+    connect(sender, signal, this, [this, signalName = std::move(name)](auto&&... args) {
+        this->dispatchSignal(std::move(signalName), {QVariant::fromValue<decltype(args)>(args)...});
+    });
+
+    return true;
+}
+
+template<typename Slot, typename>
+bool SignalProxy::attachSlot(const QByteArray& signalName, typename FunctionTraits<Slot>::ClassType* receiver, Slot slot)
+{
+    // Create a wrapper function that invokes the member function pointer for the receiver instance
+    attachSlotObject(signalName, std::make_unique<SlotObject<Slot>>(receiver, [receiver, slot = std::move(slot)](auto&&... args) {
+        (receiver->*slot)(std::forward<decltype(args)>(args)...);
+    }));
+    return true;
+}
+
+template<typename Slot, typename>
+bool SignalProxy::attachSlot(const QByteArray& signalName, const QObject* context, Slot slot)
+{
+    static_assert(!std::is_same<Slot, const char*>::value, "Old-style slots not supported");
+
+    attachSlotObject(signalName, std::make_unique<SlotObject<Slot>>(context, std::move(slot)));
+    return true;
+}
+
+/**
+ * Base object for storing a slot (or functor) to be invoked with a list of arguments.
+ *
+ * @note Having this untemplated base class for SlotObject allows for handling slots in the implementation rather than in the header.
+ */
+class COMMON_EXPORT SignalProxy::SlotObjectBase
+{
+public:
+    virtual ~SlotObjectBase() = default;
+
+    /**
+     * @returns The context associated with the slot
+     */
+    const QObject* context() const;
+
+    /**
+     * Invokes the slot with the given list of parameters.
+     *
+     * If the parameters cannot all be converted to the slot's argument types, or there is a mismatch in argument count,
+     * the invocation will fail.
+     *
+     * @param params List of arguments marshalled as QVariants
+     * @returns true if the invocation was successful
+     */
+    virtual bool invoke(const QVariantList& params) const = 0;
+
+protected:
+    SlotObjectBase(const QObject* context);
+
+private:
+    const QObject* _context;
+};
+
+/**
+ * Specialization of SlotObjectBase for a particular type of slot.
+ *
+ * Callable may be a function wrapper around a member function pointer of type Slot,
+ * or a functor that can be invoked directly.
+ *
+ * @tparam Slot     Type of the slot, used for determining the callable's signature
+ * @tparam Callable Type of the actual callable to be invoked
+ */
+template<typename Slot, typename Callable>
+class SignalProxy::SlotObject : public SlotObjectBase
+{
+public:
+    /**
+     * Constructs a SlotObject for the given callable, whose lifetime is controlled by context.
+     *
+     * @param context  Context object; if destroyed, the slot object will be destroyed as well by SignalProxy.
+     * @param callable Callable to be invoked
+     */
+    SlotObject(const QObject* context, Callable callable)
+        : SlotObjectBase(context)
+        , _callable(std::move(callable))
+    {}
+
+    // See base class
+    bool invoke(const QVariantList& params) const override
+    {
+        if (QThread::currentThread() != context()->thread()) {
+            qWarning() << "Cannot call slot in different thread!";
+            return false;
+        }
+        return invokeWithArgsList(_callable, params);
+    }
+
+private:
+    Callable _callable;
 };
 
 // ==================================================

@@ -28,8 +28,8 @@ DebugConsole::DebugConsole(QWidget* parent)
 {
     ui.setupUi(this);
 
-    Client::signalProxy()->attachSignal(this, SIGNAL(scriptRequest(QString)));
-    Client::signalProxy()->attachSlot(SIGNAL(scriptResult(QString)), this, SLOT(scriptResult(QString)));
+    Client::signalProxy()->attachSignal(this, &DebugConsole::scriptRequest);
+    Client::signalProxy()->attachSlot(SIGNAL(scriptResult(QString)), this, &DebugConsole::scriptResult);
 }
 
 void DebugConsole::on_evalButton_clicked()
