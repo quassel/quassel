@@ -141,7 +141,6 @@ class SyncObj : public SyncableObject
     Q_PROPERTY(double doubleProperty READ doubleProperty WRITE setDoubleProperty)
 
 public:
-
     int intProperty() const
     {
         return _intProperty;
@@ -271,6 +270,10 @@ TEST_F(SignalProxyTest, syncableObject)
                                                              {"intProperty", 17},
                                                              {"doubleProperty", 2.3}
                                                          }))));
+
+        // Rename object
+        EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("__objectRenamed__"), ElementsAre("SyncObj", "Bar", "Foo"))));
+        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Bar"), Eq("setStringProperty"), ElementsAre("Hi Universe"))));
     }
 
     SignalSpy spy;
@@ -346,6 +349,14 @@ TEST_F(SignalProxyTest, syncableObject)
     EXPECT_EQ(17, clientObject.intProperty());
     EXPECT_EQ("Quassel", clientObject.stringProperty());
     EXPECT_EQ(2.3, clientObject.doubleProperty());
+
+    // -- Rename object
+    spy.connect(&clientObject, &SyncObj::stringPropertyChanged);
+    serverObject.setObjectName("Bar");
+    serverObject.setStringProperty("Hi Universe");
+    ASSERT_TRUE(spy.wait());
+    EXPECT_EQ("Bar", clientObject.objectName());
+    EXPECT_EQ("Hi Universe", clientObject.stringProperty());
 }
 
 #include "signalproxytest.moc"

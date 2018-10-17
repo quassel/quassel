@@ -262,7 +262,7 @@ void IrcUser::setEncrypted(bool encrypted)
 
 void IrcUser::updateObjectName()
 {
-    renameObject(QString::number(network()->networkId().toInt()) + "/" + _nick);
+    setObjectName(QString::number(network()->networkId().toInt()) + "/" + _nick);
 }
 
 void IrcUser::updateHostmask(const QString& mask)

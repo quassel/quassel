@@ -25,7 +25,7 @@
 #include "types.h"
 
 DccConfig::DccConfig(QObject* parent)
-    : SyncableObject(parent)
+    : SyncableObject("DccConfig", parent)
 {
     static auto regTypes = []() -> bool {
         qRegisterMetaTypeStreamOperators<IpDetectionMode>("DccConfig::IpDetectionMode");
@@ -34,7 +34,6 @@ DccConfig::DccConfig(QObject* parent)
     }();
     Q_UNUSED(regTypes);
 
-    renameObject("DccConfig");
     setAllowClientUpdates(true);
 }
 

@@ -372,9 +372,12 @@ void SignalProxy::renameObject(const SyncableObject* obj, const QString& newname
 
 void SignalProxy::objectRenamed(const QByteArray& classname, const QString& newname, const QString& oldname)
 {
-    if (_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname) && oldname != newname) {
-        SyncableObject* obj = _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
-        requestInit(obj);
+    if (newname != oldname) {
+        if (_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname)) {
+            SyncableObject* obj = _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
+            obj->setObjectName(newname);
+            requestInit(obj);
+        }
     }
 }
 

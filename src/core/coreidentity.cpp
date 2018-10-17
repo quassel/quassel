@@ -110,7 +110,7 @@ CoreCertManager::CoreCertManager(CoreIdentity& identity)
 
 void CoreCertManager::setId(IdentityId id)
 {
-    renameObject(QString::number(id.toInt()));
+    setObjectName(QString::number(id.toInt()));
 }
 
 void CoreCertManager::setSslKey(const QByteArray& encoded)
