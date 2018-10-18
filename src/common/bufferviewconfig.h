@@ -46,48 +46,26 @@ public:
     BufferViewConfig(int bufferViewId, QObject* parent = nullptr);
     BufferViewConfig(int bufferViewId, const QVariantMap& properties, QObject* parent = nullptr);
 
+public:
+    int bufferViewId() const;
+    QString bufferViewName() const;
+    NetworkId networkId() const;
+    bool addNewBuffersAutomatically() const;
+    bool sortAlphabetically() const;
+    bool disableDecoration() const;
+    int allowedBufferTypes() const;
+    int minimumActivity() const;
+    bool hideInactiveBuffers() const;
+    bool hideInactiveNetworks() const;
+    bool showSearch() const;
+
+    QList<BufferId> bufferList() const;
+    QSet<BufferId> removedBuffers() const;
+    QSet<BufferId> temporarilyRemovedBuffers() const;
+
 public slots:
-    inline int bufferViewId() const { return _bufferViewId; }
-
-    inline const QString& bufferViewName() const { return _bufferViewName; }
-    void setBufferViewName(const QString& bufferViewName);
-
-    inline const NetworkId& networkId() const { return _networkId; }
-    void setNetworkId(const NetworkId& networkId);
-
-    inline bool addNewBuffersAutomatically() const { return _addNewBuffersAutomatically; }
-    void setAddNewBuffersAutomatically(bool addNewBuffersAutomatically);
-
-    inline bool sortAlphabetically() const { return _sortAlphabetically; }
-    void setSortAlphabetically(bool sortAlphabetically);
-
-    inline bool disableDecoration() const { return _disableDecoration; }
-    void setDisableDecoration(bool disableDecoration);
-
-    inline int allowedBufferTypes() const { return _allowedBufferTypes; }
-    void setAllowedBufferTypes(int bufferTypes);
-
-    inline int minimumActivity() const { return _minimumActivity; }
-    void setMinimumActivity(int activity);
-
-    inline bool hideInactiveBuffers() const { return _hideInactiveBuffers; }
-    void setHideInactiveBuffers(bool hideInactiveBuffers);
-
-    inline bool hideInactiveNetworks() const { return _hideInactiveNetworks; }
-    void setHideInactiveNetworks(bool hideInactiveNetworks);
-
-    inline bool showSearch() const { return _showSearch; }
-    void setShowSearch(bool showSearch);
-
-    virtual inline void requestSetBufferViewName(const QString& bufferViewName) { REQUEST(ARG(bufferViewName)) }
-
-    const QList<BufferId>& bufferList() const { return _buffers; }
-    const QSet<BufferId>& removedBuffers() const { return _removedBuffers; }
-    const QSet<BufferId>& temporarilyRemovedBuffers() const { return _temporarilyRemovedBuffers; }
-
     QVariantList initBufferList() const;
     void initSetBufferList(const QVariantList& buffers);
-    void initSetBufferList(const QList<BufferId>& buffers);
 
     QVariantList initRemovedBuffers() const;
     void initSetRemovedBuffers(const QVariantList& buffers);
@@ -95,36 +73,41 @@ public slots:
     QVariantList initTemporarilyRemovedBuffers() const;
     void initSetTemporarilyRemovedBuffers(const QVariantList& buffers);
 
-    void addBuffer(const BufferId& bufferId, int pos);
-    virtual inline void requestAddBuffer(const BufferId& bufferId, int pos) { REQUEST(ARG(bufferId), ARG(pos)) }
-    void moveBuffer(const BufferId& bufferId, int pos);
-    virtual inline void requestMoveBuffer(const BufferId& bufferId, int pos) { REQUEST(ARG(bufferId), ARG(pos)) }
-    void removeBuffer(const BufferId& bufferId);
-    virtual inline void requestRemoveBuffer(const BufferId& bufferId) { REQUEST(ARG(bufferId)) }
-    void removeBufferPermanently(const BufferId& bufferId);
-    virtual inline void requestRemoveBufferPermanently(const BufferId& bufferId){REQUEST(ARG(bufferId))}
+    void setBufferViewName(const QString& bufferViewName);
+    void setNetworkId(const NetworkId& networkId);
+    void setAddNewBuffersAutomatically(bool addNewBuffersAutomatically);
+    void setSortAlphabetically(bool sortAlphabetically);
+    void setDisableDecoration(bool disableDecoration);
+    void setAllowedBufferTypes(int bufferTypes);
+    void setMinimumActivity(int activity);
+    void setHideInactiveBuffers(bool hideInactiveBuffers);
+    void setHideInactiveNetworks(bool hideInactiveNetworks);
+    void setShowSearch(bool showSearch);
 
-    signals : void bufferViewNameSet(const QString& bufferViewName);  // invalidate
+    void setBufferList(const QList<BufferId>& buffers);
+
+    void addBuffer(const BufferId& bufferId, int pos);
+    void moveBuffer(const BufferId& bufferId, int pos);
+    void removeBuffer(const BufferId& bufferId);
+    void removeBufferPermanently(const BufferId& bufferId);
+
+    virtual void requestSetBufferViewName(const QString& bufferViewName);
+    virtual void requestAddBuffer(const BufferId& bufferId, int pos);
+    virtual void requestMoveBuffer(const BufferId& bufferId, int pos);
+    virtual void requestRemoveBuffer(const BufferId& bufferId);
+    virtual void requestRemoveBufferPermanently(const BufferId& bufferId);
+
+signals:
     void configChanged();
+
+    void bufferViewNameSet(const QString& bufferViewName);
     void networkIdSet(const NetworkId& networkId);
-    //   void addNewBuffersAutomaticallySet(bool addNewBuffersAutomatically); // invalidate
-    //   void sortAlphabeticallySet(bool sortAlphabetically); // invalidate
-    //   //  void disableDecorationSet(bool disableDecoration); // invalidate
-    //   void allowedBufferTypesSet(int allowedBufferTypes); // invalidate
-    //   void minimumActivitySet(int activity); // invalidate
-    //   void hideInactiveBuffersSet(bool hideInactiveBuffers); // invalidate
-    void bufferListSet();  // invalidate
+    void bufferListSet();
 
     void bufferAdded(const BufferId& bufferId, int pos);
-    //   void addBufferRequested(const BufferId &bufferId, int pos);
     void bufferMoved(const BufferId& bufferId, int pos);
-    //   void moveBufferRequested(const BufferId &bufferId, int pos);
     void bufferRemoved(const BufferId& bufferId);
     void bufferPermanentlyRemoved(const BufferId& bufferId);
-    //   void removeBufferRequested(const BufferId &bufferId);
-    //   void removeBufferPermanentlyRequested(const BufferId &bufferId);
-
-    //   void setBufferViewNameRequested(const QString &bufferViewName);
 
 private:
     int _bufferViewId = 0;         ///< ID of the associated BufferView
