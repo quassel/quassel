@@ -44,7 +44,7 @@ script:
                             -DBUILD_TESTING=ON \
                       && ninja install \
                       && ccache -s \
-                      && ninja test \
+                      && ctest -VV \
                      "
 
 # Define a separate job for OSX
@@ -72,7 +72,7 @@ jobs:
           cmake -GNinja .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DDEPLOY=$DEPLOY
           ninja install
         - ccache -s
-        - ninja test
+        - ctest -VV
       deploy:
         provider: releases
         api_key: "${GH_TOKEN}"
