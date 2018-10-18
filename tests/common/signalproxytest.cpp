@@ -220,12 +220,36 @@ public slots:
         emit syncMethodCalled(intArg, stringArg);
     }
 
-    void requestMethod(const QString& stringArg, int intArg)
+    int requestInt(const QString& stringArg, int intArg)
+    {
+        REQUEST(ARG(stringArg), ARG(intArg));
+        REQUEST_OTHER(setIntProperty, ARG(intArg));
+        emit requestMethodCalled(stringArg, intArg);
+        return -intArg;
+    }
+
+    QString requestString(const QString& stringArg, int intArg)
     {
         REQUEST(ARG(stringArg), ARG(intArg));
         REQUEST_OTHER(setStringProperty, ARG(stringArg));
         emit requestMethodCalled(stringArg, intArg);
+        return stringArg.toUpper();
     }
+
+    // Receive methods can either have the full signature of the request method + return value, or...
+    void receiveInt(const QString&, int, int reply)
+    {
+        _intProperty = reply;
+        emit intReceived(reply);
+    }
+
+    // ... only the return value
+    void receiveString(const QString& reply)
+    {
+        _stringProperty = reply;
+        emit stringReceived(reply);
+    }
+
 
 signals:
     void intPropertyChanged(int);
@@ -233,6 +257,8 @@ signals:
     void fooDataChanged(const QByteArray&);
     void syncMethodCalled(int, const QString&);
     void requestMethodCalled(const QString&, int);
+    void intReceived(int);
+    void stringReceived(const QString&);
 
 private:
     int _intProperty{};
@@ -266,7 +292,12 @@ TEST_F(SignalProxyTest, syncableObject)
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setStringProperty"), ElementsAre("World"))));
 
         // Request method
-        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestMethod"), ElementsAre("Hello", 23))));
+        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestInt"), ElementsAre("Hello", 23))));
+        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("receiveInt"), ElementsAre("Hello", 23, -23))));
+        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setIntProperty"), ElementsAre(23))));
+
+        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestString"), ElementsAre("Hello", 23))));
+        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("receiveString"), ElementsAre("HELLO"))));
         EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setStringProperty"), ElementsAre("Hello"))));
 
         // Update properties (twice)
@@ -335,10 +366,17 @@ TEST_F(SignalProxyTest, syncableObject)
 
     // -- Request method
 
-    spy.connect(&serverObject, &SyncObj::requestMethodCalled);
-    clientObject.requestMethod("Hello", 23);
+    spy.connect(&clientObject, &SyncObj::intReceived);
+    clientObject.requestInt("Hello", 23);
+    ASSERT_TRUE(spy.wait());
+    EXPECT_EQ(23, serverObject.intProperty());
+    EXPECT_EQ(-23, clientObject.intProperty());
+
+    spy.connect(&clientObject, &SyncObj::stringReceived);
+    clientObject.requestString("Hello", 23);
     ASSERT_TRUE(spy.wait());
     EXPECT_EQ("Hello", serverObject.stringProperty());
+    EXPECT_EQ("HELLO", clientObject.stringProperty());
 
     // -- Property update
 
