@@ -252,7 +252,7 @@ void BufferViewSettingsPage::newBufferView(const QString& bufferViewName)
             config->setProperty("OriginalBufferList", toVariantList<BufferId>(bufferIds));
         }
     }
-    config->initSetBufferList(bufferIds);
+    config->setBufferList(bufferIds);
 
     _newBufferViews << config;
     addBufferView(config);
@@ -484,7 +484,7 @@ void BufferViewSettingsPage::saveConfig(BufferViewConfig* config)
         Client::networkModel()->sortBufferIds(bufferIds);
 
     if (!_newBufferViews.contains(config) || config->addNewBuffersAutomatically())
-        config->initSetBufferList(bufferIds);
+        config->setBufferList(bufferIds);
 }
 
 void BufferViewSettingsPage::widgetHasChanged()
