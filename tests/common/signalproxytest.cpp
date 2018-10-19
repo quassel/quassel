@@ -179,17 +179,6 @@ public:
     }
 
 public slots:
-    QByteArray initFooData() const
-    {
-        return _fooData;
-    }
-
-    void setInitFooData(const QByteArray& data)
-    {
-        _fooData = data;
-        emit fooDataChanged(data);
-    }
-
     void setIntProperty(int value)
     {
         _intProperty = value;
@@ -254,7 +243,6 @@ public slots:
 signals:
     void intPropertyChanged(int);
     void stringPropertyChanged(const QString&);
-    void fooDataChanged(const QByteArray&);
     void syncMethodCalled(int, const QString&);
     void requestMethodCalled(const QString&, int);
     void intReceived(int);
@@ -264,7 +252,6 @@ private:
     int _intProperty{};
     QString _stringProperty;
     double _doubleProperty{};
-    QByteArray _fooData{"FOO"};
     int _syncedInt{};
     QString _syncedString;
 };
@@ -280,7 +267,6 @@ TEST_F(SignalProxyTest, syncableObject)
                                                           {"stringProperty", "Hello"},
                                                           {"intProperty", 42},
                                                           {"doubleProperty", 4.2},
-                                                          {"FooData", "FOO"}
                                                       })));
 
         // Set int property
@@ -346,7 +332,6 @@ TEST_F(SignalProxyTest, syncableObject)
     EXPECT_EQ(42, clientObject.intProperty());
     EXPECT_EQ("Hello", clientObject.stringProperty());
     EXPECT_EQ(4.2, clientObject.doubleProperty());
-    EXPECT_EQ("FOO", clientObject.initFooData());
 
     // -- Set int property
     spy.connect(&clientObject, &SyncObj::intPropertyChanged);

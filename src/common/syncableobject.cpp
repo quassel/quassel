@@ -88,7 +88,7 @@ QVariantMap SyncableObject::toVariantMap()
 
     const QMetaObject* meta = metaObject();
 
-    // we collect data from properties
+    // Collect data from properties
     QMetaProperty prop;
     QString propName;
     for (int i = 0; i < meta->propertyCount(); i++) {
@@ -99,26 +99,6 @@ QVariantMap SyncableObject::toVariantMap()
         properties[propName] = prop.read(this);
     }
 
-    // ...as well as methods, which have names starting with "init"
-    for (int i = 0; i < meta->methodCount(); i++) {
-        QMetaMethod method = meta->method(i);
-        QString methodname(SignalProxy::ExtendedMetaObject::methodName(method));
-        if (!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
-            continue;
-
-        QVariant::Type variantType = QVariant::nameToType(method.typeName());
-        if (variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
-            qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.methodSignature()
-                       << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
-            continue;
-        }
-
-        QVariant value(variantType, (const void*)nullptr);
-        QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
-        QMetaObject::invokeMethod(this, methodname.toLatin1(), genericvalue);
-
-        properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
-    }
     return properties;
 }
 
@@ -136,33 +116,11 @@ void SyncableObject::fromVariantMap(const QVariantMap& properties)
         }
 
         int propertyIndex = meta->indexOfProperty(propName.toLatin1());
-
-        if (propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
-            setInitValue(propName, iterator.value());
-        else
+        if (propertyIndex != -1 && meta->property(propertyIndex).isWritable()) {
             setProperty(propName.toLatin1(), iterator.value());
-        // qDebug() << "<<< SYNC:" << name << iterator.value();
+        }
         ++iterator;
     }
-}
-
-bool SyncableObject::setInitValue(const QString& property, const QVariant& value)
-{
-    QString handlername = QString("initSet") + property;
-    handlername[7] = handlername[7].toUpper();
-
-    QString methodSignature = QString("%1(%2)").arg(handlername).arg(value.typeName());
-    int methodIdx = metaObject()->indexOfMethod(methodSignature.toLatin1().constData());
-    if (methodIdx < 0) {
-        QByteArray normedMethodName = QMetaObject::normalizedSignature(methodSignature.toLatin1().constData());
-        methodIdx = metaObject()->indexOfMethod(normedMethodName.constData());
-    }
-    if (methodIdx < 0) {
-        return false;
-    }
-
-    QGenericArgument param(value.typeName(), value.constData());
-    return QMetaObject::invokeMethod(this, handlername.toLatin1(), param);
 }
 
 void SyncableObject::update(const QVariantMap& properties)

@@ -839,32 +839,6 @@ QByteArray SignalProxy::ExtendedMetaObject::methodName(const QMetaMethod& method
     return sig.left(sig.indexOf("("));
 }
 
-QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod& method)
-{
-    QString methodname = QString(method.methodSignature()).section("(", 0, 0);
-
-    // determine where we have to chop:
-    int upperCharPos;
-    if (method.methodType() == QMetaMethod::Slot) {
-        // we take evertyhing from the first uppercase char if it's slot
-        upperCharPos = methodname.indexOf(QRegExp("[A-Z]"));
-        if (upperCharPos == -1)
-            return QString();
-        methodname = methodname.mid(upperCharPos);
-    }
-    else {
-        // and if it's a signal we discard everything from the last uppercase char
-        upperCharPos = methodname.lastIndexOf(QRegExp("[A-Z]"));
-        if (upperCharPos == -1)
-            return QString();
-        methodname = methodname.left(upperCharPos);
-    }
-
-    methodname[0] = methodname[0].toUpper();
-
-    return methodname;
-}
-
 SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaMethod& method)
     : _methodName(SignalProxy::ExtendedMetaObject::methodName(method))
     , _returnType(QMetaType::type(method.typeName()))

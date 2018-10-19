@@ -474,7 +474,6 @@ public:
     const QMetaObject* metaObject() const { return _meta; }
 
     static QByteArray methodName(const QMetaMethod& method);
-    static QString methodBaseName(const QMetaMethod& method);
 
 private:
     const MethodDescriptor& methodDescriptor(int methodId);

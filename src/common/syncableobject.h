@@ -61,23 +61,29 @@ public:
     SyncableObject(const SyncableObject& other, QObject* parent = nullptr);
     ~SyncableObject() override;
 
-    //! Stores the object's state into a QVariantMap.
-    /** The default implementation takes dynamic properties as well as getters that have
-     *  names starting with "init" and stores them in a QVariantMap. Override this method in
-     *  derived classes in order to store the object state in a custom form.
-     *  \note  This is used by SignalProxy to transmit the state of the object to clients
-     *         that request the initial object state. Later updates use a different mechanism
-     *         and assume that the state is completely covered by properties and init* getters.
-     *         DO NOT OVERRIDE THIS unless you know exactly what you do!
+    /**
+     * Stores the object's state in a QVariantMap.
      *
-     *  \return The object's state in a QVariantMap
+     * The returned map contains the values of all properties, indexed by property name.
+     *
+     * @sa fromVariantMap
+     *
+     * @returns The object's state in a QVariantMap
      */
-    virtual QVariantMap toVariantMap();
+    QVariantMap toVariantMap();
 
-    //! Initialize the object's state from a given QVariantMap.
-    /** \see toVariantMap() for important information concerning this method.
+    /**
+     * Initializes the object's state from a given QVariantMap.
+     *
+     * Writable properties are updated from the values stored in the given map.
+     *
+     * @note Properties not contained in the map are left alone; they're not reset to default values.
+     *
+     * @sa toVariantMap
+     *
+     * @param properties Map containing property values, indexed by property name
      */
-    virtual void fromVariantMap(const QVariantMap& properties);
+    void fromVariantMap(const QVariantMap& properties);
 
     virtual bool isInitialized() const;
 
@@ -104,8 +110,6 @@ signals:
 private:
     void synchronize(SignalProxy* proxy);
     void stopSynchronize(SignalProxy* proxy);
-
-    bool setInitValue(const QString& property, const QVariant& value);
 
 private:
     QString _objectName;
