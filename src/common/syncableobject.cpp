@@ -24,6 +24,7 @@
 #include <QMetaProperty>
 
 #include "signalproxy.h"
+#include "types.h"
 #include "util.h"
 
 SyncableObject::SyncableObject(QObject* parent)
@@ -85,42 +86,47 @@ void SyncableObject::setInitialized()
 QVariantMap SyncableObject::toVariantMap()
 {
     QVariantMap properties;
+    auto count = syncMetaObject()->propertyCount();
 
-    const QMetaObject* meta = metaObject();
-
-    // Collect data from properties
-    QMetaProperty prop;
-    QString propName;
-    for (int i = 0; i < meta->propertyCount(); i++) {
-        prop = meta->property(i);
-        propName = QString(prop.name());
-        if (propName == "objectName")
-            continue;
-        properties[propName] = prop.read(this);
+    // Ignore properties defined by QObject itself
+    for (int i = staticMetaObject.propertyOffset(); i < count; ++i) {
+        auto property = syncMetaObject()->property(i);
+        properties[property.name()] = property.read(this);
     }
-
     return properties;
 }
 
 void SyncableObject::fromVariantMap(const QVariantMap& properties)
 {
-    const QMetaObject* meta = metaObject();
-
-    QVariantMap::const_iterator iterator = properties.constBegin();
-    QString propName;
-    while (iterator != properties.constEnd()) {
-        propName = iterator.key();
-        if (propName == "objectName") {
-            ++iterator;
-            continue;
+    auto it = properties.constBegin();
+    while (it != properties.constEnd()) {
+        auto property = syncMetaObject()->property(propertyIndex(it.key()));
+        if (property.isValid() && property.isWritable()) {
+            property.write(this, it.value());
         }
-
-        int propertyIndex = meta->indexOfProperty(propName.toLatin1());
-        if (propertyIndex != -1 && meta->property(propertyIndex).isWritable()) {
-            setProperty(propName.toLatin1(), iterator.value());
-        }
-        ++iterator;
+        ++it;
     }
+}
+
+int SyncableObject::propertyIndex(const QString &propertyName) const
+{
+    // We cache the property indices per class, because Qt performs a string-based lookup each time a property is accessed.
+    // Use thread_local storage to avoid having to lock the cache for each access.
+    using PropertyNameMap = std::unordered_map<QString, int, Hash<QString>>;
+    thread_local std::unordered_map<QByteArray, PropertyNameMap, Hash<QByteArray>> propertyNameCache;
+
+    auto classIt = propertyNameCache.find(syncMetaObject()->className());
+    if (classIt == propertyNameCache.end()) {
+        // Fill cache with all known properties
+        classIt = propertyNameCache.insert({syncMetaObject()->className(), PropertyNameMap{}}).first;
+        auto count = syncMetaObject()->propertyCount();
+        for (int i = staticMetaObject.propertyOffset(); i < count; i++) {
+            auto property = syncMetaObject()->property(i);
+            classIt->second.emplace(property.name(), property.propertyIndex());
+        }
+    }
+    auto propIt = classIt->second.find(propertyName);
+    return (propIt != classIt->second.end() ? propIt->second : -1);
 }
 
 void SyncableObject::update(const QVariantMap& properties)

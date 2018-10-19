@@ -22,6 +22,8 @@
 
 #include "common-export.h"
 
+#include <unordered_map>
+
 #include <QDataStream>
 #include <QMetaType>
 #include <QObject>
@@ -110,6 +112,8 @@ signals:
 private:
     void synchronize(SignalProxy* proxy);
     void stopSynchronize(SignalProxy* proxy);
+
+    int propertyIndex(const QString& propertyName) const;
 
 private:
     QString _objectName;
