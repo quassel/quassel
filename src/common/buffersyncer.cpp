@@ -77,7 +77,7 @@ bool BufferSyncer::setMarkerLine(BufferId buffer, const MsgId& msgId)
     return true;
 }
 
-QVariantList BufferSyncer::initLastSeenMsg() const
+QVariantList BufferSyncer::lastSeenMsgs() const
 {
     QVariantList list;
     QHash<BufferId, MsgId>::const_iterator iter = _lastSeenMsg.constBegin();
@@ -88,7 +88,7 @@ QVariantList BufferSyncer::initLastSeenMsg() const
     return list;
 }
 
-void BufferSyncer::initSetLastSeenMsg(const QVariantList& list)
+void BufferSyncer::setLastSeenMsgs(const QVariantList& list)
 {
     _lastSeenMsg.clear();
     Q_ASSERT(list.count() % 2 == 0);
@@ -97,7 +97,7 @@ void BufferSyncer::initSetLastSeenMsg(const QVariantList& list)
     }
 }
 
-QVariantList BufferSyncer::initMarkerLines() const
+QVariantList BufferSyncer::markerLines() const
 {
     QVariantList list;
     QHash<BufferId, MsgId>::const_iterator iter = _markerLines.constBegin();
@@ -108,7 +108,7 @@ QVariantList BufferSyncer::initMarkerLines() const
     return list;
 }
 
-void BufferSyncer::initSetMarkerLines(const QVariantList& list)
+void BufferSyncer::setMarkerLines(const QVariantList& list)
 {
     _markerLines.clear();
     Q_ASSERT(list.count() % 2 == 0);
@@ -117,7 +117,7 @@ void BufferSyncer::initSetMarkerLines(const QVariantList& list)
     }
 }
 
-QVariantList BufferSyncer::initActivities() const
+QVariantList BufferSyncer::activities() const
 {
     QVariantList list;
     auto iter = _bufferActivities.constBegin();
@@ -128,7 +128,7 @@ QVariantList BufferSyncer::initActivities() const
     return list;
 }
 
-void BufferSyncer::initSetActivities(const QVariantList& list)
+void BufferSyncer::setActivities(const QVariantList& list)
 {
     _bufferActivities.clear();
     Q_ASSERT(list.count() % 2 == 0);
@@ -175,7 +175,7 @@ int BufferSyncer::highlightCount(BufferId buffer) const
     return _highlightCounts.value(buffer, 0);
 }
 
-QVariantList BufferSyncer::initHighlightCounts() const
+QVariantList BufferSyncer::highlightCounts() const
 {
     QVariantList list;
     auto iter = _highlightCounts.constBegin();
@@ -186,7 +186,7 @@ QVariantList BufferSyncer::initHighlightCounts() const
     return list;
 }
 
-void BufferSyncer::initSetHighlightCounts(const QVariantList& list)
+void BufferSyncer::setHighlightCounts(const QVariantList& list)
 {
     _highlightCounts.clear();
     Q_ASSERT(list.count() % 2 == 0);

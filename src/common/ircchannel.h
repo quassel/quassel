@@ -38,6 +38,9 @@ class COMMON_EXPORT IrcChannel : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
+    Q_PROPERTY(QVariantMap ChanModes READ chanModesToMap WRITE chanModesFromMap)
+    Q_PROPERTY(QVariantMap UserModes READ userModesToMap WRITE userModesFromMap)
+
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(QString topic READ topic WRITE setTopic)
     Q_PROPERTY(QString password READ password WRITE setPassword)
@@ -99,14 +102,6 @@ public slots:
     void addChannelMode(const QChar& mode, const QString& value);
     void removeChannelMode(const QChar& mode, const QString& value);
 
-    // init geters
-    QVariantMap initUserModes() const;
-    QVariantMap initChanModes() const;
-
-    // init seters
-    void initSetUserModes(const QVariantMap& usermodes);
-    void initSetChanModes(const QVariantMap& chanModes);
-
 signals:
     void topicSet(const QString& topic);  // needed by NetworkModel
     void encryptedSet(bool encrypted);
@@ -130,6 +125,13 @@ signals:
 private slots:
     void ircUserDestroyed();
     void ircUserNickSet(QString nick);
+
+private:
+    QVariantMap userModesToMap() const;
+    QVariantMap chanModesToMap() const;
+
+    void userModesFromMap(const QVariantMap& usermodes);
+    void chanModesFromMap(const QVariantMap& chanModes);
 
 private:
     bool _initialized;

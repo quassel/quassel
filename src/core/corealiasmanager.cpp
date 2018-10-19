@@ -34,7 +34,7 @@ CoreAliasManager::CoreAliasManager(CoreSession* parent)
         return;
     }
 
-    initSetAliases(Core::getUserSetting(session->user(), "Aliases").toMap());
+    fromAliasMap(Core::getUserSetting(session->user(), "Aliases").toMap());
     if (isEmpty())
         loadDefaults();
 
@@ -50,7 +50,7 @@ void CoreAliasManager::save() const
         return;
     }
 
-    Core::setUserSetting(session->user(), "Aliases", initAliases());
+    Core::setUserSetting(session->user(), "Aliases", toAliasMap());
 }
 
 const Network* CoreAliasManager::network(NetworkId id) const

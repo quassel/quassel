@@ -58,7 +58,7 @@ int HighlightRuleManager::nextId()
     return max + 1;
 }
 
-QVariantMap HighlightRuleManager::initHighlightRuleList() const
+QVariantMap HighlightRuleManager::highlightRulesToMap() const
 {
     QVariantList id;
     QVariantMap highlightRuleListMap;
@@ -92,7 +92,7 @@ QVariantMap HighlightRuleManager::initHighlightRuleList() const
     return highlightRuleListMap;
 }
 
-void HighlightRuleManager::initSetHighlightRuleList(const QVariantMap& highlightRuleList)
+void HighlightRuleManager::highlightRulesFromMap(const QVariantMap& highlightRuleList)
 {
     QVariantList id = highlightRuleList["id"].toList();
     QStringList name = highlightRuleList["name"].toStringList();

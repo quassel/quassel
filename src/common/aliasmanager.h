@@ -36,6 +36,8 @@ class COMMON_EXPORT AliasManager : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
+    Q_PROPERTY(QVariantMap Aliases READ toAliasMap WRITE fromAliasMap)
+
 public:
     inline AliasManager(QObject* parent = nullptr)
         : SyncableObject(parent)
@@ -71,12 +73,12 @@ public:
     CommandList processInput(const BufferInfo& info, const QString& message);
 
 public slots:
-    virtual QVariantMap initAliases() const;
-    virtual void initSetAliases(const QVariantMap& aliases);
-
     virtual void addAlias(const QString& name, const QString& expansion);
 
 protected:
+    QVariantMap toAliasMap() const;
+    void fromAliasMap(const QVariantMap& aliases);
+
     void setAliases(const QList<Alias>& aliases) { _aliases = aliases; }
     virtual const Network* network(NetworkId) const = 0;  // core and client require different access
 

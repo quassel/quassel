@@ -244,7 +244,6 @@ void IrcChannel::part(const QString& nick)
     part(network()->ircUser(nick));
 }
 
-// SET USER MODE
 void IrcChannel::setUserModes(IrcUser* ircuser, const QString& modes)
 {
     if (isKnownUser(ircuser)) {
@@ -261,7 +260,6 @@ void IrcChannel::setUserModes(const QString& nick, const QString& modes)
     setUserModes(network()->ircUser(nick), modes);
 }
 
-// ADD USER MODE
 void IrcChannel::addUserMode(IrcUser* ircuser, const QString& mode)
 {
     if (!isKnownUser(ircuser) || !isValidChannelUserMode(mode))
@@ -281,7 +279,6 @@ void IrcChannel::addUserMode(const QString& nick, const QString& mode)
     addUserMode(network()->ircUser(nick), mode);
 }
 
-// REMOVE USER MODE
 void IrcChannel::removeUserMode(IrcUser* ircuser, const QString& mode)
 {
     if (!isKnownUser(ircuser) || !isValidChannelUserMode(mode))
@@ -301,8 +298,7 @@ void IrcChannel::removeUserMode(const QString& nick, const QString& mode)
     removeUserMode(network()->ircUser(nick), mode);
 }
 
-// INIT SET USER MODES
-QVariantMap IrcChannel::initUserModes() const
+QVariantMap IrcChannel::userModesToMap() const
 {
     QVariantMap usermodes;
     QHash<IrcUser*, QString>::const_iterator iter = _userModes.constBegin();
@@ -313,7 +309,7 @@ QVariantMap IrcChannel::initUserModes() const
     return usermodes;
 }
 
-void IrcChannel::initSetUserModes(const QVariantMap& usermodes)
+void IrcChannel::userModesFromMap(const QVariantMap& usermodes)
 {
     QList<IrcUser*> users;
     QStringList modes;
@@ -327,7 +323,7 @@ void IrcChannel::initSetUserModes(const QVariantMap& usermodes)
     joinIrcUsers(users, modes);
 }
 
-QVariantMap IrcChannel::initChanModes() const
+QVariantMap IrcChannel::chanModesToMap() const
 {
     QVariantMap channelModes;
 
@@ -366,7 +362,7 @@ QVariantMap IrcChannel::initChanModes() const
     return channelModes;
 }
 
-void IrcChannel::initSetChanModes(const QVariantMap& channelModes)
+void IrcChannel::chanModesFromMap(const QVariantMap& channelModes)
 {
     QVariantMap::const_iterator iter = channelModes["A"].toMap().constBegin();
     QVariantMap::const_iterator iterEnd = channelModes["A"].toMap().constEnd();

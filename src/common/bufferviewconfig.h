@@ -31,6 +31,10 @@ class COMMON_EXPORT BufferViewConfig : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
+    Q_PROPERTY(QVariantList BufferList READ buffersToList WRITE buffersFromList)
+    Q_PROPERTY(QVariantList RemovedBuffers READ removedBuffersToList WRITE removedBuffersFromList)
+    Q_PROPERTY(QVariantList TemporarilyRemovedBuffers READ tempRemovedBuffersToList WRITE tempRemovedBuffersFromList)
+
     Q_PROPERTY(QString bufferViewName READ bufferViewName WRITE setBufferViewName)
     Q_PROPERTY(NetworkId networkId READ networkId WRITE setNetworkId)
     Q_PROPERTY(bool addNewBuffersAutomatically READ addNewBuffersAutomatically WRITE setAddNewBuffersAutomatically)
@@ -64,15 +68,6 @@ public:
     QSet<BufferId> temporarilyRemovedBuffers() const;
 
 public slots:
-    QVariantList initBufferList() const;
-    void initSetBufferList(const QVariantList& buffers);
-
-    QVariantList initRemovedBuffers() const;
-    void initSetRemovedBuffers(const QVariantList& buffers);
-
-    QVariantList initTemporarilyRemovedBuffers() const;
-    void initSetTemporarilyRemovedBuffers(const QVariantList& buffers);
-
     void setBufferViewName(const QString& bufferViewName);
     void setNetworkId(const NetworkId& networkId);
     void setAddNewBuffersAutomatically(bool addNewBuffersAutomatically);
@@ -108,6 +103,16 @@ signals:
     void bufferMoved(const BufferId& bufferId, int pos);
     void bufferRemoved(const BufferId& bufferId);
     void bufferPermanentlyRemoved(const BufferId& bufferId);
+
+private:
+    QVariantList buffersToList() const;
+    void buffersFromList(const QVariantList& buffers);
+
+    QVariantList removedBuffersToList() const;
+    void removedBuffersFromList(const QVariantList& buffers);
+
+    QVariantList tempRemovedBuffersToList() const;
+    void tempRemovedBuffersFromList(const QVariantList& buffers);
 
 private:
     int _bufferViewId = 0;         ///< ID of the associated BufferView

@@ -56,6 +56,12 @@ class COMMON_EXPORT Network : public SyncableObject
 
     Q_ENUMS(ConnectionState)
 
+    Q_PROPERTY(QVariantMap Supports READ supportsToMap WRITE setSupports)
+    Q_PROPERTY(QVariantMap Caps READ capsToMap WRITE setCaps)
+    Q_PROPERTY(QVariantList CapsEnabled READ capsEnabledToList WRITE setCapsEnabled)
+    Q_PROPERTY(QVariantList ServerList READ serversToList WRITE setServerList)
+    Q_PROPERTY(QVariantMap IrcUsersAndChannels READ ircUsersAndChannels WRITE setIrcUsersAndChannels)
+
     Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName)
     Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer)
     Q_PROPERTY(QString myNick READ myNick WRITE setMyNick)
@@ -430,7 +436,7 @@ public slots:
     void setLatency(int latency);
     void setIdentity(IdentityId);
 
-    void setServerList(const QVariantList& serverList);
+    void setServerList(const ServerList& serverList);
     void setUseRandomServer(bool);
     void setPerform(const QStringList&);
     void setUseAutoIdentify(bool);
@@ -537,40 +543,6 @@ public slots:
 
     inline void addIrcUser(const QString& hostmask) { newIrcUser(hostmask); }
     inline void addIrcChannel(const QString& channel) { newIrcChannel(channel); }
-
-    // init geters
-    QVariantMap initSupports() const;
-    /**
-     * Get the initial list of available capabilities.
-     *
-     * @return QVariantMap of <QString, QString> indicating available capabilities and values
-     */
-    QVariantMap initCaps() const;
-    /**
-     * Get the initial list of enabled (acknowledged) capabilities.
-     *
-     * @return QVariantList of QString indicating enabled (acknowledged) capabilities and values
-     */
-    QVariantList initCapsEnabled() const { return toVariantList(capsEnabled()); }
-    inline QVariantList initServerList() const { return toVariantList(serverList()); }
-    virtual QVariantMap initIrcUsersAndChannels() const;
-
-    // init seters
-    void initSetSupports(const QVariantMap& supports);
-    /**
-     * Initialize the list of available capabilities.
-     *
-     * @param[in] caps QVariantMap of <QString, QString> indicating available capabilities and values
-     */
-    void initSetCaps(const QVariantMap& caps);
-    /**
-     * Initialize the list of enabled (acknowledged) capabilities.
-     *
-     * @param[in] caps QVariantList of QString indicating enabled (acknowledged) capabilities and values
-     */
-    inline void initSetCapsEnabled(const QVariantList& capsEnabled) { _capsEnabled = fromVariantList<QString>(capsEnabled); }
-    inline void initSetServerList(const QVariantList& serverList) { _serverList = fromVariantList<Server>(serverList); }
-    virtual void initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels);
 
     /**
      * Update IrcUser hostmask and username from mask, creating an IrcUser if one does not exist.
@@ -706,6 +678,44 @@ signals:
 protected:
     inline virtual IrcChannel* ircChannelFactory(const QString& channelname) { return new IrcChannel(channelname, this); }
     inline virtual IrcUser* ircUserFactory(const QString& hostmask) { return new IrcUser(hostmask, this); }
+
+private:
+    QVariantMap supportsToMap() const;
+    void setSupports(const QVariantMap& supports);
+
+    /**
+     * Get the initial list of available capabilities.
+     *
+     * @return QVariantMap of <QString, QString> indicating available capabilities and values
+     */
+    QVariantMap capsToMap() const;
+
+    /**
+     * Initialize the list of available capabilities.
+     *
+     * @param[in] caps QVariantMap of <QString, QString> indicating available capabilities and values
+     */
+    void setCaps(const QVariantMap& caps);
+
+    /**
+     * Get the initial list of enabled (acknowledged) capabilities.
+     *
+     * @return QVariantList of QString indicating enabled (acknowledged) capabilities and values
+     */
+    QVariantList capsEnabledToList() const;
+
+    /**
+     * Initialize the list of enabled (acknowledged) capabilities.
+     *
+     * @param[in] caps QVariantList of QString indicating enabled (acknowledged) capabilities and values
+     */
+    void setCapsEnabled(const QVariantList& capsEnabled);
+
+    QVariantList serversToList() const;
+    void setServerList(const QVariantList& serverList);
+
+    QVariantMap ircUsersAndChannels() const;
+    void setIrcUsersAndChannels(const QVariantMap& usersAndChannels);
 
 private:
     QPointer<SignalProxy> _proxy;

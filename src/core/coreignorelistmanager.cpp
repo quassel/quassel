@@ -33,7 +33,7 @@ CoreIgnoreListManager::CoreIgnoreListManager(CoreSession* parent)
         return;
     }
 
-    initSetIgnoreList(Core::getUserSetting(session->user(), "IgnoreList").toMap());
+    ignoreListFromMap(Core::getUserSetting(session->user(), "IgnoreList").toMap());
 
     // we store our settings whenever they change
     connect(this, &SyncableObject::updatedRemotely, this, &CoreIgnoreListManager::save);
@@ -56,7 +56,7 @@ void CoreIgnoreListManager::save() const
         return;
     }
 
-    Core::setUserSetting(session->user(), "IgnoreList", initIgnoreList());
+    Core::setUserSetting(session->user(), "IgnoreList", ignoreListToMap());
 }
 
 // void CoreIgnoreListManager::loadDefaults() {

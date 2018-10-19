@@ -137,7 +137,7 @@ void Network::setNetworkInfo(const NetworkInfo& info)
     if (info.codecForDecoding != codecForDecoding())
         setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
     if (info.serverList.count())
-        setServerList(toVariantList(info.serverList));  // FIXME compare components
+        setServerList(info.serverList);  // FIXME compare components
     if (info.useRandomServer != useRandomServer())
         setUseRandomServer(info.useRandomServer);
     if (info.perform != perform())
@@ -617,9 +617,9 @@ void Network::setIdentity(IdentityId id)
     emit configChanged();
 }
 
-void Network::setServerList(const QVariantList& serverList)
+void Network::setServerList(const ServerList& serverList)
 {
-    _serverList = fromVariantList<Server>(serverList);
+    _serverList = serverList;
     SYNC(ARG(serverList))
     emit configChanged();
 }
@@ -787,7 +787,7 @@ void Network::removeSupport(const QString& param)
     }
 }
 
-QVariantMap Network::initSupports() const
+QVariantMap Network::supportsToMap() const
 {
     QVariantMap supports;
     QHashIterator<QString, QString> iter(_supports);
@@ -858,7 +858,7 @@ void Network::clearCaps()
     SYNC(NO_ARG)
 }
 
-QVariantMap Network::initCaps() const
+QVariantMap Network::capsToMap() const
 {
     QVariantMap caps;
     QHashIterator<QString, QString> iter(_caps);
@@ -869,12 +869,32 @@ QVariantMap Network::initCaps() const
     return caps;
 }
 
+QVariantList Network::capsEnabledToList() const
+{
+    return toVariantList(capsEnabled());
+}
+
+void Network::setCapsEnabled(const QVariantList& capsEnabled)
+{
+    _capsEnabled = fromVariantList<QString>(capsEnabled);
+}
+
+QVariantList Network::serversToList() const
+{
+    return toVariantList(serverList());
+}
+
+void Network::setServerList(const QVariantList& serverList)
+{
+    _serverList = fromVariantList<Server>(serverList);
+}
+
 // There's potentially a lot of users and channels, so it makes sense to optimize the format of this.
 // Rather than sending a thousand maps with identical keys, we convert this into one map containing lists
 // where each list index corresponds to a particular IrcUser. This saves sending the key names a thousand times.
 // Benchmarks have shown space savings of around 56%, resulting in saving several MBs worth of data on sync
 // (without compression) with a decent amount of IrcUsers.
-QVariantMap Network::initIrcUsersAndChannels() const
+QVariantMap Network::ircUsersAndChannels() const
 {
     Q_ASSERT(proxy());
     Q_ASSERT(proxy()->targetPeer());
@@ -937,7 +957,7 @@ QVariantMap Network::initIrcUsersAndChannels() const
     return usersAndChannels;
 }
 
-void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
+void Network::setIrcUsersAndChannels(const QVariantMap& usersAndChannels)
 {
     Q_ASSERT(proxy());
     Q_ASSERT(proxy()->sourcePeer());
@@ -1005,7 +1025,7 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
     }
 }
 
-void Network::initSetSupports(const QVariantMap& supports)
+void Network::setSupports(const QVariantMap& supports)
 {
     QMapIterator<QString, QVariant> iter(supports);
     while (iter.hasNext()) {
@@ -1014,7 +1034,7 @@ void Network::initSetSupports(const QVariantMap& supports)
     }
 }
 
-void Network::initSetCaps(const QVariantMap& caps)
+void Network::setCaps(const QVariantMap& caps)
 {
     QMapIterator<QString, QVariant> iter(caps);
     while (iter.hasNext()) {
