@@ -69,6 +69,9 @@ public slots:
     void previousBuffer();
     void hideCurrentBuffer();
     void filterTextChanged(QString filterString);
+    void changeHighlight(const Direction direction);
+    void selectHighlighted();
+    void clearHighlight();
 
 signals:
     void removeBuffer(const QModelIndex &);
@@ -132,6 +135,7 @@ private:
         WasActive = 0x02
     };
     QHash<NetworkId, short> _expandedState;
+    QModelIndex m_currentHighlight;
 };
 
 
@@ -145,10 +149,13 @@ class BufferViewDelegate : public QStyledItemDelegate
 
 public:
     BufferViewDelegate(QObject *parent = 0);
-    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+
+    QModelIndex currentHighlight;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 protected:
-    virtual void customEvent(QEvent *event);
+    virtual void customEvent(QEvent *event) override;
 };
 
 
