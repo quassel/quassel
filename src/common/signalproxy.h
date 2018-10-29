@@ -28,6 +28,7 @@
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include <QDebug>
 #include <QEvent>
@@ -52,6 +53,8 @@ class COMMON_EXPORT SignalProxy : public QObject
     template<typename Slot, typename Callable = typename FunctionTraits<Slot>::FunctionType>
     class SlotObject;
     class SlotObjectBase;
+
+    class PropertyRelay;
 
 public:
     enum ProxyMode
@@ -248,6 +251,24 @@ private:
     void detachSlotObjects(const QObject* context);
 
     /**
+     * Attaches the notify signals of the given SyncableObject's properties.
+     *
+     * Properties that have a NOTIFY signal will automatically cause a SyncMessage to be sent whenever the
+     * signal is emitted on the server side.
+     *
+     * NOTIFY signals have to adhere to the following naming conventions that determine the client-side slot
+     * to be invoked:
+     *
+     * - Signals "myFooChanged()" or "myFooSet()" will invoke "setMyFoo()"
+     * - Signal "syncWhateverSlot()" will invoke "whateverSlot()"
+     *
+     * Other naming schemes are not supported and will cause a warning, as well as the signal to be ignored.
+     *
+     * @param syncObject The object to attach
+     */
+    void attachProperties(const SyncableObject* syncObject);
+
+    /**
      * Dispatches an RpcMessage for the given signal and parameters.
      *
      * @param signalName The signal
@@ -286,7 +307,8 @@ private:
     // containg a list of argtypes for fast access
     QHash<const QMetaObject*, ExtendedMetaObject*> _extendedMetaObjects;
 
-    std::unordered_multimap<QByteArray, std::unique_ptr<SlotObjectBase>, Hash<QByteArray>> _attachedSlots;  ///< Attached slot objects
+    std::unordered_multimap<QByteArray, std::unique_ptr<SlotObjectBase>, Hash<QByteArray>> _attachedSlots;              ///< Attached slot objects
+    std::unordered_map<QByteArray, std::vector<std::unique_ptr<PropertyRelay>>, Hash<QByteArray>> _attachedProperties;  ///< Attached property relays
 
     // slaves for sync
     using ObjectId = QHash<QString, SyncableObject*>;

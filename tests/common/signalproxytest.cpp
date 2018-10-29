@@ -148,9 +148,10 @@ class SyncObj : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
-    Q_PROPERTY(int intProperty READ intProperty WRITE setIntProperty NOTIFY intPropertyChanged)
+    Q_PROPERTY(int intProperty READ intProperty WRITE setIntProperty NOTIFY intPropertySet)
     Q_PROPERTY(QString stringProperty READ stringProperty WRITE setStringProperty NOTIFY stringPropertyChanged)
     Q_PROPERTY(double doubleProperty READ doubleProperty WRITE setDoubleProperty)
+    Q_PROPERTY(QString customValue READ customValue NOTIFY syncCustomSlot)
 
 public:
     int intProperty() const
@@ -178,18 +179,27 @@ public:
         return _syncedString;
     }
 
+    QString customValue() const
+    {
+        return _customValue;
+    }
+
+    void setCustomValue(const QString& value)
+    {
+        _customValue = value;
+        emit syncCustomSlot();
+    }
+
 public slots:
     void setIntProperty(int value)
     {
         _intProperty = value;
-        SYNC(ARG(value));
-        emit intPropertyChanged(value);
+        emit intPropertySet(value);
     }
 
     void setStringProperty(const QString& value)
     {
         _stringProperty = value;
-        SYNC(ARG(value));
         emit stringPropertyChanged(value);
     }
 
@@ -239,14 +249,23 @@ public slots:
         emit stringReceived(reply);
     }
 
+    void customSlot(const QString& value)
+    {
+        _customValue = value;
+        emit customSlotCalled();
+    }
+
 
 signals:
-    void intPropertyChanged(int);
+    void intPropertySet(int);
     void stringPropertyChanged(const QString&);
     void syncMethodCalled(int, const QString&);
     void requestMethodCalled(const QString&, int);
     void intReceived(int);
     void stringReceived(const QString&);
+    void syncCustomSlot();
+    void customSlotCalled();
+
 
 private:
     int _intProperty{};
@@ -254,6 +273,7 @@ private:
     double _doubleProperty{};
     int _syncedInt{};
     QString _syncedString;
+    QString _customValue;
 };
 
 TEST_F(SignalProxyTest, syncableObject)
@@ -264,13 +284,20 @@ TEST_F(SignalProxyTest, syncableObject)
         // Synchronize
         EXPECT_CALL(*_clientPeer, Dispatches(InitRequest(Eq("SyncObj"), Eq("Foo"))));
         EXPECT_CALL(*_serverPeer, Dispatches(InitData(Eq("SyncObj"), Eq("Foo"), QVariantMap{
+                                                          {"customValue", ""},
+                                                          {"doubleProperty", 4.2},
                                                           {"stringProperty", "Hello"},
                                                           {"intProperty", 42},
-                                                          {"doubleProperty", 4.2},
                                                       })));
 
         // Set int property
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setIntProperty"), ElementsAre(23))));
+
+        // Set string property
+        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setStringProperty"), ElementsAre("Hi Universe"))));
+
+        // Set custom value
+        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("customSlot"), ElementsAre("Custom"))));
 
         // Sync method
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("syncMethod"), ElementsAre(42, "World"))));
@@ -278,9 +305,9 @@ TEST_F(SignalProxyTest, syncableObject)
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setStringProperty"), ElementsAre("World"))));
 
         // Request method
-        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestInt"), ElementsAre("Hello", 23))));
-        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("receiveInt"), ElementsAre("Hello", 23, -23))));
-        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setIntProperty"), ElementsAre(23))));
+        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestInt"), ElementsAre("Hello", 42))));
+        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("receiveInt"), ElementsAre("Hello", 42, -42))));
+        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setIntProperty"), ElementsAre(42))));
 
         EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestString"), ElementsAre("Hello", 23))));
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("receiveString"), ElementsAre("HELLO"))));
@@ -290,19 +317,19 @@ TEST_F(SignalProxyTest, syncableObject)
         EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestUpdate"), ElementsAre(QVariantMap{
                                                              {"stringProperty", "Quassel"},
                                                              {"intProperty", 17},
-                                                             {"doubleProperty", 2.3}
+                                                             {"doubleProperty", 1.7}
                                                          })))).Times(2);
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setIntProperty"), ElementsAre(17))));
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setStringProperty"), ElementsAre("Quassel"))));
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("update"), ElementsAre(QVariantMap{
                                                              {"stringProperty", "Quassel"},
                                                              {"intProperty", 17},
-                                                             {"doubleProperty", 2.3}
+                                                             {"doubleProperty", 1.7}
                                                          }))));
 
         // Rename object
         EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("__objectRenamed__"), ElementsAre("SyncObj", "Bar", "Foo"))));
-        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Bar"), Eq("setStringProperty"), ElementsAre("Hi Universe"))));
+        EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Bar"), Eq("setStringProperty"), ElementsAre("Hello again"))));
     }
 
     SignalSpy spy;
@@ -311,7 +338,6 @@ TEST_F(SignalProxyTest, syncableObject)
     SyncObj serverObject;
 
     // -- Set initial data
-
     serverObject.setIntProperty(42);
     serverObject.setStringProperty("Hello");
     serverObject.setDoubleProperty(4.2);
@@ -319,7 +345,6 @@ TEST_F(SignalProxyTest, syncableObject)
     clientObject.setObjectName("Foo");
 
     // -- Synchronize
-
     spy.connect(&serverObject, &SyncableObject::initDone);
     _serverProxy.synchronize(&serverObject);
     ASSERT_TRUE(spy.wait());
@@ -328,19 +353,29 @@ TEST_F(SignalProxyTest, syncableObject)
     ASSERT_TRUE(spy.wait());
 
     // -- Check if client-side values are as expected
-
     EXPECT_EQ(42, clientObject.intProperty());
     EXPECT_EQ("Hello", clientObject.stringProperty());
     EXPECT_EQ(4.2, clientObject.doubleProperty());
 
     // -- Set int property
-    spy.connect(&clientObject, &SyncObj::intPropertyChanged);
+    spy.connect(&clientObject, &SyncObj::intPropertySet);
     serverObject.setIntProperty(23);
     ASSERT_TRUE(spy.wait());
     EXPECT_EQ(23, clientObject.intProperty());
 
-    // -- Sync method
+    // -- Set string property
+    spy.connect(&clientObject, &SyncObj::stringPropertyChanged);
+    serverObject.setStringProperty("Hi Universe");
+    ASSERT_TRUE(spy.wait());
+    EXPECT_EQ("Hi Universe", clientObject.stringProperty());
 
+    // -- Set custom value
+    spy.connect(&clientObject, &SyncObj::customSlotCalled);
+    serverObject.setCustomValue("Custom");
+    ASSERT_TRUE(spy.wait());
+    EXPECT_EQ("Custom", clientObject.customValue());
+
+    // -- Sync method
     spy.connect(&clientObject, &SyncObj::syncMethodCalled);
     serverObject.syncMethod(42, "World");
     ASSERT_TRUE(spy.wait());
@@ -350,28 +385,26 @@ TEST_F(SignalProxyTest, syncableObject)
     EXPECT_EQ("World", clientObject.stringProperty());
 
     // -- Request method
-
     spy.connect(&clientObject, &SyncObj::intReceived);
-    clientObject.requestInt("Hello", 23);
+    clientObject.requestInt("Hello", 42);
     ASSERT_TRUE(spy.wait());
     EXPECT_EQ(23, serverObject.intProperty());
-    EXPECT_EQ(-23, clientObject.intProperty());
+    EXPECT_EQ(-42, clientObject.intProperty());
 
     spy.connect(&clientObject, &SyncObj::stringReceived);
     clientObject.requestString("Hello", 23);
     ASSERT_TRUE(spy.wait());
-    EXPECT_EQ("Hello", serverObject.stringProperty());
+    EXPECT_EQ("Hi Universe", serverObject.stringProperty());
     EXPECT_EQ("HELLO", clientObject.stringProperty());
 
     // -- Property update
-
-    QVariantMap propMap{{"intProperty", 17}, {"stringProperty", "Quassel"}, {"doubleProperty", 2.3}};
+    QVariantMap propMap{{"intProperty", 17}, {"stringProperty", "Quassel"}, {"doubleProperty", 1.7}};
     spy.connect(&serverObject, &SyncableObject::updatedRemotely);
     clientObject.requestUpdate(propMap);
     ASSERT_TRUE(spy.wait());
     // We don't allow client updates yet, so the values shouldn't have changed
     EXPECT_EQ(23, serverObject.intProperty());
-    EXPECT_EQ("Hello", serverObject.stringProperty());
+    EXPECT_EQ("Hi Universe", serverObject.stringProperty());
     EXPECT_EQ(4.2, serverObject.doubleProperty());
     // Allow client updates, try again
     serverObject.setAllowClientUpdates(true);
@@ -380,18 +413,18 @@ TEST_F(SignalProxyTest, syncableObject)
     ASSERT_TRUE(spy.wait());
     EXPECT_EQ(17, serverObject.intProperty());
     EXPECT_EQ("Quassel", serverObject.stringProperty());
-    EXPECT_EQ(2.3, serverObject.doubleProperty());
+    EXPECT_EQ(1.7, serverObject.doubleProperty());
     EXPECT_EQ(17, clientObject.intProperty());
     EXPECT_EQ("Quassel", clientObject.stringProperty());
-    EXPECT_EQ(2.3, clientObject.doubleProperty());
+    EXPECT_EQ(1.7, clientObject.doubleProperty());
 
     // -- Rename object
     spy.connect(&clientObject, &SyncObj::stringPropertyChanged);
     serverObject.setObjectName("Bar");
-    serverObject.setStringProperty("Hi Universe");
+    serverObject.setStringProperty("Hello again");
     ASSERT_TRUE(spy.wait());
     EXPECT_EQ("Bar", clientObject.objectName());
-    EXPECT_EQ("Hi Universe", clientObject.stringProperty());
+    EXPECT_EQ("Hello again", clientObject.stringProperty());
 }
 
 #include "signalproxytest.moc"
