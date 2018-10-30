@@ -43,7 +43,7 @@ public:
     ChatViewSettings(ChatScene *scene);
     ChatViewSettings(ChatView *view);
 
-    inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
+    inline bool showWebPreview() { return localValue("ShowWebPreview", false).toBool(); }
     inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 
     /**
