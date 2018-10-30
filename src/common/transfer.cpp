@@ -77,7 +77,6 @@ void Transfer::setStatus(Transfer::Status status)
 {
     if (_status != status) {
         _status = status;
-        SYNC(ARG(status));
         emit statusChanged(status);
         if (status == Status::Completed || status == Status::Failed) {
             cleanUp();
@@ -118,7 +117,6 @@ void Transfer::setDirection(Transfer::Direction direction)
 {
     if (_direction != direction) {
         _direction = direction;
-        SYNC(ARG(direction));
         emit directionChanged(direction);
     }
 }
@@ -132,7 +130,6 @@ void Transfer::setAddress(const QHostAddress& address)
 {
     if (_address != address) {
         _address = address;
-        SYNC(ARG(address));
         emit addressChanged(address);
     }
 }
@@ -146,7 +143,6 @@ void Transfer::setPort(quint16 port)
 {
     if (_port != port) {
         _port = port;
-        SYNC(ARG(port));
         emit portChanged(port);
     }
 }
@@ -160,7 +156,6 @@ void Transfer::setFileName(const QString& fileName)
 {
     if (_fileName != fileName) {
         _fileName = fileName;
-        SYNC(ARG(fileName));
         emit fileNameChanged(fileName);
     }
 }
@@ -174,7 +169,6 @@ void Transfer::setFileSize(quint64 fileSize)
 {
     if (_fileSize != fileSize) {
         _fileSize = fileSize;
-        SYNC(ARG(fileSize));
         emit fileSizeChanged(fileSize);
     }
 }
@@ -188,7 +182,6 @@ void Transfer::setNick(const QString& nick)
 {
     if (_nick != nick) {
         _nick = nick;
-        SYNC(ARG(nick));
         emit nickChanged(nick);
     }
 }
