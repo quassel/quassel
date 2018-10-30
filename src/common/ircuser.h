@@ -40,24 +40,24 @@ class COMMON_EXPORT IrcUser : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
-    Q_PROPERTY(QString user READ user WRITE setUser)
-    Q_PROPERTY(QString host READ host WRITE setHost)
-    Q_PROPERTY(QString nick READ nick WRITE setNick)
-    Q_PROPERTY(QString realName READ realName WRITE setRealName)
-    Q_PROPERTY(QString account READ account WRITE setAccount)
-    Q_PROPERTY(bool away READ isAway WRITE setAway)
-    Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage)
-    Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime)
-    Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime)
-    Q_PROPERTY(QString server READ server WRITE setServer)
-    Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator)
-    Q_PROPERTY(QDateTime lastAwayMessageTime READ lastAwayMessageTime WRITE setLastAwayMessageTime)
-    Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply)
-    Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost)
-    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
+    Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userSet)
+    Q_PROPERTY(QString host READ host WRITE setHost NOTIFY hostSet)
+    Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickSet)
+    Q_PROPERTY(QString realName READ realName WRITE setRealName NOTIFY realNameSet)
+    Q_PROPERTY(QString account READ account WRITE setAccount NOTIFY accountSet)
+    Q_PROPERTY(bool away READ isAway WRITE setAway NOTIFY awaySet)
+    Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage NOTIFY awayMessageSet)
+    Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime NOTIFY idleTimeSet)
+    Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime NOTIFY loginTimeSet)
+    Q_PROPERTY(QString server READ server WRITE setServer NOTIFY serverSet)
+    Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator NOTIFY ircOperatorSet)
+    Q_PROPERTY(QDateTime lastAwayMessageTime READ lastAwayMessageTime WRITE setLastAwayMessageTime NOTIFY lastAwayMessageTimeSet)
+    Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply NOTIFY whoisServiceReplySet)
+    Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost NOTIFY suserHostSet)
+    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted NOTIFY encryptedSet)
 
     Q_PROPERTY(QStringList channels READ channels)
-    Q_PROPERTY(QString userModes READ userModes WRITE setUserModes)
+    Q_PROPERTY(QString userModes READ userModes WRITE setUserModes NOTIFY userModesSet)
 
 public:
     IrcUser(const QString& hostmask, Network* network);
@@ -174,27 +174,28 @@ public slots:
     void removeUserModes(const QString& modes);
 
 signals:
-    //   void userSet(QString user);
-    //   void hostSet(QString host);
-    void nickSet(QString newnick);  // needed in NetworkModel
-                                    //   void realNameSet(QString realName);
-    void awaySet(bool away);        // needed in NetworkModel
-                                    //   void awayMessageSet(QString awayMessage);
-                                    //   void idleTimeSet(QDateTime idleTime);
-                                    //   void loginTimeSet(QDateTime loginTime);
-                                    //   void serverSet(QString server);
-                                    //   void ircOperatorSet(QString ircOperator);
-                                    //   void lastAwayMessageTimeSet(QDateTime lastAwayMessageTime);
-                                    //   void whoisServiceReplySet(QString whoisServiceReply);
-                                    //   void suserHostSet(QString suserHost);
+    void userSet(const QString& user);
+    void hostSet(const QString& host);
+    void nickSet(const QString& newnick);
+    void realNameSet(const QString& realName);
+    void accountSet(const QString& account);
+    void awaySet(bool away);
+    void awayMessageSet(const QString& awayMessage);
+    void idleTimeSet(const QDateTime& idleTime);
+    void loginTimeSet(const QDateTime& loginTime);
+    void serverSet(const QString& server);
+    void ircOperatorSet(const QString& ircOperator);
+    void lastAwayMessageTimeSet(const QDateTime& lastAwayMessageTime);
+    void whoisServiceReplySet(const QString& whoisServiceReply);
+    void suserHostSet(const QString& suserHost);
     void encryptedSet(bool encrypted);
 
-    void userModesSet(QString modes);
-    void userModesAdded(QString modes);
-    void userModesRemoved(QString modes);
+    void userModesSet(const QString& modes);
+    void userModesAdded(const QString& modes);
+    void userModesRemoved(const QString& modes);
 
     // void channelJoined(QString channel);
-    void channelParted(QString channel);
+    void channelParted(const QString& channel);
     void quited();
 
     void lastChannelActivityUpdated(BufferId id, const QDateTime& newTime);
