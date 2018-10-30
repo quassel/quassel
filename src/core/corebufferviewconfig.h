@@ -32,8 +32,8 @@ public:
 
 public slots:
     inline void requestSetBufferViewName(const QString& bufferViewName) override { setBufferViewName(bufferViewName); }
-    inline void requestRemoveBuffer(const BufferId& bufferId) override { removeBuffer(bufferId); }
-    inline void requestRemoveBufferPermanently(const BufferId& bufferId) override { removeBufferPermanently(bufferId); }
-    inline void requestAddBuffer(const BufferId& bufferId, int pos) override { addBuffer(bufferId, pos); }
-    inline void requestMoveBuffer(const BufferId& bufferId, int pos) override { moveBuffer(bufferId, pos); }
+    inline void requestRemoveBuffer(BufferId bufferId) override { removeBuffer(bufferId); }
+    inline void requestRemoveBufferPermanently(BufferId bufferId) override { removeBufferPermanently(bufferId); }
+    inline void requestAddBuffer(BufferId bufferId, int pos) override { addBuffer(bufferId, pos); }
+    inline void requestMoveBuffer(BufferId bufferId, int pos) override { moveBuffer(bufferId, pos); }
 };
