@@ -33,13 +33,13 @@ class COMMON_EXPORT CoreInfo : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
-    Q_PROPERTY(QVariantMap coreData READ coreData WRITE setCoreData)
+    Q_PROPERTY(QVariantMap coreData READ coreData WRITE setCoreData NOTIFY coreDataChanged)
 
 public:
     explicit CoreInfo(QObject* parent = nullptr);
     inline QVariant& at(const QString& key) { return _coreData[key]; }
 
-    void setConnectedClientData(int, QVariantList);
+    void setConnectedClientData(int peerCount, const QVariantList&);
 
     /**
      * Reset the core info state, clearing anything saved
@@ -50,7 +50,7 @@ signals:
     /**
      * Signals that core information has changed
      */
-    void coreDataChanged(QVariantMap);
+    void coreDataChanged(const QVariantMap&);
 
 public slots:
     QVariantMap coreData() const;
