@@ -408,9 +408,6 @@ public:
     QByteArray codecForServer() const;
     QByteArray codecForEncoding() const;
     QByteArray codecForDecoding() const;
-    void setCodecForServer(QTextCodec* codec);
-    void setCodecForEncoding(QTextCodec* codec);
-    void setCodecForDecoding(QTextCodec* codec);
 
     QString decodeString(const QByteArray& text) const;
     QByteArray encodeString(const QString& string) const;

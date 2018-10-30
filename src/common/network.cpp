@@ -126,53 +126,30 @@ NetworkInfo Network::networkInfo() const
 void Network::setNetworkInfo(const NetworkInfo& info)
 {
     // we don't set our ID!
-    if (!info.networkName.isEmpty() && info.networkName != networkName())
-        setNetworkName(info.networkName);
-    if (info.identity > 0 && info.identity != identity())
-        setIdentity(info.identity);
-    if (info.codecForServer != codecForServer())
-        setCodecForServer(QTextCodec::codecForName(info.codecForServer));
-    if (info.codecForEncoding != codecForEncoding())
-        setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
-    if (info.codecForDecoding != codecForDecoding())
-        setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
-    if (info.serverList.count())
-        setServerList(info.serverList);  // FIXME compare components
-    if (info.useRandomServer != useRandomServer())
-        setUseRandomServer(info.useRandomServer);
-    if (info.perform != perform())
-        setPerform(info.perform);
-    if (info.useAutoIdentify != useAutoIdentify())
-        setUseAutoIdentify(info.useAutoIdentify);
-    if (info.autoIdentifyService != autoIdentifyService())
-        setAutoIdentifyService(info.autoIdentifyService);
-    if (info.autoIdentifyPassword != autoIdentifyPassword())
-        setAutoIdentifyPassword(info.autoIdentifyPassword);
-    if (info.useSasl != useSasl())
-        setUseSasl(info.useSasl);
-    if (info.saslAccount != saslAccount())
-        setSaslAccount(info.saslAccount);
-    if (info.saslPassword != saslPassword())
-        setSaslPassword(info.saslPassword);
-    if (info.useAutoReconnect != useAutoReconnect())
-        setUseAutoReconnect(info.useAutoReconnect);
-    if (info.autoReconnectInterval != autoReconnectInterval())
-        setAutoReconnectInterval(info.autoReconnectInterval);
-    if (info.autoReconnectRetries != autoReconnectRetries())
-        setAutoReconnectRetries(info.autoReconnectRetries);
-    if (info.unlimitedReconnectRetries != unlimitedReconnectRetries())
-        setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
-    if (info.rejoinChannels != rejoinChannels())
-        setRejoinChannels(info.rejoinChannels);
-    // Custom rate limiting
-    if (info.useCustomMessageRate != useCustomMessageRate())
-        setUseCustomMessageRate(info.useCustomMessageRate);
-    if (info.messageRateBurstSize != messageRateBurstSize())
-        setMessageRateBurstSize(info.messageRateBurstSize);
-    if (info.messageRateDelay != messageRateDelay())
-        setMessageRateDelay(info.messageRateDelay);
-    if (info.unlimitedMessageRate != unlimitedMessageRate())
-        setUnlimitedMessageRate(info.unlimitedMessageRate);
+
+    setNetworkName(info.networkName);
+    setIdentity(info.identity);
+    setCodecForServer(info.codecForServer);
+    setCodecForEncoding(info.codecForEncoding);
+    setCodecForDecoding(info.codecForDecoding);
+    setServerList(info.serverList);
+    setUseRandomServer(info.useRandomServer);
+    setPerform(info.perform);
+    setUseAutoIdentify(info.useAutoIdentify);
+    setAutoIdentifyService(info.autoIdentifyService);
+    setAutoIdentifyPassword(info.autoIdentifyPassword);
+    setUseSasl(info.useSasl);
+    setSaslAccount(info.saslAccount);
+    setSaslPassword(info.saslPassword);
+    setUseAutoReconnect(info.useAutoReconnect);
+    setAutoReconnectInterval(info.autoReconnectInterval);
+    setAutoReconnectRetries(info.autoReconnectRetries);
+    setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
+    setRejoinChannels(info.rejoinChannels);
+    setUseCustomMessageRate(info.useCustomMessageRate);
+    setMessageRateBurstSize(info.messageRateBurstSize);
+    setMessageRateDelay(info.messageRateDelay);
+    setUnlimitedMessageRate(info.unlimitedMessageRate);
 }
 
 QString Network::prefixToMode(const QString& prefix) const
@@ -451,69 +428,56 @@ void Network::setDefaultCodecForDecoding(const QByteArray& name)
 
 QByteArray Network::codecForServer() const
 {
-    if (_codecForServer)
-        return _codecForServer->name();
-    return QByteArray();
+    return _codecForServer ? _codecForServer->name() : QByteArray{};
 }
 
 void Network::setCodecForServer(const QByteArray& name)
 {
-    setCodecForServer(QTextCodec::codecForName(name));
-}
-
-void Network::setCodecForServer(QTextCodec* codec)
-{
-    _codecForServer = codec;
-    emit codecForServerSet(codecForServer());
-    emit configChanged();
+    if (codecForServer() != name) {
+        _codecForServer = QTextCodec::codecForName(name);
+        emit codecForServerSet(codecForServer());
+        emit configChanged();
+    }
 }
 
 QByteArray Network::codecForEncoding() const
 {
-    if (_codecForEncoding)
-        return _codecForEncoding->name();
-    return QByteArray();
+    return _codecForEncoding ? _codecForEncoding->name() : QByteArray{};
 }
 
 void Network::setCodecForEncoding(const QByteArray& name)
 {
-    setCodecForEncoding(QTextCodec::codecForName(name));
-}
-
-void Network::setCodecForEncoding(QTextCodec* codec)
-{
-    _codecForEncoding = codec;
-    emit codecForEncodingSet(codecForEncoding());
-    emit configChanged();
+    if (codecForEncoding() != name) {
+        _codecForEncoding = QTextCodec::codecForName(name);
+        emit codecForEncodingSet(codecForEncoding());
+        emit configChanged();
+    }
 }
 
 QByteArray Network::codecForDecoding() const
 {
-    if (_codecForDecoding)
-        return _codecForDecoding->name();
-    else
-        return QByteArray();
+    return _codecForDecoding ? _codecForDecoding->name() : QByteArray{};
 }
 
 void Network::setCodecForDecoding(const QByteArray& name)
 {
-    setCodecForDecoding(QTextCodec::codecForName(name));
-}
-
-void Network::setCodecForDecoding(QTextCodec* codec)
-{
-    _codecForDecoding = codec;
-    emit codecForDecodingSet(codecForDecoding());
-    emit configChanged();
+    if (codecForDecoding() != name) {
+        _codecForDecoding = QTextCodec::codecForName(name);
+        emit codecForDecodingSet(codecForDecoding());
+        emit configChanged();
+    }
 }
 
 // FIXME use server encoding if appropriate
 QString Network::decodeString(const QByteArray& text) const
 {
-    if (_codecForDecoding)
+    if (_codecForDecoding) {
         return ::decodeString(text, _codecForDecoding);
-    else
+    }
+    if (_defaultCodecForDecoding) {
         return ::decodeString(text, _defaultCodecForDecoding);
+    }
+    return QString::fromLatin1(text);
 }
 
 QByteArray Network::encodeString(const QString& string) const
@@ -529,10 +493,13 @@ QByteArray Network::encodeString(const QString& string) const
 
 QString Network::decodeServerString(const QByteArray& text) const
 {
-    if (_codecForServer)
+    if (_codecForServer) {
         return ::decodeString(text, _codecForServer);
-    else
+    }
+    if (_defaultCodecForServer) {
         return ::decodeString(text, _defaultCodecForServer);
+    }
+    return QString::fromLatin1(text);
 }
 
 QByteArray Network::encodeServerString(const QString& string) const
@@ -551,159 +518,194 @@ QByteArray Network::encodeServerString(const QString& string) const
 // ====================
 void Network::setNetworkName(const QString& networkName)
 {
-    _networkName = networkName;
-    emit networkNameSet(networkName);
-    emit configChanged();
+    if (_networkName != networkName) {
+        _networkName = networkName;
+        emit networkNameSet(networkName);
+        emit configChanged();
+    }
 }
 
 void Network::setCurrentServer(const QString& currentServer)
 {
-    _currentServer = currentServer;
-    emit currentServerSet(currentServer);
+    if (_currentServer != currentServer) {
+        _currentServer = currentServer;
+        emit currentServerSet(currentServer);
+    }
 }
 
 void Network::setConnected(bool connected)
 {
-    if (_connected == connected)
-        return;
-
-    _connected = connected;
-    if (!connected) {
-        setMyNick(QString());
-        setCurrentServer(QString());
-        removeChansAndUsers();
+    if (_connected != connected) {
+        _connected = connected;
+        if (!connected) {
+            setMyNick({});
+            setCurrentServer({});
+            removeChansAndUsers();
+        }
+        emit connectedSet(connected);
     }
-    emit connectedSet(connected);
 }
 
-// void Network::setConnectionState(ConnectionState state) {
 void Network::setConnectionState(int state)
 {
-    _connectionState = (ConnectionState)state;
-    // qDebug() << "netstate" << networkId() << networkName() << state;
-    emit connectionStateSet(_connectionState);
+    if (_connectionState != static_cast<ConnectionState>(state)) {
+        _connectionState = static_cast<ConnectionState>(state);
+        emit connectionStateSet(_connectionState);
+    }
 }
 
 void Network::setMyNick(const QString& nickname)
 {
-    _myNick = nickname;
-    if (!_myNick.isEmpty() && !ircUser(myNick())) {
-        newIrcUser(myNick());
+    if (_myNick != nickname) {
+        _myNick = nickname;
+        if (!_myNick.isEmpty() && !ircUser(myNick())) {
+            newIrcUser(myNick());
+        }
+        emit myNickSet(nickname);
     }
-    emit myNickSet(nickname);
 }
 
 void Network::setLatency(int latency)
 {
-    if (_latency == latency)
-        return;
-    _latency = latency;
-    emit latencySet(latency);
+    if (_latency != latency) {
+        _latency = latency;
+        emit latencySet(latency);
+    }
 }
 
 void Network::setIdentity(IdentityId id)
 {
-    _identity = id;
-    emit identitySet(id);
-    emit configChanged();
+    if (_identity != id) {
+        _identity = id;
+        emit identitySet(id);
+        emit configChanged();
+    }
 }
 
 void Network::setServerList(const ServerList& serverList)
 {
-    _serverList = serverList;
-    emit serverListSet(_serverList);
-    emit configChanged();
+    if (_serverList != serverList) {
+        _serverList = serverList;
+        emit serverListSet(_serverList);
+        emit configChanged();
+    }
 }
 
 void Network::setUseRandomServer(bool use)
 {
-    _useRandomServer = use;
-    emit useRandomServerSet(use);
-    emit configChanged();
+    if (_useRandomServer != use) {
+        _useRandomServer = use;
+        emit useRandomServerSet(use);
+        emit configChanged();
+    }
 }
 
 void Network::setPerform(const QStringList& perform)
 {
-    _perform = perform;
-    emit performSet(perform);
-    emit configChanged();
+    if (_perform != perform) {
+        _perform = perform;
+        emit performSet(perform);
+        emit configChanged();
+    }
 }
 
 void Network::setUseAutoIdentify(bool use)
 {
-    _useAutoIdentify = use;
-    emit useAutoIdentifySet(use);
-    emit configChanged();
+    if (_useAutoIdentify != use) {
+        _useAutoIdentify = use;
+        emit useAutoIdentifySet(use);
+        emit configChanged();
+    }
 }
 
 void Network::setAutoIdentifyService(const QString& service)
 {
-    _autoIdentifyService = service;
-    emit autoIdentifyServiceSet(service);
-    emit configChanged();
+    if (_autoIdentifyService != service) {
+        _autoIdentifyService = service;
+        emit autoIdentifyServiceSet(service);
+        emit configChanged();
+    }
 }
 
 void Network::setAutoIdentifyPassword(const QString& password)
 {
-    _autoIdentifyPassword = password;
-    emit autoIdentifyPasswordSet(password);
-    emit configChanged();
+    if (_autoIdentifyPassword != password) {
+        _autoIdentifyPassword = password;
+        emit autoIdentifyPasswordSet(password);
+        emit configChanged();
+    }
 }
 
 void Network::setUseSasl(bool use)
 {
-    _useSasl = use;
-    emit useSaslSet(use);
-    emit configChanged();
+    if (_useSasl != use) {
+        _useSasl = use;
+        emit useSaslSet(use);
+        emit configChanged();
+    }
 }
 
 void Network::setSaslAccount(const QString& account)
 {
-    _saslAccount = account;
-    emit saslAccountSet(account);
-    emit configChanged();
+    if (_saslAccount != account) {
+        _saslAccount = account;
+        emit saslAccountSet(account);
+        emit configChanged();
+    }
 }
 
 void Network::setSaslPassword(const QString& password)
 {
-    _saslPassword = password;
-    emit saslPasswordSet(password);
-    emit configChanged();
+    if (_saslPassword != password) {
+        _saslPassword = password;
+        emit saslPasswordSet(password);
+        emit configChanged();
+    }
 }
 
 void Network::setUseAutoReconnect(bool use)
 {
-    _useAutoReconnect = use;
-    emit useAutoReconnectSet(use);
-    emit configChanged();
+    if (_useAutoReconnect != use) {
+        _useAutoReconnect = use;
+        emit useAutoReconnectSet(use);
+        emit configChanged();
+    }
 }
 
 void Network::setAutoReconnectInterval(quint32 interval)
 {
-    _autoReconnectInterval = interval;
-    emit autoReconnectIntervalSet(interval);
-    emit configChanged();
+    if (_autoReconnectInterval != interval) {
+        _autoReconnectInterval = interval;
+        emit autoReconnectIntervalSet(interval);
+        emit configChanged();
+    }
 }
 
 void Network::setAutoReconnectRetries(quint16 retries)
 {
-    _autoReconnectRetries = retries;
-    emit autoReconnectRetriesSet(retries);
-    emit configChanged();
+    if (_autoReconnectRetries != retries) {
+        _autoReconnectRetries = retries;
+        emit autoReconnectRetriesSet(retries);
+        emit configChanged();
+    }
 }
 
 void Network::setUnlimitedReconnectRetries(bool unlimited)
 {
-    _unlimitedReconnectRetries = unlimited;
-    emit unlimitedReconnectRetriesSet(unlimited);
-    emit configChanged();
+    if (_unlimitedReconnectRetries != unlimited) {
+        _unlimitedReconnectRetries = unlimited;
+        emit unlimitedReconnectRetriesSet(unlimited);
+        emit configChanged();
+    }
 }
 
 void Network::setRejoinChannels(bool rejoin)
 {
-    _rejoinChannels = rejoin;
-    emit rejoinChannelsSet(rejoin);
-    emit configChanged();
+    if (_rejoinChannels != rejoin) {
+        _rejoinChannels = rejoin;
+        emit rejoinChannelsSet(rejoin);
+        emit configChanged();
+    }
 }
 
 void Network::setUseCustomMessageRate(bool useCustomRate)
