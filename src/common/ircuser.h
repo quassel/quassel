@@ -217,7 +217,7 @@ private:
      */
     inline void markAwayChanged() { _awayChanged = true; }
 
-    bool _initialized;
+    bool _initialized{false};
 
     QString _nick;
     QString _user;
@@ -225,7 +225,7 @@ private:
     QString _realName;
     QString _account;  /// Account name, e.g. NickServ/SASL account
     QString _awayMessage;
-    bool _away;
+    bool _away{false};
     QString _server;
     QDateTime _idleTime;
     QDateTime _idleTimeSet;
@@ -234,21 +234,21 @@ private:
     QDateTime _lastAwayMessageTime;
     QString _whoisServiceReply;
     QString _suserHost;
-    bool _encrypted;
+    bool _encrypted{false};
 
     // QSet<QString> _channels;
     QSet<IrcChannel*> _channels;
     QString _userModes;
 
-    Network* _network;
+    Network* _network{nullptr};
 
-    QTextCodec* _codecForEncoding;
-    QTextCodec* _codecForDecoding;
+    QTextCodec* _codecForEncoding{nullptr};
+    QTextCodec* _codecForDecoding{nullptr};
 
     QHash<BufferId, QDateTime> _lastActivity;
     QHash<BufferId, QDateTime> _lastSpokenTo;
 
     // Given it's never been acknowledged, assume changes exist on IrcUser creation
     /// Tracks if changes in away state (away/here, message) have yet to be acknowledged
-    bool _awayChanged = true;
+    bool _awayChanged{true};
 };

@@ -29,24 +29,11 @@
 #include "util.h"
 
 IrcUser::IrcUser(const QString& hostmask, Network* network)
-    : SyncableObject(network)
-    , _initialized(false)
-    , _nick(nickFromMask(hostmask))
-    , _user(userFromMask(hostmask))
-    , _host(hostFromMask(hostmask))
-    , _realName()
-    , _awayMessage()
-    , _away(false)
-    , _server()
-    ,
-    // _idleTime(QDateTime::currentDateTime()),
-    _ircOperator()
-    , _lastAwayMessageTime()
-    , _whoisServiceReply()
-    , _encrypted(false)
-    , _network(network)
-    , _codecForEncoding(nullptr)
-    , _codecForDecoding(nullptr)
+    : SyncableObject{network}
+    , _nick{nickFromMask(hostmask)}
+    , _user{userFromMask(hostmask)}
+    , _host{hostFromMask(hostmask)}
+    , _network{network}
 {
     updateObjectName();
     _lastAwayMessageTime.setTimeSpec(Qt::UTC);
