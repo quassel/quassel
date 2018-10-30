@@ -42,9 +42,9 @@ class COMMON_EXPORT IrcChannel : public SyncableObject
     Q_PROPERTY(QVariantMap UserModes READ userModesToMap WRITE userModesFromMap)
 
     Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(QString topic READ topic WRITE setTopic)
-    Q_PROPERTY(QString password READ password WRITE setPassword)
-    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
+    Q_PROPERTY(QString topic READ topic WRITE setTopic NOTIFY topicSet)
+    Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY passwordSet)
+    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted NOTIFY encryptedSet)
 
 public:
     IrcChannel(const QString& channelname, Network* network);
@@ -105,7 +105,7 @@ public slots:
 signals:
     void topicSet(const QString& topic);  // needed by NetworkModel
     void encryptedSet(bool encrypted);
-    //   void passwordSet(const QString &password);
+    void passwordSet(const QString& password);
     //   void userModesSet(QString nick, QString modes);
     //   void userModeAdded(QString nick, QString mode);
     //   void userModeRemoved(QString nick, QString mode);
@@ -115,16 +115,16 @@ signals:
     void ircUsersJoined(const QList<IrcUser*>& ircusers);
     //   void ircUsersJoined(QStringList nicks, QStringList modes);
     void ircUserParted(IrcUser* ircuser);
-    void ircUserNickSet(IrcUser* ircuser, QString nick);
-    void ircUserModeAdded(IrcUser* ircuser, QString mode);
-    void ircUserModeRemoved(IrcUser* ircuser, QString mode);
-    void ircUserModesSet(IrcUser* ircuser, QString modes);
+    void ircUserNickSet(IrcUser* ircuser, const QString& nick);
+    void ircUserModeAdded(IrcUser* ircuser, const QString& mode);
+    void ircUserModeRemoved(IrcUser* ircuser, const QString& mode);
+    void ircUserModesSet(IrcUser* ircuser, const QString& modes);
 
     void parted();  // convenience signal emitted before channels destruction
 
 private slots:
     void ircUserDestroyed();
-    void ircUserNickSet(QString nick);
+    void ircUserNickSet(const QString& nick);
 
 private:
     QVariantMap userModesToMap() const;

@@ -123,22 +123,26 @@ QByteArray IrcChannel::encodeString(const QString& string) const
 // ====================
 void IrcChannel::setTopic(const QString& topic)
 {
-    _topic = topic;
-    SYNC(ARG(topic))
-    emit topicSet(topic);
+    if (_topic != topic) {
+        _topic = topic;
+        emit topicSet(topic);
+    }
 }
 
 void IrcChannel::setPassword(const QString& password)
 {
-    _password = password;
-    SYNC(ARG(password))
+    if (_password != password) {
+        _password = password;
+        emit passwordSet(password);
+    }
 }
 
 void IrcChannel::setEncrypted(bool encrypted)
 {
-    _encrypted = encrypted;
-    SYNC(ARG(encrypted))
-    emit encryptedSet(encrypted);
+    if (_encrypted != encrypted) {
+        _encrypted = encrypted;
+        emit encryptedSet(encrypted);
+    }
 }
 
 void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& modes)
@@ -179,7 +183,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& m
 
         _userModes[ircuser] = sortedModes[i];
         ircuser->joinChannel(this, true);
-        connect(ircuser, &IrcUser::nickSet, this, selectOverload<QString>(&IrcChannel::ircUserNickSet));
+        connect(ircuser, &IrcUser::nickSet, this, selectOverload<const QString&>(&IrcChannel::ircUserNickSet));
 
         // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
         // If you wonder why there is no counterpart to ircUserJoined:
@@ -400,7 +404,7 @@ void IrcChannel::ircUserDestroyed()
     // this leads only to fuck ups.
 }
 
-void IrcChannel::ircUserNickSet(QString nick)
+void IrcChannel::ircUserNickSet(const QString& nick)
 {
     auto* ircUser = qobject_cast<IrcUser*>(sender());
     Q_ASSERT(ircUser);
