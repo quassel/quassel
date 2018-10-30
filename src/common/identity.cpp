@@ -190,121 +190,157 @@ void Identity::setToDefaults()
 
 /*** setters ***/
 
-void Identity::setId(IdentityId _id)
+void Identity::setId(IdentityId id)
 {
-    _identityId = _id;
-    SYNC(ARG(_id))
-    emit idSet(_id);
-    setObjectName(QString::number(id().toInt()));
+    if (_identityId != id) {
+        _identityId = id;
+        setObjectName(QString::number(id.toInt()));
+        emit idSet(id);
+    }
 }
 
 void Identity::setIdentityName(const QString& identityName)
 {
-    _identityName = identityName;
-    SYNC(ARG(identityName))
+    if (_identityName != identityName) {
+        _identityName = identityName;
+        emit identityNameSet(identityName);
+    }
 }
 
 void Identity::setRealName(const QString& realName)
 {
-    _realName = realName;
-    SYNC(ARG(realName))
+    if (_realName != realName) {
+        _realName = realName;
+        emit realNameSet(realName);
+    }
 }
 
 void Identity::setNicks(const QStringList& nicks)
 {
-    _nicks = nicks;
-    SYNC(ARG(nicks))
-    emit nicksSet(nicks);
+    if (_nicks != nicks) {
+        _nicks = nicks;
+        emit nicksSet(nicks);
+    }
 }
 
 void Identity::setAwayNick(const QString& nick)
 {
-    _awayNick = nick;
-    SYNC(ARG(nick))
+    if (_awayNick != nick) {
+        _awayNick = nick;
+        emit awayNickSet(nick);
+    }
 }
 
 void Identity::setAwayReason(const QString& reason)
 {
-    _awayReason = reason;
-    SYNC(ARG(reason))
+    if (_awayReason != reason) {
+        _awayReason = reason;
+        emit awayReasonSet(reason);
+    }
 }
 
 void Identity::setAwayNickEnabled(bool enabled)
 {
-    _awayNickEnabled = enabled;
-    SYNC(ARG(enabled))
+    if (_awayNickEnabled != enabled) {
+        _awayNickEnabled = enabled;
+        emit awayNickEnabledSet(enabled);
+    }
 }
 
 void Identity::setAwayReasonEnabled(bool enabled)
 {
-    _awayReasonEnabled = enabled;
-    SYNC(ARG(enabled))
+    if (_awayReasonEnabled != enabled) {
+        _awayReasonEnabled = enabled;
+        emit awayReasonEnabledSet(enabled);
+    }
 }
 
 void Identity::setAutoAwayEnabled(bool enabled)
 {
-    _autoAwayEnabled = enabled;
-    SYNC(ARG(enabled))
+    if (_autoAwayEnabled != enabled) {
+        _autoAwayEnabled = enabled;
+        emit autoAwayEnabledSet(enabled);
+    }
 }
 
 void Identity::setAutoAwayTime(int time)
 {
-    _autoAwayTime = time;
-    SYNC(ARG(time))
+    if (_autoAwayTime != time) {
+        _autoAwayTime = time;
+        emit autoAwayTimeSet(time);
+    }
 }
 
 void Identity::setAutoAwayReason(const QString& reason)
 {
-    _autoAwayReason = reason;
-    SYNC(ARG(reason))
+    if (_autoAwayReason != reason) {
+        _autoAwayReason = reason;
+        emit autoAwayReasonSet(reason);
+    }
 }
 
 void Identity::setAutoAwayReasonEnabled(bool enabled)
 {
-    _autoAwayReasonEnabled = enabled;
-    SYNC(ARG(enabled))
+    if (_autoAwayReasonEnabled != enabled) {
+        _autoAwayReasonEnabled = enabled;
+        emit autoAwayReasonEnabledSet(enabled);
+    }
 }
 
 void Identity::setDetachAwayEnabled(bool enabled)
 {
-    _detachAwayEnabled = enabled;
-    SYNC(ARG(enabled))
+    if (_detachAwayEnabled != enabled) {
+        _detachAwayEnabled = enabled;
+        emit detachAwayEnabledSet(enabled);
+    }
 }
 
 void Identity::setDetachAwayReason(const QString& reason)
 {
-    _detachAwayReason = reason;
-    SYNC(ARG(reason))
+    if (_detachAwayReason != reason) {
+        _detachAwayReason = reason;
+        emit detachAwayReasonSet(reason);
+    }
 }
 
 void Identity::setDetachAwayReasonEnabled(bool enabled)
 {
-    _detachAwayReasonEnabled = enabled;
-    SYNC(ARG(enabled))
+    if (_detachAwayReasonEnabled != enabled) {
+        _detachAwayReasonEnabled = enabled;
+        emit detachAwayReasonEnabledSet(enabled);
+    }
 }
 
 void Identity::setIdent(const QString& ident)
 {
-    _ident = ident;
-    SYNC(ARG(ident))
+    if (_ident != ident) {
+        _ident = ident;
+        emit identSet(ident);
+    }
 }
 
 void Identity::setKickReason(const QString& reason)
 {
-    _kickReason = reason;
-    SYNC(ARG(reason))
+    if (_kickReason != reason) {
+        _kickReason = reason;
+        emit kickReasonSet(reason);
+    }
 }
 
 void Identity::setPartReason(const QString& reason)
 {
-    _partReason = reason;
-    SYNC(ARG(reason))
+    if (_partReason != reason) {
+        _partReason = reason;
+        emit partReasonSet(reason);
+    }
 }
 
 void Identity::setQuitReason(const QString& reason)
 {
-    _quitReason = reason;
-    SYNC(ARG(reason))
+    if (_quitReason != reason) {
+        _quitReason = reason;
+        emit quitReasonSet(reason);
+    }
 }
 
 /***  ***/
