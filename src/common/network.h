@@ -59,38 +59,38 @@ class COMMON_EXPORT Network : public SyncableObject
     Q_PROPERTY(QVariantMap Supports READ supportsToMap WRITE setSupports)
     Q_PROPERTY(QVariantMap Caps READ capsToMap WRITE setCaps)
     Q_PROPERTY(QVariantList CapsEnabled READ capsEnabledToList WRITE setCapsEnabled)
-    Q_PROPERTY(QVariantList ServerList READ serversToList WRITE setServerList)
+    Q_PROPERTY(QVariantList ServerList READ serversToList WRITE setServerList NOTIFY serverListSet)
     Q_PROPERTY(QVariantMap IrcUsersAndChannels READ ircUsersAndChannels WRITE setIrcUsersAndChannels)
 
-    Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName)
-    Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer)
-    Q_PROPERTY(QString myNick READ myNick WRITE setMyNick)
-    Q_PROPERTY(int latency READ latency WRITE setLatency)
-    Q_PROPERTY(QByteArray codecForServer READ codecForServer WRITE setCodecForServer)
-    Q_PROPERTY(QByteArray codecForEncoding READ codecForEncoding WRITE setCodecForEncoding)
-    Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding)
-    Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity)
-    Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected)
+    Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName NOTIFY networkNameSet)
+    Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer NOTIFY currentServerSet)
+    Q_PROPERTY(QString myNick READ myNick WRITE setMyNick NOTIFY myNickSet)
+    Q_PROPERTY(int latency READ latency WRITE setLatency NOTIFY latencySet)
+    Q_PROPERTY(QByteArray codecForServer READ codecForServer WRITE setCodecForServer NOTIFY codecForServerSet)
+    Q_PROPERTY(QByteArray codecForEncoding READ codecForEncoding WRITE setCodecForEncoding NOTIFY codecForEncodingSet)
+    Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding NOTIFY codecForDecodingSet)
+    Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity NOTIFY identitySet)
+    Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected NOTIFY connectedSet)
     // Q_PROPERTY(Network::ConnectionState connectionState READ connectionState WRITE setConnectionState)
-    Q_PROPERTY(int connectionState READ connectionState WRITE setConnectionState)
-    Q_PROPERTY(bool useRandomServer READ useRandomServer WRITE setUseRandomServer)
-    Q_PROPERTY(QStringList perform READ perform WRITE setPerform)
-    Q_PROPERTY(bool useAutoIdentify READ useAutoIdentify WRITE setUseAutoIdentify)
-    Q_PROPERTY(QString autoIdentifyService READ autoIdentifyService WRITE setAutoIdentifyService)
-    Q_PROPERTY(QString autoIdentifyPassword READ autoIdentifyPassword WRITE setAutoIdentifyPassword)
-    Q_PROPERTY(bool useSasl READ useSasl WRITE setUseSasl)
-    Q_PROPERTY(QString saslAccount READ saslAccount WRITE setSaslAccount)
-    Q_PROPERTY(QString saslPassword READ saslPassword WRITE setSaslPassword)
-    Q_PROPERTY(bool useAutoReconnect READ useAutoReconnect WRITE setUseAutoReconnect)
-    Q_PROPERTY(quint32 autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval)
-    Q_PROPERTY(quint16 autoReconnectRetries READ autoReconnectRetries WRITE setAutoReconnectRetries)
-    Q_PROPERTY(bool unlimitedReconnectRetries READ unlimitedReconnectRetries WRITE setUnlimitedReconnectRetries)
-    Q_PROPERTY(bool rejoinChannels READ rejoinChannels WRITE setRejoinChannels)
+    Q_PROPERTY(int connectionState READ connectionState WRITE setConnectionState NOTIFY connectionStateSet)
+    Q_PROPERTY(bool useRandomServer READ useRandomServer WRITE setUseRandomServer NOTIFY useRandomServerSet)
+    Q_PROPERTY(QStringList perform READ perform WRITE setPerform NOTIFY performSet)
+    Q_PROPERTY(bool useAutoIdentify READ useAutoIdentify WRITE setUseAutoIdentify NOTIFY useAutoIdentifySet)
+    Q_PROPERTY(QString autoIdentifyService READ autoIdentifyService WRITE setAutoIdentifyService NOTIFY autoIdentifyServiceSet)
+    Q_PROPERTY(QString autoIdentifyPassword READ autoIdentifyPassword WRITE setAutoIdentifyPassword NOTIFY autoIdentifyPasswordSet)
+    Q_PROPERTY(bool useSasl READ useSasl WRITE setUseSasl NOTIFY useSaslSet)
+    Q_PROPERTY(QString saslAccount READ saslAccount WRITE setSaslAccount NOTIFY saslAccountSet)
+    Q_PROPERTY(QString saslPassword READ saslPassword WRITE setSaslPassword NOTIFY saslPasswordSet)
+    Q_PROPERTY(bool useAutoReconnect READ useAutoReconnect WRITE setUseAutoReconnect NOTIFY useAutoReconnectSet)
+    Q_PROPERTY(quint32 autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval NOTIFY autoReconnectIntervalSet)
+    Q_PROPERTY(quint16 autoReconnectRetries READ autoReconnectRetries WRITE setAutoReconnectRetries NOTIFY autoReconnectRetriesSet)
+    Q_PROPERTY(bool unlimitedReconnectRetries READ unlimitedReconnectRetries WRITE setUnlimitedReconnectRetries NOTIFY unlimitedReconnectRetriesSet)
+    Q_PROPERTY(bool rejoinChannels READ rejoinChannels WRITE setRejoinChannels NOTIFY rejoinChannelsSet)
     // Custom rate limiting
-    Q_PROPERTY(bool useCustomMessageRate READ useCustomMessageRate WRITE setUseCustomMessageRate)
-    Q_PROPERTY(quint32 msgRateBurstSize READ messageRateBurstSize WRITE setMessageRateBurstSize)
-    Q_PROPERTY(quint32 msgRateMessageDelay READ messageRateDelay WRITE setMessageRateDelay)
-    Q_PROPERTY(bool unlimitedMessageRate READ unlimitedMessageRate WRITE setUnlimitedMessageRate)
+    Q_PROPERTY(bool useCustomMessageRate READ useCustomMessageRate WRITE setUseCustomMessageRate NOTIFY useCustomMessageRateSet)
+    Q_PROPERTY(quint32 msgRateBurstSize READ messageRateBurstSize WRITE setMessageRateBurstSize NOTIFY messageRateBurstSizeSet)
+    Q_PROPERTY(quint32 msgRateMessageDelay READ messageRateDelay WRITE setMessageRateDelay NOTIFY messageRateDelaySet)
+    Q_PROPERTY(bool unlimitedMessageRate READ unlimitedMessageRate WRITE setUnlimitedMessageRate NOTIFY unlimitedMessageRateSet)
 
 public:
     enum ConnectionState
@@ -576,22 +576,25 @@ signals:
     //   void connectionStateSet(int);
     void connectionError(const QString& errorMsg);
     void myNickSet(const QString& mynick);
-    //   void latencySet(int latency);
+    void latencySet(int latency);
     void identitySet(IdentityId);
 
-    void configChanged();
+    void serverListSet(const ServerList&);
+    void useRandomServerSet(bool);
+    void performSet(const QStringList&);
+    void useAutoIdentifySet(bool);
+    void autoIdentifyServiceSet(const QString&);
+    void autoIdentifyPasswordSet(const QString&);
+    void useSaslSet(bool);
+    void saslAccountSet(const QString&);
+    void saslPasswordSet(const QString&);
+    void useAutoReconnectSet(bool);
+    void autoReconnectIntervalSet(quint32);
+    void autoReconnectRetriesSet(quint16);
+    void unlimitedReconnectRetriesSet(bool);
+    void rejoinChannelsSet(bool);
 
-    //   void serverListSet(QVariantList serverList);
-    //   void useRandomServerSet(bool);
-    //   void performSet(const QStringList &);
-    //   void useAutoIdentifySet(bool);
-    //   void autoIdentifyServiceSet(const QString &);
-    //   void autoIdentifyPasswordSet(const QString &);
-    //   void useAutoReconnectSet(bool);
-    //   void autoReconnectIntervalSet(quint32);
-    //   void autoReconnectRetriesSet(quint16);
-    //   void unlimitedReconnectRetriesSet(bool);
-    //   void rejoinChannelsSet(bool);
+    void configChanged();
 
     // Custom rate limiting (can drive other slots)
 
@@ -631,9 +634,9 @@ signals:
      */
     void unlimitedMessageRateSet(const bool unlimitedRate);
 
-    //   void codecForServerSet(const QByteArray &codecName);
-    //   void codecForEncodingSet(const QByteArray &codecName);
-    //   void codecForDecodingSet(const QByteArray &codecName);
+    void codecForServerSet(const QByteArray &codecName);
+    void codecForEncodingSet(const QByteArray &codecName);
+    void codecForDecodingSet(const QByteArray &codecName);
 
     //   void supportAdded(const QString &param, const QString &value);
     //   void supportRemoved(const QString &param);

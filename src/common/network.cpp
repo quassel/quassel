@@ -464,8 +464,7 @@ void Network::setCodecForServer(const QByteArray& name)
 void Network::setCodecForServer(QTextCodec* codec)
 {
     _codecForServer = codec;
-    QByteArray codecName = codecForServer();
-    SYNC_OTHER(setCodecForServer, ARG(codecName))
+    emit codecForServerSet(codecForServer());
     emit configChanged();
 }
 
@@ -484,8 +483,7 @@ void Network::setCodecForEncoding(const QByteArray& name)
 void Network::setCodecForEncoding(QTextCodec* codec)
 {
     _codecForEncoding = codec;
-    QByteArray codecName = codecForEncoding();
-    SYNC_OTHER(setCodecForEncoding, ARG(codecName))
+    emit codecForEncodingSet(codecForEncoding());
     emit configChanged();
 }
 
@@ -505,8 +503,7 @@ void Network::setCodecForDecoding(const QByteArray& name)
 void Network::setCodecForDecoding(QTextCodec* codec)
 {
     _codecForDecoding = codec;
-    QByteArray codecName = codecForDecoding();
-    SYNC_OTHER(setCodecForDecoding, ARG(codecName))
+    emit codecForDecodingSet(codecForDecoding());
     emit configChanged();
 }
 
@@ -555,7 +552,6 @@ QByteArray Network::encodeServerString(const QString& string) const
 void Network::setNetworkName(const QString& networkName)
 {
     _networkName = networkName;
-    SYNC(ARG(networkName))
     emit networkNameSet(networkName);
     emit configChanged();
 }
@@ -563,7 +559,6 @@ void Network::setNetworkName(const QString& networkName)
 void Network::setCurrentServer(const QString& currentServer)
 {
     _currentServer = currentServer;
-    SYNC(ARG(currentServer))
     emit currentServerSet(currentServer);
 }
 
@@ -578,7 +573,6 @@ void Network::setConnected(bool connected)
         setCurrentServer(QString());
         removeChansAndUsers();
     }
-    SYNC(ARG(connected))
     emit connectedSet(connected);
 }
 
@@ -587,7 +581,6 @@ void Network::setConnectionState(int state)
 {
     _connectionState = (ConnectionState)state;
     // qDebug() << "netstate" << networkId() << networkName() << state;
-    SYNC(ARG(state))
     emit connectionStateSet(_connectionState);
 }
 
@@ -597,7 +590,6 @@ void Network::setMyNick(const QString& nickname)
     if (!_myNick.isEmpty() && !ircUser(myNick())) {
         newIrcUser(myNick());
     }
-    SYNC(ARG(nickname))
     emit myNickSet(nickname);
 }
 
@@ -606,13 +598,12 @@ void Network::setLatency(int latency)
     if (_latency == latency)
         return;
     _latency = latency;
-    SYNC(ARG(latency))
+    emit latencySet(latency);
 }
 
 void Network::setIdentity(IdentityId id)
 {
     _identity = id;
-    SYNC(ARG(id))
     emit identitySet(id);
     emit configChanged();
 }
@@ -620,98 +611,98 @@ void Network::setIdentity(IdentityId id)
 void Network::setServerList(const ServerList& serverList)
 {
     _serverList = serverList;
-    SYNC(ARG(serverList))
+    emit serverListSet(_serverList);
     emit configChanged();
 }
 
 void Network::setUseRandomServer(bool use)
 {
     _useRandomServer = use;
-    SYNC(ARG(use))
+    emit useRandomServerSet(use);
     emit configChanged();
 }
 
 void Network::setPerform(const QStringList& perform)
 {
     _perform = perform;
-    SYNC(ARG(perform))
+    emit performSet(perform);
     emit configChanged();
 }
 
 void Network::setUseAutoIdentify(bool use)
 {
     _useAutoIdentify = use;
-    SYNC(ARG(use))
+    emit useAutoIdentifySet(use);
     emit configChanged();
 }
 
 void Network::setAutoIdentifyService(const QString& service)
 {
     _autoIdentifyService = service;
-    SYNC(ARG(service))
+    emit autoIdentifyServiceSet(service);
     emit configChanged();
 }
 
 void Network::setAutoIdentifyPassword(const QString& password)
 {
     _autoIdentifyPassword = password;
-    SYNC(ARG(password))
+    emit autoIdentifyPasswordSet(password);
     emit configChanged();
 }
 
 void Network::setUseSasl(bool use)
 {
     _useSasl = use;
-    SYNC(ARG(use))
+    emit useSaslSet(use);
     emit configChanged();
 }
 
 void Network::setSaslAccount(const QString& account)
 {
     _saslAccount = account;
-    SYNC(ARG(account))
+    emit saslAccountSet(account);
     emit configChanged();
 }
 
 void Network::setSaslPassword(const QString& password)
 {
     _saslPassword = password;
-    SYNC(ARG(password))
+    emit saslPasswordSet(password);
     emit configChanged();
 }
 
 void Network::setUseAutoReconnect(bool use)
 {
     _useAutoReconnect = use;
-    SYNC(ARG(use))
+    emit useAutoReconnectSet(use);
     emit configChanged();
 }
 
 void Network::setAutoReconnectInterval(quint32 interval)
 {
     _autoReconnectInterval = interval;
-    SYNC(ARG(interval))
+    emit autoReconnectIntervalSet(interval);
     emit configChanged();
 }
 
 void Network::setAutoReconnectRetries(quint16 retries)
 {
     _autoReconnectRetries = retries;
-    SYNC(ARG(retries))
+    emit autoReconnectRetriesSet(retries);
     emit configChanged();
 }
 
 void Network::setUnlimitedReconnectRetries(bool unlimited)
 {
     _unlimitedReconnectRetries = unlimited;
-    SYNC(ARG(unlimited))
+    emit unlimitedReconnectRetriesSet(unlimited);
     emit configChanged();
 }
 
 void Network::setRejoinChannels(bool rejoin)
 {
     _rejoinChannels = rejoin;
-    SYNC(ARG(rejoin))
+    emit rejoinChannelsSet(rejoin);
     emit configChanged();
 }
 
@@ -719,9 +710,8 @@ void Network::setUseCustomMessageRate(bool useCustomRate)
 {
     if (_useCustomMessageRate != useCustomRate) {
         _useCustomMessageRate = useCustomRate;
-        SYNC(ARG(useCustomRate))
-        emit configChanged();
         emit useCustomMessageRateSet(_useCustomMessageRate);
+        emit configChanged();
     }
 }
 
@@ -737,9 +727,8 @@ void Network::setMessageRateBurstSize(quint32 burstSize)
     }
     if (_messageRateBurstSize != burstSize) {
         _messageRateBurstSize = burstSize;
-        SYNC(ARG(burstSize))
-        emit configChanged();
         emit messageRateBurstSizeSet(_messageRateBurstSize);
+        emit configChanged();
     }
 }
 
@@ -755,9 +744,8 @@ void Network::setMessageRateDelay(quint32 messageDelay)
     }
     if (_messageRateDelay != messageDelay) {
         _messageRateDelay = messageDelay;
-        SYNC(ARG(messageDelay))
-        emit configChanged();
         emit messageRateDelaySet(_messageRateDelay);
+        emit configChanged();
     }
 }
 
@@ -765,9 +753,8 @@ void Network::setUnlimitedMessageRate(bool unlimitedRate)
 {
     if (_unlimitedMessageRate != unlimitedRate) {
         _unlimitedMessageRate = unlimitedRate;
-        SYNC(ARG(unlimitedRate))
-        emit configChanged();
         emit unlimitedMessageRateSet(_unlimitedMessageRate);
+        emit configChanged();
     }
 }
 
