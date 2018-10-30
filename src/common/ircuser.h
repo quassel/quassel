@@ -142,7 +142,7 @@ public slots:
      * @param[in] account Account name if logged in, * if logged out, or empty string if unknown
      */
     void setAccount(const QString &account);
-    void setAway(const bool &away);
+    void setAway(bool away);
     void setAwayMessage(const QString &awayMessage);
     void setIdleTime(const QDateTime &idleTime);
     void setLoginTime(const QDateTime &loginTime);
@@ -150,7 +150,7 @@ public slots:
     void setIrcOperator(const QString &ircOperator);
     // setLastAwayMessage is only called by legacy (pre-0.13) cores, which automatically gets
     // converted to setting the appropriate lastAwayMessageTime.  Do not use this in new code.
-    void setLastAwayMessage(const int &lastAwayMessage);
+    void setLastAwayMessage(int lastAwayMessage);
     void setLastAwayMessageTime(const QDateTime &lastAwayMessageTime);
     void setWhoisServiceReply(const QString &whoisServiceReply);
     void setSuserHost(const QString &suserHost);
