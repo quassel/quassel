@@ -161,7 +161,7 @@ void IrcUser::setAccount(const QString &account)
 }
 
 
-void IrcUser::setAway(const bool &away)
+void IrcUser::setAway(bool away)
 {
     if (away != _away) {
         _away = away;
@@ -221,17 +221,16 @@ void IrcUser::setIrcOperator(const QString &ircOperator)
 
 // This function is only ever called by SYNC calls from legacy cores (pre-0.13).
 // Therefore, no SYNC call is needed here.
-void IrcUser::setLastAwayMessage(const int &lastAwayMessage)
+void IrcUser::setLastAwayMessage(int lastAwayMessage)
 {
-    QDateTime lastAwayMessageTime = QDateTime();
-    lastAwayMessageTime.setTimeSpec(Qt::UTC);
 #if QT_VERSION >= 0x050800
-    lastAwayMessageTime.fromSecsSinceEpoch(lastAwayMessage);
+    QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage);
 #else
     // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
     // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-    lastAwayMessageTime.fromMSecsSinceEpoch(lastAwayMessage * 1000);
+    QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000);
 #endif
+    lastAwayMessageTime.setTimeSpec(Qt::UTC);
     setLastAwayMessageTime(lastAwayMessageTime);
 }
 
