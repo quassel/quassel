@@ -422,7 +422,7 @@ public:
             qWarning() << "Cannot call slot in different thread!";
             return false;
         }
-        return invokeWithArgsList(_callable, params);
+        return invokeWithArgsList(_callable, params) ? true : false;
     }
 
 private:

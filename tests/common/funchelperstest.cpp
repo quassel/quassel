@@ -38,7 +38,9 @@ TEST(FuncHelpersTest, invokeWithArgsList)
     // Good case
     {
         QVariantList argsList{42, "Hello World"};
-        ASSERT_TRUE(invokeWithArgsList(callable, argsList));
+        auto ret = invokeWithArgsList(callable, argsList);
+        ASSERT_TRUE(ret);
+        EXPECT_FALSE(ret->isValid());  // Callable returns void, so the returned QVariant should be invalid
         EXPECT_EQ(42, intVal);
         EXPECT_EQ("Hello World", stringVal);
     }
@@ -73,5 +75,37 @@ TEST(FuncHelpersTest, invokeWithArgsList)
         // Values shouldn't have changed
         EXPECT_EQ(42, intVal);
         EXPECT_EQ("Hello World", stringVal);
+    }
+}
+
+TEST(FuncHelpersTest, invokeWithArgsListAndReturnValue)
+{
+    {
+        int intVal{};
+        QString stringVal{};
+
+        auto callable = [&intVal, &stringVal](int i, const QString& s)
+        {
+            intVal = i;
+            stringVal = s;
+            return -i;
+        };
+
+        // Good case
+        {
+            QVariantList argsList{42, "Hello World"};
+            auto ret = invokeWithArgsList(callable, argsList);
+            ASSERT_TRUE(ret);
+            ASSERT_TRUE(ret->isValid());
+            EXPECT_EQ(-42, *ret);
+            EXPECT_EQ(42, intVal);
+            EXPECT_EQ("Hello World", stringVal);
+        }
+
+        // Failed invocation
+        {
+            QVariantList argsList{23};
+            ASSERT_FALSE(invokeWithArgsList(callable, argsList));
+        }
     }
 }
