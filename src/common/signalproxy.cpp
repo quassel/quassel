@@ -407,7 +407,7 @@ void SignalProxy::attachProperties(const SyncableObject* syncObject)
     auto meta = syncObject->syncMetaObject();
     QByteArray className = meta->className();
     auto it = _attachedProperties.find(className);
-    // Since the sender instance is determined dynamically, we can only need one relay instance per class per property.
+    // Since the sender instance is determined dynamically, we need only one relay instance per class per property.
     // Cache this to avoid the expensive construction for every instance.
     if (it == _attachedProperties.end()) {
         auto& relays = _attachedProperties[className];
@@ -416,32 +416,15 @@ void SignalProxy::attachProperties(const SyncableObject* syncObject)
             auto property = meta->property(i);
             auto signal = property.notifySignal();
             if (signal.isValid()) {
-                // Unfortunately, Qt provides no way to get the name of the property's write method. Thus, we have to impose
-                // naming conventions and rely on heuristics until we can break protocol and explicitly support properties by name.
-                QByteArray setter;
-                const auto& signalName = signal.name();
-                if (signal.name().startsWith("sync")) {
-                    // Allow custom slot names by prefixing them with "sync". Slot name needs to start with lower-case letter.
-                    setter = signalName.mid(4);
-                    setter[0] = QChar(setter[0]).toLower().toLatin1();
-                }
-                else if (signalName.endsWith("Changed")) {
-                    // Notify signals like "myFooChanged" get mapped to the corresponding "setMyFoo"
-                    setter = "set" + signalName.left(signalName.length() - 7);
-                    setter[3] = QChar(setter[3]).toUpper().toLatin1();
-                }
-                else if (signalName.endsWith("Set")) {
-                    // Same for signals ending with "Set"
-                    setter = "set" + signalName.left(signalName.length() - 3);
-                    setter[3] = QChar(setter[3]).toUpper().toLatin1();
+                QByteArray setter = SyncableObject::propertySetter(signal);
+                if (!setter.isEmpty()) {
+                    auto relay = std::make_unique<PropertyRelay>(className, std::move(setter), property, signal, this);
+                    connect(syncObject, signal, relay.get(), relay->dispatchSlot());
+                    relays.emplace_back(std::move(relay));
                 }
                 else {
-                    qWarning() << "Unsupported NOTIFY signal" << signalName << "for property" << property.name() << "of class" << className;
-                    continue;
+                    qWarning() << "Unsupported NOTIFY signal" << signal.name() << "for property" << property.name() << "of class" << className;
                 }
-                auto relay = std::make_unique<PropertyRelay>(className, std::move(setter), property, signal, this);
-                connect(syncObject, signal, relay.get(), relay->dispatchSlot());
-                relays.emplace_back(std::move(relay));
             }
         }
     }
@@ -496,6 +479,14 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
     }
 
     SyncableObject* receiver = _syncSlave[syncMessage.className][syncMessage.objectName];
+
+    // In client mode, check if the message contains a property update and directly set its value instead of invoking the slot
+    if (proxyMode() == ProxyMode::Client && syncMessage.params.size() == 1) {
+        if (receiver->syncProperty(syncMessage.slotName, syncMessage.params.first())) {
+            return;
+        }
+    }
+
     ExtendedMetaObject* eMeta = extendedMetaObject(receiver);
     if (!eMeta->slotMap().contains(syncMessage.slotName)) {
         qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:")

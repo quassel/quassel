@@ -108,6 +108,34 @@ void SyncableObject::fromVariantMap(const QVariantMap& properties)
     }
 }
 
+QByteArray SyncableObject::propertySetter(const QMetaMethod& notifySignal)
+{
+    if (!notifySignal.isValid()) {
+        return {};
+    }
+
+    // Unfortunately, Qt provides no way to get the name of the property's write method. Thus, we have to impose
+    // naming conventions and rely on heuristics until we can break protocol and explicitly support properties by name.
+    QByteArray setter;
+    const auto& signalName = notifySignal.name();
+    if (signalName.startsWith("sync")) {
+        // Allow custom setter names by prefixing the signal with "sync". Setter name needs to start with lower-case letter.
+        setter = signalName.mid(4);
+        setter[0] = QChar(setter[0]).toLower().toLatin1();
+    }
+    else if (signalName.endsWith("Changed")) {
+        // Notify signals like "myFooChanged" get mapped to the corresponding "setMyFoo"
+        setter = "set" + signalName.left(signalName.length() - 7);
+        setter[3] = QChar(setter[3]).toUpper().toLatin1();
+    }
+    else if (signalName.endsWith("Set")) {
+        // Same for signals ending with "Set"
+        setter = "set" + signalName.left(signalName.length() - 3);
+        setter[3] = QChar(setter[3]).toUpper().toLatin1();
+    }
+    return setter;
+}
+
 int SyncableObject::propertyIndex(const QString &propertyName) const
 {
     // We cache the property indices per class, because Qt performs a string-based lookup each time a property is accessed.
@@ -127,6 +155,36 @@ int SyncableObject::propertyIndex(const QString &propertyName) const
     }
     auto propIt = classIt->second.find(propertyName);
     return (propIt != classIt->second.end() ? propIt->second : -1);
+}
+
+bool SyncableObject::syncProperty(const QByteArray& setterName, const QVariant& value)
+{
+    using PropertyMap = std::unordered_map<QByteArray, QMetaProperty, Hash<QByteArray>>;
+    thread_local std::unordered_map<QByteArray, PropertyMap, Hash<QByteArray>> propertyCache;
+
+    auto classIt = propertyCache.find(syncMetaObject()->className());
+    if (classIt == propertyCache.end()) {
+        // Fill cache with all properties that declare a supported NOTIFY signal
+        classIt = propertyCache.insert({syncMetaObject()->className(), PropertyMap{}}).first;
+        auto count = syncMetaObject()->propertyCount();
+        for (int i = staticMetaObject.propertyOffset(); i < count; i++) {
+            auto property = syncMetaObject()->property(i);
+            if (property.isWritable() && property.hasNotifySignal()) {
+                auto setter = propertySetter(property.notifySignal());
+                if (!setter.isEmpty()) {
+                    classIt->second.emplace(std::move(setter), property);
+                }
+            }
+        }
+    }
+    auto propIt = classIt->second.find(setterName);
+    if (propIt != classIt->second.end()) {
+        if (propIt->second.write(this, value)) {
+            emit updatedRemotely();
+            return true;
+        }
+    }
+    return false;
 }
 
 void SyncableObject::update(const QVariantMap& properties)

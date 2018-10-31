@@ -94,6 +94,42 @@ public:
     inline void setAllowClientUpdates(bool allow) { _allowClientUpdates = allow; }
     inline bool allowClientUpdates() const { return _allowClientUpdates; }
 
+    /**
+     * Derives a property's setter name from the given NOTIFY signal.
+     *
+     * Unfortunately, Qt provides no way to get the name of the property's write method; only the NOTIFY signal,
+     * if declared, is exposed with its meta information.
+     * Thus, we have to rely on a naming convention and heuristics to derive the setter name from that signal:
+     *
+     * - If the signal name starts with "sync", the remainder of the name is used as the setter, with the first letter
+     *   converted to lowercase; e.g. "syncAnySlot" becomes "anySlot". This allows for defining custom setter names.
+     *
+     * - If the signal name ends with "Set" or "Changed", then that suffix is removed and "set" prefixed, so "myFooChanged"
+     *   becomes "setMyFoo". This covers a vast majority of existing setters and their notify signals, and is the recommended
+     *   naming scheme when introducing new properties.
+     *
+     * If the given signal isn't valid, or if it does not adhere to the naming scheme, an empty byte array is returned.
+     *
+     * @param notifySignal A property's NOTIFY signal
+     * @returns The property's setter name derived from the signal name if it adheres to the naming scheme, empty byte array otherwise
+     */
+    static QByteArray propertySetter(const QMetaMethod& notifySignal);
+
+    /**
+     * Checks if a property corresponds to the given setter name, and if successful, sets its value.
+     *
+     * Matches the given setterName against the setters derived from the supported properties (as determined by @a propertySetter),
+     * and if a match is found, sets the property's value by calling QMetaProperty::write(), which is more efficient than
+     * invoking the setter dynamically. This is mainly useful for syncing properties from a SyncMessage in a more efficient way.
+     *
+     * The supported properties are cached, so subsequent calls of this method are fast.
+     *
+     * @param setterName The setter name
+     * @param value      The value to set
+     * @returns true, if a property was found and the value could be set successfully
+     */
+    bool syncProperty(const QByteArray& setterName, const QVariant& value);
+
 public slots:
     virtual void setInitialized();
     void requestUpdate(const QVariantMap& properties);

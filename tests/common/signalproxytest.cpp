@@ -418,6 +418,15 @@ TEST_F(SignalProxyTest, syncableObject)
     EXPECT_EQ("Quassel", clientObject.stringProperty());
     EXPECT_EQ(1.7, clientObject.doubleProperty());
 
+    // -- Sync property directly
+    spy.connect(&clientObject, &SyncObj::stringPropertyChanged);
+    ASSERT_TRUE(clientObject.syncProperty("setStringProperty", "Hi Universe!"));
+    ASSERT_TRUE(spy.wait());
+    EXPECT_EQ(clientObject.stringProperty(), "Hi Universe!");
+
+    // -- Try to sync unsupported property
+    ASSERT_FALSE(clientObject.syncProperty("setDoubleProperty", 4.2));
+
     // -- Rename object
     spy.connect(&clientObject, &SyncObj::stringPropertyChanged);
     serverObject.setObjectName("Bar");

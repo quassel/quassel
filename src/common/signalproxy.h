@@ -264,6 +264,8 @@ private:
      *
      * Other naming schemes are not supported and will cause a warning, as well as the signal to be ignored.
      *
+     * @sa SyncableObject::propertySetter
+     *
      * @param syncObject The object to attach
      */
     void attachProperties(const SyncableObject* syncObject);
