@@ -57,7 +57,7 @@ class CoreNetwork : public Network
 
 public:
     CoreNetwork(const NetworkId &networkid, CoreSession *session);
-    ~CoreNetwork() override;
+    virtual ~CoreNetwork();
 
     inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
 
