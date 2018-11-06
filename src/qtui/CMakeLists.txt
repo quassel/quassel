@@ -25,7 +25,7 @@ set(SOURCES
     coresessionwidget.cpp
     debugbufferviewoverlay.cpp
     debugconsole.cpp
-    debuglogwidget.cpp
+    debuglogdlg.cpp
     debugmessagemodelfilter.cpp
     inputwidget.cpp
     ircconnectionwizard.cpp
@@ -72,7 +72,7 @@ set(FORMS
     coresessionwidget.ui
     debugbufferviewoverlay.ui
     debugconsole.ui
-    debuglogwidget.ui
+    debuglogdlg.ui
     inputwidget.ui
     msgprocessorstatuswidget.ui
     nicklistwidget.ui

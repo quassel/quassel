@@ -18,28 +18,38 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#pragma once
+#include "debuglogdlg.h"
 
-#include <QString>
-#include <QWidget>
+#include "quassel.h"
 
-#include "logger.h"
-
-#include "ui_debuglogwidget.h"
-
-class DebugLogWidget : public QWidget
+DebugLogDlg::DebugLogDlg(QWidget *parent)
+    : QDialog(parent)
 {
-    Q_OBJECT
+    ui.setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose, true);
 
-public:
-    DebugLogWidget(QWidget *parent = 0);
+    ui.textEdit->setReadOnly(true);
 
-private slots:
-    void logUpdated(const Logger::LogEntry &msg);
+    connect(Quassel::instance()->logger(), SIGNAL(messageLogged(Logger::LogEntry)), SLOT(logUpdated(Logger::LogEntry)));
 
-private:
-    QString toString(const Logger::LogEntry &msg);
+    QString content;
+    for (auto &&message : Quassel::instance()->logger()->messages()) {
+        content += toString(message);
+    }
+    ui.textEdit->setPlainText(content);
 
-private:
-    Ui::DebugLogWidget ui;
-};
+}
+
+
+QString DebugLogDlg::toString(const Logger::LogEntry &msg)
+{
+    return msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + msg.message + "\n";
+}
+
+
+void DebugLogDlg::logUpdated(const Logger::LogEntry &msg)
+{
+    ui.textEdit->moveCursor(QTextCursor::End);
+    ui.textEdit->insertPlainText(toString(msg));
+    ui.textEdit->moveCursor(QTextCursor::End);
+}
