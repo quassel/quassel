@@ -79,7 +79,7 @@
 #include "coreinfodlg.h"
 #include "contextmenuactionprovider.h"
 #include "debugbufferviewoverlay.h"
-#include "debuglogwidget.h"
+#include "debuglogdlg.h"
 #include "debugmessagemodelfilter.h"
 #include "flatproxymodel.h"
 #include "icon.h"
@@ -1998,8 +1998,8 @@ void MainWin::on_actionDebugMessageModel_triggered()
 
 void MainWin::on_actionDebugLog_triggered()
 {
-    DebugLogWidget *logWidget = new DebugLogWidget(nullptr);  // will be deleted on close
-    logWidget->show();
+    auto dlg = new DebugLogDlg(this);
+    dlg->show();
 }
 
 
