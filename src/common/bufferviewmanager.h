@@ -46,6 +46,9 @@ public slots:
     QVariantList initBufferViewIds() const;
     void initSetBufferViewIds(const QVariantList bufferViewIds);
 
+    void addBufferViewConfig(int bufferViewConfigId);
+    void deleteBufferViewConfig(int bufferViewConfigId);
+
     virtual inline void requestCreateBufferView(const QVariantMap &properties) { REQUEST(ARG(properties)) }
     virtual inline void requestCreateBufferViews(const QVariantList &properties) { REQUEST(ARG(properties)) }
     virtual inline void requestDeleteBufferView(int bufferViewId) { REQUEST(ARG(bufferViewId)) }
@@ -65,8 +68,6 @@ protected:
     virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
 
     void addBufferViewConfig(BufferViewConfig *config);
-    void addBufferViewConfig(int bufferViewConfigId);
-    void deleteBufferViewConfig(int bufferViewConfigId);
 
 private:
     BufferViewConfigHash _bufferViewConfigs;
