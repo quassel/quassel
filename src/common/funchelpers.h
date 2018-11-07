@@ -140,3 +140,29 @@ boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantLi
     }
     return detail::invokeWithArgsList(c, args, std::make_index_sequence<tupleSize>{});
 }
+
+/**
+ * Invokes the given member function pointer on the given object with the arguments contained in the given variant list.
+ *
+ * The types contained in the given QVariantList are converted to the types expected by the member function.
+ * If the invocation is successful, the returned optional contains a QVariant with the return value,
+ * or an invalid QVariant if the member function returns void.
+ * If the conversion fails, or if the argument count does not match, this function returns boost::none
+ * and the member function is not invoked.
+ *
+ * @param c    Callable
+ * @param args Arguments to be given to the member function
+ * @returns An optional containing a QVariant with the return value if the member function could be invoked with
+ *          the given list of arguments; otherwise boost::none
+ */
+template<typename R, typename C, typename ...Args>
+boost::optional<QVariant> invokeWithArgsList(C* object, R(C::*func)(Args...), const QVariantList& args)
+{
+    if (sizeof...(Args) != args.size()) {
+        qWarning().nospace() << "Argument count mismatch! Expected: " << sizeof...(Args) << ", actual: " << args.size();
+        return boost::none;
+    }
+    return detail::invokeWithArgsList([object, func](Args&&... args) {
+        return (object->*func)(std::forward<decltype(args)>(args)...);
+    }, args, std::make_index_sequence<sizeof...(Args)>{});
+}

@@ -24,7 +24,7 @@
 
 #include "funchelpers.h"
 
-TEST(FuncHelpersTest, invokeWithArgsList)
+TEST(FuncHelpersTest, invokeLambdaWithArgsList)
 {
     int intVal{};
     QString stringVal{};
@@ -37,8 +37,7 @@ TEST(FuncHelpersTest, invokeWithArgsList)
 
     // Good case
     {
-        QVariantList argsList{42, "Hello World"};
-        auto ret = invokeWithArgsList(callable, argsList);
+        auto ret = invokeWithArgsList(callable, {42, "Hello World"});
         ASSERT_TRUE(ret);
         EXPECT_FALSE(ret->isValid());  // Callable returns void, so the returned QVariant should be invalid
         EXPECT_EQ(42, intVal);
@@ -47,8 +46,7 @@ TEST(FuncHelpersTest, invokeWithArgsList)
 
     // Too many arguments
     {
-        QVariantList argsList{23, "Hi Universe", 2.3};
-        ASSERT_FALSE(invokeWithArgsList(callable, argsList));
+        ASSERT_FALSE(invokeWithArgsList(callable, {23, "Hi Universe", 2.3}));
         // Values shouldn't have changed
         EXPECT_EQ(42, intVal);
         EXPECT_EQ("Hello World", stringVal);
@@ -56,8 +54,7 @@ TEST(FuncHelpersTest, invokeWithArgsList)
 
     // Too few arguments
     {
-        QVariantList argsList{23};
-        ASSERT_FALSE(invokeWithArgsList(callable, argsList));
+        ASSERT_FALSE(invokeWithArgsList(callable, {23}));
         // Values shouldn't have changed
         EXPECT_EQ(42, intVal);
         EXPECT_EQ("Hello World", stringVal);
@@ -70,42 +67,83 @@ TEST(FuncHelpersTest, invokeWithArgsList)
         QVariant v{wrong};
         ASSERT_FALSE(v.canConvert<QString>());
 
-        QVariantList argsList{23, wrong};
-        ASSERT_FALSE(invokeWithArgsList(callable, argsList));
+        ASSERT_FALSE(invokeWithArgsList(callable, {23, wrong}));
         // Values shouldn't have changed
         EXPECT_EQ(42, intVal);
         EXPECT_EQ("Hello World", stringVal);
     }
 }
 
-TEST(FuncHelpersTest, invokeWithArgsListAndReturnValue)
+TEST(FuncHelpersTest, invokeLambdaWithArgsListAndReturnValue)
 {
+    int intVal{};
+    QString stringVal{};
+
+    auto callable = [&intVal, &stringVal](int i, const QString& s)
     {
-        int intVal{};
-        QString stringVal{};
+        intVal = i;
+        stringVal = s;
+        return -i;
+    };
 
-        auto callable = [&intVal, &stringVal](int i, const QString& s)
-        {
-            intVal = i;
-            stringVal = s;
-            return -i;
-        };
+    // Good case
+    {
+        auto ret = invokeWithArgsList(callable, {42, "Hello World"});
+        ASSERT_TRUE(ret);
+        ASSERT_TRUE(ret->isValid());
+        EXPECT_EQ(-42, *ret);
+        EXPECT_EQ(42, intVal);
+        EXPECT_EQ("Hello World", stringVal);
+    }
 
-        // Good case
-        {
-            QVariantList argsList{42, "Hello World"};
-            auto ret = invokeWithArgsList(callable, argsList);
-            ASSERT_TRUE(ret);
-            ASSERT_TRUE(ret->isValid());
-            EXPECT_EQ(-42, *ret);
-            EXPECT_EQ(42, intVal);
-            EXPECT_EQ("Hello World", stringVal);
-        }
+    // Failed invocation
+    {
+        ASSERT_FALSE(invokeWithArgsList(callable, {23}));
+    }
+}
 
-        // Failed invocation
-        {
-            QVariantList argsList{23};
-            ASSERT_FALSE(invokeWithArgsList(callable, argsList));
-        }
+class Object
+{
+public:
+    void voidFunc(int i, const QString& s)
+    {
+        intVal = i;
+        stringVal = s;
+    }
+
+    int intFunc(int i)
+    {
+        return -i;
+    }
+
+    int intVal{};
+    QString stringVal{};
+};
+
+TEST(FuncHelpersTest, invokeMemberFunction)
+{
+    Object object;
+
+    // Good case
+    {
+        auto ret = invokeWithArgsList(&object, &Object::voidFunc, {42, "Hello World"});
+        ASSERT_TRUE(ret);
+        EXPECT_FALSE(ret->isValid());  // Callable returns void, so the returned QVariant should be invalid
+        EXPECT_EQ(42, object.intVal);
+        EXPECT_EQ("Hello World", object.stringVal);
+    }
+
+    // Good case with return value
+    {
+        auto ret = invokeWithArgsList(&object, &Object::intFunc, {42});
+        ASSERT_TRUE(ret);
+        EXPECT_EQ(-42, *ret);
+    }
+
+    // Too few arguments
+    {
+        auto ret = invokeWithArgsList(&object, &Object::voidFunc, {23});
+        ASSERT_FALSE(ret);
+        EXPECT_EQ(42, object.intVal);
     }
 }
