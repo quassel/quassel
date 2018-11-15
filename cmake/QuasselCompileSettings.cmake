@@ -5,6 +5,8 @@
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
+include(QuasselMacros)
+
 # Helper function to check for linker flag support
 include(CheckCXXCompilerFlag)
 function(check_and_set_linker_flag flag name outvar)
@@ -29,36 +31,74 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # For GCC and Clang, enable a whole bunch of warnings
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(
-        -Wall
-        -Wcast-align
-        -Wextra
-        -Wformat-security
-        -Wno-unknown-pragmas
-        -Wnon-virtual-dtor
-        -Wpedantic
-        -Wundef
+        -fdiagnostics-color=always
+        -fexceptions
         -fno-common
         -fstack-protector-strong
+        -Wall
+        -Wextra
+        -Wcast-align
+        -Wformat-security
+        -Wnon-virtual-dtor
+        -Woverloaded-virtual
+        -Wpedantic
+        -Wundef
+        -Wvla
+        -Werror=return-type
+        -Wno-unknown-pragmas
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
     )
 
     # Check for and set linker flags
-    check_and_set_linker_flag("-Wl,-z,relro"    RELRO     LINKER_FLAGS)
-    check_and_set_linker_flag("-Wl,-z,now"      NOW       LINKER_FLAGS)
-    check_and_set_linker_flag("-Wl,--as-needed" AS_NEEDED LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,-z,relro"            RELRO            LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,-z,now"              NOW              LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,--as-needed"         AS_NEEDED        LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,--enable-new-dtags"  ENABLE_NEW_DTAGS LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,--no-undefined"      NO_UNDEFINED     LINKER_FLAGS)
 
-    set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS    "${LINKER_FLAGS} ${CMAKE_EXE_LINKER_FLAGS}")
+    set(CMAKE_MODULE_LINKER_FLAGS "${LINKER_FLAGS} ${CMAKE_MODULE_LINKER_FLAGS}")
+    set(CMAKE_SHARED_LINKER_FLAGS "${LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+
+elseif(MSVC)
+    # Target Windows Vista
+    add_definitions(-D_WIN32_WINNT=0x0600 -DWINVER=0x0600 -D_WIN32_IE=0x0600)
+
+    # Various settings for the Windows API
+    add_definitions(-DWIN32_LEAN_AND_MEAN -DUNICODE -D_UNICODE -D_USE_MATH_DEFINES -DNOMINMAX)
+
+    # Compile options
+    add_compile_options(-EHsc -W3)
+
+    # Link against the correct version of the C runtime
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+    set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "/NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt ${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
+    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL "/NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt ${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL}")
+    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/NODEFAULTLIB:libcmtd /DEFAULTLIB:msvcrtd ${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+
 else()
     # For other compilers, we rely on default settings (unless someone provides a good set of options; patches welcome!)
+    message(WARNING "${CMAKE_CXX_COMPILER_ID} is not a supported C++ compiler.")
 endif()
 
 # Mac build stuff
-if (APPLE AND DEPLOY)
+if (APPLE)
     set(CMAKE_OSX_ARCHITECTURES "x86_64")
     add_compile_options(
         -mmacosx-version-min=10.9
         -stdlib=libc++
     )
+    add_definitions(-DQT_MAC_USE_COCOA -D_DARWIN_C_SOURCE)
 endif()
+
+# Optionally, produce clazy warnings
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    option(ENABLE_CLAZY "Enable Clazy warnings" OFF)
+
+    if(ENABLE_CLAZY)
+        set(CMAKE_CXX_COMPILE_OBJECT "${CMAKE_CXX_COMPILE_OBJECT} -Xclang -load -Xclang ClangLazy${CMAKE_SHARED_LIBRARY_SUFFIX} -Xclang -add-plugin -Xclang clang-lazy")
+    endif()
+endif()
+
+# Append CMAKE_CXX_FLAGS, so our flags can be overwritten externally.
+process_cmake_cxx_flags()
