@@ -13,8 +13,8 @@ changes, the git history at <https://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.13.0 (TBR)
-====================
+Version 0.13.0 (2018-11-17)
+===========================
 
 NOTE:  Database schema and settings format change, no downgrade possible!
 NOTE²: Database migration may take a long time (hours for big databases),
