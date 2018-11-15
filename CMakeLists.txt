@@ -113,8 +113,7 @@ if (NOT EMBED_DEFAULT)
 endif()
 
 # The following options are not for end-user consumption, so don't list them in the feature summary
-cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF "APPLE" OFF)
-
+cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg" OFF "APPLE" OFF)
 
 # List of authenticators and the cmake flags to build them
 # (currently that's just LDAP, but more can be added here).
@@ -124,9 +123,23 @@ option(WITH_LDAP "Enable LDAP authentication support if present on system" ON)
 # Setup CMake
 #####################################################################
 
+# Visibility settings apply to all targets
+if (POLICY CMP0063)
+    cmake_policy(SET CMP0063 NEW)
+endif()
+
 # Let automoc/autouic process generated files
 if (POLICY CMP0071)
     cmake_policy(SET CMP0071 NEW)
+endif()
+
+set(BUILD_SHARED_LIBS TRUE CACHE BOOL "" FORCE)
+
+# Don't use X11 on OSX
+if (APPLE)
+    set(CMAKE_DISABLE_FIND_PACKAGE_X11 true)
+    set(CMAKE_DISABLE_FIND_PACKAGE_XCB true)
+    set(CMAKE_DISABLE_FIND_PACKAGE_Qt5X11Extras true)
 endif()
 
 # Simplify later checks
@@ -138,7 +151,6 @@ endif()
 if (WANT_MONO OR WANT_CORE)
     set(BUILD_CORE true)
 endif()
-
 
 # Set up Qt
 #####################################################################
@@ -364,6 +376,9 @@ if (BUILD_TESTING)
         PURPOSE "Required for building unit tests"
     )
     enable_testing()
+
+    # GTest messes with CMAKE_CXX_FLAGS, so process them again
+    process_cmake_cxx_flags()
 endif()
 
 # Check for SSL support in Qt
@@ -385,34 +400,17 @@ if (HAVE_SSL)
 endif()
 add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
 
-# Additional compile settings
-#####################################################################
-
-# Needed to compile with mingw without kde
-if (MINGW AND NOT WITH_KDE)
-    add_definitions(-D_WIN32_WINNT=0x0500)
-    message(STATUS "Added _WIN32_WINNT=0x0500 definition for MinGW")
-    # workaround for bug in mingw gcc 4.0
-    add_definitions(-U__STRICT_ANSI__)
-endif()
-
 # Setup support for KDE Frameworks
 #####################################################################
 
-# We want to do this up here, so we have the necessary variables and defines set before
-# compiling anything
-
 if (WITH_KDE)
+    add_definitions(-DHAVE_KDE -DHAVE_KF5)
+    set(WITH_KF5 TRUE)
+
     # If KDE Frameworks are present, they're most probably providing Qt5 integration including icon loading
     set(EMBED_DATA OFF)
 
     include(KDEInstallDirs)
-    include(KDECompilerSettings)
-    include(KDECMakeSettings)
-
-    kde_enable_exceptions()
-    add_definitions(-DHAVE_KDE -DHAVE_KF5)
-    set(WITH_KF5 TRUE)
 endif()
 
 # This needs to come after setting up KDE integration, so we can use KDE-specific paths
@@ -468,14 +466,9 @@ endif()
 if (WIN32)
     link_libraries(imm32 winmm dbghelp Secur32)  # missing by default :/
     if (MSVC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DNOMINMAX")
-        set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBUGINFO "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt")
-        set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/debug /INCREMENTAL:YES /NODEFAULTLIB:libcmt")
-        set(CMAKE_EXE_LINKER_FLAGS_DEBUGFULL "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
         link_libraries(Version dwmapi shlwapi)
     endif()
 endif()
-
 
 # Generate version information from Git
 #####################################################################

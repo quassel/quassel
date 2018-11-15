@@ -262,3 +262,19 @@ function(target_link_if_exists _target)
         endforeach()
     endif()
 endfunction()
+
+###################################################################################################
+# process_cmake_cxx_flags()
+#
+# Append the options declared CMAKE_CXX_FLAGS and CMAKE_CXX_FLAGS_<BUILD_TYPE> to the global
+# compile options.
+# Unset the variables afterwards to avoid duplication.
+#
+function(process_cmake_cxx_flags)
+    string(TOUPPER ${CMAKE_BUILD_TYPE} upper_build_type)
+    set(cxx_flags "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${upper_build_type}}")
+    separate_arguments(sep_cxx_flags UNIX_COMMAND ${cxx_flags})
+    add_compile_options(${sep_cxx_flags})
+    set(CMAKE_CXX_FLAGS "" PARENT_SCOPE)
+    set(CMAKE_CXX_FLAGS_${upper_build_type} "" PARENT_SCOPE)
+endfunction()
