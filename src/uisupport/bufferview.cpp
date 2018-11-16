@@ -594,7 +594,7 @@ void BufferView::hideCurrentBuffer()
     config()->requestRemoveBuffer(bufferId);
 }
 
-void BufferView::filterTextChanged(QString filterString)
+void BufferView::filterTextChanged(const QString& filterString)
 {
     BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
     if (!filter) {
@@ -624,15 +624,15 @@ QSize BufferView::sizeHint() const
 }
 
 
-void BufferView::changeHighlight(const BufferView::Direction direction)
+void BufferView::changeHighlight(BufferView::Direction direction)
 {
     // If for some weird reason we get a new delegate
-    BufferViewDelegate *delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(m_currentHighlight));
+    BufferViewDelegate *delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }
 
-    QModelIndex newIndex = m_currentHighlight;
+    QModelIndex newIndex = _currentHighlight;
     if (!newIndex.isValid()) {
         newIndex = model()->index(0, 0);
     }
@@ -647,20 +647,20 @@ void BufferView::changeHighlight(const BufferView::Direction direction)
         return;
     }
 
-    m_currentHighlight = newIndex;
+    _currentHighlight = newIndex;
 
-    delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(m_currentHighlight));
+    delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
     if (delegate) {
-        delegate->currentHighlight = m_currentHighlight;
+        delegate->currentHighlight = _currentHighlight;
     }
     viewport()->update();
 }
 
 void BufferView::selectHighlighted()
 {
-    if (m_currentHighlight.isValid()) {
-        selectionModel()->setCurrentIndex(m_currentHighlight, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-        selectionModel()->select(m_currentHighlight, QItemSelectionModel::ClearAndSelect);
+    if (_currentHighlight.isValid()) {
+        selectionModel()->setCurrentIndex(_currentHighlight, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+        selectionModel()->select(_currentHighlight, QItemSelectionModel::ClearAndSelect);
     } else {
         selectFirstBuffer();
     }
@@ -671,16 +671,16 @@ void BufferView::selectHighlighted()
 void BufferView::clearHighlight()
 {
     // If for some weird reason we get a new delegate
-    BufferViewDelegate *delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(m_currentHighlight));
+    BufferViewDelegate *delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }
-    m_currentHighlight = QModelIndex();
+    _currentHighlight = QModelIndex();
     viewport()->update();
 }
 
 // ****************************************
-//  BufferViewDelgate
+//  BufferViewDelegate
 // ****************************************
 class ColorsChangedEvent : public QEvent
 {
