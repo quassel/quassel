@@ -11,14 +11,8 @@ cmake_minimum_required(VERSION 3.5)
 # Tell CMake about or own modules
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-# Versions
-set(QUASSEL_MAJOR  0)
-set(QUASSEL_MINOR 13)
-set(QUASSEL_PATCH 50)
-set(QUASSEL_VERSION_STRING "0.14-pre")
+include(QuasselVersion)
 
-# Output CMake and Quassel versions as well as build type for debug reasons
-message(STATUS "Building Quassel ${QUASSEL_VERSION_STRING}...")
 message(STATUS "Using CMake ${CMAKE_VERSION}")
 
 # Set up build type rather early
@@ -469,43 +463,6 @@ if (WIN32)
         link_libraries(Version dwmapi shlwapi)
     endif()
 endif()
-
-# Generate version information from Git
-#####################################################################
-
-include(GetGitRevisionDescription)
-get_git_head_revision(GIT_REFSPEC GIT_HEAD)
-git_describe(GIT_DESCRIBE --long)
-
-# If in a Git repo we can get the commit-date from a git command
-if (GIT_HEAD)
-    execute_process(
-        COMMAND git -c log.showsignature=false show -s --format=%ct
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE GIT_COMMIT_DATE
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-endif()
-
-# If not in a Git repo try to read GIT_HEAD and GIT_DESCRIBE from
-# enviroment
-if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
-  if (DEFINED ENV{GIT_HEAD})
-      set(GIT_HEAD $ENV{GIT_HEAD})
-  endif()
-  if (DEFINED ENV{GIT_DESCRIBE})
-     set(GIT_DESCRIBE $ENV{GIT_DESCRIBE})
-  endif()
-endif()
-
-# Sanitize things if we're not in a Git repo
-if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
-    set(GIT_HEAD "")
-    set(GIT_DESCRIBE "")
-    set(GIT_COMMIT_DATE 0)
-endif()
-
-configure_file(version.h.in ${CMAKE_BINARY_DIR}/version.h @ONLY)
 
 # Prepare the build
 #####################################################################
