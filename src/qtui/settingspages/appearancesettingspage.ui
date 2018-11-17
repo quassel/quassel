@@ -243,6 +243,19 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="showConfirmConnectionDlg">
+     <property name="text">
+      <string>Confirm dialog for connecting to/disconnecting from all Networks</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">ShowConfirmConnectionDlg</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Message Redirection</string>

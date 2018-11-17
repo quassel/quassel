@@ -38,6 +38,7 @@
 #include "icon.h"
 #include "network.h"
 #include "util.h"
+#include "../qtui/qtuisettings.h"
 
 NetworkModelController::NetworkModelController(QObject *parent)
     : QObject(parent),
@@ -238,10 +239,13 @@ void NetworkModelController::actionTriggered(QAction *action)
 void NetworkModelController::handleNetworkAction(ActionType type, QAction *)
 {
     if (type == NetworkConnectAllWithDropdown || type == NetworkDisconnectAllWithDropdown || type == NetworkConnectAll || type == NetworkDisconnectAll) {
-        if (type == NetworkConnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really Connect to all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
-            return;
-        if (type == NetworkDisconnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really disconnect from all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
-            return;
+        QtUiSettings s;
+        if (s.value("ShowConfirmConnectionDlg").toBool()) {
+            if (type == NetworkConnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really Connect to all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
+                return;
+            if (type == NetworkDisconnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really disconnect from all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
+                return;
+        }
         foreach(NetworkId id, Client::networkIds()) {
             const Network *net = Client::network(id);
             if ((type == NetworkConnectAllWithDropdown || type == NetworkConnectAll) && net->connectionState() == Network::Disconnected)
