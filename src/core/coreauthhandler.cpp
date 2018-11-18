@@ -26,8 +26,6 @@
 
 #include "core.h"
 
-using namespace Protocol;
-
 CoreAuthHandler::CoreAuthHandler(QTcpSocket* socket, QObject* parent)
     : AuthHandler(parent)
     , _peer(nullptr)
@@ -140,7 +138,7 @@ void CoreAuthHandler::onProtocolVersionMismatch(int actual, int expected)
                              "This core needs at least client/core protocol version %1 (got: %2).<br>"
                              "Please consider upgrading your client.")
                               .arg(expected, actual);
-    _peer->dispatch(ClientDenied(errorString));
+    _peer->dispatch(Protocol::ClientDenied(errorString));
     _peer->close();
 }
 
@@ -150,14 +148,14 @@ bool CoreAuthHandler::checkClientRegistered()
         qWarning() << qPrintable(tr("Client")) << qPrintable(socket()->peerAddress().toString())
                    << qPrintable(tr("did not send a registration message before trying to login, rejecting."));
         _peer->dispatch(
-            ClientDenied(tr("<b>Client not initialized!</b><br>You need to send a registration message before trying to login.")));
+            Protocol::ClientDenied(tr("<b>Client not initialized!</b><br>You need to send a registration message before trying to login.")));
         _peer->close();
         return false;
     }
     return true;
 }
 
-void CoreAuthHandler::handle(const RegisterClient& msg)
+void CoreAuthHandler::handle(const Protocol::RegisterClient& msg)
 {
     bool useSsl;
     if (_legacy)
@@ -167,7 +165,7 @@ void CoreAuthHandler::handle(const RegisterClient& msg)
 
     if (Quassel::isOptionSet("require-ssl") && !useSsl && !_peer->isLocal()) {
         qInfo() << qPrintable(tr("SSL required but non-SSL connection attempt from %1").arg(socket()->peerAddress().toString()));
-        _peer->dispatch(ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
+        _peer->dispatch(Protocol::ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
         _peer->close();
         return;
     }
@@ -186,7 +184,7 @@ void CoreAuthHandler::handle(const RegisterClient& msg)
         }
     }
 
-    _peer->dispatch(ClientRegistered(Quassel::Features{}, configured, backends, authenticators, useSsl));
+    _peer->dispatch(Protocol::ClientRegistered(Quassel::Features{}, configured, backends, authenticators, useSsl));
 
     // useSsl is only used for the legacy protocol
     if (_legacy && useSsl)
@@ -195,7 +193,7 @@ void CoreAuthHandler::handle(const RegisterClient& msg)
     _clientRegistered = true;
 }
 
-void CoreAuthHandler::handle(const SetupData& msg)
+void CoreAuthHandler::handle(const Protocol::SetupData& msg)
 {
     if (!checkClientRegistered())
         return;
@@ -210,12 +208,12 @@ void CoreAuthHandler::handle(const SetupData& msg)
 
     QString result = Core::setup(msg.adminUser, msg.adminPassword, msg.backend, msg.setupData, authenticator, msg.authSetupData);
     if (!result.isEmpty())
-        _peer->dispatch(SetupFailed(result));
+        _peer->dispatch(Protocol::SetupFailed(result));
     else
-        _peer->dispatch(SetupDone());
+        _peer->dispatch(Protocol::SetupDone());
 }
 
-void CoreAuthHandler::handle(const Login& msg)
+void CoreAuthHandler::handle(const Protocol::Login& msg)
 {
     if (!checkClientRegistered())
         return;
@@ -223,7 +221,7 @@ void CoreAuthHandler::handle(const Login& msg)
     if (!Core::isConfigured()) {
         qWarning() << qPrintable(tr("Client")) << qPrintable(socket()->peerAddress().toString())
                    << qPrintable(tr("attempted to login before the core was configured, rejecting."));
-        _peer->dispatch(ClientDenied(
+        _peer->dispatch(Protocol::ClientDenied(
             tr("<b>Attempted to login before core was configured!</b><br>The core must be configured before attempting to login.")));
         return;
     }
@@ -237,11 +235,11 @@ void CoreAuthHandler::handle(const Login& msg)
 
     if (uid == 0) {
         qInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
-        _peer->dispatch(LoginFailed(tr(
+        _peer->dispatch(Protocol::LoginFailed(tr(
             "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.")));
         return;
     }
-    _peer->dispatch(LoginSuccess());
+    _peer->dispatch(Protocol::LoginSuccess());
 
     qInfo() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).")
                           .arg(socket()->peerAddress().toString(), msg.user, QString::number(uid.toInt())));
