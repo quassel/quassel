@@ -68,7 +68,22 @@ elseif(MSVC)
     add_definitions(-DWIN32_LEAN_AND_MEAN -DUNICODE -D_UNICODE -D_USE_MATH_DEFINES -DNOMINMAX)
 
     # Compile options
-    add_compile_options(-EHsc -W3)
+    add_compile_options(/EHsc)
+
+    # Increase warning level on MSVC
+    # CMake puts /W3 in CMAKE_CXX_FLAGS which will be appended later, so we need to replace
+    message(STATUS "CXX ${CMAKE_CXX_FLAGS} REL ${CMAKE_CXX_FLAGS_RELEASE} DEB ${CMAKE_CXX_FLAGS_DEBUG}")
+    string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
+    # Silence annoying/useless warnings
+    #   C4127: conditional expression is constant
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4127")
+    #   C4244: 'identifier': conversion from 't1' to 't2', possible loss of data
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244")
+    #   C4456: declaration of 'identifier' hides previous local declaration
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4456")
+    #   C4458: declaration of 'identifier' hides class member
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4458")
 
     # Link against the correct version of the C runtime
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
