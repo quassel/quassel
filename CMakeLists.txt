@@ -107,6 +107,7 @@ if (NOT EMBED_DEFAULT)
 endif()
 
 # The following options are not for end-user consumption, so don't list them in the feature summary
+option(FATAL_WARNINGS "Make compile warnings fatal (most useful for CI builds)" OFF)
 cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg" OFF "APPLE" OFF)
 
 # List of authenticators and the cmake flags to build them

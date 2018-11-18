@@ -44,6 +44,7 @@ script:
                             -GNinja \
                             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
                             -DBUILD_TESTING=ON \
+                            -DFATAL_WARNINGS=ON \
                       && ninja install \
                       && ccache -s \
                       && ctest -VV \
