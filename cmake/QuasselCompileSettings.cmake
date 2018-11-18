@@ -45,6 +45,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -Wundef
         -Wvla
         -Werror=return-type
+        "$<$<BOOL:${FATAL_WARNINGS}>:-Werror>"
         -Wno-unknown-pragmas
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
     )
@@ -68,7 +69,10 @@ elseif(MSVC)
     add_definitions(-DWIN32_LEAN_AND_MEAN -DUNICODE -D_UNICODE -D_USE_MATH_DEFINES -DNOMINMAX)
 
     # Compile options
-    add_compile_options(/EHsc)
+    add_compile_options(
+        /EHsc
+        "$<$<BOOL:${FATAL_WARNINGS}>:/WX>"
+    )
 
     # Increase warning level on MSVC
     # CMake puts /W3 in CMAKE_CXX_FLAGS which will be appended later, so we need to replace
