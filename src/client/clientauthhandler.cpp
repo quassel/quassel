@@ -33,8 +33,6 @@
 #include "peerfactory.h"
 #include "util.h"
 
-using namespace Protocol;
-
 ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject* parent)
     : AuthHandler(parent)
     , _peer(nullptr)
@@ -294,16 +292,16 @@ void ClientAuthHandler::startRegistration()
     useSsl = _account.useSsl();
 #endif
 
-    _peer->dispatch(RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate, useSsl));
+    _peer->dispatch(Protocol::RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate, useSsl));
 }
 
-void ClientAuthHandler::handle(const ClientDenied& msg)
+void ClientAuthHandler::handle(const Protocol::ClientDenied& msg)
 {
     emit errorPopup(msg.errorString);
     requestDisconnect(tr("The core refused connection from this client"));
 }
 
-void ClientAuthHandler::handle(const ClientRegistered& msg)
+void ClientAuthHandler::handle(const Protocol::ClientRegistered& msg)
 {
     _coreConfigured = msg.coreConfigured;
     _backendInfo = msg.backendInfo;
@@ -340,17 +338,17 @@ void ClientAuthHandler::onConnectionReady()
         login();
 }
 
-void ClientAuthHandler::setupCore(const SetupData& setupData)
+void ClientAuthHandler::setupCore(const Protocol::SetupData& setupData)
 {
     _peer->dispatch(setupData);
 }
 
-void ClientAuthHandler::handle(const SetupFailed& msg)
+void ClientAuthHandler::handle(const Protocol::SetupFailed& msg)
 {
     emit coreSetupFailed(msg.errorString);
 }
 
-void ClientAuthHandler::handle(const SetupDone& msg)
+void ClientAuthHandler::handle(const Protocol::SetupDone& msg)
 {
     Q_UNUSED(msg)
 
@@ -377,22 +375,22 @@ void ClientAuthHandler::login(const QString& previousError)
         }
     }
 
-    _peer->dispatch(Login(_account.user(), _account.password()));
+    _peer->dispatch(Protocol::Login(_account.user(), _account.password()));
 }
 
-void ClientAuthHandler::handle(const LoginFailed& msg)
+void ClientAuthHandler::handle(const Protocol::LoginFailed& msg)
 {
     login(msg.errorString);
 }
 
-void ClientAuthHandler::handle(const LoginSuccess& msg)
+void ClientAuthHandler::handle(const Protocol::LoginSuccess& msg)
 {
     Q_UNUSED(msg)
 
     emit loginSuccessful(_account);
 }
 
-void ClientAuthHandler::handle(const SessionState& msg)
+void ClientAuthHandler::handle(const Protocol::SessionState& msg)
 {
     disconnect(socket(), nullptr, this, nullptr);  // this is the last message we shall ever get
 
