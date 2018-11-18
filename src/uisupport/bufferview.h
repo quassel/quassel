@@ -81,7 +81,6 @@ protected:
     virtual void dropEvent(QDropEvent *event);
     virtual void rowsInserted(const QModelIndex &parent, int start, int end);
     virtual void wheelEvent(QWheelEvent *);
-    virtual QSize sizeHint() const;
     virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
     virtual void contextMenuEvent(QContextMenuEvent *event);
 
