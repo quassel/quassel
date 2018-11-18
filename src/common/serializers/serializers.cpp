@@ -20,6 +20,21 @@
 
 #include "serializers.h"
 
+namespace {
+
+template<typename T>
+bool toVariant(QDataStream& stream, Quassel::Features features, QVariant& data)
+{
+    T content;
+    if (!Serializers::deserialize(stream, features, content)) {
+        return false;
+    }
+    data = QVariant::fromValue<T>(content);
+    return true;
+}
+
+}  // anon
+
 bool checkStreamValid(QDataStream& stream)
 {
     if (stream.status() != QDataStream::Ok) {
@@ -96,226 +111,78 @@ bool Serializers::deserialize(QDataStream& stream, const Quassel::Features& feat
 bool Serializers::deserialize(QDataStream& stream, const Quassel::Features& features, QVariant& data, Types::VariantType type)
 {
     switch (type) {
-    case Types::VariantType::Void: {
+    case Types::VariantType::Void:
         return true;
-    }
-    case Types::VariantType::Bool: {
-        bool content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::Int: {
-        int32_t content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::UInt: {
-        uint32_t content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QChar: {
-        QChar content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QVariantMap: {
-        QVariantMap content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QVariantList: {
-        QVariantList content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QString: {
-        QString content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QStringList: {
-        QStringList content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QByteArray: {
-        QByteArray content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QDate: {
-        QDate content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QTime: {
-        QTime content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QDateTime: {
-        QDateTime content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::Long: {
-        qlonglong content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::Short: {
-        int16_t content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::Char: {
-        int8_t content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::ULong: {
-        qulonglong content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::UShort: {
-        uint16_t content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::UChar: {
-        uint8_t content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    case Types::VariantType::QVariant: {
-        QVariant content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = QVariant(content);
-        return true;
-    }
-    default: {
+    case Types::VariantType::Bool:
+        return toVariant<bool>(stream, features, data);
+    case Types::VariantType::Int:
+        return toVariant<int32_t>(stream, features, data);
+    case Types::VariantType::UInt:
+        return toVariant<uint32_t>(stream, features, data);
+    case Types::VariantType::QChar:
+        return toVariant<QChar>(stream, features, data);
+    case Types::VariantType::QVariantMap:
+        return toVariant<QVariantMap>(stream, features, data);
+    case Types::VariantType::QVariantList:
+        return toVariant<QVariantList>(stream, features, data);
+    case Types::VariantType::QString:
+        return toVariant<QString>(stream, features, data);
+    case Types::VariantType::QStringList:
+        return toVariant<QStringList>(stream, features, data);
+    case Types::VariantType::QByteArray:
+        return toVariant<QByteArray>(stream, features, data);
+    case Types::VariantType::QDate:
+        return toVariant<QDate>(stream, features, data);
+    case Types::VariantType::QTime:
+        return toVariant<QTime>(stream, features, data);
+    case Types::VariantType::QDateTime:
+        return toVariant<QDateTime>(stream, features, data);
+    case Types::VariantType::Long:
+        return toVariant<qlonglong>(stream, features, data);
+    case Types::VariantType::Short:
+        return toVariant<int16_t>(stream, features, data);
+    case Types::VariantType::Char:
+        return toVariant<int8_t>(stream, features, data);
+    case Types::VariantType::ULong:
+        return toVariant<qulonglong>(stream, features, data);
+    case Types::VariantType::UShort:
+        return toVariant<uint16_t>(stream, features, data);
+    case Types::VariantType::UChar:
+        return toVariant<uint8_t>(stream, features, data);
+    case Types::VariantType::QVariant:
+        return toVariant<QVariant>(stream, features, data);
+    default:
         qWarning() << "Usertype should have been caught earlier already";
         return false;
-    }
     }
 }
 
 bool Serializers::deserialize(QDataStream& stream, const Quassel::Features& features, QVariant& data, Types::QuasselType type)
 {
     switch (type) {
-    case Types::QuasselType::BufferId: {
-        BufferId content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::BufferInfo: {
-        BufferInfo content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::Identity: {
-        Identity content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::IdentityId: {
-        IdentityId content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::Message: {
-        Message content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::MsgId: {
-        MsgId content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::NetworkId: {
-        NetworkId content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::NetworkInfo: {
-        NetworkInfo content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::Network_Server: {
-        Network::Server content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    case Types::QuasselType::PeerPtr: {
-        PeerPtr content;
-        if (!deserialize(stream, features, content))
-            return false;
-        data = qVariantFromValue(content);
-        return true;
-    }
-    default: {
+    case Types::QuasselType::BufferId:
+        return toVariant<BufferId>(stream, features, data);
+    case Types::QuasselType::BufferInfo:
+        return toVariant<BufferInfo>(stream, features, data);
+    case Types::QuasselType::Identity:
+        return toVariant<Identity>(stream, features, data);
+    case Types::QuasselType::IdentityId:
+        return toVariant<IdentityId>(stream, features, data);
+    case Types::QuasselType::Message:
+        return toVariant<Message>(stream, features, data);
+    case Types::QuasselType::MsgId:
+        return toVariant<MsgId>(stream, features, data);
+    case Types::QuasselType::NetworkId:
+        return toVariant<NetworkId>(stream, features, data);
+    case Types::QuasselType::NetworkInfo:
+        return toVariant<NetworkInfo>(stream, features, data);
+    case Types::QuasselType::Network_Server:
+        return toVariant<Network::Server>(stream, features, data);
+    case Types::QuasselType::PeerPtr:
+        return toVariant<PeerPtr>(stream, features, data);
+    default:
         qWarning() << "Invalid QType";
         return false;
-    }
     }
 }
 
