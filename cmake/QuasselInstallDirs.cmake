@@ -18,10 +18,10 @@ if (NOT WITH_KDE)
         # On Windows, we have to guess good paths
         # We must check if the variables are already defined on the command line
         if (NOT DEFINED CMAKE_INSTALL_BINDIR)
-            set(CMAKE_INSTALL_BINDIR "${CMAKE_INSTALL_PREFIX}" CACHE PATH "Install path for binaries")
+            set(CMAKE_INSTALL_BINDIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Install path for executables and DLLs")
         endif()
         if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
-            set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}" CACHE PATH "Install path for libraries")
+            set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE PATH "Install path for static libraries")
         endif()
         if (NOT DEFINED CMAKE_INSTALL_DATADIR)
             set(CMAKE_INSTALL_DATADIR "$ENV{APPDATA}/quassel-irc.org/share/apps" CACHE PATH "Install path for data files")
