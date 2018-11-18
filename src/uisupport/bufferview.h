@@ -83,7 +83,6 @@ protected:
     void dropEvent(QDropEvent* event) override;
     void rowsInserted(const QModelIndex& parent, int start, int end) override;
     void wheelEvent(QWheelEvent*) override;
-    QSize sizeHint() const override;
     void focusInEvent(QFocusEvent* event) override { QAbstractScrollArea::focusInEvent(event); }
     void contextMenuEvent(QContextMenuEvent* event) override;
 

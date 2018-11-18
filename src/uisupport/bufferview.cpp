@@ -575,24 +575,6 @@ void BufferView::filterTextChanged(const QString& filterString)
     on_configChanged();  // make sure collapsation is correct
 }
 
-QSize BufferView::sizeHint() const
-{
-    return TreeViewTouch::sizeHint();
-
-    if (!model())
-        return TreeViewTouch::sizeHint();
-
-    if (model()->rowCount() == 0)
-        return {120, 50};
-
-    int columnSize = 0;
-    for (int i = 0; i < model()->columnCount(); i++) {
-        if (!isColumnHidden(i))
-            columnSize += sizeHintForColumn(i);
-    }
-    return {columnSize, 50};
-}
-
 void BufferView::changeHighlight(BufferView::Direction direction)
 {
     // If for some weird reason we get a new delegate

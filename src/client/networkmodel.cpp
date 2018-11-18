@@ -405,7 +405,6 @@ bool BufferItem::setData(int column, const QVariant& value, int role)
     default:
         return PropertyMapItem::setData(column, value, role);
     }
-    return true;
 }
 
 void BufferItem::setBufferName(const QString& name)
