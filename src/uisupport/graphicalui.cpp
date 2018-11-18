@@ -144,38 +144,26 @@ bool GraphicalUi::eventFilter(QObject* obj, QEvent* event)
 
 bool GraphicalUi::checkMainWidgetVisibility(bool perform)
 {
+    bool needsActivation{true};
+
 #ifdef Q_OS_WIN
     // the problem is that we lose focus when the systray icon is activated
     // and we don't know the former active window
     // therefore we watch for activation event and use our stopwatch :)
     if (GetTickCount() - _dwTickCount < 300) {
         // we were active in the last 300ms -> hide it
-        if (perform)
-            minimizeRestore(false);
-        return false;
+        needsActivation = false;
     }
-    else {
-        if (perform)
-            minimizeRestore(true);
-        return true;
-    }
-
 #else
-
-    if (!mainWidget()->isVisible() || mainWidget()->isMinimized() || !mainWidget()->isActiveWindow()) {
-        if (perform)
-            minimizeRestore(true);
-        return true;
+    if (mainWidget()->isVisible() && !mainWidget()->isMinimized() && mainWidget()->isActiveWindow()) {
+        needsActivation = false;
     }
-    else {
-        if (perform)
-            minimizeRestore(false);
-        return false;
-    }
-
 #endif
 
-    return true;
+    if (perform) {
+        minimizeRestore(needsActivation);
+    }
+    return needsActivation;
 }
 
 bool GraphicalUi::isMainWidgetVisible()
