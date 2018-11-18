@@ -81,18 +81,8 @@ QModelIndex ShortcutsModel::index(int row, int column, const QModelIndex &parent
 }
 
 
-int ShortcutsModel::columnCount(const QModelIndex &parent) const
+int ShortcutsModel::columnCount(const QModelIndex &) const
 {
-    return 2;
-    if (!parent.isValid())
-        return 2;
-
-    Item *item = static_cast<Item *>(parent.internalPointer());
-    Q_ASSERT(item);
-
-    if (!item->parentItem)
-        return 2;
-
     return 2;
 }
 
