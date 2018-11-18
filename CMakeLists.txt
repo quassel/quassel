@@ -422,18 +422,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 # These RPATH settings allow for running directly from the build dir
 set(CMAKE_SKIP_BUILD_RPATH            FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE )
 
-# Set install RPATH only if libdir isn't a system directory
-if (IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}")
-    set(libdir "${CMAKE_INSTALL_LIBDIR}")
-else()
-    set(libdir "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-endif()
-list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${libdir}" is_systemdir)
-if ("${is_systemdir}" STREQUAL "-1")
-   set(CMAKE_INSTALL_RPATH "${libdir}")
-endif()
+# Set RPATH for Quassel's private libraries
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}/quassel")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE )
 
 # Various config-dependent checks and settings
 #####################################################################

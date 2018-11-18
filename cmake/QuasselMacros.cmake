@@ -69,8 +69,8 @@ function(quassel_add_module _module)
     if (buildmode STREQUAL "SHARED" AND NOT ${ARG_NOINSTALL})
         install(TARGETS ${target}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/quassel
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/quassel
         )
     endif()
 
