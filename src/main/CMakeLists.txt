@@ -40,7 +40,7 @@ if (WANT_CORE)
     setup_executable(quasselcore -DBUILD_CORE Qt5::Core Quassel::Core)
 endif()
 
-if (WANT_CLIENT OR WANT_QTCLIENT)
+if (WANT_QTCLIENT)
     add_executable(quasselclient WIN32 main.cpp ${WIN_RC})
     setup_executable(quasselclient -DBUILD_QTUI Qt5::Core Qt5::Gui Quassel::QtUi)
     if (WITH_KDE)
@@ -58,19 +58,29 @@ endif()
 
 # Build bundles for MacOSX
 if (APPLE)
-    add_custom_command(TARGET quasselclient POST_BUILD
-                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
-                               ${CMAKE_SOURCE_DIR} "Quassel Client" ${CMAKE_BINARY_DIR}/quasselclient)
+    if (WANT_QTCLIENT)
+        add_custom_command(TARGET quasselclient POST_BUILD
+                           COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
+                                   ${CMAKE_SOURCE_DIR} "Quassel Client" ${CMAKE_BINARY_DIR}/quasselclient)
+    endif()
+    if (WANT_MONO)
+        add_custom_command(TARGET quassel POST_BUILD
+                           COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
+                                   ${CMAKE_SOURCE_DIR} "Quassel" ${CMAKE_BINARY_DIR}/quassel)
+    endif()
 
-    add_custom_command(TARGET quassel POST_BUILD
-                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
-                               ${CMAKE_SOURCE_DIR} "Quassel" ${CMAKE_BINARY_DIR}/quassel)
     if (DEPLOY)
-        add_custom_command(TARGET quasselclient POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                           COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client ${CMAKE_BINARY_DIR} qsvgicon)
-        add_custom_command(TARGET quasselcore POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                           COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core ${CMAKE_BINARY_DIR})
-        add_custom_command(TARGET quassel POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-                           COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Mono ${CMAKE_BINARY_DIR} qsvgicon)
+        if (WANT_QTCLIENT)
+            add_custom_command(TARGET quasselclient POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                               COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client ${CMAKE_BINARY_DIR} qsvgicon)
+        endif()
+        if (WANT_CORE)
+            add_custom_command(TARGET quasselcore POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                               COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core ${CMAKE_BINARY_DIR})
+        endif()
+        if (WANT_MONO)
+            add_custom_command(TARGET quassel POST_BUILD WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                               COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Mono ${CMAKE_BINARY_DIR} qsvgicon)
+        endif()
     endif()
 endif()
