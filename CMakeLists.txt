@@ -335,6 +335,14 @@ set_package_properties(Boost PROPERTIES TYPE REQUIRED
     URL "https://www.boost.org/"
     DESCRIPTION "Boost libraries for C++"
 )
+# Older versions don't define the imported target
+if (NOT TARGET Boost::boost)
+    add_library(Boost::boost INTERFACE IMPORTED GLOBAL)
+    if (Boost_INCLUDE_DIRS)
+        set_target_properties(Boost::boost PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES "${Boost_INCLUDE_DIRS}")
+    endif()
+endif()
 
 find_package(ZLIB REQUIRED)
 set_package_properties(ZLIB PROPERTIES TYPE REQUIRED
