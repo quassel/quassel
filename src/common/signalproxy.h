@@ -36,8 +36,9 @@
 #include <QSet>
 #include <QThread>
 
-#include "funchelpers.h"
+#include "invoke.h"
 #include "protocol.h"
+#include "traits.h"
 #include "types.h"
 
 struct QMetaObject;
@@ -50,7 +51,7 @@ class COMMON_EXPORT SignalProxy : public QObject
 {
     Q_OBJECT
 
-    template<typename Slot, typename Callable = typename FunctionTraits<Slot>::FunctionType>
+    template<typename Slot, typename Callable = traits::function_t<Slot>>
     class SlotObject;
     class SlotObjectBase;
 
@@ -99,7 +100,7 @@ public:
      * @returns true if attaching the signal was successful
      */
     template<typename Signal>
-    bool attachSignal(const typename FunctionTraits<Signal>::ClassType* sender, Signal signal, const QByteArray& signalName = {});
+    bool attachSignal(const traits::class_t<Signal>* sender, Signal signal, const QByteArray& signalName = {});
 
     /**
      * Attaches a slot to a remote signal.
@@ -118,7 +119,7 @@ public:
      * @returns true if attaching the slot was successful
      */
     template<typename Slot, typename = std::enable_if_t<std::is_member_function_pointer<Slot>::value>>
-    bool attachSlot(const QByteArray& signalName, typename FunctionTraits<Slot>::ClassType* receiver, Slot slot);
+    bool attachSlot(const QByteArray& signalName, traits::class_t<Slot>* receiver, Slot slot);
 
     /**
      * @overload
@@ -337,7 +338,7 @@ private:
 // ---- Template function implementations ---------------------------------------
 
 template<typename Signal>
-bool SignalProxy::attachSignal(const typename FunctionTraits<Signal>::ClassType* sender, Signal signal, const QByteArray& signalName)
+bool SignalProxy::attachSignal(const traits::class_t<Signal>* sender, Signal signal, const QByteArray& signalName)
 {
     static_assert(std::is_member_function_pointer<Signal>::value, "Signal must be given as member function pointer");
 
@@ -364,7 +365,7 @@ bool SignalProxy::attachSignal(const typename FunctionTraits<Signal>::ClassType*
 }
 
 template<typename Slot, typename>
-bool SignalProxy::attachSlot(const QByteArray& signalName, typename FunctionTraits<Slot>::ClassType* receiver, Slot slot)
+bool SignalProxy::attachSlot(const QByteArray& signalName, traits::class_t<Slot>* receiver, Slot slot)
 {
     // Create a wrapper function that invokes the member function pointer for the receiver instance
     attachSlotObject(signalName, std::make_unique<SlotObject<Slot>>(receiver, [receiver, slot = std::move(slot)](auto&&... args) {

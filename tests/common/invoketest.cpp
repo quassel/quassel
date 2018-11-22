@@ -22,7 +22,7 @@
 
 #include <QVariantList>
 
-#include "funchelpers.h"
+#include "invoke.h"
 
 TEST(FuncHelpersTest, invokeLambdaWithArgsList)
 {
