@@ -87,3 +87,30 @@ template<typename Func>
 using function_t = typename detail::FunctionTraitsHelper<Func>::FunctionType;
 
 }  // traits
+
+// ---- decay_t ----------------------------------------------------------------------------------------------------------------------------
+
+namespace detail {
+
+// Primary template
+template<typename ...Args>
+struct DecayHelper;
+
+// Specialization for std::tuple
+template<typename ...Args>
+struct DecayHelper<std::tuple<Args...>>
+{
+    using type = std::tuple<std::decay_t<Args>...>;
+};
+
+}  // detail
+
+namespace traits {
+
+/**
+ * For the given tuple type T, provides a tuple type that contains the decayed types of T.
+ */
+template<typename T>
+using decay_t = typename detail::DecayHelper<T>::type;
+
+}  // traits
