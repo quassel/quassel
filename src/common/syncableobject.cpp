@@ -38,8 +38,8 @@ SyncableObject::SyncableObject(const QString& objectName, QObject* parent)
     setObjectName(objectName);
 
     connect(this, &QObject::objectNameChanged, this, [this](auto&& newName) {
-        for (auto&& proxy : _signalProxies) {
-            proxy->renameObject(this, newName, _objectName);
+        if (_signalProxy) {
+            _signalProxy->renameObject(this, newName, _objectName);
         }
         _objectName = newName;
     });
@@ -54,11 +54,8 @@ SyncableObject::SyncableObject(const SyncableObject& other, QObject* parent)
 
 SyncableObject::~SyncableObject()
 {
-    QList<SignalProxy*>::iterator proxyIter = _signalProxies.begin();
-    while (proxyIter != _signalProxies.end()) {
-        SignalProxy* proxy = (*proxyIter);
-        proxyIter = _signalProxies.erase(proxyIter);
-        proxy->stopSynchronize(this);
+    if (_signalProxy) {
+        _signalProxy->stopSynchronize(this);
     }
 }
 
@@ -205,27 +202,25 @@ void SyncableObject::requestUpdate(const QVariantMap& properties)
 void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char* funcname, ...) const
 {
     // qDebug() << Q_FUNC_INFO << modeType << funcname;
-    foreach (SignalProxy* proxy, _signalProxies) {
+    if (_signalProxy) {
         va_list ap;
         va_start(ap, funcname);
-        proxy->sync_call__(this, modeType, funcname, ap);
+        _signalProxy->sync_call__(this, modeType, funcname, ap);
         va_end(ap);
     }
 }
 
-void SyncableObject::synchronize(SignalProxy* proxy)
+void SyncableObject::synchronize(QPointer<SignalProxy> proxy)
 {
-    if (_signalProxies.contains(proxy))
+    if (_signalProxy) {
+        qWarning().noquote() << QString{"Trying to synchronize syncable object %1 (objectName = \"%2\") that is already synchronized"}
+                                        .arg(syncMetaObject()->className(), objectName());
         return;
-    _signalProxies << proxy;
+    }
+    _signalProxy = proxy;
 }
 
-void SyncableObject::stopSynchronize(SignalProxy* proxy)
+void SyncableObject::stopSynchronize(QPointer<SignalProxy>)
 {
-    for (int i = 0; i < _signalProxies.count(); i++) {
-        if (_signalProxies[i] == proxy) {
-            _signalProxies.removeAt(i);
-            break;
-        }
-    }
+    _signalProxy.clear();
 }

@@ -27,6 +27,7 @@
 #include <QDataStream>
 #include <QMetaType>
 #include <QObject>
+#include <QPointer>
 #include <QVariantMap>
 
 #include "signalproxy.h"
@@ -146,8 +147,8 @@ signals:
     void updated();
 
 private:
-    void synchronize(SignalProxy* proxy);
-    void stopSynchronize(SignalProxy* proxy);
+    void synchronize(QPointer<SignalProxy> proxy);
+    void stopSynchronize(QPointer<SignalProxy> proxy);
 
     int propertyIndex(const QString& propertyName) const;
 
@@ -156,7 +157,7 @@ private:
     bool _initialized{false};
     bool _allowClientUpdates{false};
 
-    QList<SignalProxy*> _signalProxies;
+    QPointer<SignalProxy> _signalProxy;
 
     friend class SignalProxy;
 };
