@@ -235,6 +235,20 @@ public slots:
         return stringArg.toUpper();
     }
 
+    // Void request method with matching receive method (that should not be called)
+    void requestVoid(const QString& stringArg, int intArg)
+    {
+        REQUEST(ARG(stringArg), ARG(intArg));
+        emit requestMethodCalled(stringArg, intArg);
+    }
+
+    // Void request method without matching receive method
+    void requestAnotherVoid(const QString& stringArg, int intArg)
+    {
+        REQUEST(ARG(stringArg), ARG(intArg));
+        emit requestMethodCalled(stringArg, intArg);
+    }
+
     // Receive methods can either have the full signature of the request method + return value, or...
     void receiveInt(const QString&, int, int reply)
     {
@@ -247,6 +261,11 @@ public slots:
     {
         _stringProperty = reply;
         emit stringReceived(reply);
+    }
+
+    void receiveVoid(const QString&, int)
+    {
+        FAIL() << "Method should never be called";
     }
 
     void customSlot(const QString& value)
@@ -312,6 +331,9 @@ TEST_F(SignalProxyTest, syncableObject)
         EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestString"), ElementsAre("Hello", 23))));
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("receiveString"), ElementsAre("HELLO"))));
         EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setStringProperty"), ElementsAre("Hello"))));
+
+        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestVoid"), ElementsAre("Hello", 23))));
+        EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestAnotherVoid"), ElementsAre("Hello", 23))));
 
         // Update properties (twice)
         EXPECT_CALL(*_clientPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("requestUpdate"), ElementsAre(QVariantMap{
@@ -396,6 +418,14 @@ TEST_F(SignalProxyTest, syncableObject)
     ASSERT_TRUE(spy.wait());
     EXPECT_EQ("Hi Universe", serverObject.stringProperty());
     EXPECT_EQ("HELLO", clientObject.stringProperty());
+
+    spy.connect(&serverObject, &SyncObj::requestMethodCalled);
+    clientObject.requestVoid("Hello", 23);
+    ASSERT_TRUE(spy.wait());
+
+    spy.connect(&serverObject, &SyncObj::requestMethodCalled);
+    clientObject.requestAnotherVoid("Hello", 23);
+    ASSERT_TRUE(spy.wait());
 
     // -- Property update
     QVariantMap propMap{{"intProperty", 17}, {"stringProperty", "Quassel"}, {"doubleProperty", 1.7}};
