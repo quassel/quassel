@@ -105,6 +105,14 @@ void SyncableObject::fromVariantMap(const QVariantMap& properties)
     }
 }
 
+SignalProxy::ProxyMode SyncableObject::proxyMode() const
+{
+    if (_signalProxy) {
+        return _signalProxy->proxyMode();
+    }
+    return SignalProxy::ProxyMode::Unknown;
+}
+
 QByteArray SyncableObject::propertySetter(const QMetaMethod& notifySignal)
 {
     if (!notifySignal.isValid()) {

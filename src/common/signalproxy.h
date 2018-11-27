@@ -60,6 +60,7 @@ class COMMON_EXPORT SignalProxy : public QObject
 public:
     enum ProxyMode
     {
+        Unknown,
         Server,
         Client
     };

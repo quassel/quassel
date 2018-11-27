@@ -92,6 +92,13 @@ public:
 
     virtual const QMetaObject* syncMetaObject() const { return metaObject(); }
 
+    /**
+     * Returns the proxy mode of the SignalProxy this instance is synchronized with.
+     *
+     * @returns The SignalProxy's proxy mode if synchronized, SignalProxy::ProxyMode::Unknown otherwise
+     */
+    SignalProxy::ProxyMode proxyMode() const;
+
     inline void setAllowClientUpdates(bool allow) { _allowClientUpdates = allow; }
     inline bool allowClientUpdates() const { return _allowClientUpdates; }
 
