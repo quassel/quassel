@@ -117,6 +117,10 @@ boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantLi
 template<typename R, typename C, typename ...Args>
 boost::optional<QVariant> invokeWithArgsList(C* object, R(C::*func)(Args...), const QVariantList& args)
 {
+    if (!object) {
+        qWarning() << "Cannot invoke member function on a null object!";
+        return boost::none;
+    }
     if (sizeof...(Args) != args.size()) {
         qWarning().nospace() << "Argument count mismatch! Expected: " << sizeof...(Args) << ", actual: " << args.size();
         return boost::none;
