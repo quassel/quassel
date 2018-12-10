@@ -34,7 +34,7 @@
 class COMMON_EXPORT Identity : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(Identity)
 
     Q_PROPERTY(IdentityId identityId READ id WRITE setId NOTIFY idSet)
     Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName NOTIFY identityNameSet)
@@ -167,7 +167,7 @@ Q_DECLARE_METATYPE(Identity)
 class COMMON_EXPORT CertManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(CertManager)
 
     Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey)
     Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert)

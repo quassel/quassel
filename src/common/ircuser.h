@@ -38,7 +38,7 @@ class IrcChannel;
 class COMMON_EXPORT IrcUser : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(IrcUser)
 
     Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userSet)
     Q_PROPERTY(QString host READ host WRITE setHost NOTIFY hostSet)

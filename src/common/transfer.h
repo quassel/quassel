@@ -31,7 +31,7 @@
 class COMMON_EXPORT Transfer : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(Transfer)
 
     Q_PROPERTY(QUuid uuid READ uuid)
     Q_PROPERTY(Transfer::Status status READ status WRITE setStatus NOTIFY statusChanged)

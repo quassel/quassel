@@ -29,7 +29,7 @@
 class COMMON_EXPORT BufferSyncer : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(BufferSyncer)
 
     Q_PROPERTY(QVariantList Activities READ activities WRITE setActivities)
     Q_PROPERTY(QVariantList HighlightCounts READ highlightCounts WRITE setHighlightCounts)

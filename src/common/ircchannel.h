@@ -36,7 +36,7 @@ class Network;
 class COMMON_EXPORT IrcChannel : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(IrcChannel)
 
     Q_PROPERTY(QVariantMap ChanModes READ chanModesToMap WRITE chanModesFromMap)
     Q_PROPERTY(QVariantMap UserModes READ userModesToMap WRITE userModesFromMap)

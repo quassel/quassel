@@ -37,7 +37,7 @@
 class COMMON_EXPORT HighlightRuleManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(HighlightRuleManager)
 
     Q_PROPERTY(QVariantMap HighlightRuleList READ highlightRulesToMap WRITE highlightRulesFromMap)
 

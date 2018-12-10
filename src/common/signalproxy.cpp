@@ -487,6 +487,19 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
         }
     }
 
+    auto result = receiver->invokeSyncMethod(syncMessage.slotName, syncMessage.params);
+    if (result) {
+        if (!result->slotName.isEmpty()) {  // Request method provides a result for a matching receive method
+            _targetPeer = peer;
+            peer->dispatch(*result);
+            _targetPeer = nullptr;
+        }
+        return;
+    }
+
+    // qDebug().noquote() << QString{"Using legacy sync method invocation for %1::%2 (objectName=\"%3\")"}
+    //                               .arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName);
+
     ExtendedMetaObject* eMeta = extendedMetaObject(receiver);
     if (!eMeta->slotMap().contains(syncMessage.slotName)) {
         qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:")

@@ -192,6 +192,29 @@ bool SyncableObject::syncProperty(const QByteArray& setterName, const QVariant& 
     return false;
 }
 
+boost::optional<Protocol::SyncMessage> SyncableObject::invokeSyncMethod(const QByteArray& syncMethodName, const QVariantList& params)
+{
+    thread_local std::unordered_map<QByteArray, SyncMethodMap, Hash<QByteArray>> syncMethodCache;
+
+    auto classIt = syncMethodCache.find(syncMetaObject()->className());
+    if (classIt == syncMethodCache.end()) {
+        classIt = syncMethodCache.insert({syncMetaObject()->className(), syncMethodMap()}).first;
+    }
+    auto methodIt = classIt->second.find(syncMethodName);
+    if (methodIt != classIt->second.end()) {
+        auto result = methodIt->second(this, params);
+        if (result) {
+            emit updatedRemotely();
+        }
+        else {
+            qWarning() << "Could not invoke syncMethod" << syncMethodName << "of class" << metaObject()->className() << "with params" << params;
+        }
+        return result;
+    }
+    // qWarning() << "No matching syncMethod" << syncMethodName;
+    return boost::none;
+}
+
 void SyncableObject::update(const QVariantMap& properties)
 {
     fromVariantMap(properties);

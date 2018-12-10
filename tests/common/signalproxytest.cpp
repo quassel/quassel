@@ -146,7 +146,20 @@ TEST_F(SignalProxyTest, attachSignal)
 class SyncObj : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(SyncObj,
+        setIntProperty,
+        setStringProperty,
+        setDoubleProperty,
+        syncMethod,
+        requestString,
+        receiveString,
+        requestInt,
+        receiveInt,
+        requestVoid,
+        receiveVoid,
+        requestAnotherVoid,
+        customSlot
+    )
 
     Q_PROPERTY(int intProperty READ intProperty WRITE setIntProperty NOTIFY intPropertySet)
     Q_PROPERTY(QString stringProperty READ stringProperty WRITE setStringProperty NOTIFY stringPropertyChanged)

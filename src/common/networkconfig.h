@@ -27,7 +27,7 @@
 class COMMON_EXPORT NetworkConfig : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(NetworkConfig)
 
     Q_PROPERTY(bool pingTimeoutEnabled READ pingTimeoutEnabled WRITE setPingTimeoutEnabled NOTIFY pingTimeoutEnabledSet)
     Q_PROPERTY(int pingInterval READ pingInterval WRITE setPingInterval NOTIFY pingIntervalSet)

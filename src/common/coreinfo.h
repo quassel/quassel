@@ -31,7 +31,7 @@
 class COMMON_EXPORT CoreInfo : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(CoreInfo)
 
     Q_PROPERTY(QVariantMap coreData READ coreData WRITE setCoreData NOTIFY coreDataChanged)
 

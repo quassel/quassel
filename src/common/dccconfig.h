@@ -35,7 +35,7 @@
 class COMMON_EXPORT DccConfig : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(DccConfig)
 
     /// Whether DCC is enabled
     Q_PROPERTY(bool dccEnabled READ isDccEnabled WRITE setDccEnabled)

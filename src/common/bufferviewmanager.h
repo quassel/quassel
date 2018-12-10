@@ -33,7 +33,7 @@ class SignalProxy;
 class COMMON_EXPORT BufferViewManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(BufferViewManager)
 
     Q_PROPERTY(QVariantList BufferViewIds READ bufferViewIds WRITE setBufferViewIds)
 
