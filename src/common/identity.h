@@ -34,27 +34,27 @@
 class COMMON_EXPORT Identity : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(Identity)
 
-    Q_PROPERTY(IdentityId identityId READ id WRITE setId)
-    Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName)
-    Q_PROPERTY(QString realName READ realName WRITE setRealName)
-    Q_PROPERTY(QStringList nicks READ nicks WRITE setNicks)
-    Q_PROPERTY(QString awayNick READ awayNick WRITE setAwayNick)
-    Q_PROPERTY(bool awayNickEnabled READ awayNickEnabled WRITE setAwayNickEnabled)
-    Q_PROPERTY(QString awayReason READ awayReason WRITE setAwayReason)
-    Q_PROPERTY(bool awayReasonEnabled READ awayReasonEnabled WRITE setAwayReasonEnabled)
-    Q_PROPERTY(bool autoAwayEnabled READ autoAwayEnabled WRITE setAutoAwayEnabled)
-    Q_PROPERTY(int autoAwayTime READ autoAwayTime WRITE setAutoAwayTime)
-    Q_PROPERTY(QString autoAwayReason READ autoAwayReason WRITE setAutoAwayReason)
-    Q_PROPERTY(bool autoAwayReasonEnabled READ autoAwayReasonEnabled WRITE setAutoAwayReasonEnabled)
-    Q_PROPERTY(bool detachAwayEnabled READ detachAwayEnabled WRITE setDetachAwayEnabled)
-    Q_PROPERTY(QString detachAwayReason READ detachAwayReason WRITE setDetachAwayReason)
-    Q_PROPERTY(bool detachAwayReasonEnabled READ detachAwayReasonEnabled WRITE setDetachAwayReasonEnabled)
-    Q_PROPERTY(QString ident READ ident WRITE setIdent)
-    Q_PROPERTY(QString kickReason READ kickReason WRITE setKickReason)
-    Q_PROPERTY(QString partReason READ partReason WRITE setPartReason)
-    Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason)
+    Q_PROPERTY(IdentityId identityId READ id WRITE setId NOTIFY idSet)
+    Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName NOTIFY identityNameSet)
+    Q_PROPERTY(QString realName READ realName WRITE setRealName NOTIFY realNameSet)
+    Q_PROPERTY(QStringList nicks READ nicks WRITE setNicks NOTIFY nicksSet)
+    Q_PROPERTY(QString awayNick READ awayNick WRITE setAwayNick NOTIFY awayNickSet)
+    Q_PROPERTY(bool awayNickEnabled READ awayNickEnabled WRITE setAwayNickEnabled NOTIFY awayNickEnabledSet)
+    Q_PROPERTY(QString awayReason READ awayReason WRITE setAwayReason NOTIFY awayReasonSet)
+    Q_PROPERTY(bool awayReasonEnabled READ awayReasonEnabled WRITE setAwayReasonEnabled NOTIFY awayReasonEnabledSet)
+    Q_PROPERTY(bool autoAwayEnabled READ autoAwayEnabled WRITE setAutoAwayEnabled NOTIFY autoAwayEnabledSet)
+    Q_PROPERTY(int autoAwayTime READ autoAwayTime WRITE setAutoAwayTime NOTIFY autoAwayTimeSet)
+    Q_PROPERTY(QString autoAwayReason READ autoAwayReason WRITE setAutoAwayReason NOTIFY autoAwayReasonSet)
+    Q_PROPERTY(bool autoAwayReasonEnabled READ autoAwayReasonEnabled WRITE setAutoAwayReasonEnabled NOTIFY autoAwayReasonEnabledSet)
+    Q_PROPERTY(bool detachAwayEnabled READ detachAwayEnabled WRITE setDetachAwayEnabled NOTIFY detachAwayEnabledSet)
+    Q_PROPERTY(QString detachAwayReason READ detachAwayReason WRITE setDetachAwayReason NOTIFY detachAwayReasonSet)
+    Q_PROPERTY(bool detachAwayReasonEnabled READ detachAwayReasonEnabled WRITE setDetachAwayReasonEnabled NOTIFY detachAwayReasonEnabledSet)
+    Q_PROPERTY(QString ident READ ident WRITE setIdent NOTIFY identSet)
+    Q_PROPERTY(QString kickReason READ kickReason WRITE setKickReason NOTIFY kickReasonSet)
+    Q_PROPERTY(QString partReason READ partReason WRITE setPartReason NOTIFY partReasonSet)
+    Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason NOTIFY quitReasonSet)
 
 public:
     Identity(IdentityId id = 0, QObject* parent = nullptr);
@@ -111,25 +111,25 @@ public slots:
     void copyFrom(const Identity& other);
 
 signals:
-    void idSet(IdentityId id);
-    //   void identityNameSet(const QString &name);
-    //   void realNameSet(const QString &realName);
-    void nicksSet(const QStringList& nicks);
-    //   void awayNickSet(const QString &awayNick);
-    //   void awayNickEnabledSet(bool);
-    //   void awayReasonSet(const QString &awayReason);
-    //   void awayReasonEnabledSet(bool);
-    //   void autoAwayEnabledSet(bool);
-    //   void autoAwayTimeSet(int);
-    //   void autoAwayReasonSet(const QString &);
-    //   void autoAwayReasonEnabledSet(bool);
-    //   void detachAwayEnabledSet(bool);
-    //   void detachAwayReasonSet(const QString &);
-    //   void detachAwayReasonEnabledSet(bool);
-    //   void identSet(const QString &);
-    //   void kickReasonSet(const QString &);
-    //   void partReasonSet(const QString &);
-    //   void quitReasonSet(const QString &);
+    void idSet(IdentityId);
+    void identityNameSet(const QString&);
+    void realNameSet(const QString&);
+    void nicksSet(const QStringList&);
+    void awayNickSet(const QString&);
+    void awayNickEnabledSet(bool);
+    void awayReasonSet(const QString&);
+    void awayReasonEnabledSet(bool);
+    void autoAwayEnabledSet(bool);
+    void autoAwayTimeSet(int);
+    void autoAwayReasonSet(const QString&);
+    void autoAwayReasonEnabledSet(bool);
+    void detachAwayEnabledSet(bool);
+    void detachAwayReasonSet(const QString&);
+    void detachAwayReasonEnabledSet(bool);
+    void identSet(const QString&);
+    void kickReasonSet(const QString&);
+    void partReasonSet(const QString&);
+    void quitReasonSet(const QString&);
 
 private:
     IdentityId _identityId;
@@ -167,7 +167,7 @@ Q_DECLARE_METATYPE(Identity)
 class COMMON_EXPORT CertManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(CertManager)
 
     Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey)
     Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert)

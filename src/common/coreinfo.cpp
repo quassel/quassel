@@ -31,16 +31,18 @@ QVariantMap CoreInfo::coreData() const
 
 void CoreInfo::setCoreData(const QVariantMap& coreData)
 {
-    _coreData = coreData;
-    SYNC(ARG(coreData));
-    emit coreDataChanged(coreData);
+    if (_coreData != coreData) {
+        _coreData = coreData;
+        emit coreDataChanged(coreData);
+    }
 }
 
-void CoreInfo::setConnectedClientData(const int peerCount, const QVariantList peerData)
+void CoreInfo::setConnectedClientData(int peerCount, const QVariantList& peerData)
 {
-    _coreData["sessionConnectedClients"] = peerCount;
-    _coreData["sessionConnectedClientData"] = peerData;
-    setCoreData(_coreData);
+    auto newData = coreData();
+    newData["sessionConnectedClients"] = peerCount;
+    newData["sessionConnectedClientData"] = peerData;
+    setCoreData(newData);
 }
 
 void CoreInfo::reset()

@@ -43,7 +43,7 @@ int IgnoreListManager::indexOf(const QString& ignore) const
     return -1;
 }
 
-QVariantMap IgnoreListManager::initIgnoreList() const
+QVariantMap IgnoreListManager::ignoreListToMap() const
 {
     QVariantMap ignoreListMap;
     QVariantList ignoreTypeList;
@@ -74,7 +74,7 @@ QVariantMap IgnoreListManager::initIgnoreList() const
     return ignoreListMap;
 }
 
-void IgnoreListManager::initSetIgnoreList(const QVariantMap& ignoreList)
+void IgnoreListManager::ignoreListFromMap(const QVariantMap& ignoreList)
 {
     QVariantList ignoreType = ignoreList["ignoreType"].toList();
     QStringList ignoreRule = ignoreList["ignoreRule"].toStringList();

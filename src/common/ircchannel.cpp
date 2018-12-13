@@ -123,22 +123,26 @@ QByteArray IrcChannel::encodeString(const QString& string) const
 // ====================
 void IrcChannel::setTopic(const QString& topic)
 {
-    _topic = topic;
-    SYNC(ARG(topic))
-    emit topicSet(topic);
+    if (_topic != topic) {
+        _topic = topic;
+        emit topicSet(topic);
+    }
 }
 
 void IrcChannel::setPassword(const QString& password)
 {
-    _password = password;
-    SYNC(ARG(password))
+    if (_password != password) {
+        _password = password;
+        emit passwordSet(password);
+    }
 }
 
 void IrcChannel::setEncrypted(bool encrypted)
 {
-    _encrypted = encrypted;
-    SYNC(ARG(encrypted))
-    emit encryptedSet(encrypted);
+    if (_encrypted != encrypted) {
+        _encrypted = encrypted;
+        emit encryptedSet(encrypted);
+    }
 }
 
 void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& modes)
@@ -179,7 +183,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& m
 
         _userModes[ircuser] = sortedModes[i];
         ircuser->joinChannel(this, true);
-        connect(ircuser, &IrcUser::nickSet, this, selectOverload<QString>(&IrcChannel::ircUserNickSet));
+        connect(ircuser, &IrcUser::nickSet, this, selectOverload<const QString&>(&IrcChannel::ircUserNickSet));
 
         // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
         // If you wonder why there is no counterpart to ircUserJoined:
@@ -244,7 +248,6 @@ void IrcChannel::part(const QString& nick)
     part(network()->ircUser(nick));
 }
 
-// SET USER MODE
 void IrcChannel::setUserModes(IrcUser* ircuser, const QString& modes)
 {
     if (isKnownUser(ircuser)) {
@@ -261,7 +264,6 @@ void IrcChannel::setUserModes(const QString& nick, const QString& modes)
     setUserModes(network()->ircUser(nick), modes);
 }
 
-// ADD USER MODE
 void IrcChannel::addUserMode(IrcUser* ircuser, const QString& mode)
 {
     if (!isKnownUser(ircuser) || !isValidChannelUserMode(mode))
@@ -281,7 +283,6 @@ void IrcChannel::addUserMode(const QString& nick, const QString& mode)
     addUserMode(network()->ircUser(nick), mode);
 }
 
-// REMOVE USER MODE
 void IrcChannel::removeUserMode(IrcUser* ircuser, const QString& mode)
 {
     if (!isKnownUser(ircuser) || !isValidChannelUserMode(mode))
@@ -301,8 +302,7 @@ void IrcChannel::removeUserMode(const QString& nick, const QString& mode)
     removeUserMode(network()->ircUser(nick), mode);
 }
 
-// INIT SET USER MODES
-QVariantMap IrcChannel::initUserModes() const
+QVariantMap IrcChannel::userModesToMap() const
 {
     QVariantMap usermodes;
     QHash<IrcUser*, QString>::const_iterator iter = _userModes.constBegin();
@@ -313,7 +313,7 @@ QVariantMap IrcChannel::initUserModes() const
     return usermodes;
 }
 
-void IrcChannel::initSetUserModes(const QVariantMap& usermodes)
+void IrcChannel::userModesFromMap(const QVariantMap& usermodes)
 {
     QList<IrcUser*> users;
     QStringList modes;
@@ -327,7 +327,7 @@ void IrcChannel::initSetUserModes(const QVariantMap& usermodes)
     joinIrcUsers(users, modes);
 }
 
-QVariantMap IrcChannel::initChanModes() const
+QVariantMap IrcChannel::chanModesToMap() const
 {
     QVariantMap channelModes;
 
@@ -366,7 +366,7 @@ QVariantMap IrcChannel::initChanModes() const
     return channelModes;
 }
 
-void IrcChannel::initSetChanModes(const QVariantMap& channelModes)
+void IrcChannel::chanModesFromMap(const QVariantMap& channelModes)
 {
     QVariantMap::const_iterator iter = channelModes["A"].toMap().constBegin();
     QVariantMap::const_iterator iterEnd = channelModes["A"].toMap().constEnd();
@@ -404,7 +404,7 @@ void IrcChannel::ircUserDestroyed()
     // this leads only to fuck ups.
 }
 
-void IrcChannel::ircUserNickSet(QString nick)
+void IrcChannel::ircUserNickSet(const QString& nick)
 {
     auto* ircUser = qobject_cast<IrcUser*>(sender());
     Q_ASSERT(ircUser);

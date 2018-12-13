@@ -103,6 +103,31 @@ COMMON_EXPORT QString tryFormatUnixEpoch(const QString& possibleEpochDate,
  */
 COMMON_EXPORT QString formatDateTimeToOffsetISO(const QDateTime& dateTime);
 
+/**
+ * Compile-time function that compares the given null-terminated C strings.
+ *
+ * Due to the limitations of constexpr functions, the implementation is a bit more cumbersome as one would like
+ * (and we can't use something like strcmp, nor QLatin1String prior to Qt 5.6, which introduced constexpr accessors).
+ *
+ * @todo Qt 5.6: Migrate to QLatin1String from const char*
+ *
+ * @param lhs Left-hand side of the comparison
+ * @param rhs Right-hand side of the comparison
+ * @returns true, if the two C strings are equal
+ */
+COMMON_EXPORT constexpr bool rawStringsAreEqual(const char* lhs, const char* rhs)
+{
+    if (!lhs || !rhs) {
+        return lhs == rhs;
+    }
+    while (*lhs || *rhs) {
+        if (*lhs++ != *rhs++) {
+            return false;
+        }
+    }
+    return true;
+}
+
 namespace detail {
 
 template<typename... Args>

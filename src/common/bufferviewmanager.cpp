@@ -77,7 +77,7 @@ void BufferViewManager::deleteBufferViewConfig(int bufferViewConfigId)
     emit bufferViewConfigDeleted(bufferViewConfigId);
 }
 
-QVariantList BufferViewManager::initBufferViewIds() const
+QVariantList BufferViewManager::bufferViewIds() const
 {
     QVariantList bufferViewIds;
     BufferViewConfigHash::const_iterator iter = _bufferViewConfigs.constBegin();
@@ -89,7 +89,7 @@ QVariantList BufferViewManager::initBufferViewIds() const
     return bufferViewIds;
 }
 
-void BufferViewManager::initSetBufferViewIds(const QVariantList bufferViewIds)
+void BufferViewManager::setBufferViewIds(const QVariantList bufferViewIds)
 {
     for (auto&& id : bufferViewIds) {
         addBufferViewConfig(id.value<int>());

@@ -24,6 +24,7 @@
 #include <QMetaProperty>
 
 #include "signalproxy.h"
+#include "types.h"
 #include "util.h"
 
 SyncableObject::SyncableObject(QObject* parent)
@@ -37,8 +38,8 @@ SyncableObject::SyncableObject(const QString& objectName, QObject* parent)
     setObjectName(objectName);
 
     connect(this, &QObject::objectNameChanged, this, [this](auto&& newName) {
-        for (auto&& proxy : _signalProxies) {
-            proxy->renameObject(this, newName, _objectName);
+        if (_signalProxy) {
+            _signalProxy->renameObject(this, newName, _objectName);
         }
         _objectName = newName;
     });
@@ -53,11 +54,8 @@ SyncableObject::SyncableObject(const SyncableObject& other, QObject* parent)
 
 SyncableObject::~SyncableObject()
 {
-    QList<SignalProxy*>::iterator proxyIter = _signalProxies.begin();
-    while (proxyIter != _signalProxies.end()) {
-        SignalProxy* proxy = (*proxyIter);
-        proxyIter = _signalProxies.erase(proxyIter);
-        proxy->stopSynchronize(this);
+    if (_signalProxy) {
+        _signalProxy->stopSynchronize(this);
     }
 }
 
@@ -85,84 +83,136 @@ void SyncableObject::setInitialized()
 QVariantMap SyncableObject::toVariantMap()
 {
     QVariantMap properties;
+    auto count = syncMetaObject()->propertyCount();
 
-    const QMetaObject* meta = metaObject();
-
-    // we collect data from properties
-    QMetaProperty prop;
-    QString propName;
-    for (int i = 0; i < meta->propertyCount(); i++) {
-        prop = meta->property(i);
-        propName = QString(prop.name());
-        if (propName == "objectName")
-            continue;
-        properties[propName] = prop.read(this);
-    }
-
-    // ...as well as methods, which have names starting with "init"
-    for (int i = 0; i < meta->methodCount(); i++) {
-        QMetaMethod method = meta->method(i);
-        QString methodname(SignalProxy::ExtendedMetaObject::methodName(method));
-        if (!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
-            continue;
-
-        QVariant::Type variantType = QVariant::nameToType(method.typeName());
-        if (variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
-            qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.methodSignature()
-                       << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
-            continue;
-        }
-
-        QVariant value(variantType, (const void*)nullptr);
-        QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
-        QMetaObject::invokeMethod(this, methodname.toLatin1(), genericvalue);
-
-        properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
+    // Ignore properties defined by QObject itself
+    for (int i = staticMetaObject.propertyOffset(); i < count; ++i) {
+        auto property = syncMetaObject()->property(i);
+        properties[property.name()] = property.read(this);
     }
     return properties;
 }
 
 void SyncableObject::fromVariantMap(const QVariantMap& properties)
 {
-    const QMetaObject* meta = metaObject();
-
-    QVariantMap::const_iterator iterator = properties.constBegin();
-    QString propName;
-    while (iterator != properties.constEnd()) {
-        propName = iterator.key();
-        if (propName == "objectName") {
-            ++iterator;
-            continue;
+    auto it = properties.constBegin();
+    while (it != properties.constEnd()) {
+        auto property = syncMetaObject()->property(propertyIndex(it.key()));
+        if (property.isValid() && property.isWritable()) {
+            property.write(this, it.value());
         }
-
-        int propertyIndex = meta->indexOfProperty(propName.toLatin1());
-
-        if (propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
-            setInitValue(propName, iterator.value());
-        else
-            setProperty(propName.toLatin1(), iterator.value());
-        // qDebug() << "<<< SYNC:" << name << iterator.value();
-        ++iterator;
+        ++it;
     }
 }
 
-bool SyncableObject::setInitValue(const QString& property, const QVariant& value)
+SignalProxy::ProxyMode SyncableObject::proxyMode() const
 {
-    QString handlername = QString("initSet") + property;
-    handlername[7] = handlername[7].toUpper();
-
-    QString methodSignature = QString("%1(%2)").arg(handlername).arg(value.typeName());
-    int methodIdx = metaObject()->indexOfMethod(methodSignature.toLatin1().constData());
-    if (methodIdx < 0) {
-        QByteArray normedMethodName = QMetaObject::normalizedSignature(methodSignature.toLatin1().constData());
-        methodIdx = metaObject()->indexOfMethod(normedMethodName.constData());
+    if (_signalProxy) {
+        return _signalProxy->proxyMode();
     }
-    if (methodIdx < 0) {
-        return false;
+    return SignalProxy::ProxyMode::Unknown;
+}
+
+QByteArray SyncableObject::propertySetter(const QMetaMethod& notifySignal)
+{
+    if (!notifySignal.isValid()) {
+        return {};
     }
 
-    QGenericArgument param(value.typeName(), value.constData());
-    return QMetaObject::invokeMethod(this, handlername.toLatin1(), param);
+    // Unfortunately, Qt provides no way to get the name of the property's write method. Thus, we have to impose
+    // naming conventions and rely on heuristics until we can break protocol and explicitly support properties by name.
+    QByteArray setter;
+    const auto& signalName = notifySignal.name();
+    if (signalName.startsWith("sync")) {
+        // Allow custom setter names by prefixing the signal with "sync". Setter name needs to start with lower-case letter.
+        setter = signalName.mid(4);
+        setter[0] = QChar(setter[0]).toLower().toLatin1();
+    }
+    else if (signalName.endsWith("Changed")) {
+        // Notify signals like "myFooChanged" get mapped to the corresponding "setMyFoo"
+        setter = "set" + signalName.left(signalName.length() - 7);
+        setter[3] = QChar(setter[3]).toUpper().toLatin1();
+    }
+    else if (signalName.endsWith("Set")) {
+        // Same for signals ending with "Set"
+        setter = "set" + signalName.left(signalName.length() - 3);
+        setter[3] = QChar(setter[3]).toUpper().toLatin1();
+    }
+    return setter;
+}
+
+int SyncableObject::propertyIndex(const QString &propertyName) const
+{
+    // We cache the property indices per class, because Qt performs a string-based lookup each time a property is accessed.
+    // Use thread_local storage to avoid having to lock the cache for each access.
+    using PropertyNameMap = std::unordered_map<QString, int, Hash<QString>>;
+    thread_local std::unordered_map<QByteArray, PropertyNameMap, Hash<QByteArray>> propertyNameCache;
+
+    auto classIt = propertyNameCache.find(syncMetaObject()->className());
+    if (classIt == propertyNameCache.end()) {
+        // Fill cache with all known properties
+        classIt = propertyNameCache.insert({syncMetaObject()->className(), PropertyNameMap{}}).first;
+        auto count = syncMetaObject()->propertyCount();
+        for (int i = staticMetaObject.propertyOffset(); i < count; i++) {
+            auto property = syncMetaObject()->property(i);
+            classIt->second.emplace(property.name(), property.propertyIndex());
+        }
+    }
+    auto propIt = classIt->second.find(propertyName);
+    return (propIt != classIt->second.end() ? propIt->second : -1);
+}
+
+bool SyncableObject::syncProperty(const QByteArray& setterName, const QVariant& value)
+{
+    using PropertyMap = std::unordered_map<QByteArray, QMetaProperty, Hash<QByteArray>>;
+    thread_local std::unordered_map<QByteArray, PropertyMap, Hash<QByteArray>> propertyCache;
+
+    auto classIt = propertyCache.find(syncMetaObject()->className());
+    if (classIt == propertyCache.end()) {
+        // Fill cache with all properties that declare a supported NOTIFY signal
+        classIt = propertyCache.insert({syncMetaObject()->className(), PropertyMap{}}).first;
+        auto count = syncMetaObject()->propertyCount();
+        for (int i = staticMetaObject.propertyOffset(); i < count; i++) {
+            auto property = syncMetaObject()->property(i);
+            if (property.isWritable() && property.hasNotifySignal()) {
+                auto setter = propertySetter(property.notifySignal());
+                if (!setter.isEmpty()) {
+                    classIt->second.emplace(std::move(setter), property);
+                }
+            }
+        }
+    }
+    auto propIt = classIt->second.find(setterName);
+    if (propIt != classIt->second.end()) {
+        if (propIt->second.write(this, value)) {
+            emit updatedRemotely();
+            return true;
+        }
+    }
+    return false;
+}
+
+boost::optional<Protocol::SyncMessage> SyncableObject::invokeSyncMethod(const QByteArray& syncMethodName, const QVariantList& params)
+{
+    thread_local std::unordered_map<QByteArray, SyncMethodMap, Hash<QByteArray>> syncMethodCache;
+
+    auto classIt = syncMethodCache.find(syncMetaObject()->className());
+    if (classIt == syncMethodCache.end()) {
+        classIt = syncMethodCache.insert({syncMetaObject()->className(), syncMethodMap()}).first;
+    }
+    auto methodIt = classIt->second.find(syncMethodName);
+    if (methodIt != classIt->second.end()) {
+        auto result = methodIt->second(this, params);
+        if (result) {
+            emit updatedRemotely();
+        }
+        else {
+            qWarning() << "Could not invoke syncMethod" << syncMethodName << "of class" << metaObject()->className() << "with params" << params;
+        }
+        return result;
+    }
+    // qWarning() << "No matching syncMethod" << syncMethodName;
+    return boost::none;
 }
 
 void SyncableObject::update(const QVariantMap& properties)
@@ -183,27 +233,25 @@ void SyncableObject::requestUpdate(const QVariantMap& properties)
 void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char* funcname, ...) const
 {
     // qDebug() << Q_FUNC_INFO << modeType << funcname;
-    foreach (SignalProxy* proxy, _signalProxies) {
+    if (_signalProxy) {
         va_list ap;
         va_start(ap, funcname);
-        proxy->sync_call__(this, modeType, funcname, ap);
+        _signalProxy->sync_call__(this, modeType, funcname, ap);
         va_end(ap);
     }
 }
 
-void SyncableObject::synchronize(SignalProxy* proxy)
+void SyncableObject::synchronize(QPointer<SignalProxy> proxy)
 {
-    if (_signalProxies.contains(proxy))
+    if (_signalProxy) {
+        qWarning().noquote() << QString{"Trying to synchronize syncable object %1 (objectName = \"%2\") that is already synchronized"}
+                                        .arg(syncMetaObject()->className(), objectName());
         return;
-    _signalProxies << proxy;
+    }
+    _signalProxy = proxy;
 }
 
-void SyncableObject::stopSynchronize(SignalProxy* proxy)
+void SyncableObject::stopSynchronize(QPointer<SignalProxy>)
 {
-    for (int i = 0; i < _signalProxies.count(); i++) {
-        if (_signalProxies[i] == proxy) {
-            _signalProxies.removeAt(i);
-            break;
-        }
-    }
+    _signalProxy.clear();
 }

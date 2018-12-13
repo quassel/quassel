@@ -493,7 +493,7 @@ void LegacyPeer::dispatchPackedFunc(const QVariantList& packedFunc)
 }
 
 // Handle the changed format for Network's initData
-// cf. Network::initIrcUsersAndChannels()
+// cf. Network::ircUsersAndChannels()
 void LegacyPeer::fromLegacyIrcUsersAndChannels(QVariantMap& initData)
 {
     const QVariantMap& legacyMap = initData["IrcUsersAndChannels"].toMap();

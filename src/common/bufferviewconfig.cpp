@@ -18,6 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <iterator>
+
 #include "bufferviewconfig.h"
 
 BufferViewConfig::BufferViewConfig(int bufferViewId, QObject* parent)
@@ -105,167 +108,145 @@ QSet<BufferId> BufferViewConfig::temporarilyRemovedBuffers() const
     return _temporarilyRemovedBuffers;
 }
 
-QVariantList BufferViewConfig::initBufferList() const
+QVariantList BufferViewConfig::buffersToList() const
 {
-    QVariantList buffers;
-
-    foreach (BufferId bufferId, _buffers) {
-        buffers << qVariantFromValue(bufferId);
-    }
-
-    return buffers;
+    QVariantList result;
+    std::transform(_buffers.cbegin(), _buffers.cend(), std::back_inserter(result), [](auto bufferId) {
+        return QVariant::fromValue(bufferId);
+    });
+    return result;
 }
 
-void BufferViewConfig::initSetBufferList(const QVariantList& buffers)
+void BufferViewConfig::buffersFromList(const QVariantList& buffers)
 {
     _buffers.clear();
-
-    foreach (QVariant buffer, buffers) {
-        _buffers << buffer.value<BufferId>();
-    }
+    std::transform(buffers.cbegin(), buffers.cend(), std::back_inserter(_buffers), [](const QVariant& v) {
+        return v.value<BufferId>();
+    });
 
     emit configChanged();  // used to track changes in the settingspage
 }
 
-QVariantList BufferViewConfig::initRemovedBuffers() const
+QVariantList BufferViewConfig::removedBuffersToList() const
 {
-    QVariantList removedBuffers;
-
-    foreach (BufferId bufferId, _removedBuffers) {
-        removedBuffers << qVariantFromValue(bufferId);
-    }
-
-    return removedBuffers;
+    QVariantList result;
+    std::transform(_removedBuffers.cbegin(), _removedBuffers.cend(), std::back_inserter(result), [](auto bufferId) {
+        return QVariant::fromValue(bufferId);
+    });
+    return result;
 }
 
-void BufferViewConfig::initSetRemovedBuffers(const QVariantList& buffers)
+void BufferViewConfig::removedBuffersFromList(const QVariantList& buffers)
 {
     _removedBuffers.clear();
-
-    foreach (QVariant buffer, buffers) {
-        _removedBuffers << buffer.value<BufferId>();
-    }
+    for (auto&& v : buffers) {
+        _removedBuffers.insert(v.value<BufferId>());
+    };
 }
 
-QVariantList BufferViewConfig::initTemporarilyRemovedBuffers() const
+QVariantList BufferViewConfig::tempRemovedBuffersToList() const
 {
-    QVariantList temporarilyRemovedBuffers;
-
-    foreach (BufferId bufferId, _temporarilyRemovedBuffers) {
-        temporarilyRemovedBuffers << qVariantFromValue(bufferId);
-    }
-
-    return temporarilyRemovedBuffers;
+    QVariantList result;
+    std::transform(_temporarilyRemovedBuffers.cbegin(), _temporarilyRemovedBuffers.cend(), std::back_inserter(result), [](auto bufferId) {
+        return QVariant::fromValue(bufferId);
+    });
+    return result;
 }
 
-void BufferViewConfig::initSetTemporarilyRemovedBuffers(const QVariantList& buffers)
+void BufferViewConfig::tempRemovedBuffersFromList(const QVariantList& buffers)
 {
     _temporarilyRemovedBuffers.clear();
-
-    foreach (QVariant buffer, buffers) {
-        _temporarilyRemovedBuffers << buffer.value<BufferId>();
+    for (auto&& v : buffers) {
+        _temporarilyRemovedBuffers.insert(v.value<BufferId>());
     }
 }
 
 void BufferViewConfig::setBufferViewName(const QString& bufferViewName)
 {
-    if (_bufferViewName == bufferViewName)
-        return;
-
-    _bufferViewName = bufferViewName;
-    SYNC(ARG(bufferViewName))
-    emit bufferViewNameSet(bufferViewName);
+    if (_bufferViewName != bufferViewName) {
+        _bufferViewName = bufferViewName;
+        emit bufferViewNameSet(bufferViewName);
+    }
 }
 
-void BufferViewConfig::setNetworkId(const NetworkId& networkId)
+void BufferViewConfig::setNetworkId(NetworkId networkId)
 {
-    if (_networkId == networkId)
-        return;
-
-    _networkId = networkId;
-    SYNC(ARG(networkId))
-    emit networkIdSet(networkId);
-    emit configChanged();
+    if (_networkId != networkId) {
+        _networkId = networkId;
+        emit networkIdSet(networkId);
+        emit configChanged();
+    }
 }
 
 void BufferViewConfig::setAddNewBuffersAutomatically(bool addNewBuffersAutomatically)
 {
-    if (_addNewBuffersAutomatically == addNewBuffersAutomatically)
-        return;
-
-    _addNewBuffersAutomatically = addNewBuffersAutomatically;
-    SYNC(ARG(addNewBuffersAutomatically))
-    emit configChanged();
+    if (_addNewBuffersAutomatically != addNewBuffersAutomatically) {
+        _addNewBuffersAutomatically = addNewBuffersAutomatically;
+        emit addNewBuffersAutomaticallySet(addNewBuffersAutomatically);
+        emit configChanged();
+    }
 }
 
 void BufferViewConfig::setSortAlphabetically(bool sortAlphabetically)
 {
-    if (_sortAlphabetically == sortAlphabetically)
-        return;
-
-    _sortAlphabetically = sortAlphabetically;
-    SYNC(ARG(sortAlphabetically))
-    emit configChanged();
+    if (_sortAlphabetically != sortAlphabetically) {
+        _sortAlphabetically = sortAlphabetically;
+        emit sortAlphabeticallySet(sortAlphabetically);
+        emit configChanged();
+    }
 }
 
 void BufferViewConfig::setDisableDecoration(bool disableDecoration)
 {
-    if (_disableDecoration == disableDecoration)
-        return;
-
-    _disableDecoration = disableDecoration;
-    SYNC(ARG(disableDecoration))
+    if (_disableDecoration != disableDecoration) {
+        _disableDecoration = disableDecoration;
+        emit disableDecorationSet(disableDecoration);
+    }
 }
 
 void BufferViewConfig::setAllowedBufferTypes(int bufferTypes)
 {
-    if (_allowedBufferTypes == bufferTypes)
-        return;
-
-    _allowedBufferTypes = bufferTypes;
-    SYNC(ARG(bufferTypes))
-    emit configChanged();
+    if (_allowedBufferTypes != bufferTypes) {
+        _allowedBufferTypes = bufferTypes;
+        emit allowedBufferTypesSet(bufferTypes);
+        emit configChanged();
+    }
 }
 
 void BufferViewConfig::setMinimumActivity(int activity)
 {
-    if (_minimumActivity == activity)
-        return;
-
-    _minimumActivity = activity;
-    SYNC(ARG(activity))
-    emit configChanged();
+    if (_minimumActivity != activity) {
+        _minimumActivity = activity;
+        emit minimumActivitySet(activity);
+        emit configChanged();
+    }
 }
 
 void BufferViewConfig::setHideInactiveBuffers(bool hideInactiveBuffers)
 {
-    if (_hideInactiveBuffers == hideInactiveBuffers)
-        return;
-
-    _hideInactiveBuffers = hideInactiveBuffers;
-    SYNC(ARG(hideInactiveBuffers))
-    emit configChanged();
+    if (_hideInactiveBuffers != hideInactiveBuffers) {
+        _hideInactiveBuffers = hideInactiveBuffers;
+        emit hideInactiveBuffersSet(hideInactiveBuffers);
+        emit configChanged();
+    }
 }
 
 void BufferViewConfig::setHideInactiveNetworks(bool hideInactiveNetworks)
 {
-    if (_hideInactiveNetworks == hideInactiveNetworks)
-        return;
-
-    _hideInactiveNetworks = hideInactiveNetworks;
-    SYNC(ARG(hideInactiveNetworks))
-    emit configChanged();
+    if (_hideInactiveNetworks != hideInactiveNetworks) {
+        _hideInactiveNetworks = hideInactiveNetworks;
+        emit hideInactiveNetworksSet(hideInactiveNetworks);
+        emit configChanged();
+    }
 }
 
 void BufferViewConfig::setShowSearch(bool showSearch)
 {
-    if (_showSearch == showSearch) {
-        return;
+    if (_showSearch != showSearch) {
+        _showSearch = showSearch;
+        emit showSearchSet(showSearch);
+        emit configChanged();
     }
-
-    _showSearch = showSearch;
-    SYNC(ARG(showSearch))
-    emit configChanged();
 }
 
 void BufferViewConfig::setBufferList(const QList<BufferId>& buffers)
@@ -274,7 +255,7 @@ void BufferViewConfig::setBufferList(const QList<BufferId>& buffers)
     emit configChanged();
 }
 
-void BufferViewConfig::addBuffer(const BufferId& bufferId, int pos)
+void BufferViewConfig::addBuffer(BufferId bufferId, int pos)
 {
     if (_buffers.contains(bufferId))
         return;
@@ -296,7 +277,7 @@ void BufferViewConfig::addBuffer(const BufferId& bufferId, int pos)
     emit configChanged();
 }
 
-void BufferViewConfig::moveBuffer(const BufferId& bufferId, int pos)
+void BufferViewConfig::moveBuffer(BufferId bufferId, int pos)
 {
     if (!_buffers.contains(bufferId))
         return;
@@ -312,7 +293,7 @@ void BufferViewConfig::moveBuffer(const BufferId& bufferId, int pos)
     emit configChanged();
 }
 
-void BufferViewConfig::removeBuffer(const BufferId& bufferId)
+void BufferViewConfig::removeBuffer(BufferId bufferId)
 {
     if (_buffers.contains(bufferId))
         _buffers.removeAt(_buffers.indexOf(bufferId));
@@ -326,7 +307,7 @@ void BufferViewConfig::removeBuffer(const BufferId& bufferId)
     emit configChanged();
 }
 
-void BufferViewConfig::removeBufferPermanently(const BufferId& bufferId)
+void BufferViewConfig::removeBufferPermanently(BufferId bufferId)
 {
     if (_buffers.contains(bufferId))
         _buffers.removeAt(_buffers.indexOf(bufferId));
@@ -346,22 +327,22 @@ void BufferViewConfig::requestSetBufferViewName(const QString& bufferViewName)
     REQUEST(ARG(bufferViewName))
 }
 
-void BufferViewConfig::requestAddBuffer(const BufferId& bufferId, int pos)
+void BufferViewConfig::requestAddBuffer(BufferId bufferId, int pos)
 {
     REQUEST(ARG(bufferId), ARG(pos))
 }
 
-void BufferViewConfig::requestMoveBuffer(const BufferId& bufferId, int pos)
+void BufferViewConfig::requestMoveBuffer(BufferId bufferId, int pos)
 {
     REQUEST(ARG(bufferId), ARG(pos))
 }
 
-void BufferViewConfig::requestRemoveBuffer(const BufferId& bufferId)
+void BufferViewConfig::requestRemoveBuffer(BufferId bufferId)
 {
     REQUEST(ARG(bufferId))
 }
 
-void BufferViewConfig::requestRemoveBufferPermanently(const BufferId& bufferId)
+void BufferViewConfig::requestRemoveBufferPermanently(BufferId bufferId)
 {
     REQUEST(ARG(bufferId))
 }

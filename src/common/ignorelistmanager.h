@@ -35,7 +35,9 @@
 class COMMON_EXPORT IgnoreListManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(IgnoreListManager)
+
+    Q_PROPERTY(QVariantMap IgnoreList READ ignoreListToMap WRITE ignoreListFromMap)
 
 public:
     inline IgnoreListManager(QObject* parent = nullptr)
@@ -358,9 +360,6 @@ public:
     //  virtual void addIgnoreListItem(const IgnoreListItem &item);
 
 public slots:
-    virtual QVariantMap initIgnoreList() const;
-    virtual void initSetIgnoreList(const QVariantMap& ignoreList);
-
     //! Request removal of an ignore rule based on the rule itself.
     /** Use this method if you want to remove a single ignore rule
      * and get that synced with the core immediately.
@@ -397,6 +396,9 @@ public slots:
         int type, const QString& ignoreRule, bool isRegEx, int strictness, int scope, const QString& scopeRule, bool isActive);
 
 protected:
+    QVariantMap ignoreListToMap() const;
+    void ignoreListFromMap(const QVariantMap& ignoreList);
+
     void setIgnoreList(const QList<IgnoreListItem>& ignoreList) { _ignoreList = ignoreList; }
 
     StrictnessType _match(

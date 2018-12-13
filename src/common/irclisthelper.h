@@ -38,7 +38,7 @@
 class COMMON_EXPORT IrcListHelper : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(IrcListHelper)
 
 public:
     inline IrcListHelper(QObject* parent = nullptr)

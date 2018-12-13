@@ -29,7 +29,12 @@
 class COMMON_EXPORT BufferSyncer : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(BufferSyncer)
+
+    Q_PROPERTY(QVariantList Activities READ activities WRITE setActivities)
+    Q_PROPERTY(QVariantList HighlightCounts READ highlightCounts WRITE setHighlightCounts)
+    Q_PROPERTY(QVariantList LastSeenMsg READ lastSeenMsgs WRITE setLastSeenMsgs)
+    Q_PROPERTY(QVariantList MarkerLines READ markerLines WRITE setMarkerLines)
 
 public:
     explicit BufferSyncer(QObject* parent);
@@ -59,18 +64,6 @@ public:
     }
 
 public slots:
-    QVariantList initLastSeenMsg() const;
-    void initSetLastSeenMsg(const QVariantList&);
-
-    QVariantList initMarkerLines() const;
-    void initSetMarkerLines(const QVariantList&);
-
-    QVariantList initActivities() const;
-    void initSetActivities(const QVariantList&);
-
-    QVariantList initHighlightCounts() const;
-    void initSetHighlightCounts(const QVariantList&);
-
     virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId& msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
     virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId& msgId)
     {
@@ -126,7 +119,19 @@ protected slots:
 protected:
     inline QList<BufferId> lastSeenBufferIds() const { return _lastSeenMsg.keys(); }
     inline QList<BufferId> markerLineBufferIds() const { return _markerLines.keys(); }
-    inline QHash<BufferId, MsgId> markerLines() const { return _markerLines; }
+
+private:
+    QVariantList lastSeenMsgs() const;
+    void setLastSeenMsgs(const QVariantList&);
+
+    QVariantList markerLines() const;
+    void setMarkerLines(const QVariantList&);
+
+    QVariantList activities() const;
+    void setActivities(const QVariantList&);
+
+    QVariantList highlightCounts() const;
+    void setHighlightCounts(const QVariantList&);
 
 private:
     QHash<BufferId, MsgId> _lastSeenMsg;

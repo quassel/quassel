@@ -38,26 +38,26 @@ class IrcChannel;
 class COMMON_EXPORT IrcUser : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(IrcUser)
 
-    Q_PROPERTY(QString user READ user WRITE setUser)
-    Q_PROPERTY(QString host READ host WRITE setHost)
-    Q_PROPERTY(QString nick READ nick WRITE setNick)
-    Q_PROPERTY(QString realName READ realName WRITE setRealName)
-    Q_PROPERTY(QString account READ account WRITE setAccount)
-    Q_PROPERTY(bool away READ isAway WRITE setAway)
-    Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage)
-    Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime)
-    Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime)
-    Q_PROPERTY(QString server READ server WRITE setServer)
-    Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator)
-    Q_PROPERTY(QDateTime lastAwayMessageTime READ lastAwayMessageTime WRITE setLastAwayMessageTime)
-    Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply)
-    Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost)
-    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
+    Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userSet)
+    Q_PROPERTY(QString host READ host WRITE setHost NOTIFY hostSet)
+    Q_PROPERTY(QString nick READ nick WRITE setNick NOTIFY nickSet)
+    Q_PROPERTY(QString realName READ realName WRITE setRealName NOTIFY realNameSet)
+    Q_PROPERTY(QString account READ account WRITE setAccount NOTIFY accountSet)
+    Q_PROPERTY(bool away READ isAway WRITE setAway NOTIFY awaySet)
+    Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage NOTIFY awayMessageSet)
+    Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime NOTIFY idleTimeSet)
+    Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime NOTIFY loginTimeSet)
+    Q_PROPERTY(QString server READ server WRITE setServer NOTIFY serverSet)
+    Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator NOTIFY ircOperatorSet)
+    Q_PROPERTY(QDateTime lastAwayMessageTime READ lastAwayMessageTime WRITE setLastAwayMessageTime NOTIFY lastAwayMessageTimeSet)
+    Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply NOTIFY whoisServiceReplySet)
+    Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost NOTIFY suserHostSet)
+    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted NOTIFY encryptedSet)
 
     Q_PROPERTY(QStringList channels READ channels)
-    Q_PROPERTY(QString userModes READ userModes WRITE setUserModes)
+    Q_PROPERTY(QString userModes READ userModes WRITE setUserModes NOTIFY userModesSet)
 
 public:
     IrcUser(const QString& hostmask, Network* network);
@@ -174,27 +174,28 @@ public slots:
     void removeUserModes(const QString& modes);
 
 signals:
-    //   void userSet(QString user);
-    //   void hostSet(QString host);
-    void nickSet(QString newnick);  // needed in NetworkModel
-                                    //   void realNameSet(QString realName);
-    void awaySet(bool away);        // needed in NetworkModel
-                                    //   void awayMessageSet(QString awayMessage);
-                                    //   void idleTimeSet(QDateTime idleTime);
-                                    //   void loginTimeSet(QDateTime loginTime);
-                                    //   void serverSet(QString server);
-                                    //   void ircOperatorSet(QString ircOperator);
-                                    //   void lastAwayMessageTimeSet(QDateTime lastAwayMessageTime);
-                                    //   void whoisServiceReplySet(QString whoisServiceReply);
-                                    //   void suserHostSet(QString suserHost);
+    void userSet(const QString& user);
+    void hostSet(const QString& host);
+    void nickSet(const QString& newnick);
+    void realNameSet(const QString& realName);
+    void accountSet(const QString& account);
+    void awaySet(bool away);
+    void awayMessageSet(const QString& awayMessage);
+    void idleTimeSet(const QDateTime& idleTime);
+    void loginTimeSet(const QDateTime& loginTime);
+    void serverSet(const QString& server);
+    void ircOperatorSet(const QString& ircOperator);
+    void lastAwayMessageTimeSet(const QDateTime& lastAwayMessageTime);
+    void whoisServiceReplySet(const QString& whoisServiceReply);
+    void suserHostSet(const QString& suserHost);
     void encryptedSet(bool encrypted);
 
-    void userModesSet(QString modes);
-    void userModesAdded(QString modes);
-    void userModesRemoved(QString modes);
+    void userModesSet(const QString& modes);
+    void userModesAdded(const QString& modes);
+    void userModesRemoved(const QString& modes);
 
     // void channelJoined(QString channel);
-    void channelParted(QString channel);
+    void channelParted(const QString& channel);
     void quited();
 
     void lastChannelActivityUpdated(BufferId id, const QDateTime& newTime);
@@ -216,7 +217,7 @@ private:
      */
     inline void markAwayChanged() { _awayChanged = true; }
 
-    bool _initialized;
+    bool _initialized{false};
 
     QString _nick;
     QString _user;
@@ -224,7 +225,7 @@ private:
     QString _realName;
     QString _account;  /// Account name, e.g. NickServ/SASL account
     QString _awayMessage;
-    bool _away;
+    bool _away{false};
     QString _server;
     QDateTime _idleTime;
     QDateTime _idleTimeSet;
@@ -233,21 +234,21 @@ private:
     QDateTime _lastAwayMessageTime;
     QString _whoisServiceReply;
     QString _suserHost;
-    bool _encrypted;
+    bool _encrypted{false};
 
     // QSet<QString> _channels;
     QSet<IrcChannel*> _channels;
     QString _userModes;
 
-    Network* _network;
+    Network* _network{nullptr};
 
-    QTextCodec* _codecForEncoding;
-    QTextCodec* _codecForDecoding;
+    QTextCodec* _codecForEncoding{nullptr};
+    QTextCodec* _codecForDecoding{nullptr};
 
     QHash<BufferId, QDateTime> _lastActivity;
     QHash<BufferId, QDateTime> _lastSpokenTo;
 
     // Given it's never been acknowledged, assume changes exist on IrcUser creation
     /// Tracks if changes in away state (away/here, message) have yet to be acknowledged
-    bool _awayChanged = true;
+    bool _awayChanged{true};
 };

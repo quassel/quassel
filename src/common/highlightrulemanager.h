@@ -37,7 +37,9 @@
 class COMMON_EXPORT HighlightRuleManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(HighlightRuleManager)
+
+    Q_PROPERTY(QVariantMap HighlightRuleList READ highlightRulesToMap WRITE highlightRulesFromMap)
 
     Q_PROPERTY(int highlightNick READ highlightNick WRITE setHighlightNick)
     Q_PROPERTY(bool nicksCaseSensitive READ nicksCaseSensitive WRITE setNicksCaseSensitive)
@@ -323,9 +325,6 @@ public:
     bool match(const Message& msg, const QString& currentNick, const QStringList& identityNicks);
 
 public slots:
-    virtual QVariantMap initHighlightRuleList() const;
-    virtual void initSetHighlightRuleList(const QVariantMap& HighlightRuleList);
-
     //! Request removal of an ignore rule based on the rule itself.
     /** Use this method if you want to remove a single ignore rule
      * and get that synced with the core immediately.
@@ -417,6 +416,10 @@ protected:
 
 signals:
     void ruleAdded(QString name, bool isRegEx, bool isCaseSensitive, bool isEnabled, bool isInverse, QString sender, QString chanName);
+
+private:
+    QVariantMap highlightRulesToMap() const;
+    void highlightRulesFromMap(const QVariantMap& HighlightRuleList);
 
 private:
     HighlightRuleList _highlightRuleList = {};  ///< Custom highlight rule list

@@ -26,78 +26,64 @@ NetworkConfig::NetworkConfig(const QString& objectName, QObject* parent)
 
 void NetworkConfig::setPingTimeoutEnabled(bool enabled)
 {
-    if (_pingTimeoutEnabled == enabled)
-        return;
-
-    _pingTimeoutEnabled = enabled;
-    SYNC(ARG(enabled))
-    emit pingTimeoutEnabledSet(enabled);
+    if (_pingTimeoutEnabled != enabled) {
+        _pingTimeoutEnabled = enabled;
+        emit pingTimeoutEnabledSet(enabled);
+    }
 }
 
 void NetworkConfig::setPingInterval(int interval)
 {
-    if (_pingInterval == interval)
-        return;
-
-    _pingInterval = interval;
-    SYNC(ARG(interval))
-    emit pingIntervalSet(interval);
+    if (_pingInterval != interval) {
+        _pingInterval = interval;
+        emit pingIntervalSet(interval);
+    }
 }
 
 void NetworkConfig::setMaxPingCount(int count)
 {
-    if (_maxPingCount == count)
-        return;
-
-    _maxPingCount = count;
-    SYNC(ARG(count))
+    if (_maxPingCount != count) {
+        _maxPingCount = count;
+        emit maxPingCountSet(count);
+    }
 }
 
 void NetworkConfig::setAutoWhoEnabled(bool enabled)
 {
-    if (_autoWhoEnabled == enabled)
-        return;
-
-    _autoWhoEnabled = enabled;
-    SYNC(ARG(enabled))
-    emit autoWhoEnabledSet(enabled);
+    if (_autoWhoEnabled != enabled) {
+        _autoWhoEnabled = enabled;
+        emit autoWhoEnabledSet(enabled);
+    }
 }
 
 void NetworkConfig::setAutoWhoInterval(int interval)
 {
-    if (_autoWhoInterval == interval)
-        return;
-
-    _autoWhoInterval = interval;
-    SYNC(ARG(interval))
-    emit autoWhoIntervalSet(interval);
+    if (_autoWhoInterval != interval) {
+        _autoWhoInterval = interval;
+        emit autoWhoIntervalSet(interval);
+    }
 }
 
 void NetworkConfig::setAutoWhoNickLimit(int nickLimit)
 {
-    if (_autoWhoNickLimit == nickLimit)
-        return;
-
-    _autoWhoNickLimit = nickLimit;
-    SYNC(ARG(nickLimit))
+    if (_autoWhoNickLimit != nickLimit) {
+        _autoWhoNickLimit = nickLimit;
+        emit autoWhoNickLimitSet(nickLimit);
+    }
 }
 
 void NetworkConfig::setAutoWhoDelay(int delay)
 {
-    if (_autoWhoDelay == delay)
-        return;
-
-    _autoWhoDelay = delay;
-    SYNC(ARG(delay))
-    emit autoWhoDelaySet(delay);
+    if (_autoWhoDelay != delay) {
+        _autoWhoDelay = delay;
+        emit autoWhoDelaySet(delay);
+    }
 }
 
 void NetworkConfig::setStandardCtcp(bool enabled)
 {
-    if (_standardCtcp == enabled)
-        return;
-
-    _standardCtcp = enabled;
-    SYNC(ARG(enabled))
-    emit standardCtcpSet(enabled);
+    if (_standardCtcp != enabled) {
+        _standardCtcp = enabled;
+        emit standardCtcpSet(enabled);
+    }
 }

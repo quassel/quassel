@@ -27,16 +27,16 @@
 class COMMON_EXPORT NetworkConfig : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(NetworkConfig)
 
-    Q_PROPERTY(bool pingTimeoutEnabled READ pingTimeoutEnabled WRITE setPingTimeoutEnabled)
-    Q_PROPERTY(int pingInterval READ pingInterval WRITE setPingInterval)
-    Q_PROPERTY(int maxPingCount READ maxPingCount WRITE setMaxPingCount)
-    Q_PROPERTY(bool autoWhoEnabled READ autoWhoEnabled WRITE setAutoWhoEnabled)
-    Q_PROPERTY(int autoWhoInterval READ autoWhoInterval WRITE setAutoWhoInterval)
-    Q_PROPERTY(int autoWhoNickLimit READ autoWhoNickLimit WRITE setAutoWhoNickLimit)
-    Q_PROPERTY(int autoWhoDelay READ autoWhoDelay WRITE setAutoWhoDelay)
-    Q_PROPERTY(bool standardCtcp READ standardCtcp WRITE setStandardCtcp)
+    Q_PROPERTY(bool pingTimeoutEnabled READ pingTimeoutEnabled WRITE setPingTimeoutEnabled NOTIFY pingTimeoutEnabledSet)
+    Q_PROPERTY(int pingInterval READ pingInterval WRITE setPingInterval NOTIFY pingIntervalSet)
+    Q_PROPERTY(int maxPingCount READ maxPingCount WRITE setMaxPingCount NOTIFY maxPingCountSet)
+    Q_PROPERTY(bool autoWhoEnabled READ autoWhoEnabled WRITE setAutoWhoEnabled NOTIFY autoWhoEnabledSet)
+    Q_PROPERTY(int autoWhoInterval READ autoWhoInterval WRITE setAutoWhoInterval NOTIFY autoWhoIntervalSet)
+    Q_PROPERTY(int autoWhoNickLimit READ autoWhoNickLimit WRITE setAutoWhoNickLimit NOTIFY autoWhoNickLimitSet)
+    Q_PROPERTY(int autoWhoDelay READ autoWhoDelay WRITE setAutoWhoDelay NOTIFY autoWhoDelaySet)
+    Q_PROPERTY(bool standardCtcp READ standardCtcp WRITE setStandardCtcp NOTIFY standardCtcpSet)
 
 public:
     NetworkConfig(const QString& objectName = "GlobalNetworkConfig", QObject* parent = nullptr);
@@ -74,22 +74,15 @@ public slots:
     void setStandardCtcp(bool);
     virtual inline void requestSetStandardCtcp(bool b){REQUEST(ARG(b))}
 
-    signals : void pingTimeoutEnabledSet(bool);
+signals:
+    void pingTimeoutEnabledSet(bool);
     void pingIntervalSet(int);
-    //   void maxPingCountSet(int);
+    void maxPingCountSet(int);
     void autoWhoEnabledSet(bool);
     void autoWhoIntervalSet(int);
-    //   void autoWhoNickLimitSet(int);
+    void autoWhoNickLimitSet(int);
     void autoWhoDelaySet(int);
     void standardCtcpSet(bool);
-
-    //   void setPingTimeoutEnabledRequested(bool);
-    //   void setPingIntervalRequested(int);
-    //   void setMaxPingCountRequested(int);
-    //   void setAutoWhoEnabledRequested(bool);
-    //   void setAutoWhoIntervalRequested(int);
-    //   void setAutoWhoNickLimitRequested(int);
-    //   void setAutoWhoDelayRequested(int);
 
 private:
     bool _pingTimeoutEnabled{true};

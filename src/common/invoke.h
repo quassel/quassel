@@ -32,47 +32,7 @@
 #include <QVariant>
 #include <QVariantList>
 
-// ---- Function traits --------------------------------------------------------------------------------------------------------------------
-
-namespace detail {
-
-/// @cond DOXYGEN_CANNOT_PARSE_THIS
-
-// Primary template
-template<typename Func>
-struct FuncHelper : public FuncHelper<decltype(&Func::operator())>
-{};
-
-// Overload for free function
-template<typename R, typename... Args>
-struct FuncHelper<R(*)(Args...)>
-{
-    using FunctionType = std::function<R(Args...)>;
-    using ReturnType = R;
-    using ArgsTuple = std::tuple<Args...>;
-};
-
-// Overload for member function with non-const call operator
-template<typename C, typename R, typename... Args>
-struct FuncHelper<R(C::*)(Args...)> : public FuncHelper<R(*)(Args...)>
-{
-    using ClassType = C;
-};
-
-// Overload for member function with const call operator
-template<typename C, typename R, typename... Args>
-struct FuncHelper<R(C::*)(Args...) const> : public FuncHelper<R(C::*)(Args...)>
-{};
-
-/// @endcond
-
-}  // namespace detail
-
-/**
- * Provides traits for the given callable.
- */
-template<typename Callable>
-using FunctionTraits = detail::FuncHelper<Callable>;
+#include "traits.h"
 
 // ---- Invoke function with argument list -------------------------------------------------------------------------------------------------
 
@@ -82,7 +42,7 @@ namespace detail {
 // The correct overload is selected via SFINAE.
 template<typename Callable, typename ...Args>
 auto invokeWithArgs(const Callable& c, Args&&... args)
-    -> std::enable_if_t<std::is_void<typename FunctionTraits<Callable>::ReturnType>::value, QVariant>
+    -> std::enable_if_t<std::is_void<traits::return_t<Callable>>::value, QVariant>
 {
     c(std::forward<Args>(args)...);
     return QVariant{};
@@ -90,13 +50,13 @@ auto invokeWithArgs(const Callable& c, Args&&... args)
 
 template<typename Callable, typename ...Args>
 auto invokeWithArgs(const Callable& c, Args&&... args)
-    -> std::enable_if_t<!std::is_void<typename FunctionTraits<Callable>::ReturnType>::value, QVariant>
+    -> std::enable_if_t<!std::is_void<traits::return_t<Callable>>::value, QVariant>
 {
     return QVariant::fromValue(c(std::forward<Args>(args)...));
 }
 
 // Helper for unpacking the argument list via an index sequence
-template<typename Callable, std::size_t ...Is, typename ArgsTuple = typename FunctionTraits<Callable>::ArgsTuple>
+template<typename Callable, std::size_t ...Is, typename ArgsTuple = traits::args_t<Callable>>
 boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantList& args, std::index_sequence<Is...>)
 {
     // Sanity check that all types can be converted
@@ -131,8 +91,7 @@ boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantLi
 template<typename Callable>
 boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantList& args)
 {
-    using ArgsTuple = typename FunctionTraits<Callable>::ArgsTuple;
-    constexpr auto tupleSize = std::tuple_size<ArgsTuple>::value;
+    constexpr auto tupleSize = std::tuple_size<traits::args_t<Callable>>::value;
 
     if (tupleSize != args.size()) {
         qWarning().nospace() << "Argument count mismatch! Expected: " << tupleSize << ", actual: " << args.size();
@@ -158,6 +117,10 @@ boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantLi
 template<typename R, typename C, typename ...Args>
 boost::optional<QVariant> invokeWithArgsList(C* object, R(C::*func)(Args...), const QVariantList& args)
 {
+    if (!object) {
+        qWarning() << "Cannot invoke member function on a null object!";
+        return boost::none;
+    }
     if (sizeof...(Args) != args.size()) {
         qWarning().nospace() << "Argument count mismatch! Expected: " << sizeof...(Args) << ", actual: " << args.size();
         return boost::none;

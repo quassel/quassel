@@ -33,7 +33,9 @@ class SignalProxy;
 class COMMON_EXPORT BufferViewManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(BufferViewManager)
+
+    Q_PROPERTY(QVariantList BufferViewIds READ bufferViewIds WRITE setBufferViewIds)
 
 public:
     BufferViewManager(SignalProxy* proxy, QObject* parent = nullptr);
@@ -42,9 +44,6 @@ public:
     BufferViewConfig* bufferViewConfig(int bufferViewId) const;
 
 public slots:
-    QVariantList initBufferViewIds() const;
-    void initSetBufferViewIds(const QVariantList bufferViewIds);
-
     void addBufferViewConfig(int bufferViewConfigId);
     void deleteBufferViewConfig(int bufferViewConfigId);
 
@@ -66,6 +65,10 @@ protected:
     virtual BufferViewConfig* bufferViewConfigFactory(int bufferViewConfigId);
 
     void addBufferViewConfig(BufferViewConfig* config);
+
+private:
+    QVariantList bufferViewIds() const;
+    void setBufferViewIds(const QVariantList bufferViewIds);
 
 private:
     BufferViewConfigHash _bufferViewConfigs;

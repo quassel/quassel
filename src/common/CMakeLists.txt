@@ -17,11 +17,12 @@ target_sources(${TARGET} PRIVATE
     event.cpp
     eventmanager.cpp
     expressionmatch.cpp
-    funchelpers.h
     highlightrulemanager.cpp
     identity.cpp
     ignorelistmanager.cpp
     internalpeer.cpp
+    invoke.h
+    irccap.h
     ircchannel.cpp
     ircevent.cpp
     irclisthelper.cpp
@@ -36,25 +37,23 @@ target_sources(${TARGET} PRIVATE
     peer.cpp
     peerfactory.cpp
     presetnetworks.cpp
+    protocol.h
     quassel.cpp
     remotepeer.cpp
     settings.cpp
     signalproxy.cpp
     singleton.h
     syncableobject.cpp
+    traits.h
     transfer.cpp
     transfermanager.cpp
     types.cpp
     util.cpp
 
-    serializers/serializers.cpp
-
     protocols/datastream/datastreampeer.cpp
     protocols/legacy/legacypeer.cpp
 
-    # needed for automoc
-    irccap.h
-    protocol.h
+    serializers/serializers.cpp
 )
 
 # Needed for finding the generated version.h

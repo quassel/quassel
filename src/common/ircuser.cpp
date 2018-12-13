@@ -29,24 +29,11 @@
 #include "util.h"
 
 IrcUser::IrcUser(const QString& hostmask, Network* network)
-    : SyncableObject(network)
-    , _initialized(false)
-    , _nick(nickFromMask(hostmask))
-    , _user(userFromMask(hostmask))
-    , _host(hostFromMask(hostmask))
-    , _realName()
-    , _awayMessage()
-    , _away(false)
-    , _server()
-    ,
-    // _idleTime(QDateTime::currentDateTime()),
-    _ircOperator()
-    , _lastAwayMessageTime()
-    , _whoisServiceReply()
-    , _encrypted(false)
-    , _network(network)
-    , _codecForEncoding(nullptr)
-    , _codecForDecoding(nullptr)
+    : SyncableObject{network}
+    , _nick{nickFromMask(hostmask)}
+    , _user{userFromMask(hostmask)}
+    , _host{hostFromMask(hostmask)}
+    , _network{network}
 {
     updateObjectName();
     _lastAwayMessageTime.setTimeSpec(Qt::UTC);
@@ -124,7 +111,7 @@ void IrcUser::setUser(const QString& user)
 {
     if (!user.isEmpty() && _user != user) {
         _user = user;
-        SYNC(ARG(user));
+        emit userSet(user);
     }
 }
 
@@ -132,7 +119,7 @@ void IrcUser::setRealName(const QString& realName)
 {
     if (!realName.isEmpty() && _realName != realName) {
         _realName = realName;
-        SYNC(ARG(realName))
+        emit realNameSet(realName);
     }
 }
 
@@ -140,7 +127,7 @@ void IrcUser::setAccount(const QString& account)
 {
     if (_account != account) {
         _account = account;
-        SYNC(ARG(account))
+        emit accountSet(account);
     }
 }
 
@@ -149,7 +136,6 @@ void IrcUser::setAway(bool away)
     if (away != _away) {
         _away = away;
         markAwayChanged();
-        SYNC(ARG(away))
         emit awaySet(away);
     }
 }
@@ -159,7 +145,7 @@ void IrcUser::setAwayMessage(const QString& awayMessage)
     if (!awayMessage.isEmpty() && _awayMessage != awayMessage) {
         _awayMessage = awayMessage;
         markAwayChanged();
-        SYNC(ARG(awayMessage))
+        emit awayMessageSet(awayMessage);
     }
 }
 
@@ -168,7 +154,7 @@ void IrcUser::setIdleTime(const QDateTime& idleTime)
     if (idleTime.isValid() && _idleTime != idleTime) {
         _idleTime = idleTime;
         _idleTimeSet = QDateTime::currentDateTime();
-        SYNC(ARG(idleTime))
+        emit idleTimeSet(idleTime);
     }
 }
 
@@ -176,7 +162,7 @@ void IrcUser::setLoginTime(const QDateTime& loginTime)
 {
     if (loginTime.isValid() && _loginTime != loginTime) {
         _loginTime = loginTime;
-        SYNC(ARG(loginTime))
+        emit loginTimeSet(loginTime);
     }
 }
 
@@ -184,7 +170,7 @@ void IrcUser::setServer(const QString& server)
 {
     if (!server.isEmpty() && _server != server) {
         _server = server;
-        SYNC(ARG(server))
+        emit serverSet(server);
     }
 }
 
@@ -192,7 +178,7 @@ void IrcUser::setIrcOperator(const QString& ircOperator)
 {
     if (!ircOperator.isEmpty() && _ircOperator != ircOperator) {
         _ircOperator = ircOperator;
-        SYNC(ARG(ircOperator))
+        emit ircOperatorSet(ircOperator);
     }
 }
 
@@ -215,7 +201,7 @@ void IrcUser::setLastAwayMessageTime(const QDateTime& lastAwayMessageTime)
 {
     if (lastAwayMessageTime > _lastAwayMessageTime) {
         _lastAwayMessageTime = lastAwayMessageTime;
-        SYNC(ARG(lastAwayMessageTime))
+        emit lastAwayMessageTimeSet(lastAwayMessageTime);
     }
 }
 
@@ -223,7 +209,7 @@ void IrcUser::setHost(const QString& host)
 {
     if (!host.isEmpty() && _host != host) {
         _host = host;
-        SYNC(ARG(host))
+        emit hostSet(host);
     }
 }
 
@@ -232,7 +218,6 @@ void IrcUser::setNick(const QString& nick)
     if (!nick.isEmpty() && nick != _nick) {
         _nick = nick;
         updateObjectName();
-        SYNC(ARG(nick))
         emit nickSet(nick);
     }
 }
@@ -241,7 +226,7 @@ void IrcUser::setWhoisServiceReply(const QString& whoisServiceReply)
 {
     if (!whoisServiceReply.isEmpty() && whoisServiceReply != _whoisServiceReply) {
         _whoisServiceReply = whoisServiceReply;
-        SYNC(ARG(whoisServiceReply))
+        emit whoisServiceReplySet(whoisServiceReply);
     }
 }
 
@@ -249,15 +234,16 @@ void IrcUser::setSuserHost(const QString& suserHost)
 {
     if (!suserHost.isEmpty() && suserHost != _suserHost) {
         _suserHost = suserHost;
-        SYNC(ARG(suserHost))
+        emit suserHostSet(suserHost);
     }
 }
 
 void IrcUser::setEncrypted(bool encrypted)
 {
-    _encrypted = encrypted;
-    emit encryptedSet(encrypted);
-    SYNC(ARG(encrypted))
+    if (_encrypted != encrypted) {
+        _encrypted = encrypted;
+        emit encryptedSet(encrypted);
+    }
 }
 
 void IrcUser::updateObjectName()
@@ -343,7 +329,6 @@ void IrcUser::setUserModes(const QString& modes)
 {
     if (_userModes != modes) {
         _userModes = modes;
-        SYNC(ARG(modes))
         emit userModesSet(modes);
     }
 }

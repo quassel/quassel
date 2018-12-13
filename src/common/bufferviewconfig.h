@@ -29,18 +29,22 @@
 class COMMON_EXPORT BufferViewConfig : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(BufferViewConfig)
 
-    Q_PROPERTY(QString bufferViewName READ bufferViewName WRITE setBufferViewName)
-    Q_PROPERTY(NetworkId networkId READ networkId WRITE setNetworkId)
-    Q_PROPERTY(bool addNewBuffersAutomatically READ addNewBuffersAutomatically WRITE setAddNewBuffersAutomatically)
-    Q_PROPERTY(bool sortAlphabetically READ sortAlphabetically WRITE setSortAlphabetically)
-    Q_PROPERTY(bool hideInactiveBuffers READ hideInactiveBuffers WRITE setHideInactiveBuffers)
-    Q_PROPERTY(bool hideInactiveNetworks READ hideInactiveNetworks WRITE setHideInactiveNetworks)
-    Q_PROPERTY(bool disableDecoration READ disableDecoration WRITE setDisableDecoration)
-    Q_PROPERTY(int allowedBufferTypes READ allowedBufferTypes WRITE setAllowedBufferTypes)
-    Q_PROPERTY(int minimumActivity READ minimumActivity WRITE setMinimumActivity)
-    Q_PROPERTY(bool showSearch READ showSearch WRITE setShowSearch)
+    Q_PROPERTY(QVariantList BufferList READ buffersToList WRITE buffersFromList)
+    Q_PROPERTY(QVariantList RemovedBuffers READ removedBuffersToList WRITE removedBuffersFromList)
+    Q_PROPERTY(QVariantList TemporarilyRemovedBuffers READ tempRemovedBuffersToList WRITE tempRemovedBuffersFromList)
+
+    Q_PROPERTY(QString bufferViewName READ bufferViewName WRITE setBufferViewName NOTIFY bufferViewNameSet)
+    Q_PROPERTY(NetworkId networkId READ networkId WRITE setNetworkId NOTIFY networkIdSet)
+    Q_PROPERTY(bool addNewBuffersAutomatically READ addNewBuffersAutomatically WRITE setAddNewBuffersAutomatically NOTIFY addNewBuffersAutomaticallySet)
+    Q_PROPERTY(bool sortAlphabetically READ sortAlphabetically WRITE setSortAlphabetically NOTIFY sortAlphabeticallySet)
+    Q_PROPERTY(bool hideInactiveBuffers READ hideInactiveBuffers WRITE setHideInactiveBuffers NOTIFY hideInactiveBuffersSet)
+    Q_PROPERTY(bool hideInactiveNetworks READ hideInactiveNetworks WRITE setHideInactiveNetworks NOTIFY hideInactiveNetworksSet)
+    Q_PROPERTY(bool disableDecoration READ disableDecoration WRITE setDisableDecoration NOTIFY disableDecorationSet)
+    Q_PROPERTY(int allowedBufferTypes READ allowedBufferTypes WRITE setAllowedBufferTypes NOTIFY allowedBufferTypesSet)
+    Q_PROPERTY(int minimumActivity READ minimumActivity WRITE setMinimumActivity NOTIFY minimumActivitySet)
+    Q_PROPERTY(bool showSearch READ showSearch WRITE setShowSearch NOTIFY showSearchSet)
 
 public:
     BufferViewConfig(int bufferViewId, QObject* parent = nullptr);
@@ -64,17 +68,8 @@ public:
     QSet<BufferId> temporarilyRemovedBuffers() const;
 
 public slots:
-    QVariantList initBufferList() const;
-    void initSetBufferList(const QVariantList& buffers);
-
-    QVariantList initRemovedBuffers() const;
-    void initSetRemovedBuffers(const QVariantList& buffers);
-
-    QVariantList initTemporarilyRemovedBuffers() const;
-    void initSetTemporarilyRemovedBuffers(const QVariantList& buffers);
-
     void setBufferViewName(const QString& bufferViewName);
-    void setNetworkId(const NetworkId& networkId);
+    void setNetworkId(NetworkId networkId);
     void setAddNewBuffersAutomatically(bool addNewBuffersAutomatically);
     void setSortAlphabetically(bool sortAlphabetically);
     void setDisableDecoration(bool disableDecoration);
@@ -86,28 +81,46 @@ public slots:
 
     void setBufferList(const QList<BufferId>& buffers);
 
-    void addBuffer(const BufferId& bufferId, int pos);
-    void moveBuffer(const BufferId& bufferId, int pos);
-    void removeBuffer(const BufferId& bufferId);
-    void removeBufferPermanently(const BufferId& bufferId);
+    void addBuffer(BufferId bufferId, int pos);
+    void moveBuffer(BufferId bufferId, int pos);
+    void removeBuffer(BufferId bufferId);
+    void removeBufferPermanently(BufferId bufferId);
 
     virtual void requestSetBufferViewName(const QString& bufferViewName);
-    virtual void requestAddBuffer(const BufferId& bufferId, int pos);
-    virtual void requestMoveBuffer(const BufferId& bufferId, int pos);
-    virtual void requestRemoveBuffer(const BufferId& bufferId);
-    virtual void requestRemoveBufferPermanently(const BufferId& bufferId);
+    virtual void requestAddBuffer(BufferId bufferId, int pos);
+    virtual void requestMoveBuffer(BufferId bufferId, int pos);
+    virtual void requestRemoveBuffer(BufferId bufferId);
+    virtual void requestRemoveBufferPermanently(BufferId bufferId);
 
 signals:
+    void bufferViewNameSet(const QString&);
+    void networkIdSet(NetworkId);
+    void addNewBuffersAutomaticallySet(bool);
+    void sortAlphabeticallySet(bool);
+    void hideInactiveBuffersSet(bool);
+    void hideInactiveNetworksSet(bool);
+    void disableDecorationSet(bool);
+    void allowedBufferTypesSet(int);
+    void minimumActivitySet(int);
+    void showSearchSet(bool);
+
     void configChanged();
 
-    void bufferViewNameSet(const QString& bufferViewName);
-    void networkIdSet(const NetworkId& networkId);
     void bufferListSet();
+    void bufferAdded(BufferId bufferId, int pos);
+    void bufferMoved(BufferId bufferId, int pos);
+    void bufferRemoved(BufferId bufferId);
+    void bufferPermanentlyRemoved(BufferId bufferId);
 
-    void bufferAdded(const BufferId& bufferId, int pos);
-    void bufferMoved(const BufferId& bufferId, int pos);
-    void bufferRemoved(const BufferId& bufferId);
-    void bufferPermanentlyRemoved(const BufferId& bufferId);
+private:
+    QVariantList buffersToList() const;
+    void buffersFromList(const QVariantList& buffers);
+
+    QVariantList removedBuffersToList() const;
+    void removedBuffersFromList(const QVariantList& buffers);
+
+    QVariantList tempRemovedBuffersToList() const;
+    void tempRemovedBuffersFromList(const QVariantList& buffers);
 
 private:
     int _bufferViewId = 0;         ///< ID of the associated BufferView

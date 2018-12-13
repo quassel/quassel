@@ -33,7 +33,7 @@ class Transfer;
 class COMMON_EXPORT TransferManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT
+    SYNCABLE_OBJECT(TransferManager)
 
     Q_PROPERTY(TransferManager::TransferIdList transferIds READ transferIds WRITE setTransferIds)
 

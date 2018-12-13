@@ -50,9 +50,69 @@ public:
     Peer* peer;
 };
 
-// ==================================================
-//  SignalProxy
-// ==================================================
+// ---- PropertyRelay ----------------------------------------------------------------------------------------------------------------------
+
+/**
+ * Relays notify signals of the given property through SyncMessages dispatched by the given SignalProxy.
+ *
+ * Such a relay is required because Qt allows accessing a property's notify signal only in the form of a
+ * QMetaMethod, so pointer-to-member-function connections are unfortunately not possible; thus we cannot
+ * wrap the necessary information in a lambda with direct invocation. Instead, all metadata is stored in
+ * the relay object.
+ * Because we have to use an actual slot, we can't determine the value type at compile time, and thus have
+ * to go through the property's read method to access the value at dispatch time rather than rely on the
+ * value provided by the signal. On the upside, this approach supports value-less notify signals; this is
+ * useful for classes that use a shared changed signal for several properties.
+ *
+ * @todo Once we can break protocol, properties should be synced explicitly rather than (ab)using SyncMessages.
+ *       This would allow to just store the property name in the message, and directly use the property's
+ *       read and write methods.
+ */
+class SignalProxy::PropertyRelay : public QObject
+{
+    Q_OBJECT
+
+public:
+    PropertyRelay(QByteArray className, QByteArray slotName, const QMetaProperty& property, const QMetaMethod& notifySignal, SignalProxy* proxy)
+        : QObject(proxy)
+        , _property(property)
+        , _notifySignal(notifySignal)
+        , _dispatchSlot{staticMetaObject.method(staticMetaObject.indexOfMethod("dispatch()"))}
+        , _proxy(proxy)
+    {
+        _syncMessage.className = std::move(className);
+        _syncMessage.slotName = std::move(slotName);
+    }
+
+    // Cached, because Qt performs a lookup every time for QMetaProperty::notifySignal()
+    QMetaMethod notifySignal() const
+    {
+        return _notifySignal;
+    }
+
+    // Cached, because Qt performs a lookup every time when requesting a slot
+    QMetaMethod dispatchSlot() const
+    {
+        return _dispatchSlot;
+    }
+
+public slots:
+    void dispatch()
+    {
+        _syncMessage.objectName = sender()->objectName();
+        _syncMessage.params = {_property.read(sender())};
+        _proxy->dispatch(_syncMessage);
+    }
+
+private:
+    QMetaProperty _property;
+    QMetaMethod _notifySignal;
+    QMetaMethod _dispatchSlot;
+    SyncMessage _syncMessage;
+    SignalProxy* _proxy;
+};
+
+// ---- SignalProxy ------------------------------------------------------------------------------------------------------------------------
 
 namespace {
 thread_local SignalProxy* _current{nullptr};
@@ -313,6 +373,7 @@ void SignalProxy::synchronize(SyncableObject* obj)
     _syncSlave[className][obj->objectName()] = obj;
 
     if (proxyMode() == Server) {
+        attachProperties(obj);
         obj->setInitialized();
         emit objectInitialized(obj);
     }
@@ -339,6 +400,39 @@ void SignalProxy::stopSynchronize(SyncableObject* obj)
         ++classIter;
     }
     obj->stopSynchronize(this);
+}
+
+void SignalProxy::attachProperties(const SyncableObject* syncObject)
+{
+    auto meta = syncObject->syncMetaObject();
+    QByteArray className = meta->className();
+    auto it = _attachedProperties.find(className);
+    // Since the sender instance is determined dynamically, we need only one relay instance per class per property.
+    // Cache this to avoid the expensive construction for every instance.
+    if (it == _attachedProperties.end()) {
+        auto& relays = _attachedProperties[className];
+        auto count = meta->propertyCount();
+        for (int i = meta->propertyOffset(); i < count; ++i) {
+            auto property = meta->property(i);
+            auto signal = property.notifySignal();
+            if (signal.isValid()) {
+                QByteArray setter = SyncableObject::propertySetter(signal);
+                if (!setter.isEmpty()) {
+                    auto relay = std::make_unique<PropertyRelay>(className, std::move(setter), property, signal, this);
+                    connect(syncObject, signal, relay.get(), relay->dispatchSlot());
+                    relays.emplace_back(std::move(relay));
+                }
+                else {
+                    qWarning() << "Unsupported NOTIFY signal" << signal.name() << "for property" << property.name() << "of class" << className;
+                }
+            }
+        }
+    }
+    else {
+        for (auto&& relay : it->second) {
+            connect(syncObject, relay->notifySignal(), relay.get(), relay->dispatchSlot());
+        }
+    }
 }
 
 void SignalProxy::dispatchSignal(QByteArray sigName, QVariantList params)
@@ -385,6 +479,27 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
     }
 
     SyncableObject* receiver = _syncSlave[syncMessage.className][syncMessage.objectName];
+
+    // In client mode, check if the message contains a property update and directly set its value instead of invoking the slot
+    if (proxyMode() == ProxyMode::Client && syncMessage.params.size() == 1) {
+        if (receiver->syncProperty(syncMessage.slotName, syncMessage.params.first())) {
+            return;
+        }
+    }
+
+    auto result = receiver->invokeSyncMethod(syncMessage.slotName, syncMessage.params);
+    if (result) {
+        if (!result->slotName.isEmpty()) {  // Request method provides a result for a matching receive method
+            _targetPeer = peer;
+            peer->dispatch(*result);
+            _targetPeer = nullptr;
+        }
+        return;
+    }
+
+    // qDebug().noquote() << QString{"Using legacy sync method invocation for %1::%2 (objectName=\"%3\")"}
+    //                               .arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName);
+
     ExtendedMetaObject* eMeta = extendedMetaObject(receiver);
     if (!eMeta->slotMap().contains(syncMessage.slotName)) {
         qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:")
@@ -839,32 +954,6 @@ QByteArray SignalProxy::ExtendedMetaObject::methodName(const QMetaMethod& method
     return sig.left(sig.indexOf("("));
 }
 
-QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod& method)
-{
-    QString methodname = QString(method.methodSignature()).section("(", 0, 0);
-
-    // determine where we have to chop:
-    int upperCharPos;
-    if (method.methodType() == QMetaMethod::Slot) {
-        // we take evertyhing from the first uppercase char if it's slot
-        upperCharPos = methodname.indexOf(QRegExp("[A-Z]"));
-        if (upperCharPos == -1)
-            return QString();
-        methodname = methodname.mid(upperCharPos);
-    }
-    else {
-        // and if it's a signal we discard everything from the last uppercase char
-        upperCharPos = methodname.lastIndexOf(QRegExp("[A-Z]"));
-        if (upperCharPos == -1)
-            return QString();
-        methodname = methodname.left(upperCharPos);
-    }
-
-    methodname[0] = methodname[0].toUpper();
-
-    return methodname;
-}
-
 SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaMethod& method)
     : _methodName(SignalProxy::ExtendedMetaObject::methodName(method))
     , _returnType(QMetaType::type(method.typeName()))
@@ -883,3 +972,5 @@ SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaM
 
     _receiverMode = (_methodName.startsWith("request")) ? SignalProxy::Server : SignalProxy::Client;
 }
+
+#include "signalproxy.moc"

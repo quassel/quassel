@@ -44,7 +44,7 @@ int AliasManager::indexOf(const QString& name) const
     return -1;
 }
 
-QVariantMap AliasManager::initAliases() const
+QVariantMap AliasManager::toAliasMap() const
 {
     QVariantMap aliases;
     QStringList names;
@@ -60,14 +60,13 @@ QVariantMap AliasManager::initAliases() const
     return aliases;
 }
 
-void AliasManager::initSetAliases(const QVariantMap& aliases)
+void AliasManager::fromAliasMap(const QVariantMap& aliases)
 {
     QStringList names = aliases["names"].toStringList();
     QStringList expansions = aliases["expansions"].toStringList();
 
     if (names.count() != expansions.count()) {
-        qWarning() << "AliasesManager::initSetAliases: received" << names.count() << "alias names but only" << expansions.count()
-                   << "expansions!";
+        qWarning().nospace() << Q_FUNC_INFO << ": received " << names.count() << " alias names but only " << expansions.count() << " expansions!";
         return;
     }
 
