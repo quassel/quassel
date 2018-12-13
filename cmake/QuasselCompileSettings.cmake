@@ -76,7 +76,6 @@ elseif(MSVC)
 
     # Increase warning level on MSVC
     # CMake puts /W3 in CMAKE_CXX_FLAGS which will be appended later, so we need to replace
-    message(STATUS "CXX ${CMAKE_CXX_FLAGS} REL ${CMAKE_CXX_FLAGS_RELEASE} DEB ${CMAKE_CXX_FLAGS_DEBUG}")
     string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
     # Silence annoying/useless warnings
