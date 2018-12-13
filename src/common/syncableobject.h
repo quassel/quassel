@@ -82,17 +82,15 @@ private:                                                                        
 /// Declares the sync methods of the base SyncableObject.
 #define SYNCOBJ_BASEMETHODS update, requestUpdate
 
-/// Applies the given operation to each of the variadic arguments except the first one, and produces a comma-separated list of the results.
-/// The first variadic argument holds the class name. The case where it is the only argument is handled by performing no operation.
-#define SYNCOBJ_APPLY(Op, ...) \
-    BOOST_PP_REMOVE_PARENS(BOOST_PP_IIF(BOOST_PP_GREATER(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__), 1), (SYNCOBJ_APPLY_IMPL(Op, __VA_ARGS__, _)), ()))
+/// Applies the given operation to each of the variadic arguments, and produces a comma-separated list of the results.
+/// The use of IDENTITY and the indirection to another macro are somehow required for MSVC.
+#define SYNCOBJ_APPLY(Op, Class, ...) \
+    BOOST_PP_IDENTITY(SYNCOBJ_APPLY_IMPL(Op, Class, __VA_ARGS__))()
 
-/// Applies the given operation with the given class name to each of the variadic arguments. Expects a dummy argument at the end of the
-/// list of variadic arguments, the result for which is discarded in the end. This is to handle the special case of no actual arguments
-/// (even though SYNCOBJ_APPLY has a special case for this and thus does not call this macro in this case, some compilers still expect
-/// __VA_ARGS__ to be non-empty).
+/// Applies the given operation with the given class name to each of the variadic arguments, and returns the results
+/// as a comma-separated list.
 #define SYNCOBJ_APPLY_IMPL(Op, Class, ...) \
-    BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_POP_BACK(BOOST_PP_SEQ_TRANSFORM(Op, Class, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))))
+    BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_TRANSFORM(Op, Class, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)))
 
 /// Operation that creates a function pointer. The first argument s is a dummy needed for implementation reasons.
 #define SYNCOBJ_MAKE_PTR(s, Class, Func) &Class::Func
