@@ -36,14 +36,14 @@ bool IdentServer::startListening()
     uint16_t port = Quassel::optionValue("ident-port").toUShort();
 
     bool success = false;
-    if (_v6server.listen(QHostAddress("::1"), port)) {
-        qInfo() << qPrintable(tr("Listening for identd clients on IPv6 %1 port %2").arg("::1").arg(_v6server.serverPort()));
+    if (_v6server.listen(QHostAddress("::"), port)) {
+        qInfo() << qPrintable(tr("Listening for identd clients on IPv6 %1 port %2").arg("::").arg(_v6server.serverPort()));
 
         success = true;
     }
 
-    if (_server.listen(QHostAddress("127.0.0.1"), port)) {
-        qInfo() << qPrintable(tr("Listening for identd clients on IPv4 %1 port %2").arg("127.0.0.1").arg(_server.serverPort()));
+    if (_server.listen(QHostAddress("0.0.0.1"), port)) {
+        qInfo() << qPrintable(tr("Listening for identd clients on IPv4 %1 port %2").arg("0.0.0.1").arg(_server.serverPort()));
 
         success = true;
     }
