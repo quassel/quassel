@@ -189,7 +189,9 @@ void Core::init()
             quInfo() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
         }
     }
-    else {
+
+    // This checks separately because config-from-environment might have only configured the core just now
+    if (_configured) {
         if (Quassel::isOptionSet("add-user")) {
             bool success = createUser();
             throw ExitException{success ? EXIT_SUCCESS : EXIT_FAILURE};
