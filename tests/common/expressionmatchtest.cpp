@@ -434,3 +434,22 @@ TEST(ExpressionMatchTest, trimMultiWildcardWhitespace)
         EXPECT_EQ(ExpressionMatch::trimMultiWildcardWhitespace(result), result);
     }
 }
+
+
+TEST(ExpressionMatchTest, testInvalidRegEx)
+{
+    // Invalid regular expression pattern
+    ExpressionMatch invalidRegExMatch =
+            ExpressionMatch("*network", ExpressionMatch::MatchMode::MatchRegEx, false);
+
+    // Assert not valid
+    ASSERT_FALSE(invalidRegExMatch.isValid());
+    // Assert not empty
+    EXPECT_FALSE(invalidRegExMatch.isEmpty());
+    // Assert default match fails
+    EXPECT_FALSE(invalidRegExMatch.match(""));
+    // Assert wildcard match fails
+    EXPECT_FALSE(invalidRegExMatch.match("network"));
+    // Assert literal match fails
+    EXPECT_FALSE(invalidRegExMatch.match("*network"));
+}
