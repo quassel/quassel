@@ -106,6 +106,10 @@ void Logger::setup(bool keepMessages)
 
 #ifdef HAVE_SYSLOG
     _syslogEnabled = Quassel::isOptionSet("syslog");
+
+    // set up options, program name, and facility for later calls to syslog(3)
+    if (_syslogEnabled)
+        openlog("quasselcore", LOG_PID, LOG_USER);
 #endif
 
     _initialized = true;
@@ -149,22 +153,25 @@ void Logger::handleMessage(LogLevel level, const QString& msg)
 {
     QString logString;
 
-    switch (level) {
-    case LogLevel::Debug:
-        logString = "[Debug] ";
-        break;
-    case LogLevel::Info:
-        logString = "[Info ] ";
-        break;
-    case LogLevel::Warning:
-        logString = "[Warn ] ";
-        break;
-    case LogLevel::Error:
-        logString = "[Error] ";
-        break;
-    case LogLevel::Fatal:
-        logString = "[FATAL] ";
-        break;
+    // Only add the log level to the message if we do not output to syslog
+    if (!_syslogEnabled) {
+        switch (level) {
+        case LogLevel::Debug:
+            logString = "[Debug] ";
+            break;
+        case LogLevel::Info:
+            logString = "[Info ] ";
+            break;
+        case LogLevel::Warning:
+            logString = "[Warn ] ";
+            break;
+        case LogLevel::Error:
+            logString = "[Error] ";
+            break;
+        case LogLevel::Fatal:
+            logString = "[FATAL] ";
+            break;
+        }
     }
 
     // Use signal connection to make this method thread-safe
@@ -208,7 +215,7 @@ void Logger::outputMessage(const LogEntry& message)
         case LogLevel::Fatal:
             prio = LOG_CRIT;
         }
-        syslog(prio | LOG_USER, "%s", qPrintable(message.message));
+        syslog(prio, "%s", qPrintable(message.message));
     }
 #endif
 
