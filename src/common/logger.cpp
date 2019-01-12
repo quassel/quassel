@@ -37,7 +37,27 @@ namespace {
 
 QByteArray msgWithTime(const Logger::LogEntry& msg)
 {
-    return (msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + msg.message + "\n").toUtf8();
+    QString levelString;
+
+    switch (msg.logLevel) {
+        case Logger::LogLevel::Debug:
+            levelString = "[Debug] ";
+            break;
+        case Logger::LogLevel::Info:
+            levelString = "[Info ] ";
+            break;
+        case Logger::LogLevel::Warning:
+            levelString = "[Warn ] ";
+            break;
+        case Logger::LogLevel::Error:
+            levelString = "[Error] ";
+            break;
+        case Logger::LogLevel::Fatal:
+            levelString = "[FATAL] ";
+            break;
+    }
+
+    return (msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + levelString + msg.message + "\n").toUtf8();
 }
 
 }  // namespace
@@ -151,31 +171,8 @@ void Logger::handleMessage(QtMsgType type, const QString& msg)
 
 void Logger::handleMessage(LogLevel level, const QString& msg)
 {
-    QString logString;
-
-    // Only add the log level to the message if we do not output to syslog
-    if (!_syslogEnabled) {
-        switch (level) {
-        case LogLevel::Debug:
-            logString = "[Debug] ";
-            break;
-        case LogLevel::Info:
-            logString = "[Info ] ";
-            break;
-        case LogLevel::Warning:
-            logString = "[Warn ] ";
-            break;
-        case LogLevel::Error:
-            logString = "[Error] ";
-            break;
-        case LogLevel::Fatal:
-            logString = "[FATAL] ";
-            break;
-        }
-    }
-
     // Use signal connection to make this method thread-safe
-    emit messageLogged({QDateTime::currentDateTime(), level, logString += msg});
+    emit messageLogged({QDateTime::currentDateTime(), level, msg});
 }
 
 void Logger::onMessageLogged(const LogEntry& message)
