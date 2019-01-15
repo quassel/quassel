@@ -1302,13 +1302,13 @@ void MainWin::loadLayout()
     QtUiSettings s;
     int accountId = Client::currentCoreAccount().accountId().toInt();
     QByteArray state = s.value(QString("MainWinState-%1").arg(accountId)).toByteArray();
+    _nickListWidget->setVisible(true);
     if (state.isEmpty()) {
         foreach(BufferViewDock *view, _bufferViews)
         view->show();
         _layoutLoaded = true;
         return;
     }
-    _nickListWidget->setVisible(true);
     restoreState(state, accountId);
     int bufferViewId = s.value(QString("ActiveBufferView-%1").arg(accountId), -1).toInt();
     if (bufferViewId >= 0)
