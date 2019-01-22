@@ -5482,22 +5482,22 @@ msgstr "Formulário"
 #: ../src/qtui/ui/inputwidget.ui:59
 msgctxt "InputWidget|"
 msgid "View and change nick"
-msgstr ""
+msgstr "Ver e mudar nick"
 
 #: ../src/qtui/ui/inputwidget.ui:139
 msgctxt "InputWidget|"
 msgid "Bold"
-msgstr ""
+msgstr "Negrito"
 
 #: ../src/qtui/ui/inputwidget.ui:179
 msgctxt "InputWidget|"
 msgid "Italic"
-msgstr ""
+msgstr "Itálico"
 
 #: ../src/qtui/ui/inputwidget.ui:222
 msgctxt "InputWidget|"
 msgid "Underline"
-msgstr ""
+msgstr "Underline"
 
 #: ../src/qtui/ui/inputwidget.ui:262
 msgctxt "InputWidget|"
