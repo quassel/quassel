@@ -50,12 +50,12 @@ msgstr ""
 #: ../src/uisupport/aboutdata.cpp:178
 msgctxt "AboutData|"
 msgid "Many features, fixes and improvements"
-msgstr ""
+msgstr "Várias funcionalidades, correções e melhorias"
 
 #: ../src/uisupport/aboutdata.cpp:179
 msgctxt "AboutData|"
 msgid "Many fixes and improvements, bug and patch triaging, community support"
-msgstr ""
+msgstr "Várias correções e melhorias, triagem de bugs e patches, suporte da comunidade"
 
 #: ../src/uisupport/aboutdata.cpp:180
 msgctxt "AboutData|"
@@ -69,12 +69,12 @@ msgctxt "AboutData|"
 msgid ""
 "Quasseldroid, architecture, (mobile) performance, many other improvements "
 "and fixes, testing"
-msgstr ""
+msgstr "QUasseldroid, architetura, performance (móvel), várias outras melhorias"
 
 #: ../src/uisupport/aboutdata.cpp:185
 msgctxt "AboutData|"
 msgid "OSX UI improvements"
-msgstr ""
+msgstr "melhoria na UI do OSX"
 
 #: ../src/uisupport/aboutdata.cpp:186 ../src/uisupport/aboutdata.cpp:201
 msgctxt "AboutData|"
@@ -95,12 +95,12 @@ msgstr "Tradução para espanhol"
 #: ../src/uisupport/aboutdata.cpp:189
 msgctxt "AboutData|"
 msgid "Build system fixes"
-msgstr ""
+msgstr "Correções no sistema de build"
 
 #: ../src/uisupport/aboutdata.cpp:190 ../src/uisupport/aboutdata.cpp:330
 msgctxt "AboutData|"
 msgid "Database performance improvements"
-msgstr ""
+msgstr "Melhoria na performance do banco de dados"
 
 #: ../src/uisupport/aboutdata.cpp:191
 msgctxt "AboutData|"
@@ -760,12 +760,12 @@ msgstr ""
 #: ../src/qtui/settingspages/aliasesmodel.cpp:85
 msgctxt "AliasesModel|"
 msgid "Special variables"
-msgstr ""
+msgstr "Variáveis especiais"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:91
 msgctxt "AliasesModel|"
 msgid "Parameter variables"
-msgstr ""
+msgstr "Variáveis de parâmetro"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:92
 msgctxt "AliasesModel|"
@@ -814,37 +814,37 @@ msgstr ""
 #: ../src/qtui/settingspages/aliasesmodel.cpp:110
 msgctxt "AliasesModel|"
 msgid "General variables"
-msgstr ""
+msgstr "Variáveis gerais"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:111
 msgctxt "AliasesModel|"
 msgid "the whole string"
-msgstr ""
+msgstr "a string inteira"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:112
 msgctxt "AliasesModel|"
 msgid "your current nickname"
-msgstr ""
+msgstr "seu apelido atual"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:113
 msgctxt "AliasesModel|"
 msgid "the name of the selected channel"
-msgstr ""
+msgstr "o nome do canal selecionado"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:120
 msgctxt "AliasesModel|"
 msgid "Multiple commands can be separated with semicolons"
-msgstr ""
+msgstr "Múltiplos comandos podem ser separados por ponto e vírgula"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:124
 msgctxt "AliasesModel|"
 msgid "Example:"
-msgstr ""
+msgstr "Exemplo:"
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:124
 msgctxt "AliasesModel|"
 msgid "\"Test $1; Test $2; Test All $0\""
-msgstr ""
+msgstr "\"Teste $1; Teste $2; Teste Todos $0\""
 
 #: ../src/qtui/settingspages/aliasesmodel.cpp:125
 msgctxt "AliasesModel|"
@@ -917,7 +917,7 @@ msgstr "<Padrão do sistema>"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:59
 msgctxt "AppearanceSettingsPage|"
 msgid "Widget style:"
-msgstr ""
+msgstr "Estilo do Widget"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:66
 msgctxt "AppearanceSettingsPage|"
@@ -969,7 +969,7 @@ msgstr "Mostrar ícone na bandeja do sistema"
 #: ../src/qtui/settingspages/appearancesettingspage.ui:188
 msgctxt "AppearanceSettingsPage|"
 msgid "Invert brightness"
-msgstr ""
+msgstr "Inverter Brilho"
 
 #: ../src/qtui/settingspages/appearancesettingspage.ui:233
 msgctxt "AppearanceSettingsPage|"
@@ -1019,7 +1019,7 @@ msgstr "Interface"
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:51
 msgctxt "AppearanceSettingsPage|"
 msgid "Icon theme:"
-msgstr ""
+msgstr "Tema do ìcone:"
 
 #: ../src/qtui/settingspages/appearancesettingspage.cpp:115
 msgctxt "AppearanceSettingsPage|"
@@ -1095,7 +1095,7 @@ msgctxt "BacklogSettingsPage|"
 msgid ""
 "Amount of messages per buffer that are requested after the core connection "
 "has been established."
-msgstr ""
+msgstr "O montante de mensagens por buffer que são solicitadas após a conexão ao core"
 
 #: ../src/qtui/settingspages/backlogsettingspage.ui:141
 msgctxt "BacklogSettingsPage|"
@@ -1193,7 +1193,7 @@ msgstr "Gostaria de mesclar o buffer \"%1\" permanentemente no buffer \"%2\"?\n 
 #: ../src/uisupport/bufferview.cpp:715
 msgctxt "BufferViewDock|"
 msgid "Search..."
-msgstr ""
+msgstr "Busca..."
 
 #: ../src/qtui/settingspages/buffervieweditdlg.ui:14
 msgctxt "BufferViewEditDlg|"
@@ -1296,7 +1296,7 @@ msgstr "Organizar alfabeticamente"
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:163
 msgctxt "BufferViewSettingsPage|"
 msgid "Show search"
-msgstr ""
+msgstr "Mostrar a busca"
 
 #: ../src/qtui/settingspages/bufferviewsettingspage.ui:170
 msgctxt "BufferViewSettingsPage|"
@@ -1383,7 +1383,7 @@ msgstr "Ir para o marcador de linha"
 #, qt-format
 msgctxt "ChannelBufferItem|"
 msgid "Channel %1"
-msgstr ""
+msgstr "Canal %1"
 
 #: ../src/client/networkmodel.cpp:780
 msgctxt "ChannelBufferItem|"
@@ -1393,7 +1393,7 @@ msgstr "Usuários"
 #: ../src/client/networkmodel.cpp:785
 msgctxt "ChannelBufferItem|"
 msgid "Mode"
-msgstr ""
+msgstr "Modo"
 
 #: ../src/client/networkmodel.cpp:795
 msgctxt "ChannelBufferItem|"
@@ -1403,7 +1403,7 @@ msgstr "Tópico"
 #: ../src/client/networkmodel.cpp:801
 msgctxt "ChannelBufferItem|"
 msgid "Not active, double-click to join"
-msgstr ""
+msgstr "Inativo, dê dois cliques para entrar"
 
 #: ../src/qtui/ui/channellistdlg.ui:14
 msgctxt "ChannelListDlg|"
@@ -1511,32 +1511,32 @@ msgstr "Mostrar próprias mensagens"
 msgctxt "ChatMonitorSettingsPage|"
 msgid ""
 "Show own messages in chatmonitor even if the originating buffer is ignored"
-msgstr ""
+msgstr "Mostrar as mensagens próprias no monitor da conversa até se o buffer originário é ignorado"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:185
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Include ignored buffers"
-msgstr ""
+msgstr "Incluir buffers ignorados"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:194
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Display messages from backlog on reconnect"
-msgstr ""
+msgstr "Mostrar mensagens do registro ao reconectar"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:197
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Show messages from backlog"
-msgstr ""
+msgstr "Mostrar mensagens do registro"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:222
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Include read messages from backlog on reconnect"
-msgstr ""
+msgstr "Incluir mensagens lidas do registro ao reconectar"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.ui:225
 msgctxt "ChatMonitorSettingsPage|"
 msgid "Include read messages"
-msgstr ""
+msgstr "Incluir mensagens lidas"
 
 #: ../src/qtui/settingspages/chatmonitorsettingspage.cpp:35
 msgctxt "ChatMonitorSettingsPage|"
@@ -1592,7 +1592,7 @@ msgstr "Copiar seleção"
 #, qt-format
 msgctxt "ChatScene|"
 msgid "Search '%1'"
-msgstr ""
+msgstr "Procurar '%1'"
 
 #: ../src/qtui/chatscene.cpp:859
 msgctxt "ChatScene|"
@@ -1913,12 +1913,12 @@ msgstr "Ver bate-papo"
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:43
 msgctxt "ChatViewSettingsPage|"
 msgid "You need at least version 0.6 of Quassel Core to use this feature"
-msgstr ""
+msgstr "Você precisa da versão 0.6 do Quassel Core ou superior para usar esta função"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:54
 msgctxt "ChatViewSettingsPage|"
 msgid "Your Quassel core does not support this feature"
-msgstr ""
+msgstr "Seu Quassel core não suporta esta função"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:55
 msgctxt "ChatViewSettingsPage|"
@@ -1930,22 +1930,22 @@ msgstr ""
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:68
 msgctxt "ChatViewSettingsPage|"
 msgid "No modes"
-msgstr ""
+msgstr "Sem modos"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:70
 msgctxt "ChatViewSettingsPage|"
 msgid "Highest mode"
-msgstr ""
+msgstr "Modo mais alto"
 
 #: ../src/qtui/settingspages/chatviewsettingspage.cpp:72
 msgctxt "ChatViewSettingsPage|"
 msgid "All modes"
-msgstr ""
+msgstr "Todos os modos"
 
 #: ../src/common/qt5cliparser.cpp:30
 msgctxt "CliParser|"
 msgid "Quassel IRC is a modern, distributed IRC client."
-msgstr ""
+msgstr "Quassel IRC é um moderno e distribuído cliente de IRC"
 
 #: ../src/client/client.cpp:354
 msgctxt "Client|"
@@ -1992,7 +1992,7 @@ msgstr "Desconectado"
 #: ../src/client/clientauthhandler.cpp:171
 msgctxt "ClientAuthHandler|"
 msgid "Reconnecting in compatibility mode..."
-msgstr ""
+msgstr "Reconectando em modo de compatibilidade..."
 
 #: ../src/client/clientauthhandler.cpp:259
 msgctxt "ClientAuthHandler|"
@@ -8821,7 +8821,7 @@ msgstr "%DN%1%DN %DH(%2@%3)%DH saiu"
 #, qt-format
 msgctxt "UiStyle::StyledMessage|"
 msgid "%DN%1%DN has kicked %DN%2%DN from %DC%3%DC"
-msgstr "%DN%1%DN foi chutado %DN%2%DN de %DC%3%DC"
+msgstr "%DN%1%DN chutou %DN%2%DN de %DC%3%DC"
 
 #. Day Change Message
 #: ../src/uisupport/uistyle.cpp:977
