@@ -167,7 +167,10 @@ Q_DECLARE_METATYPE(Identity)
 class COMMON_EXPORT CertManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT(CertManager)
+    SYNCABLE_OBJECT(CertManager,
+        setSslKey,
+        setSslCert
+    )
 
     Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey)
     Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert)

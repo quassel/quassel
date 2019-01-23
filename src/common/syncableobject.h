@@ -68,11 +68,21 @@ private:                                                                        
     SyncMethodMap syncMethodMap() const final override { return buildSyncMethodMap(syncMethodNames(), syncMethodPointers()); }                   \
 
 
-#define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
-#define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
+#define SYNC(...) \
+    static_assert(isSyncMethodDeclared(__func__), ""); \
+    sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
 
-#define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
-#define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
+#define REQUEST(...) \
+    static_assert(isSyncMethodDeclared(__func__), ""); \
+    sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
+
+#define SYNC_OTHER(x, ...) \
+    static_assert(isSyncMethodDeclared(#x), ""); \
+    sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
+
+#define REQUEST_OTHER(x, ...) \
+    static_assert(isSyncMethodDeclared(#x), ""); \
+    sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
 
 #define ARG(x) const_cast<void*>(reinterpret_cast<const void*>(&x))
 #define NO_ARG 0

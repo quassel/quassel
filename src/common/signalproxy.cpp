@@ -497,9 +497,10 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
         return;
     }
 
-    // qDebug().noquote() << QString{"Using legacy sync method invocation for %1::%2 (objectName=\"%3\")"}
-    //                               .arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName);
+    qDebug().noquote() << QString{"Using legacy sync method invocation for %1::%2 (objectName=\"%3\")"}
+                                   .arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName);
 
+#if 1
     ExtendedMetaObject* eMeta = extendedMetaObject(receiver);
     if (!eMeta->slotMap().contains(syncMessage.slotName)) {
         qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:")
@@ -538,6 +539,7 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
 
     // send emit update signal
     invokeSlot(receiver, eMeta->updatedRemotelyId());
+#endif
 }
 
 void SignalProxy::handle(Peer* peer, const RpcCall& rpcCall)

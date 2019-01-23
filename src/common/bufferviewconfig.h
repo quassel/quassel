@@ -29,7 +29,17 @@
 class COMMON_EXPORT BufferViewConfig : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT(BufferViewConfig)
+    SYNCABLE_OBJECT(BufferViewConfig,
+        addBuffer,
+        moveBuffer,
+        removeBuffer,
+        removeBufferPermanently,
+        requestSetBufferViewName,
+        requestAddBuffer,
+        requestMoveBuffer,
+        requestRemoveBuffer,
+        requestRemoveBufferPermanently
+    )
 
     Q_PROPERTY(QVariantList BufferList READ buffersToList WRITE buffersFromList)
     Q_PROPERTY(QVariantList RemovedBuffers READ removedBuffersToList WRITE removedBuffersFromList)

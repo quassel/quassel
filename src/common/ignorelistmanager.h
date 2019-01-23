@@ -35,7 +35,14 @@
 class COMMON_EXPORT IgnoreListManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT(IgnoreListManager)
+    SYNCABLE_OBJECT(IgnoreListManager,
+        requestAddIgnoreListItem,
+        addIgnoreListItem,
+        requestRemoveIgnoreListItem,
+        removeIgnoreListItem,
+        requestToggleIgnoreRule,
+        toggleIgnoreRule
+    )
 
     Q_PROPERTY(QVariantMap IgnoreList READ ignoreListToMap WRITE ignoreListFromMap)
 

@@ -34,7 +34,9 @@ class Network;
 class COMMON_EXPORT AliasManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT(AliasManager)
+    SYNCABLE_OBJECT(AliasManager,
+        addAlias
+    )
 
     Q_PROPERTY(QVariantMap Aliases READ toAliasMap WRITE fromAliasMap)
 

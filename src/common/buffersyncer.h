@@ -29,7 +29,23 @@
 class COMMON_EXPORT BufferSyncer : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT(BufferSyncer)
+    SYNCABLE_OBJECT(BufferSyncer,
+        requestSetLastSeenMsg,
+        setLastSeenMsg,
+        requestSetMarkerLine,
+        setMarkerLine,
+        requestRemoveBuffer,
+        removeBuffer,
+        requestMergeBuffersPermanently,
+        mergeBuffersPermanently,
+        setBufferActivity,
+        setHighlightCount,
+        requestRenameBuffer,
+        renameBuffer,
+        requestMarkBufferAsRead,
+        markBufferAsRead,
+        requestPurgeBufferIds
+    )
 
     Q_PROPERTY(QVariantList Activities READ activities WRITE setActivities)
     Q_PROPERTY(QVariantList HighlightCounts READ highlightCounts WRITE setHighlightCounts)

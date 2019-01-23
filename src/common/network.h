@@ -52,7 +52,19 @@ struct NetworkInfo;
 class COMMON_EXPORT Network : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT(Network)
+    SYNCABLE_OBJECT(Network,
+        addIrcUser,
+        addIrcChannel,
+        addSupport,
+        removeSupport,
+        addCap,
+        acknowledgeCap,
+        removeCap,
+        clearCaps,
+        requestConnect,
+        requestDisconnect,
+        requestSetNetworkInfo
+    )
 
     Q_ENUMS(ConnectionState)
 

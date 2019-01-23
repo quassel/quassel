@@ -28,7 +28,16 @@
 class COMMON_EXPORT BacklogManager : public SyncableObject
 {
     Q_OBJECT
-    SYNCABLE_OBJECT(BacklogManager)
+    SYNCABLE_OBJECT(BacklogManager,
+        requestBacklog,
+        receiveBacklog,
+        requestBacklogFiltered,
+        receiveBacklogFiltered,
+        requestBacklogAll,
+        receiveBacklogAll,
+        requestBacklogAllFiltered,
+        receiveBacklogAllFiltered
+    )
 
 public:
     BacklogManager(QObject* parent = nullptr)
