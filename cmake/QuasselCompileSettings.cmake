@@ -1,6 +1,6 @@
 # This file contains compile flags and general build configuration for Quassel
 #
-# (C) 2014-2018 by the Quassel Project <devel@quassel-irc.org>
+# (C) 2014-2019 by the Quassel Project <devel@quassel-irc.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
