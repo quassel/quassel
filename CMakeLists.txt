@@ -360,6 +360,12 @@ if (NOT WIN32)
     )
 endif()
 
+# Shared library support
+#####################################################################
+
+option(ENABLE_SHARED "Build modules as shared libraries" ON)
+add_feature_info(ENABLE_SHARED ENABLE_SHARED "Build modules as shared libraries")
+
 # Setup unit testing
 #####################################################################
 

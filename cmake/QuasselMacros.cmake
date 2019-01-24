@@ -45,7 +45,7 @@ function(quassel_add_module _module)
     string(REPLACE "::" "_" target ${target})
     string(REPLACE "_" "-" output_name ${target})
 
-    if (ARG_STATIC)
+    if (ARG_STATIC OR NOT ENABLE_SHARED)
         set(buildmode STATIC)
     else()
         set(buildmode SHARED)
