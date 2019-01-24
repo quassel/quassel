@@ -34,7 +34,7 @@ compiler is needed:
 Other compilers may work, but are not officially supported.
 
 As Quassel is a Qt application, you need the Qt SDK, version 5.5 or higher.
-Furthermore, the Boost header-only libraries (at least version 1.56) and
+Furthermore, the Boost header-only libraries (at least version 1.54) and
 CMake 3.5 or later are required. CMake will tell you about any missing
 dependencies when configuring the project.
 

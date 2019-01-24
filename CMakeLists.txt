@@ -330,7 +330,7 @@ endif()
 # Non-Qt-based packages
 #####################################################################
 
-find_package(Boost 1.56 REQUIRED)
+find_package(Boost 1.54 REQUIRED)
 set_package_properties(Boost PROPERTIES TYPE REQUIRED
     URL "https://www.boost.org/"
     DESCRIPTION "Boost libraries for C++"
