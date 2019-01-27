@@ -254,7 +254,7 @@ int main(int argc, char **argv)
     }
     catch (ExitException e) {
         if (!e.errorString.isEmpty()) {
-            qCritical() << e.errorString;
+            qCritical() << qPrintable(e.errorString);
         }
         return e.exitCode;
     }
