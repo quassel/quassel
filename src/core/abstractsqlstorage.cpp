@@ -309,14 +309,6 @@ bool AbstractSqlStorage::upgradeDb()
         }
     }
 
-    // Update the schema version for the final step.  Split this out to offer more informative
-    // logging (though setting schema version really should not fail).
-    if (!updateSchemaVersion(schemaVersion())) {
-        // Updating the final schema version failed, bail out
-        qCritical() << "Unable to upgrade Logging Backend!  Setting final schema version" << schemaVersion() << "failed.";
-        return false;
-    }
-
     // If we made it here, everything seems to have worked!
     return true;
 }
