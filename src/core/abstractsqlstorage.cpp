@@ -180,13 +180,13 @@ QString AbstractSqlStorage::queryString(const QString& queryName, int version)
     return query.trimmed();
 }
 
-QStringList AbstractSqlStorage::setupQueries()
+QList<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::setupQueries()
 {
-    QStringList queries;
+    QList<SqlQueryResource> queries;
     // The current schema is stored in the root folder, including setup scripts.
     QDir dir = QDir(QString(":/SQL/%1/").arg(displayName()));
     foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
-        queries << queryString(fileInfo.baseName());
+        queries << SqlQueryResource(queryString(fileInfo.baseName()), fileInfo.baseName());
     }
     return queries;
 }
@@ -201,10 +201,11 @@ bool AbstractSqlStorage::setup(const QVariantMap& settings, const QProcessEnviro
     }
 
     db.transaction();
-    foreach (QString queryString, setupQueries()) {
-        QSqlQuery query = db.exec(queryString);
+    foreach (auto queryResource, setupQueries()) {
+        QSqlQuery query = db.exec(queryResource.queryString);
         if (!watchQuery(query)) {
-            qCritical() << "Unable to setup Logging Backend!";
+            qCritical() << qPrintable(QString("Unable to setup Logging Backend!  Setup query failed (step: %1).")
+                                      .arg(queryResource.queryFilename));
             db.rollback();
             return false;
         }
