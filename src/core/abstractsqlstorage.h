@@ -87,7 +87,12 @@ protected:
      */
     QString queryString(const QString &queryName, int version = 0);
 
-    QStringList setupQueries();
+    /**
+     * Gets the collection of SQL setup queries and filenames to create a new database
+     *
+     * @return List of SQL query strings and filenames
+     */
+    QList<SqlQueryResource> setupQueries();
 
     /**
      * Gets the collection of SQL upgrade queries and filenames for a given schema version
