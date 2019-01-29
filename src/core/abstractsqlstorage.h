@@ -22,6 +22,7 @@
 
 #include <memory>
 
+#include <QList>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
@@ -41,6 +42,18 @@ public:
 
     virtual std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() { return {}; }
     virtual std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter() { return {}; }
+
+    /**
+     * An SQL query with associated resource filename
+     */
+    struct SqlQueryResource {
+        QString queryString;   ///< SQL query string
+        QString queryFilename; ///< Path to the resource file providing this query
+
+        SqlQueryResource(const QString& queryString, const QString& queryFilename)
+            : queryString(std::move(queryString)),
+              queryFilename(std::move(queryFilename)) {}
+    };
 
 public slots:
     State init(const QVariantMap& settings = QVariantMap(),
@@ -76,15 +89,45 @@ protected:
 
     QStringList setupQueries();
 
-    QStringList upgradeQueries(int ver);
+    /**
+     * Gets the collection of SQL upgrade queries and filenames for a given schema version
+     *
+     * @param ver  SQL schema version
+     * @return List of SQL query strings and filenames
+     */
+    QList<SqlQueryResource> upgradeQueries(int ver);
     bool upgradeDb();
 
     bool watchQuery(QSqlQuery& query);
 
     int schemaVersion();
     virtual int installedSchemaVersion() { return -1; };
-    virtual bool updateSchemaVersion(int newVersion) = 0;
+
+    /**
+     * Update the stored schema version number, optionally clearing the record of mid-schema steps
+     *
+     * @param newVersion        New schema version number
+     * @param clearUpgradeStep  If true, clear the record of any in-progress schema upgrades
+     * @return
+     */
+    virtual bool updateSchemaVersion(int newVersion, bool clearUpgradeStep = true) = 0;
+
     virtual bool setupSchemaVersion(int version) = 0;
+
+    /**
+     * Gets the last successful schema upgrade step, or an empty string if no upgrade is in progress
+     *
+     * @return Filename of last successful schema upgrade query, or empty string if not upgrading
+     */
+    virtual QString schemaVersionUpgradeStep();
+
+    /**
+     * Sets the last successful schema upgrade step
+     *
+     * @param upgradeQuery  The filename of the last successful schema upgrade query
+     * @return True if successfully set, otherwise false
+     */
+    virtual bool setSchemaVersionUpgradeStep(QString upgradeQuery) = 0;
 
     virtual void setConnectionProperties(const QVariantMap& properties, const QProcessEnvironment& environment, bool loadFromEnvironment) = 0;
     virtual QString driverName() = 0;

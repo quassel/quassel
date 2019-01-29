@@ -75,21 +75,39 @@ int SqliteStorage::installedSchemaVersion()
     return AbstractSqlStorage::installedSchemaVersion();
 }
 
-bool SqliteStorage::updateSchemaVersion(int newVersion)
+bool SqliteStorage::updateSchemaVersion(int newVersion, bool clearUpgradeStep)
 {
     // only used when there is a singlethread (during startup)
     // so we don't need locking here
-    QSqlQuery query(logDb());
+
+    QSqlDatabase db = logDb();
+
+    // Atomically update the schema version and clear the upgrade step, if specified
+    // Note: This will need reworked if "updateSchemaVersion" is ever called within a transaction.
+    db.transaction();
+
+    QSqlQuery query(db);
     query.prepare("UPDATE coreinfo SET value = :version WHERE key = 'schemaversion'");
     query.bindValue(":version", newVersion);
-    query.exec();
+    safeExec(query);
 
-    bool success = true;
-    if (query.lastError().isValid()) {
-        qCritical() << "SqliteStorage::updateSchemaVersion(int): Updating schema version failed!";
-        success = false;
+    if (!watchQuery(query)) {
+        qCritical() << "SqliteStorage::updateSchemaVersion(int, bool): Updating schema version failed!";
+        db.rollback();
+        return false;
     }
-    return success;
+
+    if (clearUpgradeStep) {
+        // Try clearing the upgrade step if requested
+        if (!setSchemaVersionUpgradeStep("")) {
+            db.rollback();
+            return false;
+        }
+    }
+
+    // Successful, commit and return true
+    db.commit();
+    return true;
 }
 
 bool SqliteStorage::setupSchemaVersion(int version)
@@ -105,6 +123,52 @@ bool SqliteStorage::setupSchemaVersion(int version)
     if (query.lastError().isValid()) {
         qCritical() << "SqliteStorage::setupSchemaVersion(int): Updating schema version failed!";
         success = false;
+    }
+    return success;
+}
+
+QString SqliteStorage::schemaVersionUpgradeStep()
+{
+    // Only used when there is a singlethread (during startup), so we don't need locking here
+    QSqlQuery query(logDb());
+    query.prepare("SELECT value FROM coreinfo WHERE key = 'schemaupgradestep'");
+    safeExec(query);
+    watchQuery(query);
+    if (query.first())
+        return query.value(0).toString();
+
+    // Fall back to the default value
+    return AbstractSqlStorage::schemaVersionUpgradeStep();
+}
+
+bool SqliteStorage::setSchemaVersionUpgradeStep(QString upgradeQuery)
+{
+    // Only used when there is a singlethread (during startup), so we don't need locking here
+
+    // Intentionally do not wrap in a transaction so other functions can include multiple operations
+    QSqlQuery query(logDb());
+    query.prepare("UPDATE coreinfo SET value = :upgradestep WHERE key = 'schemaupgradestep'");
+    query.bindValue(":upgradestep", upgradeQuery);
+    safeExec(query);
+
+    // Don't wrap with watchQuery to avoid an alarming message in the log when the key is missing
+    // Make sure that the query didn't fail, and that some non-zero number of rows were affected
+    bool success = !query.lastError().isValid() && query.numRowsAffected() != 0;
+
+    if (!success) {
+        // The key might not exist (Quassel 0.13.0 and older).  Try inserting it...
+        query = QSqlQuery(logDb());
+        query.prepare("INSERT INTO coreinfo (key, value) VALUES ('schemaupgradestep', :upgradestep)");
+        query.bindValue(":upgradestep", upgradeQuery);
+        safeExec(query);
+
+        if (!watchQuery(query)) {
+            qCritical() << Q_FUNC_INFO << "Setting schema upgrade step failed!";
+            success = false;
+        }
+        else {
+            success = true;
+        }
     }
     return success;
 }
