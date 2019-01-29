@@ -133,8 +133,24 @@ protected:
     QString userName()  override { return _userName; }
     QString password()  override { return _password; }
     int installedSchemaVersion() override;
-    bool updateSchemaVersion(int newVersion) override;
+    bool updateSchemaVersion(int newVersion, bool clearUpgradeStep) override;
     bool setupSchemaVersion(int version) override;
+
+    /**
+     * Gets the last successful schema upgrade step, or an empty string if no upgrade is in progress
+     *
+     * @return Filename of last successful schema upgrade query, or empty string if not upgrading
+     */
+    QString schemaVersionUpgradeStep() override;
+
+    /**
+     * Sets the last successful schema upgrade step
+     *
+     * @param upgradeQuery  The filename of the last successful schema upgrade query
+     * @return True if successfully set, otherwise false
+     */
+    virtual bool setSchemaVersionUpgradeStep(QString upgradeQuery) override;
+
     void safeExec(QSqlQuery &query);
 
     bool beginTransaction(QSqlDatabase &db);
