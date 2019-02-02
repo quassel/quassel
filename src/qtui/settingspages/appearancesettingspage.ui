@@ -243,12 +243,25 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="showConfirmConnectionDlg">
+    <widget class="QCheckBox" name="showConfirmConnectDlg">
      <property name="text">
-      <string>Confirm dialog for connecting to/disconnecting from all Networks</string>
+      <string>Confirm dialog for connecting to all Networks</string>
      </property>
      <property name="settingsKey" stdset="0">
-      <string notr="true">ShowConfirmConnectionDlg</string>
+      <string notr="true">ShowConfirmConnectDlg</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showConfirmDisconnectDlg">
+     <property name="text">
+      <string>Confirm dialog for disconnecting from all Networks</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">ShowConfirmDisconnectDlg</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>true</bool>

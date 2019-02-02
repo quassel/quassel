@@ -22,6 +22,7 @@
 
 #include <QComboBox>
 #include <QDialogButtonBox>
+#include <QCheckBox>
 #include <QGridLayout>
 #include <QIcon>
 #include <QLabel>
@@ -240,11 +241,39 @@ void NetworkModelController::handleNetworkAction(ActionType type, QAction *)
 {
     if (type == NetworkConnectAllWithDropdown || type == NetworkDisconnectAllWithDropdown || type == NetworkConnectAll || type == NetworkDisconnectAll) {
         QtUiSettings s;
-        if (s.value("ShowConfirmConnectionDlg").toBool()) {
-            if (type == NetworkConnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really Connect to all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
+        if (type == NetworkConnectAllWithDropdown && s.value("ShowConfirmConnectDlg").toBool()) {
+            auto *cb = new QCheckBox("Don't ask again");
+            QMessageBox mbox;
+            mbox.setWindowTitle(tr("Question"));
+            mbox.setText(tr("Really connect to all IRC Networks?"));
+            mbox.setIcon(QMessageBox::Icon::Question);
+            mbox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            mbox.setDefaultButton(QMessageBox::No);
+            mbox.setCheckBox(cb);
+            auto answer = static_cast<QMessageBox::StandardButton>(mbox.exec());
+            if (answer == QMessageBox::No) {
                 return;
-            if (type == NetworkDisconnectAllWithDropdown && QMessageBox::question(0, tr("Question"), tr("Really disconnect from all IRC Networks?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
+            }
+            if (cb->checkState()) {
+                s.setValue("ShowConfirmConnectDlg", false);
+            }
+        }
+        if (type == NetworkDisconnectAllWithDropdown && s.value("ShowConfirmDisconnectDlg").toBool()) {
+            auto *cb = new QCheckBox("Don't ask again");
+            QMessageBox mbox;
+            mbox.setWindowTitle(tr("Question"));
+            mbox.setText(tr("Really disconnect from all IRC Networks?"));
+            mbox.setIcon(QMessageBox::Icon::Question);
+            mbox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            mbox.setDefaultButton(QMessageBox::No);
+            mbox.setCheckBox(cb);
+            auto answer = static_cast<QMessageBox::StandardButton>(mbox.exec());
+            if (answer == QMessageBox::No) {
                 return;
+            }
+            if (cb->checkState()) {
+                s.setValue("ShowConfirmDisconnectDlg", false);
+            }
         }
         foreach(NetworkId id, Client::networkIds()) {
             const Network *net = Client::network(id);
