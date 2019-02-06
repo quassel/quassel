@@ -1914,15 +1914,20 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
         QSqlQuery query(db);
         if (last == -1 && first == -1) {
             query.prepare(queryString("select_messagesNewestK"));
+            // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+            query.bindValue(":bufferidDup1", bufferId.toInt());
         }
         else if (last == -1) {
             query.prepare(queryString("select_messagesNewerThan"));
             query.bindValue(":firstmsg", first.toQint64());
+            // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+            query.bindValue(":bufferidDup1", bufferId.toInt());
         }
         else {
             query.prepare(queryString("select_messagesRange"));
             query.bindValue(":lastmsg", last.toQint64());
             query.bindValue(":firstmsg", first.toQint64());
+            // Workaround for Qt 4 QSqlQuery::bindValue() not needed, only has one ":bufferid"
         }
         query.bindValue(":bufferid", bufferId.toInt());
         query.bindValue(":limit", limit);
@@ -1989,15 +1994,20 @@ QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId
         QSqlQuery query(db);
         if (last == -1 && first == -1) {
             query.prepare(queryString("select_messagesNewestK_filtered"));
+            // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+            query.bindValue(":bufferidDup1", bufferId.toInt());
         }
         else if (last == -1) {
             query.prepare(queryString("select_messagesNewerThan_filtered"));
             query.bindValue(":firstmsg", first.toQint64());
+            // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+            query.bindValue(":bufferidDup1", bufferId.toInt());
         }
         else {
             query.prepare(queryString("select_messagesRange_filtered"));
             query.bindValue(":lastmsg", last.toQint64());
             query.bindValue(":firstmsg", first.toQint64());
+            // Workaround for Qt 4 QSqlQuery::bindValue() not needed, only has one ":bufferid"
         }
         query.bindValue(":bufferid", bufferId.toInt());
         query.bindValue(":limit", limit);
@@ -2005,6 +2015,8 @@ QList<Message> SqliteStorage::requestMsgsFiltered(UserId user, BufferId bufferId
         query.bindValue(":type", typeRaw);
         int flagsRaw = flags;
         query.bindValue(":flags", flagsRaw);
+        // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+        query.bindValue(":flagsDup1", flagsRaw);
 
         safeExec(query);
         watchQuery(query);
@@ -2128,6 +2140,8 @@ QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, M
         query.bindValue(":type", typeRaw);
         int flagsRaw = flags;
         query.bindValue(":flags", flagsRaw);
+        // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+        query.bindValue(":flagsDup1", flagsRaw);
         safeExec(query);
 
         watchQuery(query);

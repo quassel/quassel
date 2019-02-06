@@ -1843,13 +1843,18 @@ QList<Message> PostgreSqlStorage::requestMsgsFiltered(UserId user, BufferId buff
     QSqlQuery query(db);
     if (last == -1 && first == -1) {
         query.prepare(queryString("select_messagesNewestK_filtered"));
+        // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+        query.bindValue(":bufferDup1", bufferId.toInt());
     } else if (last == -1) {
         query.prepare(queryString("select_messagesNewerThan_filtered"));
         query.bindValue(":first", first.toQint64());
+        // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+        query.bindValue(":bufferDup1", bufferId.toInt());
     } else {
         query.prepare(queryString("select_messagesRange_filtered"));
         query.bindValue(":last", last.toQint64());
         query.bindValue(":first", first.toQint64());
+        // Workaround for Qt 4 QSqlQuery::bindValue() not needed, only has one ":buffer"
     }
     query.bindValue(":buffer", bufferId.toInt());
     query.bindValue(":limit", limit);
@@ -1857,6 +1862,8 @@ QList<Message> PostgreSqlStorage::requestMsgsFiltered(UserId user, BufferId buff
     query.bindValue(":type", typeRaw);
     int flagsRaw = flags;
     query.bindValue(":flags", flagsRaw);
+    // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+    query.bindValue(":flagsDup1", flagsRaw);
 
     safeExec(query);
     if (!watchQuery(query)) {
@@ -1979,6 +1986,8 @@ QList<Message> PostgreSqlStorage::requestAllMsgsFiltered(UserId user, MsgId firs
 
     int flagsRaw = flags;
     query.bindValue(":flags", flagsRaw);
+    // Workaround for Qt 4 QSqlQuery::bindValue() not supporting repeated placeholder names
+    query.bindValue(":flagsDup1", flagsRaw);
 
     safeExec(query);
     if (!watchQuery(query)) {

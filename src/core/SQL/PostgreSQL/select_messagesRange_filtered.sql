@@ -5,6 +5,6 @@ WHERE backlog.messageid >= :first
     AND backlog.messageid < :last
     AND bufferid = :buffer
     AND backlog.type & :type != 0
-    AND (:flags = 0 OR backlog.flags & :flags != 0)
+    AND (:flags = 0 OR backlog.flags & :flagsDup1 != 0)
 ORDER BY messageid DESC
 LIMIT :limit

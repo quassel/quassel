@@ -5,6 +5,6 @@ WHERE backlog.bufferid IN (SELECT bufferid FROM buffer WHERE userid = :userid)
     AND backlog.messageid >= :firstmsg
     AND backlog.messageid < :lastmsg
     AND backlog.type & :type != 0
-    AND (:flags = 0 OR backlog.flags & :flags != 0)
+    AND (:flags = 0 OR backlog.flags & :flagsDup1 != 0)
 ORDER BY messageid DESC
 -- Unlike SQLite, no LIMIT clause, mimicking the unfiltered version - investigate later..?
