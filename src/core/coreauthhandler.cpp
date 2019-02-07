@@ -228,7 +228,17 @@ void CoreAuthHandler::handle(const Protocol::Login& msg)
 
     // First attempt local auth using the real username and password.
     // If that fails, move onto the auth provider.
-    UserId uid = Core::validateUser(msg.user, msg.password);
+
+    // Check to see if the user has the "Database" authenticator configured.
+    UserId uid = 0;
+    if (Core::getUserAuthenticator(msg.user) == "Database") {
+        uid = Core::validateUser(msg.user, msg.password);
+    }
+
+    // If they did not, *or* if the database login fails, try to use a different authenticator.
+    // TODO: this logic should likely be moved into Core::authenticateUser in the future.
+    // Right now a core can only have one authenticator configured; this might be something
+    // to change in the future.
     if (uid == 0) {
         uid = Core::authenticateUser(msg.user, msg.password);
     }

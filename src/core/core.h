@@ -125,6 +125,16 @@ public:
         return instance()->_storage->getUserAuthenticator(userid) == authenticator;
     }
 
+    //! Gets the authenticator configured for a user.
+    /**
+     * \param userid The user's name as a QString.
+     * \return String value corresponding to the user's configure dauthenticator.
+     */
+    static inline QString getUserAuthenticator(const QString& userName)
+    {
+        return instance()->_storage->getUserAuthenticator(instance()->_storage->getUserId(userName));
+    }
+
     //! Change a user's password
     /**
      * \param userId     The user's ID
