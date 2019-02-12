@@ -20,14 +20,9 @@
 
 #pragma once
 
-#include "coreircchannel.h"
-#include "coreircuser.h"
-#include "network.h"
+#include <functional>
 
-// IRCv3 capabilities
 #include <QTimer>
-
-#include "irccap.h"
 
 #ifdef HAVE_SSL
 #    include <QSslError>
@@ -40,9 +35,12 @@
 #    include "cipher.h"
 #endif
 
-#include <functional>
-
+#include "coreircchannel.h"
+#include "coreircuser.h"
 #include "coresession.h"
+#include "irccap.h"
+#include "irctag.h"
+#include "network.h"
 
 class CoreIdentity;
 class CoreUserInputHandler;
@@ -280,7 +278,7 @@ public slots:
      * maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, bool prepend = false);
+    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString> &tags = {}, bool prepend = false);
 
     /**
      * Sends the command for each set of encoded parameters, with optional prefix or high priority.
@@ -299,7 +297,7 @@ public slots:
      * cannot maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, bool prependAll = false);
+    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString> &tags = {}, bool prependAll = false);
 
     void setChannelJoined(const QString& channel);
     void setChannelParted(const QString& channel);

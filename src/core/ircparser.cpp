@@ -24,6 +24,7 @@
 
 #include "corenetwork.h"
 #include "eventmanager.h"
+#include "ircdecoder.h"
 #include "ircevent.h"
 #include "messageevent.h"
 #include "networkevent.h"
@@ -88,8 +89,8 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     // note that the IRC server is still alive
     net->resetPingTimeout();
 
-    QByteArray msg = e->data();
-    if (msg.isEmpty()) {
+    const QByteArray rawMsg = e->data();
+    if (rawMsg.isEmpty()) {
         qWarning() << "Received empty string from server!";
         return;
     }
@@ -97,81 +98,40 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     // Log the message if enabled and network ID matches or allows all
     if (_debugLogRawIrc && (_debugLogRawNetId == -1 || net->networkId().toInt() == _debugLogRawNetId)) {
         // Include network ID
-        qDebug() << "IRC net" << net->networkId() << "<<" << msg;
+        qDebug() << "IRC net" << net->networkId() << "<<" << rawMsg;
     }
 
-    // Now we split the raw message into its various parts...
+    QHash<IrcTagKey, QString> tags;
     QString prefix;
-    QByteArray trailing;
-    QString cmd, target;
-
-    // First, check for a trailing parameter introduced by " :", since this might screw up splitting the msg
-    // NOTE: This assumes that this is true in raw encoding, but well, hopefully there are no servers running in japanese on protocol level...
-    int idx = msg.indexOf(" :");
-    if (idx >= 0) {
-        if (msg.length() > idx + 2)
-            trailing = msg.mid(idx + 2);
-        msg = msg.left(idx);
-    }
-    // OK, now it is safe to split...
-    QList<QByteArray> params = msg.split(' ');
-
-    // This could still contain empty elements due to (faulty?) ircds sending multiple spaces in a row
-    // Also, QByteArray is not nearly as convenient to work with as QString for such things :)
-    QList<QByteArray>::iterator iter = params.begin();
-    while (iter != params.end()) {
-        if (iter->isEmpty())
-            iter = params.erase(iter);
-        else
-            ++iter;
-    }
-
-    if (!trailing.isEmpty())
-        params << trailing;
-    if (params.count() < 1) {
-        qWarning() << "Received invalid string from server!";
-        return;
-    }
-
-    QString foo = net->serverDecode(params.takeFirst());
-
-    // a colon as the first chars indicates the existence of a prefix
-    if (foo[0] == ':') {
-        foo.remove(0, 1);
-        prefix = foo;
-        if (params.count() < 1) {
-            qWarning() << "Received invalid string from server!";
-            return;
-        }
-        foo = net->serverDecode(params.takeFirst());
-    }
-
-    // next string without a whitespace is the command
-    cmd = foo.trimmed();
+    QString cmd;
+    QList<QByteArray> params;
+    IrcDecoder::parseMessage([&net](const QByteArray& data) {
+        return net->serverDecode(data);
+    }, rawMsg, tags, prefix, cmd, params);
 
     QList<Event*> events;
     EventManager::EventType type = EventManager::Invalid;
 
+    QString messageTarget;
     uint num = cmd.toUInt();
     if (num > 0) {
         // numeric reply
         if (params.count() == 0) {
-            qWarning() << "Message received from server violates RFC and is ignored!" << msg;
+            qWarning() << "Message received from server violates RFC and is ignored!" << rawMsg;
             return;
         }
         // numeric replies have the target as first param (RFC 2812 - 2.4). this is usually our own nick. Remove this!
-        target = net->serverDecode(params.takeFirst());
+        messageTarget = net->serverDecode(params.takeFirst());
         type = EventManager::IrcEventNumeric;
     }
     else {
         // any other irc command
         QString typeName = QLatin1String("IrcEvent") + cmd.at(0).toUpper() + cmd.mid(1).toLower();
-        type = eventManager()->eventTypeByName(typeName);
+        type = EventManager::eventTypeByName(typeName);
         if (type == EventManager::Invalid) {
-            type = eventManager()->eventTypeByName("IrcEventUnknown");
+            type = EventManager::eventTypeByName("IrcEventUnknown");
             Q_ASSERT(type != EventManager::Invalid);
         }
-        target = QString();
     }
 
     // Almost always, all params are server-encoded. There's a few exceptions, let's catch them here!
@@ -245,8 +205,8 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                     if (welcomeRegExp.indexIn(decMsg) != -1) {
                         QString channelname = welcomeRegExp.cap(1);
                         decMsg = decMsg.mid(welcomeRegExp.matchedLength());
-                        CoreIrcChannel* chan = static_cast<CoreIrcChannel*>(
-                            net->ircChannel(channelname));  // we only have CoreIrcChannels in the core, so this cast is safe
+                        // we only have CoreIrcChannels in the core, so this cast is safe
+                        CoreIrcChannel* chan = static_cast<CoreIrcChannel*>(net->ircChannel(channelname)); // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
                         if (chan && !chan->receivedWelcomeMsg()) {
                             chan->setReceivedWelcomeMsg();
                             events << new MessageEvent(Message::Notice, net, decMsg, prefix, channelname, Message::None, e->timestamp());
@@ -368,7 +328,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             }
             break;
         case 451: /* You have not registered... */
-            if (target.compare("CAP", Qt::CaseInsensitive) == 0) {
+            if (messageTarget.compare("CAP", Qt::CaseInsensitive) == 0) {
                 // :irc.server.com 451 CAP :You have not registered
                 // If server doesn't support capabilities, it will report this message.  Turn it
                 // into a nicer message since it's not a real error.
@@ -399,7 +359,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
         IrcEvent* event;
         if (type == EventManager::IrcEventNumeric)
-            event = new IrcEventNumeric(num, net, prefix, target);
+            event = new IrcEventNumeric(num, net, prefix, messageTarget);
         else
             event = new IrcEvent(type, net, prefix);
         event->setParams(decParams);
