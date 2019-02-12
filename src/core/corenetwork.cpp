@@ -28,10 +28,10 @@
 #include "corenetworkconfig.h"
 #include "coresession.h"
 #include "coreuserinputhandler.h"
-#include "networkevent.h"
-
-// IRCv3 capabilities
+#include "ircencoder.h"
 #include "irccap.h"
+#include "irctag.h"
+#include "networkevent.h"
 
 CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     : Network(networkid, session)
@@ -361,32 +361,17 @@ void CoreNetwork::putRawLine(const QByteArray& s, bool prepend)
     }
 }
 
-void CoreNetwork::putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix, const bool prepend)
+void CoreNetwork::putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString> &tags, const bool prepend)
 {
-    QByteArray msg;
-
-    if (!prefix.isEmpty())
-        msg += ":" + prefix + " ";
-    msg += cmd.toUpper().toLatin1();
-
-    for (int i = 0; i < params.size(); i++) {
-        msg += " ";
-
-        if (i == params.size() - 1 && (params[i].contains(' ') || (!params[i].isEmpty() && params[i][0] == ':')))
-            msg += ":";
-
-        msg += params[i];
-    }
-
-    putRawLine(msg, prepend);
+    putRawLine(IrcEncoder::writeMessage(tags, prefix, cmd, params), prepend);
 }
 
-void CoreNetwork::putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix, const bool prependAll)
+void CoreNetwork::putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString> &tags, const bool prependAll)
 {
     QListIterator<QList<QByteArray>> i(params);
     while (i.hasNext()) {
         QList<QByteArray> msg = i.next();
-        putCmd(cmd, msg, prefix, prependAll);
+        putCmd(cmd, msg, prefix, tags, prependAll);
     }
 }
 

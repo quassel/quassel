@@ -18,40 +18,39 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#pragma once
-
-#include "coresession.h"
 #include "irctag.h"
 
-class Event;
-class EventManager;
-class IrcEvent;
-class NetworkDataEvent;
-
-class IrcParser : public QObject
+uint qHash(const IrcTagKey& key)
 {
-    Q_OBJECT
+    QString clientTag;
+    if (key.clientTag) {
+        clientTag = "+";
+    }
+    return qHash(QString(clientTag + key.vendor + "/" + key.key));
+}
 
-public:
-    IrcParser(CoreSession* session);
+bool operator==(const IrcTagKey& a, const IrcTagKey& b)
+{
+    return a.vendor == b.vendor && a.key == b.key && a.clientTag == b.clientTag;
+}
 
-    inline CoreSession* coreSession() const { return _coreSession; }
-    inline EventManager* eventManager() const { return coreSession()->eventManager(); }
+bool operator<(const IrcTagKey& a, const IrcTagKey& b)
+{
+    return a.vendor < b.vendor || a.key < b.key || a.clientTag < b.clientTag;
+}
 
-signals:
-    void newEvent(Event*);
+QDebug operator<<(QDebug dbg, const IrcTagKey& i) {
+    return dbg << QString(("(clientTag = %1, vendor = %2,key = %3")).arg(i.clientTag).arg(i.vendor).arg(i.key);
+}
 
-protected:
-    Q_INVOKABLE void processNetworkIncoming(NetworkDataEvent* e);
-
-    bool checkParamCount(const QString& cmd, const QList<QByteArray>& params, int minParams);
-
-    // no-op if we don't have crypto support!
-    QByteArray decrypt(Network* network, const QString& target, const QByteArray& message, bool isTopic = false);
-
-private:
-    CoreSession* _coreSession;
-
-    bool _debugLogRawIrc;      ///< If true, include raw IRC socket messages in the debug log
-    qint32 _debugLogRawNetId;  ///< Network ID for logging raw IRC socket messages, or -1 for all
-};
+std::ostream& operator<<(std::ostream& o, const IrcTagKey& i) {
+    std::string result;
+    if (i.clientTag)
+        result += "+";
+    if (!i.vendor.isEmpty()) {
+        result += i.vendor.toStdString();
+        result += "/";
+    }
+    result += i.key.toStdString();
+    return o << result;
+}

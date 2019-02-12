@@ -64,23 +64,23 @@ signals:
      *
      * @see CoreNetwork::putRawLine()
      */
-    void putRawLine(const QByteArray& msg, const bool prepend = false);
+    void putRawLine(const QByteArray& msg, bool prepend = false);
 
     /**
      * Sends the command with encoded parameters, with optional prefix or high priority.
      *
-     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray(), const bool
-     * prepend = false)
+     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray(), const
+     * QHash<IrcTagKey, QString>& tags = {}, bool prepend = false)
      */
-    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, bool prepend = false);
+    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString>& tags = {}, bool prepend = false);
 
     /**
      * Sends the command for each set of encoded parameters, with optional prefix or high priority.
      *
      * @see CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray(), const
-     * bool prepend = false)
+     * QHash<IrcTagKey, QString>& tags = {}, bool prepend = false)
      */
-    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, bool prepend = false);
+    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString>& tags = {}, bool prepend = false);
 
 protected:
     /**
@@ -89,6 +89,7 @@ protected:
      * @param[in] cmd      Command to send, ignoring capitalization
      * @param[in] param    Parameter for the command, encoded within a QByteArray
      * @param[in] prefix   Optional command prefix
+     * @param[in] tags     Optional command tags
      * @param[in] prepend
      * @parmblock
      * If true, the command is prepended into the start of the queue, otherwise, it's appended to
@@ -96,7 +97,7 @@ protected:
      * maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString& cmd, const QByteArray& param, const QByteArray& prefix = QByteArray(), const bool prepend = false);
+    void putCmd(const QString& cmd, const QByteArray& param, const QByteArray& prefix = QByteArray(), const QHash<IrcTagKey, QString>& tags = {}, bool prepend = false);
 
     inline CoreNetwork* network() const { return _network; }
     inline CoreSession* coreSession() const { return _network->coreSession(); }

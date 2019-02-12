@@ -25,6 +25,9 @@ target_sources(${TARGET} PRIVATE
     ircchannel.cpp
     ircevent.cpp
     irclisthelper.cpp
+    ircdecoder.cpp
+    ircencoder.cpp
+    irctag.cpp
     ircuser.cpp
     logger.cpp
     message.cpp

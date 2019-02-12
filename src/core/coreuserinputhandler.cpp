@@ -566,7 +566,7 @@ void CoreUserInputHandler::handlePing(const BufferInfo& bufferInfo, const QStrin
         param = QTime::currentTime().toString("hh:mm:ss.zzz");
 
     // Take priority so this won't get stuck behind other queued messages.
-    putCmd("PING", serverEncode(param), QByteArray(), true);
+    putCmd("PING", serverEncode(param), {}, {}, true);
 }
 
 void CoreUserInputHandler::handlePrint(const BufferInfo& bufferInfo, const QString& msg)
@@ -615,7 +615,7 @@ void CoreUserInputHandler::handleQuit(const BufferInfo& bufferInfo, const QStrin
 void CoreUserInputHandler::issueQuit(const QString& reason, bool forceImmediate)
 {
     // If needing an immediate QUIT (e.g. core shutdown), prepend this to the queue
-    emit putCmd("QUIT", serverEncode(reason), QByteArray(), forceImmediate);
+    emit putCmd("QUIT", serverEncode(reason), {}, {}, forceImmediate);
 }
 
 void CoreUserInputHandler::handleQuote(const BufferInfo& bufferInfo, const QString& msg)
