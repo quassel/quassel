@@ -108,6 +108,13 @@ namespace IrcCap {
     const QString SERVER_TIME = "server-time";
 
     /**
+     * Server sending own message back
+     *
+     * https://ircv3.net/specs/extensions/echo-message-3.2.html
+     */
+    const QString ECHO_MESSAGE = "echo-message";
+
+    /**
      * Vendor-specific capabilities
      */
     namespace Vendor {
@@ -149,6 +156,7 @@ namespace IrcCap {
                                               SASL,
                                               USERHOST_IN_NAMES,
                                               SERVER_TIME,
+                                              ECHO_MESSAGE,
                                               Vendor::TWITCH_MEMBERSHIP,
                                               Vendor::ZNC_SELF_MESSAGE};
     // NOTE: If you modify the knownCaps list, update the constants above as needed.

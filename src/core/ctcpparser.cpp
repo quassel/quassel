@@ -66,6 +66,9 @@ void CtcpParser::displayMsg(NetworkEvent* event,
         return;
 
     MessageEvent* msgEvent = new MessageEvent(msgType, event->network(), std::move(msg), std::move(sender), std::move(target), msgFlags, event->timestamp());
+    if (event->testFlag(EventManager::Self)) {
+        msgEvent->setFlag(EventManager::Self);
+    }
     emit newEvent(msgEvent);
 }
 
@@ -236,6 +239,9 @@ void CtcpParser::parseSimple(IrcEventRawMessage* e,
                                              ctcpparam,
                                              e->timestamp(),
                                              uuid);
+            if (e->testFlag(EventManager::Self)) {
+                event->setFlag(EventManager::Self);
+            }
             emit newEvent(event);
             CtcpEvent* flushEvent = new CtcpEvent(EventManager::CtcpEventFlush,
                                                   e->network(),
@@ -313,6 +319,9 @@ void CtcpParser::parseStandard(IrcEventRawMessage* e,
                                              ctcpparam,
                                              e->timestamp(),
                                              uuid);
+            if (e->testFlag(EventManager::Self)) {
+                event->setFlag(EventManager::Self);
+            }
             ctcpEvents << event;
         }
     }
