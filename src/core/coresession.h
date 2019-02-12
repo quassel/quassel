@@ -306,6 +306,7 @@ struct NetworkInternalMessage
 
 struct RawMessage
 {
+    QDateTime timestamp;
     NetworkId networkId;
     Message::Type type;
     BufferInfo::Type bufferType;
@@ -314,14 +315,16 @@ struct RawMessage
     QString sender;
     Message::Flags flags;
 
-    RawMessage(NetworkId networkId,
+    RawMessage(QDateTime timestamp,
+               NetworkId networkId,
                Message::Type type,
                BufferInfo::Type bufferType,
                QString target,
                QString text,
                QString sender,
                Message::Flags flags)
-        : networkId(networkId)
+        : timestamp(std::move(timestamp))
+        , networkId(networkId)
         , type(type)
         , bufferType(bufferType)
         , target(std::move(target))
@@ -332,7 +335,8 @@ struct RawMessage
 
     RawMessage(NetworkId networkId,
                const NetworkInternalMessage& msg)
-        : networkId(networkId)
+        : timestamp(QDateTime::currentDateTimeUtc())
+        , networkId(networkId)
         , type(msg.type)
         , bufferType(msg.bufferType)
         , target(msg.target)

@@ -335,6 +335,7 @@ void CoreSession::recvStatusMsgFromServer(QString msg)
 void CoreSession::processMessageEvent(MessageEvent* event)
 {
     recvMessageFromServer(RawMessage{
+        event->timestamp(),
         event->networkId(),
         event->msgType(),
         event->bufferType(),
@@ -369,7 +370,8 @@ void CoreSession::processMessages()
             Q_ASSERT(!createBuffer);
             bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, BufferInfo::StatusBuffer, "");
         }
-        Message msg(bufferInfo,
+        Message msg(rawMsg.timestamp,
+                    bufferInfo,
                     rawMsg.type,
                     rawMsg.text,
                     rawMsg.sender,
@@ -400,7 +402,8 @@ void CoreSession::processMessages()
                 }
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo,
+            Message msg(rawMsg.timestamp,
+                        bufferInfo,
                         rawMsg.type,
                         rawMsg.text,
                         rawMsg.sender,
@@ -423,7 +426,8 @@ void CoreSession::processMessages()
                 // add the StatusBuffer to the Cache in case there are more Messages for the original target
                 bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
             }
-            Message msg(bufferInfo,
+            Message msg(rawMsg.timestamp,
+                        bufferInfo,
                         rawMsg.type,
                         rawMsg.text,
                         rawMsg.sender,
