@@ -101,6 +101,13 @@ namespace IrcCap {
     const QString USERHOST_IN_NAMES = "userhost-in-names";
 
     /**
+     * Server time for messages.
+     *
+     * https://ircv3.net/specs/extensions/server-time-3.2.html
+     */
+    const QString SERVER_TIME = "server-time";
+
+    /**
      * Vendor-specific capabilities
      */
     namespace Vendor {
@@ -141,6 +148,7 @@ namespace IrcCap {
                                               MULTI_PREFIX,
                                               SASL,
                                               USERHOST_IN_NAMES,
+                                              SERVER_TIME,
                                               Vendor::TWITCH_MEMBERSHIP,
                                               Vendor::ZNC_SELF_MESSAGE};
     // NOTE: If you modify the knownCaps list, update the constants above as needed.
