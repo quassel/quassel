@@ -197,6 +197,7 @@ int main(int argc, char **argv)
     cliParser->addSwitch("strict-ident", 0, "Use users' quasselcore username as ident reply. Ignores each user's configured ident setting.");
     cliParser->addSwitch("ident-daemon", 0, "Enable internal ident daemon");
     cliParser->addOption("ident-port", 0, "The port quasselcore will listen at for ident requests. Only meaningful with --ident-daemon", "port", "10113");
+    cliParser->addOption("ident-listen", 0, "The address(es) quasselcore will listen on for ident requests", "<address>[,<address>[,...]]", "::1,127.0.0.1");
 #ifdef HAVE_SSL
     cliParser->addSwitch("require-ssl", 0, "Require SSL for remote (non-loopback) client connections");
     cliParser->addOption("ssl-cert", 0, "Specify the path to the SSL Certificate", "path", "configdir/quasselCert.pem");
