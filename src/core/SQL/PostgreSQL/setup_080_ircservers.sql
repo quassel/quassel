@@ -4,7 +4,7 @@ CREATE TABLE ircserver (
     networkid integer NOT NULL REFERENCES network (networkid) ON DELETE CASCADE,
     hostname varchar(128) NOT NULL,
     port integer NOT NULL DEFAULT 6667,
-    password varchar(74),
+    password varchar(100),
     ssl boolean NOT NULL DEFAULT FALSE, -- bool
     sslversion integer NOT NULL DEFAULT 0,
     useproxy boolean NOT NULL DEFAULT FALSE, -- bool
