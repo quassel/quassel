@@ -358,7 +358,7 @@ void Quassel::setupCliParser()
              tr("The port quasselcore will listen at for ident requests. Only meaningful with --ident-daemon."),
              tr("port"),
              "10113"},
-            {"ident-listen", tr("The address(es) quasselcore will listen on for ident requests."), tr("<address>[,<address>[,...]]"), "::1,127.0.0.1"},
+            {"ident-listen", tr("The address(es) quasselcore will listen on for ident requests. Same format as --listen."), tr("<address>[,...]"), "::1,127.0.0.1"},
             {"oidentd", tr("Enable oidentd integration. In most cases you should also enable --strict-ident.")},
             {"oidentd-conffile", tr("Set path to oidentd configuration file."), tr("file")},
 #ifdef HAVE_SSL
