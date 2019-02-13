@@ -463,7 +463,7 @@ void MainWin::setupActions()
     aboutQuasselAct->setMenuRole(QAction::AboutRole);
     coll->addAction("AboutQuassel", aboutQuasselAct);
 
-    QAction *aboutQtAct = new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll,
+    QAction *aboutQtAct = new Action(QIcon(":/pics/qt-logo-32.png"), tr("About &Qt"), coll,
         qApp, SLOT(aboutQt()));
     aboutQtAct->setMenuRole(QAction::AboutQtRole);
     coll->addAction("AboutQt", aboutQtAct);
