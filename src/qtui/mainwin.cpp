@@ -413,7 +413,7 @@ void MainWin::setupActions()
     // Help
     coll->addAction("AboutQuassel", new Action(icon::get("quassel"), tr("&About Quassel"), coll, this, &MainWin::showAboutDlg))
         ->setMenuRole(QAction::AboutRole);
-    coll->addAction("AboutQt", new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll, qApp, &QApplication::aboutQt))
+    coll->addAction("AboutQt", new Action(QIcon(":/pics/qt-logo-32.png"), tr("About &Qt"), coll, qApp, &QApplication::aboutQt))
         ->setMenuRole(QAction::AboutQtRole);
     coll->addActions(
         {{"DebugNetworkModel",
