@@ -7,7 +7,6 @@ if (WANT_MONO OR WANT_QTCLIENT)
         quassel-eye.png
         quassel-logo.png
         quassel-oxygen-32.png
-        qt-logo.png
         qt-logo-32.png
     )
 endif()
