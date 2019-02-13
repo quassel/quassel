@@ -111,6 +111,7 @@ private:
     std::vector<LogEntry> _messages;
     bool _keepMessages{true};
     bool _initialized{false};
+    QByteArray _prgname;
 };
 
 Q_DECLARE_METATYPE(Logger::LogEntry)
