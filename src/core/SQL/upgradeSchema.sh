@@ -9,8 +9,7 @@
 # whatever the current latest version is (e.g. 21 -> 22).
 #
 # NOTE: If you upgrade the database schema version, you must add upgrade
-# scripts and modify the existing setup queries, then regenerate sql.qrc with
-# 'updateSQLResource'.  See 'README.md' for details.
+# scripts and modify the existing setup queries.  See 'README.md' for details.
 
 TARGET_DIR="$1"
 # If not specified, assume current directory
