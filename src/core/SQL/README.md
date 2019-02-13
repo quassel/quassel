@@ -17,10 +17,9 @@ All of the current schema version queries are stored at the top level of the
 backend subdirectory, with schema upgrade queries stored in
 `[backend]/version/##` folders.
 
-At compile time, Qt reads [`sql.qrc`][file-qrc-sql] to know which queries to
-include.  This list can be automatically updated on Linux and macOS using
-[`updateSQLResource.sh`][file-sh-updateresource]; for now, on Windows you'll
-need to install some form of Bash.
+At compile time, the build system generates and reads a Qt resource file to
+know which queries to include.  For past Quassel contributors, this replaces
+the classic `sql.qrc` file and `updateSQLResource.sh` script.
 
 ## Managing the database outside of Quassel
 
@@ -106,33 +105,7 @@ For any table changes, you'll need to update the relevant
 >
 > Modify `PostgreSQL/migrate_write_ircserver.sql` to insert to new column
 
-5.  **Update the SQL resource file; re-run CMake if needed**
-
-**The easy way:**
-
-Run [`updateSQLResource.sh`][file-sh-updateresource] in this directory.
-
-**The manual way:**
-
-Add the new SQL queries to [`src/core/sql.qrc`][file-qrc-sql], update all
-changed existing files.
-
-> *Example: modifying the `ircserver` table to add column `test`*
->
-> Add the new upgrade scripts:
-> ```diff
-> +  <file>./SQL/SQLite/version/19/upgrade_000_alter_ircserver_add_test.sql</file>
-> +  <file>./SQL/PostgreSQL/version/18/upgrade_000_alter_ircserver_add_test.sql</file>
-> ```
->
-> Add/update non-upgrade scripts, if any:
-> ```diff
-> +  <file>./SQL/SQLite/update_buffer_persistent_channel.sql</file>
-> +  <file>./SQL/PostgreSQL/update_buffer_persistent_channel.sql</file>
-> +  [etc]
-> ```
-
-6.  **Update the migration logic in
+5.  **Update the migration logic in
 [`src/core/abstractsqlstorage.cpp`][file-cpp-abstract], and the storage
 backends [`postgresqlstorage.cpp`][file-cpp-postgres] and
 [`sqlitestorage.cpp`][file-cpp-sqlite]**
@@ -155,7 +128,7 @@ may use different database representations of certain types.
 > [`postgresqlstorage.cpp`][file-cpp-postgres] to write to the new column from
 > the data in the migration object.
 
-7.  **Update any affected queries in storage backends
+6.  **Update any affected queries in storage backends
 [`postgresqlstorage.cpp`][file-cpp-postgres] and
 [`sqlitestorage.cpp`][file-cpp-sqlite], and any related synchronized
 `src/common` classes.**
@@ -184,7 +157,7 @@ may use different database representations of certain types.
 > +  query.bindValue(":test", server.test);                // New column 'test'
 > ```
 
-8.  **If protocol changed (*add a setting, etc*), add a new `Feature` flag**
+7.  **If protocol changed (*add a setting, etc*), add a new `Feature` flag**
 
 Newer clients need to detect when they're on an older core to disable the
 feature.  Use the `Feature` enum in [`quassel.h`][file-h-quassel].
@@ -195,7 +168,7 @@ In client-side code, test for a feature with...
 if (Client::isCoreFeatureEnabled(Quassel::Feature::FeatureName)) { ... }
 ```
 
-9.  **Test everything!  Upgrade, migrate, new setups, new client/old core,
+8.  **Test everything!  Upgrade, migrate, new setups, new client/old core,
 old client/new core, etc.**
 
 More specifically, you should try the following combinations, especially if you
@@ -270,8 +243,5 @@ Thank you for reading this guide and good luck with your changes!
 [file-h-abstract]: ../abstractsqlstorage.h
 [file-cpp-postgres]: ../postgresqlstorage.cpp
 [file-cpp-sqlite]: ../sqlitestorage.cpp
-[file-sh-updateresource]: updateSQLResource.sh
 [file-sh-upgradeschema]: upgradeSchema.sh
-[file-qrc-sql]: ../sql.qrc
 [file-h-quassel]: ../../common/quassel.h
-
