@@ -127,9 +127,22 @@ void Logger::setup(bool keepMessages)
 #ifdef HAVE_SYSLOG
     _syslogEnabled = Quassel::isOptionSet("syslog");
 
+    Quassel::RunMode mode = Quassel::runMode();
+    Quassel::BuildInfo info = Quassel::buildInfo();
+    QString prgname = info.applicationName;
+
+    if (mode == Quassel::RunMode::ClientOnly) {
+        prgname = info.clientApplicationName;
+    } else if (mode == Quassel::RunMode::CoreOnly) {
+        prgname = info.coreApplicationName;
+    }
+
+    _prgname = prgname.toLocal8Bit();
+
     // set up options, program name, and facility for later calls to syslog(3)
-    if (_syslogEnabled)
-        openlog("quasselcore", LOG_PID, LOG_USER);
+    if (_syslogEnabled) {
+        openlog(_prgname.constData(), LOG_PID, LOG_USER);
+    }
 #endif
 
     _initialized = true;
