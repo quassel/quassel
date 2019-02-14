@@ -13,6 +13,19 @@ changes, the git history at <https://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.13.1 (2019-02-15)
+===========================
+
+* Fix backlog message fetching that was broken when using Qt4
+* Improve output to syslog
+* Make upgrading the database schema more robust in case of interruption
+* Fix alignment of buttons in the input widget
+* Fix bug where the nicklist would be hidden on first start
+* Allow configuring the listen addresses for the built-in identd (--ident-listen)
+* Honor core options even if it was just configured via environment variables
+* Fix syncing of auto reconnect retries in network settings
+* Update translations
+
 Version 0.13.0 (2018-11-17)
 ===========================
 
@@ -21,7 +34,7 @@ NOTE²: Database migration may take a long time (hours for big databases),
        and temporarily require double the disk space until migration is
        complete!
 
-* Use Qt 5 by default (this will be the last release still supporting Qt4)
+* Use Qt 5 by default (this will be the last feature release still supporting Qt4)
 * New branding (application icon)
 * UI improvements
   - Improve ChatView color settings
