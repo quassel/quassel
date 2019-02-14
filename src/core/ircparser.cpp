@@ -42,6 +42,9 @@ IrcParser::IrcParser(CoreSession* session)
     // Check if raw IRC logging is enabled
     _debugLogRawIrc = (Quassel::isOptionSet("debug-irc") || Quassel::isOptionSet("debug-irc-id"));
     _debugLogRawNetId = Quassel::optionValue("debug-irc-id").toInt();
+    // Check if parsed IRC logging is enabled
+    _debugLogParsedIrc = (Quassel::isOptionSet("debug-irc-parsed") || Quassel::isOptionSet("debug-irc-parsed-id"));
+    _debugLogParsedNetId = Quassel::optionValue("debug-irc-parsed-id").toInt();
 
     connect(this, &IrcParser::newEvent, coreSession()->eventManager(), &EventManager::postEvent);
 }
@@ -109,6 +112,12 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     IrcDecoder::parseMessage([&net](const QByteArray& data) {
         return net->serverDecode(data);
     }, rawMsg, tags, prefix, cmd, params);
+
+    // Log the message if enabled and network ID matches or allows all
+    if (_debugLogParsedIrc && (_debugLogParsedNetId == -1 || net->networkId().toInt() == _debugLogParsedNetId)) {
+        // Include network ID
+        qDebug() << "IRC net" << net->networkId() << "<<" << tags << prefix << cmd << params;
+    }
 
     QList<Event*> events;
     EventManager::EventType type = EventManager::Invalid;

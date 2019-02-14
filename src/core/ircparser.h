@@ -54,4 +54,6 @@ private:
 
     bool _debugLogRawIrc;      ///< If true, include raw IRC socket messages in the debug log
     qint32 _debugLogRawNetId;  ///< Network ID for logging raw IRC socket messages, or -1 for all
+    bool _debugLogParsedIrc;      ///< If true, include parsed IRC socket messages in the debug log
+    qint32 _debugLogParsedNetId;  ///< Network ID for logging parsed IRC socket messages, or -1 for all
 };
