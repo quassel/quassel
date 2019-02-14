@@ -37,27 +37,7 @@ namespace {
 
 QByteArray msgWithTime(const Logger::LogEntry& msg)
 {
-    QString levelString;
-
-    switch (msg.logLevel) {
-        case Logger::LogLevel::Debug:
-            levelString = "[Debug] ";
-            break;
-        case Logger::LogLevel::Info:
-            levelString = "[Info ] ";
-            break;
-        case Logger::LogLevel::Warning:
-            levelString = "[Warn ] ";
-            break;
-        case Logger::LogLevel::Error:
-            levelString = "[Error] ";
-            break;
-        case Logger::LogLevel::Fatal:
-            levelString = "[FATAL] ";
-            break;
-    }
-
-    return (msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + levelString + msg.message + "\n").toUtf8();
+    return (msg.toString() + "\n").toUtf8();
 }
 
 }  // namespace
@@ -243,4 +223,30 @@ void Logger::outputMessage(const LogEntry& message)
         }
     }
 #endif
+}
+
+
+QString Logger::LogEntry::toString() const
+{
+    QString levelString;
+
+    switch (logLevel) {
+        case Logger::LogLevel::Debug:
+            levelString = "[Debug] ";
+            break;
+        case Logger::LogLevel::Info:
+            levelString = "[Info ] ";
+            break;
+        case Logger::LogLevel::Warning:
+            levelString = "[Warn ] ";
+            break;
+        case Logger::LogLevel::Error:
+            levelString = "[Error] ";
+            break;
+        case Logger::LogLevel::Fatal:
+            levelString = "[FATAL] ";
+            break;
+    }
+
+    return timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + levelString + message;
 }

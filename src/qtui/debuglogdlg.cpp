@@ -41,7 +41,7 @@ DebugLogDlg::DebugLogDlg(QWidget* parent)
 
 QString DebugLogDlg::toString(const Logger::LogEntry& msg)
 {
-    return msg.timeStamp.toString("yyyy-MM-dd hh:mm:ss ") + msg.message + "\n";
+    return msg.toString() + "\n";
 }
 
 void DebugLogDlg::logUpdated(const Logger::LogEntry& msg)
