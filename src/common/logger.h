@@ -55,6 +55,13 @@ public:
         QDateTime timeStamp;
         LogLevel logLevel;
         QString message;
+
+        /**
+         * Gets this log entry in a printable format, with timestamp and log level
+         *
+         * @return the log entry, formatted with timestamp and log level
+         */
+        QString toString() const;
     };
 
     /**
