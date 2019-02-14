@@ -50,7 +50,7 @@ public:
         Fatal
     };
 
-    struct LogEntry
+    struct COMMON_EXPORT LogEntry
     {
         QDateTime timeStamp;
         LogLevel logLevel;
