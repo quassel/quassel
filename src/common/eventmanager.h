@@ -113,6 +113,7 @@ public:
         IrcEventWallops,
         IrcEventRawPrivmsg,  ///< Undecoded privmsg (still needs CTCP parsing)
         IrcEventRawNotice,   ///< Undecoded notice (still needs CTCP parsing)
+        IrcEventSetname,
         IrcEventUnknown,     ///< Unknown non-numeric cmd
 
         IrcEventNumeric = 0x00031000,     /* needs 1000 (0x03e8) consecutive free values! */

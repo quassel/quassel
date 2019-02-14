@@ -894,6 +894,12 @@ void CoreUserInputHandler::handleTopic(const BufferInfo& bufferInfo, const QStri
     emit putCmd("TOPIC", params);
 }
 
+void CoreUserInputHandler::handleSetname(const BufferInfo& bufferInfo, const QString& msg)
+{
+    Q_UNUSED(bufferInfo)
+    emit putCmd("SETNAME", serverEncode(msg));
+}
+
 void CoreUserInputHandler::handleVoice(const BufferInfo& bufferInfo, const QString& msg)
 {
     QStringList nicks = msg.split(' ', QString::SkipEmptyParts);

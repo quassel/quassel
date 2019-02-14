@@ -79,6 +79,7 @@ public slots:
     void handleQuote(const BufferInfo& bufferInfo, const QString& text);
     void handleSay(const BufferInfo& bufferInfo, const QString& text);
     void handleSetkey(const BufferInfo& bufferInfo, const QString& text);
+    void handleSetname(const BufferInfo& bufferInfo, const QString& text);
     void handleShowkey(const BufferInfo& bufferInfo, const QString& text);
     void handleTopic(const BufferInfo& bufferInfo, const QString& text);
     void handleVoice(const BufferInfo& bufferInfo, const QString& text);

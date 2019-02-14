@@ -115,6 +115,20 @@ namespace IrcCap {
     const QString ECHO_MESSAGE = "echo-message";
 
     /**
+     * Draft capabilities
+     */
+    namespace Draft
+    {
+
+        /**
+         * Allows updating realname while being connected
+         *
+         * https://github.com/ircv3/ircv3-specifications/pull/361
+         */
+        const QString SETNAME = "draft/setname";
+    }
+
+    /**
      * Vendor-specific capabilities
      */
     namespace Vendor {
@@ -157,6 +171,7 @@ namespace IrcCap {
                                               USERHOST_IN_NAMES,
                                               SERVER_TIME,
                                               ECHO_MESSAGE,
+                                              Draft::SETNAME,
                                               Vendor::TWITCH_MEMBERSHIP,
                                               Vendor::ZNC_SELF_MESSAGE};
     // NOTE: If you modify the knownCaps list, update the constants above as needed.
