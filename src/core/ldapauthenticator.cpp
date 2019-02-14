@@ -128,7 +128,7 @@ UserId LdapAuthenticator::validateUser(const QString& username, const QString& p
     // Users created via LDAP have empty passwords, but authenticator column = LDAP.
     // On the other hand, if auth succeeds and the user already exists, do a final
     // cross-check to confirm we're using the right auth provider.
-    UserId quasselId = Core::validateUser(lUsername, QString());
+    UserId quasselId = Core::getUserId(lUsername);
     if (!quasselId.isValid()) {
         return Core::addUser(lUsername, QString(), backendId());
     }

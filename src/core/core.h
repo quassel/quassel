@@ -127,12 +127,22 @@ public:
 
     //! Gets the authenticator configured for a user.
     /**
-     * \param userid The user's name as a QString.
+     * \param userName The user's name as a QString.
      * \return String value corresponding to the user's configure dauthenticator.
      */
     static inline QString getUserAuthenticator(const QString& userName)
     {
         return instance()->_storage->getUserAuthenticator(instance()->_storage->getUserId(userName));
+    }
+
+    //! Gets the user ID mapped to a username. This is necessary so that non-database auth methods can log in users properly.
+    /**
+     * \param userName The user's name as a QString.
+     * \return userId  The user's ID.
+     */
+    static inline UserId getUserId(const QString& userName)
+    {
+        return instance()->_storage->getUserId(userName);
     }
 
     //! Change a user's password
