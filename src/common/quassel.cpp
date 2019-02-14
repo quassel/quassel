@@ -390,6 +390,8 @@ void Quassel::setupCliParser()
         options += {
             {"debug-irc", tr("Enable logging of all raw IRC messages to debug log, including passwords!  In most cases you should also set --loglevel Debug")},
             {"debug-irc-id", tr("Limit raw IRC logging to this network ID.  Implies --debug-irc"), tr("database network ID"), "-1"},
+            {"debug-irc-parsed", tr("Enable logging of all parsed IRC messages to debug log, including passwords!  In most cases you should also set --loglevel Debug")},
+            {"debug-irc-parsed-id", tr("Limit parsed IRC logging to this network ID.  Implies --debug-irc-parsed"), tr("database network ID"), "-1"},
         };
     }
 
