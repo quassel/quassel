@@ -20,38 +20,18 @@
 
 #pragma once
 
-#include "coresession.h"
 #include "irctag.h"
 
-class Event;
-class EventManager;
-class IrcEvent;
-class NetworkDataEvent;
-
-class IrcParser : public QObject
+/**
+ * This namespace contains commonly used message tags, similar to the IrcCaps
+ * namespace used for IRCv3 capabilities.
+ */
+namespace IrcTags
 {
-    Q_OBJECT
-
-public:
-    explicit IrcParser(CoreSession* session);
-
-    inline CoreSession* coreSession() const { return _coreSession; }
-    inline EventManager* eventManager() const { return coreSession()->eventManager(); }
-
-signals:
-    void newEvent(Event*);
-
-protected:
-    Q_INVOKABLE void processNetworkIncoming(NetworkDataEvent* e);
-
-    bool checkParamCount(const QString& cmd, const QList<QByteArray>& params, int minParams);
-
-    // no-op if we don't have crypto support!
-    QByteArray decrypt(Network* network, const QString& target, const QByteArray& message, bool isTopic = false);
-
-private:
-    CoreSession* _coreSession;
-
-    bool _debugLogRawIrc;      ///< If true, include raw IRC socket messages in the debug log
-    qint32 _debugLogRawNetId;  ///< Network ID for logging raw IRC socket messages, or -1 for all
-};
+    /**
+     * Server time for messages.
+     *
+     * https://ircv3.net/specs/extensions/server-time-3.2.html
+     */
+    const IrcTagKey SERVER_TIME = IrcTagKey{"", "time", false};
+}

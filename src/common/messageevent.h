@@ -63,7 +63,9 @@ protected:
     inline void debugInfo(QDebug& dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
-        dbg.nospace() << ", sender = " << qPrintable(sender()) << ", target = " << qPrintable(target()) << ", text = " << text()
+        dbg.nospace() << ", sender = " << qPrintable(sender())
+                      << ", target = " << qPrintable(target())
+                      << ", text = " << text()
                       << ", msgtype = " << qPrintable(QString::number(msgType(), 16))
                       << ", buffertype = " << qPrintable(QString::number(bufferType(), 16))
                       << ", msgflags = " << qPrintable(QString::number(msgFlags(), 16));

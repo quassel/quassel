@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CORESESSIONEVENTPROCESSOR_H
-#define CORESESSIONEVENTPROCESSOR_H
+#pragma once
 
 #include "basichandler.h"
 #include "corenetwork.h"
@@ -40,7 +39,7 @@ class CoreSessionEventProcessor : public BasicHandler
     Q_OBJECT
 
 public:
-    CoreSessionEventProcessor(CoreSession* session);
+    explicit CoreSessionEventProcessor(CoreSession* session);
 
     inline CoreSession* coreSession() const { return _coreSession; }
 
@@ -186,5 +185,3 @@ private:
                                const QString& awayStateAndModes,
                                const QString& realname);
 };
-
-#endif

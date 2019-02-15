@@ -335,7 +335,7 @@ public slots:
      * set by the user.  Use with caution and remember to re-enable configured limits when done.
      * @endparmblock
      */
-    void updateRateLimiting(const bool forceUnlimited = false);
+    void updateRateLimiting(bool forceUnlimited = false);
 
     /**
      * Resets the token bucket up to the maximum
@@ -418,21 +418,15 @@ public slots:
      */
     inline void resetPongReplyPending() { _pongReplyPending = false; }
 
-    void onDisplayMsg(Message::Type msgType,
-                      BufferInfo::Type bufferType,
-                      const QString& target,
-                      const QString& text,
-                      const QString& sender,
-                      Message::Flags flags)
+    void onDisplayMsg(const NetworkInternalMessage& msg)
     {
-        emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
+        emit displayMsg(RawMessage(networkId(), msg));
     }
 
 signals:
-    void recvRawServerMsg(QString);
-    void displayStatusMsg(QString);
-    void displayMsg(
-        NetworkId, Message::Type, BufferInfo::Type, const QString& target, const QString& text, const QString& sender, Message::Flags flags);
+    void recvRawServerMsg(const QString&);
+    void displayStatusMsg(const QString&);
+    void displayMsg(const RawMessage& msg);
     void disconnected(NetworkId networkId);
     void connectionError(const QString& errorMsg);
 
@@ -508,14 +502,9 @@ private slots:
     void writeToSocket(const QByteArray& data);
 
 private:
-    void showMessage(Message::Type msgType,
-                     BufferInfo::Type bufferType,
-                     const QString& target,
-                     const QString& text,
-                     const QString& sender = "",
-                     Message::Flags flags = Message::None)
+    void showMessage(const NetworkInternalMessage& msg)
     {
-        emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
+        emit displayMsg(RawMessage(networkId(), msg));
     }
 
 private:

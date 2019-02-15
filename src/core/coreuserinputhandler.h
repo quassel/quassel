@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREUSERINPUTHANDLER_H
-#define COREUSERINPUTHANDLER_H
+#pragma once
 
 #include <utility>
 
@@ -135,5 +134,3 @@ private:
 
     QHash<int, Command> _delayedCommands;
 };
-
-#endif

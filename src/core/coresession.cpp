@@ -20,6 +20,8 @@
 
 #include "coresession.h"
 
+#include <utility>
+
 #include <QtScript>
 
 #include "core.h"
@@ -113,7 +115,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     QVariantMap data;
     data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
     data["quasselBuildDate"] = Quassel::buildInfo().commitDate;  // "BuildDate" for compatibility
-    data["startTime"] = Core::instance()->startTime();
+    data["startTime"] = Core::startTime();
     data["sessionConnectedClients"] = 0;
     _coreInfo->setCoreData(data);
 
@@ -130,7 +132,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     eventManager()->registerObject(ctcpParser(), EventManager::LowPriority, "send");
 
     // periodically save our session state
-    connect(Core::instance()->syncTimer(), &QTimer::timeout, this, &CoreSession::saveSessionState);
+    connect(Core::syncTimer(), &QTimer::timeout, this, &CoreSession::saveSessionState);
 
     p->synchronize(_bufferSyncer);
     p->synchronize(&aliasManager());
@@ -201,7 +203,7 @@ void CoreSession::loadSettings()
     // migrate to db
     QList<IdentityId> ids = s.identityIds();
     QList<NetworkInfo> networkInfos = Core::networks(user());
-    foreach (IdentityId id, ids) {
+    for (IdentityId id : ids) {
         CoreIdentity identity(s.identity(id));
         IdentityId newId = Core::createIdentity(user(), identity);
         QList<NetworkInfo>::iterator networkIter = networkInfos.begin();
@@ -219,11 +221,11 @@ void CoreSession::loadSettings()
     }
     // end of migration
 
-    foreach (CoreIdentity identity, Core::identities(user())) {
+    for (const CoreIdentity& identity : Core::identities(user())) {
         createIdentity(identity);
     }
 
-    foreach (NetworkInfo info, Core::networks(user())) {
+    for (const NetworkInfo& info : Core::networks(user())) {
         createNetwork(info);
     }
 }
@@ -239,7 +241,7 @@ void CoreSession::restoreSessionState()
 {
     QList<NetworkId> nets = Core::connectedNetworks(user());
     CoreNetwork* net = nullptr;
-    foreach (NetworkId id, nets) {
+    for (NetworkId id :  nets) {
         net = network(id);
         Q_ASSERT(net);
         net->connectToIrc();
@@ -300,31 +302,23 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg)
 
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
-void CoreSession::recvMessageFromServer(NetworkId networkId,
-                                        Message::Type type,
-                                        BufferInfo::Type bufferType,
-                                        const QString& target,
-                                        const QString& text_,
-                                        const QString& sender,
-                                        Message::Flags flags)
+void CoreSession::recvMessageFromServer(RawMessage msg)
 {
     // U+FDD0 and U+FDD1 are special characters for Qt's text engine, specifically they mark the boundaries of
     // text frames in a QTextDocument. This might lead to problems in widgets displaying QTextDocuments (such as
     // KDE's notifications), hence we remove those just to be safe.
-    QString text = text_;
-    text.remove(QChar(0xfdd0)).remove(QChar(0xfdd1));
-    RawMessage rawMsg(networkId, type, bufferType, target, text, sender, flags);
+    msg.text.remove(QChar(0xfdd0)).remove(QChar(0xfdd1));
 
     // check for HardStrictness ignore
-    CoreNetwork* currentNetwork = network(networkId);
+    CoreNetwork* currentNetwork = network(msg.networkId);
     QString networkName = currentNetwork ? currentNetwork->networkName() : QString("");
-    if (_ignoreListManager.match(rawMsg, networkName) == IgnoreListManager::HardStrictness)
+    if (_ignoreListManager.match(msg, networkName) == IgnoreListManager::HardStrictness)
         return;
 
-    if (currentNetwork && _highlightRuleManager.match(rawMsg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
-        rawMsg.flags |= Message::Flag::Highlight;
+    if (currentNetwork && _highlightRuleManager.match(msg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
+        msg.flags |= Message::Flag::Highlight;
 
-    _messageQueue << rawMsg;
+    _messageQueue << std::move(msg);
     if (!_processMessages) {
         _processMessages = true;
         QCoreApplication::postEvent(this, new ProcessMessagesEvent());
@@ -335,18 +329,20 @@ void CoreSession::recvStatusMsgFromServer(QString msg)
 {
     auto* net = qobject_cast<CoreNetwork*>(sender());
     Q_ASSERT(net);
-    emit displayStatusMsg(net->networkName(), msg);
+    emit displayStatusMsg(net->networkName(), std::move(msg));
 }
 
 void CoreSession::processMessageEvent(MessageEvent* event)
 {
-    recvMessageFromServer(event->networkId(),
-                          event->msgType(),
-                          event->bufferType(),
-                          event->target().isNull() ? "" : event->target(),
-                          event->text().isNull() ? "" : event->text(),
-                          event->sender().isNull() ? "" : event->sender(),
-                          event->msgFlags());
+    recvMessageFromServer(RawMessage{
+        event->networkId(),
+        event->msgType(),
+        event->bufferType(),
+        event->target().isNull() ? "" : event->target(),
+        event->text().isNull() ? "" : event->text(),
+        event->sender().isNull() ? "" : event->sender(),
+        event->msgFlags()
+    });
 }
 
 QList<BufferInfo> CoreSession::buffers() const
@@ -502,12 +498,15 @@ Protocol::SessionState CoreSession::sessionState() const
     QVariantList networkIds;
     QVariantList identities;
 
-    foreach (const BufferInfo& id, buffers())
+    for (const BufferInfo& id : buffers()) {
         bufferInfos << QVariant::fromValue(id);
-    foreach (const NetworkId& id, _networks.keys())
+    }
+    for (const NetworkId& id : _networks.keys()) {
         networkIds << QVariant::fromValue(id);
-    foreach (const Identity* i, _identities.values())
+    }
+    for (const Identity* i : _identities.values()) {
         identities << QVariant::fromValue(*i);
+    }
 
     return Protocol::SessionState(identities, bufferInfos, networkIds);
 }
@@ -609,7 +608,7 @@ void CoreSession::createNetwork(const NetworkInfo& info_, const QStringList& per
     if (!_networks.contains(id)) {
         // create persistent chans
         QRegExp rx(R"(\s*(\S+)(?:\s*(\S+))?\s*)");
-        foreach (QString channel, persistentChans) {
+        for (const QString& channel : persistentChans) {
             if (!rx.exactMatch(channel)) {
                 qWarning() << QString("Invalid persistent channel declaration: %1").arg(channel);
                 continue;
@@ -672,7 +671,7 @@ void CoreSession::destroyNetwork(NetworkId id)
             }
         }
         // remove buffers from syncer
-        foreach (BufferId bufferId, removedBuffers) {
+        for (BufferId bufferId : removedBuffers) {
             _bufferSyncer->removeBuffer(bufferId);
         }
         emit networkRemoved(id);

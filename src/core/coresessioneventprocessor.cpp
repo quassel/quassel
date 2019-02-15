@@ -406,7 +406,7 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent* e)
     // Else :nick!user@host JOIN #channelname
 
     bool handledByNetsplit = false;
-    foreach (Netsplit* n, _netsplits.value(e->network())) {
+    for (Netsplit* n : _netsplits.value(e->network())) {
         handledByNetsplit = n->userJoined(e->prefix(), channel);
         if (handledByNetsplit)
             break;
@@ -488,7 +488,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
                         if (add) {
                             bool handledByNetsplit = false;
                             QHash<QString, Netsplit*> splits = _netsplits.value(e->network());
-                            foreach (Netsplit* n, _netsplits.value(e->network())) {
+                            for (Netsplit* n : _netsplits.value(e->network())) {
                                 handledByNetsplit = n->userAlreadyJoined(ircUser->hostmask(), channel->name());
                                 if (handledByNetsplit) {
                                     n->addMode(ircUser->hostmask(), channel->name(), QString(mode));
@@ -1191,7 +1191,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
     // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
     bool _useCapMultiPrefix = coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX);
 
-    foreach (QString nick, e->params()[2].split(' ', QString::SkipEmptyParts)) {
+    for (QString nick : e->params()[2].split(' ', QString::SkipEmptyParts)) {
         QString mode;
 
         if (_useCapMultiPrefix) {
@@ -1427,7 +1427,7 @@ void CoreSessionEventProcessor::handleNetsplitJoin(
     QStringList newModes = modes;
     QStringList newUsers = users;
 
-    foreach (const QString& user, users) {
+    for (const QString& user : users) {
         IrcUser* iu = net->ircUser(nickFromMask(user));
         if (iu)
             ircUsers.append(iu);
@@ -1447,10 +1447,9 @@ void CoreSessionEventProcessor::handleNetsplitQuit(Network* net, const QString& 
 {
     NetworkSplitEvent* event = new NetworkSplitEvent(EventManager::NetworkSplitQuit, net, channel, users, quitMessage);
     emit newEvent(event);
-    foreach (QString user, users) {
-        IrcUser* iu = net->ircUser(nickFromMask(user));
-        if (iu)
-            iu->quit();
+    for (const QString& user : users) {
+        IrcUser* ircUser = net->ircUser(nickFromMask(user));
+        if (ircUser) ircUser->quit();
     }
 }
 
@@ -1465,19 +1464,19 @@ void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network* net, const QStr
     QList<IrcUser*> ircUsers;
     QStringList newModes = modes;
 
-    foreach (QString user, users) {
-        IrcUser* iu = net->updateNickFromMask(user);
-        if (iu) {
-            ircUsers.append(iu);
+    for (const QString& user : users) {
+        IrcUser* ircUser = net->updateNickFromMask(user);
+        if (ircUser) {
+            ircUsers.append(ircUser);
             // fake event for scripts that consume join events
-            events << new IrcEvent(EventManager::IrcEventJoin, net, iu->hostmask(), QStringList() << channel);
+            events << new IrcEvent(EventManager::IrcEventJoin, net, ircUser->hostmask(), QStringList() << channel);
         }
         else {
             newModes.removeAt(users.indexOf(user));
         }
     }
     ircChannel->joinIrcUsers(ircUsers, newModes);
-    foreach (NetworkEvent* event, events) {
+    for (NetworkEvent* event : events) {
         event->setFlag(EventManager::Fake);  // ignore this in here!
         emit newEvent(event);
     }
@@ -1535,7 +1534,7 @@ void CoreSessionEventProcessor::handleCtcpAction(CtcpEvent* e)
 void CoreSessionEventProcessor::handleCtcpClientinfo(CtcpEvent* e)
 {
     QStringList supportedHandlers;
-    foreach (QString handler, providesHandlers())
+    for (const QString& handler : providesHandlers())
         supportedHandlers << handler.toUpper();
     qSort(supportedHandlers);
     e->setReply(supportedHandlers.join(" "));

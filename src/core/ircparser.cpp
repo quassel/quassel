@@ -26,6 +26,7 @@
 #include "eventmanager.h"
 #include "ircdecoder.h"
 #include "ircevent.h"
+#include "irctags.h"
 #include "messageevent.h"
 #include "networkevent.h"
 
