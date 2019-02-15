@@ -43,9 +43,9 @@ public:
 
     MessageEvent* createMessageEvent(NetworkEvent* event,
                                      Message::Type msgType,
-                                     const QString& msg,
-                                     const QString& sender = QString(),
-                                     const QString& target = QString(),
+                                     QString msg,
+                                     QString sender = {},
+                                     QString target = {},
                                      Message::Flags msgFlags = Message::None);
 
     // legacy handlers
@@ -108,9 +108,9 @@ public slots:
     //! Creates and sends a MessageEvent
     void displayMsg(NetworkEvent* event,
                     Message::Type msgType,
-                    const QString& msg,
-                    const QString& sender = QString(),
-                    const QString& target = QString(),
+                    QString msg,
+                    QString sender = {},
+                    QString target = {},
                     Message::Flags msgFlags = Message::None);
 
 signals:

@@ -36,12 +36,13 @@ public:
 
     explicit KeyEvent(EventManager::EventType type,
                       Network* network,
-                      const QString& prefix,
+                      QHash<IrcTagKey, QString> tags,
+                      QString prefix,
                       QString target,
                       ExchangeType exchangeType,
                       QByteArray key,
                       const QDateTime& timestamp = QDateTime())
-        : IrcEvent(type, network, prefix)
+        : IrcEvent(type, network, std::move(tags), std::move(prefix))
         , _exchangeType(exchangeType)
         , _target(std::move(target))
         , _key(std::move(key))

@@ -107,6 +107,7 @@ public:
         IrcEventPong,
         IrcEventPrivmsg,
         IrcEventQuit,
+        IrcEventTagmsg,
         IrcEventTopic,
         IrcEventError,  /// ERROR message from server
         IrcEventWallops,

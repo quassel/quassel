@@ -24,20 +24,26 @@
 
 #include <utility>
 
+#include "irctag.h"
 #include "networkevent.h"
 #include "util.h"
 
 class COMMON_EXPORT IrcEvent : public NetworkEvent
 {
 public:
-    explicit IrcEvent(EventManager::EventType type, Network* network, QString prefix, QStringList params = QStringList())
+    explicit IrcEvent(
+        EventManager::EventType type, Network* network, QHash<IrcTagKey, QString> tags, QString prefix, QStringList params = {})
         : NetworkEvent(type, network)
+        , _tags(std::move(tags))
         , _prefix(std::move(prefix))
         , _params(std::move(params))
     {}
 
     inline QString prefix() const { return _prefix; }
     inline void setPrefix(const QString& prefix) { _prefix = prefix; }
+
+    inline QHash<IrcTagKey, QString> tags() const { return _tags; }
+    inline void setTags(const QHash<IrcTagKey, QString>& tags) { _tags = tags; }
 
     inline QString nick() const { return nickFromMask(prefix()); }
 
@@ -58,6 +64,7 @@ protected:
     }
 
 private:
+    QHash<IrcTagKey, QString> _tags;
     QString _prefix;
     QStringList _params;
 };
@@ -65,8 +72,13 @@ private:
 class COMMON_EXPORT IrcEventNumeric : public IrcEvent
 {
 public:
-    explicit IrcEventNumeric(uint number, Network* network, const QString& prefix, QString target, const QStringList& params = QStringList())
-        : IrcEvent(EventManager::IrcEventNumeric, network, prefix, params)
+    explicit IrcEventNumeric(uint number,
+                             Network* network,
+                             QHash<IrcTagKey, QString> tags,
+                             QString prefix,
+                             QString target,
+                             QStringList params = {})
+        : IrcEvent(EventManager::IrcEventNumeric, network, std::move(tags), std::move(prefix), std::move(params))
         , _number(number)
         , _target(std::move(target))
     {}
@@ -85,7 +97,9 @@ protected:
     {
         dbg << ", num = " << number();
         NetworkEvent::debugInfo(dbg);
-        dbg << ", target = " << qPrintable(target()) << ", prefix = " << qPrintable(prefix()) << ", params = " << params();
+        dbg << ", target = " << qPrintable(target())
+            << ", prefix = " << qPrintable(prefix())
+            << ", params = " << params();
     }
 
 private:
@@ -98,13 +112,14 @@ private:
 class COMMON_EXPORT IrcEventRawMessage : public IrcEvent
 {
 public:
-    explicit inline IrcEventRawMessage(EventManager::EventType type,
-                                       Network* network,
-                                       QByteArray rawMessage,
-                                       const QString& prefix,
-                                       const QString& target,
-                                       const QDateTime& timestamp = QDateTime())
-        : IrcEvent(type, network, prefix, QStringList() << target)
+    explicit IrcEventRawMessage(EventManager::EventType type,
+                                Network* network,
+                                QHash<IrcTagKey, QString> tags,
+                                QByteArray rawMessage,
+                                QString prefix,
+                                QString target,
+                                const QDateTime& timestamp = QDateTime())
+        : IrcEvent(type, network, std::move(tags), std::move(prefix), QStringList() << target)
         , _rawMessage(std::move(rawMessage))
     {
         setTimestamp(timestamp);
@@ -124,7 +139,9 @@ protected:
     inline void debugInfo(QDebug& dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
-        dbg << ", target = " << qPrintable(target()) << ", prefix = " << qPrintable(prefix()) << ", msg = " << rawMessage();
+        dbg << ", target = " << qPrintable(target())
+            << ", prefix = " << qPrintable(prefix())
+            << ", msg = " << rawMessage();
     }
 
 private:

@@ -39,14 +39,15 @@ public:
 
     explicit CtcpEvent(EventManager::EventType type,
                        Network* network,
-                       const QString& prefix,
+                       QHash<IrcTagKey, QString> tags,
+                       QString prefix,
                        QString target,
                        CtcpType ctcpType,
                        QString ctcpCmd,
                        QString param,
                        const QDateTime& timestamp = QDateTime(),
                        const QUuid& uuid = QUuid())
-        : IrcEvent(type, network, prefix)
+        : IrcEvent(type, network, std::move(tags), std::move(prefix))
         , _ctcpType(ctcpType)
         , _ctcpCmd(std::move(ctcpCmd))
         , _target(std::move(target))
@@ -84,9 +85,12 @@ protected:
     inline void debugInfo(QDebug& dbg) const override
     {
         NetworkEvent::debugInfo(dbg);
-        dbg << ", prefix = " << qPrintable(prefix()) << ", target = " << qPrintable(target())
-            << ", ctcptype = " << (ctcpType() == Query ? "query" : "reply") << ", cmd = " << qPrintable(ctcpCmd())
-            << ", param = " << qPrintable(param()) << ", reply = " << qPrintable(reply());
+        dbg << ", prefix = " << qPrintable(prefix())
+            << ", target = " << qPrintable(target())
+            << ", ctcptype = " << (ctcpType() == Query ? "query" : "reply")
+            << ", cmd = " << qPrintable(ctcpCmd())
+            << ", param = " << qPrintable(param())
+            << ", reply = " << qPrintable(reply());
     }
 
 private:

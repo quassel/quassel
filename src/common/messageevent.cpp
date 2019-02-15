@@ -30,12 +30,17 @@ Event* MessageEvent::create(EventManager::EventType type, QVariantMap& map, Netw
     return nullptr;
 }
 
-MessageEvent::MessageEvent(
-    Message::Type msgType, Network* net, QString msg, const QString& sender, QString target, Message::Flags flags, const QDateTime& timestamp)
+MessageEvent::MessageEvent(Message::Type msgType,
+                           Network* net,
+                           QString msg,
+                           QString sender,
+                           QString target,
+                           Message::Flags flags,
+                           const QDateTime& timestamp)
     : NetworkEvent(EventManager::MessageEvent, net)
     , _msgType(msgType)
     , _text(std::move(msg))
-    , _sender(sender)
+    , _sender(std::move(sender))
     , _target(std::move(target))
     , _msgFlags(flags)
 {
@@ -45,7 +50,7 @@ MessageEvent::MessageEvent(
             _target = _target.mid(1);
 
         if (_target.startsWith('$') || _target.startsWith('#'))
-            _target = nickFromMask(sender);
+            _target = nickFromMask(_sender);
     }
 
     _bufferType = bufferTypeByTarget(_target);
@@ -71,7 +76,7 @@ void MessageEvent::toVariantMap(QVariantMap& map) const
 {
     NetworkEvent::toVariantMap(map);
     map["messageType"] = msgType();
-    map["messageFlags"] = (int)msgFlags();
+    map["messageFlags"] = (int) msgFlags();
     map["bufferType"] = bufferType();
     map["text"] = text();
     map["sender"] = sender();

@@ -32,7 +32,6 @@ target_sources(${TARGET} PRIVATE
     eventstringifier.cpp
     identserver.cpp
     ircparser.cpp
-    irctags.h
     netsplit.cpp
     oidentdconfiggenerator.cpp
     postgresqlstorage.cpp

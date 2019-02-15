@@ -289,7 +289,12 @@ struct NetworkInternalMessage
     QString text;
     QString sender;
     Message::Flags flags;
-    NetworkInternalMessage(Message::Type type, BufferInfo::Type bufferType, QString target, QString text, QString sender = "", Message::Flags flags = Message::None)
+    NetworkInternalMessage(Message::Type type,
+                           BufferInfo::Type bufferType,
+                           QString target,
+                           QString text,
+                           QString sender = "",
+                           Message::Flags flags = Message::None)
         : type(type)
         , bufferType(bufferType)
         , target(std::move(target))
@@ -308,8 +313,14 @@ struct RawMessage
     QString text;
     QString sender;
     Message::Flags flags;
-    RawMessage(
-        NetworkId networkId, Message::Type type, BufferInfo::Type bufferType, QString target, QString text, QString sender, Message::Flags flags)
+
+    RawMessage(NetworkId networkId,
+               Message::Type type,
+               BufferInfo::Type bufferType,
+               QString target,
+               QString text,
+               QString sender,
+               Message::Flags flags)
         : networkId(networkId)
         , type(type)
         , bufferType(bufferType)
@@ -319,7 +330,8 @@ struct RawMessage
         , flags(flags)
     {}
 
-    RawMessage(NetworkId networkId, const NetworkInternalMessage& msg)
+    RawMessage(NetworkId networkId,
+               const NetworkInternalMessage& msg)
         : networkId(networkId)
         , type(msg.type)
         , bufferType(msg.bufferType)
