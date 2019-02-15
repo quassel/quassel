@@ -40,13 +40,9 @@ CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     , _autoReconnectCount(0)
     , _quitRequested(false)
     , _disconnectExpected(false)
-    ,
-
-    _previousConnectionAttemptFailed(false)
+    , _previousConnectionAttemptFailed(false)
     , _lastUsedServerIndex(0)
-    ,
-
-    _requestedUserModes('-')
+    , _requestedUserModes('-')
 {
     // Check if raw IRC logging is enabled
     _debugLogRawIrc = (Quassel::isOptionSet("debug-irc") || Quassel::isOptionSet("debug-irc-id"));
@@ -62,12 +58,12 @@ CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     setAutoWhoInterval(networkConfig()->autoWhoInterval());
 
     QHash<QString, QString> channels = coreSession()->persistentChannels(networkId());
-    foreach (QString chan, channels.keys()) {
+    for (const QString& chan : channels.keys()) {
         _channelKeys[chan.toLower()] = channels[chan];
     }
 
     QHash<QString, QByteArray> bufferCiphers = coreSession()->bufferCiphers(networkId());
-    foreach (QString buffer, bufferCiphers.keys()) {
+    for (const QString& buffer : bufferCiphers.keys()) {
         storeChannelCipherKey(buffer.toLower(), bufferCiphers[buffer]);
     }
 
@@ -122,9 +118,9 @@ CoreNetwork::~CoreNetwork()
     disconnect(&socket, nullptr, this, nullptr);
     if (!forceDisconnect()) {
         qWarning() << QString{"Could not disconnect from network %1 (network ID: %2, user ID: %3)"}
-                          .arg(networkName())
-                          .arg(networkId().toInt())
-                          .arg(userId().toInt());
+            .arg(networkName())
+            .arg(networkId().toInt())
+            .arg(userId().toInt());
     }
 }
 
@@ -222,7 +218,12 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     else if (_previousConnectionAttemptFailed) {
         // cycle to next server if previous connection attempt failed
         _previousConnectionAttemptFailed = false;
-        showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Connection failed. Cycling to next Server"));
+        showMessage(NetworkInternalMessage(
+            Message::Server,
+            BufferInfo::StatusBuffer,
+            "",
+            tr("Connection failed. Cycling to next server...")
+        ));
         if (++_lastUsedServerIndex >= serverList().size()) {
             _lastUsedServerIndex = 0;
         }
@@ -234,10 +235,15 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 
     Server server = usedServer();
     displayStatusMsg(tr("Connecting to %1:%2...").arg(server.host).arg(server.port));
-    showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Connecting to %1:%2...").arg(server.host).arg(server.port));
+    showMessage(NetworkInternalMessage(
+        Message::Server,
+        BufferInfo::StatusBuffer,
+        "",
+        tr("Connecting to %1:%2...").arg(server.host).arg(server.port)
+    ));
 
     if (server.useProxy) {
-        QNetworkProxy proxy((QNetworkProxy::ProxyType)server.proxyType, server.proxyHost, server.proxyPort, server.proxyUser, server.proxyPass);
+        QNetworkProxy proxy((QNetworkProxy::ProxyType) server.proxyType, server.proxyHost, server.proxyPort, server.proxyUser, server.proxyPass);
         socket.setProxy(proxy);
     }
     else {
@@ -298,10 +304,12 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool 
     else
         _quitReason = reason;
 
-    showMessage(Message::Server,
-                BufferInfo::StatusBuffer,
-                "",
-                tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason));
+    showMessage(NetworkInternalMessage(
+        Message::Server,
+        BufferInfo::StatusBuffer,
+        "",
+        tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason)
+    ));
     if (socket.state() == QAbstractSocket::UnconnectedState) {
         onSocketDisconnected();
     }
@@ -323,9 +331,9 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool 
 void CoreNetwork::onSocketCloseTimeout()
 {
     qWarning() << QString{"Timed out quitting network %1 (network ID: %2, user ID: %3)"}
-                      .arg(networkName())
-                      .arg(networkId().toInt())
-                      .arg(userId().toInt());
+        .arg(networkName())
+        .arg(networkId().toInt())
+        .arg(userId().toInt());
     socket.abort();
 }
 
@@ -361,12 +369,12 @@ void CoreNetwork::putRawLine(const QByteArray& s, bool prepend)
     }
 }
 
-void CoreNetwork::putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString> &tags, const bool prepend)
+void CoreNetwork::putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString>& tags, bool prepend)
 {
     putRawLine(IrcEncoder::writeMessage(tags, prefix, cmd, params), prepend);
 }
 
-void CoreNetwork::putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString> &tags, const bool prependAll)
+void CoreNetwork::putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString>& tags, bool prependAll)
 {
     QListIterator<QList<QByteArray>> i(params);
     while (i.hasNext()) {
@@ -517,7 +525,12 @@ void CoreNetwork::onSocketError(QAbstractSocket::SocketError error)
     _previousConnectionAttemptFailed = true;
     qWarning() << qPrintable(tr("Could not connect to %1 (%2)").arg(networkName(), socket.errorString()));
     emit connectionError(socket.errorString());
-    showMessage(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
+    showMessage(NetworkInternalMessage(
+        Message::Error,
+        BufferInfo::StatusBuffer,
+        "",
+        tr("Connection failure: %1").arg(socket.errorString())
+    ));
     emitConnectionError(socket.errorString());
     if (socket.state() < QAbstractSocket::ConnectedState) {
         onSocketDisconnected();
@@ -564,7 +577,12 @@ void CoreNetwork::onSocketInitialized()
 
     // Request capabilities as per IRCv3.2 specifications
     // Older servers should ignore this; newer servers won't downgrade to RFC1459
-    showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Requesting capability list..."));
+    showMessage(NetworkInternalMessage(
+        Message::Server,
+        BufferInfo::StatusBuffer,
+        "",
+        tr("Requesting capability list...")
+    ));
     putRawLine(serverEncode(QString("CAP LS 302")));
 
     if (!server.password.isEmpty()) {
@@ -599,8 +617,14 @@ void CoreNetwork::onSocketDisconnected()
 
     IrcUser* me_ = me();
     if (me_) {
-        foreach (QString channel, me_->channels())
-            showMessage(Message::Quit, BufferInfo::ChannelBuffer, channel, _quitReason, me_->hostmask());
+        for (const QString& channel : me_->channels()) {
+            showMessage(NetworkInternalMessage(
+                Message::Quit,
+                BufferInfo::ChannelBuffer,
+                channel,
+                _quitReason, me_->hostmask()
+            ));
+        }
     }
 
     setConnected(false);
@@ -706,7 +730,7 @@ void CoreNetwork::sendPerform()
     }
 
     // send perform list
-    foreach (QString line, perform()) {
+    for (const QString& line : perform()) {
         if (!line.isEmpty())
             userInput(statusBuf, line);
     }
@@ -714,7 +738,7 @@ void CoreNetwork::sendPerform()
     // rejoin channels we've been in
     if (rejoinChannels()) {
         QStringList channels, keys;
-        foreach (QString chan, coreSession()->persistentChannels(networkId()).keys()) {
+        for (const QString& chan : coreSession()->persistentChannels(networkId()).keys()) {
             QString key = channelKey(chan);
             if (!key.isEmpty()) {
                 channels.prepend(chan);
@@ -898,7 +922,7 @@ void CoreNetwork::sendPing()
         qDebug() << "UserId:" << userId() << "Network:" << networkName() << "missed" << _pingCount << "pings."
                  << "BA:" << socket.bytesAvailable() << "BTW:" << socket.bytesToWrite();
     }
-    if ((int)_pingCount >= networkConfig()->maxPingCount() && (now - _lastPingTime) <= (_pingTimer.interval() + (1 * 1000))) {
+    if ((int) _pingCount >= networkConfig()->maxPingCount() && (now - _lastPingTime) <= (_pingTimer.interval() + (1 * 1000))) {
         // In transitioning to 64-bit time, the interval no longer needs converted down to seconds.
         // However, to reduce the risk of breaking things by changing past behavior, we still allow
         // up to 1 second missed instead of enforcing a stricter 1 millisecond allowance.
@@ -955,7 +979,7 @@ void CoreNetwork::setPongTimestampValid(bool validTimestamp)
 
 /******** Custom Rate Limiting ********/
 
-void CoreNetwork::updateRateLimiting(const bool forceUnlimited)
+void CoreNetwork::updateRateLimiting(bool forceUnlimited)
 {
     // Verify and apply custom rate limiting options, always resetting the delay and burst size
     // (safe-guarding against accidentally starting the timer), but don't reset the token bucket as
@@ -1075,7 +1099,12 @@ void CoreNetwork::serverCapAcknowledged(const QString& capability)
                 putRawLine(serverEncode("AUTHENTICATE EXTERNAL"));
             }
             else {
-                showMessage(Message::Error, BufferInfo::StatusBuffer, "", tr("SASL EXTERNAL authentication not supported"));
+                showMessage(NetworkInternalMessage(
+                    Message::Error,
+                    BufferInfo::StatusBuffer,
+                    "",
+                    tr("SASL EXTERNAL authentication not supported")
+                ));
                 sendNextCap();
             }
         }
@@ -1087,7 +1116,12 @@ void CoreNetwork::serverCapAcknowledged(const QString& capability)
                 putRawLine(serverEncode("AUTHENTICATE PLAIN"));
             }
             else {
-                showMessage(Message::Error, BufferInfo::StatusBuffer, "", tr("SASL PLAIN authentication not supported"));
+                showMessage(NetworkInternalMessage(
+                    Message::Error,
+                    BufferInfo::StatusBuffer,
+                    "",
+                    tr("SASL PLAIN authentication not supported")
+                ));
                 sendNextCap();
             }
 #ifdef HAVE_SSL
@@ -1196,10 +1230,12 @@ void CoreNetwork::retryCapsIndividually()
     // Add most recently tried capability set to individual list, re-requesting them one at a time
     _capsQueuedIndividual.append(_capsQueuedLastBundle);
     // Warn of this issue to explain the slower login.  Servers usually shouldn't trigger this.
-    showMessage(Message::Server,
-                BufferInfo::StatusBuffer,
-                "",
-                tr("Could not negotiate some capabilities, retrying individually (%1)...").arg(_capsQueuedLastBundle.join(", ")));
+    showMessage(NetworkInternalMessage(
+        Message::Server,
+        BufferInfo::StatusBuffer,
+        "",
+        tr("Could not negotiate some capabilities, retrying individually (%1)...").arg(_capsQueuedLastBundle.join(", "))
+    ));
     // Capabilities are already removed from the capability bundle queue via takeQueuedCaps(), no
     // need to remove them here.
     // Clear the most recently tried set to reduce risk that mistakes elsewhere causes retrying
@@ -1213,20 +1249,35 @@ void CoreNetwork::beginCapNegotiation()
     if (!capNegotiationInProgress()) {
         // If the server doesn't have any capabilities, but supports CAP LS, continue on with the
         // normal connection.
-        showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("No capabilities available"));
+        showMessage(NetworkInternalMessage(
+            Message::Server,
+            BufferInfo::StatusBuffer,
+            "",
+            tr("No capabilities available")
+        ));
         endCapNegotiation();
         return;
     }
 
     _capNegotiationActive = true;
-    showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Ready to negotiate (found: %1)").arg(caps().join(", ")));
+    showMessage(NetworkInternalMessage(
+        Message::Server,
+        BufferInfo::StatusBuffer,
+        "",
+        tr("Ready to negotiate (found: %1)").arg(caps().join(", "))
+    ));
 
     // Build a list of queued capabilities, starting with individual, then bundled, only adding the
     // comma separator between the two if needed (both individual and bundled caps exist).
     QString queuedCapsDisplay = _capsQueuedIndividual.join(", ")
                                 + ((!_capsQueuedIndividual.empty() && !_capsQueuedBundled.empty()) ? ", " : "")
                                 + _capsQueuedBundled.join(", ");
-    showMessage(Message::Server, BufferInfo::StatusBuffer, "", tr("Negotiating capabilities (requesting: %1)...").arg(queuedCapsDisplay));
+    showMessage(NetworkInternalMessage(
+        Message::Server,
+        BufferInfo::StatusBuffer,
+        "",
+        tr("Negotiating capabilities (requesting: %1)...").arg(queuedCapsDisplay)
+    ));
 
     sendNextCap();
 }
@@ -1241,13 +1292,20 @@ void CoreNetwork::sendNextCap()
         // No pending desired capabilities, capability negotiation finished
         // If SASL requested but not available, print a warning
         if (networkInfo().useSasl && !capEnabled(IrcCap::SASL))
-            showMessage(Message::Error, BufferInfo::StatusBuffer, "", tr("SASL authentication currently not supported by server"));
+            showMessage(NetworkInternalMessage(
+                Message::Error,
+                BufferInfo::StatusBuffer,
+                "",
+                tr("SASL authentication currently not supported by server")
+            ));
 
         if (_capNegotiationActive) {
-            showMessage(Message::Server,
-                        BufferInfo::StatusBuffer,
-                        "",
-                        tr("Capability negotiation finished (enabled: %1)").arg(capsEnabled().join(", ")));
+            showMessage(NetworkInternalMessage(
+                Message::Server,
+                BufferInfo::StatusBuffer,
+                "",
+                tr("Capability negotiation finished (enabled: %1)").arg(capsEnabled().join(", "))
+            ));
             _capNegotiationActive = false;
         }
 
@@ -1385,7 +1443,12 @@ void CoreNetwork::onSslErrors(const QList<QSslError>& sslErrors)
             // Add the error reason if known
             sslErrorMessage.append(tr(" (Reason: %1)").arg(sslErrors.first().errorString()));
         }
-        showMessage(Message::Error, BufferInfo::StatusBuffer, "", sslErrorMessage);
+        showMessage(NetworkInternalMessage(
+            Message::Error,
+            BufferInfo::StatusBuffer,
+            "",
+            sslErrorMessage
+        ));
 
         // Disconnect, triggering a reconnect in case it's a temporary issue with certificate
         // validity, network trouble, etc.
@@ -1399,7 +1462,12 @@ void CoreNetwork::onSslErrors(const QList<QSslError>& sslErrors)
             // Add the error reason if known
             sslErrorMessage.append(tr(" (Reason: %1)").arg(sslErrors.first().errorString()));
         }
-        showMessage(Message::Info, BufferInfo::StatusBuffer, "", sslErrorMessage);
+        showMessage(NetworkInternalMessage(
+            Message::Info,
+            BufferInfo::StatusBuffer,
+            "",
+            sslErrorMessage
+        ));
 
         // Proceed with the connection
         socket.ignoreSslErrors();
@@ -1411,7 +1479,7 @@ void CoreNetwork::onSslErrors(const QList<QSslError>& sslErrors)
 void CoreNetwork::checkTokenBucket()
 {
     if (_skipMessageRates) {
-        if (_msgQueue.size() == 0) {
+        if (_msgQueue.empty()) {
             // Message queue emptied; stop the timer and bail out
             _tokenBucketTimer.stop();
             return;
@@ -1431,7 +1499,7 @@ void CoreNetwork::fillBucketAndProcessQueue()
     }
 
     // As long as there's tokens available and messages remaining, sending messages from the queue
-    while (_msgQueue.size() > 0 && _tokenBucket > 0) {
+    while (!_msgQueue.empty() && _tokenBucket > 0) {
         writeToSocket(_msgQueue.takeFirst());
     }
 }

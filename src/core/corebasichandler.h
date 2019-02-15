@@ -52,12 +52,7 @@ public:
     QList<QByteArray> userEncode(const QString& userNick, const QStringList& stringlist);
 
 signals:
-    void displayMsg(Message::Type,
-                    BufferInfo::Type,
-                    const QString& target,
-                    const QString& text,
-                    const QString& sender = "",
-                    Message::Flags flags = Message::None);
+    void displayMsg(const NetworkInternalMessage& msg);
 
     /**
      * Sends the raw (encoded) line, adding to the queue if needed, optionally with higher priority.
