@@ -1405,7 +1405,9 @@ void CoreNetwork::sendAutoWho()
             // And https://github.com/quakenet/snircd/blob/master/doc/readme.who
             // And https://github.com/hexchat/hexchat/blob/57478b65758e6b697b1d82ce21075e74aa475efc/src/common/proto-irc.c#L752
             putRawLine(serverEncode(
-                QString("WHO %1 n%chtsunfra,%2").arg(serverEncode(chanOrNick), QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))));
+                QString("WHO %1 n%chtsunfra,%2")
+                    .arg(chanOrNick, QString::number(IrcCap::ACCOUNT_NOTIFY_WHOX_NUM))
+            ));
         }
         else {
             // Fall back to normal WHO
