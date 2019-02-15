@@ -34,10 +34,10 @@ public:
     explicit MessageEvent(Message::Type msgType,
                           Network* network,
                           QString msg,
-                          const QString& sender = QString(),
-                          QString target = QString(),
+                          QString sender = {},
+                          QString target = {},
                           Message::Flags msgFlags = Message::None,
-                          const QDateTime& timestamp = QDateTime());
+                          const QDateTime& timestamp = {});
 
     inline Message::Type msgType() const { return _msgType; }
     inline void setMsgType(Message::Type type) { _msgType = type; }

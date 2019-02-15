@@ -28,6 +28,7 @@ target_sources(${TARGET} PRIVATE
     ircdecoder.cpp
     ircencoder.cpp
     irctag.cpp
+    irctags.h
     ircuser.cpp
     logger.cpp
     message.cpp

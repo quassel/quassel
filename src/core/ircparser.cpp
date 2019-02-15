@@ -179,6 +179,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
                 IrcEventRawMessage* rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg,
                                                                         net,
+                                                                        tags,
                                                                         msg,
                                                                         prefix,
                                                                         target,
@@ -246,16 +247,17 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                 // Don't allow key exchange in channels, and don't allow it for self-messages.
                 bool keyExchangeAllowed = (!net->isChannelName(target) && !isSelfMessage);
                 if (params[1].startsWith("DH1080_INIT") && keyExchangeAllowed) {
-                    events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Init, params[1].mid(12));
+                    events << new KeyEvent(EventManager::KeyEvent, net, tags, prefix, target, KeyEvent::Init, params[1].mid(12));
                 }
                 else if (params[1].startsWith("DH1080_FINISH") && keyExchangeAllowed) {
-                    events << new KeyEvent(EventManager::KeyEvent, net, prefix, target, KeyEvent::Finish, params[1].mid(14));
+                    events << new KeyEvent(EventManager::KeyEvent, net, tags, prefix, target, KeyEvent::Finish, params[1].mid(14));
                 }
                 else
 #endif
                 {
                     IrcEventRawMessage* rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawNotice,
                                                                             net,
+                                                                            tags,
                                                                             params[1],
                                                                             prefix,
                                                                             target,
@@ -270,7 +272,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         }
         break;
 
-    // the following events need only special casing for param decoding
+        // the following events need only special casing for param decoding
     case EventManager::IrcEventKick:
         if (params.count() >= 3) {  // we have a reason
             decParams << net->serverDecode(params.at(0)) << net->serverDecode(params.at(1));
@@ -294,6 +296,34 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         }
         break;
 
+    case EventManager::IrcEventTagmsg:
+        defaultHandling = false;  // this might create a list of events
+
+        if (checkParamCount(cmd, params, 1)) {
+            QString senderNick = nickFromMask(prefix);
+            net->updateNickFromMask(prefix);
+            // Check if the sender is our own nick.  If so, treat message as if sent by ourself.
+            // See http://ircv3.net/specs/extensions/echo-message-3.2.html
+            // Cache the result to avoid multiple redundant comparisons
+            bool isSelfMessage = net->isMyNick(senderNick);
+
+            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList::const_iterator targetIter;
+            for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
+                // For self-messages, keep the target, don't set it to the senderNick
+                QString target = net->isChannelName(*targetIter) || net->isStatusMsg(*targetIter) || isSelfMessage ? *targetIter : senderNick;
+
+                IrcEvent* tagMsg = new IrcEvent(EventManager::IrcEventTagmsg, net, tags, prefix, {target});
+                if (isSelfMessage) {
+                    // Self-messages need processed differently, tag as such via flag.
+                    tagMsg->setFlag(EventManager::Self);
+                }
+                tagMsg->setTimestamp(e->timestamp());
+                events << tagMsg;
+            }
+        }
+        break;
+
     case EventManager::IrcEventTopic:
         if (params.count() >= 1) {
             QString channel = net->serverDecode(params.at(0));
@@ -302,15 +332,17 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         }
         break;
 
-    case EventManager::IrcEventAway: {
-        // Update hostmask info first.  This will create the nick if it doesn't exist, e.g.
-        // away-notify data being sent before JOIN messages.
-        net->updateNickFromMask(prefix);
-        // Separate nick in order to separate server and user decoding
-        QString nick = nickFromMask(prefix);
-        decParams << nick;
-        decParams << (params.count() >= 1 ? net->userDecode(nick, params.at(0)) : QString());
-    } break;
+    case EventManager::IrcEventAway:
+        {
+            // Update hostmask info first.  This will create the nick if it doesn't exist, e.g.
+            // away-notify data being sent before JOIN messages.
+            net->updateNickFromMask(prefix);
+            // Separate nick in order to separate server and user decoding
+            QString nick = nickFromMask(prefix);
+            decParams << nick;
+            decParams << (params.count() >= 1 ? net->userDecode(nick, params.at(0)) : QString());
+        }
+        break;
 
     case EventManager::IrcEventNumeric:
         switch (num) {
@@ -369,15 +401,15 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
         IrcEvent* event;
         if (type == EventManager::IrcEventNumeric)
-            event = new IrcEventNumeric(num, net, prefix, messageTarget);
+            event = new IrcEventNumeric(num, net, tags, prefix, messageTarget);
         else
-            event = new IrcEvent(type, net, prefix);
+            event = new IrcEvent(type, net, tags, prefix);
         event->setParams(decParams);
         event->setTimestamp(e->timestamp());
         events << event;
     }
 
-    foreach (Event* event, events) {
+    for (Event* event : events) {
         emit newEvent(event);
     }
 }

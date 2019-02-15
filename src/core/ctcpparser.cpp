@@ -24,6 +24,7 @@
 #include "coresession.h"
 #include "coreuserinputhandler.h"
 #include "ctcpevent.h"
+#include "irctags.h"
 #include "messageevent.h"
 
 const QByteArray XDELIM = "\001";
@@ -54,15 +55,17 @@ void CtcpParser::setStandardCtcp(bool enabled)
     _ctcpXDelimDequoteHash[XQUOTE + QByteArray("a")] = XDELIM;
 }
 
-void CtcpParser::displayMsg(
-    NetworkEvent* event, Message::Type msgType, const QString& msg, const QString& sender, const QString& target, Message::Flags msgFlags)
+void CtcpParser::displayMsg(NetworkEvent* event,
+                            Message::Type msgType,
+                            QString msg,
+                            QString sender,
+                            QString target,
+                            Message::Flags msgFlags)
 {
     if (event->testFlag(EventManager::Silent))
         return;
 
-    MessageEvent* msgEvent = new MessageEvent(msgType, event->network(), msg, sender, target, msgFlags);
-    msgEvent->setTimestamp(event->timestamp());
-
+    MessageEvent* msgEvent = new MessageEvent(msgType, event->network(), std::move(msg), std::move(sender), std::move(target), msgFlags, event->timestamp());
     emit newEvent(msgEvent);
 }
 
@@ -192,8 +195,11 @@ void CtcpParser::parse(IrcEventRawMessage* e, Message::Type messagetype)
 
 // only accept CTCPs in their simplest form, i.e. one ctcp, from start to
 // end, no text around it; not as per the 'specs', but makes people happier
-void CtcpParser::parseSimple(
-    IrcEventRawMessage* e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
+void CtcpParser::parseSimple(IrcEventRawMessage* e,
+                             Message::Type messagetype,
+                             const QByteArray& dequotedMessage,
+                             CtcpEvent::CtcpType ctcptype,
+                             Message::Flags flags)
 {
     if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.count() - 1] != '\001') {
         displayMsg(e, messagetype, targetDecode(e, dequotedMessage), e->prefix(), e->target(), flags);
@@ -214,13 +220,15 @@ void CtcpParser::parseSimple(
         }
         ctcpcmd = ctcpcmd.toUpper();
 
+        bool isAction = ctcpcmd == QLatin1String("ACTION");
         // we don't want to block /me messages by the CTCP ignore list
-        if (ctcpcmd == QLatin1String("ACTION")
+        if (isAction
             || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
             QUuid uuid = QUuid::createUuid();
             _replies.insert(uuid, CtcpReply(coreNetwork(e), nickFromMask(e->prefix())));
             CtcpEvent* event = new CtcpEvent(EventManager::CtcpEvent,
                                              e->network(),
+                                             isAction ? QHash<IrcTagKey, QString>() : e->tags(),
                                              e->prefix(),
                                              e->target(),
                                              ctcptype,
@@ -231,6 +239,7 @@ void CtcpParser::parseSimple(
             emit newEvent(event);
             CtcpEvent* flushEvent = new CtcpEvent(EventManager::CtcpEventFlush,
                                                   e->network(),
+                                                  {},
                                                   e->prefix(),
                                                   e->target(),
                                                   ctcptype,
@@ -243,9 +252,13 @@ void CtcpParser::parseSimple(
     }
 }
 
-void CtcpParser::parseStandard(
-    IrcEventRawMessage* e, Message::Type messagetype, QByteArray dequotedMessage, CtcpEvent::CtcpType ctcptype, Message::Flags flags)
+void CtcpParser::parseStandard(IrcEventRawMessage* e,
+                               Message::Type messagetype,
+                               const QByteArray& dequotedMessage_,
+                               CtcpEvent::CtcpType ctcptype,
+                               Message::Flags flags)
 {
+    auto dequotedMessage = dequotedMessage_;
     QByteArray ctcp;
 
     QList<CtcpEvent*> ctcpEvents;
@@ -283,14 +296,16 @@ void CtcpParser::parseStandard(
 
         ctcpcmd = ctcpcmd.toUpper();
 
+        bool isAction = ctcpcmd == QLatin1String("ACTION");
         // we don't want to block /me messages by the CTCP ignore list
-        if (ctcpcmd == QLatin1String("ACTION")
+        if (isAction
             || !coreSession()->ignoreListManager()->ctcpMatch(e->prefix(), e->network()->networkName(), ctcpcmd)) {
             if (uuid.isNull())
                 uuid = QUuid::createUuid();
 
             CtcpEvent* event = new CtcpEvent(EventManager::CtcpEvent,
                                              e->network(),
+                                             isAction ? QHash<IrcTagKey, QString>() : e->tags(),
                                              e->prefix(),
                                              e->target(),
                                              ctcptype,
@@ -305,6 +320,7 @@ void CtcpParser::parseStandard(
         _replies.insert(uuid, CtcpReply(coreNetwork(e), nickFromMask(e->prefix())));
         CtcpEvent* flushEvent = new CtcpEvent(EventManager::CtcpEventFlush,
                                               e->network(),
+                                              {},
                                               e->prefix(),
                                               e->target(),
                                               ctcptype,
@@ -313,7 +329,7 @@ void CtcpParser::parseStandard(
                                               e->timestamp(),
                                               uuid);
         ctcpEvents << flushEvent;
-        foreach (CtcpEvent* event, ctcpEvents) {
+        for (CtcpEvent* event : ctcpEvents) {
             emit newEvent(event);
         }
     }

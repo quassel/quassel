@@ -1469,7 +1469,7 @@ void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network* net, const QStr
         if (ircUser) {
             ircUsers.append(ircUser);
             // fake event for scripts that consume join events
-            events << new IrcEvent(EventManager::IrcEventJoin, net, ircUser->hostmask(), QStringList() << channel);
+            events << new IrcEvent(EventManager::IrcEventJoin, net, {}, ircUser->hostmask(), QStringList() << channel);
         }
         else {
             newModes.removeAt(users.indexOf(user));

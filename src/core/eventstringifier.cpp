@@ -22,6 +22,7 @@
 
 #include "coresession.h"
 #include "ctcpevent.h"
+#include "irctags.h"
 #include "messageevent.h"
 
 EventStringifier::EventStringifier(CoreSession* parent)
@@ -32,22 +33,29 @@ EventStringifier::EventStringifier(CoreSession* parent)
     connect(this, &EventStringifier::newMessageEvent, coreSession()->eventManager(), &EventManager::postEvent);
 }
 
-void EventStringifier::displayMsg(
-    NetworkEvent* event, Message::Type msgType, const QString& msg, const QString& sender, const QString& target, Message::Flags msgFlags)
+void EventStringifier::displayMsg(NetworkEvent* event,
+                                  Message::Type msgType,
+                                  QString msg,
+                                  QString sender,
+                                  QString target,
+                                  Message::Flags msgFlags)
 {
     if (event->flags().testFlag(EventManager::Silent))
         return;
 
-    MessageEvent* msgEvent = createMessageEvent(event, msgType, msg, sender, target, msgFlags);
+    MessageEvent* msgEvent = createMessageEvent(event, msgType, std::move(msg), std::move(sender), std::move(target), msgFlags);
     // sendMessageEvent(msgEvent);
     emit newMessageEvent(msgEvent);
 }
 
-MessageEvent* EventStringifier::createMessageEvent(
-    NetworkEvent* event, Message::Type msgType, const QString& msg, const QString& sender, const QString& target, Message::Flags msgFlags)
+MessageEvent* EventStringifier::createMessageEvent(NetworkEvent* event,
+                                                   Message::Type msgType,
+                                                   QString msg,
+                                                   QString sender,
+                                                   QString target,
+                                                   Message::Flags msgFlags)
 {
-    MessageEvent* msgEvent = new MessageEvent(msgType, event->network(), msg, sender, target, msgFlags);
-    msgEvent->setTimestamp(event->timestamp());
+    MessageEvent* msgEvent = new MessageEvent(msgType, event->network(), std::move(msg), std::move(sender), std::move(target), msgFlags, event->timestamp());
     return msgEvent;
 }
 
@@ -59,7 +67,7 @@ bool EventStringifier::checkParamCount(IrcEvent* e, int minParams)
                        << "params, got: " << e->params();
         }
         else {
-            QString name = coreSession()->eventManager()->enumName(e->type());
+            QString name = EventManager::enumName(e->type());
             qWarning() << qPrintable(name) << "requires" << minParams << "params, got:" << e->params();
         }
         e->stop();
@@ -328,7 +336,7 @@ void EventStringifier::processIrcEventNick(IrcEvent* e)
     }
 
     // Announce to all channels the IrcUser is in
-    foreach (const QString& channel, ircuser->channels()) {
+    for (const QString& channel : ircuser->channels()) {
         displayMsg(e, Message::Nick, newnick, sender, channel, msgFlags);
     }
 }
@@ -375,7 +383,7 @@ void EventStringifier::processIrcEventQuit(IrcEvent* e)
     }
 
     // Announce to all channels the IrcUser is in
-    foreach (const QString& channel, ircuser->channels()) {
+    for (const QString& channel : ircuser->channels()) {
         displayMsg(e, Message::Quit, e->params().count() ? e->params().first() : QString(), e->prefix(), channel, msgFlags);
     }
 }
@@ -528,9 +536,10 @@ void EventStringifier::processIrcEvent317(IrcEvent* e)
 {
     int idleSecs = e->params()[1].toInt();
 
-    if (e->params().count() > 3) {  // if we have more then 3 params we have the above mentioned "real life" situation
-                                    // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
-                                    // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
+    if (e->params().count() > 3) {
+        // if we have more then 3 params we have the above mentioned "real life" situation
+        // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
+        // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
 #if QT_VERSION >= 0x050800
         QDateTime loginTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
 #else
@@ -566,7 +575,7 @@ void EventStringifier::processIrcEvent319(IrcEvent* e)
     QStringList op;
     QStringList voice;
     QStringList user;
-    foreach (QString channel, e->params().last().split(" ")) {
+    for (QString channel : e->params().last().split(" ")) {
         if (channel.startsWith("@"))
             op.append(channel.remove(0, 1));
         else if (channel.startsWith("+"))

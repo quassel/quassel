@@ -18,18 +18,23 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "message.h"
-
 #include <utility>
 
 #include <QDataStream>
 
+#include "message.h"
 #include "peer.h"
 #include "signalproxy.h"
 #include "util.h"
 
-Message::Message(
-    BufferInfo bufferInfo, Type type, QString contents, QString sender, QString senderPrefixes, QString realName, QString avatarUrl, Flags flags)
+Message::Message(BufferInfo bufferInfo,
+                 Type type,
+                 QString contents,
+                 QString sender,
+                 QString senderPrefixes,
+                 QString realName,
+                 QString avatarUrl,
+                 Flags flags)
     : _timestamp(QDateTime::currentDateTime().toUTC())
     , _bufferInfo(std::move(bufferInfo))
     , _contents(std::move(contents))
@@ -71,13 +76,16 @@ QDataStream& operator<<(QDataStream& out, const Message& msg)
 
     if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
         // toMSecs returns a qint64, signed rather than unsigned
-        out << (qint64)msg.timestamp().toMSecsSinceEpoch();
+        out << (qint64) msg.timestamp().toMSecsSinceEpoch();
     }
     else {
-        out << (quint32)msg.timestamp().toTime_t();
+        out << (quint32) msg.timestamp().toTime_t();
     }
 
-    out << (quint32)msg.type() << (quint8)msg.flags() << msg.bufferInfo() << msg.sender().toUtf8();
+    out << (quint32) msg.type()
+        << (quint8) msg.flags()
+        << msg.bufferInfo()
+        << msg.sender().toUtf8();
 
     if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::SenderPrefixes))
         out << msg.senderPrefixes().toUtf8();
@@ -147,9 +155,14 @@ QDataStream& operator>>(QDataStream& in, Message& msg)
 
 QDebug operator<<(QDebug dbg, const Message& msg)
 {
-    dbg.nospace() << qPrintable(QString("Message(MsgId:")) << msg.msgId() << qPrintable(QString(",")) << msg.timestamp()
-                  << qPrintable(QString(", Type:")) << msg.type() << qPrintable(QString(", RealName:")) << msg.realName()
-                  << qPrintable(QString(", AvatarURL:")) << msg.avatarUrl() << qPrintable(QString(", Flags:")) << msg.flags()
-                  << qPrintable(QString(")")) << msg.senderPrefixes() << msg.sender() << ":" << msg.contents();
+    dbg.nospace() << qPrintable(QString("Message(MsgId:")) << msg.msgId()
+                  << qPrintable(QString(",")) << msg.timestamp()
+                  << qPrintable(QString(", Type:")) << msg.type()
+                  << qPrintable(QString(", RealName:")) << msg.realName()
+                  << qPrintable(QString(", AvatarURL:")) << msg.avatarUrl()
+                  << qPrintable(QString(", Flags:")) << msg.flags()
+                  << qPrintable(QString(")"))
+                  << msg.senderPrefixes() << msg.sender() << ":"
+                  << msg.contents();
     return dbg;
 }
