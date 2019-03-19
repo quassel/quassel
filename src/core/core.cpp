@@ -213,6 +213,14 @@ void Core::init()
             _identServer = new IdentServer(this);
         }
 
+        if (Quassel::isOptionSet("metrics-daemon")) {
+            _metricsServer = new MetricsServer(this);
+#ifdef HAVE_SSL
+            _server.setMetricsServer(_metricsServer);
+            _v6server.setMetricsServer(_metricsServer);
+#endif
+        }
+
         Quassel::registerReloadHandler([]() {
             // Currently, only reloading SSL certificates and the sysident cache is supported
             if (Core::instance()) {
@@ -674,6 +682,10 @@ bool Core::startListening()
         _identServer->startListening();
     }
 
+    if (_metricsServer) {
+        _metricsServer->startListening();
+    }
+
     return success;
 }
 
@@ -681,6 +693,10 @@ void Core::stopListening(const QString& reason)
 {
     if (_identServer) {
         _identServer->stopListening(reason);
+    }
+
+    if (_metricsServer) {
+        _metricsServer->stopListening(reason);
     }
 
     bool wasListening = false;

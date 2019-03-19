@@ -29,6 +29,7 @@
 CoreAuthHandler::CoreAuthHandler(QTcpSocket* socket, QObject* parent)
     : AuthHandler(parent)
     , _peer(nullptr)
+    , _metricsServer(Core::instance()->metricsServer())
     , _magicReceived(false)
     , _legacy(false)
     , _clientRegistered(false)
@@ -247,9 +248,15 @@ void CoreAuthHandler::handle(const Protocol::Login& msg)
         qInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
         _peer->dispatch(Protocol::LoginFailed(tr(
             "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.")));
+        if (_metricsServer) {
+            _metricsServer->addLoginAttempt(msg.user, false);
+        }
         return;
     }
     _peer->dispatch(Protocol::LoginSuccess());
+    if (_metricsServer) {
+        _metricsServer->addLoginAttempt(uid, true);
+    }
 
     qInfo() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).")
                           .arg(socket()->peerAddress().toString(), msg.user, QString::number(uid.toInt())));

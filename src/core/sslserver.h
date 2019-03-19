@@ -28,6 +28,8 @@
 #    include <QSslKey>
 #    include <QTcpServer>
 
+#    include "metricsserver.h"
+
 class SslServer : public QTcpServer
 {
     Q_OBJECT
@@ -52,6 +54,8 @@ public:
      */
     bool reloadCerts();
 
+    void setMetricsServer(MetricsServer* metricsServer);
+
 protected:
     void incomingConnection(qintptr socketDescriptor) override;
 
@@ -69,6 +73,8 @@ private:
     bool loadCerts();
     QSslKey loadKey(QFile* keyFile);
 
+    MetricsServer* _metricsServer{nullptr};
+
     QLinkedList<QTcpSocket*> _pendingConnections;
     QSslCertificate _cert;
     QSslKey _key;
@@ -78,6 +84,8 @@ private:
     // Used when reloading certificates later
     QString _sslCertPath;  /// Path to the certificate file
     QString _sslKeyPath;   /// Path to the private key file (may be in same file as above)
+
+    QDateTime _certificateExpires;
 };
 
 #endif  // HAVE_SSL

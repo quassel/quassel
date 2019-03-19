@@ -37,6 +37,7 @@ CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     : Network(networkid, session)
     , _coreSession(session)
     , _userInputHandler(new CoreUserInputHandler(this))
+    , _metricsServer(Core::instance()->metricsServer())
     , _autoReconnectCount(0)
     , _quitRequested(false)
     , _disconnectExpected(false)
@@ -184,6 +185,10 @@ void CoreNetwork::connectToIrc(bool reconnecting)
         _socketId = Core::instance()->identServer()->addWaitingSocket();
     }
 
+    if (_metricsServer) {
+        _metricsServer->addNetwork(userId());
+    }
+
     if (!reconnecting && useAutoReconnect() && _autoReconnectCount == 0) {
         _autoReconnectTimer.setInterval(autoReconnectInterval() * 1000);
         if (unlimitedReconnectRetries())
@@ -290,6 +295,9 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool 
     }
     disablePingTimeout();
     _msgQueue.clear();
+    if (_metricsServer) {
+        _metricsServer->messageQueue(userId(), 0);
+    }
 
     IrcUser* me_ = me();
     if (me_) {
@@ -365,6 +373,9 @@ void CoreNetwork::putRawLine(const QByteArray& s, bool prepend)
         else {
             // Add to back, waiting in order
             _msgQueue.append(s);
+        }
+        if (_metricsServer) {
+            _metricsServer->messageQueue(userId(), _msgQueue.size());
         }
     }
 }
@@ -505,6 +516,9 @@ void CoreNetwork::onSocketHasData()
 {
     while (socket.canReadLine()) {
         QByteArray s = socket.readLine();
+        if (_metricsServer) {
+            _metricsServer->receiveDataNetwork(userId(), s.size());
+        }
         if (s.endsWith("\r\n"))
             s.chop(2);
         else if (s.endsWith("\n"))
@@ -605,6 +619,9 @@ void CoreNetwork::onSocketDisconnected()
 {
     disablePingTimeout();
     _msgQueue.clear();
+    if (_metricsServer) {
+        _metricsServer->messageQueue(userId(), 0);
+    }
 
     _autoWhoCycleTimer.stop();
     _autoWhoTimer.stop();
@@ -643,6 +660,10 @@ void CoreNetwork::onSocketDisconnected()
             doAutoReconnect();  // first try is immediate
         else
             _autoReconnectTimer.start();
+    }
+
+    if (_metricsServer) {
+        _metricsServer->removeNetwork(userId());
     }
 }
 
@@ -1503,6 +1524,9 @@ void CoreNetwork::fillBucketAndProcessQueue()
     // As long as there's tokens available and messages remaining, sending messages from the queue
     while (!_msgQueue.empty() && _tokenBucket > 0) {
         writeToSocket(_msgQueue.takeFirst());
+        if (_metricsServer) {
+            _metricsServer->messageQueue(userId(), _msgQueue.size());
+        }
     }
 }
 
@@ -1515,6 +1539,9 @@ void CoreNetwork::writeToSocket(const QByteArray& data)
     }
     socket.write(data);
     socket.write("\r\n");
+    if (_metricsServer) {
+        _metricsServer->transmitDataNetwork(userId(), data.size() + 2);
+    }
     if (!_skipMessageRates) {
         // Only subtract from the token bucket if message rate limiting is enabled
         _tokenBucket--;

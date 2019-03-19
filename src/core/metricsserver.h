@@ -18,56 +18,69 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREAUTHHANDLER_H
-#define COREAUTHHANDLER_H
+#pragma once
 
-#include "authhandler.h"
-#include "metricsserver.h"
-#include "peerfactory.h"
-#include "remotepeer.h"
-#include "types.h"
+#include <QHash>
+#include <QObject>
+#include <QString>
+#include <QTcpServer>
 
-class CoreAuthHandler : public AuthHandler
+#include "coreidentity.h"
+
+class MetricsServer : public QObject
 {
     Q_OBJECT
 
 public:
-    CoreAuthHandler(QTcpSocket* socket, QObject* parent = nullptr);
+    explicit MetricsServer(QObject* parent = nullptr);
 
-signals:
-    void handshakeComplete(RemotePeer* peer, UserId uid);
+    bool startListening();
+    void stopListening(const QString& msg);
 
-private:
-    using AuthHandler::handle;
+    void addLoginAttempt(UserId user, bool successful);
+    void addLoginAttempt(const QString& user, bool successful);
 
-    void handle(const Protocol::RegisterClient& msg) override;
-    void handle(const Protocol::SetupData& msg) override;
-    void handle(const Protocol::Login& msg) override;
+    void addSession(UserId user, const QString& name);
+    void removeSession(UserId user);
 
-    void setPeer(RemotePeer* peer);
-    void startSsl();
+    void addClient(UserId user);
+    void removeClient(UserId user);
 
-    bool checkClientRegistered();
+    void addNetwork(UserId user);
+    void removeNetwork(UserId user);
+
+    void transmitDataNetwork(UserId user, uint64_t size);
+    void receiveDataNetwork(UserId user, uint64_t size);
+
+    void loginSuccessful();
+    void loginFailed();
+
+    void messageQueue(UserId user, uint64_t size);
+
+    void setCertificateExpires(QDateTime expires);
 
 private slots:
-    void onReadyRead();
-
-#ifdef HAVE_SSL
-    void onSslErrors();
-#endif
-
-    // only in legacy mode
-    void onProtocolVersionMismatch(int actual, int expected);
+    void incomingConnection();
+    void respond();
 
 private:
-    RemotePeer* _peer;
-    MetricsServer* _metricsServer;
+    QTcpServer _server, _v6server;
 
-    bool _magicReceived;
-    bool _legacy;
-    bool _clientRegistered;
-    quint8 _connectionFeatures;
-    QVector<PeerFactory::ProtoDescriptor> _supportedProtos;
+    QHash<UserId, uint64_t> _loginAttempts{};
+    QHash<UserId, uint64_t> _successfulLogins{};
+
+    QHash<UserId, QString> _sessions{};
+
+    QHash<UserId, int64_t> _clientSessions{};
+    QHash<UserId, int64_t> _networkSessions{};
+
+    QHash<UserId, uint64_t> _networkDataTransmit{};
+    QHash<UserId, uint64_t> _networkDataReceive{};
+
+    QHash<UserId, uint64_t> _messageQueue{};
+
+    uint64_t _loginSuccessful{};
+    uint64_t _loginFailed{};
+
+    QDateTime _certificateExpires{};
 };
-
-#endif

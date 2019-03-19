@@ -82,6 +82,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     , _processMessages(false)
     , _ignoreListManager(this)
     , _highlightRuleManager(this)
+    , _metricsServer(Core::instance()->metricsServer())
 {
     SignalProxy* p = signalProxy();
     p->setHeartBeatInterval(30);
@@ -151,6 +152,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
         restoreSessionState();
 
     emit initialized();
+
+    if (_metricsServer) {
+        _metricsServer->addSession(user(), Core::instance()->strictSysIdent(_user));
+    }
 }
 
 void CoreSession::shutdown()
@@ -170,6 +175,10 @@ void CoreSession::shutdown()
     if (_networksPendingDisconnect.isEmpty()) {
         // Nothing to do, suicide so the core can shut down
         deleteLater();
+    }
+
+    if (_metricsServer) {
+        _metricsServer->removeSession(user());
     }
 }
 
@@ -257,6 +266,10 @@ void CoreSession::addClient(RemotePeer* peer)
     _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
 
     signalProxy()->setTargetPeer(nullptr);
+
+    if (_metricsServer) {
+        _metricsServer->addClient(user());
+    }
 }
 
 void CoreSession::addClient(InternalPeer* peer)
@@ -271,6 +284,10 @@ void CoreSession::removeClient(Peer* peer)
     if (p)
         qInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
     _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
+
+    if (_metricsServer) {
+        _metricsServer->removeClient(user());
+    }
 }
 
 QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const
