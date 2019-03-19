@@ -26,6 +26,7 @@
 
 #include <QDateTime>
 
+#include "core.h"
 #include "quassel.h"
 
 #ifdef HAVE_SSL
@@ -199,6 +200,11 @@ bool SslServer::setCertificate(const QString& path, const QString& keyPath)
         return false;
     }
 
+    _certificateExpires = untestedCert.expiryDate();
+    if (_metricsServer) {
+        _metricsServer->setCertificateExpires(_certificateExpires);
+    }
+
     _isCertValid = true;
 
     // All keys are valid, update the externally visible copy used for new connections.
@@ -221,6 +227,13 @@ QSslKey SslServer::loadKey(QFile* keyFile)
         key = QSslKey(keyFile, QSsl::Ec);
     }
     return key;
+}
+
+void SslServer::setMetricsServer(MetricsServer* metricsServer) {
+    _metricsServer = metricsServer;
+    if (_metricsServer) {
+        _metricsServer->setCertificateExpires(_certificateExpires);
+    }
 }
 
 #endif  // HAVE_SSL

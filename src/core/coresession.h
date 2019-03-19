@@ -32,6 +32,7 @@
 #include "coreignorelistmanager.h"
 #include "coreinfo.h"
 #include "message.h"
+#include "metricsserver.h"
 #include "peer.h"
 #include "protocol.h"
 #include "storage.h"
@@ -279,6 +280,7 @@ private:
     bool _processMessages;
     CoreIgnoreListManager _ignoreListManager;
     CoreHighlightRuleManager _highlightRuleManager;
+    MetricsServer* _metricsServer{nullptr};
 };
 
 struct NetworkInternalMessage

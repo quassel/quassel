@@ -45,6 +45,7 @@
 #include "deferredptr.h"
 #include "identserver.h"
 #include "message.h"
+#include "metricsserver.h"
 #include "oidentdconfiggenerator.h"
 #include "sessionthread.h"
 #include "singleton.h"
@@ -655,6 +656,7 @@ public:
 
     inline OidentdConfigGenerator* oidentdConfigGenerator() const { return _oidentdConfigGenerator; }
     inline IdentServer* identServer() const { return _identServer; }
+    inline MetricsServer* metricsServer() const { return _metricsServer; }
 
     static const int AddClientEventId;
 
@@ -785,6 +787,7 @@ private:
     QDateTime _startTime;
 
     IdentServer* _identServer{nullptr};
+    MetricsServer* _metricsServer{nullptr};
 
     bool _initialized{false};
     bool _configured{false};

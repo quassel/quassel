@@ -521,6 +521,7 @@ private:
     qint64 _socketId{0};
 
     CoreUserInputHandler* _userInputHandler;
+    MetricsServer* _metricsServer;
 
     QHash<QString, QString> _channelKeys;  // stores persistent channels and their passwords, if any
 
