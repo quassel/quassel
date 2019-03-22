@@ -36,6 +36,9 @@ QtUiApplication::QtUiApplication(int& argc, char** argv)
 #if QT_VERSION >= 0x050600
     QGuiApplication::setFallbackSessionManagementEnabled(false);
 #endif
+#if QT_VERSION >= 0x050700
+    QGuiApplication::setDesktopFileName(Quassel::buildInfo().clientApplicationName);
+#endif
 }
 
 void QtUiApplication::init()
