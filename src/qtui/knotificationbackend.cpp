@@ -73,7 +73,7 @@ void KNotificationBackend::notify(const Notification& n)
             selectOverload<uint>(&KNotification::activated),
             this,
             selectOverload<>(&KNotificationBackend::notificationActivated));
-    notification->setActions(QStringList("View"));
+    notification->setDefaultAction(tr("View"));
     notification->setProperty("notificationId", n.notificationId);
 
     _notifications.append(qMakePair(n.notificationId, QPointer<KNotification>(notification)));
