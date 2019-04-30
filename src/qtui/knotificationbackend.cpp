@@ -65,7 +65,7 @@ void KNotificationBackend::notify(const Notification& n)
     QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, n.message.toHtmlEscaped());
     KNotification* notification = KNotification::event(type,
                                                        message,
-                                                       icon::get("dialog-information").pixmap(48),
+                                                       QStringLiteral("dialog-information"),
                                                        QtUi::mainWindow(),
                                                        KNotification::RaiseWidgetOnActivation | KNotification::CloseWhenWidgetActivated
                                                            | KNotification::CloseOnTimeout);
