@@ -1,5 +1,6 @@
 [Global]
 IconName=quassel
+DesktopEntry=quassel
 Comment=Quassel IRC
 Comment[ast]=Quassel IRC
 Comment[ca]=Xat IRC Quassel
