@@ -32,6 +32,7 @@ target_sources(${TARGET} PRIVATE
     eventstringifier.cpp
     identserver.cpp
     ircparser.cpp
+    ldapescaper.cpp
     metricsserver.cpp
     netsplit.cpp
     oidentdconfiggenerator.cpp
