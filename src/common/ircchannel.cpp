@@ -231,7 +231,7 @@ void IrcChannel::part(IrcUser* ircuser)
             _userModes.clear();
             foreach (IrcUser* user, users) {
                 disconnect(user, nullptr, this, nullptr);
-                user->partChannel(this);
+                user->partChannel(this, true);
             }
             emit parted();
             network()->removeIrcChannel(this);
