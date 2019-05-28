@@ -1779,6 +1779,7 @@ bool SqliteStorage::logMessage(Message& msg)
         logMessageQuery.bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
         logMessageQuery.bindValue(":type", msg.type());
         logMessageQuery.bindValue(":flags", (int)msg.flags());
+        logMessageQuery.bindValue(":ignored", msg.ignored());
         logMessageQuery.bindValue(":sender", msg.sender());
         logMessageQuery.bindValue(":realname", msg.realName());
         logMessageQuery.bindValue(":avatarurl", msg.avatarUrl());
@@ -1862,6 +1863,7 @@ bool SqliteStorage::logMessages(MessageList& msgs)
             logMessageQuery.bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
             logMessageQuery.bindValue(":type", msg.type());
             logMessageQuery.bindValue(":flags", (int)msg.flags());
+            logMessageQuery.bindValue(":ignored", msg.ignored());
             logMessageQuery.bindValue(":sender", msg.sender());
             logMessageQuery.bindValue(":realname", msg.realName());
             logMessageQuery.bindValue(":avatarurl", msg.avatarUrl());
@@ -2461,9 +2463,10 @@ bool SqliteMigrationReader::readMo(BacklogMO& backlog)
     backlog.bufferid = value(2).toInt();
     backlog.type = value(3).toInt();
     backlog.flags = value(4).toInt();
-    backlog.senderid = value(5).toLongLong();
-    backlog.senderprefixes = value(6).toString();
-    backlog.message = value(7).toString();
+    backlog.ignored = value(5).toInt();
+    backlog.senderid = value(6).toLongLong();
+    backlog.senderprefixes = value(7).toString();
+    backlog.message = value(8).toString();
     return true;
 }
 

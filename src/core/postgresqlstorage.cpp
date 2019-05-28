@@ -1647,7 +1647,7 @@ bool PostgreSqlStorage::logMessage(Message& msg)
     QVariantList params;
     // PostgreSQL handles QDateTime()'s serialized format by default, and QDateTime() serializes
     // to a 64-bit time compatible format by default.
-    params << msg.timestamp() << msg.bufferInfo().bufferId().toInt() << msg.type() << (int)msg.flags() << senderId << msg.senderPrefixes()
+    params << msg.timestamp() << msg.bufferInfo().bufferId().toInt() << msg.type() << (int)msg.flags() << msg.ignored() << senderId << msg.senderPrefixes()
            << msg.contents();
     QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
 
@@ -1726,7 +1726,7 @@ bool PostgreSqlStorage::logMessages(MessageList& msgs)
         QVariantList params;
         // PostgreSQL handles QDateTime()'s serialized format by default, and QDateTime() serializes
         // to a 64-bit time compatible format by default.
-        params << msg.timestamp() << msg.bufferInfo().bufferId().toInt() << msg.type() << (int)msg.flags() << senderIdList.at(i)
+        params << msg.timestamp() << msg.bufferInfo().bufferId().toInt() << msg.type() << (int)msg.flags() << msg.ignored() << senderIdList.at(i)
                << msg.senderPrefixes() << msg.contents();
         QSqlQuery logMessageQuery = executePreparedQuery("insert_message", params, db);
         if (!watchQuery(logMessageQuery)) {
@@ -2360,9 +2360,10 @@ bool PostgreSqlMigrationWriter::writeMo(const BacklogMO& backlog)
     bindValue(2, backlog.bufferid.toInt());
     bindValue(3, backlog.type);
     bindValue(4, (int)backlog.flags);
-    bindValue(5, backlog.senderid);
-    bindValue(6, backlog.senderprefixes);
-    bindValue(7, backlog.message);
+    bindValue(5, backlog.ignored);
+    bindValue(6, backlog.senderid);
+    bindValue(7, backlog.senderprefixes);
+    bindValue(8, backlog.message);
     return exec();
 }
 

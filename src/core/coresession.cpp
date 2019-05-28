@@ -312,8 +312,11 @@ void CoreSession::recvMessageFromServer(RawMessage msg)
     // check for HardStrictness ignore
     CoreNetwork* currentNetwork = network(msg.networkId);
     QString networkName = currentNetwork ? currentNetwork->networkName() : QString("");
-    if (_ignoreListManager.match(msg, networkName) == IgnoreListManager::HardStrictness)
+    IgnoreListManager::StrictnessType ignoreStrictness = _ignoreListManager.match(msg, networkName);
+    if (ignoreStrictness == IgnoreListManager::HardStrictness)
         return;
+
+    msg.ignored = ignoreStrictness == IgnoreListManager::SoftStrictness;
 
     if (currentNetwork && _highlightRuleManager.match(msg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
         msg.flags |= Message::Flag::Highlight;
@@ -342,7 +345,8 @@ void CoreSession::processMessageEvent(MessageEvent* event)
         event->target().isNull() ? "" : event->target(),
         event->text().isNull() ? "" : event->text(),
         event->sender().isNull() ? "" : event->sender(),
-        event->msgFlags()
+        event->msgFlags(),
+        false
     });
 }
 
@@ -378,7 +382,8 @@ void CoreSession::processMessages()
                     senderPrefixes(rawMsg.sender, bufferInfo),
                     realName(rawMsg.sender, rawMsg.networkId),
                     avatarUrl(rawMsg.sender, rawMsg.networkId),
-                    rawMsg.flags);
+                    rawMsg.flags,
+                    rawMsg.ignored);
         if (Core::storeMessage(msg))
             emit displayMsg(msg);
     }
@@ -410,7 +415,8 @@ void CoreSession::processMessages()
                         senderPrefixes(rawMsg.sender, bufferInfo),
                         realName(rawMsg.sender, rawMsg.networkId),
                         avatarUrl(rawMsg.sender, rawMsg.networkId),
-                        rawMsg.flags);
+                        rawMsg.flags,
+                        rawMsg.ignored);
             messages << msg;
         }
 
@@ -434,7 +440,8 @@ void CoreSession::processMessages()
                         senderPrefixes(rawMsg.sender, bufferInfo),
                         realName(rawMsg.sender, rawMsg.networkId),
                         avatarUrl(rawMsg.sender, rawMsg.networkId),
-                        rawMsg.flags);
+                        rawMsg.flags,
+                        rawMsg.ignored);
             messages << msg;
         }
 

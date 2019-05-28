@@ -312,6 +312,7 @@ public:
         BufferId bufferid;
         int type;
         int flags;
+        bool ignored;
         qint64 senderid;
         QString senderprefixes;
         QString message;

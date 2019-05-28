@@ -314,6 +314,7 @@ struct RawMessage
     QString text;
     QString sender;
     Message::Flags flags;
+    bool ignored;
 
     RawMessage(QDateTime timestamp,
                NetworkId networkId,
@@ -322,7 +323,8 @@ struct RawMessage
                QString target,
                QString text,
                QString sender,
-               Message::Flags flags)
+               Message::Flags flags,
+               bool ignored)
         : timestamp(std::move(timestamp))
         , networkId(networkId)
         , type(type)
@@ -331,6 +333,7 @@ struct RawMessage
         , text(std::move(text))
         , sender(std::move(sender))
         , flags(flags)
+        , ignored(ignored)
     {}
 
     RawMessage(NetworkId networkId,
@@ -343,5 +346,6 @@ struct RawMessage
         , text(msg.text)
         , sender(msg.sender)
         , flags(msg.flags)
+        , ignored(false)
     {}
 };

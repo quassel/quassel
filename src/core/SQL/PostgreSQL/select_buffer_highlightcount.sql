@@ -4,4 +4,5 @@ FROM
    WHERE bufferid = :bufferid
      AND flags & 2 != 0
      AND flags & 1 = 0
+     AND ignored != true
      AND messageid > :lastseenmsgid) t;

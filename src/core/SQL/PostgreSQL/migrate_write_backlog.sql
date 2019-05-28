@@ -1,2 +1,2 @@
-INSERT INTO backlog (messageid, time, bufferid, type, flags, senderid, senderprefixes, message)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO backlog (messageid, time, bufferid, type, flags, ignored, senderid, senderprefixes, message)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)

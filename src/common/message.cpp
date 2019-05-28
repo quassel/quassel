@@ -34,7 +34,8 @@ Message::Message(BufferInfo bufferInfo,
                  QString senderPrefixes,
                  QString realName,
                  QString avatarUrl,
-                 Flags flags)
+                 Flags flags,
+                 bool ignored)
     : _timestamp(QDateTime::currentDateTime().toUTC())
     , _bufferInfo(std::move(bufferInfo))
     , _contents(std::move(contents))
@@ -44,6 +45,7 @@ Message::Message(BufferInfo bufferInfo,
     , _avatarUrl(std::move(avatarUrl))
     , _type(type)
     , _flags(flags)
+    , _ignored(ignored)
 {}
 
 Message::Message(QDateTime ts,
@@ -54,7 +56,8 @@ Message::Message(QDateTime ts,
                  QString senderPrefixes,
                  QString realName,
                  QString avatarUrl,
-                 Flags flags)
+                 Flags flags,
+                 bool ignored)
     : _timestamp(std::move(ts))
     , _bufferInfo(std::move(bufferInfo))
     , _contents(std::move(contents))
@@ -64,6 +67,7 @@ Message::Message(QDateTime ts,
     , _avatarUrl(std::move(avatarUrl))
     , _type(type)
     , _flags(flags)
+    , _ignored(ignored)
 {}
 
 QDataStream& operator<<(QDataStream& out, const Message& msg)
@@ -161,6 +165,7 @@ QDebug operator<<(QDebug dbg, const Message& msg)
                   << qPrintable(QString(", RealName:")) << msg.realName()
                   << qPrintable(QString(", AvatarURL:")) << msg.avatarUrl()
                   << qPrintable(QString(", Flags:")) << msg.flags()
+                  << qPrintable(QString(", Ignored:")) << msg.ignored()
                   << qPrintable(QString(")"))
                   << msg.senderPrefixes() << msg.sender() << ":"
                   << msg.contents();

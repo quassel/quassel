@@ -40,17 +40,21 @@ public slots:
 
     void addBufferActivity(const Message& message)
     {
-        auto oldActivity = activity(message.bufferId());
-        if (!oldActivity.testFlag(message.type())) {
-            setBufferActivity(message.bufferId(), (int)(oldActivity | message.type()));
+        if (!message.ignored()) {
+            auto oldActivity = activity(message.bufferId());
+            if (!oldActivity.testFlag(message.type())) {
+                setBufferActivity(message.bufferId(), (int) (oldActivity | message.type()));
+            }
         }
     }
 
     void addCoreHighlight(const Message& message)
     {
-        auto oldHighlightCount = highlightCount(message.bufferId());
-        if (message.flags().testFlag(Message::Flag::Highlight) && !message.flags().testFlag(Message::Flag::Self)) {
-            setHighlightCount(message.bufferId(), oldHighlightCount + 1);
+        if (!message.ignored()) {
+            auto oldHighlightCount = highlightCount(message.bufferId());
+            if (message.flags().testFlag(Message::Flag::Highlight) && !message.flags().testFlag(Message::Flag::Self)) {
+                setHighlightCount(message.bufferId(), oldHighlightCount + 1);
+            }
         }
     }
 

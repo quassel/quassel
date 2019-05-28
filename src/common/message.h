@@ -77,7 +77,8 @@ public:
             QString senderPrefixes = {},
             QString realName = {},
             QString avatarUrl = {},
-            Flags flags = None);
+            Flags flags = None,
+            bool ignored = false);
     Message(QDateTime ts,
             BufferInfo buffer = BufferInfo(),
             Type type = Plain,
@@ -86,7 +87,8 @@ public:
             QString senderPrefixes = {},
             QString realName = {},
             QString avatarUrl = {},
-            Flags flags = None);
+            Flags flags = None,
+            bool ignored = false);
 
     inline static Message ChangeOfDay(const QDateTime& day) { return Message(day, BufferInfo(), DayChange); }
     inline const MsgId& msgId() const { return _msgId; }
@@ -103,6 +105,8 @@ public:
     inline Type type() const { return _type; }
     inline Flags flags() const { return _flags; }
     inline void setFlags(Flags flags) { _flags = flags; }
+    inline bool ignored() const { return _ignored; }
+    inline void setIgnored(bool ignored) { _ignored = ignored; }
     inline const QDateTime& timestamp() const { return _timestamp; }
 
     inline bool isValid() const { return _msgId.isValid(); }
@@ -120,6 +124,7 @@ private:
     QString _avatarUrl;
     Type _type;
     Flags _flags;
+    bool _ignored;
 
     friend QDataStream& operator>>(QDataStream& in, Message& msg);
 };
