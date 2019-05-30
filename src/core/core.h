@@ -515,6 +515,14 @@ public:
      */
     QString strictSysIdent(UserId user) const;
 
+    //! Get a Hash of all last message ids
+    /** This Method is called when the Quassel Core is started to restore the lastMsgIds
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    static inline QHash<BufferId, MsgId> bufferLastMsgIds(UserId user) { return instance()->_storage->bufferLastMsgIds(user); }
+
     //! Get a Hash of all last seen message ids
     /** This Method is called when the Quassel Core is started to restore the lastSeenMsgIds
      *  \note This method is threadsafe.

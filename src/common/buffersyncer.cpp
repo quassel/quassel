@@ -26,17 +26,24 @@ BufferSyncer::BufferSyncer(QObject* parent)
     : SyncableObject(parent)
 {}
 
-BufferSyncer::BufferSyncer(QHash<BufferId, MsgId> lastSeenMsg,
+BufferSyncer::BufferSyncer(QHash<BufferId, MsgId> lastMsg,
+                           QHash<BufferId, MsgId> lastSeenMsg,
                            QHash<BufferId, MsgId> markerLines,
                            QHash<BufferId, Message::Types> activities,
                            QHash<BufferId, int> highlightCounts,
                            QObject* parent)
     : SyncableObject(parent)
+    , _lastMsg(std::move(lastMsg))
     , _lastSeenMsg(std::move(lastSeenMsg))
     , _markerLines(std::move(markerLines))
     , _bufferActivities(std::move(activities))
     , _highlightCounts(std::move(highlightCounts))
 {}
+
+MsgId BufferSyncer::lastMsg(BufferId buffer) const
+{
+    return _lastMsg.value(buffer, MsgId());
+}
 
 MsgId BufferSyncer::lastSeenMsg(BufferId buffer) const
 {
@@ -75,6 +82,26 @@ bool BufferSyncer::setMarkerLine(BufferId buffer, const MsgId& msgId)
     SYNC(ARG(buffer), ARG(msgId))
     emit markerLineSet(buffer, msgId);
     return true;
+}
+
+QVariantList BufferSyncer::initLastMsg() const
+{
+    QVariantList list;
+    QHash<BufferId, MsgId>::const_iterator iter = _lastMsg.constBegin();
+    while (iter != _lastMsg.constEnd()) {
+        list << QVariant::fromValue<BufferId>(iter.key()) << QVariant::fromValue<MsgId>(iter.value());
+        ++iter;
+    }
+    return list;
+}
+
+void BufferSyncer::initSetLastMsg(const QVariantList& list)
+{
+    _lastMsg.clear();
+    Q_ASSERT(list.count() % 2 == 0);
+    for (int i = 0; i < list.count(); i += 2) {
+        setLastMsg(list.at(i).value<BufferId>(), list.at(i + 1).value<MsgId>());
+    }
 }
 
 QVariantList BufferSyncer::initLastSeenMsg() const
@@ -144,6 +171,8 @@ Message::Types BufferSyncer::activity(BufferId buffer) const
 
 void BufferSyncer::removeBuffer(BufferId buffer)
 {
+    if (_lastMsg.contains(buffer))
+        _lastMsg.remove(buffer);
     if (_lastSeenMsg.contains(buffer))
         _lastSeenMsg.remove(buffer);
     if (_markerLines.contains(buffer))
@@ -158,9 +187,12 @@ void BufferSyncer::removeBuffer(BufferId buffer)
 
 void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2)
 {
+    setLastMsg(buffer1, std::max(_lastMsg[buffer1], _lastMsg[buffer2]));
     setBufferActivity(buffer1, _bufferActivities[buffer1] | _bufferActivities[buffer2]);
     setHighlightCount(buffer1, _highlightCounts[buffer1] + _highlightCounts[buffer2]);
 
+    if (_lastMsg.contains(buffer2))
+        _lastMsg.remove(buffer2);
     if (_lastSeenMsg.contains(buffer2))
         _lastSeenMsg.remove(buffer2);
     if (_markerLines.contains(buffer2))
