@@ -167,6 +167,7 @@ public:
 
     static void changePassword(const QString& oldPassword, const QString& newPassword);
     static void kickClient(int peerId);
+    static void markPeerAway(int peerId, bool away);
 
     void displayIgnoreList(QString ignoreRule) { emit showIgnoreList(ignoreRule); }
 
@@ -252,6 +253,7 @@ signals:
     void requestPasswordChange(PeerPtr peer, const QString& userName, const QString& oldPassword, const QString& newPassword);
 
     void requestKickClient(int peerId);
+    void requestMarkPeerAway(int peerId, bool away);
     void passwordChanged(bool success);
 
     //! Emitted when database schema upgrade starts or ends (only mono client)

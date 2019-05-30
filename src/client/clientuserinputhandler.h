@@ -47,6 +47,7 @@ private slots:
     void handleQuery(const BufferInfo& bufferInfo, const QString& text);
     void handleIgnore(const BufferInfo& bufferInfo, const QString& text);
     void handleList(const BufferInfo& bufferInfo, const QString& text);
+    void handleClientaway(const BufferInfo& bufferInfo, const QString& text);
     void defaultHandler(const QString& cmd, const BufferInfo& bufferInfo, const QString& text);
 
 private:

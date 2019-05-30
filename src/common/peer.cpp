@@ -85,6 +85,17 @@ void Peer::setId(int id)
     _id = id;
 }
 
+bool Peer::away() const
+{
+    return _away;
+}
+
+void Peer::setAway(bool away)
+{
+    _away = away;
+    emit awayStateChanged();
+}
+
 // PeerPtr is used in RPC signatures for enabling receivers to send replies
 // to a particular peer rather than broadcast to all connected ones.
 // To enable this, the SignalProxy transparently replaces the bogus value

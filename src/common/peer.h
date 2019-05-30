@@ -60,6 +60,9 @@ public:
     int id() const;
     void setId(int id);
 
+    bool away() const;
+    void setAway(bool away);
+
     AuthHandler* authHandler() const;
 
     virtual bool isOpen() const = 0;
@@ -94,6 +97,7 @@ public slots:
 
 signals:
     void disconnected();
+    void awayStateChanged();
     void secureStateChanged(bool secure = true);
     void lagUpdated(int msecs);
 
@@ -109,6 +113,8 @@ private:
     QString _buildDate;
     QString _clientVersion;
     Quassel::Features _features;
+
+    bool _away;
 
     int _id = -1;
 };

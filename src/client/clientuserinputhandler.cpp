@@ -83,6 +83,13 @@ void ClientUserInputHandler::defaultHandler(const QString& cmd, const BufferInfo
     emit sendInput(bufferInfo, command);
 }
 
+void ClientUserInputHandler::handleClientaway(const BufferInfo& bufferInfo, const QString& text)
+{
+    Q_UNUSED(bufferInfo);
+
+    Client::markPeerAway(-1, text.toLower() == "true");
+}
+
 void ClientUserInputHandler::handleExec(const BufferInfo& bufferInfo, const QString& execString)
 {
     auto* exec = new ExecWrapper(this);  // gets suicidal when it's done

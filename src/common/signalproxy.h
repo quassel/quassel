@@ -186,6 +186,11 @@ public:
     Peer* peerById(int peerId);
 
     /**
+     * @return If all currently connected peers are away
+     */
+    bool peersAllAway();
+
+    /**
      * @return If handling a signal, the Peer from which the current signal originates
      */
     Peer* sourcePeer();

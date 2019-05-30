@@ -87,8 +87,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
 
     connect(p, &SignalProxy::peerRemoved, this, &CoreSession::removeClient);
 
-    connect(p, &SignalProxy::connected, this, &CoreSession::clientsConnected);
-    connect(p, &SignalProxy::disconnected, this, &CoreSession::clientsDisconnected);
+    connect(p, &SignalProxy::connected, this, &CoreSession::updateDetachAway);
+    connect(p, &SignalProxy::disconnected, this, &CoreSession::updateDetachAway);
 
     p->attachSlot(SIGNAL(sendInput(BufferInfo,QString)), this, &CoreSession::msgFromClient);
     p->attachSignal(this, &CoreSession::displayMsg);
@@ -106,6 +106,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
 
     p->attachSlot(SIGNAL(changePassword(PeerPtr,QString,QString,QString)), this, &CoreSession::changePassword);
     p->attachSignal(this, &CoreSession::passwordChanged);
+
+    p->attachSlot(SIGNAL(markPeerAway(int,bool)), this, &CoreSession::markPeerAway);
 
     p->attachSlot(SIGNAL(kickClient(int)), this, &CoreSession::kickClient);
     p->attachSignal(this, &CoreSession::disconnectFromCore);
@@ -252,9 +254,16 @@ void CoreSession::addClient(RemotePeer* peer)
 
     peer->dispatch(sessionState());
     signalProxy()->addPeer(peer);
-    _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
+    updatePeers();
 
     signalProxy()->setTargetPeer(nullptr);
+    connect(peer, &RemotePeer::awayStateChanged, this, &CoreSession::updatePeers);
+}
+
+void CoreSession::updatePeers()
+{
+    _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
+    updateDetachAway();
 }
 
 void CoreSession::addClient(InternalPeer* peer)
@@ -266,9 +275,11 @@ void CoreSession::addClient(InternalPeer* peer)
 void CoreSession::removeClient(Peer* peer)
 {
     auto* p = qobject_cast<RemotePeer*>(peer);
-    if (p)
+    if (p) {
         qInfo() << qPrintable(tr("Client")) << p->description() << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
-    _coreInfo->setConnectedClientData(signalProxy()->peerCount(), signalProxy()->peerData());
+        disconnect(peer, &RemotePeer::awayStateChanged, this, &CoreSession::updatePeers);
+    }
+    updatePeers();
 }
 
 QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const
@@ -688,58 +699,31 @@ void CoreSession::renameBuffer(const NetworkId& networkId, const QString& newNam
     }
 }
 
-void CoreSession::clientsConnected()
+void CoreSession::updateDetachAway()
 {
-    QHash<NetworkId, CoreNetwork*>::iterator netIter = _networks.begin();
-    Identity* identity = nullptr;
-    CoreNetwork* net = nullptr;
-    IrcUser* me = nullptr;
-    while (netIter != _networks.end()) {
-        net = *netIter;
-        ++netIter;
-
+    bool shouldBeAway = signalProxy()->peersAllAway();
+    for (CoreNetwork* net : _networks) {
         if (!net->isConnected())
             continue;
-        identity = net->identityPtr();
+        Identity* identity = net->identityPtr();
         if (!identity)
             continue;
-        me = net->me();
+        IrcUser* me = net->me();
         if (!me)
             continue;
 
-        if (identity->detachAwayEnabled() && me->isAway()) {
-            net->userInputHandler()->handleAway(BufferInfo(), QString());
-        }
-    }
-}
-
-void CoreSession::clientsDisconnected()
-{
-    QHash<NetworkId, CoreNetwork*>::iterator netIter = _networks.begin();
-    Identity* identity = nullptr;
-    CoreNetwork* net = nullptr;
-    IrcUser* me = nullptr;
-    QString awayReason;
-    while (netIter != _networks.end()) {
-        net = *netIter;
-        ++netIter;
-
-        if (!net->isConnected())
-            continue;
-
-        identity = net->identityPtr();
-        if (!identity)
-            continue;
-        me = net->me();
-        if (!me)
-            continue;
-
-        if (identity->detachAwayEnabled() && !me->isAway()) {
-            if (!identity->detachAwayReason().isEmpty())
-                awayReason = identity->detachAwayReason();
-            net->setAutoAwayActive(true);
-            // Allow handleAway() to format the current date/time in the string.
-            net->userInputHandler()->handleAway(BufferInfo(), awayReason);
+        if (identity->detachAwayEnabled()) {
+            if (shouldBeAway && !me->isAway()) {
+                QString awayReason;
+                if (!identity->detachAwayReason().isEmpty())
+                    awayReason = identity->detachAwayReason();
+                net->setAutoAwayActive(true);
+                // Allow handleAway() to format the current date/time in the string.
+                net->userInputHandler()->handleAway(BufferInfo(), awayReason);
+            }
+            else if (!shouldBeAway && me->isAway() && net->autoAwayActive()) {
+                net->userInputHandler()->handleAway(BufferInfo(), QString());
+            }
         }
     }
 }
@@ -779,4 +763,20 @@ void CoreSession::kickClient(int peerId)
         return;
     }
     signalProxy()->restrictTargetPeers(peer, [&] { emit disconnectFromCore(); });
+}
+
+void CoreSession::markPeerAway(int peerId, bool away)
+{
+    Peer* peer = nullptr;
+    if (peerId == -1) {
+        peer = signalProxy()->sourcePeer();
+    }
+    else {
+        signalProxy()->peerById(peerId);
+    }
+    if (peer == nullptr) {
+        qWarning() << "Invalid peer Id: " << peerId;
+        return;
+    }
+    peer->setAway(away);
 }

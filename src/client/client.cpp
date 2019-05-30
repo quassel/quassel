@@ -112,6 +112,8 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject* parent)
     p->attachSignal(this, &Client::requestKickClient, SIGNAL(kickClient(int)));
     p->attachSlot(SIGNAL(disconnectFromCore()), this, &Client::disconnectFromCore);
 
+    p->attachSignal(this, &Client::requestMarkPeerAway, SIGNAL(markPeerAway(int,bool)));
+
     p->synchronize(backlogManager());
     p->synchronize(coreInfo());
     p->synchronize(_ircListHelper);
@@ -657,6 +659,11 @@ void Client::changePassword(const QString& oldPassword, const QString& newPasswo
 void Client::kickClient(int peerId)
 {
     emit instance()->requestKickClient(peerId);
+}
+
+void Client::markPeerAway(int peerId, bool away)
+{
+    emit instance()->requestMarkPeerAway(peerId, away);
 }
 
 void Client::corePasswordChanged(PeerPtr, bool success)

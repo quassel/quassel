@@ -658,6 +658,7 @@ QVariantList SignalProxy::peerData()
     for (auto&& peer : _peerMap.values()) {
         QVariantMap data;
         data["id"] = peer->id();
+        data["away"] = peer->away();
         data["clientVersion"] = peer->clientVersion();
         // We explicitly rename this, as, due to the Debian reproducability changes, buildDate isn’t actually the build
         // date anymore, but on newer clients the date of the last git commit
@@ -670,6 +671,15 @@ QVariantList SignalProxy::peerData()
         result << data;
     }
     return result;
+}
+
+bool SignalProxy::peersAllAway()
+{
+    for (auto&& peer : _peerMap.values()) {
+        if (!peer->away())
+            return false;
+    }
+    return true;
 }
 
 Peer* SignalProxy::peerById(int peerId)

@@ -151,6 +151,11 @@ public slots:
 
     void changePassword(PeerPtr peer, const QString& userName, const QString& oldPassword, const QString& newPassword);
 
+    /**
+     * Marks the own client as away
+     */
+    void markPeerAway(int peerId, bool away);
+
     void kickClient(int peerId);
 
     QHash<QString, QString> persistentChannels(NetworkId) const;
@@ -215,14 +220,15 @@ private slots:
 
     void scriptRequest(QString script);
 
-    void clientsConnected();
-    void clientsDisconnected();
+    void updateDetachAway();
 
     void updateIdentityBySender();
 
     void saveSessionState() const;
 
     void onNetworkDisconnected(NetworkId networkId);
+
+    void updatePeers();
 
 private:
     void processMessages();
