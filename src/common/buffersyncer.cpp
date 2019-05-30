@@ -158,6 +158,9 @@ void BufferSyncer::removeBuffer(BufferId buffer)
 
 void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2)
 {
+    setBufferActivity(buffer1, _bufferActivities[buffer1] | _bufferActivities[buffer2]);
+    setHighlightCount(buffer1, _highlightCounts[buffer1] + _highlightCounts[buffer2]);
+
     if (_lastSeenMsg.contains(buffer2))
         _lastSeenMsg.remove(buffer2);
     if (_markerLines.contains(buffer2))
