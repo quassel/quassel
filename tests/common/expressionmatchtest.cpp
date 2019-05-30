@@ -425,7 +425,7 @@ TEST(ExpressionMatchTest, trimMultiWildcardWhitespace)
     QString result;
     for (auto&& patternPair : patterns) {
         // Make sure data is valid
-        EXPECT_TRUE(patternPair.size() == 2);
+        ASSERT_TRUE(patternPair.size() == 2);
         // Run transformation
         result = ExpressionMatch::trimMultiWildcardWhitespace(patternPair[PATTERN_SOURCE]);
         // Assert that source trims into expected pattern
