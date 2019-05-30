@@ -39,7 +39,8 @@ public:
 };
 
 CoreBufferSyncer::CoreBufferSyncer(CoreSession* parent)
-    : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()),
+    : BufferSyncer(Core::bufferLastMsgIds(parent->user()),
+                   Core::bufferLastSeenMsgIds(parent->user()),
                    Core::bufferMarkerLineMsgIds(parent->user()),
                    Core::bufferActivities(parent->user()),
                    Core::highlightCounts(parent->user()),

@@ -1485,6 +1485,34 @@ bool SqliteStorage::mergeBuffersPermanently(const UserId& user, const BufferId& 
     return !error;
 }
 
+QHash<BufferId, MsgId> SqliteStorage::bufferLastMsgIds(UserId user)
+{
+    QHash<BufferId, MsgId> lastMsgHash;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    bool error = false;
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_buffer_last_messages"));
+        query.bindValue(":userid", user.toInt());
+
+        lockForRead();
+        safeExec(query);
+        error = !watchQuery(query);
+        if (!error) {
+            while (query.next()) {
+                lastMsgHash[query.value(0).toInt()] = query.value(1).toLongLong();
+            }
+        }
+    }
+
+    db.commit();
+    unlock();
+    return lastMsgHash;
+}
+
 void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId& bufferId, const MsgId& msgId)
 {
     QSqlDatabase db = logDb();

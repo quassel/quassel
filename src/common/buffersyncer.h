@@ -33,13 +33,15 @@ class COMMON_EXPORT BufferSyncer : public SyncableObject
 
 public:
     explicit BufferSyncer(QObject* parent);
-    explicit BufferSyncer(QHash<BufferId, MsgId> lastSeenMsg,
+    explicit BufferSyncer(QHash<BufferId, MsgId> lastMsg,
+                          QHash<BufferId, MsgId> lastSeenMsg,
                           QHash<BufferId, MsgId> markerLines,
                           QHash<BufferId, Message::Types> activities,
                           QHash<BufferId, int> highlightCounts,
                           QObject* parent);
 
     MsgId lastSeenMsg(BufferId buffer) const;
+    MsgId lastMsg(BufferId buffer) const;
     MsgId markerLine(BufferId buffer) const;
     Message::Types activity(BufferId buffer) const;
     int highlightCount(BufferId buffer) const;
@@ -59,6 +61,9 @@ public:
     }
 
 public slots:
+    QVariantList initLastMsg() const;
+    void initSetLastMsg(const QVariantList&);
+
     QVariantList initLastSeenMsg() const;
     void initSetLastSeenMsg(const QVariantList&);
 
@@ -70,6 +75,13 @@ public slots:
 
     QVariantList initHighlightCounts() const;
     void initSetHighlightCounts(const QVariantList&);
+
+    virtual inline void setLastMsg(BufferId buffer, const MsgId& msgId)
+    {
+        SYNC(ARG(buffer), ARG(msgId));
+        _lastMsg[buffer] = msgId;
+        emit lastMsgSet(buffer, msgId);
+    }
 
     virtual inline void requestSetLastSeenMsg(BufferId buffer, const MsgId& msgId) { REQUEST(ARG(buffer), ARG(msgId)) }
     virtual inline void requestSetMarkerLine(BufferId buffer, const MsgId& msgId)
@@ -110,6 +122,7 @@ public slots:
     virtual inline void markBufferAsRead(BufferId buffer) { SYNC(ARG(buffer)) emit bufferMarkedAsRead(buffer); }
 
 signals:
+    void lastMsgSet(BufferId buffer, const MsgId& msgId);
     void lastSeenMsgSet(BufferId buffer, const MsgId& msgId);
     void markerLineSet(BufferId buffer, const MsgId& msgId);
     void bufferRemoved(BufferId buffer);
@@ -124,11 +137,13 @@ protected slots:
     bool setMarkerLine(BufferId buffer, const MsgId& msgId);
 
 protected:
+    inline QList<BufferId> lastBufferIds() const { return _lastMsg.keys(); }
     inline QList<BufferId> lastSeenBufferIds() const { return _lastSeenMsg.keys(); }
     inline QList<BufferId> markerLineBufferIds() const { return _markerLines.keys(); }
     inline QHash<BufferId, MsgId> markerLines() const { return _markerLines; }
 
 private:
+    QHash<BufferId, MsgId> _lastMsg;
     QHash<BufferId, MsgId> _lastSeenMsg;
     QHash<BufferId, MsgId> _markerLines;
     QHash<BufferId, Message::Types> _bufferActivities;
