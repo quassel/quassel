@@ -207,19 +207,23 @@ if (BUILD_GUI)
         PURPOSE     "Required for audio notifications"
     )
 
-    find_package(LibsnoreQt5 0.7.0 QUIET)
-    set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
-        URL "https://projects.kde.org/projects/playground/libs/snorenotify"
-        DESCRIPTION "a cross-platform notification framework"
-        PURPOSE     "Enable support for the snorenotify framework"
-    )
-    if (LibsnoreQt5_FOUND)
-        find_package(LibsnoreSettingsQt5 QUIET)
-        set_package_properties(LibsnoreSettingsQt5 PROPERTIES TYPE OPTIONAL
+    # snorenotify segfaults on startup on msys2
+    # we don't check for just MSYS to support the Ninja generator
+    if(NOT (WIN32 AND (NOT $ENV{MSYSTEM} STREQUAL "")))
+        find_package(LibsnoreQt5 0.7.0 QUIET)
+        set_package_properties(LibsnoreQt5 PROPERTIES TYPE OPTIONAL
             URL "https://projects.kde.org/projects/playground/libs/snorenotify"
             DESCRIPTION "a cross-platform notification framework"
             PURPOSE     "Enable support for the snorenotify framework"
         )
+        if (LibsnoreQt5_FOUND)
+            find_package(LibsnoreSettingsQt5 QUIET)
+            set_package_properties(LibsnoreSettingsQt5 PROPERTIES TYPE OPTIONAL
+                URL "https://projects.kde.org/projects/playground/libs/snorenotify"
+                DESCRIPTION "a cross-platform notification framework"
+                PURPOSE     "Enable support for the snorenotify framework"
+            )
+        endif()
     endif()
 
     if (WITH_WEBENGINE)

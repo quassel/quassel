@@ -20,9 +20,9 @@ include(QuasselCompileFeatures)
 #  - a library target named quassel_client with output name (lib)quassel-client(.so)
 #  - an alias target named Quassel::Client in global scope
 #
-# If the optional argument STATIC is given, a static library is built; otherwise, on
-# platforms other than Windows, a shared library is created. For shared libraries, also
-# an install rule is added.
+# If the optional argument STATIC is given, or the ENABLE_SHARED option is OFF,
+# a static library is built; otherwise a shared library is created. For shared
+# libraries, an install rule is also added.
 #
 # To generate an export header for the library, specify EXPORT. The header will be named
 # ${module}-export.h (where ${module} is the lower-case name of the module).
@@ -143,7 +143,7 @@ function(quassel_add_resource _name)
     #
     # On Windows, input redirection apparently doesn't work, however piping does. Use this for all platforms for
     # consistency, accommodating for the fact that the 'cat' equivalent on Windows is 'type'.
-    if (WIN32)
+    if (WIN32 AND NOT MSYS)
         set(cat_cmd type)
     else()
         set(cat_cmd cat)
