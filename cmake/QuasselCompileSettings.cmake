@@ -34,7 +34,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -fdiagnostics-color=always
         -fexceptions
         -fno-common
-        -fstack-protector-strong
         -Wall
         -Wextra
         -Wcast-align
@@ -49,6 +48,11 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -Wno-unknown-pragmas
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
     )
+
+    # ssp is currently very broken on MinGW
+    if(NOT MINGW)
+        add_compile_options(-fstack-protector-strong)
+    endif()
 
     # Check for and set linker flags
     check_and_set_linker_flag("-Wl,-z,relro"            RELRO            LINKER_FLAGS)
