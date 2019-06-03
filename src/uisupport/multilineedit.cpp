@@ -601,6 +601,10 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
         }
 
         posRight = text.indexOf(mircCode.cap(), posRight + 1);
+        if (posRight == -1) {
+            words << text.mid(posLeft);
+            break;  // unclosed color code; can't process
+        }
         words << text.mid(posLeft, posRight + 1 - posLeft);
         posLeft = posRight + 1;
     }
