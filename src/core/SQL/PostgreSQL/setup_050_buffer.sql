@@ -3,15 +3,15 @@ create TABLE buffer (
 	userid integer NOT NULL REFERENCES quasseluser (userid) ON DELETE CASCADE,
 	groupid integer,
 	networkid integer NOT NULL REFERENCES network (networkid) ON DELETE CASCADE,
-	buffername varchar(128) NOT NULL,
-	buffercname varchar(128) NOT NULL, -- CANONICAL BUFFER NAME (lowercase version)
+	buffername varchar(8703) NOT NULL,
+	buffercname varchar(8703) NOT NULL, -- CANONICAL BUFFER NAME (lowercase version)
 	buffertype integer NOT NULL DEFAULT 0,
 	lastmsgid bigint NOT NULL DEFAULT 0,
 	lastseenmsgid bigint NOT NULL DEFAULT 0,
 	markerlinemsgid bigint NOT NULL DEFAULT 0,
 	bufferactivity integer NOT NULL DEFAULT 0,
 	highlightcount integer NOT NULL DEFAULT 0,
-	key varchar(128),
+	key varchar(8703),
 	joined boolean NOT NULL DEFAULT FALSE, -- BOOL
 	cipher TEXT,
 	UNIQUE(userid, networkid, buffercname),
