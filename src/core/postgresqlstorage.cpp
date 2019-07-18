@@ -1608,6 +1608,86 @@ int PostgreSqlStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
     return result;
 }
 
+void PostgreSqlStorage::setNotificationSetting(UserId user, BufferId bufferId, NotificationManager::NotificationSetting notificationSetting)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("update_buffer_notificationsetting"));
+
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":notificationsetting", static_cast<int>(notificationSetting));
+    safeExec(query);
+    watchQuery(query);
+}
+
+QHash<BufferId, NotificationManager::NotificationSetting> PostgreSqlStorage::notificationSettings(UserId user)
+{
+    QHash<BufferId, NotificationManager::NotificationSetting> notificationSettingHash;
+
+    QSqlDatabase db = logDb();
+    if (!beginReadOnlyTransaction(db)) {
+        qWarning() << "PostgreSqlStorage::notificationSettings(): cannot start read only transaction!";
+        qWarning() << " -" << qPrintable(db.lastError().text());
+        return notificationSettingHash;
+    }
+
+    QSqlQuery query(db);
+    query.prepare(queryString("select_buffer_notificationsettings"));
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    if (!watchQuery(query)) {
+        db.rollback();
+        return notificationSettingHash;
+    }
+
+    while (query.next()) {
+        notificationSettingHash[query.value(0).toInt()] = static_cast<NotificationManager::NotificationSetting>(query.value(1).toInt());
+    }
+
+    db.commit();
+    return notificationSettingHash;
+}
+
+void PostgreSqlStorage::setMutedUntil(UserId user, BufferId bufferId, QDateTime mutedUntil)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("update_buffer_muteduntil"));
+
+    query.bindValue(":userid", user.toInt());
+    query.bindValue(":bufferid", bufferId.toInt());
+    query.bindValue(":muteduntil", mutedUntil);
+    safeExec(query);
+    watchQuery(query);
+}
+
+QHash<BufferId, QDateTime> PostgreSqlStorage::mutedUntils(UserId user)
+{
+    QHash<BufferId, QDateTime> mutedUntilHash;
+
+    QSqlDatabase db = logDb();
+    if (!beginReadOnlyTransaction(db)) {
+        qWarning() << "PostgreSqlStorage::mutedUntils(): cannot start read only transaction!";
+        qWarning() << " -" << qPrintable(db.lastError().text());
+        return mutedUntilHash;
+    }
+
+    QSqlQuery query(db);
+    query.prepare(queryString("select_buffer_muteduntils"));
+    query.bindValue(":userid", user.toInt());
+    safeExec(query);
+    if (!watchQuery(query)) {
+        db.rollback();
+        return mutedUntilHash;
+    }
+
+    while (query.next()) {
+        mutedUntilHash[query.value(0).toInt()] = query.value(1).toDateTime();
+    }
+
+    db.commit();
+    return mutedUntilHash;
+}
+
 bool PostgreSqlStorage::logMessage(Message& msg)
 {
     QSqlDatabase db = logDb();
@@ -2346,9 +2426,11 @@ bool PostgreSqlMigrationWriter::writeMo(const BufferMO& buffer)
     bindValue(9, buffer.markerlinemsgid);
     bindValue(10, buffer.bufferactivity);
     bindValue(11, buffer.highlightcount);
-    bindValue(12, buffer.key);
-    bindValue(13, buffer.joined);
-    bindValue(14, buffer.cipher);
+    bindValue(12, buffer.notificationSetting);
+    bindValue(13, buffer.mutedUntil);
+    bindValue(14, buffer.key);
+    bindValue(15, buffer.joined);
+    bindValue(16, buffer.cipher);
     return exec();
 }
 

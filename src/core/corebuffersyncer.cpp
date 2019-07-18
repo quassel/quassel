@@ -38,6 +38,8 @@ CoreBufferSyncer::CoreBufferSyncer(CoreSession* parent)
                    Core::bufferMarkerLineMsgIds(parent->user()),
                    Core::bufferActivities(parent->user()),
                    Core::highlightCounts(parent->user()),
+                   Core::notificationSettings(parent->user()),
+                   Core::mutedUntils(parent->user()),
                    parent)
     , _coreSession(parent)
     , _purgeBuffers(false)
@@ -89,10 +91,20 @@ void CoreBufferSyncer::storeDirtyIds()
         Core::setHighlightCount(userId, bufferId, highlightCount(bufferId));
     }
 
+    for (BufferId bufferId : dirtyNotificationSettings) {
+        Core::setNotificationSetting(userId, bufferId, notificationSetting(bufferId));
+    }
+
+    for (BufferId bufferId : dirtyMutedUntil) {
+        Core::setMutedUntil(userId, bufferId, mutedUntil(bufferId));
+    }
+
     dirtyLastSeenBuffers.clear();
     dirtyMarkerLineBuffers.clear();
     dirtyActivities.clear();
     dirtyHighlights.clear();
+    dirtyNotificationSettings.clear();
+    dirtyMutedUntil.clear();
 }
 
 void CoreBufferSyncer::removeBuffer(BufferId bufferId)

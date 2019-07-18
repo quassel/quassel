@@ -21,6 +21,7 @@ target_sources(${TARGET} PRIVATE
     coreircuser.cpp
     corenetwork.cpp
     corenetworkconfig.cpp
+    corenotificationmanager.cpp
     coresession.cpp
     coresessioneventprocessor.cpp
     coresettings.cpp

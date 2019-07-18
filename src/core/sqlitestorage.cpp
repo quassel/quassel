@@ -1764,6 +1764,102 @@ int SqliteStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
     return result;
 }
 
+void SqliteStorage::setNotificationSetting(UserId user, BufferId bufferId, NotificationManager::NotificationSetting notificationSetting)
+{
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("update_buffer_notificationsetting"));
+        query.bindValue(":userid", user.toInt());
+        query.bindValue(":bufferid", bufferId.toInt());
+        query.bindValue(":notificationsetting", static_cast<int>(notificationSetting));
+
+        lockForWrite();
+        safeExec(query);
+        watchQuery(query);
+    }
+    db.commit();
+    unlock();
+}
+
+QHash<BufferId, NotificationManager::NotificationSetting> SqliteStorage::notificationSettings(UserId user)
+{
+    QHash<BufferId, NotificationManager::NotificationSetting> notificationSettingHash;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    bool error = false;
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_buffer_notificationsettings"));
+        query.bindValue(":userid", user.toInt());
+
+        lockForRead();
+        safeExec(query);
+        error = !watchQuery(query);
+        if (!error) {
+            while (query.next()) {
+                notificationSettingHash[query.value(0).toInt()] = static_cast<NotificationManager::NotificationSetting>(query.value(1).toInt());
+            }
+        }
+    }
+
+    db.commit();
+    unlock();
+    return notificationSettingHash;
+}
+
+void SqliteStorage::setMutedUntil(UserId user, BufferId bufferId, QDateTime mutedUntil)
+{
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("update_buffer_muteduntil"));
+        query.bindValue(":userid", user.toInt());
+        query.bindValue(":bufferid", bufferId.toInt());
+        query.bindValue(":muteduntil", mutedUntil.toMSecsSinceEpoch());
+
+        lockForWrite();
+        safeExec(query);
+        watchQuery(query);
+    }
+    db.commit();
+    unlock();
+}
+
+QHash<BufferId, QDateTime> SqliteStorage::mutedUntils(UserId user)
+{
+    QHash<BufferId, QDateTime> mutedUntilHash;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    bool error = false;
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_buffer_muteduntil"));
+        query.bindValue(":userid", user.toInt());
+
+        lockForRead();
+        safeExec(query);
+        error = !watchQuery(query);
+        if (!error) {
+            while (query.next()) {
+                mutedUntilHash[query.value(0).toInt()] = QDateTime::fromMSecsSinceEpoch(query.value(1).toLongLong());
+            }
+        }
+    }
+
+    db.commit();
+    unlock();
+    return mutedUntilHash;
+}
+
 bool SqliteStorage::logMessage(Message& msg)
 {
     QSqlDatabase db = logDb();
@@ -2409,9 +2505,11 @@ bool SqliteMigrationReader::readMo(BufferMO& buffer)
     buffer.markerlinemsgid = value(9).toLongLong();
     buffer.bufferactivity = value(10).toInt();
     buffer.highlightcount = value(11).toInt();
-    buffer.key = value(12).toString();
-    buffer.joined = value(13).toInt() == 1 ? true : false;
-    buffer.cipher = value(14).toString();
+    buffer.notificationSetting = value(12).toInt();
+    buffer.mutedUntil = value(13).toDateTime();
+    buffer.key = value(14).toString();
+    buffer.joined = value(15).toInt() == 1 ? true : false;
+    buffer.cipher = value(16).toString();
     return true;
 }
 

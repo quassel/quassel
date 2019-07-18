@@ -300,6 +300,8 @@ public:
         qint64 markerlinemsgid;
         int bufferactivity;
         int highlightcount;
+        int notificationSetting;
+        QDateTime mutedUntil;
         QString key;
         bool joined;
         QString cipher;

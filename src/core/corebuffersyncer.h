@@ -87,6 +87,8 @@ private:
     QSet<BufferId> dirtyMarkerLineBuffers;
     QSet<BufferId> dirtyActivities;
     QSet<BufferId> dirtyHighlights;
+    QSet<BufferId> dirtyNotificationSettings;
+    QSet<BufferId> dirtyMutedUntil;
 
     void purgeBufferIds();
 };

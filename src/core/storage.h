@@ -23,6 +23,7 @@
 
 #include <QtCore>
 
+#include "buffersyncer.h"
 #include "coreidentity.h"
 #include "message.h"
 #include "network.h"
@@ -476,6 +477,42 @@ public slots:
      * \param lastSeenMsgId     The last seen message
      */
     virtual int highlightCount(BufferId bufferId, MsgId lastSeenMsgId) = 0;
+
+    //! Update the notification setting for a Buffer
+    /** This Method is used to make the notification setting of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
+     * \param user                  The Owner of that Buffer
+     * \param bufferId              The buffer id
+     * \param notificationSetting   The notification setting for that buffer
+     */
+    virtual void setNotificationSetting(UserId id, BufferId bufferId, NotificationManager::NotificationSetting notificationSetting) = 0;
+
+    //! Get a Hash of all notification settings
+    /** This Method is called when the Quassel Core is started to restore the notification settings
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    virtual QHash<BufferId, NotificationManager::NotificationSetting> notificationSettings(UserId id) = 0;
+
+    //! Update the muted until state for a Buffer
+    /** This Method is used to make the muted until state of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
+     * \param user          The Owner of that Buffer
+     * \param bufferId      The buffer id
+     * \param mutedUntil    The muted until state for that buffer
+     */
+    virtual void setMutedUntil(UserId id, BufferId bufferId, QDateTime mutedUntil) = 0;
+
+    //! Get a Hash of all muted until states
+    /** This Method is called when the Quassel Core is started to restore the muted until states
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    virtual QHash<BufferId, QDateTime> mutedUntils(UserId id) = 0;
 
     /* Message handling */
 

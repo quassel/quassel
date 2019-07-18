@@ -42,6 +42,7 @@
 
 #include "authenticator.h"
 #include "bufferinfo.h"
+#include "buffersyncer.h"
 #include "deferredptr.h"
 #include "identserver.h"
 #include "message.h"
@@ -628,6 +629,48 @@ public:
     {
         return instance()->_storage->highlightCount(bufferId, lastSeenMsgId);
     }
+
+    //! Update the notification setting for a Buffer
+    /** This Method is used to make the notification setting of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
+     * \param user                  The Owner of that Buffer
+     * \param bufferId              The buffer id
+     * \param notificationSetting   The notification setting for that buffer
+     */
+    static inline void setNotificationSetting(UserId user, BufferId bufferId, NotificationManager::NotificationSetting notificationSetting)
+    {
+        return instance()->_storage->setNotificationSetting(user, bufferId, notificationSetting);
+    }
+
+    //! Get a Hash of all notification settings
+    /** This Method is called when the Quassel Core is started to restore the notification settings
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    static inline QHash<BufferId, NotificationManager::NotificationSetting> notificationSettings(UserId user) { return instance()->_storage->notificationSettings(user); }
+
+    //! Update the muted until state for a Buffer
+    /** This Method is used to make the muted until state of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
+     * \param user          The Owner of that Buffer
+     * \param bufferId      The buffer id
+     * \param mutedUntil    The muted until state for that buffer
+     */
+    static inline void setMutedUntil(UserId user, BufferId bufferId, const QDateTime& mutedUntil)
+    {
+        return instance()->_storage->setMutedUntil(user, bufferId, mutedUntil);
+    }
+
+    //! Get a Hash of all muted until states
+    /** This Method is called when the Quassel Core is started to restore the muted until states
+     *  \note This method is threadsafe.
+     *
+     * \param user      The Owner of the buffers
+     */
+    static inline QHash<BufferId, QDateTime> mutedUntils(UserId user) { return instance()->_storage->mutedUntils(user); }
 
     static inline QDateTime startTime() { return instance()->_startTime; }
     static inline bool isConfigured() { return instance()->_configured; }

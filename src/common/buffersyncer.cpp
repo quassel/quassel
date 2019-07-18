@@ -30,12 +30,16 @@ BufferSyncer::BufferSyncer(QHash<BufferId, MsgId> lastSeenMsg,
                            QHash<BufferId, MsgId> markerLines,
                            QHash<BufferId, Message::Types> activities,
                            QHash<BufferId, int> highlightCounts,
+                           QHash<BufferId, NotificationManager::NotificationSetting> notificationSettings,
+                           QHash<BufferId, QDateTime> mutedUntil,
                            QObject* parent)
     : SyncableObject(parent)
     , _lastSeenMsg(std::move(lastSeenMsg))
     , _markerLines(std::move(markerLines))
     , _bufferActivities(std::move(activities))
     , _highlightCounts(std::move(highlightCounts))
+    , _notificationSettings(std::move(notificationSettings))
+    , _mutedUntil(std::move(mutedUntil))
 {}
 
 MsgId BufferSyncer::lastSeenMsg(BufferId buffer) const
@@ -75,6 +79,16 @@ bool BufferSyncer::setMarkerLine(BufferId buffer, const MsgId& msgId)
     SYNC(ARG(buffer), ARG(msgId))
     emit markerLineSet(buffer, msgId);
     return true;
+}
+
+NotificationManager::NotificationSetting BufferSyncer::notificationSetting(BufferId buffer) const
+{
+    return _notificationSettings.value(buffer, NotificationManager::NotificationSetting::Default);
+}
+
+QDateTime BufferSyncer::mutedUntil(BufferId buffer) const
+{
+    return _mutedUntil.value(buffer, QDateTime{});
 }
 
 QVariantList BufferSyncer::initLastSeenMsg() const
@@ -137,6 +151,46 @@ void BufferSyncer::initSetActivities(const QVariantList& list)
     }
 }
 
+QVariantList BufferSyncer::initNotificationSettings() const
+{
+    QVariantList list;
+    auto iter = _notificationSettings.constBegin();
+    while (iter != _notificationSettings.constEnd()) {
+        list << QVariant::fromValue<BufferId>(iter.key()) << QVariant::fromValue<qint8>((int) iter.value());
+        ++iter;
+    }
+    return list;
+}
+
+void BufferSyncer::initSetNotificationSettings(const QVariantList& list)
+{
+    _notificationSettings.clear();
+    Q_ASSERT(list.count() % 2 == 0);
+    for (int i = 0; i < list.count(); i += 2) {
+        setNotificationSetting(list.at(i).value<BufferId>(), list.at(i + 1).value<int>());
+    }
+}
+
+QVariantList BufferSyncer::initMutedUntil() const
+{
+    QVariantList list;
+    auto iter = _mutedUntil.constBegin();
+    while (iter != _mutedUntil.constEnd()) {
+        list << QVariant::fromValue<BufferId>(iter.key()) << QVariant::fromValue<QDateTime>(iter.value());
+        ++iter;
+    }
+    return list;
+}
+
+void BufferSyncer::initSetMutedUntil(const QVariantList& list)
+{
+    _mutedUntil.clear();
+    Q_ASSERT(list.count() % 2 == 0);
+    for (int i = 0; i < list.count(); i += 2) {
+        setMutedUntil(list.at(i).value<BufferId>(), list.at(i + 1).value<QDateTime>());
+    }
+}
+
 Message::Types BufferSyncer::activity(BufferId buffer) const
 {
     return _bufferActivities.value(buffer, Message::Types());
@@ -152,6 +206,10 @@ void BufferSyncer::removeBuffer(BufferId buffer)
         _bufferActivities.remove(buffer);
     if (_highlightCounts.contains(buffer))
         _highlightCounts.remove(buffer);
+    if (_notificationSettings.contains(buffer))
+        _notificationSettings.remove(buffer);
+    if (_mutedUntil.contains(buffer))
+        _mutedUntil.remove(buffer);
     SYNC(ARG(buffer))
     emit bufferRemoved(buffer);
 }
@@ -166,6 +224,10 @@ void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2)
         _bufferActivities.remove(buffer2);
     if (_highlightCounts.contains(buffer2))
         _highlightCounts.remove(buffer2);
+    if (_notificationSettings.contains(buffer2))
+        _notificationSettings.remove(buffer2);
+    if (_mutedUntil.contains(buffer2))
+        _mutedUntil.remove(buffer2);
     SYNC(ARG(buffer1), ARG(buffer2))
     emit buffersPermanentlyMerged(buffer1, buffer2);
 }

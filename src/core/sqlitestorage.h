@@ -103,6 +103,10 @@ public slots:
     void setHighlightCount(UserId id, BufferId bufferId, int count) override;
     QHash<BufferId, int> highlightCounts(UserId id) override;
     int highlightCount(BufferId bufferId, MsgId lastSeenMsgId) override;
+    void setNotificationSetting(UserId id, BufferId bufferId, NotificationManager::NotificationSetting notificationSetting) override;
+    QHash<BufferId, NotificationManager::NotificationSetting> notificationSettings(UserId id) override;
+    void setMutedUntil(UserId id, BufferId bufferId, QDateTime mutedUntil) override;
+    QHash<BufferId, QDateTime> mutedUntils(UserId id) override;
     QHash<QString, QByteArray> bufferCiphers(UserId user, const NetworkId& networkId) override;
     void setBufferCipher(UserId user, const NetworkId& networkId, const QString& bufferName, const QByteArray& cipher) override;
 

@@ -36,6 +36,7 @@ target_sources(${TARGET} PRIVATE
     network.cpp
     networkconfig.cpp
     networkevent.cpp
+    notificationmanager.cpp
     nickhighlightmatcher.cpp
     peer.cpp
     peerfactory.cpp

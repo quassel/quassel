@@ -11,6 +11,8 @@ CREATE TABLE buffer (
 	markerlinemsgid INTEGER NOT NULL DEFAULT 0,
 	bufferactivity INTEGER NOT NULL DEFAULT 0,
 	highlightcount INTEGER NOT NULL DEFAULT 0,
+	notificationsetting INTEGER NOT NULL DEFAULT 0,
+	muteduntil INTEGER NOT NULL DEFAULT 0,
 	key TEXT,
 	joined INTEGER NOT NULL DEFAULT 0, -- BOOL
 	cipher TEXT,

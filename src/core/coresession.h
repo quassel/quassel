@@ -30,6 +30,7 @@
 #include "corealiasmanager.h"
 #include "corehighlightrulemanager.h"
 #include "coreignorelistmanager.h"
+#include "corenotificationmanager.h"
 #include "coreinfo.h"
 #include "message.h"
 #include "peer.h"
@@ -245,6 +246,7 @@ private:
     CoreNetworkConfig* _networkConfig;
     CoreInfo* _coreInfo;
     CoreTransferManager* _transferManager;
+    CoreNotificationManager* _notificationManager;
 
     EventManager* _eventManager;
     EventStringifier* _eventStringifier;  // should eventually move into client
