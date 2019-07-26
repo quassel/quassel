@@ -336,6 +336,7 @@ void Quassel::setupCliParser()
             {"icontheme", tr("Override the system icon theme ('breeze' is recommended)."), tr("theme")},
             {"qss", tr("Load a custom application stylesheet."), tr("file.qss")},
             {"hidewindow", tr("Start the client minimized to the system tray.")},
+            {"account", tr("Account id to connect to on startup."), tr("account"), "0"},
         };
     }
 
