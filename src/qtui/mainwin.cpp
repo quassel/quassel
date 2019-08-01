@@ -466,7 +466,14 @@ void MainWin::setupActions()
                      coll,
                      this,
                      &MainWin::onFormatUnderlineTriggered,
-                     QKeySequence::Underline)}});
+                     QKeySequence::Underline)},
+         {"FormatStrikethrough",
+          new Action(icon::get("format-text-strikethrough"),
+                     tr("Toggle strikethrough"),
+                     coll,
+                     this,
+                     &MainWin::onFormatStrikethroughTriggered,
+                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S))}});
 
     // Navigation
     coll = QtUi::actionCollection("Navigation", tr("Navigation"));
@@ -1833,6 +1840,15 @@ void MainWin::onFormatUnderlineTriggered()
 
     _inputWidget->toggleFormatUnderline();
 }
+
+void MainWin::onFormatStrikethroughTriggered()
+{
+    if (!_inputWidget)
+        return;
+
+    _inputWidget->toggleFormatStrikethrough();
+}
+
 
 void MainWin::onJumpHotBufferTriggered()
 {
