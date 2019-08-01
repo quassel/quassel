@@ -84,6 +84,13 @@ public slots:
     void toggleFormatUnderline();
 
     /**
+     * Toggle the striking of the selected or typed text
+     *
+     * striking becomes normal, and normal becomes underlined.
+     */
+    void toggleFormatStrikethrough();
+
+    /**
      * Clear the formatting of the selected or typed text
      *
      * Clears the font weight (bold, italic, underline) and foreground/background coloring.
@@ -132,6 +139,7 @@ private slots:
     void on_boldButton_clicked(bool checked);
     void on_italicButton_clicked(bool checked);
     void on_underlineButton_clicked(bool checked);
+    void on_strikethroughButton_clicked(bool checked);
     void colorChosen(QAction* action);
     void colorHighlightChosen(QAction* action);
 
@@ -165,6 +173,13 @@ private:
      * @param bold If true, set text underlined, otherwise set text normal
      */
     void setFormatUnderline(const bool underline);
+
+    /**
+     * Sets the strikethrough of the selected or typed text
+     *
+     * @param strike If true, set text striked, otherwise set text normal
+     */
+    void setFormatStrikethrough(const bool strike);
 
     Ui::InputWidget ui;
 

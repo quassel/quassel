@@ -189,6 +189,13 @@ private slots:
      */
     void onFormatUnderlineTriggered();
 
+     /**
+     * Toggle the strikethrough of the input widget selected or typed text
+     *
+     * @seealso InputWidget::toggleFormatStrikethrough()
+     */
+    void onFormatStrikethroughTriggered();
+
     /**
      * Clear the formatting of the input widget selected or typed text
      *
