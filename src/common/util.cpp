@@ -26,6 +26,7 @@
 
 #include <QCoreApplication>
 #include <QDateTime>
+#include <QTimeZone>
 #include <QDebug>
 #include <QTextCodec>
 #include <QVector>
@@ -357,32 +358,7 @@ QString formatDateTimeToOffsetISO(const QDateTime& dateTime)
     // See https://en.wikipedia.org/wiki/ISO_8601#cite_note-32
     // And https://www.ietf.org/rfc/rfc3339.txt
 
-#if 0
     // The expected way to get a UTC offset on ISO 8601 dates
     // Remove the "T" date/time separator
-    return dateTime.toTimeSpec(Qt::OffsetFromUTC).toString(Qt::ISODate).replace(10, 1, " ");
-#else
-    // Work around Qt bug that converts to UTC instead of including timezone information
-    // See https://bugreports.qt.io/browse/QTBUG-26161
-    //
-    // NOTE: Despite the bug report marking as fixed in Qt 5.2.0 (QT_VERSION >= 0x050200), this
-    // still appears broken in Qt 5.5.1.
-    //
-    // Credit to "user362638" for the solution below, modified to fit Quassel's needs
-    // https://stackoverflow.com/questions/18750569/qdatetime-isodate-with-timezone
-
-    // Get the local and UTC time
-    QDateTime local = QDateTime(dateTime);
-    QDateTime utc = local.toUTC();
-    utc.setTimeSpec(Qt::LocalTime);
-
-    // Find the UTC offset
-    int utcOffset = utc.secsTo(local);
-
-    // Force the local time to follow this offset
-    local.setUtcOffset(utcOffset);
-    // Now the output should be correct
-    // Remove the "T" date/time separator
-    return local.toString(Qt::ISODate).replace(10, 1, " ");
-#endif
+    return dateTime.toOffsetFromUtc(dateTime.offsetFromUtc()).toString(Qt::ISODate).replace(10, 1, " ");
 }
