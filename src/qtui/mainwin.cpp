@@ -1195,7 +1195,8 @@ void MainWin::saveMainToolBarStatus(bool enabled)
 
 void MainWin::doAutoConnect()
 {
-    if (!Client::coreConnection()->connectToCore()) {
+    int accountId = Quassel::optionValue("account").toInt();
+    if (!Client::coreConnection()->connectToCore(accountId)) {
         // No autoconnect selected (or no accounts)
         showCoreConnectionDlg();
     }
