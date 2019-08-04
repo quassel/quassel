@@ -22,8 +22,6 @@
 
 #include <utility>
 
-#include <QtScript>
-
 #include "core.h"
 #include "corebacklogmanager.h"
 #include "corebuffersyncer.h"
@@ -78,7 +76,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     , _sessionEventProcessor(new CoreSessionEventProcessor(this))
     , _ctcpParser(new CtcpParser(this))
     , _ircParser(new IrcParser(this))
-    , scriptEngine(new QScriptEngine(this))
     , _processMessages(false)
     , _ignoreListManager(this)
     , _highlightRuleManager(this)
@@ -121,7 +118,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     _coreInfo->setCoreData(data);
 
     loadSettings();
-    initScriptEngine();
 
     eventManager()->registerObject(ircParser(), EventManager::NormalPriority);
     eventManager()->registerObject(sessionEventProcessor(), EventManager::HighPriority);  // needs to process events *before* the stringifier!
@@ -530,21 +526,6 @@ Protocol::SessionState CoreSession::sessionState() const
     }
 
     return Protocol::SessionState(identities, bufferInfos, networkIds);
-}
-
-void CoreSession::initScriptEngine()
-{
-    signalProxy()->attachSlot(SIGNAL(scriptRequest(QString)), this, &CoreSession::scriptRequest);
-    signalProxy()->attachSignal(this, &CoreSession::scriptResult);
-
-    // FIXME
-    // QScriptValue storage_ = scriptEngine->newQObject(storage);
-    // scriptEngine->globalObject().setProperty("storage", storage_);
-}
-
-void CoreSession::scriptRequest(QString script)
-{
-    emit scriptResult(scriptEngine->evaluate(script).toString());
 }
 
 /*** Identity Handling ***/
