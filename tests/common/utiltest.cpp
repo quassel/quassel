@@ -18,13 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "testglobal.h"
-#include "util.h"
 #include <QDebug>
 #include <QDateTime>
 #include <QTimeZone>
 
-TEST(UtilTest, formatDateTimeToOffsetISO) {
+#include "testglobal.h"
+#include "util.h"
+
+TEST(UtilTest, formatDateTimeToOffsetISO)
+{
     QDateTime dateTime{{2006, 01, 02}, {15, 04, 05}, QTimeZone{"UTC+01:00"}};
 
     ASSERT_TRUE(dateTime.isValid());
