@@ -58,8 +58,6 @@ class SignalProxy;
 
 struct NetworkInfo;
 
-class QScriptEngine;
-
 class CoreSession : public QObject
 {
     Q_OBJECT
@@ -173,8 +171,6 @@ signals:
     void displayMsg(Message message);
     void displayStatusMsg(QString, QString);
 
-    void scriptResult(QString result);
-
     //! Identity has been created.
     /** This signal is propagated to the clients to tell them that the given identity has been created.
      *  \param identity The new identity.
@@ -206,8 +202,6 @@ private slots:
 
     void destroyNetwork(NetworkId);
 
-    void scriptRequest(QString script);
-
     void clientsConnected();
     void clientsDisconnected();
 
@@ -221,7 +215,6 @@ private:
     void processMessages();
 
     void loadSettings();
-    void initScriptEngine();
 
     /// Hook for converting events to the old displayMsg() handlers
     Q_INVOKABLE void processMessageEvent(MessageEvent* event);
@@ -252,8 +245,6 @@ private:
     CoreSessionEventProcessor* _sessionEventProcessor;
     CtcpParser* _ctcpParser;
     IrcParser* _ircParser;
-
-    QScriptEngine* scriptEngine;
 
     /**
      * This method obtains the prefixes of the message's sender within a channel, by looking up their channelmodes, and

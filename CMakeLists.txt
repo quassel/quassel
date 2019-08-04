@@ -169,7 +169,7 @@ if (BUILD_GUI)
     list(APPEND qt_components Gui Widgets)
 endif()
 if (BUILD_CORE)
-    list(APPEND qt_components Script Sql)
+    list(APPEND qt_components Sql)
 endif()
 
 find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS ${qt_components})

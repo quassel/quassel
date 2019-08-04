@@ -24,7 +24,6 @@ target_sources(${TARGET} PRIVATE
     coreinfodlg.cpp
     coresessionwidget.cpp
     debugbufferviewoverlay.cpp
-    debugconsole.cpp
     debuglogdlg.cpp
     debugmessagemodelfilter.cpp
     inputwidget.cpp
@@ -71,7 +70,6 @@ target_sources(${TARGET} PRIVATE
     coreinfodlg.ui
     coresessionwidget.ui
     debugbufferviewoverlay.ui
-    debugconsole.ui
     debuglogdlg.ui
     inputwidget.ui
     msgprocessorstatuswidget.ui
