@@ -108,6 +108,11 @@ endif()
 
 # The following options are not for end-user consumption, so don't list them in the feature summary
 option(FATAL_WARNINGS "Make compile warnings fatal (most useful for CI builds)" OFF)
+option(WARN_QT_DEPRECATION "Warn about deprecated Qt functionality" OFF)
+if (WARN_QT_DEPRECATION)
+    # Enable Qt deprecation warnings for Qt < 5.13 (on by default in newer versions)
+    add_definitions("-DQT_DEPRECATED_WARNINGS")
+endif()
 cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg" OFF "APPLE" OFF)
 
 # List of authenticators and the cmake flags to build them
