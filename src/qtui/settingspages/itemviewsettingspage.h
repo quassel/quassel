@@ -46,7 +46,6 @@ private slots:
 
 private:
     Ui::ItemViewSettingsPage ui;
-    QSignalMapper* _mapper;
     QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem, *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
 
     inline QString settingsKey() const override { return QString("ItemViews"); }

@@ -28,7 +28,6 @@
 
 ItemViewSettingsPage::ItemViewSettingsPage(QWidget* parent)
     : SettingsPage(tr("Interface"), tr("Chat & Nick Lists"), parent)
-    , _mapper(new QSignalMapper(this))
 {
     ui.setupUi(this);
 
@@ -43,11 +42,11 @@ ItemViewSettingsPage::ItemViewSettingsPage(QWidget* parent)
 
     ui.bufferViewPreview->expandAll();
 
-    foreach (ColorButton* button, findChildren<ColorButton*>()) {
-        connect(button, &ColorButton::colorChanged, _mapper, selectOverload<>(&QSignalMapper::map));
-        _mapper->setMapping(button, button);
+    for (ColorButton* button : findChildren<ColorButton*>()) {
+        connect(button, &ColorButton::colorChanged, button, [this, button]() {
+            updateBufferViewPreview(button);
+        });
     }
-    connect(_mapper, selectOverload<QWidget*>(&QSignalMapper::mapped), this, &ItemViewSettingsPage::updateBufferViewPreview);
 
     initAutoWidgets();
 }
