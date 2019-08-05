@@ -494,13 +494,13 @@ void BufferView::changeBuffer(Direction direction)
             if (currentIndex.row() == 0)
                 newParent = lastNetIndex;
             if (model()->hasChildren(newParent))
-                resultingIndex = newParent.child(model()->rowCount(newParent) - 1, 0);
+                resultingIndex = newParent.model()->index(model()->rowCount(newParent) - 1, 0, newParent);
             else
                 resultingIndex = newParent;
         }
         else {
             if (model()->hasChildren(currentIndex))
-                resultingIndex = currentIndex.child(0, 0);
+                resultingIndex = currentIndex.model()->index(0, 0, currentIndex);
             else
                 resultingIndex = currentIndex.sibling(currentIndex.row() + 1, 0);
         }
@@ -510,7 +510,7 @@ void BufferView::changeBuffer(Direction direction)
         if (direction == Forward)
             resultingIndex = model()->index(0, 0, QModelIndex());
         else
-            resultingIndex = lastNetIndex.child(model()->rowCount(lastNetIndex) - 1, 0);
+            resultingIndex = lastNetIndex.model()->index(model()->rowCount(lastNetIndex) - 1, 0, lastNetIndex);
     }
 
     selectionModel()->setCurrentIndex(resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
