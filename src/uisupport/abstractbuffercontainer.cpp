@@ -47,7 +47,7 @@ void AbstractBufferContainer::rowsAboutToBeRemoved(const QModelIndex& parent, in
     else {
         // check if there are explicitly buffers removed
         for (int i = start; i <= end; i++) {
-            QVariant variant = parent.child(i, 0).data(NetworkModel::BufferIdRole);
+            QVariant variant = parent.model()->index(i, 0, parent).data(NetworkModel::BufferIdRole);
             if (!variant.isValid())
                 continue;
 

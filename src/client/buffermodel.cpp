@@ -138,7 +138,7 @@ void BufferModel::newBuffers(const QModelIndex& parent, int start, int end)
         return;
 
     for (int row = start; row <= end; row++) {
-        QModelIndex child = parent.child(row, 0);
+        QModelIndex child = parent.model()->index(row, 0, parent);
         newBuffer(child.data(NetworkModel::BufferIdRole).value<BufferId>());
     }
 }

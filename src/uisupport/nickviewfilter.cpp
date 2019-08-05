@@ -44,7 +44,7 @@ bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex& source_
     if (!source_parent.isValid())
         return true;
 
-    QModelIndex source_child = source_parent.child(source_row, 0);
+    QModelIndex source_child = source_parent.model()->index(source_row, 0, source_parent);
     return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
 }
 

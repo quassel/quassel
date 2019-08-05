@@ -571,7 +571,7 @@ void TreeModel::debug_rowsAboutToBeRemoved(const QModelIndex& parent, int start,
 
     QModelIndex child;
     for (int i = end; i >= start; i--) {
-        child = parent.child(i, 0);
+        child = parent.model()->index(i, 0, parent);
         Q_ASSERT(parentItem->child(i));
         qDebug() << ">>>" << i << child << child.data().toString();
     }
@@ -587,7 +587,7 @@ void TreeModel::debug_rowsInserted(const QModelIndex& parent, int start, int end
 
     QModelIndex child;
     for (int i = start; i <= end; i++) {
-        child = parent.child(i, 0);
+        child = parent.model()->index(i, 0, parent);
         Q_ASSERT(parentItem->child(i));
         qDebug() << "<<<" << i << child << child.data().toString();
     }
