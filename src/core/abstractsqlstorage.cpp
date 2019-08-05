@@ -384,7 +384,7 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery& query)
             valueStrings << QString("%1=%2").arg(iter.key(), value);
         }
         qCritical() << "                bound Values:" << qPrintable(valueStrings.join(", "));
-        qCritical() << "                Error Number:" << query.lastError().number();
+        qCritical() << "                  Error Code:" << qPrintable(query.lastError().nativeErrorCode());
         qCritical() << "               Error Message:" << qPrintable(query.lastError().text());
         qCritical() << "              Driver Message:" << qPrintable(query.lastError().driverText());
         qCritical() << "                  DB Message:" << qPrintable(query.lastError().databaseText());
@@ -492,7 +492,7 @@ void AbstractSqlMigrator::dumpStatus()
     QList<QVariant> list = boundValues();
     for (int i = 0; i < list.size(); ++i)
         qWarning() << i << ": " << list.at(i).toString().toLatin1().data();
-    qWarning() << "  Error Number:" << lastError().number();
+    qWarning() << "  Error Code:" << qPrintable(lastError().nativeErrorCode());
     qWarning() << "  Error Message:" << lastError().text();
 }
 
