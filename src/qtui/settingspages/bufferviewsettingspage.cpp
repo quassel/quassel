@@ -248,7 +248,7 @@ void BufferViewSettingsPage::newBufferView(const QString& bufferViewName)
         }
         else {
             bufferIds = Client::networkModel()->allBufferIds();
-            qSort(bufferIds);
+            std::sort(bufferIds.begin(), bufferIds.end());
             config->setProperty("OriginalBufferList", toVariantList<BufferId>(bufferIds));
         }
     }

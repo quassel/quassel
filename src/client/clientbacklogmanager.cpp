@@ -164,7 +164,7 @@ void ClientBacklogManager::dispatchMessages(const MessageList& messages, bool so
 
     clock_t start_t = clock();
     if (sort)
-        qSort(msgs);
+        std::sort(msgs.begin(), msgs.end());
     Client::messageProcessor()->process(msgs);
     clock_t end_t = clock();
 
