@@ -330,7 +330,7 @@ void ChatViewSearchController::repositionHighlights(ChatLine* line)
         }
     }
 
-    qSort(searchHighlights.begin(), searchHighlights.end(), SearchHighlightItem::firstInLine);
+    std::sort(searchHighlights.begin(), searchHighlights.end(), SearchHighlightItem::firstInLine);
 
     Q_ASSERT(wordPos.count() == searchHighlights.count());
     for (int i = 0; i < searchHighlights.count(); i++) {

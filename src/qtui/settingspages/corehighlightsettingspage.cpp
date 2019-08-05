@@ -420,7 +420,7 @@ void CoreHighlightSettingsPage::removeSelectedHighlightRows()
     for (auto selectedItem : selectedItemList) {
         selectedRows.append(selectedItem->row());
     }
-    qSort(selectedRows.begin(), selectedRows.end(), qGreater<int>());
+    std::sort(selectedRows.begin(), selectedRows.end(), std::greater<>());
     int lastRow = -1;
     for (auto row : selectedRows) {
         if (row != lastRow) {
@@ -438,7 +438,7 @@ void CoreHighlightSettingsPage::removeSelectedIgnoredRows()
     for (auto selectedItem : selectedItemList) {
         selectedRows.append(selectedItem->row());
     }
-    qSort(selectedRows.begin(), selectedRows.end(), qGreater<int>());
+    std::sort(selectedRows.begin(), selectedRows.end(), std::greater<>());
     int lastRow = -1;
     for (auto row : selectedRows) {
         if (row != lastRow) {

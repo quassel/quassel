@@ -115,7 +115,7 @@ QString MessageFilter::idString() const
         return "*";
 
     QList<BufferId> bufferIds = _validBuffers.toList();
-    qSort(bufferIds);
+    std::sort(bufferIds.begin(), bufferIds.end());
 
     QStringList bufferIdStrings;
     foreach (BufferId id, bufferIds)

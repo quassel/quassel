@@ -1605,7 +1605,7 @@ void NetworkModel::sortBufferIds(QList<BufferId>& bufferIds) const
             bufferItems << _bufferItemCache[bufferId];
     }
 
-    qSort(bufferItems.begin(), bufferItems.end(), bufferItemLessThan);
+    std::sort(bufferItems.begin(), bufferItems.end(), bufferItemLessThan);
 
     bufferIds.clear();
     foreach (BufferItem* bufferItem, bufferItems) {
