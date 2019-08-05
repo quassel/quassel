@@ -24,13 +24,8 @@
 
 #include <QNetworkConfigurationManager>
 #include <QPointer>
+#include <QSslSocket>
 #include <QTimer>
-
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#else
-#    include <QTcpSocket>
-#endif
 
 #include "coreaccount.h"
 #include "remotepeer.h"
@@ -111,9 +106,7 @@ signals:
     void userAuthenticationRequired(CoreAccount*, bool* valid, const QString& errorMessage = QString());
     void handleNoSslInClient(bool* accepted);
     void handleNoSslInCore(bool* accepted);
-#ifdef HAVE_SSL
     void handleSslErrors(const QSslSocket* socket, bool* accepted, bool* permanently);
-#endif
 
 private slots:
     void connectToCurrentAccount();

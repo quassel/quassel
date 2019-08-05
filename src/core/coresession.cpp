@@ -529,17 +529,11 @@ Protocol::SessionState CoreSession::sessionState() const
 /*** Identity Handling ***/
 void CoreSession::createIdentity(const Identity& identity, const QVariantMap& additional)
 {
-#ifndef HAVE_SSL
-    Q_UNUSED(additional)
-#endif
-
     CoreIdentity coreIdentity(identity);
-#ifdef HAVE_SSL
     if (additional.contains("KeyPem"))
         coreIdentity.setSslKey(additional["KeyPem"].toByteArray());
     if (additional.contains("CertPem"))
         coreIdentity.setSslCert(additional["CertPem"].toByteArray());
-#endif
     qDebug() << Q_FUNC_INFO;
     IdentityId id = Core::createIdentity(user(), coreIdentity);
     if (!id.isValid())

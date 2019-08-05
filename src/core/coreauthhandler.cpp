@@ -22,9 +22,7 @@
 
 #include <QtEndian>
 
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#endif
+#include <QSslSocket>
 
 #include "core.h"
 
@@ -336,7 +334,6 @@ bool CoreAuthHandler::isLocal() const
 
 void CoreAuthHandler::startSsl()
 {
-#ifdef HAVE_SSL
     auto* sslSocket = qobject_cast<QSslSocket*>(socket());
     Q_ASSERT(sslSocket);
 
@@ -344,14 +341,11 @@ void CoreAuthHandler::startSsl()
     connect(sslSocket, selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &CoreAuthHandler::onSslErrors);
     sslSocket->flush();  // ensure that the write cache is flushed before we switch to ssl (bug 682)
     sslSocket->startServerEncryption();
-#endif /* HAVE_SSL */
 }
 
-#ifdef HAVE_SSL
 void CoreAuthHandler::onSslErrors()
 {
     auto* sslSocket = qobject_cast<QSslSocket*>(socket());
     Q_ASSERT(sslSocket);
     sslSocket->ignoreSslErrors();
 }
-#endif

@@ -27,18 +27,10 @@
 
 #include <QDateTime>
 #include <QPointer>
+#include <QSslSocket>
 #include <QString>
 #include <QTimer>
 #include <QVariant>
-
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-
-#    include "sslserver.h"
-#else
-#    include <QTcpServer>
-#    include <QTcpSocket>
-#endif
 
 #include "authenticator.h"
 #include "bufferinfo.h"
@@ -49,6 +41,7 @@
 #include "oidentdconfiggenerator.h"
 #include "sessionthread.h"
 #include "singleton.h"
+#include "sslserver.h"
 #include "storage.h"
 #include "types.h"
 
@@ -781,11 +774,7 @@ private:
 
     QTimer _storageSyncTimer;
 
-#ifdef HAVE_SSL
     SslServer _server, _v6server;
-#else
-    QTcpServer _server, _v6server;
-#endif
 
     OidentdConfigGenerator* _oidentdConfigGenerator{nullptr};
 

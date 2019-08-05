@@ -134,9 +134,7 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent* e)
 
     CoreNetwork* net = coreNetwork(e);
 
-#ifdef HAVE_SSL
     if (net->identityPtr()->sslCert().isNull()) {
-#endif
         QString construct = net->saslAccount();
         construct.append(QChar(QChar::Null));
         construct.append(net->saslAccount());
@@ -145,12 +143,10 @@ void CoreSessionEventProcessor::processIrcEventAuthenticate(IrcEvent* e)
         QByteArray saslData = QByteArray(construct.toLatin1().toBase64());
         saslData.prepend("AUTHENTICATE ");
         net->putRawLine(saslData);
-#ifdef HAVE_SSL
     }
     else {
         net->putRawLine("AUTHENTICATE +");
     }
-#endif
 }
 
 void CoreSessionEventProcessor::processIrcEventCap(IrcEvent* e)

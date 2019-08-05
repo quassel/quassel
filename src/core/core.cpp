@@ -215,10 +215,8 @@ void Core::init()
 
         if (Quassel::isOptionSet("metrics-daemon")) {
             _metricsServer = new MetricsServer(this);
-#ifdef HAVE_SSL
             _server.setMetricsServer(_metricsServer);
             _v6server.setMetricsServer(_metricsServer);
-#endif
         }
 
         Quassel::registerReloadHandler([]() {
@@ -574,17 +572,12 @@ bool Core::initAuthenticator(
 
 bool Core::sslSupported()
 {
-#ifdef HAVE_SSL
     auto* sslServer = qobject_cast<SslServer*>(&instance()->_server);
     return sslServer && sslServer->isCertValid();
-#else
-    return false;
-#endif
 }
 
 bool Core::reloadCerts()
 {
-#ifdef HAVE_SSL
     auto* sslServerv4 = qobject_cast<SslServer*>(&_server);
     bool retv4 = sslServerv4->reloadCerts();
 
@@ -592,10 +585,6 @@ bool Core::reloadCerts()
     bool retv6 = sslServerv6->reloadCerts();
 
     return retv4 && retv6;
-#else
-    // SSL not supported, don't mark configuration reload as failed
-    return true;
-#endif
 }
 
 void Core::cacheSysIdent()

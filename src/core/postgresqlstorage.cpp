@@ -527,13 +527,8 @@ IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity& identity
     query.bindValue(":kickreason", identity.kickReason());
     query.bindValue(":partreason", identity.partReason());
     query.bindValue(":quitreason", identity.quitReason());
-#ifdef HAVE_SSL
     query.bindValue(":sslcert", identity.sslCert().toPem());
     query.bindValue(":sslkey", identity.sslKey().toPem());
-#else
-    query.bindValue(":sslcert", QByteArray());
-    query.bindValue(":sslkey", QByteArray());
-#endif
     safeExec(query);
     if (!watchQuery(query)) {
         db.rollback();
@@ -610,13 +605,8 @@ bool PostgreSqlStorage::updateIdentity(UserId user, const CoreIdentity& identity
     query.bindValue(":kickreason", identity.kickReason());
     query.bindValue(":partreason", identity.partReason());
     query.bindValue(":quitreason", identity.quitReason());
-#ifdef HAVE_SSL
     query.bindValue(":sslcert", identity.sslCert().toPem());
     query.bindValue(":sslkey", identity.sslKey().toPem());
-#else
-    query.bindValue(":sslcert", QByteArray());
-    query.bindValue(":sslkey", QByteArray());
-#endif
     query.bindValue(":identityid", identity.id().toInt());
 
     safeExec(query);
@@ -717,10 +707,8 @@ std::vector<CoreIdentity> PostgreSqlStorage::identities(UserId user)
         identity.setKickReason(query.value(15).toString());
         identity.setPartReason(query.value(16).toString());
         identity.setQuitReason(query.value(17).toString());
-#ifdef HAVE_SSL
         identity.setSslCert(query.value(18).toByteArray());
         identity.setSslKey(query.value(19).toByteArray());
-#endif
 
         nickQuery.bindValue(":identityid", identity.id().toInt());
         QList<QString> nicks;

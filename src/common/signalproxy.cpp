@@ -25,11 +25,8 @@
 #include <QHostAddress>
 #include <QMetaMethod>
 #include <QMetaProperty>
+#include <QSslSocket>
 #include <QThread>
-
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#endif
 
 #include "peer.h"
 #include "protocol.h"

@@ -67,9 +67,7 @@ signals:
     void userAuthenticationRequired(CoreAccount* account, bool* valid, const QString& errorMessage = QString());
     void handleNoSslInClient(bool* accepted);
     void handleNoSslInCore(bool* accepted);
-#ifdef HAVE_SSL
     void handleSslErrors(const QSslSocket* socket, bool* accepted, bool* permanently);
-#endif
 
     void encrypted(bool isEncrypted = true);
     void startCoreSetup(const QVariantList& backendInfo, const QVariantList& authenticatorInfo);
@@ -98,10 +96,8 @@ private slots:
     void onSocketDisconnected() override;
     void onReadyRead();
 
-#ifdef HAVE_SSL
     void onSslSocketEncrypted();
     void onSslErrors();
-#endif
 
     void onProtocolVersionMismatch(int actual, int expected);
 

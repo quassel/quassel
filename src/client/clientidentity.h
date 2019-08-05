@@ -35,13 +35,8 @@ public:
     CertIdentity(const Identity& other, QObject* parent = nullptr);
     CertIdentity(const CertIdentity& other, QObject* parent = nullptr);
 
-#ifdef HAVE_SSL
     inline bool isDirty() const { return _isDirty; }
-#else
-    inline bool isDirty() const { return false; }
-#endif
 
-#ifdef HAVE_SSL
     void enableEditSsl(bool enable = true);
     inline const QSslKey& sslKey() const { return _sslKey; }
     inline const QSslCertificate& sslCert() const { return _sslCert; }
@@ -63,13 +58,11 @@ private:
     bool _isDirty{false};
     QSslKey _sslKey;
     QSslCertificate _sslCert;
-#endif  // HAVE_SSL
 };
 
 // ========================================
 //  ClientCertManager
 // ========================================
-#ifdef HAVE_SSL
 
 class ClientCertManager : public CertManager
 {
@@ -92,4 +85,3 @@ private:
     CertIdentity* _certIdentity;
 };
 
-#endif  // HAVE_SSL

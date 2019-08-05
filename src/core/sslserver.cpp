@@ -20,16 +20,11 @@
 
 #include "sslserver.h"
 
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#endif
-
 #include <QDateTime>
+#include <QSslSocket>
 
 #include "core.h"
 #include "quassel.h"
-
-#ifdef HAVE_SSL
 
 SslServer::SslServer(QObject* parent)
     : QTcpServer(parent)
@@ -235,5 +230,3 @@ void SslServer::setMetricsServer(MetricsServer* metricsServer) {
         _metricsServer->setCertificateExpires(_certificateExpires);
     }
 }
-
-#endif  // HAVE_SSL
