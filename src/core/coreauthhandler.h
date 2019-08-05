@@ -56,9 +56,7 @@ private:
 private slots:
     void onReadyRead();
 
-#ifdef HAVE_SSL
     void onSslErrors();
-#endif
 
     // only in legacy mode
     void onProtocolVersionMismatch(int actual, int expected);

@@ -24,51 +24,36 @@
 
 CoreIdentity::CoreIdentity(IdentityId id, QObject* parent)
     : Identity(id, parent)
-#ifdef HAVE_SSL
     , _certManager(this)
-#endif
 {
-#ifdef HAVE_SSL
     connect(this, &Identity::idSet, &_certManager, &CoreCertManager::setId);
     connect(&_certManager, &SyncableObject::updated, this, &SyncableObject::updated);
-#endif
 }
 
 CoreIdentity::CoreIdentity(const Identity& other, QObject* parent)
     : Identity(other, parent)
-#ifdef HAVE_SSL
     , _certManager(this)
-#endif
 {
-#ifdef HAVE_SSL
     connect(this, &Identity::idSet, &_certManager, &CoreCertManager::setId);
     connect(&_certManager, &SyncableObject::updated, this, &SyncableObject::updated);
-#endif
 }
 
 CoreIdentity::CoreIdentity(const CoreIdentity& other, QObject* parent)
     : Identity(other, parent)
-#ifdef HAVE_SSL
     , _sslKey(other._sslKey)
     , _sslCert(other._sslCert)
     , _certManager(this)
-#endif
 {
-#ifdef HAVE_SSL
     connect(this, &Identity::idSet, &_certManager, &CoreCertManager::setId);
     connect(&_certManager, &SyncableObject::updated, this, &SyncableObject::updated);
-#endif
 }
 
 void CoreIdentity::synchronize(SignalProxy* proxy)
 {
     proxy->synchronize(this);
-#ifdef HAVE_SSL
     proxy->synchronize(&_certManager);
-#endif
 }
 
-#ifdef HAVE_SSL
 void CoreIdentity::setSslKey(const QByteArray& encoded)
 {
     QSslKey key(encoded, QSsl::Rsa);
@@ -84,9 +69,6 @@ void CoreIdentity::setSslCert(const QByteArray& encoded)
     setSslCert(QSslCertificate(encoded));
 }
 
-#endif
-
-#ifdef HAVE_SSL
 // ========================================
 //  CoreCertManager
 // ========================================
@@ -114,5 +96,3 @@ void CoreCertManager::setSslCert(const QByteArray& encoded)
     _identity->setSslCert(encoded);
     CertManager::setSslCert(encoded);
 }
-
-#endif  // HAVE_SSL

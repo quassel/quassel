@@ -84,10 +84,8 @@ CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     connect(&socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::error), this, &CoreNetwork::onSocketError);
     connect(&socket, &QAbstractSocket::stateChanged, this, &CoreNetwork::onSocketStateChanged);
     connect(&socket, &QIODevice::readyRead, this, &CoreNetwork::onSocketHasData);
-#ifdef HAVE_SSL
     connect(&socket, &QSslSocket::encrypted, this, &CoreNetwork::onSocketInitialized);
     connect(&socket, selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &CoreNetwork::onSslErrors);
-#endif
     connect(this, &CoreNetwork::newEvent, coreSession()->eventManager(), &EventManager::postEvent);
 
     // Custom rate limiting
@@ -268,7 +266,6 @@ void CoreNetwork::connectToIrc(bool reconnecting)
         // hostname of the server. Qt's DNS cache also isn't used by the proxy so we don't need to refresh the entry.
         QHostInfo::fromName(server.host);
     }
-#ifdef HAVE_SSL
     if (server.useSsl) {
         CoreIdentity* identity = identityPtr();
         if (identity) {
@@ -280,9 +277,6 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     else {
         socket.connectToHost(server.host, server.port);
     }
-#else
-    socket.connectToHost(server.host, server.port);
-#endif
 }
 
 void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool withReconnect)
@@ -563,7 +557,6 @@ void CoreNetwork::onSocketInitialized()
 
     Server server = usedServer();
 
-#ifdef HAVE_SSL
     // Non-SSL connections enter here only once, always emit socketInitialized(...) in these cases
     // SSL connections call socketInitialized() twice, only emit socketInitialized(...) on the first (not yet encrypted) run
     if (!server.useSsl || !socket.isEncrypted()) {
@@ -574,9 +567,6 @@ void CoreNetwork::onSocketInitialized()
         // We'll finish setup once we're encrypted, and called again
         return;
     }
-#else
-    emit socketInitialized(identity, localAddress(), localPort(), peerAddress(), peerPort(), _socketId);
-#endif
 
     socket.setSocketOption(QAbstractSocket::KeepAliveOption, true);
 
@@ -1114,7 +1104,6 @@ void CoreNetwork::serverCapAcknowledged(const QString& capability)
         // If SASL mechanisms specified, limit to what's accepted for authentication
         // if the current identity has a cert set, use SASL EXTERNAL
         // FIXME use event
-#ifdef HAVE_SSL
         if (!identityPtr()->sslCert().isNull()) {
             if (saslMaybeSupports(IrcCap::SaslMech::EXTERNAL)) {
                 // EXTERNAL authentication supported, send request
@@ -1131,7 +1120,6 @@ void CoreNetwork::serverCapAcknowledged(const QString& capability)
             }
         }
         else {
-#endif
             if (saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
                 // PLAIN authentication supported, send request
                 // Only working with PLAIN atm, blowfish later
@@ -1146,9 +1134,7 @@ void CoreNetwork::serverCapAcknowledged(const QString& capability)
                 ));
                 sendNextCap();
             }
-#ifdef HAVE_SSL
         }
-#endif
     }
 }
 
@@ -1455,7 +1441,6 @@ void CoreNetwork::sendAutoWho()
     }
 }
 
-#ifdef HAVE_SSL
 void CoreNetwork::onSslErrors(const QList<QSslError>& sslErrors)
 {
     Server server = usedServer();
@@ -1497,8 +1482,6 @@ void CoreNetwork::onSslErrors(const QList<QSslError>& sslErrors)
         socket.ignoreSslErrors();
     }
 }
-
-#endif  // HAVE_SSL
 
 void CoreNetwork::checkTokenBucket()
 {

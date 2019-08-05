@@ -20,15 +20,13 @@
 
 #pragma once
 
-#ifdef HAVE_SSL
+#include <QFile>
+#include <QLinkedList>
+#include <QSslCertificate>
+#include <QSslKey>
+#include <QTcpServer>
 
-#    include <QFile>
-#    include <QLinkedList>
-#    include <QSslCertificate>
-#    include <QSslKey>
-#    include <QTcpServer>
-
-#    include "metricsserver.h"
+#include "metricsserver.h"
 
 class SslServer : public QTcpServer
 {
@@ -87,5 +85,3 @@ private:
 
     QDateTime _certificateExpires;
 };
-
-#endif  // HAVE_SSL

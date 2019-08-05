@@ -21,12 +21,7 @@
 #include "clientauthhandler.h"
 
 #include <QtEndian>
-
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#else
-#    include <QTcpSocket>
-#endif
+#include <QSslSocket>
 
 #include "client.h"
 #include "clientsettings.h"
@@ -51,24 +46,9 @@ void ClientAuthHandler::connectToCore()
 {
     CoreAccountSettings s;
 
-#ifdef HAVE_SSL
     auto* socket = new QSslSocket(this);
     // make sure the warning is shown if we happen to connect without SSL support later
     s.setAccountValue("ShowNoClientSslWarning", true);
-#else
-    if (_account.useSsl()) {
-        if (s.accountValue("ShowNoClientSslWarning", true).toBool()) {
-            bool accepted = false;
-            emit handleNoSslInClient(&accepted);
-            if (!accepted) {
-                emit errorMessage(tr("Unencrypted connection canceled"));
-                return;
-            }
-            s.setAccountValue("ShowNoClientSslWarning", false);
-        }
-    }
-    QTcpSocket* socket = new QTcpSocket(this);
-#endif
 
 #ifndef QT_NO_NETWORKPROXY
     QNetworkProxy proxy;
@@ -179,10 +159,8 @@ void ClientAuthHandler::onSocketConnected()
         stream.setVersion(QDataStream::Qt_4_2);
 
         quint32 magic = Protocol::magic;
-#ifdef HAVE_SSL
         if (_account.useSsl())
             magic |= Protocol::Encryption;
-#endif
         magic |= Protocol::Compression;
 
         stream << magic;
@@ -288,9 +266,7 @@ void ClientAuthHandler::startRegistration()
 
     // useSsl will be ignored by non-legacy peers
     bool useSsl = false;
-#ifdef HAVE_SSL
     useSsl = _account.useSsl();
-#endif
 
     _peer->dispatch(Protocol::RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate, useSsl));
 }
@@ -403,9 +379,6 @@ void ClientAuthHandler::handle(const Protocol::SessionState& msg)
 
 void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
 {
-#ifndef HAVE_SSL
-    Q_UNUSED(coreSupportsSsl);
-#else
     CoreAccountSettings s;
     if (coreSupportsSsl && _account.useSsl()) {
         // Make sure the warning is shown next time we don't have SSL in the core
@@ -436,10 +409,8 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
         else
             startRegistration();
     }
-#endif
 }
 
-#ifdef HAVE_SSL
 
 void ClientAuthHandler::onSslSocketEncrypted()
 {
@@ -512,5 +483,3 @@ void ClientAuthHandler::onSslErrors()
 
     socket->ignoreSslErrors();
 }
-
-#endif /* HAVE_SSL */

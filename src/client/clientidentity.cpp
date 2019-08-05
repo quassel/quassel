@@ -33,14 +33,11 @@ CertIdentity::CertIdentity(const Identity& other, QObject* parent)
 
 CertIdentity::CertIdentity(const CertIdentity& other, QObject* parent)
     : Identity(other, parent)
-#ifdef HAVE_SSL
     , _isDirty(other._isDirty)
     , _sslKey(other._sslKey)
     , _sslCert(other._sslCert)
-#endif
 {}
 
-#ifdef HAVE_SSL
 void CertIdentity::enableEditSsl(bool enable)
 {
     if (!enable || _certManager)
@@ -101,5 +98,3 @@ void ClientCertManager::setSslCert(const QByteArray& encoded)
 {
     _certIdentity->setSslCert(QSslCertificate(encoded));
 }
-
-#endif  // HAVE_SSL

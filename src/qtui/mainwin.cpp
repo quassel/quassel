@@ -91,6 +91,7 @@
 #include "resourcetreedlg.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
+#include "sslinfodlg.h"
 #include "statusnotifieritem.h"
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
@@ -112,10 +113,6 @@
 #    include "snorenotificationbackend.h"
 #endif
 
-#ifdef HAVE_SSL
-#    include "sslinfodlg.h"
-#endif
-
 #ifdef HAVE_NOTIFICATION_CENTER
 #    include "osxnotificationbackend.h"
 #endif
@@ -123,8 +120,6 @@
 #ifdef HAVE_DBUS
 #    include "dockmanagernotificationbackend.h"
 #endif
-
-#include <settingspages/corehighlightsettingspage.h>
 
 #include "settingspages/aliasessettingspage.h"
 #include "settingspages/appearancesettingspage.h"
@@ -136,6 +131,7 @@
 #include "settingspages/connectionsettingspage.h"
 #include "settingspages/coreaccountsettingspage.h"
 #include "settingspages/coreconnectionsettingspage.h"
+#include "settingspages/corehighlightsettingspage.h"
 #include "settingspages/dccsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
@@ -202,9 +198,7 @@ void MainWin::init()
     connect(Client::coreConnection(), &CoreConnection::userAuthenticationRequired, this, &MainWin::userAuthenticationRequired);
     connect(Client::coreConnection(), &CoreConnection::handleNoSslInClient, this, &MainWin::handleNoSslInClient);
     connect(Client::coreConnection(), &CoreConnection::handleNoSslInCore, this, &MainWin::handleNoSslInCore);
-#ifdef HAVE_SSL
     connect(Client::coreConnection(), &CoreConnection::handleSslErrors, this, &MainWin::handleSslErrors);
-#endif
 
     // Setup Dock Areas
     setDockNestingEnabled(true);
@@ -1380,8 +1374,6 @@ void MainWin::handleNoSslInCore(bool* accepted)
     *accepted = (box.exec() == QMessageBox::Ignore);
 }
 
-#ifdef HAVE_SSL
-
 void MainWin::handleSslErrors(const QSslSocket* socket, bool* accepted, bool* permanently)
 {
     QString errorString = "<ul>";
@@ -1419,8 +1411,6 @@ void MainWin::handleSslErrors(const QSslSocket* socket, bool* accepted, bool* pe
         *permanently = (box2.buttonRole(box2.clickedButton()) == QMessageBox::YesRole);
     }
 }
-
-#endif /* HAVE_SSL */
 
 void MainWin::handleCoreConnectionError(const QString& error)
 {

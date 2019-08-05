@@ -23,10 +23,8 @@
 #include <utility>
 
 #include <QHostAddress>
+#include <QSslSocket>
 #include <QStringList>
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#endif
 
 #include "client.h"
 #include "quassel.h"

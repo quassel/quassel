@@ -148,9 +148,7 @@ private slots:
     void userAuthenticationRequired(CoreAccount*, bool* valid, const QString& errorMessage);
     void handleNoSslInClient(bool* accepted);
     void handleNoSslInCore(bool* accepted);
-#ifdef HAVE_SSL
     void handleSslErrors(const QSslSocket* socket, bool* accepted, bool* permanently);
-#endif
 
     void onConfigureNetworksTriggered();
     void onConfigureViewsTriggered();
