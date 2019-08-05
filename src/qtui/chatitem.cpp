@@ -142,11 +142,12 @@ void ChatItem::initLayoutHelper(QTextLayout* layout, QTextOption::WrapMode wrapM
     option.setAlignment(alignment);
     layout->setTextOption(option);
 
-    QList<QTextLayout::FormatRange> formatRanges = QtUi::style()
-                                                       ->toTextLayoutList(formatList(),
-                                                                          layout->text().length(),
-                                                                          data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>());
-    layout->setAdditionalFormats(formatRanges);
+    UiStyle::FormatContainer formatRanges = QtUi::style()->toTextLayoutList(
+        formatList(),
+        layout->text().length(),
+        data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>()
+    );
+    UiStyle::setTextLayoutFormats(*layout, formatRanges);
 }
 
 void ChatItem::initLayout(QTextLayout* layout) const
@@ -347,16 +348,16 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
     }
 
     // Add all formats that have an extra label to the additionalFormats list
-    QList<QTextLayout::FormatRange> additionalFormats;
+    UiStyle::FormatContainer additionalFormats;
     for (size_t i = 0; i < labelFmtList.size() - 1; ++i) {
         if (labelFmtList[i].label != itemLabel) {
             additionalFormats << QtUi::style()->toTextLayoutList({std::make_pair(labelFmtList[i].offset, labelFmtList[i].format)},
-                                                                 labelFmtList[i + 1].offset,
-                                                                 labelFmtList[i].label);
+                                                                   labelFmtList[i + 1].offset,
+                                                                   labelFmtList[i].label);
         }
     }
 
-    return additionalFormats.toVector();
+    return UiStyle::containerToVector(additionalFormats);
 }
 
 bool ChatItem::hasSelection() const

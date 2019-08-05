@@ -49,6 +49,28 @@ public:
     UiStyle(QObject* parent = nullptr);
     ~UiStyle() override;
 
+// For backwards compatibility with Qt 5.5, the setFormats method was introduced
+// in Qt 5.6, but the old setAdditionalFormats was deprecated in 5.6 as well.
+//
+// So we use the old one on Qt 5.5, and the new one everywhere else.
+#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+    using FormatContainer = QVector<QTextLayout::FormatRange>;
+    static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) {
+        layout.setFormats(formats);
+    }
+    static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) {
+        return container;
+    }
+#else
+    using FormatContainer = QList<QTextLayout::FormatRange>;
+    static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) {
+        layout.setAdditionalFormats(formats);
+    }
+    static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) {
+        return container.toVector();
+    }
+#endif
+
     //! This enumerates the possible formats a text element may have. */
     /** These formats are ordered on increasing importance, in cases where a given property is specified
      *  by multiple active formats.
@@ -275,7 +297,7 @@ public:
     QTextCharFormat format(const Format& format, MessageLabel messageLabel) const;
     QFontMetricsF* fontMetrics(FormatType formatType, MessageLabel messageLabel) const;
 
-    QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList&, int textLength, MessageLabel messageLabel) const;
+    FormatContainer toTextLayoutList(const FormatList&, int textLength, MessageLabel messageLabel) const;
 
     inline const QBrush& brush(ColorRole role) const { return _uiStylePalette.at((int)role); }
     inline void setBrush(ColorRole role, const QBrush& brush) { _uiStylePalette[(int)role] = brush; }
