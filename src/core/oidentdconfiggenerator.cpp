@@ -44,7 +44,7 @@ OidentdConfigGenerator::~OidentdConfigGenerator()
 
 bool OidentdConfigGenerator::init()
 {
-    _configDir = QDir::homePath();
+    _configDir.setPath(QDir::homePath());
     _configFileName = ".oidentd.conf";
 
     if (Quassel::isOptionSet("oidentd-conffile"))
