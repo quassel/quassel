@@ -200,7 +200,7 @@ void ChatLineModelItem::computeWrapList() const
     option.setWrapMode(QTextOption::NoWrap);
     layout.setTextOption(option);
 
-    layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(_styledMsg.contentsFormatList(), length, messageLabel()));
+    UiStyle::setTextLayoutFormats(layout, QtUi::style()->toTextLayoutList(_styledMsg.contentsFormatList(), length, messageLabel()));
     layout.beginLayout();
     QTextLine line = layout.createLine();
     line.setNumColumns(length);

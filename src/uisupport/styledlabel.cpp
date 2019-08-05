@@ -110,10 +110,8 @@ void StyledLabel::updateSizeHint()
 
 void StyledLabel::setText(const QString& text)
 {
-    UiStyle* style = GraphicalUi::uiStyle();
-
-    UiStyle::StyledString sstr = style->styleString(style->mircToInternal(text), UiStyle::FormatType::PlainMsg);
-    QList<QTextLayout::FormatRange> layoutList = style->toTextLayoutList(sstr.formatList, sstr.plainText.length(), UiStyle::MessageLabel::None);
+    UiStyle::StyledString sstr = UiStyle::styleString(UiStyle::mircToInternal(text), UiStyle::FormatType::PlainMsg);
+    UiStyle::FormatContainer layoutList = GraphicalUi::uiStyle()->toTextLayoutList(sstr.formatList, sstr.plainText.length(), UiStyle::MessageLabel::None);
 
     // Use default font rather than the style's
     QTextLayout::FormatRange fmtRange;
@@ -135,7 +133,7 @@ void StyledLabel::setText(const QString& text)
     }
 
     _layout.setText(sstr.plainText);
-    _layout.setAdditionalFormats(layoutList);
+    UiStyle::setTextLayoutFormats(_layout, layoutList);
 
     layout();
 
