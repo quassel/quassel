@@ -35,6 +35,7 @@ struct Request
 {
     QPointer<QTcpSocket> socket;
     uint16_t localPort;
+    uint16_t remotePort;
     QString query;
     qint64 transactionId;
     qint64 requestId;
@@ -43,6 +44,8 @@ struct Request
 
     void respondSuccess(const QString& user);
     void respondError(const QString& error);
+
+    const static int DISCONNECTION_TIMEOUT = 500;
 };
 
 class IdentServer : public QObject

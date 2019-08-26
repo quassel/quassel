@@ -150,17 +150,22 @@ void IdentServer::respond()
     else if (query.endsWith("\n"))
         query.chop(1);
 
+    qDebug() << "Received identd query" << query << "from" << socket->peerAddress();
+
     QList<QByteArray> split = query.split(',');
 
-    bool success = false;
+    bool successLocalPort = false;
+    bool successRemotePort = false;
 
     quint16 localPort = 0;
-    if (!split.empty()) {
-        localPort = split[0].trimmed().toUShort(&success, 10);
+    quint16 remotePort = 0;
+    if (split.length() == 2) {
+        localPort = split[0].trimmed().toUShort(&successLocalPort, 10);
+        remotePort = split[1].trimmed().toUShort(&successRemotePort, 10);
     }
 
-    Request request{socket, localPort, query, transactionId, _requestId++};
-    if (!success) {
+    Request request{socket, localPort, remotePort, query, transactionId, _requestId++};
+    if (!successLocalPort || !successRemotePort) {
         request.respondError("INVALID-PORT");
     }
     else if (responseAvailable(request)) {
@@ -177,20 +182,28 @@ void IdentServer::respond()
 void Request::respondSuccess(const QString& user)
 {
     if (socket) {
-        QString data = query + " : USERID : Quassel : " + user + "\r\n";
+        QString data = QString("%1, %2 : USERID : Quassel : %3\r\n")
+            .arg(QString::number(localPort))
+            .arg(QString::number(remotePort))
+            .arg(user);
+        qDebug() << "answering identd request from" << socket->peerAddress() << "with" << data;
         socket->write(data.toUtf8());
         socket->flush();
-        socket->close();
+        QTimer::singleShot(DISCONNECTION_TIMEOUT, socket, &QTcpSocket::close);
     }
 }
 
 void Request::respondError(const QString& error)
 {
     if (socket) {
-        QString data = query + " : ERROR : " + error + "\r\n";
+        QString data = QString("%1, %2 : ERROR : %3\r\n")
+            .arg(QString::number(localPort))
+            .arg(QString::number(remotePort))
+            .arg(error);
+        qDebug() << "answering identd request from" << socket->peerAddress() << "with" << data;
         socket->write(data.toUtf8());
         socket->flush();
-        socket->close();
+        QTimer::singleShot(DISCONNECTION_TIMEOUT, socket, &QTcpSocket::close);
     }
 }
 
@@ -217,7 +230,7 @@ void IdentServer::addSocket(const CoreIdentity* identity,
 
     const CoreNetwork* network = qobject_cast<CoreNetwork*>(sender());
     _connections[localPort] = network->coreSession()->strictCompliantIdent(identity);
-    ;
+
     processWaiting(socketId);
 }
 
