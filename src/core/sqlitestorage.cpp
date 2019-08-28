@@ -22,6 +22,8 @@
 
 #include <QtSql>
 
+#include <QLatin1String>
+
 #include "network.h"
 #include "quassel.h"
 
@@ -192,7 +194,7 @@ UserId SqliteStorage::addUser(const QString& user, const QString& password, cons
         lockForWrite();
         safeExec(query);
         if (query.lastError().isValid()
-            && query.lastError().nativeErrorCode() == "19") {  // user already exists - sadly 19 seems to be the general constraint violation error...
+            && query.lastError().nativeErrorCode() == QLatin1String{"19"}) {  // user already exists - sadly 19 seems to be the general constraint violation error...
             db.rollback();
         }
         else {
@@ -1409,7 +1411,7 @@ bool SqliteStorage::renameBuffer(const UserId& user, const BufferId& bufferId, c
 
         error = query.lastError().isValid();
         // unexepcted error occured (19 == constraint violation)
-        if (error && query.lastError().nativeErrorCode() != "19") {
+        if (error && query.lastError().nativeErrorCode() != QLatin1String{"19"}) {
             watchQuery(query);
         }
         else {
@@ -1790,7 +1792,7 @@ bool SqliteStorage::logMessage(Message& msg)
 
         if (logMessageQuery.lastError().isValid()) {
             // constraint violation - must be NOT NULL constraint - probably the sender is missing...
-            if (logMessageQuery.lastError().nativeErrorCode() == "19") {
+            if (logMessageQuery.lastError().nativeErrorCode() == QLatin1String{"19"}) {
                 QSqlQuery addSenderQuery(db);
                 addSenderQuery.prepare(queryString("insert_sender"));
                 addSenderQuery.bindValue(":sender", msg.sender());
@@ -2223,7 +2225,7 @@ bool SqliteStorage::safeExec(QSqlQuery& query, int retryCount)
 
     // SQLITE_BUSY         5   /* The database file is locked */
     // SQLITE_LOCKED       6   /* A table in the database is locked */
-    if (nativeErrorCode == "5" || nativeErrorCode == "6") {
+    if (nativeErrorCode == QLatin1String{"5"} || nativeErrorCode == QLatin1String{"6"}) {
         if (retryCount < _maxRetryCount)
             return safeExec(query, retryCount + 1);
     }
