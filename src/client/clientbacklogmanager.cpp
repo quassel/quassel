@@ -20,6 +20,7 @@
 
 #include "clientbacklogmanager.h"
 
+#include <algorithm>
 #include <ctime>
 
 #include <QDebug>

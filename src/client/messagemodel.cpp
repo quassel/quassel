@@ -20,6 +20,8 @@
 
 #include "messagemodel.h"
 
+#include <algorithm>
+
 #include <QEvent>
 
 #include "backlogsettings.h"
