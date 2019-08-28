@@ -51,14 +51,14 @@ if (TARGET Qt5::lconvert)
             COMMAND $<TARGET_FILE:Qt5::lupdate> -silent ${CMAKE_SOURCE_DIR}/src -ts ${tsfiles}
             COMMAND ${CMAKE_COMMAND} -E touch tsfiles.done
             DEPENDS ${tsfiles}
-            OUTPUT tsfiles.depends
+            OUTPUT tsfiles.done
         )
 
         # Generate the final translation files (.qm) for use by Qt
         add_custom_command(VERBATIM
             COMMENT "Compressing translations"
             COMMAND $<TARGET_FILE:Qt5::lrelease> -silent ${tsfiles}
-            DEPENDS tsfiles.depends
+            DEPENDS tsfiles.done
             OUTPUT ${qmfiles}
         )
 
