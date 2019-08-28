@@ -20,6 +20,8 @@
 
 #include "coresessioneventprocessor.h"
 
+#include <algorithm>
+
 #include "coreirclisthelper.h"
 #include "corenetwork.h"
 #include "coresession.h"

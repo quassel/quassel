@@ -20,6 +20,7 @@
 
 #include "bufferviewsettingspage.h"
 
+#include <algorithm>
 #include <utility>
 
 #include <QMessageBox>

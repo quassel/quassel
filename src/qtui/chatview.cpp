@@ -20,6 +20,8 @@
 
 #include "chatview.h"
 
+#include <algorithm>
+
 #include <QGraphicsTextItem>
 #include <QKeyEvent>
 #include <QMenu>

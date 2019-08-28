@@ -20,6 +20,8 @@
 
 #include "corehighlightsettingspage.h"
 
+#include <algorithm>
+
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QTableWidget>

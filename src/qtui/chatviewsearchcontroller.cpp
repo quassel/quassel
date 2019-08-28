@@ -20,6 +20,8 @@
 
 #include "chatviewsearchcontroller.h"
 
+#include <algorithm>
+
 #include <QAbstractItemModel>
 #include <QPainter>
 

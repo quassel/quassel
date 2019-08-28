@@ -20,6 +20,7 @@
 
 #include "networkmodel.h"
 
+#include <algorithm>
 #include <utility>
 
 #include <QAbstractItemView>
