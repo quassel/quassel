@@ -25,7 +25,7 @@
 CoreIdentity::CoreIdentity(IdentityId id, QObject* parent)
     : Identity(id, parent)
 #ifdef HAVE_SSL
-    , _certManager(*this)
+    , _certManager(this)
 #endif
 {
 #ifdef HAVE_SSL
@@ -37,7 +37,7 @@ CoreIdentity::CoreIdentity(IdentityId id, QObject* parent)
 CoreIdentity::CoreIdentity(const Identity& other, QObject* parent)
     : Identity(other, parent)
 #ifdef HAVE_SSL
-    , _certManager(*this)
+    , _certManager(this)
 #endif
 {
 #ifdef HAVE_SSL
@@ -51,7 +51,7 @@ CoreIdentity::CoreIdentity(const CoreIdentity& other, QObject* parent)
 #ifdef HAVE_SSL
     , _sslKey(other._sslKey)
     , _sslCert(other._sslCert)
-    , _certManager(*this)
+    , _certManager(this)
 #endif
 {
 #ifdef HAVE_SSL
@@ -91,9 +91,9 @@ void CoreIdentity::setSslCert(const QByteArray& encoded)
 //  CoreCertManager
 // ========================================
 
-CoreCertManager::CoreCertManager(CoreIdentity& identity)
-    : CertManager(identity.id())
-    , identity(identity)
+CoreCertManager::CoreCertManager(CoreIdentity* identity)
+    : CertManager(identity->id())
+    , _identity(identity)
 {
     setAllowClientUpdates(true);
 }
@@ -105,13 +105,13 @@ void CoreCertManager::setId(IdentityId id)
 
 void CoreCertManager::setSslKey(const QByteArray& encoded)
 {
-    identity.setSslKey(encoded);
+    _identity->setSslKey(encoded);
     CertManager::setSslKey(encoded);
 }
 
 void CoreCertManager::setSslCert(const QByteArray& encoded)
 {
-    identity.setSslCert(encoded);
+    _identity->setSslCert(encoded);
     CertManager::setSslCert(encoded);
 }
 
