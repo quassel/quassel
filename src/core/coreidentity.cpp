@@ -86,16 +86,6 @@ void CoreIdentity::setSslCert(const QByteArray& encoded)
 
 #endif
 
-CoreIdentity& CoreIdentity::operator=(const CoreIdentity& identity)
-{
-    Identity::operator=(identity);
-#ifdef HAVE_SSL
-    _sslKey = identity._sslKey;
-    _sslCert = identity._sslCert;
-#endif
-    return *this;
-}
-
 #ifdef HAVE_SSL
 // ========================================
 //  CoreCertManager
