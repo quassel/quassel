@@ -18,14 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef CHATLINE_H_
-#define CHATLINE_H_
+#pragma once
 
 #include <QGraphicsItem>
+#include <QModelIndex>
+#include <QRectF>
 
 #include "chatitem.h"
 #include "chatlinemodel.h"
 #include "chatscene.h"
+
+class QAbstractItemModel;
+class QEvent;
+class QGraphicsSceneMouseEvent;
+class QGraphicsSceneHoverEvent;
+class QPainter;
+class QStyleOptionGraphicsItem;
 
 class ChatLine : public QGraphicsItem
 {
@@ -122,5 +130,3 @@ private:
     ChatItem* _mouseGrabberItem;
     ChatItem* _hoverItem;
 };
-
-#endif

@@ -22,6 +22,7 @@
 
 #include <QDebug>
 #include <QHostInfo>
+#include <QTextBoundaryFinder>
 
 #include "core.h"
 #include "coreidentity.h"

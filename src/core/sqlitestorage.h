@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include <memory>
+
+#include <QReadWriteLock>
 #include <QSqlDatabase>
 
 #include "abstractsqlstorage.h"

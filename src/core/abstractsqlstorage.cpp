@@ -20,11 +20,14 @@
 
 #include "abstractsqlstorage.h"
 
+#include <QDir>
+#include <QFileInfo>
 #include <QMutexLocker>
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlField>
 #include <QSqlQuery>
+#include <QThread>
 
 #include "quassel.h"
 

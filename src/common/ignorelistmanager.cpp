@@ -22,7 +22,6 @@
 
 #include <QDebug>
 #include <QStringList>
-#include <QtCore>
 
 IgnoreListManager& IgnoreListManager::operator=(const IgnoreListManager& other)
 {
