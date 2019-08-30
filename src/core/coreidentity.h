@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "core-export.h"
+
 #include "identity.h"
 
 #ifdef HAVE_SSL
@@ -34,12 +36,12 @@ class SignalProxy;
 // ========================================
 #ifdef HAVE_SSL
 class CoreIdentity;
-class CoreCertManager : public CertManager
+class CORE_EXPORT CoreCertManager : public CertManager
 {
     Q_OBJECT
 
 public:
-    CoreCertManager(CoreIdentity& identity);
+    CoreCertManager(CoreIdentity* identity);
 
 #    ifdef HAVE_SSL
     const QSslKey& sslKey() const override;
@@ -53,7 +55,7 @@ public slots:
     void setId(IdentityId id);
 
 private:
-    CoreIdentity& identity;
+    CoreIdentity* _identity{nullptr};
 };
 
 #endif  // HAVE_SSL
@@ -61,7 +63,7 @@ private:
 // =========================================
 //  CoreIdentity
 // =========================================
-class CoreIdentity : public Identity
+class CORE_EXPORT CoreIdentity : public Identity
 {
     Q_OBJECT
 
@@ -93,12 +95,12 @@ private:
 #ifdef HAVE_SSL
 inline const QSslKey& CoreCertManager::sslKey() const
 {
-    return identity.sslKey();
+    return _identity->sslKey();
 }
 
 inline const QSslCertificate& CoreCertManager::sslCert() const
 {
-    return identity.sslCert();
+    return _identity->sslCert();
 }
 
 #endif
