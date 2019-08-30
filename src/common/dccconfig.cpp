@@ -37,22 +37,6 @@ DccConfig::DccConfig(QObject* parent)
     setAllowClientUpdates(true);
 }
 
-DccConfig& DccConfig::operator=(const DccConfig& other)
-{
-    if (this == &other)
-        return *this;
-
-    SyncableObject::operator=(other);
-
-    static auto propCount = staticMetaObject.propertyCount();
-    for (int i = 0; i < propCount; ++i) {
-        auto propName = staticMetaObject.property(i).name();
-        setProperty(propName, other.property(propName));
-    }
-
-    return *this;
-}
-
 bool DccConfig::operator==(const DccConfig& other)
 {
     // NOTE: We don't compare the SyncableObject attributes (isInitialized, clientUpdatesAllowed())

@@ -89,16 +89,6 @@ public:
     DccConfig(QObject* parent = nullptr);
 
     /**
-     * Assignment operator.
-     *
-     * @note Only assigns properties relevant for config management!
-     *
-     * @param[in] other Right-hand side instance
-     * @returns The updated instance
-     */
-    DccConfig& operator=(const DccConfig& other);
-
-    /**
      * Equality operator.
      *
      * @note Only compares properties relevant for config management!
