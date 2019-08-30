@@ -81,8 +81,6 @@ public:
     void setSslCert(const QByteArray& encoded);
 #endif /* HAVE_SSL */
 
-    CoreIdentity& operator=(const CoreIdentity& identity);
-
 private:
 #ifdef HAVE_SSL
     QSslKey _sslKey;
