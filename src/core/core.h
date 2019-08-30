@@ -194,7 +194,7 @@ public:
 
     static void removeIdentity(UserId user, IdentityId identityId) { instance()->_storage->removeIdentity(user, identityId); }
 
-    static QList<CoreIdentity> identities(UserId user) { return instance()->_storage->identities(user); }
+    static std::vector<CoreIdentity> identities(UserId user) { return instance()->_storage->identities(user); }
 
     //! Create a Network in the Storage and store it's Id in the given NetworkInfo
     /** \note This method is thredsafe.
@@ -230,9 +230,9 @@ public:
     /** \note This method is thredsafe.
      *
      *  \param user        The core user
-     *  \return QList<NetworkInfo>.
+     *  \return std::vector<NetworkInfo>.
      */
-    static inline QList<NetworkInfo> networks(UserId user) { return instance()->_storage->networks(user); }
+    static inline std::vector<NetworkInfo> networks(UserId user) { return instance()->_storage->networks(user); }
 
     //! Get a list of Networks to restore
     /** Return a list of networks the user was connected at the time of core shutdown
@@ -240,7 +240,7 @@ public:
      *
      *  \param user  The User Id in question
      */
-    static inline QList<NetworkId> connectedNetworks(UserId user) { return instance()->_storage->connectedNetworks(user); }
+    static inline std::vector<NetworkId> connectedNetworks(UserId user) { return instance()->_storage->connectedNetworks(user); }
 
     //! Update the connected state of a network
     /** \note This method is threadsafe
@@ -407,7 +407,7 @@ public:
      *  \param limit    if != -1 limit the returned list to a max of \limit entries
      *  \return The requested list of messages
      */
-    static inline QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1)
+    static inline std::vector<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1)
     {
         return instance()->_storage->requestMsgs(user, bufferId, first, last, limit);
     }
@@ -420,7 +420,7 @@ public:
      *  \param type     The Message::Types that should be returned
      *  \return The requested list of messages
      */
-    static inline QList<Message> requestMsgsFiltered(UserId user,
+    static inline std::vector<Message> requestMsgsFiltered(UserId user,
                                                      BufferId bufferId,
                                                      MsgId first = -1,
                                                      MsgId last = -1,
@@ -437,7 +437,7 @@ public:
      *  \param limit    Max amount of messages
      *  \return The requested list of messages
      */
-    static inline QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1)
+    static inline std::vector<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1)
     {
         return instance()->_storage->requestAllMsgs(user, first, last, limit);
     }
@@ -449,7 +449,7 @@ public:
      *  \param type     The Message::Types that should be returned
      *  \return The requested list of messages
      */
-    static inline QList<Message> requestAllMsgsFiltered(UserId user,
+    static inline std::vector<Message> requestAllMsgsFiltered(UserId user,
                                                         MsgId first = -1,
                                                         MsgId last = -1,
                                                         int limit = -1,
@@ -466,7 +466,7 @@ public:
      *  \param user  The user whose buffers we request
      *  \return A list of the BufferInfos for all buffers as requested
      */
-    static inline QList<BufferInfo> requestBuffers(UserId user) { return instance()->_storage->requestBuffers(user); }
+    static inline std::vector<BufferInfo> requestBuffers(UserId user) { return instance()->_storage->requestBuffers(user); }
 
     //! Request a list of BufferIds for a given NetworkId
     /** \note This method is threadsafe.
@@ -475,7 +475,7 @@ public:
      *  \param networkId  The NetworkId of the network in question
      *  \return List of BufferIds belonging to the Network
      */
-    static inline QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId)
+    static inline std::vector<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId)
     {
         return instance()->_storage->requestBufferIdsForNetwork(user, networkId);
     }

@@ -21,6 +21,7 @@
 #pragma once
 
 #include <utility>
+#include <vector>
 
 #include <QHash>
 #include <QSet>
@@ -65,7 +66,7 @@ class CoreSession : public QObject
 public:
     CoreSession(UserId, bool restoreState, bool strictIdentEnabled, QObject* parent = nullptr);
 
-    QList<BufferInfo> buffers() const;
+    std::vector<BufferInfo> buffers() const;
     inline UserId user() const { return _user; }
     CoreNetwork* network(NetworkId) const;
     CoreIdentity* identity(IdentityId) const;

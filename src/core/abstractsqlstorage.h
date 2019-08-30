@@ -21,6 +21,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <QHash>
 #include <QMutex>
@@ -95,7 +96,7 @@ protected:
      *
      * @return List of SQL query strings and filenames
      */
-    QList<SqlQueryResource> setupQueries();
+    std::vector<SqlQueryResource> setupQueries();
 
     /**
      * Gets the collection of SQL upgrade queries and filenames for a given schema version
@@ -103,7 +104,7 @@ protected:
      * @param ver  SQL schema version
      * @return List of SQL query strings and filenames
      */
-    QList<SqlQueryResource> upgradeQueries(int ver);
+    std::vector<SqlQueryResource> upgradeQueries(int ver);
     bool upgradeDb();
 
     bool watchQuery(QSqlQuery& query);
