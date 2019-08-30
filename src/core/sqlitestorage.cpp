@@ -20,9 +20,10 @@
 
 #include "sqlitestorage.h"
 
-#include <QtSql>
-
+#include <QByteArray>
+#include <QDataStream>
 #include <QLatin1String>
+#include <QVariant>
 
 #include "network.h"
 #include "quassel.h"

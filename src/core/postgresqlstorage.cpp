@@ -20,7 +20,10 @@
 
 #include "postgresqlstorage.h"
 
-#include <QtSql>
+#include <QByteArray>
+#include <QDataStream>
+#include <QSqlDriver>
+#include <QSqlField>
 
 #include "network.h"
 #include "quassel.h"

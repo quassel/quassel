@@ -20,6 +20,8 @@
 
 #include "coreauthhandler.h"
 
+#include <QtEndian>
+
 #ifdef HAVE_SSL
 #    include <QSslSocket>
 #endif

@@ -20,10 +20,20 @@
 
 #include "chatline.h"
 
+#include <QAbstractItemModel>
 #include <QDateTime>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneHoverEvent>
+#include <QPainter>
 #include <QString>
-#include <QtGui>
+#include <QStyleOptionGraphicsItem>
+#include <QTextCharFormat>
+
+class QAbstractItemModel;
+class QGraphicsSceneMouseEvent;
+class QGraphicsSceneHoverEvent;
+class QPainter;
+class QStyleOptionGraphicsItem;
 
 #include "bufferinfo.h"
 #include "buffersyncer.h"
@@ -47,9 +57,8 @@ ChatLine::ChatLine(int row,
                    const QPointF& contentsPos,
                    QGraphicsItem* parent)
     : QGraphicsItem(parent)
-    , _row(row)
-    ,  // needs to be set before the items
-    _model(model)
+    , _row(row) // needs to be set before the items
+    , _model(model)
     , _contentsItem(contentsPos, contentsWidth, this)
     , _senderItem(QRectF(senderPos, QSizeF(senderWidth, _contentsItem.height())), this)
     , _timestampItem(QRectF(0, 0, timestampWidth, _contentsItem.height()), this)

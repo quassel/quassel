@@ -18,10 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef STORAGE_H
-#define STORAGE_H
+#pragma once
 
-#include <QtCore>
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QProcessEnvironment>
+#include <QString>
+#include <QVariant>
+#include <QVariantList>
 
 #include "coreidentity.h"
 #include "message.h"
@@ -572,5 +577,3 @@ private:
     bool checkHashedPasswordSha2_512(const QString& password, const QString& hashedPassword);
     QString sha2_512(const QString& input);
 };
-
-#endif

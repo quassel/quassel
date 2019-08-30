@@ -22,12 +22,15 @@
 
 #include <memory>
 
-#include <QList>
+#include <QHash>
+#include <QMutex>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
 
 #include "storage.h"
+
+class QThread;
 
 class AbstractSqlMigrationReader;
 class AbstractSqlMigrationWriter;
