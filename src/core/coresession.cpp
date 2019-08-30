@@ -207,11 +207,11 @@ void CoreSession::loadSettings()
 
     // migrate to db
     QList<IdentityId> ids = s.identityIds();
-    QList<NetworkInfo> networkInfos = Core::networks(user());
+    std::vector<NetworkInfo> networkInfos = Core::networks(user());
     for (IdentityId id : ids) {
         CoreIdentity identity(s.identity(id));
         IdentityId newId = Core::createIdentity(user(), identity);
-        QList<NetworkInfo>::iterator networkIter = networkInfos.begin();
+        auto networkIter = networkInfos.begin();
         while (networkIter != networkInfos.end()) {
             if (networkIter->identity == id) {
                 networkIter->identity = newId;
@@ -244,10 +244,8 @@ void CoreSession::saveSessionState() const
 
 void CoreSession::restoreSessionState()
 {
-    QList<NetworkId> nets = Core::connectedNetworks(user());
-    CoreNetwork* net = nullptr;
-    for (NetworkId id :  nets) {
-        net = network(id);
+    for (NetworkId id : Core::connectedNetworks(user())) {
+        auto net = network(id);
         Q_ASSERT(net);
         net->connectToIrc();
     }
@@ -359,7 +357,7 @@ void CoreSession::processMessageEvent(MessageEvent* event)
     });
 }
 
-QList<BufferInfo> CoreSession::buffers() const
+std::vector<BufferInfo> CoreSession::buffers() const
 {
     return Core::requestBuffers(user());
 }
@@ -659,7 +657,6 @@ void CoreSession::removeNetwork(NetworkId id)
 
 void CoreSession::destroyNetwork(NetworkId id)
 {
-    QList<BufferId> removedBuffers = Core::requestBufferIdsForNetwork(user(), id);
     Network* net = _networks.take(id);
     if (net && Core::removeNetwork(user(), id)) {
         // make sure that all unprocessed RawMessages from this network are removed
@@ -673,7 +670,7 @@ void CoreSession::destroyNetwork(NetworkId id)
             }
         }
         // remove buffers from syncer
-        for (BufferId bufferId : removedBuffers) {
+        for (BufferId bufferId : Core::requestBufferIdsForNetwork(user(), id)) {
             _bufferSyncer->removeBuffer(bufferId);
         }
         emit networkRemoved(id);

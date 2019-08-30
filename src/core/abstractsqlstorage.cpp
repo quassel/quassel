@@ -183,13 +183,13 @@ QString AbstractSqlStorage::queryString(const QString& queryName, int version)
     return query.trimmed();
 }
 
-QList<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::setupQueries()
+std::vector<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::setupQueries()
 {
-    QList<SqlQueryResource> queries;
+    std::vector<SqlQueryResource> queries;
     // The current schema is stored in the root folder, including setup scripts.
     QDir dir = QDir(QString(":/SQL/%1/").arg(displayName()));
     foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
-        queries << SqlQueryResource(queryString(fileInfo.baseName()), fileInfo.baseName());
+        queries.emplace_back(queryString(fileInfo.baseName()), fileInfo.baseName());
     }
     return queries;
 }
@@ -221,13 +221,13 @@ bool AbstractSqlStorage::setup(const QVariantMap& settings, const QProcessEnviro
     return success;
 }
 
-QList<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::upgradeQueries(int version)
+std::vector<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::upgradeQueries(int version)
 {
-    QList<SqlQueryResource> queries;
+    std::vector<SqlQueryResource> queries;
     // Upgrade queries are stored in the 'version/##' subfolders.
     QDir dir = QDir(QString(":/SQL/%1/version/%2/").arg(displayName()).arg(version));
     foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
-        queries << SqlQueryResource(queryString(fileInfo.baseName(), version), fileInfo.baseName());
+        queries.emplace_back(queryString(fileInfo.baseName(), version), fileInfo.baseName());
     }
     return queries;
 }

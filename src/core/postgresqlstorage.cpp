@@ -676,9 +676,9 @@ void PostgreSqlStorage::removeIdentity(UserId user, IdentityId identityId)
     }
 }
 
-QList<CoreIdentity> PostgreSqlStorage::identities(UserId user)
+std::vector<CoreIdentity> PostgreSqlStorage::identities(UserId user)
 {
-    QList<CoreIdentity> identities;
+    std::vector<CoreIdentity> identities;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -730,7 +730,7 @@ QList<CoreIdentity> PostgreSqlStorage::identities(UserId user)
             nicks << nickQuery.value(0).toString();
         }
         identity.setNicks(nicks);
-        identities << identity;
+        identities.push_back(std::move(identity));
     }
     db.commit();
     return identities;
@@ -908,9 +908,9 @@ bool PostgreSqlStorage::removeNetwork(UserId user, const NetworkId& networkId)
     return true;
 }
 
-QList<NetworkInfo> PostgreSqlStorage::networks(UserId user)
+std::vector<NetworkInfo> PostgreSqlStorage::networks(UserId user)
 {
-    QList<NetworkInfo> nets;
+    std::vector<NetworkInfo> nets;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -984,15 +984,15 @@ QList<NetworkInfo> PostgreSqlStorage::networks(UserId user)
             servers << server;
         }
         net.serverList = servers;
-        nets << net;
+        nets.push_back(std::move(net));
     }
     db.commit();
     return nets;
 }
 
-QList<NetworkId> PostgreSqlStorage::connectedNetworks(UserId user)
+std::vector<NetworkId> PostgreSqlStorage::connectedNetworks(UserId user)
 {
-    QList<NetworkId> connectedNets;
+    std::vector<NetworkId> connectedNets;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -1008,7 +1008,7 @@ QList<NetworkId> PostgreSqlStorage::connectedNetworks(UserId user)
     watchQuery(query);
 
     while (query.next()) {
-        connectedNets << query.value(0).toInt();
+        connectedNets.emplace_back(query.value(0).toInt());
     }
 
     db.commit();
@@ -1210,9 +1210,9 @@ BufferInfo PostgreSqlStorage::getBufferInfo(UserId user, const BufferId& bufferI
     return bufferInfo;
 }
 
-QList<BufferInfo> PostgreSqlStorage::requestBuffers(UserId user)
+std::vector<BufferInfo> PostgreSqlStorage::requestBuffers(UserId user)
 {
-    QList<BufferInfo> bufferlist;
+    std::vector<BufferInfo> bufferlist;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -1228,19 +1228,19 @@ QList<BufferInfo> PostgreSqlStorage::requestBuffers(UserId user)
     safeExec(query);
     watchQuery(query);
     while (query.next()) {
-        bufferlist << BufferInfo(query.value(0).toInt(),
-                                 query.value(1).toInt(),
-                                 (BufferInfo::Type)query.value(2).toInt(),
-                                 query.value(3).toInt(),
-                                 query.value(4).toString());
+        bufferlist.emplace_back(query.value(0).toInt(),
+                                query.value(1).toInt(),
+                                (BufferInfo::Type)query.value(2).toInt(),
+                                query.value(3).toInt(),
+                                query.value(4).toString());
     }
     db.commit();
     return bufferlist;
 }
 
-QList<BufferId> PostgreSqlStorage::requestBufferIdsForNetwork(UserId user, NetworkId networkId)
+std::vector<BufferId> PostgreSqlStorage::requestBufferIdsForNetwork(UserId user, NetworkId networkId)
 {
-    QList<BufferId> bufferList;
+    std::vector<BufferId> bufferList;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -1257,7 +1257,7 @@ QList<BufferId> PostgreSqlStorage::requestBufferIdsForNetwork(UserId user, Netwo
     safeExec(query);
     watchQuery(query);
     while (query.next()) {
-        bufferList << BufferId(query.value(0).toInt());
+        bufferList.emplace_back(query.value(0).toInt());
     }
     db.commit();
     return bufferList;
@@ -1755,9 +1755,9 @@ bool PostgreSqlStorage::logMessages(MessageList& msgs)
     return true;
 }
 
-QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit)
+std::vector<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -1816,17 +1816,17 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
                     query.value(7).toString(),
                     (Message::Flags)query.value(3).toInt());
         msg.setMsgId(query.value(0).toLongLong());
-        messagelist << msg;
+        messagelist.push_back(std::move(msg));
     }
 
     db.commit();
     return messagelist;
 }
 
-QList<Message> PostgreSqlStorage::requestMsgsFiltered(
+std::vector<Message> PostgreSqlStorage::requestMsgsFiltered(
     UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     QSqlDatabase db = logDb();
     if (!beginReadOnlyTransaction(db)) {
@@ -1884,16 +1884,16 @@ QList<Message> PostgreSqlStorage::requestMsgsFiltered(
                     query.value(7).toString(),
                     Message::Flags{query.value(3).toInt()});
         msg.setMsgId(query.value(0).toLongLong());
-        messagelist << msg;
+        messagelist.push_back(std::move(msg));
     }
 
     db.commit();
     return messagelist;
 }
 
-QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit)
+std::vector<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     // requestBuffers uses it's own transaction.
     QHash<BufferId, BufferInfo> bufferInfoHash;
@@ -1940,17 +1940,17 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
                     query.value(8).toString(),
                     (Message::Flags)query.value(4).toInt());
         msg.setMsgId(query.value(0).toLongLong());
-        messagelist << msg;
+        messagelist.push_back(std::move(msg));
     }
 
     db.commit();
     return messagelist;
 }
 
-QList<Message> PostgreSqlStorage::requestAllMsgsFiltered(
+std::vector<Message> PostgreSqlStorage::requestAllMsgsFiltered(
     UserId user, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     // requestBuffers uses it's own transaction.
     QHash<BufferId, BufferInfo> bufferInfoHash;
@@ -2004,7 +2004,7 @@ QList<Message> PostgreSqlStorage::requestAllMsgsFiltered(
                     query.value(8).toString(),
                     Message::Flags{query.value(4).toInt()});
         msg.setMsgId(query.value(0).toLongLong());
-        messagelist << msg;
+        messagelist.push_back(std::move(msg));
     }
 
     db.commit();

@@ -650,9 +650,9 @@ void SqliteStorage::removeIdentity(UserId user, IdentityId identityId)
     unlock();
 }
 
-QList<CoreIdentity> SqliteStorage::identities(UserId user)
+std::vector<CoreIdentity> SqliteStorage::identities(UserId user)
 {
-    QList<CoreIdentity> identities;
+    std::vector<CoreIdentity> identities;
     QSqlDatabase db = logDb();
     db.transaction();
 
@@ -699,8 +699,8 @@ QList<CoreIdentity> SqliteStorage::identities(UserId user)
             while (nickQuery.next()) {
                 nicks << nickQuery.value(0).toString();
             }
-            identity.setNicks(nicks);
-            identities << identity;
+            identity.setNicks(std::move(nicks));
+            identities.push_back(std::move(identity));
         }
         db.commit();
     }
@@ -938,9 +938,9 @@ bool SqliteStorage::removeNetwork(UserId user, const NetworkId& networkId)
     return true;
 }
 
-QList<NetworkInfo> SqliteStorage::networks(UserId user)
+std::vector<NetworkInfo> SqliteStorage::networks(UserId user)
 {
-    QList<NetworkInfo> nets;
+    std::vector<NetworkInfo> nets;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1008,7 +1008,7 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user)
                         servers << server;
                     }
                     net.serverList = servers;
-                    nets << net;
+                    nets.push_back(std::move(net));
                 }
             }
         }
@@ -1018,9 +1018,9 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user)
     return nets;
 }
 
-QList<NetworkId> SqliteStorage::connectedNetworks(UserId user)
+std::vector<NetworkId> SqliteStorage::connectedNetworks(UserId user)
 {
-    QList<NetworkId> connectedNets;
+    std::vector<NetworkId> connectedNets;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1034,7 +1034,7 @@ QList<NetworkId> SqliteStorage::connectedNetworks(UserId user)
         watchQuery(query);
 
         while (query.next()) {
-            connectedNets << query.value(0).toInt();
+            connectedNets.emplace_back(query.value(0).toInt());
         }
         db.commit();
     }
@@ -1295,9 +1295,9 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const BufferId& bufferId)
     return bufferInfo;
 }
 
-QList<BufferInfo> SqliteStorage::requestBuffers(UserId user)
+std::vector<BufferInfo> SqliteStorage::requestBuffers(UserId user)
 {
-    QList<BufferInfo> bufferlist;
+    std::vector<BufferInfo> bufferlist;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1311,11 +1311,11 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user)
         safeExec(query);
         watchQuery(query);
         while (query.next()) {
-            bufferlist << BufferInfo(query.value(0).toInt(),
-                                     query.value(1).toInt(),
-                                     (BufferInfo::Type)query.value(2).toInt(),
-                                     query.value(3).toInt(),
-                                     query.value(4).toString());
+            bufferlist.emplace_back(query.value(0).toInt(),
+                                    query.value(1).toInt(),
+                                    (BufferInfo::Type)query.value(2).toInt(),
+                                    query.value(3).toInt(),
+                                    query.value(4).toString());
         }
         db.commit();
     }
@@ -1324,9 +1324,9 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user)
     return bufferlist;
 }
 
-QList<BufferId> SqliteStorage::requestBufferIdsForNetwork(UserId user, NetworkId networkId)
+std::vector<BufferId> SqliteStorage::requestBufferIdsForNetwork(UserId user, NetworkId networkId)
 {
-    QList<BufferId> bufferList;
+    std::vector<BufferId> bufferList;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1341,7 +1341,7 @@ QList<BufferId> SqliteStorage::requestBufferIdsForNetwork(UserId user, NetworkId
         safeExec(query);
         watchQuery(query);
         while (query.next()) {
-            bufferList << BufferId(query.value(0).toInt());
+            bufferList.emplace_back(query.value(0).toInt());
         }
         db.commit();
     }
@@ -1897,9 +1897,9 @@ bool SqliteStorage::logMessages(MessageList& msgs)
     return !error;
 }
 
-QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit)
+std::vector<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -1966,7 +1966,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
                 query.value(7).toString(),
                 (Message::Flags)query.value(3).toInt());
             msg.setMsgId(query.value(0).toLongLong());
-            messagelist << msg;
+            messagelist.push_back(std::move(msg));
         }
     }
     db.commit();
@@ -1975,10 +1975,10 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
     return messagelist;
 }
 
-QList<Message> SqliteStorage::requestMsgsFiltered(
+std::vector<Message> SqliteStorage::requestMsgsFiltered(
     UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -2050,7 +2050,7 @@ QList<Message> SqliteStorage::requestMsgsFiltered(
                 query.value(7).toString(),
                 Message::Flags{query.value(3).toInt()});
             msg.setMsgId(query.value(0).toLongLong());
-            messagelist << msg;
+            messagelist.push_back(std::move(msg));
         }
     }
     db.commit();
@@ -2059,9 +2059,9 @@ QList<Message> SqliteStorage::requestMsgsFiltered(
     return messagelist;
 }
 
-QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit)
+std::vector<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -2113,7 +2113,7 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
                 query.value(8).toString(),
                 (Message::Flags)query.value(4).toInt());
             msg.setMsgId(query.value(0).toLongLong());
-            messagelist << msg;
+            messagelist.push_back(std::move(msg));
         }
     }
     db.commit();
@@ -2121,9 +2121,9 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
     return messagelist;
 }
 
-QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+std::vector<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
 {
-    QList<Message> messagelist;
+    std::vector<Message> messagelist;
 
     QSqlDatabase db = logDb();
     db.transaction();
@@ -2180,7 +2180,7 @@ QList<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, M
                 query.value(8).toString(),
                 Message::Flags{query.value(4).toInt()});
             msg.setMsgId(query.value(0).toLongLong());
-            messagelist << msg;
+            messagelist.push_back(std::move(msg));
         }
     }
     db.commit();
