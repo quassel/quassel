@@ -270,16 +270,6 @@ void MetricsServer::respond()
                     .toUtf8()
             );
         }
-        socket->write(
-                QString("quassel_login{successful=\"false\"} %1\n")
-                        .arg(QString::number((float) _loginFailed))
-                        .toUtf8()
-        );
-        socket->write(
-                QString("quassel_login{successful=\"true\"} %1\n")
-                        .arg(QString::number((float) _loginSuccessful))
-                        .toUtf8()
-        );
         socket->close();
     }
     else if (requestPath == "/healthz") {
@@ -352,7 +342,7 @@ void MetricsServer::addClient(UserId user)
 
 void MetricsServer::removeClient(UserId user)
 {
-    int count = _clientSessions.value(user, 0) - 1;
+    int32_t count = _clientSessions.value(user, 0) - 1;
     if (count <= 0) {
         _clientSessions.remove(user);
     }
@@ -368,7 +358,7 @@ void MetricsServer::addNetwork(UserId user)
 
 void MetricsServer::removeNetwork(UserId user)
 {
-    int count = _networkSessions.value(user, 0) - 1;
+    int32_t count = _networkSessions.value(user, 0) - 1;
     if (count <= 0) {
         _networkSessions.remove(user);
     }
@@ -395,14 +385,4 @@ void MetricsServer::messageQueue(UserId user, uint64_t size)
 void MetricsServer::setCertificateExpires(QDateTime expires)
 {
     _certificateExpires = std::move(expires);
-}
-
-void MetricsServer::loginSuccessful()
-{
-    _loginSuccessful++;
-}
-
-void MetricsServer::loginFailed()
-{
-    _loginFailed++;
 }
