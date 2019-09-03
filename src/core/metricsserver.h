@@ -52,9 +52,6 @@ public:
     void transmitDataNetwork(UserId user, uint64_t size);
     void receiveDataNetwork(UserId user, uint64_t size);
 
-    void loginSuccessful();
-    void loginFailed();
-
     void messageQueue(UserId user, uint64_t size);
 
     void setCertificateExpires(QDateTime expires);
@@ -71,16 +68,13 @@ private:
 
     QHash<UserId, QString> _sessions{};
 
-    QHash<UserId, int64_t> _clientSessions{};
-    QHash<UserId, int64_t> _networkSessions{};
+    QHash<UserId, int32_t> _clientSessions{};
+    QHash<UserId, int32_t> _networkSessions{};
 
     QHash<UserId, uint64_t> _networkDataTransmit{};
     QHash<UserId, uint64_t> _networkDataReceive{};
 
     QHash<UserId, uint64_t> _messageQueue{};
-
-    uint64_t _loginSuccessful{};
-    uint64_t _loginFailed{};
 
     QDateTime _certificateExpires{};
 };
