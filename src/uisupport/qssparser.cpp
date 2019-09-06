@@ -31,13 +31,13 @@ QssParser::QssParser()
 
     // Init palette color roles
     _paletteColorRoles["alternate-base"] = QPalette::AlternateBase;
-    _paletteColorRoles["background"] = QPalette::Background;
+    _paletteColorRoles["background"] = QPalette::Window;
     _paletteColorRoles["base"] = QPalette::Base;
     _paletteColorRoles["bright-text"] = QPalette::BrightText;
     _paletteColorRoles["button"] = QPalette::Button;
     _paletteColorRoles["button-text"] = QPalette::ButtonText;
     _paletteColorRoles["dark"] = QPalette::Dark;
-    _paletteColorRoles["foreground"] = QPalette::Foreground;
+    _paletteColorRoles["foreground"] = QPalette::WindowText;
     _paletteColorRoles["highlight"] = QPalette::Highlight;
     _paletteColorRoles["highlighted-text"] = QPalette::HighlightedText;
     _paletteColorRoles["light"] = QPalette::Light;
