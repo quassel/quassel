@@ -1,4 +1,8 @@
 if (BUILD_GUI)
+    if (WITH_KF5)
+        install(FILES quassel.notifyrc DESTINATION ${CMAKE_INSTALL_KNOTIFY5RCDIR})
+    endif()
+
     if (UNIX AND NOT APPLE)
         if (WANT_QTCLIENT)
             install(FILES quasselclient.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
@@ -6,10 +10,6 @@ if (BUILD_GUI)
 
         if (WANT_MONO)
             install(FILES quassel.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
-        endif()
-
-        if (WITH_KF5)
-            install(FILES quassel.notifyrc DESTINATION ${CMAKE_INSTALL_KNOTIFY5RCDIR})
         endif()
     endif()
 
