@@ -489,7 +489,7 @@ QStringList Quassel::dataDirPaths()
 
     QStringList dataDirNames;
 #ifdef Q_OS_WIN
-    dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain() + "/share/apps/quassel/"
+    dataDirNames << QCoreApplication::applicationDirPath() + "/data/quassel/"
                  << qgetenv("APPDATA") + QCoreApplication::organizationDomain() << QCoreApplication::applicationDirPath();
 #elif defined Q_OS_MAC
     dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/" << QCoreApplication::applicationDirPath();
