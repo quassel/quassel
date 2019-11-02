@@ -299,7 +299,7 @@ if (BUILD_GUI)
     if (ECM_FOUND)
         list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
         if (WITH_KDE)
-            find_package(KF5 REQUIRED COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui)
+            find_package(KF5 REQUIRED COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet IdleTime TextWidgets WidgetsAddons XmlGui)
             set_package_properties(KF5 PROPERTIES TYPE REQUIRED
                 URL "http://www.kde.org"
                 DESCRIPTION "KDE Frameworks"
@@ -314,6 +314,13 @@ if (BUILD_GUI)
             URL "http://api.kde.org/frameworks-api/frameworks5-apidocs/sonnet/html"
             DESCRIPTION "framework for providing spell-checking capabilities"
             PURPOSE "Enables spell-checking support in input widgets"
+        )
+
+        find_package(KF5IdleTime QUIET)
+        set_package_properties(KF5IdleTime PROPERTIES TYPE RECOMMENDED
+            URL "https://api.kde.org/frameworks/kidletime/html/"
+            DESCRIPTION "framework for providing idle time information"
+            PURPOSE "Enables detecting when the GUI user is idle"
         )
     endif()
 endif()

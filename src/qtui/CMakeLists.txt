@@ -128,6 +128,11 @@ if (KF5Sonnet_FOUND)
     target_link_libraries(${TARGET} PRIVATE KF5::SonnetUi)
 endif()
 
+if (KF5IdleTime_FOUND)
+    target_compile_definitions(${TARGET} PRIVATE -DHAVE_KIDLETIME)
+    target_link_libraries(${TARGET} PRIVATE KF5::IdleTime)
+endif()
+
 if (Qt5Multimedia_FOUND)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_QTMULTIMEDIA)
     target_sources(${TARGET} PRIVATE
