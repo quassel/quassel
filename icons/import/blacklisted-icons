@@ -4,13 +4,13 @@
 quassel
 
 # Quassel-specific icons
-connect-quassel
-disconnect-quassel
-message-quassel
-message-quassel-tray
-message-quassel-tray-inverted
-inactive-quassel
-inactive-quassel-tray
-inactive-quassel-tray-inverted
-active-quassel-tray
-active-quassel-tray-inverted
+quassel-connect
+quassel-disconnect
+quassel-message
+quassel-tray-message
+quassel-tray-message-inverted
+quassel-inactive
+quassel-tray-inactive
+quassel-tray-inactive-inverted
+quassel-tray-active
+quassel-tray-active-inverted

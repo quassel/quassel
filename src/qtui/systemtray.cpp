@@ -130,13 +130,13 @@ QString SystemTray::iconName(State state) const
     QString name;
     switch (state) {
     case State::Passive:
-        name = "inactive-quassel-tray";
+        name = "quassel-tray-inactive";
         break;
     case State::Active:
-        name = "active-quassel-tray";
+        name = "quassel-tray-active";
         break;
     case State::NeedsAttention:
-        name = "message-quassel-tray";
+        name = "quassel-tray-message";
         break;
     }
 

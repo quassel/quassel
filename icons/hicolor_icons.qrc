@@ -1,27 +1,27 @@
 <RCC>
   <qresource prefix="/icons">
-    <file alias="hicolor/24x24/actions/connect-quassel.svg">breeze/actions/24/connect-quassel.svg</file>
-    <file alias="hicolor/32x32/actions/connect-quassel.svg">breeze/actions/32/connect-quassel.svg</file>
-    <file alias="hicolor/24x24/actions/disconnect-quassel.svg">breeze/actions/24/disconnect-quassel.svg</file>
-    <file alias="hicolor/32x32/actions/disconnect-quassel.svg">breeze/actions/32/disconnect-quassel.svg</file>
+    <file alias="hicolor/24x24/actions/quassel-connect.svg">breeze/actions/24/quassel-connect.svg</file>
+    <file alias="hicolor/32x32/actions/quassel-connect.svg">breeze/actions/32/quassel-connect.svg</file>
+    <file alias="hicolor/24x24/actions/quassel-disconnect.svg">breeze/actions/24/quassel-disconnect.svg</file>
+    <file alias="hicolor/32x32/actions/quassel-disconnect.svg">breeze/actions/32/quassel-disconnect.svg</file>
     <file alias="hicolor/32x32/apps/quassel.svg">breeze/apps/32/quassel.svg</file>
     <file alias="hicolor/48x48/apps/quassel.svg">breeze/apps/48/quassel.svg</file>
     <file alias="hicolor/64x64/apps/quassel.svg">breeze/apps/64/quassel.svg</file>
-    <file alias="hicolor/24x24/status/active-quassel-tray.svg">breeze/status/24/active-quassel-tray.svg</file>
-    <file alias="hicolor/64x64/status/active-quassel-tray.svg">breeze/status/64/active-quassel-tray.svg</file>
-    <file alias="hicolor/24x24/status/active-quassel-tray-inverted.svg">breeze/status/24/active-quassel-tray-inverted.svg</file>
-    <file alias="hicolor/64x64/status/active-quassel-tray-inverted.svg">breeze/status/64/active-quassel-tray-inverted.svg</file>
-    <file alias="hicolor/24x24/status/inactive-quassel.svg">breeze/status/24/inactive-quassel.svg</file>
-    <file alias="hicolor/64x64/status/inactive-quassel.svg">breeze/status/64/inactive-quassel.svg</file>
-    <file alias="hicolor/24x24/status/inactive-quassel-tray.svg">breeze/status/24/inactive-quassel-tray.svg</file>
-    <file alias="hicolor/64x64/status/inactive-quassel-tray.svg">breeze/status/64/inactive-quassel-tray.svg</file>
-    <file alias="hicolor/24x24/status/inactive-quassel-tray-inverted.svg">breeze/status/24/inactive-quassel-tray-inverted.svg</file>
-    <file alias="hicolor/64x64/status/inactive-quassel-tray-inverted.svg">breeze/status/64/inactive-quassel-tray-inverted.svg</file>
-    <file alias="hicolor/24x24/status/message-quassel.svg">breeze/status/24/message-quassel.svg</file>
-    <file alias="hicolor/64x64/status/message-quassel.svg">breeze/status/64/message-quassel.svg</file>
-    <file alias="hicolor/24x24/status/message-quassel-tray.svg">breeze/status/24/message-quassel-tray.svg</file>
-    <file alias="hicolor/64x64/status/message-quassel-tray.svg">breeze/status/64/message-quassel-tray.svg</file>
-    <file alias="hicolor/24x24/status/message-quassel-tray-inverted.svg">breeze/status/24/message-quassel-tray-inverted.svg</file>
-    <file alias="hicolor/64x64/status/message-quassel-tray-inverted.svg">breeze/status/64/message-quassel-tray-inverted.svg</file>
+    <file alias="hicolor/24x24/status/quassel-tray-active.svg">breeze/status/24/quassel-tray-active.svg</file>
+    <file alias="hicolor/64x64/status/quassel-tray-active.svg">breeze/status/64/quassel-tray-active.svg</file>
+    <file alias="hicolor/24x24/status/quassel-tray-active-inverted.svg">breeze/status/24/quassel-tray-active-inverted.svg</file>
+    <file alias="hicolor/64x64/status/quassel-tray-active-inverted.svg">breeze/status/64/quassel-tray-active-inverted.svg</file>
+    <file alias="hicolor/24x24/status/quassel-inactive.svg">breeze/status/24/quassel-inactive.svg</file>
+    <file alias="hicolor/64x64/status/quassel-inactive.svg">breeze/status/64/quassel-inactive.svg</file>
+    <file alias="hicolor/24x24/status/quassel-tray-inactive.svg">breeze/status/24/quassel-tray-inactive.svg</file>
+    <file alias="hicolor/64x64/status/quassel-tray-inactive.svg">breeze/status/64/quassel-tray-inactive.svg</file>
+    <file alias="hicolor/24x24/status/quassel-tray-inactive-inverted.svg">breeze/status/24/quassel-tray-inactive-inverted.svg</file>
+    <file alias="hicolor/64x64/status/quassel-tray-inactive-inverted.svg">breeze/status/64/quassel-tray-inactive-inverted.svg</file>
+    <file alias="hicolor/24x24/status/quassel-message.svg">breeze/status/24/quassel-message.svg</file>
+    <file alias="hicolor/64x64/status/quassel-message.svg">breeze/status/64/quassel-message.svg</file>
+    <file alias="hicolor/24x24/status/quassel-tray-message.svg">breeze/status/24/quassel-tray-message.svg</file>
+    <file alias="hicolor/64x64/status/quassel-tray-message.svg">breeze/status/64/quassel-tray-message.svg</file>
+    <file alias="hicolor/24x24/status/quassel-tray-message-inverted.svg">breeze/status/24/quassel-tray-message-inverted.svg</file>
+    <file alias="hicolor/64x64/status/quassel-tray-message-inverted.svg">breeze/status/64/quassel-tray-message-inverted.svg</file>
   </qresource>
 </RCC>

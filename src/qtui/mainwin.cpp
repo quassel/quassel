@@ -353,7 +353,7 @@ void MainWin::updateIcon()
     if (Client::isConnected())
         icon = icon::get("quassel");
     else
-        icon = icon::get("inactive-quassel");
+        icon = icon::get("quassel-inactive");
     setWindowIcon(icon);
 }
 
@@ -364,9 +364,9 @@ void MainWin::setupActions()
 
     // File
     coll->addActions(
-        {{"ConnectCore", new Action(icon::get("connect-quassel"), tr("&Connect to Core..."), coll, this, &MainWin::showCoreConnectionDlg)},
+        {{"ConnectCore", new Action(icon::get("quassel-connect"), tr("&Connect to Core..."), coll, this, &MainWin::showCoreConnectionDlg)},
          {"DisconnectCore",
-          new Action(icon::get("disconnect-quassel"), tr("&Disconnect from Core"), coll, Client::instance(), &Client::disconnectFromCore)},
+          new Action(icon::get("quassel-disconnect"), tr("&Disconnect from Core"), coll, Client::instance(), &Client::disconnectFromCore)},
          {"ChangePassword", new Action(icon::get("dialog-password"), tr("Change &Password..."), coll, this, &MainWin::showPasswordChangeDlg)},
          {"CoreInfo", new Action(icon::get("help-about"), tr("Core &Info..."), coll, this, &MainWin::showCoreInfoDlg)},
          {"ConfigureNetworks",
