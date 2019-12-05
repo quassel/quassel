@@ -5,6 +5,7 @@ services:
 
 # Define build matrix for Linux
 os: linux
+dist: bionic
 language: generic  # No host compilation
 
 env:
