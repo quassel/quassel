@@ -27,6 +27,7 @@
 #include "compressor.h"
 #include "peer.h"
 #include "protocol.h"
+#include "proxyline.h"
 #include "signalproxy.h"
 
 class QTimer;
@@ -46,11 +47,14 @@ public:
 
     void setSignalProxy(SignalProxy* proxy) override;
 
+    void setProxyLine(ProxyLine proxyLine);
+
     virtual QString protocolName() const = 0;
     QString description() const override;
     virtual quint16 enabledFeatures() const { return 0; }
 
     QString address() const override;
+    QHostAddress hostAddress() const;
     quint16 port() const override;
 
     bool isOpen() const override;
@@ -105,6 +109,8 @@ private:
     QTcpSocket* _socket;
     Compressor* _compressor;
     SignalProxy* _signalProxy;
+    ProxyLine _proxyLine;
+    bool _useProxyLine;
     QTimer* _heartBeatTimer;
     int _heartBeatCount;
     int _lag;

@@ -18,63 +18,22 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREAUTHHANDLER_H
-#define COREAUTHHANDLER_H
+#pragma once
 
-#include "authhandler.h"
-#include "metricsserver.h"
-#include "peerfactory.h"
-#include "proxyline.h"
-#include "remotepeer.h"
-#include "types.h"
+#include <QAbstractSocket>
+#include <QByteArray>
+#include <QHostAddress>
 
-class CoreAuthHandler : public AuthHandler
+#include "common-export.h"
+
+struct COMMON_EXPORT ProxyLine
 {
-    Q_OBJECT
+    QAbstractSocket::NetworkLayerProtocol protocol = QAbstractSocket::UnknownNetworkLayerProtocol;
+    QHostAddress sourceHost;
+    uint16_t sourcePort;
+    QHostAddress targetHost;
+    uint16_t targetPort;
 
-public:
-    CoreAuthHandler(QTcpSocket* socket, QObject* parent = nullptr);
-
-    QHostAddress hostAddress() const;
-    bool isLocal() const override;
-
-signals:
-    void handshakeComplete(RemotePeer* peer, UserId uid);
-
-private:
-    using AuthHandler::handle;
-
-    void handle(const Protocol::RegisterClient& msg) override;
-    void handle(const Protocol::SetupData& msg) override;
-    void handle(const Protocol::Login& msg) override;
-
-    void setPeer(RemotePeer* peer);
-    void startSsl();
-
-    bool checkClientRegistered();
-
-private slots:
-    void onReadyRead();
-
-#ifdef HAVE_SSL
-    void onSslErrors();
-#endif
-
-    // only in legacy mode
-    void onProtocolVersionMismatch(int actual, int expected);
-
-private:
-    RemotePeer* _peer;
-    MetricsServer* _metricsServer;
-
-    bool _proxyReceived;
-    ProxyLine _proxyLine;
-    bool _useProxyLine;
-    bool _magicReceived;
-    bool _legacy;
-    bool _clientRegistered;
-    quint8 _connectionFeatures;
-    QVector<PeerFactory::ProtoDescriptor> _supportedProtos;
+    static ProxyLine parseProxyLine(const QByteArray& line);
+    friend COMMON_EXPORT QDebug operator<<(QDebug dbg, const ProxyLine& p);
 };
-
-#endif

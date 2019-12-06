@@ -362,6 +362,7 @@ void Quassel::setupCliParser()
             {"ident-listen", tr("The address(es) quasselcore will listen on for ident requests. Same format as --listen."), tr("<address>[,...]"), "::1,127.0.0.1"},
             {"oidentd", tr("Enable oidentd integration. In most cases you should also enable --strict-ident.")},
             {"oidentd-conffile", tr("Set path to oidentd configuration file."), tr("file")},
+            {"proxy-cidr", tr("Set IP range from which proxy protocol definitions are allowed"), tr("<address>[,...]"), "::1,127.0.0.1"},
 #ifdef HAVE_SSL
             {"require-ssl", tr("Require SSL for remote (non-loopback) client connections.")},
             {"ssl-cert", tr("Specify the path to the SSL certificate."), tr("path"), "configdir/quasselCert.pem"},

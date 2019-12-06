@@ -730,7 +730,7 @@ void Core::incomingConnection()
         connect(handler, &AuthHandler::socketError, this, &Core::socketError);
         connect(handler, &CoreAuthHandler::handshakeComplete, this, &Core::setupClientSession);
 
-        qInfo() << qPrintable(tr("Client connected from")) << qPrintable(socket->peerAddress().toString());
+        qInfo() << qPrintable(tr("Client connected from")) << qPrintable(handler->hostAddress().toString());
 
         if (!_configured) {
             stopListening(tr("Closing server for basic setup."));
@@ -744,7 +744,7 @@ void Core::clientDisconnected()
     auto* handler = qobject_cast<CoreAuthHandler*>(sender());
     Q_ASSERT(handler);
 
-    qInfo() << qPrintable(tr("Non-authed client disconnected:")) << qPrintable(handler->socket()->peerAddress().toString());
+    qInfo() << qPrintable(tr("Non-authed client disconnected:")) << qPrintable(handler->hostAddress().toString());
     _connectingClients.remove(handler);
     handler->deleteLater();
 

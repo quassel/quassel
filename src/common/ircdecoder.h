@@ -39,6 +39,24 @@ public:
      * @param parameters[out] Parsed list of parameters
      */
     static void parseMessage(const std::function<QString(const QByteArray&)>& decode, const QByteArray& raw, QHash<IrcTagKey, QString>& tags, QString& prefix, QString& command, QList<QByteArray>& parameters);
+
+    /**
+     * Extracts a space-delimited fragment from an IRC message
+     * @param raw Raw Message
+     * @param start Current index into the message, will be advanced automatically
+     * @param end End of fragment, if already known. Default is -1, in which case it will be set to the next whitespace
+     * character or the end of the string
+     * @param prefix Required prefix. Default is 0. If set, this only parses a fragment if it starts with the given prefix.
+     * @return Fragment
+     */
+    static QByteArray extractFragment(const QByteArray& raw, int& start, int end = -1, char prefix = 0);
+
+    /**
+     * Skips empty parts in the message
+     * @param raw Raw Message
+     * @param start Current index into the message, will be advanced  automatically
+     */
+    static void skipEmptyParts(const QByteArray& raw, int& start);
 private:
     /**
      * Parses an encoded IRCv3 message tag value

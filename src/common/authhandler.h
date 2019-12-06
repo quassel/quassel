@@ -37,7 +37,7 @@ public:
 
     QTcpSocket* socket() const;
 
-    bool isLocal() const;
+    virtual bool isLocal() const;
 
     virtual void handle(const Protocol::RegisterClient&) { invalidMessage(); }
     virtual void handle(const Protocol::ClientDenied&) { invalidMessage(); }

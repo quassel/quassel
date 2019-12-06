@@ -32,6 +32,8 @@ namespace Protocol {
 
 const quint32 magic = 0x42b33f00;
 
+const quint32 proxyMagic = 0x50524f58;
+
 enum Type
 {
     InternalProtocol = 0x00,

@@ -63,16 +63,7 @@ QString IrcDecoder::parseTagValue(const QString& value)
     return result;
 }
 
-/**
- * Extracts a space-delimited fragment from an IRC message
- * @param raw Raw Message
- * @param start Current index into the message, will be advanced automatically
- * @param end End of fragment, if already known. Default is -1, in which case it will be set to the next whitespace
- * character or the end of the string
- * @param prefix Required prefix. Default is 0. If set, this only parses a fragment if it starts with the given prefix.
- * @return Fragment
- */
-QByteArray extractFragment(const QByteArray& raw, int& start, int end = -1, char prefix = 0)
+QByteArray IrcDecoder::extractFragment(const QByteArray& raw, int& start, int end, char prefix)
 {
     // Try to set find the end of the space-delimited fragment
     if (end == -1) {
@@ -100,12 +91,7 @@ QByteArray extractFragment(const QByteArray& raw, int& start, int end = -1, char
     return fragment;
 }
 
-/**
- * Skips empty parts in the message
- * @param raw Raw Message
- * @param start Current index into the message, will be advanced  automatically
- */
-void skipEmptyParts(const QByteArray& raw, int& start)
+void IrcDecoder::skipEmptyParts(const QByteArray& raw, int& start)
 {
     while (start < raw.length() && raw[start] == ' ') {
         start++;
