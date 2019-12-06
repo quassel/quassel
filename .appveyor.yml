@@ -34,7 +34,6 @@ test_script:
 environment:
     matrix:
     - TARGET: windows-msvc2017_64-cl
-    - TARGET: windows-msvc2017_32-cl
 
 artifacts:
   - path: binaries\*
