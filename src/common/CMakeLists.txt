@@ -41,6 +41,7 @@ target_sources(${TARGET} PRIVATE
     peerfactory.cpp
     presetnetworks.cpp
     quassel.cpp
+    proxyline.cpp
     remotepeer.cpp
     settings.cpp
     signalproxy.cpp

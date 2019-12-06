@@ -32,6 +32,9 @@ CoreAuthHandler::CoreAuthHandler(QTcpSocket* socket, QObject* parent)
     : AuthHandler(parent)
     , _peer(nullptr)
     , _metricsServer(Core::instance()->metricsServer())
+    , _proxyReceived(false)
+    , _proxyLine({})
+    , _useProxyLine(false)
     , _magicReceived(false)
     , _legacy(false)
     , _clientRegistered(false)
@@ -45,11 +48,35 @@ CoreAuthHandler::CoreAuthHandler(QTcpSocket* socket, QObject* parent)
 
 void CoreAuthHandler::onReadyRead()
 {
-    if (socket()->bytesAvailable() < 4)
-        return;
-
     // once we have selected a peer, we certainly don't want to read more data!
     if (_peer)
+        return;
+
+    if (!_proxyReceived) {
+        quint32 magic;
+        socket()->peek((char*) &magic, 4);
+        magic = qFromBigEndian<quint32>(magic);
+
+        if (magic == Protocol::proxyMagic) {
+            if (!socket()->canReadLine()) {
+                return;
+            }
+            QByteArray line = socket()->readLine(108);
+            _proxyLine = ProxyLine::parseProxyLine(line);
+            if (_proxyLine.protocol != QAbstractSocket::UnknownNetworkLayerProtocol) {
+                QList<QString> subnets = Quassel::optionValue("proxy-cidr").split(",");
+                for (const QString& subnet : subnets) {
+                    if (socket()->peerAddress().isInSubnet(QHostAddress::parseSubnet(subnet))) {
+                        _useProxyLine = true;
+                        break;
+                    }
+                }
+            }
+        }
+        _proxyReceived = true;
+    }
+
+    if (socket()->bytesAvailable() < 4)
         return;
 
     if (!_magicReceived) {
@@ -101,7 +128,7 @@ void CoreAuthHandler::onReadyRead()
 
             RemotePeer* peer = PeerFactory::createPeer(_supportedProtos, this, socket(), level, this);
             if (!peer) {
-                qWarning() << "Received invalid handshake data from client" << socket()->peerAddress().toString();
+                qWarning() << "Received invalid handshake data from client" << hostAddress().toString();
                 close();
                 return;
             }
@@ -130,6 +157,9 @@ void CoreAuthHandler::setPeer(RemotePeer* peer)
     qDebug().nospace() << "Using " << qPrintable(peer->protocolName()) << "...";
 
     _peer = peer;
+    if (_proxyLine.protocol != QAbstractSocket::UnknownNetworkLayerProtocol) {
+        _peer->setProxyLine(_proxyLine);
+    }
     disconnect(socket(), &QIODevice::readyRead, this, &CoreAuthHandler::onReadyRead);
 }
 
@@ -148,7 +178,7 @@ void CoreAuthHandler::onProtocolVersionMismatch(int actual, int expected)
 bool CoreAuthHandler::checkClientRegistered()
 {
     if (!_clientRegistered) {
-        qWarning() << qPrintable(tr("Client")) << qPrintable(socket()->peerAddress().toString())
+        qWarning() << qPrintable(tr("Client")) << qPrintable(hostAddress().toString())
                    << qPrintable(tr("did not send a registration message before trying to login, rejecting."));
         _peer->dispatch(
             Protocol::ClientDenied(tr("<b>Client not initialized!</b><br>You need to send a registration message before trying to login.")));
@@ -167,7 +197,7 @@ void CoreAuthHandler::handle(const Protocol::RegisterClient& msg)
         useSsl = _connectionFeatures & Protocol::Encryption;
 
     if (Quassel::isOptionSet("require-ssl") && !useSsl && !_peer->isLocal()) {
-        qInfo() << qPrintable(tr("SSL required but non-SSL connection attempt from %1").arg(socket()->peerAddress().toString()));
+        qInfo() << qPrintable(tr("SSL required but non-SSL connection attempt from %1").arg(hostAddress().toString()));
         _peer->dispatch(Protocol::ClientDenied(tr("<b>SSL is required!</b><br>You need to use SSL in order to connect to this core.")));
         _peer->close();
         return;
@@ -222,7 +252,7 @@ void CoreAuthHandler::handle(const Protocol::Login& msg)
         return;
 
     if (!Core::isConfigured()) {
-        qWarning() << qPrintable(tr("Client")) << qPrintable(socket()->peerAddress().toString())
+        qWarning() << qPrintable(tr("Client")) << qPrintable(hostAddress().toString())
                    << qPrintable(tr("attempted to login before the core was configured, rejecting."));
         _peer->dispatch(Protocol::ClientDenied(
             tr("<b>Attempted to login before core was configured!</b><br>The core must be configured before attempting to login.")));
@@ -247,7 +277,7 @@ void CoreAuthHandler::handle(const Protocol::Login& msg)
     }
 
     if (uid == 0) {
-        qInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(socket()->peerAddress().toString(), msg.user));
+        qInfo() << qPrintable(tr("Invalid login attempt from %1 as \"%2\"").arg(hostAddress().toString(), msg.user));
         _peer->dispatch(Protocol::LoginFailed(tr(
             "<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.")));
         if (_metricsServer) {
@@ -261,7 +291,7 @@ void CoreAuthHandler::handle(const Protocol::Login& msg)
     }
 
     qInfo() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).")
-                          .arg(socket()->peerAddress().toString(), msg.user, QString::number(uid.toInt())));
+                              .arg(_peer->address(), msg.user, QString::number(uid.toInt())));
 
     const auto& clientFeatures = _peer->features();
     auto unsupported = clientFeatures.toStringList(false);
@@ -282,6 +312,24 @@ void CoreAuthHandler::handle(const Protocol::Login& msg)
 
     socket()->flush();  // Make sure all data is sent before handing over the peer (and socket) to the session thread (bug 682)
     emit handshakeComplete(_peer, uid);
+}
+
+QHostAddress CoreAuthHandler::hostAddress() const
+{
+    if (_useProxyLine) {
+        return _proxyLine.sourceHost;
+    }
+    else if (socket()) {
+        return socket()->peerAddress();
+    }
+
+    return {};
+}
+
+bool CoreAuthHandler::isLocal() const
+{
+    return hostAddress() == QHostAddress::LocalHost ||
+           hostAddress() == QHostAddress::LocalHostIPv6;
 }
 
 /*** SSL Stuff ***/

@@ -49,7 +49,7 @@ void LegacyPeer::setSignalProxy(::SignalProxy* proxy)
         // enable compression now if requested - the initial handshake is uncompressed in the legacy protocol!
         _useCompression = socket()->property("UseCompression").toBool();
         if (_useCompression)
-            qDebug() << "Using compression for peer:" << qPrintable(socket()->peerAddress().toString());
+            qDebug() << "Using compression for peer:" << qPrintable(address());
     }
 }
 
