@@ -126,12 +126,12 @@ void BufferViewSettingsPage::load()
     // load network selector
     ui.networkSelector->clear();
     ui.networkSelector->addItem(tr("All"));
-    ui.networkSelector->setItemData(0, qVariantFromValue<NetworkId>(NetworkId()));
+    ui.networkSelector->setItemData(0, QVariant::fromValue(NetworkId()));
     const Network* net;
     foreach (NetworkId netId, Client::networkIds()) {
         net = Client::network(netId);
         ui.networkSelector->addItem(net->networkName());
-        ui.networkSelector->setItemData(ui.networkSelector->count() - 1, qVariantFromValue<NetworkId>(net->networkId()));
+        ui.networkSelector->setItemData(ui.networkSelector->count() - 1, QVariant::fromValue(net->networkId()));
     }
     _ignoreWidgetChanges = false;
 
@@ -206,7 +206,7 @@ void BufferViewSettingsPage::coreConnectionStateChanged(bool state)
 void BufferViewSettingsPage::addBufferView(BufferViewConfig* config)
 {
     auto* item = new QListWidgetItem(config->bufferViewName(), ui.bufferViewList);
-    item->setData(Qt::UserRole, qVariantFromValue<QObject*>(qobject_cast<QObject*>(config)));
+    item->setData(Qt::UserRole, QVariant::fromValue(qobject_cast<QObject*>(config)));
     connect(config, &SyncableObject::updatedRemotely, this, &BufferViewSettingsPage::updateBufferView);
     connect(config, &QObject::destroyed, this, &BufferViewSettingsPage::bufferViewDeleted);
     ui.deleteBufferView->setEnabled(ui.bufferViewList->count() > 1);
