@@ -34,7 +34,11 @@ ExecWrapper::ExecWrapper(QObject* parent)
     connect(&_process, &QProcess::readyReadStandardOutput, this, &ExecWrapper::processReadStdout);
     connect(&_process, &QProcess::readyReadStandardError, this, &ExecWrapper::processReadStderr);
     connect(&_process, selectOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &ExecWrapper::processFinished);
+#if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
     connect(&_process, selectOverload<QProcess::ProcessError>(&QProcess::error), this, &ExecWrapper::processError);
+#else
+    connect(&_process, &QProcess::errorOccurred, this, &ExecWrapper::processError);
+#endif
 
     connect(this, &ExecWrapper::output, this, &ExecWrapper::postStdout);
     connect(this, &ExecWrapper::error, this, &ExecWrapper::postStderr);
