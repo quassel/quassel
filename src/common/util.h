@@ -23,6 +23,7 @@
 #include "common-export.h"
 
 #include <QList>
+#include <QSet>
 #include <QString>
 #include <QVariant>
 
@@ -49,6 +50,16 @@ COMMON_EXPORT QString secondsToString(int timeInSeconds);
 COMMON_EXPORT QString decodeString(const QByteArray& input, QTextCodec* codec = nullptr);
 
 COMMON_EXPORT uint editingDistance(const QString& s1, const QString& s2);
+
+template<typename T>
+QSet<T> toQSet(const QList<T>& list)
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    return list.toSet();
+#else
+    return {list.begin(), list.end()};
+#endif
+}
 
 template<typename T>
 QVariantList toVariantList(const QList<T>& list)

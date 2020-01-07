@@ -35,6 +35,7 @@
 #include "messagefilter.h"
 #include "qtui.h"
 #include "qtuistyle.h"
+#include "util.h"
 
 ChatView::ChatView(BufferId bufferId, QWidget* parent)
     : QGraphicsView(parent)
@@ -293,7 +294,7 @@ QSet<ChatLine*> ChatView::visibleChatLines(Qt::ItemSelectionMode mode) const
 
 QList<ChatLine*> ChatView::visibleChatLinesSorted(Qt::ItemSelectionMode mode) const
 {
-    QList<ChatLine*> result = visibleChatLines(mode).toList();
+    QList<ChatLine*> result = visibleChatLines(mode).values();
     std::sort(result.begin(), result.end(), chatLinePtrLessThan);
     return result;
 }

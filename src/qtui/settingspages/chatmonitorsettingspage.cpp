@@ -30,6 +30,7 @@
 #include "client.h"
 #include "icon.h"
 #include "networkmodel.h"
+#include "util.h"
 
 ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget* parent)
     : SettingsPage(tr("Interface"), tr("Chat Monitor"), parent)
@@ -189,7 +190,7 @@ bool ChatMonitorSettingsPage::testHasChanged()
     if (_configActive->bufferList().count() != settings["Buffers"].toList().count())
         return true;
 
-    QSet<BufferId> uiBufs = _configActive->bufferList().toSet();
+    QSet<BufferId> uiBufs = toQSet(_configActive->bufferList());
     QSet<BufferId> settingsBufs;
     foreach (QVariant v, settings["Buffers"].toList())
         settingsBufs << v.value<BufferId>();

@@ -32,6 +32,7 @@
 #include "graphicalui.h"
 #include "networkmodel.h"
 #include "uistyle.h"
+#include "util.h"
 
 /*****************************************
  * The Filter for the Tree View
@@ -141,7 +142,7 @@ void BufferViewFilter::enableEditMode(bool enable)
         return;
 
     if (enable == false) {
-        addBuffers(QList<BufferId>::fromSet(_toAdd));
+        addBuffers(_toAdd.values());
         QSet<BufferId>::const_iterator iter;
         for (iter = _toTempRemove.constBegin(); iter != _toTempRemove.constEnd(); ++iter) {
             if (config()->temporarilyRemovedBuffers().contains(*iter))
