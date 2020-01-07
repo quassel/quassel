@@ -29,6 +29,7 @@
 #include "backlogrequester.h"
 #include "backlogsettings.h"
 #include "client.h"
+#include "util.h"
 
 ClientBacklogManager::ClientBacklogManager(QObject* parent)
     : BacklogManager(parent)
@@ -117,7 +118,7 @@ void ClientBacklogManager::requestInitialBacklog()
 BufferIdList ClientBacklogManager::filterNewBufferIds(const BufferIdList& bufferIds)
 {
     BufferIdList newBuffers;
-    QSet<BufferId> availableBuffers = Client::networkModel()->allBufferIds().toSet();
+    QSet<BufferId> availableBuffers = toQSet(Client::networkModel()->allBufferIds());
     foreach (BufferId bufferId, bufferIds) {
         if (_buffersRequested.contains(bufferId) || !availableBuffers.contains(bufferId))
             continue;

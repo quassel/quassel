@@ -118,7 +118,7 @@ void ChatViewSearchController::updateHighlights(bool reuse)
             if (line)
                 chatLines << line;
         }
-        foreach (ChatLine* line, QList<ChatLine*>(chatLines.toList())) {
+        foreach (ChatLine* line, chatLines) {
             updateHighlights(line);
         }
     }
@@ -302,8 +302,7 @@ void ChatViewSearchController::repositionHighlights()
         if (line)
             chatLines << line;
     }
-    QList<ChatLine*> chatLineList(chatLines.toList());
-    foreach (ChatLine* line, chatLineList) {
+    foreach (ChatLine* line, chatLines) {
         repositionHighlights(line);
     }
 }

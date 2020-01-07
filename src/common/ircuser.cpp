@@ -317,7 +317,7 @@ void IrcUser::partChannel(const QString& channelname)
 
 void IrcUser::quit()
 {
-    QList<IrcChannel*> channels = _channels.toList();
+    QList<IrcChannel*> channels = _channels.values();
     _channels.clear();
     foreach (IrcChannel* channel, channels) {
         disconnect(channel, nullptr, this, nullptr);

@@ -35,36 +35,30 @@ BacklogRequester::BacklogRequester(bool buffering, RequesterType requesterType, 
     Q_ASSERT(backlogManager);
 }
 
-void BacklogRequester::setWaitingBuffers(const QSet<BufferId>& buffers)
+void BacklogRequester::setWaitingBuffers(const BufferIdList& buffers)
 {
-    _buffersWaiting = buffers;
-    _totalBuffers = _buffersWaiting.count();
-}
-
-void BacklogRequester::addWaitingBuffer(BufferId buffer)
-{
-    _buffersWaiting << buffer;
-    _totalBuffers++;
+    _buffersWaiting = {buffers.begin(), buffers.end()};
+    _totalBuffers = int(_buffersWaiting.size());
 }
 
 bool BacklogRequester::buffer(BufferId bufferId, const MessageList& messages)
 {
     _bufferedMessages << messages;
-    _buffersWaiting.remove(bufferId);
-    return !_buffersWaiting.isEmpty();
+    _buffersWaiting.erase(bufferId);
+    return !_buffersWaiting.empty();
 }
 
 BufferIdList BacklogRequester::allBufferIds() const
 {
     QSet<BufferId> bufferIds = Client::bufferViewOverlay()->bufferIds();
     bufferIds += Client::bufferViewOverlay()->tempRemovedBufferIds();
-    return bufferIds.toList();
+    return bufferIds.values();
 }
 
 void BacklogRequester::flushBuffer()
 {
-    if (!_buffersWaiting.isEmpty()) {
-        qWarning() << Q_FUNC_INFO << "was called before all backlog was received:" << _buffersWaiting.count() << "buffers are waiting.";
+    if (!_buffersWaiting.empty()) {
+        qWarning() << Q_FUNC_INFO << "was called before all backlog was received:" << _buffersWaiting.size() << "buffers are waiting.";
     }
     _bufferedMessages.clear();
     _totalBuffers = 0;

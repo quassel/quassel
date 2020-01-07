@@ -28,6 +28,7 @@
 #include "corenetwork.h"
 #include "coresession.h"
 #include "ircchannel.h"
+#include "util.h"
 
 class PurgeEvent : public QEvent
 {
@@ -193,7 +194,7 @@ void CoreBufferSyncer::purgeBufferIds()
     std::transform(bufferInfos.cbegin(), bufferInfos.cend(), std::inserter(actualBuffers, actualBuffers.end()),
                    [](auto&& bufferInfo) { return bufferInfo.bufferId(); });
 
-    QSet<BufferId> storedIds = lastSeenBufferIds().toSet() + markerLineBufferIds().toSet();
+    QSet<BufferId> storedIds = toQSet(lastSeenBufferIds()) + toQSet(markerLineBufferIds());
     foreach (BufferId bufferId, storedIds) {
         if (actualBuffers.find(bufferId) == actualBuffers.end()) {
             BufferSyncer::removeBuffer(bufferId);
