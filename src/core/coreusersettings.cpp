@@ -45,7 +45,7 @@ QList<IdentityId> CoreUserSettings::identityIds() const
 
 void CoreUserSettings::storeIdentity(const Identity& identity)
 {
-    setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), qVariantFromValue(identity));
+    setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), QVariant::fromValue(identity));
 }
 
 void CoreUserSettings::removeIdentity(IdentityId id)
