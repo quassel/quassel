@@ -29,7 +29,7 @@ bool toVariant(QDataStream& stream, Quassel::Features features, QVariant& data)
     if (!Serializers::deserialize(stream, features, content)) {
         return false;
     }
-    data = QVariant::fromValue<T>(content);
+    data = QVariant::fromValue(content);
     return true;
 }
 

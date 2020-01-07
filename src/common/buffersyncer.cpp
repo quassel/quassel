@@ -82,7 +82,7 @@ QVariantList BufferSyncer::initLastSeenMsg() const
     QVariantList list;
     QHash<BufferId, MsgId>::const_iterator iter = _lastSeenMsg.constBegin();
     while (iter != _lastSeenMsg.constEnd()) {
-        list << QVariant::fromValue<BufferId>(iter.key()) << QVariant::fromValue<MsgId>(iter.value());
+        list << QVariant::fromValue(iter.key()) << QVariant::fromValue(iter.value());
         ++iter;
     }
     return list;
@@ -102,7 +102,7 @@ QVariantList BufferSyncer::initMarkerLines() const
     QVariantList list;
     QHash<BufferId, MsgId>::const_iterator iter = _markerLines.constBegin();
     while (iter != _markerLines.constEnd()) {
-        list << QVariant::fromValue<BufferId>(iter.key()) << QVariant::fromValue<MsgId>(iter.value());
+        list << QVariant::fromValue(iter.key()) << QVariant::fromValue(iter.value());
         ++iter;
     }
     return list;
@@ -122,7 +122,7 @@ QVariantList BufferSyncer::initActivities() const
     QVariantList list;
     auto iter = _bufferActivities.constBegin();
     while (iter != _bufferActivities.constEnd()) {
-        list << QVariant::fromValue<BufferId>(iter.key()) << QVariant::fromValue<int>((int)iter.value());
+        list << QVariant::fromValue(iter.key()) << QVariant::fromValue((int)iter.value());
         ++iter;
     }
     return list;
@@ -180,7 +180,7 @@ QVariantList BufferSyncer::initHighlightCounts() const
     QVariantList list;
     auto iter = _highlightCounts.constBegin();
     while (iter != _highlightCounts.constEnd()) {
-        list << QVariant::fromValue<BufferId>(iter.key()) << QVariant::fromValue<int>((int)iter.value());
+        list << QVariant::fromValue(iter.key()) << QVariant::fromValue((int)iter.value());
         ++iter;
     }
     return list;

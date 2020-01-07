@@ -70,7 +70,7 @@ QVariant NetworkItem::data(int column, int role) const
         else
             return QVariant();
     case NetworkModel::NetworkIdRole:
-        return qVariantFromValue(_networkId);
+        return QVariant::fromValue(_networkId);
     case NetworkModel::ItemTypeRole:
         return NetworkModel::NetworkItemType;
     case NetworkModel::ItemActiveRole:
@@ -377,11 +377,11 @@ QVariant BufferItem::data(int column, int role) const
     case NetworkModel::ItemTypeRole:
         return NetworkModel::BufferItemType;
     case NetworkModel::BufferIdRole:
-        return qVariantFromValue(bufferInfo().bufferId());
+        return QVariant::fromValue(bufferInfo().bufferId());
     case NetworkModel::NetworkIdRole:
-        return qVariantFromValue(bufferInfo().networkId());
+        return QVariant::fromValue(bufferInfo().networkId());
     case NetworkModel::BufferInfoRole:
-        return qVariantFromValue(bufferInfo());
+        return QVariant::fromValue(bufferInfo());
     case NetworkModel::BufferTypeRole:
         return int(bufferType());
     case NetworkModel::ItemActiveRole:
@@ -389,9 +389,9 @@ QVariant BufferItem::data(int column, int role) const
     case NetworkModel::BufferActivityRole:
         return (int)activityLevel();
     case NetworkModel::BufferFirstUnreadMsgIdRole:
-        return qVariantFromValue(firstUnreadMsgId());
+        return QVariant::fromValue(firstUnreadMsgId());
     case NetworkModel::MarkerLineMsgIdRole:
-        return qVariantFromValue(markerLineMsgId());
+        return QVariant::fromValue(markerLineMsgId());
     default:
         return PropertyMapItem::data(column, role);
     }
@@ -483,7 +483,7 @@ QVariant QueryBufferItem::data(int column, int role) const
     case Qt::EditRole:
         return BufferItem::data(column, Qt::DisplayRole);
     case NetworkModel::IrcUserRole:
-        return QVariant::fromValue<QObject*>(_ircUser);
+        return QVariant::fromValue(_ircUser);
     case NetworkModel::UserAwayRole:
         return (bool)_ircUser ? _ircUser->isAway() : false;
     default:
@@ -696,7 +696,7 @@ QVariant ChannelBufferItem::data(int column, int role) const
 {
     switch (role) {
     case NetworkModel::IrcChannelRole:
-        return QVariant::fromValue<QObject*>(_ircChannel);
+        return QVariant::fromValue(_ircChannel);
     default:
         return BufferItem::data(column, role);
     }
@@ -1063,7 +1063,7 @@ QVariant IrcUserItem::data(int column, int role) const
     case NetworkModel::IrcChannelRole:
         return parent()->data(column, role);
     case NetworkModel::IrcUserRole:
-        return QVariant::fromValue<QObject*>(_ircUser.data());
+        return QVariant::fromValue(_ircUser.data());
     case NetworkModel::UserAwayRole:
         return (bool)_ircUser ? _ircUser->isAway() : false;
     default:

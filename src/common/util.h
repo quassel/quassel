@@ -55,7 +55,7 @@ QVariantList toVariantList(const QList<T>& list)
 {
     QVariantList variants;
     for (int i = 0; i < list.count(); i++) {
-        variants << QVariant::fromValue<T>(list[i]);
+        variants << QVariant::fromValue(list[i]);
     }
     return variants;
 }

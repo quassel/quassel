@@ -149,7 +149,7 @@ QVariant ShortcutsModel::data(const QModelIndex& index, int role) const
         return QVariant();
 
     case ActionRole:
-        return QVariant::fromValue<QObject*>(action);
+        return QVariant::fromValue(action);
 
     case DefaultShortcutRole:
         return action->shortcut(Action::DefaultShortcut);

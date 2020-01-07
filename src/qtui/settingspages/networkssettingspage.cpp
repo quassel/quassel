@@ -556,7 +556,7 @@ QListWidgetItem* NetworksSettingsPage::insertNetwork(const NetworkInfo& info)
         if (!item)
             item = new QListWidgetItem(disconnectedIcon, info.networkName, ui.networkList);
     }
-    item->setData(Qt::UserRole, QVariant::fromValue<NetworkId>(info.networkId));
+    item->setData(Qt::UserRole, QVariant::fromValue(info.networkId));
     setItemState(info.networkId, item);
     widgetHasChanged();
     return item;

@@ -302,7 +302,7 @@ void Core::saveState()
     if (_storage) {
         QVariantList activeSessions;
         for (auto&& user : instance()->_sessions.keys())
-            activeSessions << QVariant::fromValue<UserId>(user);
+            activeSessions << QVariant::fromValue(user);
         _storage->setCoreState(activeSessions);
     }
 }

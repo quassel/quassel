@@ -156,7 +156,7 @@ void ChatMonitorSettingsPage::save()
     // save list of active buffers
     QVariantList saveableBufferIdList;
     foreach (BufferId id, _configActive->bufferList()) {
-        saveableBufferIdList << QVariant::fromValue<BufferId>(id);
+        saveableBufferIdList << QVariant::fromValue(id);
     }
 
     chatViewSettings.setValue("Buffers", saveableBufferIdList);

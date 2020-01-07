@@ -439,11 +439,11 @@ QVariant MessageModelItem::data(int column, int role) const
 
     switch (role) {
     case MessageModel::MessageRole:
-        return QVariant::fromValue<Message>(message());
+        return QVariant::fromValue(message());
     case MessageModel::MsgIdRole:
-        return QVariant::fromValue<MsgId>(msgId());
+        return QVariant::fromValue(msgId());
     case MessageModel::BufferIdRole:
-        return QVariant::fromValue<BufferId>(bufferId());
+        return QVariant::fromValue(bufferId());
     case MessageModel::TypeRole:
         return msgType();
     case MessageModel::FlagsRole:
@@ -451,9 +451,9 @@ QVariant MessageModelItem::data(int column, int role) const
     case MessageModel::TimestampRole:
         return timestamp();
     case MessageModel::RedirectedToRole:
-        return qVariantFromValue<BufferId>(_redirectedTo);
+        return QVariant::fromValue(_redirectedTo);
     default:
-        return QVariant();
+        return {};
     }
 }
 

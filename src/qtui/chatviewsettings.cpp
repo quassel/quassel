@@ -70,7 +70,7 @@ void ChatViewSettings::setTimestampFormatString(const QString& format)
 UiStyle::SenderPrefixMode ChatViewSettings::senderPrefixDisplay() const
 {
     return static_cast<UiStyle::SenderPrefixMode>(
-        localValue("SenderPrefixMode", QVariant::fromValue<UiStyle::SenderPrefixMode>(UiStyle::SenderPrefixMode::HighestMode)).toInt());
+        localValue("SenderPrefixMode", QVariant::fromValue(UiStyle::SenderPrefixMode::HighestMode)).toInt());
     // Cast the QVariant to an integer, then cast that to the enum class.
     // .canConvert<UiStyle::SenderPrefixMode>() returned true, but
     // .value<UiStyle::SenderPrefixMode>(); always gave the default value 0.
