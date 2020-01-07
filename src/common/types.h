@@ -195,6 +195,7 @@ Q_DECLARE_METATYPE(QHostAddress)
 using MsgIdList = QList<MsgId>;
 using BufferIdList = QList<BufferId>;
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 /**
  * Catch-all stream serialization operator for enum types.
  *
@@ -224,6 +225,7 @@ QDataStream& operator>>(QDataStream& in, T& value)
     value = static_cast<T>(v);
     return in;
 }
+#endif
 
 // STL-compliant hash functor for Qt types
 template<typename T>
