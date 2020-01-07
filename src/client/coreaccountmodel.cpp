@@ -98,7 +98,7 @@ QVariant CoreAccountModel::data(const QModelIndex& index, int role) const
     case Qt::DisplayRole:
         return acc.accountName();
     case AccountIdRole:
-        return QVariant::fromValue<AccountId>(acc.accountId());
+        return QVariant::fromValue(acc.accountId());
     case UuidRole:
         return acc.uuid().toString();
 

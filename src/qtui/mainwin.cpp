@@ -1725,7 +1725,7 @@ void MainWin::clientNetworkCreated(NetworkId id)
     const Network* net = Client::network(id);
     auto* act = new QAction(net->networkName(), this);
     act->setObjectName(QString("NetworkAction-%1").arg(id.toInt()));
-    act->setData(QVariant::fromValue<NetworkId>(id));
+    act->setData(QVariant::fromValue(id));
     connect(net, &SyncableObject::updatedRemotely, this, &MainWin::clientNetworkUpdated);
     connect(act, &QAction::triggered, this, &MainWin::connectOrDisconnectFromNet);
 
