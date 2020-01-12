@@ -63,6 +63,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     if (APPLE)
     check_and_set_linker_flag("-Wl,-dead_strip"         DEAD_STRIP          LINKER_FLAGS)
     check_and_set_linker_flag("-Wl,-dead_strip_dylibs"  DEAD_STRIP_DYLIBS   LINKER_FLAGS)
+    check_and_set_linker_flag("-Wl,-bind_at_load"       BIND_AT_LOAD        LINKER_FLAGS)
     endif()
 
     set(CMAKE_EXE_LINKER_FLAGS    "${LINKER_FLAGS} ${CMAKE_EXE_LINKER_FLAGS}")
