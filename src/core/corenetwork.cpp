@@ -1267,16 +1267,37 @@ void CoreNetwork::retryCapsIndividually()
 
 void CoreNetwork::beginCapNegotiation()
 {
-    // Don't begin negotiation if no capabilities are queued to request
     if (!capNegotiationInProgress()) {
-        // If the server doesn't have any capabilities, but supports CAP LS, continue on with the
-        // normal connection.
+        // No capabilities are queued for request, determine the reason why
+        QString capStatusMsg;
+        if (caps().empty()) {
+            // The server doesn't provide any capabilities, but supports CAP LS
+            capStatusMsg = tr("No capabilities available");
+        }
+        else if (capsEnabled().empty()) {
+            // The server supports capabilities (caps() is not empty) but Quassel doesn't support
+            // anything offered.  This should be uncommon.
+            capStatusMsg =
+                    tr("None of the capabilities provided by the server are supported (found: %1)")
+                    .arg(caps().join(", "));
+        }
+        else {
+            // Quassel has enabled some capabilities, but there are no further capabilities that can
+            // be negotiated.
+            // (E.g. the user has manually run "/cap ls 302" after initial negotiation.)
+            capStatusMsg =
+                    tr("No additional capabilities are supported (found: %1; currently enabled: %2)")
+                    .arg(caps().join(", "), capsEnabled().join(", "));
+        }
+        // Inform the user of the situation
         showMessage(NetworkInternalMessage(
             Message::Server,
             BufferInfo::StatusBuffer,
             "",
-            tr("No capabilities available")
+            capStatusMsg
         ));
+
+        // End any ongoing capability negotiation, allowing connection to continue
         endCapNegotiation();
         return;
     }
