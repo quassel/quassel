@@ -1267,7 +1267,7 @@ void CoreNetwork::retryCapsIndividually()
 
 void CoreNetwork::beginCapNegotiation()
 {
-    if (!capNegotiationInProgress()) {
+    if (!capsPendingNegotiation()) {
         // No capabilities are queued for request, determine the reason why
         QString capStatusMsg;
         if (caps().empty()) {
@@ -1327,7 +1327,7 @@ void CoreNetwork::beginCapNegotiation()
 
 void CoreNetwork::sendNextCap()
 {
-    if (capNegotiationInProgress()) {
+    if (capsPendingNegotiation()) {
         // Request the next set of capabilities and remove them from the list
         putRawLine(serverEncode(QString("CAP REQ :%1").arg(takeQueuedCaps())));
     }

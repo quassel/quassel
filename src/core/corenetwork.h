@@ -141,7 +141,7 @@ public:
      *
      * @returns True if in progress, otherwise false
      */
-    inline bool capNegotiationInProgress() const { return (!_capsQueuedIndividual.empty() || !_capsQueuedBundled.empty()); }
+    inline bool capsPendingNegotiation() const { return (!_capsQueuedIndividual.empty() || !_capsQueuedBundled.empty()); }
 
     /**
      * Queues a capability to be requested.
