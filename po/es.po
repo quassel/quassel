@@ -7507,7 +7507,7 @@ msgstr "Solicitando hasta %1 de todos los mensajes sin leer del registro (más %
 #, qt-format
 msgctxt "QObject|"
 msgid "Requesting a total of up to %1 unread backlog messages for %2 buffers"
-msgstr "Solicitando un total de hasta %1 mesnajes sin leer del registro de %2 canales en memoria"
+msgstr "Solicitando un total de hasta %1 mensajes sin leer del registro de %2 canales en memoria"
 
 #: ../src/qtui/ircconnectionwizard.cpp:57
 msgctxt "QObject|"
