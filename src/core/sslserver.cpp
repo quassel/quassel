@@ -57,28 +57,19 @@ SslServer::SslServer(QObject* parent)
     }
 }
 
-QTcpSocket* SslServer::nextPendingConnection()
-{
-    if (_pendingConnections.isEmpty())
-        return nullptr;
-    else
-        return _pendingConnections.takeFirst();
-}
-
 void SslServer::incomingConnection(qintptr socketDescriptor)
 {
-    auto* serverSocket = new QSslSocket(this);
-    if (serverSocket->setSocketDescriptor(socketDescriptor)) {
+    auto* socket = new QSslSocket(this);
+    if (socket->setSocketDescriptor(socketDescriptor)) {
         if (isCertValid()) {
-            serverSocket->setLocalCertificate(_cert);
-            serverSocket->setPrivateKey(_key);
-            serverSocket->addCaCertificates(_ca);
+            socket->setLocalCertificate(_cert);
+            socket->setPrivateKey(_key);
+            socket->addCaCertificates(_ca);
         }
-        _pendingConnections << serverSocket;
-        emit newConnection();
+        addPendingConnection(socket);
     }
     else {
-        delete serverSocket;
+        delete socket;
     }
 }
 
