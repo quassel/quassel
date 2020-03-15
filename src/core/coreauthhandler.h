@@ -18,8 +18,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREAUTHHANDLER_H
-#define COREAUTHHANDLER_H
+#pragma once
 
 #include "authhandler.h"
 #include "metricsserver.h"
@@ -33,7 +32,7 @@ class CoreAuthHandler : public AuthHandler
     Q_OBJECT
 
 public:
-    CoreAuthHandler(QTcpSocket* socket, QObject* parent = nullptr);
+    CoreAuthHandler(QSslSocket* socket, QObject* parent = nullptr);
 
     QHostAddress hostAddress() const;
     bool isLocal() const override;
@@ -74,5 +73,3 @@ private:
     quint8 _connectionFeatures;
     QVector<PeerFactory::ProtoDescriptor> _supportedProtos;
 };
-
-#endif

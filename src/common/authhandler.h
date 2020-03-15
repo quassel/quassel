@@ -22,7 +22,7 @@
 
 #include "common-export.h"
 
-#include <QTcpSocket>
+#include <QSslSocket>
 
 #include "protocol.h"
 
@@ -35,7 +35,7 @@ class COMMON_EXPORT AuthHandler : public QObject
 public:
     AuthHandler(QObject* parent = nullptr);
 
-    QTcpSocket* socket() const;
+    QSslSocket* socket() const;
 
     virtual bool isLocal() const;
 
@@ -65,7 +65,7 @@ signals:
     void socketError(QAbstractSocket::SocketError error, const QString& errorString);
 
 protected:
-    void setSocket(QTcpSocket* socket);
+    void setSocket(QSslSocket* socket);
 
 protected slots:
     virtual void onSocketError(QAbstractSocket::SocketError error);
@@ -74,6 +74,6 @@ protected slots:
 private:
     void invalidMessage();
 
-    QTcpSocket* _socket{nullptr};  // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
+    QSslSocket* _socket{nullptr};  // FIXME: should be a QSharedPointer? -> premature disconnect before the peer has taken over
     bool _disconnectedSent{false};
 };

@@ -28,12 +28,12 @@ AuthHandler::AuthHandler(QObject* parent)
     : QObject(parent)
 {}
 
-QTcpSocket* AuthHandler::socket() const
+QSslSocket* AuthHandler::socket() const
 {
     return _socket;
 }
 
-void AuthHandler::setSocket(QTcpSocket* socket)
+void AuthHandler::setSocket(QSslSocket* socket)
 {
     _socket = socket;
     connect(socket, selectOverload<QAbstractSocket::SocketError>(&QTcpSocket::error), this, &AuthHandler::onSocketError);

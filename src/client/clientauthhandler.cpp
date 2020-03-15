@@ -384,13 +384,11 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
         // Make sure the warning is shown next time we don't have SSL in the core
         s.setAccountValue("ShowNoCoreSslWarning", true);
 
-        auto* sslSocket = qobject_cast<QSslSocket*>(socket());
-        Q_ASSERT(sslSocket);
-        connect(sslSocket, &QSslSocket::encrypted, this, &ClientAuthHandler::onSslSocketEncrypted);
-        connect(sslSocket, selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &ClientAuthHandler::onSslErrors);
+        connect(socket(), &QSslSocket::encrypted, this, &ClientAuthHandler::onSslSocketEncrypted);
+        connect(socket(), selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &ClientAuthHandler::onSslErrors);
         qDebug() << "Starting encryption...";
-        sslSocket->flush();
-        sslSocket->startClientEncryption();
+        socket()->flush();
+        socket()->startClientEncryption();
     }
     else {
         if (s.accountValue("ShowNoCoreSslWarning", true).toBool()) {
@@ -435,9 +433,6 @@ void ClientAuthHandler::onSslSocketEncrypted()
 
 void ClientAuthHandler::onSslErrors()
 {
-    auto* socket = qobject_cast<QSslSocket*>(sender());
-    Q_ASSERT(socket);
-
     CoreAccountSettings s;
     QByteArray knownDigest = s.accountValue("SslCert").toByteArray();
     ClientAuthHandler::DigestVersion knownDigestVersion = static_cast<ClientAuthHandler::DigestVersion>(
@@ -446,11 +441,11 @@ void ClientAuthHandler::onSslErrors()
     QByteArray calculatedDigest;
     switch (knownDigestVersion) {
     case ClientAuthHandler::DigestVersion::Md5:
-        calculatedDigest = socket->peerCertificate().digest(QCryptographicHash::Md5);
+        calculatedDigest = socket()->peerCertificate().digest(QCryptographicHash::Md5);
         break;
 
     case ClientAuthHandler::DigestVersion::Sha2_512:
-        calculatedDigest = socket->peerCertificate().digest(QCryptographicHash::Sha512);
+        calculatedDigest = socket()->peerCertificate().digest(QCryptographicHash::Sha512);
         break;
 
     default:
@@ -460,7 +455,7 @@ void ClientAuthHandler::onSslErrors()
     if (knownDigest != calculatedDigest) {
         bool accepted = false;
         bool permanently = false;
-        emit handleSslErrors(socket, &accepted, &permanently);
+        emit handleSslErrors(socket(), &accepted, &permanently);
 
         if (!accepted) {
             requestDisconnect(tr("Unencrypted connection canceled"));
@@ -468,7 +463,7 @@ void ClientAuthHandler::onSslErrors()
         }
 
         if (permanently) {
-            s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
+            s.setAccountValue("SslCert", socket()->peerCertificate().digest(QCryptographicHash::Sha512));
             s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
         }
         else {
@@ -477,9 +472,9 @@ void ClientAuthHandler::onSslErrors()
         }
     }
     else if (knownDigestVersion != ClientAuthHandler::DigestVersion::Latest) {
-        s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
+        s.setAccountValue("SslCert", socket()->peerCertificate().digest(QCryptographicHash::Sha512));
         s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
     }
 
-    socket->ignoreSslErrors();
+    socket()->ignoreSslErrors();
 }
