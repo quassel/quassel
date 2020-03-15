@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2011-2019 by Hannah von Reth                            *
+ *   Copyright (C) 2011-2020 by Hannah von Reth                            *
  *   vonreth@kde.org                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
