@@ -21,7 +21,6 @@
 #pragma once
 
 #include <QFile>
-#include <QLinkedList>
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QTcpServer>
@@ -34,9 +33,6 @@ class SslServer : public QTcpServer
 
 public:
     SslServer(QObject* parent = nullptr);
-
-    bool hasPendingConnections() const override { return !_pendingConnections.isEmpty(); }
-    QTcpSocket* nextPendingConnection() override;
 
     const QSslCertificate& certificate() const { return _cert; }
     const QSslKey& key() const { return _key; }
@@ -73,7 +69,6 @@ private:
 
     MetricsServer* _metricsServer{nullptr};
 
-    QLinkedList<QTcpSocket*> _pendingConnections;
     QSslCertificate _cert;
     QSslKey _key;
     QList<QSslCertificate> _ca;
