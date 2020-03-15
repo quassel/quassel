@@ -159,8 +159,7 @@ void ClientAuthHandler::onSocketConnected()
         stream.setVersion(QDataStream::Qt_4_2);
 
         quint32 magic = Protocol::magic;
-        if (_account.useSsl())
-            magic |= Protocol::Encryption;
+        magic |= Protocol::Encryption;
         magic |= Protocol::Compression;
 
         stream << magic;
@@ -253,7 +252,7 @@ void ClientAuthHandler::setPeer(RemotePeer* peer)
     connect(_peer, &RemotePeer::transferProgress, this, &ClientAuthHandler::transferProgress);
 
     // The legacy protocol enables SSL later, after registration
-    if (!_account.useSsl() || _legacy)
+    if (_legacy)
         startRegistration();
     // otherwise, do it now
     else
@@ -264,11 +263,7 @@ void ClientAuthHandler::startRegistration()
 {
     emit statusMessage(tr("Synchronizing to core..."));
 
-    // useSsl will be ignored by non-legacy peers
-    bool useSsl = false;
-    useSsl = _account.useSsl();
-
-    _peer->dispatch(Protocol::RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate, useSsl));
+    _peer->dispatch(Protocol::RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate));
 }
 
 void ClientAuthHandler::handle(const Protocol::ClientDenied& msg)
@@ -286,7 +281,7 @@ void ClientAuthHandler::handle(const Protocol::ClientRegistered& msg)
     _peer->setFeatures(std::move(msg.features));
 
     // The legacy protocol enables SSL at this point
-    if (_legacy && _account.useSsl())
+    if (_legacy)
         checkAndEnableSsl(msg.sslSupported);
     else
         onConnectionReady();
@@ -380,7 +375,7 @@ void ClientAuthHandler::handle(const Protocol::SessionState& msg)
 void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
 {
     CoreAccountSettings s;
-    if (coreSupportsSsl && _account.useSsl()) {
+    if (coreSupportsSsl) {
         // Make sure the warning is shown next time we don't have SSL in the core
         s.setAccountValue("ShowNoCoreSslWarning", true);
 
