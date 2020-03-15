@@ -572,17 +572,13 @@ bool Core::initAuthenticator(
 
 bool Core::sslSupported()
 {
-    auto* sslServer = qobject_cast<SslServer*>(&instance()->_server);
-    return sslServer && sslServer->isCertValid();
+    return instance()->_server.isCertValid() && instance()->_v6server.isCertValid();
 }
 
 bool Core::reloadCerts()
 {
-    auto* sslServerv4 = qobject_cast<SslServer*>(&_server);
-    bool retv4 = sslServerv4->reloadCerts();
-
-    auto* sslServerv6 = qobject_cast<SslServer*>(&_v6server);
-    bool retv6 = sslServerv6->reloadCerts();
+    bool retv4 = _server.reloadCerts();
+    bool retv6 = _v6server.reloadCerts();
 
     return retv4 && retv6;
 }
@@ -707,10 +703,11 @@ void Core::stopListening(const QString& reason)
 
 void Core::incomingConnection()
 {
-    auto* server = qobject_cast<QTcpServer*>(sender());
+    auto* server = qobject_cast<SslServer*>(sender());
     Q_ASSERT(server);
     while (server->hasPendingConnections()) {
-        QTcpSocket* socket = server->nextPendingConnection();
+        auto socket = qobject_cast<QSslSocket*>(server->nextPendingConnection());
+        Q_ASSERT(socket);
 
         auto* handler = new CoreAuthHandler(socket, this);
         _connectingClients.insert(handler);
