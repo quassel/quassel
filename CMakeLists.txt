@@ -195,9 +195,6 @@ if (NOT HAVE_SSL)
     message(FATAL_ERROR "Quassel requires SSL support, but Qt is built with QT_NO_SSL")
 endif()
 
-# Compat until fallback code paths have been disabled
-add_definitions(-DHAVE_SSL)
-
 # Optional Qt components
 
 find_package(Qt5LinguistTools QUIET)
