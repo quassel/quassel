@@ -179,6 +179,25 @@ set_package_properties(Qt5 PROPERTIES TYPE REQUIRED
 )
 message(STATUS "Found Qt ${Qt5Core_VERSION}")
 
+# Check for SSL support in Qt
+cmake_push_check_state(RESET)
+set(CMAKE_REQUIRED_LIBRARIES Qt5::Core)
+check_cxx_source_compiles("
+    #include \"qglobal.h\"
+    #if defined QT_NO_SSL
+    #  error \"No SSL support\"
+    #endif
+    int main() {}"
+    HAVE_SSL)
+cmake_pop_check_state()
+
+if (NOT HAVE_SSL)
+    message(FATAL_ERROR "Quassel requires SSL support, but Qt is built with QT_NO_SSL")
+endif()
+
+# Compat until fallback code paths have been disabled
+add_definitions(-DHAVE_SSL)
+
 # Optional Qt components
 
 find_package(Qt5LinguistTools QUIET)
@@ -398,25 +417,6 @@ if (BUILD_TESTING)
     # GTest messes with CMAKE_CXX_FLAGS, so process them again
     process_cmake_cxx_flags()
 endif()
-
-# Check for SSL support in Qt
-#####################################################################
-
-cmake_push_check_state(RESET)
-set(CMAKE_REQUIRED_LIBRARIES Qt5::Core)
-check_cxx_source_compiles("
-    #include \"qglobal.h\"
-    #if defined QT_NO_SSL
-    #  error \"No SSL support\"
-    #endif
-    int main() {}"
-    HAVE_SSL)
-cmake_pop_check_state()
-
-if (HAVE_SSL)
-    add_definitions(-DHAVE_SSL)
-endif()
-add_feature_info("SSL support in Qt" HAVE_SSL "Use secure network connections")
 
 # Setup support for KDE Frameworks
 #####################################################################
