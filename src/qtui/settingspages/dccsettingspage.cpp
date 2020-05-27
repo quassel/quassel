@@ -81,14 +81,14 @@ bool DccSettingsPage::hasDefaults() const
 
 void DccSettingsPage::defaults()
 {
-    _localConfig = DccConfig();
+    _localConfig.fromVariantMap(DccConfig{}.toVariantMap());
     SettingsPage::load();
     widgetHasChanged();
 }
 
 void DccSettingsPage::load()
 {
-    _localConfig = isClientConfigValid() ? *_clientConfig : DccConfig{};
+    _localConfig.fromVariantMap(isClientConfigValid() ? _clientConfig->toVariantMap() : DccConfig{}.toVariantMap());
     SettingsPage::load();
     widgetHasChanged();
 }

@@ -144,7 +144,6 @@ bool IgnoreListModel::newIgnoreRule(const IgnoreListManager::IgnoreListItem& ite
     if (manager.contains(item.contents()))
         return false;
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    // manager.addIgnoreListItem(item);
     manager.addIgnoreListItem(item.type(), item.contents(), item.isRegEx(), item.strictness(), item.scope(), item.scopeRule(), item.isEnabled());
     endInsertRows();
     return true;
@@ -216,47 +215,41 @@ QModelIndex IgnoreListModel::index(int row, int column, const QModelIndex& paren
 
 const IgnoreListManager& IgnoreListModel::ignoreListManager() const
 {
-    if (_configChanged)
-        return _clonedIgnoreListManager;
-    else
-        return *Client::ignoreListManager();
+    return _clonedIgnoreListManager ? *_clonedIgnoreListManager : *Client::ignoreListManager();
 }
 
 IgnoreListManager& IgnoreListModel::ignoreListManager()
 {
-    if (_configChanged)
-        return _clonedIgnoreListManager;
-    else
-        return *Client::ignoreListManager();
+    return _clonedIgnoreListManager ? *_clonedIgnoreListManager : *Client::ignoreListManager();
 }
 
 IgnoreListManager& IgnoreListModel::cloneIgnoreListManager()
 {
-    if (!_configChanged) {
-        _clonedIgnoreListManager = *Client::ignoreListManager();
-        _configChanged = true;
+    if (!_clonedIgnoreListManager) {
+        _clonedIgnoreListManager = std::make_unique<ClientIgnoreListManager>();
+        _clonedIgnoreListManager->fromVariantMap(Client::ignoreListManager()->toVariantMap());
         emit configChanged(true);
     }
-    return _clonedIgnoreListManager;
+    return *_clonedIgnoreListManager;
 }
 
 void IgnoreListModel::revert()
 {
-    if (!_configChanged)
+    if (!_clonedIgnoreListManager)
         return;
 
-    _configChanged = false;
-    emit configChanged(false);
     beginResetModel();
+    _clonedIgnoreListManager.reset();
     endResetModel();
+    emit configChanged(false);
 }
 
 void IgnoreListModel::commit()
 {
-    if (!_configChanged)
+    if (!_clonedIgnoreListManager)
         return;
 
-    Client::ignoreListManager()->requestUpdate(_clonedIgnoreListManager.toVariantMap());
+    Client::ignoreListManager()->requestUpdate(_clonedIgnoreListManager->toVariantMap());
     revert();
 }
 
@@ -279,10 +272,9 @@ void IgnoreListModel::clientConnected()
 
 void IgnoreListModel::clientDisconnected()
 {
-    // clear
-    _clonedIgnoreListManager = ClientIgnoreListManager();
     _modelReady = false;
     beginResetModel();
+    _clonedIgnoreListManager.reset();
     endResetModel();
     emit modelReady(false);
 }

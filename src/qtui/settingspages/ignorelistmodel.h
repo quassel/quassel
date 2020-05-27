@@ -18,11 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IGNORELISTMODEL_H
-#define IGNORELISTMODEL_H
+#pragma once
+
+#include <memory>
 
 #include <QAbstractItemModel>
-#include <QPointer>
 
 #include "clientignorelistmanager.h"
 
@@ -47,7 +47,7 @@ public:
     inline int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     inline int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    inline bool hasConfigChanged() const { return _configChanged; }
+    inline bool hasConfigChanged() const { return static_cast<bool>(_clonedIgnoreListManager); }
     inline bool isReady() const { return _modelReady; }
 
     const IgnoreListManager::IgnoreListItem& ignoreListItemAt(int row) const;
@@ -66,8 +66,7 @@ signals:
     void modelReady(bool);
 
 private:
-    ClientIgnoreListManager _clonedIgnoreListManager;
-    bool _configChanged{false};
+    std::unique_ptr<ClientIgnoreListManager> _clonedIgnoreListManager;
     bool _modelReady{false};
 
     const IgnoreListManager& ignoreListManager() const;
@@ -92,5 +91,3 @@ int IgnoreListModel::columnCount(const QModelIndex& parent) const
     Q_UNUSED(parent);
     return isReady() ? 3 : 0;
 }
-
-#endif  // IGNORELISTMODEL_H

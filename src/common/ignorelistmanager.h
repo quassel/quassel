@@ -43,7 +43,6 @@ public:
     {
         setAllowClientUpdates(true);
     }
-    IgnoreListManager& operator=(const IgnoreListManager& other);
 
     enum IgnoreType
     {

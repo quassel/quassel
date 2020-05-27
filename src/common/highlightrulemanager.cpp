@@ -25,18 +25,6 @@
 #include "expressionmatch.h"
 #include "util.h"
 
-HighlightRuleManager& HighlightRuleManager::operator=(const HighlightRuleManager& other)
-{
-    if (this == &other)
-        return *this;
-
-    SyncableObject::operator=(other);
-    _highlightRuleList = other._highlightRuleList;
-    _nicksCaseSensitive = other._nicksCaseSensitive;
-    _highlightNick = other._highlightNick;
-    return *this;
-}
-
 int HighlightRuleManager::indexOf(int id) const
 {
     for (int i = 0; i < _highlightRuleList.count(); i++) {

@@ -18,11 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef ALIASESMODEL_H
-#define ALIASESMODEL_H
+#pragma once
+
+#include <memory>
 
 #include <QAbstractItemModel>
-#include <QPointer>
 
 #include "clientaliasmanager.h"
 
@@ -47,7 +47,7 @@ public:
     inline int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     inline int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    inline bool hasConfigChanged() const { return _configChanged; }
+    inline bool hasConfigChanged() const { return static_cast<bool>(_clonedAliasManager); }
     inline bool isReady() const { return _modelReady; }
 
 public slots:
@@ -62,8 +62,7 @@ signals:
     void modelReady(bool);
 
 private:
-    ClientAliasManager _clonedAliasManager;
-    bool _configChanged{false};
+    std::unique_ptr<ClientAliasManager> _clonedAliasManager;
     bool _modelReady{false};
 
     const AliasManager& aliasManager() const;
@@ -88,5 +87,3 @@ int AliasesModel::columnCount(const QModelIndex& parent) const
     Q_UNUSED(parent);
     return isReady() ? 2 : 0;
 }
-
-#endif  // ALIASESMODEL_H

@@ -620,7 +620,7 @@ void CoreHighlightSettingsPage::save()
     if (ruleManager == nullptr)
         return;
 
-    auto clonedManager = HighlightRuleManager();
+    HighlightRuleManager clonedManager;
     clonedManager.fromVariantMap(ruleManager->toVariantMap());
     clonedManager.clear();
 
@@ -734,7 +734,7 @@ void CoreHighlightSettingsPage::importRules()
         save();
     }
 
-    auto clonedManager = HighlightRuleManager();
+    HighlightRuleManager clonedManager;
     clonedManager.fromVariantMap(Client::highlightRuleManager()->toVariantMap());
 
     for (const auto& variant : notificationSettings.highlightList()) {

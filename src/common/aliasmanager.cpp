@@ -25,16 +25,6 @@
 
 #include "network.h"
 
-AliasManager& AliasManager::operator=(const AliasManager& other)
-{
-    if (this == &other)
-        return *this;
-
-    SyncableObject::operator=(other);
-    _aliases = other._aliases;
-    return *this;
-}
-
 int AliasManager::indexOf(const QString& name) const
 {
     for (int i = 0; i < _aliases.count(); i++) {
