@@ -23,16 +23,6 @@
 #include <QDebug>
 #include <QStringList>
 
-IgnoreListManager& IgnoreListManager::operator=(const IgnoreListManager& other)
-{
-    if (this == &other)
-        return *this;
-
-    SyncableObject::operator=(other);
-    _ignoreList = other._ignoreList;
-    return *this;
-}
-
 int IgnoreListManager::indexOf(const QString& ignore) const
 {
     for (int i = 0; i < _ignoreList.count(); i++) {

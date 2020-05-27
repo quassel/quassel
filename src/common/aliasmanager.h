@@ -42,7 +42,6 @@ public:
     {
         setAllowClientUpdates(true);
     }
-    AliasManager& operator=(const AliasManager& other);
 
     struct Alias
     {

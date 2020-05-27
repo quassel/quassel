@@ -244,47 +244,41 @@ QModelIndex AliasesModel::index(int row, int column, const QModelIndex& parent) 
 
 const AliasManager& AliasesModel::aliasManager() const
 {
-    if (_configChanged)
-        return _clonedAliasManager;
-    else
-        return *Client::aliasManager();
+    return _clonedAliasManager ? *_clonedAliasManager : *Client::aliasManager();
 }
 
 AliasManager& AliasesModel::aliasManager()
 {
-    if (_configChanged)
-        return _clonedAliasManager;
-    else
-        return *Client::aliasManager();
+    return _clonedAliasManager ? *_clonedAliasManager : *Client::aliasManager();
 }
 
 AliasManager& AliasesModel::cloneAliasManager()
 {
-    if (!_configChanged) {
-        _clonedAliasManager = *Client::aliasManager();
-        _configChanged = true;
+    if (!_clonedAliasManager) {
+        _clonedAliasManager = std::make_unique<ClientAliasManager>();
+        _clonedAliasManager->fromVariantMap(Client::aliasManager()->toVariantMap());
         emit configChanged(true);
     }
-    return _clonedAliasManager;
+    return *_clonedAliasManager;
 }
 
 void AliasesModel::revert()
 {
-    if (!_configChanged)
+    if (!_clonedAliasManager)
         return;
 
-    _configChanged = false;
-    emit configChanged(false);
     beginResetModel();
+    _clonedAliasManager.reset();
     endResetModel();
+    emit configChanged(false);
 }
 
 void AliasesModel::commit()
 {
-    if (!_configChanged)
+    if (!_clonedAliasManager)
         return;
 
-    Client::aliasManager()->requestUpdate(_clonedAliasManager.toVariantMap());
+    Client::aliasManager()->requestUpdate(_clonedAliasManager->toVariantMap());
     revert();
 }
 
@@ -307,10 +301,9 @@ void AliasesModel::clientConnected()
 
 void AliasesModel::clientDisconnected()
 {
-    // clear
-    _clonedAliasManager = ClientAliasManager();
     _modelReady = false;
     beginResetModel();
+    _clonedAliasManager.reset();
     endResetModel();
     emit modelReady(false);
 }

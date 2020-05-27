@@ -44,13 +44,6 @@ SyncableObject::SyncableObject(const QString& objectName, QObject* parent)
     });
 }
 
-SyncableObject::SyncableObject(const SyncableObject& other, QObject* parent)
-    : SyncableObject(QString{}, parent)
-{
-    _initialized = other._initialized;
-    _allowClientUpdates = other._allowClientUpdates;
-}
-
 SyncableObject::~SyncableObject()
 {
     QList<SignalProxy*>::iterator proxyIter = _signalProxies.begin();
@@ -59,16 +52,6 @@ SyncableObject::~SyncableObject()
         proxyIter = _signalProxies.erase(proxyIter);
         proxy->stopSynchronize(this);
     }
-}
-
-SyncableObject& SyncableObject::operator=(const SyncableObject& other)
-{
-    if (this == &other)
-        return *this;
-
-    _initialized = other._initialized;
-    _allowClientUpdates = other._allowClientUpdates;
-    return *this;
 }
 
 bool SyncableObject::isInitialized() const

@@ -55,7 +55,6 @@ public:
     {
         setAllowClientUpdates(true);
     }
-    HighlightRuleManager& operator=(const HighlightRuleManager& other);
 
     /**
      * Individual highlight rule
