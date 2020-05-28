@@ -34,7 +34,6 @@ public:
 
     std::unique_ptr<AbstractSqlMigrationWriter> createMigrationWriter() override;
 
-public slots:
     /* General */
     bool isAvailable() const override;
     QString backendId() const override;
