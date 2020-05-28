@@ -56,7 +56,6 @@ public:
 
     };
 
-public slots:
     /* General */
 
     //! Check if the storage type is available.

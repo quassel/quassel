@@ -38,7 +38,6 @@ public:
 
     std::unique_ptr<AbstractSqlMigrationReader> createMigrationReader() override;
 
-public slots:
     /* General */
 
     bool isAvailable() const override;
