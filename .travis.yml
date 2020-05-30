@@ -9,16 +9,20 @@ dist: bionic
 language: generic  # No host compilation
 
 env:
-  - DIST=ubuntu-xenial CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBKIT=OFF"
-  - DIST=ubuntu-xenial CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBKIT=OFF"
-  - DIST=ubuntu-xenial CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
-  - DIST=ubuntu-xenial CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
-  - DIST=ubuntu-bionic CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
-  - DIST=ubuntu-bionic CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
-  - DIST=ubuntu-eoan   CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
-  - DIST=ubuntu-eoan   CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
-  - DIST=ubuntu-focal  CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
-  - DIST=ubuntu-focal  CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
+  - DIST=ubuntu-xenial  CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBKIT=OFF"
+  - DIST=ubuntu-xenial  CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBKIT=OFF"
+  - DIST=ubuntu-xenial  CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
+  - DIST=ubuntu-xenial  CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
+  - DIST=ubuntu-bionic  CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBKIT=ON"
+  - DIST=ubuntu-bionic  CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
+  - DIST=ubuntu-eoan    CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
+  - DIST=ubuntu-eoan    CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
+  - DIST=ubuntu-focal   CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
+  - DIST=ubuntu-focal   CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
+  - DIST=debian-stable  CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
+  - DIST=debian-stable  CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBENGINE=ON"
+  - DIST=debian-testing CXX=g++     CMAKE_OPTIONS="-DWITH_KDE=OFF -DWITH_WEBENGINE=ON"
+  - DIST=debian-testing CXX=clang++ CMAKE_OPTIONS="-DWITH_KDE=ON  -DWITH_WEBENGINE=ON"
 
 # Set up cache
 cache:
