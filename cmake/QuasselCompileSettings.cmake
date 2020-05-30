@@ -44,6 +44,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -Wundef
         -Wvla
         -Werror=return-type
+        -Wno-error=deprecated  # Don't break on Qt upgrades
         "$<$<BOOL:${FATAL_WARNINGS}>:-Werror>"
         -Wno-unknown-pragmas
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
@@ -91,6 +92,8 @@ elseif(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4456")
     #   C4458: declaration of 'identifier' hides class member
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4458")
+    #   C4996: deprecation warnings
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996")
 
     # Link against the correct version of the C runtime
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")

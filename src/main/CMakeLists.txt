@@ -58,6 +58,9 @@ endif()
 
 # Build bundles for MacOSX
 if (APPLE)
+    get_target_property(QT_QMAKE_EXECUTABLE Qt5::qmake LOCATION)
+    set(ENV{QT_QMAKE_EXECUTABLE} ${QT_QMAKE_EXECUTABLE})
+
     if (WANT_QTCLIENT)
         add_custom_command(TARGET quasselclient POST_BUILD
                            COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py

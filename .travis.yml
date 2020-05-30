@@ -73,8 +73,9 @@ jobs:
           if [[ "$TRAVIS_TAG" != "" && "$GH_TOKEN" != "" ]]; then
             DEPLOY=ON
           fi
-          cmake -GNinja .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DDEPLOY=$DEPLOY
+          cmake -GNinja .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DDEPLOY=ON -DENABLE_SHARED=OFF
           ninja install
+          ls -lhR
         - ccache -s
         - ctest -VV
       deploy:
