@@ -1,0 +1,72 @@
+name: Quassel CI (Linux)
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    name: Build and run tests
+    runs-on: ubuntu-latest
+    container: quassel/quassel-build-env:${{ matrix.dist }}
+    strategy:
+      matrix:
+        dist: [ ubuntu-focal ]
+        cxx: [ clang++ ]
+        with_kde: [ ON ]
+        with_webengine: [ ON ]
+        include:
+          - dist: ubuntu-xenial
+            with_kde: OFF
+            with_webengine: OFF
+    env:
+        CXX: ${{ matrix.cxx }}
+        DIST: ${{ matrix.dist }}
+        CCACHE_BASEDIR: ${{ github.workspace }}
+        CCACHE_DIR: ${{ github.workspace }}/ccache
+        CCACHE_MAXSIZE: 2G
+        CCACHE_COMPRESS: true
+        CCACHE_COMPRESSLEVEL: 6
+        CMAKE_OPTIONS: -DWITH_KDE=${{ matrix.with_kde }} -DWITH_WEBENGINE=${{ matrix.with_webengine }} -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DFATAL_WARNINGS=ON
+    steps:
+
+    - name: Get timestamp
+      id: get-timestamp
+      run: echo "::set-output name=timestamp::$(date -u "+%F-%H-%M-%S")xs"
+
+    - name: Print timestamp
+      env:
+        FOO: ${ { matrix.dist } }-ccache
+      run: echo "$FOO $DIST"
+
+    - name: Setup ccache
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/ccache
+        key: ${ { matrix.dist } }-ccache-${ { steps.get-timestamp.outputs.timestamp } }
+        restore-keys: |
+             ${ { matrix.dist } }-ccache-
+
+    - name: Zero ccache stats
+      run: ccache -z
+
+    - name: Check out source code
+      uses: actions/checkout@v2
+
+    - name: Setup build directory
+      run: mkdir build
+
+    - name: Configure
+      run: |
+        echo "CMake options: $CMAKE_OPTIONS"
+        cd build && cmake $GITHUB_WORKSPACE -GNinja $CMAKE_OPTIONS
+
+    #- name: Build
+    #  run: cd build && ninja
+
+    #- name: Install
+    #  run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
+
+    - name: Print ccache stats
+      run: ccache -s
+
+    #- name: List image contents
+    #  run: ls -lhR $GITHUB_WORKSPACE/image/*
