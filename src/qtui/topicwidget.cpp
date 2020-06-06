@@ -196,10 +196,12 @@ void TopicWidget::on_topicLineEdit_textEntered()
     QModelIndex currentIdx = currentIndex();
     if (currentIdx.isValid() && currentIdx.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer) {
         BufferInfo bufferInfo = currentIdx.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-        if (ui.topicLineEdit->text().isEmpty())
+        if (ui.topicLineEdit->text().isEmpty()) {
             Client::userInput(bufferInfo, QString("/quote TOPIC %1 :").arg(bufferInfo.bufferName()));
-        else
-            Client::userInput(bufferInfo, QString("/topic %1").arg(ui.topicLineEdit->text()));
+        } else {
+            QString newTopic = UiStyle::makeIrcReadable(ui.topicLineEdit->text());
+            Client::userInput(bufferInfo, QString("/topic %1").arg(newTopic));
+	}
     }
     switchPlain();
 }
@@ -211,14 +213,18 @@ void TopicWidget::on_topicEditButton_clicked()
 
 void TopicWidget::switchEditable()
 {
+    _topic = UiStyle::makeHumanReadable(_topic);
+    ui.topicLineEdit->setText(_topic);
     ui.stackedWidget->setCurrentIndex(1);
     ui.topicLineEdit->setFocus();
     ui.topicLineEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
+
     updateGeometry();
 }
 
 void TopicWidget::switchPlain()
 {
+    _topic = UiStyle::makeIrcReadable(_topic);
     ui.stackedWidget->setCurrentIndex(0);
     ui.topicLineEdit->setPlainText(_topic);
     updateGeometry();
@@ -228,11 +234,6 @@ void TopicWidget::switchPlain()
 // filter for the input widget to switch back to normal mode
 bool TopicWidget::eventFilter(QObject* obj, QEvent* event)
 {
-    if (event->type() == QEvent::FocusOut && !_mouseEntered) {
-        switchPlain();
-        return true;
-    }
-
     if (event->type() == QEvent::Enter) {
         _mouseEntered = true;
     }
@@ -264,6 +265,7 @@ QString TopicWidget::sanitizeTopic(const QString& topic)
     result.replace(QChar::CarriageReturn, " ");
     result.replace(QChar::ParagraphSeparator, " ");
     result.replace(QChar::LineSeparator, " ");
+    result = UiStyle::makeIrcReadable(result);
 
     return result;
 }

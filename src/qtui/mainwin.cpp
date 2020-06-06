@@ -97,6 +97,10 @@
 #include "transfermodel.h"
 #include "verticaldock.h"
 
+#ifdef Q_OS_MAC
+#include "cocoahelper.h"
+#endif
+
 #ifndef HAVE_KDE
 #    ifdef HAVE_QTMULTIMEDIA
 #        include "qtmultimedianotificationbackend.h"
@@ -593,6 +597,10 @@ void MainWin::setupMenus()
         flagRemoteCoreOnly(coreAction);
     }
     flagRemoteCoreOnly(_fileMenu->addSeparator());
+
+#ifdef Q_OS_MAC
+    _editMenu = CocoaHelper::makeEditMenu(menuBar(), this);
+#endif
 
     _networksMenu = _fileMenu->addMenu(tr("&Networks"));
     _networksMenu->addAction(coll->action("ConfigureNetworks"));
