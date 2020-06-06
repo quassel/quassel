@@ -498,8 +498,7 @@ void InputWidget::changeNick(const QString& newNick) const
 
 void InputWidget::onTextEntered(const QString& text)
 {
-    QString output = UiStyle::makeIrcReadable(text);
-    Client::userInput(currentBufferInfo(), output);
+    Client::userInput(currentBufferInfo(), text);
     ui.boldButton->setChecked(false);
     ui.underlineButton->setChecked(false);
     ui.italicButton->setChecked(false);

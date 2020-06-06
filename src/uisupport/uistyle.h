@@ -305,9 +305,6 @@ public:
     QVariant bufferViewItemData(const QModelIndex& networkModelIndex, int role) const;
     QVariant nickViewItemData(const QModelIndex& networkModelIndex, int role) const;
 
-    static QString makeHumanReadable(const QString &);
-    static QString makeIrcReadable(const QString &);
-
 public slots:
     void reload();
 

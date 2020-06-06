@@ -343,47 +343,6 @@ QVariant UiStyle::bufferViewItemData(const QModelIndex& index, int role) const
     return itemData(role, fmt);
 }
 
-QString
-UiStyle::makeHumanReadable(const QString &s)
-{
-    QString line(s);
-
-    line.replace(QLatin1Char('\x02'), QStringLiteral("%B"));       // replace bold char with %B
-    line.replace(QLatin1Char('\x03'), QStringLiteral("%C"));       // replace color char with %C
-    line.replace(QLatin1Char('\x07'), QStringLiteral("%G"));       // replace ASCII BEL 0x07 with %G
-    line.replace(QLatin1Char('\x1d'), QStringLiteral("%I"));       // replace italics char with %I
-    line.replace(QLatin1Char('\x0f'), QStringLiteral("%O"));       // replace reset to default char with %O
-    line.replace(QLatin1Char('\x13'), QStringLiteral("%S"));       // replace strikethru char with %S
-    line.replace(QLatin1Char('\x16'), QStringLiteral("%R"));       // replace reverse char with %R
-    // underline char send by kvirc
-    line.replace(QLatin1Char('\x1f'), QStringLiteral("%U"));       // replace underline char with %U
-    // underline char send by mirc
-    line.replace(QLatin1Char('\x15'), QStringLiteral("%U"));       // replace underline char with %U
-
-    return line;
-}
-
-
-QString
-UiStyle::makeIrcReadable(const QString &s)
-{
-    QString line(s);
-
-    line.replace(QStringLiteral("%%"),QStringLiteral("%\x01"));      // make sure to protect double %%
-    line.replace(QStringLiteral("%B"),QStringLiteral("\x02"));       // replace %B with bold char
-    line.replace(QStringLiteral("%C"),QStringLiteral("\x03"));       // replace %C with color char
-    line.replace(QStringLiteral("%G"),QStringLiteral("\x07"));       // replace %G with ASCII BEL 0x07
-    line.replace(QStringLiteral("%I"),QStringLiteral("\x1d"));       // replace %I with italics char
-    line.replace(QStringLiteral("%O"),QStringLiteral("\x0f"));       // replace %O with reset to default char
-    line.replace(QStringLiteral("%S"),QStringLiteral("\x13"));       // replace %S with strikethru char
-    line.replace(QStringLiteral("%R"),QStringLiteral("\x16"));       // replace %R with reverse char
-    line.replace(QStringLiteral("%U"),QStringLiteral("\x1f"));       // replace %U with underline char
-    line.replace(QStringLiteral("%\x01"),QStringLiteral("%"));       // restore double %% as single %
-
-    return line;
-}
-
-
 QVariant UiStyle::nickViewItemData(const QModelIndex& index, int role) const
 {
     NetworkModel::ItemType type = (NetworkModel::ItemType)index.data(NetworkModel::ItemTypeRole).toInt();

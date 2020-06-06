@@ -196,12 +196,10 @@ void TopicWidget::on_topicLineEdit_textEntered()
     QModelIndex currentIdx = currentIndex();
     if (currentIdx.isValid() && currentIdx.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer) {
         BufferInfo bufferInfo = currentIdx.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-        if (ui.topicLineEdit->text().isEmpty()) {
+        if (ui.topicLineEdit->text().isEmpty())
             Client::userInput(bufferInfo, QString("/quote TOPIC %1 :").arg(bufferInfo.bufferName()));
-        } else {
-            QString newTopic = UiStyle::makeIrcReadable(ui.topicLineEdit->text());
-            Client::userInput(bufferInfo, QString("/topic %1").arg(newTopic));
-	}
+        else
+            Client::userInput(bufferInfo, QString("/topic %1").arg(ui.topicLineEdit->text()));
     }
     switchPlain();
 }
@@ -213,18 +211,14 @@ void TopicWidget::on_topicEditButton_clicked()
 
 void TopicWidget::switchEditable()
 {
-    _topic = UiStyle::makeHumanReadable(_topic);
-    ui.topicLineEdit->setText(_topic);
     ui.stackedWidget->setCurrentIndex(1);
     ui.topicLineEdit->setFocus();
     ui.topicLineEdit->moveCursor(QTextCursor::End, QTextCursor::MoveAnchor);
-
     updateGeometry();
 }
 
 void TopicWidget::switchPlain()
 {
-    _topic = UiStyle::makeIrcReadable(_topic);
     ui.stackedWidget->setCurrentIndex(0);
     ui.topicLineEdit->setPlainText(_topic);
     updateGeometry();
@@ -265,7 +259,6 @@ QString TopicWidget::sanitizeTopic(const QString& topic)
     result.replace(QChar::CarriageReturn, " ");
     result.replace(QChar::ParagraphSeparator, " ");
     result.replace(QChar::LineSeparator, " ");
-    result = UiStyle::makeIrcReadable(result);
 
     return result;
 }
