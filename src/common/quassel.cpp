@@ -490,9 +490,10 @@ QStringList Quassel::dataDirPaths()
 #ifdef Q_OS_WIN
     dataDirNames << QCoreApplication::applicationDirPath() + "/data/quassel/"
                  << qgetenv("APPDATA") + QCoreApplication::organizationDomain() << QCoreApplication::applicationDirPath();
-#elif defined Q_OS_MAC
-    dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/" << QCoreApplication::applicationDirPath();
 #else
+#if defined Q_OS_MAC
+    dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/" << QCoreApplication::applicationDirPath();
+#endif
     // Linux et al
 
     // XDG_DATA_HOME is the location for users to override system-installed files, usually in .local/share
