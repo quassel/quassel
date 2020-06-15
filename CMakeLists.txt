@@ -108,11 +108,6 @@ endif()
 
 # The following options are not for end-user consumption, so don't list them in the feature summary
 option(FATAL_WARNINGS "Make compile warnings fatal (most useful for CI builds)" OFF)
-option(WARN_QT_DEPRECATION "Warn about deprecated Qt functionality" OFF)
-if (WARN_QT_DEPRECATION)
-    # Enable Qt deprecation warnings for Qt < 5.13 (on by default in newer versions)
-    add_definitions("-DQT_DEPRECATED_WARNINGS")
-endif()
 cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg" OFF "APPLE" OFF)
 
 # List of authenticators and the cmake flags to build them
@@ -155,13 +150,19 @@ endif()
 # Set up Qt
 #####################################################################
 
+set(QT_MIN_VERSION "5.5.0")
+
+# Enable Qt deprecation warnings for Qt < 5.13 (on by default in newer versions)
+add_definitions(-DQT_DEPRECATED_WARNINGS)
+
+# Disable all Qt APIs that were deprecated in 5.5 and before
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050500)
+
 # Find package dependencies
 #
 # Note that you can forcefully disable optional packages
 # using -DCMAKE_DISABLE_FIND_PACKAGE_<PkgName>=TRUE
 #####################################################################
-
-set(QT_MIN_VERSION "5.5.0")
 
 # Required Qt components
 set(qt_components Core Network)
