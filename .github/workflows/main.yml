@@ -1,0 +1,257 @@
+# Workflow that builds Quassel on various Linux distros, and creates packages for both Windows and macOS.
+# For tagged pushes, a draft release is automatically created, using the tag message as release description
+# and attaching Windows and macOS builds, as well as the source archive.
+name: Quassel CI
+
+on: [ push, pull_request ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+# ------------------------------------------------------------------------------------------------------------------------------------------
+  build-linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    container: quassel/quassel-build-env:${{ matrix.dist }}
+    strategy:
+      matrix:
+        dist: [ debian-stable, debian-testing, ubuntu-xenial, ubuntu-bionic, ubuntu-eoan, ubuntu-focal ]
+        cxx: [ gcc, clang++ ]
+        with-kde: [ -DWITH_KDE=ON ]
+        extra-options: [ -DWITH_WEBENGINE=ON ]
+        include:
+          # Baseline, test more combinations
+          - dist: ubuntu-xenial
+            with-kde: -DWITH_KDE=OFF
+            extra-options: -DWITH_WEBKIT=ON
+          - dist: ubuntu-xenial
+            with-kde: -DWITH_KDE=ON
+            extra-options: -DWITH_WEBKIT=ON
+        exclude:
+          # QtWebEngine is not available on Xenial
+          - dist: ubuntu-xenial
+            extra-options: -DWITH_WEBENGINE=ON
+    env:
+        CCACHE_BASEDIR: ${{ github.workspace }}
+        CCACHE_DIR: ${{ github.workspace }}/ccache
+        CCACHE_MAXSIZE: 100M
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v2
+
+    - name: Get timestamp
+      id: get-timestamp
+      run: echo "::set-output name=timestamp::$(date -u "+%F-%R")"
+
+    - name: Setup ccache
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/ccache
+        key: ${{ matrix.dist }}-ccache-${{ steps.get-timestamp.outputs.timestamp }}
+        restore-keys: |
+             ${{ matrix.dist }}-ccache-
+
+    - name: Zero ccache stats
+      run: ccache -z
+
+    - name: Configure
+      run: |
+        mkdir build
+        cd build && cmake $GITHUB_WORKSPACE \
+                          -GNinja \
+                          -DCMAKE_BUILD_TYPE=Release \
+                          -DBUILD_TESTING=ON \
+                          -DFATAL_WARNINGS=ON \
+                          ${{ matrix.with-kde }} \
+                          ${{ matrix.extra-options }}
+
+    - name: Build
+      run: cd build && ninja
+
+    - name: Run tests
+      run: cd build && ctest
+
+    - name: Install
+      run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
+
+    - name: Print ccache stats
+      run: ccache -s
+
+# ------------------------------------------------------------------------------------------------------------------------------------------
+  build-macos:
+    name: macOS
+    runs-on: macos-latest
+    env:
+      CCACHE_BASEDIR: ${{ github.workspace }}
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_MAXSIZE: 100M
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # so git-describe works
+
+    - name: Fetch tag information
+      if: startsWith(github.ref, 'refs/tags/')
+      run: git fetch -f origin $GITHUB_REF:$GITHUB_REF
+
+    - name: Install dependencies
+      run: brew update && brew install boost ccache ninja qca qt5
+
+    - name: Get timestamp
+      id: get-timestamp
+      run: echo "::set-output name=timestamp::$(date -u "+%F-%R")"
+
+    - name: Setup ccache
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/ccache
+        key: macos-ccache-${{ steps.get-timestamp.outputs.timestamp }}
+        restore-keys: |
+             macos-ccache-
+
+    - name: Zero ccache stats
+      run: ccache -z
+
+    - name: Configure
+      run: |
+        mkdir build
+        cd build && cmake $GITHUB_WORKSPACE \
+                          -GNinja \
+                          -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/lib/cmake \
+                          -DCMAKE_BUILD_TYPE=Release \
+                          -DBUILD_TESTING=ON \
+                          -DFATAL_WARNINGS=OFF \
+                          -DDEPLOY=ON \
+                          -DENABLE_SHARED=OFF
+
+    - name: Build
+      run: |
+        # Deploy scripts require qmake in the path
+        export PATH=$PATH:/usr/local/opt/qt5/bin
+        cd build && ninja
+
+    - name: Run tests
+      run: cd build && ctest
+
+    - name: Install
+      run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
+
+    - name: Print ccache stats
+      run: ccache -s
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: macOS
+        path: ${{ github.workspace }}/build/*.dmg
+
+# ------------------------------------------------------------------------------------------------------------------------------------------
+  build-windows:
+    name: Windows
+    runs-on: windows-latest
+    env:
+      WORKSPACE: ${{ github.workspace }}
+      CRAFT: /C/CraftMaster/windows-msvc2019_64-cl/craft/bin/craft.py
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # so git-describe works
+
+    - name: Fetch tag information
+      if: startsWith(github.ref, 'refs/tags/')
+      run: git fetch -f origin $GITHUB_REF:$GITHUB_REF
+
+    - name: Clone CraftMaster
+      run: git clone --depth=1 https://invent.kde.org/kde/craftmaster.git /C/CraftMaster/CraftMaster
+
+    - name: Configure CraftMaster
+      run: python /C/CraftMaster/CraftMaster/CraftMaster.py --config $WORKSPACE/.craftsettings.ini --variables "WORKSPACE=$WORKSPACE"
+
+    - name: Add Quassel blueprint
+      run: python $CRAFT --add-blueprint-repository https://github.com/quassel/craft-blueprints-quassel.git
+
+    - name: Install NSIS
+      run: python $CRAFT dev-utils/nsis
+
+    - name: Install dependencies
+      run: python $CRAFT --install-deps quassel/quassel
+
+    - name: Build
+      run: python $CRAFT --no-cache --src-dir $WORKSPACE quassel/quassel
+
+    - name: Run tests
+      run: python $CRAFT --no-cache --src-dir $WORKSPACE --test quassel/quassel
+
+    - name: Package
+      run: python $CRAFT --no-cache --src-dir $WORKSPACE --package quassel/quassel
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Windows
+        path: ${{ github.workspace }}/packages/*
+
+# ------------------------------------------------------------------------------------------------------------------------------------------
+  create-release:
+    name: Create release
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [ build-linux, build-macos, build-windows ]
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v2
+
+    - name: Fetch tag information
+      run: git fetch -f origin $GITHUB_REF:$GITHUB_REF
+
+    - name: Create release notes
+      run: |
+        # Use the tag's annotation as release notes
+        TAGNAME=$(git rev-parse --abbrev-ref $GITHUB_REF)
+        MESSAGE=$(git tag -l --format='%(contents)' $TAGNAME | perl -ne 'print if not /-----BEGIN PGP SIGNATURE-----/../-----END PGP SIGNATURE-----/')
+        echo -e "Quassel $TAGNAME\n\n$MESSAGE" > release_notes.txt
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        path: artifacts
+
+    - name: List artifacts
+      run: ls -lhR artifacts
+
+    - name: Prepare source archive
+      run: |
+        mkdir assets
+        TAGNAME=$(git rev-parse --abbrev-ref $GITHUB_REF)
+        git archive --format=tar --prefix=quassel-$TAGNAME/ $TAGNAME | xz > assets/quassel-$TAGNAME.tar.xz
+
+    - name: Prepare packages for release
+      run: |
+        TAGNAME=$(git rev-parse --abbrev-ref $GITHUB_REF)
+        for type in Client Core Mono; do
+          mv artifacts/macOS/Quassel$type*.dmg assets/Quassel$type-macOS-$TAGNAME.dmg
+        done
+        mv artifacts/Windows/quassel-*.exe assets/quassel-windows-setup-$TAGNAME.exe
+        mv artifacts/Windows/quassel-*.7z assets/quassel-windows-$TAGNAME.7z
+
+    - name: Create checksums for release assets
+      run: find assets/ -type f -execdir sh -c 'sha256sum "$1" > "$1.sha256sum"' _ {} \;
+
+    - name: Create draft release
+      run: |
+        # The stock upload-release-asset action can only handle single files
+        # Instead, use the hub utility so we can upload all assets at once
+        assets=()
+        for asset in assets/*; do assets+=("-a" "$asset"); done
+        hub release create -d "${assets[@]}" -F release_notes.txt `git rev-parse --abbrev-ref $GITHUB_REF`
