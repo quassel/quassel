@@ -110,22 +110,22 @@ public:
         D_CHANMODE = 0x08
     };
 
-    // Default port assignments according to what many IRC networks have settled on.
-    // Technically not a standard, but it's fairly widespread.
-    // See https://freenode.net/news/port-6697-irc-via-tlsssl
+    /// Default port assignments according to what many IRC networks have settled on.
+    /// Technically not a standard, but it's fairly widespread.
+    /// See https://freenode.net/news/port-6697-irc-via-tlsssl
     enum PortDefaults
     {
-        PORT_PLAINTEXT = 6667,  /// Default port for unencrypted connections
-        PORT_SSL = 6697         /// Default port for encrypted connections
+        PORT_PLAINTEXT = 6667,  ///< Default port for unencrypted connections
+        PORT_SSL = 6697         ///< Default port for encrypted connections
     };
 
     struct Server
     {
         QString host;
-        uint port{6667};
+        uint port{PortDefaults::PORT_SSL};
         QString password;
-        bool useSsl{false};
-        bool sslVerify{true};  /// If true, validate SSL certificates
+        bool useSsl{true};     ///< If true, connect via SSL/TLS
+        bool sslVerify{true};  ///< If true, validate SSL certificates
         int sslVersion{0};
 
         bool useProxy{false};
