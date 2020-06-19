@@ -179,7 +179,7 @@ void Identity::setToDefaults()
     setAutoAwayTime(10);
     setAutoAwayReason(tr("Not here. No, really. not here!"));
     setAutoAwayReasonEnabled(false);
-    setDetachAwayEnabled(false);
+    setDetachAwayEnabled(true);
     setDetachAwayReason(tr("All Quassel clients vanished from the face of the earth..."));
     setDetachAwayReasonEnabled(false);
     setIdent("quassel");
