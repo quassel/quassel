@@ -1,7 +1,7 @@
 Quassel IRC
 ===============
 
-[![Linux Build Status][ci-linux-badge]][ci-linux-status-page] [![Windows Build Status][ci-win-badge]][ci-win-status-page]
+[![Quassel CI Build Status][ci-badge]][ci-status-page]
 
 [Quassel IRC][web-home] is a modern, cross-platform, distributed IRC client,
 meaning that one (or multiple) client(s) can attach to and detach from a
@@ -20,7 +20,7 @@ as well as in this repository's [`ChangeLog`][repo-changelog].
 ## Downloading
 Official, stable downloads are provided on the [Quassel IRC download page](https://quassel-irc.org/downloads).
 
-Automated Windows builds are available via the [AppVeyor build history][ci-win-status-history].  Pick a build, then choose the *Artifacts* tab.
+Automated Windows and macOS builds are available via the [GitHub Actions tab][ci-status-page].  Pick a build, then download the appropriate artifact.
 
 Unofficial builds and testing versions are [contributed by several community members](https://bugs.quassel-irc.org/projects/quassel-irc/wiki#Unofficial-builds).
 
@@ -67,8 +67,5 @@ Thanks for reading,
 [dev-email]: mailto:devel@quassel-irc.org
 [help-freenode]: https://webchat.freenode.net?channels=%23quassel
 [repo-changelog]: ChangeLog
-[ci-linux-badge]: https://travis-ci.org/quassel/quassel.svg?branch=master
-[ci-linux-status-page]: https://travis-ci.org/quassel/quassel/branches
-[ci-win-badge]: https://ci.appveyor.com/api/projects/status/github/quassel/quassel?branch=master&svg=true&passingText=Windows:%20passing&pendingText=Windows:%20pending&failingText=Windows:%20failing
-[ci-win-status-page]: https://ci.appveyor.com/project/quassel/quassel/branch/master
-[ci-win-status-history]: https://ci.appveyor.com/project/quassel/quassel/history
+[ci-badge]: https://github.com/quassel/quassel/workflows/Quassel%20CI/badge.svg?branch=master
+[ci-status-page]: https://github.com/quassel/quassel/actions?query=branch%3Amaster
