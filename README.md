@@ -18,14 +18,14 @@ You can find the current release notes on the [Quassel IRC homepage][web-home],
 as well as in this repository's [`ChangeLog`][repo-changelog].
 
 ## Downloading
-Official, stable downloads are provided on the [Quassel IRC download page][web-download].
+Official, stable downloads are provided on the [Quassel IRC download page](https://quassel-irc.org/downloads).
 
 Automated Windows builds are available via the [AppVeyor build history][ci-win-status-history].  Pick a build, then choose the *Artifacts* tab.
 
-Unofficial builds and testing versions are [contributed by several community members][docs-wiki-unofficial-build].
+Unofficial builds and testing versions are [contributed by several community members](https://bugs.quassel-irc.org/projects/quassel-irc/wiki#Unofficial-builds).
 
 ## Quick reference
-We recommend reading the [getting started guide on the wiki][docs-wiki-getstart],
+We recommend reading the [getting started guide on the wiki](https://bugs.quassel-irc.org/projects/quassel-irc/wiki#Getting-started),
 but in a pinch, these steps will do.
 
 On first run of the Quassel core, it will wait for a client to connect
@@ -40,7 +40,7 @@ Once you've set up Quassel, you may:
 On some systems, you may need to specify `--configdir`, e.g.
 `quasselcore --configdir=/var/lib/quassel [command]`.
 
-To learn more, see [the Quassel project wiki][docs-wiki] for in-depth
+To learn more, see [the Quassel project wiki](https://bugs.quassel-irc.org/projects/quassel-irc/wiki) for in-depth
 documentation.
 
 ## Getting involved
@@ -55,8 +55,8 @@ We always welcome new users in our channels!
 
 You can learn more and reach out to us in several ways:
 * [Visit our homepage][web-home]
-* [Submit and browse issues on the bugtracker][dev-bugs]
-  * GitHub issues are not used, but [pull requests][dev-pr-new] are accepted!
+* [Submit and browse issues on the bugtracker](https://bugs.quassel-irc.org)
+  * GitHub issues are not used, but [pull requests](https://github.com/quassel/quassel/pull/new/master) are accepted!
 * [Email the dev team - devel@quassel-irc.org][dev-email]
 
 Thanks for reading,
@@ -64,13 +64,7 @@ Thanks for reading,
 ~ *The Quassel IRC Team*
 
 [web-home]: https://quassel-irc.org
-[web-download]: https://quassel-irc.org/downloads
-[dev-bugs]: https://bugs.quassel-irc.org
 [dev-email]: mailto:devel@quassel-irc.org
-[dev-pr-new]: https://github.com/quassel/quassel/pull/new/master
-[docs-wiki]: https://bugs.quassel-irc.org/projects/quassel-irc/wiki
-[docs-wiki-unofficial-build]: https://bugs.quassel-irc.org/projects/quassel-irc/wiki#Unofficial-builds
-[docs-wiki-getstart]: https://bugs.quassel-irc.org/projects/quassel-irc/wiki#Getting-started
 [help-freenode]: https://webchat.freenode.net?channels=%23quassel
 [repo-changelog]: ChangeLog
 [ci-linux-badge]: https://travis-ci.org/quassel/quassel.svg?branch=master
