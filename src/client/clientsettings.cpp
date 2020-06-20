@@ -296,7 +296,7 @@ void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickT
 
 NotificationSettings::HighlightNickType NotificationSettings::highlightNick() const
 {
-    return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick", CurrentNick).toInt();
+    return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick", NoNick).toInt();
 }
 
 void NotificationSettings::setNicksCaseSensitive(bool cs)
