@@ -32,9 +32,7 @@
 #include "util.h"
 
 CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget* parent)
-    : SettingsPage(tr("Interface"),
-                   // In Monolithic mode, local highlights are replaced by remote highlights
-                   Quassel::runMode() == Quassel::Monolithic ? tr("Highlights") : tr("Remote Highlights"),
+    : SettingsPage(tr("Interface"), tr("Highlights"),
                    parent)
 {
     ui.setupUi(this);
@@ -84,22 +82,12 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget* parent)
     ui.coreUnsupportedIcon->setPixmap(icon::get("dialog-warning").pixmap(16));
 
     // Set up client/monolithic remote highlights information
-    if (Quassel::runMode() == Quassel::Monolithic) {
-        // We're running in Monolithic mode, local highlights are considered legacy
-        ui.highlightImport->setText(tr("Import Legacy"));
-        ui.highlightImport->setToolTip(
-            tr("Import highlight rules configured in <i>%1</i>.").arg(tr("Legacy Highlights").replace(" ", "&nbsp;")));
-        // Re-use translations of "Legacy Highlights" as this is a word-for-word reference, forcing
-        // all spaces to be non-breaking
-    }
-    else {
-        // We're running in client/split mode, local highlights are distinguished from remote
-        ui.highlightImport->setText(tr("Import Local"));
-        ui.highlightImport->setToolTip(
-            tr("Import highlight rules configured in <i>%1</i>.").arg(tr("Local Highlights").replace(" ", "&nbsp;")));
-        // Re-use translations of "Local Highlights" as this is a word-for-word reference, forcing
-        // all spaces to be non-breaking
-    }
+    // Local highlights are considered legacy
+    ui.highlightImport->setText(tr("Import Legacy"));
+    ui.highlightImport->setToolTip(
+        tr("Import highlight rules configured in <i>%1</i>.").arg(tr("Legacy Highlights").replace(" ", "&nbsp;")));
+    // Re-use translations of "Legacy Highlights" as this is a word-for-word reference, forcing
+    // all spaces to be non-breaking
 }
 
 void CoreHighlightSettingsPage::coreConnectionStateChanged(bool state)
@@ -681,9 +669,9 @@ void CoreHighlightSettingsPage::widgetHasChanged()
 
 void CoreHighlightSettingsPage::on_coreUnsupportedDetails_clicked()
 {
-    // Re-use translations of "Local Highlights" as this is a word-for-word reference, forcing all
+    // Re-use translations of "Legacy Highlights" as this is a word-for-word reference, forcing all
     // spaces to non-breaking
-    const QString localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
+    const QString localHighlightsName = tr("Legacy Highlights").replace(" ", "&nbsp;");
 
     const QString remoteHighlightsMsgText = QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>")
                                                 .arg(tr("Your Quassel core is too old to support remote highlights"),
@@ -704,13 +692,8 @@ void CoreHighlightSettingsPage::importRules()
 
     // Re-use translations of "Legacy/Local Highlights" as this is a word-for-word reference,
     // forcing all spaces to non-breaking
-    QString localHighlightsName;
-    if (Quassel::runMode() == Quassel::Monolithic) {
-        localHighlightsName = tr("Legacy Highlights").replace(" ", "&nbsp;");
-    }
-    else {
-        localHighlightsName = tr("Local Highlights").replace(" ", "&nbsp;");
-    }
+    // "Local Highlights" has been removed; it's always called "Legacy" now.
+    QString localHighlightsName = tr("Legacy Highlights").replace(" ", "&nbsp;");
 
     if (localHighlightList.count() == 0) {
         // No highlight rules exist to import, do nothing
@@ -750,14 +733,48 @@ void CoreHighlightSettingsPage::importRules()
                                        highlightRule["Channel"].toString());
     }
 
+    // Copy nickname highlighting settings
+    clonedManager.setNicksCaseSensitive(notificationSettings.nicksCaseSensitive());
+    if (notificationSettings.highlightNick() == NotificationSettings::HighlightNickType::AllNicks) {
+        clonedManager.setHighlightNick(HighlightRuleManager::HighlightNickType::AllNicks);
+    }
+    else if (notificationSettings.highlightNick() == NotificationSettings::HighlightNickType::CurrentNick) {
+       clonedManager.setHighlightNick(HighlightRuleManager::HighlightNickType::CurrentNick);
+    }
+    // else - Don't copy "NoNick", "NoNick" is now default and should be ignored
+
     Client::highlightRuleManager()->requestUpdate(clonedManager.toVariantMap());
     setChangedState(false);
     load();
 
-    // Give a heads-up that all succeeded
-    QMessageBox::information(this,
-                             tr("Imported highlights"),
-                             tr("%1 highlight rules successfully imported.").arg(QString::number(localHighlightList.count())));
+    // Give a heads-up that all succeeded, ask about removing old rules
+    //
+    // Hypothetically, someone might use a common set of highlight rules across multiple cores.
+    // This won't matter once client highlights are disabled entirely on newer cores.
+    //
+    // Remove this once client-side highlights are disabled for newer cores.
+    ret = QMessageBox::question(this, tr("Imported highlights"),
+                                QString("<p>%1</p></br><p>%2</p>").arg(
+                                    tr("%1 highlight rules successfully imported.").arg(QString::number(localHighlightList.count())),
+                                    tr("Clean up old, duplicate highlight rules?")),
+                                QMessageBox::Yes | QMessageBox::No,
+                                QMessageBox::Yes);
+
+    if (ret != QMessageBox::Yes) {
+        // Only two options, Yes or No, return if not Yes
+        return;
+    }
+
+    // Remove all local highlight rules
+    notificationSettings.setHighlightList({});
+    // Disable local nickname highlighting
+    notificationSettings.setHighlightNick(NotificationSettings::HighlightNickType::NoNick);
+    // Disable nickname sensitivity
+    // This isn't needed to disable local highlights, but it's part of appearing reset-to-default
+    notificationSettings.setNicksCaseSensitive(false);
+
+    // Refresh HighlightSettingsPage in case it was already loaded
+    emit localHighlightsChanged();
 }
 
 bool CoreHighlightSettingsPage::isSelectable() const
