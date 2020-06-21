@@ -66,6 +66,7 @@ public:
         Redirected = 0x04,
         ServerMsg  = 0x08,
         StatusMsg  = 0x10,
+        Ignored    = 0x20, ///< This message matched an active ignore rule when first received
         Backlog    = 0x80
     };
     Q_DECLARE_FLAGS(Flags, Flag)
