@@ -323,8 +323,18 @@ void CoreSession::recvMessageFromServer(RawMessage msg)
     // check for HardStrictness ignore
     CoreNetwork* currentNetwork = network(msg.networkId);
     QString networkName = currentNetwork ? currentNetwork->networkName() : QString("");
-    if (_ignoreListManager.match(msg, networkName) == IgnoreListManager::HardStrictness)
+    switch (_ignoreListManager.match(msg, networkName)) {
+    case IgnoreListManager::StrictnessType::HardStrictness:
+        // Drop the message permanently
         return;
+    case IgnoreListManager::StrictnessType::SoftStrictness:
+        // Mark the message as (dynamically) ignored
+        msg.flags |= Message::Flag::Ignored;
+        break;
+    case IgnoreListManager::StrictnessType::UnmatchedStrictness:
+        // Keep the message unmodified
+        break;
+    }
 
     if (currentNetwork && _highlightRuleManager.match(msg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
         msg.flags |= Message::Flag::Highlight;

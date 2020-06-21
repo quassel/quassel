@@ -40,6 +40,10 @@ public slots:
 
     void addBufferActivity(const Message& message)
     {
+        if (message.flags().testFlag(Message::Flag::Ignored)) {
+            // Don't update buffer activity with messages that are ignored
+            return;
+        }
         auto oldActivity = activity(message.bufferId());
         if (!oldActivity.testFlag(message.type())) {
             setBufferActivity(message.bufferId(), (int)(oldActivity | message.type()));
@@ -48,6 +52,10 @@ public slots:
 
     void addCoreHighlight(const Message& message)
     {
+        if (message.flags().testFlag(Message::Flag::Ignored)) {
+            // Don't increase highlight count for messages that are ignored
+            return;
+        }
         auto oldHighlightCount = highlightCount(message.bufferId());
         if (message.flags().testFlag(Message::Flag::Highlight) && !message.flags().testFlag(Message::Flag::Self)) {
             setHighlightCount(message.bufferId(), oldHighlightCount + 1);
