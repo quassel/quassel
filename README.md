@@ -22,6 +22,8 @@ Official, stable downloads are provided on the [Quassel IRC download page](https
 
 Automated Windows and macOS builds are available via the [GitHub Actions tab][ci-status-page].  Pick a build, then download the appropriate artifact.
 
+*NOTE: As of this writing, you need to log into GitHub to download the automated builds.  This [issue is being tracked with GitHub](https://github.com/actions/upload-artifact/issues/51 ).*
+
 Unofficial builds and testing versions are [contributed by several community members](https://bugs.quassel-irc.org/projects/quassel-irc/wiki#Unofficial-builds).
 
 ## Quick reference
