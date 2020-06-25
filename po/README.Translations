@@ -41,3 +41,15 @@ currently configured as
 <https://github.com/quassel/quassel-i18n/raw/tx-sync/po/quassel.pot> and
 can be updated at https://www.transifex.com/quassel/quassel/content/ →
 "Auto update resources".
+
+== For maintainers ==
+To synchronize the i18n repository with the main repository follow these steps:
+
+$ git remote add origin-i18n git@github.com:quassel/quassel-i18n.git
+$ git fetch origin-i18n
+$ git merge --squash origin-i18n/tx-sync
+$ pushd po && ./update-pot.sh; popd
+$ git add po/quassel.pot
+$ git commit
+$ git push
+$ git push origin-i18n +HEAD:tx-sync
