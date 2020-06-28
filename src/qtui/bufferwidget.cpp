@@ -27,6 +27,7 @@
 
 #include "action.h"
 #include "actioncollection.h"
+#include "backlogsettings.h"
 #include "chatline.h"
 #include "chatview.h"
 #include "chatviewsearchbar.h"
@@ -83,6 +84,9 @@ BufferWidget::BufferWidget(QWidget* parent)
     ChatViewSettings s;
     s.initAndNotify("AutoMarkerLine", this, &BufferWidget::setAutoMarkerLine, true);
     s.initAndNotify("AutoMarkerLineOnLostFocus", this, &BufferWidget::setAutoMarkerLineOnLostFocus, true);
+
+    BacklogSettings backlogSettings;
+    backlogSettings.initAndNotify("EnsureBacklogOnBufferShow", this, &BufferWidget::setEnsureBacklogOnBufferShow);
 }
 
 BufferWidget::~BufferWidget()
@@ -99,6 +103,11 @@ void BufferWidget::setAutoMarkerLine(const QVariant& v)
 void BufferWidget::setAutoMarkerLineOnLostFocus(const QVariant& v)
 {
     _autoMarkerLineOnLostFocus = v.toBool();
+}
+
+void BufferWidget::setEnsureBacklogOnBufferShow(const QVariant& v)
+{
+    _ensureBacklogOnBufferShow = v.toBool();
 }
 
 AbstractChatView* BufferWidget::createChatView(BufferId id)
@@ -132,6 +141,10 @@ void BufferWidget::showChatView(BufferId id)
         Q_ASSERT(view);
         ui.stackedWidget->setCurrentWidget(view);
         _chatViewSearchController->setScene(view->scene());
+        if (_ensureBacklogOnBufferShow) {
+            // Try to ensure some messages are visible
+            view->requestBacklogForScroll();
+        }
     }
 }
 

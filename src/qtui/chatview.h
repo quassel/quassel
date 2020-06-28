@@ -79,6 +79,17 @@ public:
      */
     void setHasCache(ChatLine* line, bool hasCache = true);
 
+    /**
+     * Requests backlog if the scrollbar is not currently visible
+     *
+     * Use this whenever trying to scroll the backlog to try to ensure some text is visible.  If the
+     * backlog does not have additional messages or those messages are filtered out, the scrollbar
+     * might remain invisible.
+     *
+     * @return True if the scrollbar isn't visible and a backlog request was made, otherwise false
+     */
+    bool requestBacklogForScroll();
+
 public slots:
     inline virtual void clear() {}
     void zoomIn();

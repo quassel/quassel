@@ -44,6 +44,17 @@ void BacklogSettings::setDynamicBacklogAmount(int amount)
     return setLocalValue("DynamicBacklogAmount", amount);
 }
 
+bool BacklogSettings::ensureBacklogOnBufferShow() const
+{
+    // This settings key is also used within BufferWidget::BufferWidget()
+    return localValue("EnsureBacklogOnBufferShow", true).toBool();
+}
+
+void BacklogSettings::setEnsureBacklogOnBufferShow(bool enabled)
+{
+    return setLocalValue("EnsureBacklogOnBufferShow", enabled);
+}
+
 int BacklogSettings::fixedBacklogAmount() const
 {
     return localValue("FixedBacklogAmount", 500).toInt();
