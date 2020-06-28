@@ -116,6 +116,13 @@ public:
                                              int limit = -1,
                                              Message::Types type = Message::Types{-1},
                                              Message::Flags flags = Message::Flags{-1}) override;
+    std::vector<Message> requestMsgsForward(UserId user,
+                                            BufferId bufferId,
+                                            MsgId first = -1,
+                                            MsgId last = -1,
+                                            int limit = -1,
+                                            Message::Types type = Message::Types{-1},
+                                            Message::Flags flags = Message::Flags{-1}) override;
     std::vector<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) override;
     std::vector<Message> requestAllMsgsFiltered(UserId user,
                                                 MsgId first = -1,

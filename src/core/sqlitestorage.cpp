@@ -2075,6 +2075,94 @@ std::vector<Message> SqliteStorage::requestMsgsFiltered(
     return messagelist;
 }
 
+std::vector<Message> SqliteStorage::requestMsgsForward(
+    UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+{
+    std::vector<Message> messagelist;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    bool error = false;
+    BufferInfo bufferInfo;
+    {
+        // code dupication from getBufferInfo:
+        // this is due to the impossibility of nesting transactions and recursive locking
+        QSqlQuery bufferInfoQuery(db);
+        bufferInfoQuery.prepare(queryString("select_buffer_by_id"));
+        bufferInfoQuery.bindValue(":userid", user.toInt());
+        bufferInfoQuery.bindValue(":bufferid", bufferId.toInt());
+
+        lockForRead();
+        safeExec(bufferInfoQuery);
+        error = !watchQuery(bufferInfoQuery) || !bufferInfoQuery.first();
+        if (!error) {
+            bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(),
+                                    bufferInfoQuery.value(1).toInt(),
+                                    (BufferInfo::Type)bufferInfoQuery.value(2).toInt(),
+                                    0,
+                                    bufferInfoQuery.value(4).toString());
+            error = !bufferInfo.isValid();
+        }
+    }
+    if (error) {
+        db.rollback();
+        unlock();
+        return messagelist;
+    }
+
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_messagesForward"));
+
+        if (first == -1) {
+            query.bindValue(":firstmsg", std::numeric_limits<qint64>::min());
+        } else {
+            query.bindValue(":firstmsg", first.toQint64());
+        }
+
+        if (last == -1) {
+            query.bindValue(":lastmsg", std::numeric_limits<qint64>::max());
+        } else {
+            query.bindValue(":lastmsg", last.toQint64());
+        }
+
+        query.bindValue(":bufferid", bufferId.toInt());
+
+        int typeRaw = type;
+        int flagsRaw = flags;
+        query.bindValue(":type", typeRaw);
+        query.bindValue(":flags", flagsRaw);
+
+        query.bindValue(":limit", limit);
+
+        safeExec(query);
+        watchQuery(query);
+
+        while (query.next()) {
+            Message msg(
+                // As of SQLite schema version 31, timestamps are stored in milliseconds
+                // instead of seconds.  This nets us more precision as well as simplifying
+                // 64-bit time.
+                QDateTime::fromMSecsSinceEpoch(query.value(1).toLongLong()),
+                bufferInfo,
+                (Message::Type)query.value(2).toInt(),
+                query.value(8).toString(),
+                query.value(4).toString(),
+                query.value(5).toString(),
+                query.value(6).toString(),
+                query.value(7).toString(),
+                Message::Flags{query.value(3).toInt()});
+            msg.setMsgId(query.value(0).toLongLong());
+            messagelist.push_back(std::move(msg));
+        }
+    }
+    db.commit();
+    unlock();
+
+    return messagelist;
+}
+
 std::vector<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit)
 {
     std::vector<Message> messagelist;
