@@ -26,11 +26,17 @@ BacklogSettings::BacklogSettings()
 
 int BacklogSettings::requesterType() const
 {
-    return localValue("RequesterType", BacklogRequester::PerBufferUnread).toInt();
+    int _requesterType = localValue("RequesterType", BacklogRequester::PerBufferUnread).toInt();
+    if (_requesterType == BacklogRequester::GlobalUnread) {
+        // GlobalUnread is currently disabled; don't allow it to be used.  Reset to default instead.
+        _requesterType = BacklogRequester::PerBufferUnread;
+    }
+    return _requesterType;
 }
 
 void BacklogSettings::setRequesterType(int requesterType)
 {
+    // This settings key is also used within ChatMonitorSettingsPage::ChatMonitorSettingsPage()
     setLocalValue("RequesterType", requesterType);
 }
 
@@ -103,4 +109,16 @@ int BacklogSettings::perBufferUnreadBacklogAdditional() const
 void BacklogSettings::setPerBufferUnreadBacklogAdditional(int additional)
 {
     return setLocalValue("PerBufferUnreadBacklogAdditional", additional);
+}
+
+int BacklogSettings::asNeededLegacyBacklogAmount() const
+{
+    // Mimic FixedBacklogAmount defaults.  This is only used on cores lacking
+    // Feature::BufferActivitySync.
+    return localValue("AsNeededLegacyBacklogAmount", 500).toInt();
+}
+
+void BacklogSettings::setAsNeededLegacyBacklogAmount(int amount)
+{
+    return setLocalValue("AsNeededLegacyBacklogAmount", amount);
 }
