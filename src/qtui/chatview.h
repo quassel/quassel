@@ -102,6 +102,7 @@ public slots:
 
 protected:
     bool event(QEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void scrollContentsBy(int dx, int dy) override;
 
@@ -129,6 +130,8 @@ private:
     bool _invalidateFilter;
     QSet<ChatLine*> _linesWithCache;
     bool _firstTouchUpdateHappened = false;
+    /// Workaround: If true, backlog has been requested before the vertical scrollbar became visible
+    bool _backlogRequestedBeforeScrollable{false};
 };
 
 #endif
