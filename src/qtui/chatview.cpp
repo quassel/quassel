@@ -100,8 +100,7 @@ bool ChatView::event(QEvent* event)
         case Qt::Key_Down:
         case Qt::Key_PageUp:
         case Qt::Key_PageDown:
-            if (!verticalScrollBar()->isVisible()) {
-                scene()->requestBacklog();
+            if (requestBacklogForScroll()) {
                 return true;
             }
         default:
@@ -145,8 +144,7 @@ bool ChatView::event(QEvent* event)
     if (event->type() == QEvent::Wheel
         || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen)
         || event->type() == QEvent::TouchUpdate) {
-        if (!verticalScrollBar()->isVisible()) {
-            scene()->requestBacklog();
+        if (requestBacklogForScroll()) {
             return true;
         }
     }
@@ -407,6 +405,23 @@ void ChatView::setHasCache(ChatLine* line, bool hasCache)
         _linesWithCache.insert(line);
     else
         _linesWithCache.remove(line);
+}
+
+bool ChatView::requestBacklogForScroll()
+{
+    if (!verticalScrollBar()->isVisible()) {
+        // Not able to scroll, fetch backlog
+        //
+        // Future improvement: continue fetching backlog in chunks until the scrollbar is visible,
+        // or the beginning of the buffer has been reached.
+        scene()->requestBacklog();
+        // Backlog has been requested
+        return true;
+    }
+    else {
+        // Scrollbar already visible, no backlog requested
+        return false;
+    }
 }
 
 void ChatView::checkChatLineCaches()

@@ -64,6 +64,13 @@ private slots:
 
     void setAutoMarkerLine(const QVariant&);
     void setAutoMarkerLineOnLostFocus(const QVariant&);
+    /**
+     * Sets the local cache of whether or not a buffer should fetch backlog upon show to provide a
+     * scrollable amount of backlog
+     *
+     * @seealso BacklogSettings::setEnsureBacklogOnBufferShow()
+     */
+    void setEnsureBacklogOnBufferShow(const QVariant&);
 
 private:
     Ui::BufferWidget ui;
@@ -73,4 +80,5 @@ private:
 
     bool _autoMarkerLine;
     bool _autoMarkerLineOnLostFocus;
+    bool _ensureBacklogOnBufferShow; ///< If a buffer fetches backlog upon show until scrollable
 };

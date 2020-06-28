@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>446</width>
-    <height>325</height>
+    <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,6 +59,22 @@
       </spacer>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="ensureBacklogOnBufferShow">
+     <property name="toolTip">
+      <string>When switching to a chat, more backlog will be fetched if no messages are shown yet or the scrollbar isn't visible.  Useful when not fetching any initial backlog.</string>
+     </property>
+     <property name="text">
+      <string>Fetch backlog if needed when switching chats</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">EnsureBacklogOnBufferShow</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">
