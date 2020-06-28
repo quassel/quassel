@@ -46,7 +46,7 @@ bool BacklogSettingsPage::hasDefaults() const
 
 void BacklogSettingsPage::defaults()
 {
-    ui.requesterType->setCurrentIndex(BacklogRequester::PerBufferUnread - 1);
+    ui.requesterType->setCurrentIndex(BacklogRequester::AsNeeded - 1);
 
     SettingsPage::defaults();
 }

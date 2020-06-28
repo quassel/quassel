@@ -94,6 +94,9 @@
      </item>
      <item>
       <widget class="QComboBox" name="requesterType">
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
        <item>
         <property name="text">
          <string>Fixed amount per chat</string>
@@ -134,7 +137,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_2">

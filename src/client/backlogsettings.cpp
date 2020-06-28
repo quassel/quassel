@@ -26,10 +26,10 @@ BacklogSettings::BacklogSettings()
 
 int BacklogSettings::requesterType() const
 {
-    int _requesterType = localValue("RequesterType", BacklogRequester::PerBufferUnread).toInt();
+    int _requesterType = localValue("RequesterType", BacklogRequester::AsNeeded).toInt();
     if (_requesterType == BacklogRequester::GlobalUnread) {
         // GlobalUnread is currently disabled; don't allow it to be used.  Reset to default instead.
-        _requesterType = BacklogRequester::PerBufferUnread;
+        _requesterType = BacklogRequester::AsNeeded;
     }
     return _requesterType;
 }

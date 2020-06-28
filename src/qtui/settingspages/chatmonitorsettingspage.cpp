@@ -73,7 +73,7 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget* parent)
 
     // AsNeededBacklogRequester conflicts with showing backlog in Chat Monitor
     BacklogSettings backlogSettings;
-    backlogSettings.initAndNotify("RequesterType", this, &ChatMonitorSettingsPage::setRequesterType, BacklogRequester::PerBufferUnread);
+    backlogSettings.initAndNotify("RequesterType", this, &ChatMonitorSettingsPage::setRequesterType, BacklogRequester::AsNeeded);
 }
 
 bool ChatMonitorSettingsPage::hasDefaults() const
