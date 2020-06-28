@@ -39,8 +39,11 @@ public slots:
     virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
     virtual QVariantList requestBacklogFiltered(
         BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0, int type = -1, int flags = -1);
+    virtual QVariantList requestBacklogForward(
+        BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int type = -1, int flags = -1);
     inline virtual void receiveBacklog(BufferId, MsgId, MsgId, int, int, QVariantList){};
     inline virtual void receiveBacklogFiltered(BufferId, MsgId, MsgId, int, int, int, int, QVariantList){};
+    inline virtual void receiveBacklogForward(BufferId, MsgId, MsgId, int, int, int, QVariantList){};
 
     virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
     virtual QVariantList requestBacklogAllFiltered(

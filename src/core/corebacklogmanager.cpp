@@ -109,6 +109,18 @@ QVariantList CoreBacklogManager::requestBacklogFiltered(BufferId bufferId, MsgId
     return backlog;
 }
 
+QVariantList CoreBacklogManager::requestBacklogForward(BufferId bufferId, MsgId first, MsgId last, int limit, int type, int flags)
+{
+    QVariantList backlog;
+    auto msgList = Core::requestMsgsForward(coreSession()->user(), bufferId, first, last, limit, Message::Types{type}, Message::Flags{flags});
+
+    std::transform(msgList.cbegin(), msgList.cend(), std::back_inserter(backlog), [](auto&& msg) {
+        return QVariant::fromValue(msg);
+    });
+
+    return backlog;
+}
+
 QVariantList CoreBacklogManager::requestBacklogAll(MsgId first, MsgId last, int limit, int additional)
 {
     QVariantList backlog;
