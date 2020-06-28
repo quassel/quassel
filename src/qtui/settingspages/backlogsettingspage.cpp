@@ -33,7 +33,8 @@ BacklogSettingsPage::BacklogSettingsPage(QWidget* parent)
     // not an auto widget, because we store index + 1
 
     // FIXME: global backlog requester disabled until issues ruled out
-    ui.requesterType->removeItem(2);
+    ui.requesterType->removeItem(3);
+    // If modifying ui.requesterType's item list, set to the index of "Globally unread messages"
 
     connectToWidgetChangedSignal(ui.requesterType, this, &BacklogSettingsPage::widgetHasChanged);
 }

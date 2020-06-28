@@ -131,3 +131,30 @@ void PerBufferUnreadBacklogRequester::requestBacklog(const BufferIdList& bufferI
         backlogManager->requestBacklog(bufferId, Client::networkModel()->lastSeenMsgId(bufferId), -1, _limit, _additional);
     }
 }
+
+// ========================================
+//  AS NEEDED BACKLOG REQUESTER
+// ========================================
+AsNeededBacklogRequester::AsNeededBacklogRequester(ClientBacklogManager* backlogManager)
+    : BacklogRequester(false, BacklogRequester::AsNeeded, backlogManager)
+{
+    BacklogSettings backlogSettings;
+    _legacyBacklogCount = backlogSettings.asNeededLegacyBacklogAmount();
+}
+
+void AsNeededBacklogRequester::requestBacklog(const BufferIdList& bufferIds)
+{
+    // Check if the core supports activity tracking
+    if (Client::isCoreFeatureEnabled(Quassel::Feature::BufferActivitySync)) {
+        // Don't fetch any backlog, the core will track buffer activity for us
+        return;
+    }
+
+    setWaitingBuffers(bufferIds);
+    backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 backlog messages for %2 buffers")
+                                              .arg(_legacyBacklogCount * bufferIds.count())
+                                              .arg(bufferIds.count()));
+    foreach (BufferId bufferId, bufferIds) {
+        backlogManager->requestBacklog(bufferId, -1, -1, _legacyBacklogCount);
+    }
+}

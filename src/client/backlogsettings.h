@@ -62,4 +62,21 @@ public:
     void setPerBufferUnreadBacklogLimit(int limit);
     int perBufferUnreadBacklogAdditional() const;
     void setPerBufferUnreadBacklogAdditional(int additional);
+
+    /**
+     * Get the initial amount of backlog fetched across all buffers for legacy cores that do not
+     * support Quassel::Feature::BufferActivitySync
+     *
+     * @seealso Quassel::Feature::BufferActivitySync
+     * @return The amount of backlog to fetch per buffer
+     */
+    int asNeededLegacyBacklogAmount() const;
+    /**
+     * Set the initial amount of backlog fetched across all buffers for legacy cores that do not
+     * support Quassel::Feature::BufferActivitySync
+     *
+     * @seealso BacklogSettings::asNeededLegacyBacklogAmount()
+     * @param amount The amount of backlog to fetch per buffer
+     */
+    void setAsNeededLegacyBacklogAmount(int amount);
 };

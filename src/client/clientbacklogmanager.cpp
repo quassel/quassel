@@ -97,6 +97,9 @@ void ClientBacklogManager::requestInitialBacklog()
 
     BacklogSettings settings;
     switch (settings.requesterType()) {
+    case BacklogRequester::AsNeeded:
+        _requester = new AsNeededBacklogRequester(this);
+        break;
     case BacklogRequester::GlobalUnread:
         _requester = new GlobalUnreadBacklogRequester(this);
         break;
@@ -144,6 +147,7 @@ void ClientBacklogManager::checkForBacklog(const QList<BufferId>& bufferIds)
         break;
     case BacklogRequester::PerBufferUnread:
     case BacklogRequester::PerBufferFixed:
+    case BacklogRequester::AsNeeded:
     default: {
         BufferIdList buffers = filterNewBufferIds(bufferIds);
         if (!buffers.isEmpty())
