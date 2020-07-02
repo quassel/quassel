@@ -437,6 +437,7 @@ public:
      *  \param last     if != -1 return only messages with a MsgId < last
      *  \param limit    if != -1 limit the returned list to a max of \limit entries
      *  \param type     The Message::Types that should be returned
+     *  \param flags     The Message::Flags that should be returned
      *  \return The requested list of messages
      */
     static inline std::vector<Message> requestMsgsForward(UserId user,
