@@ -334,7 +334,7 @@ void IrcUser::quitInternal(bool skip_sync)
         channel->part(this);
     }
     network()->removeIrcUser(this);
-    if (!skip_sync) SYNC(NO_ARG)
+    if (!skip_sync) SYNC_OTHER(quit, NO_ARG)
     emit quited();
 }
 
