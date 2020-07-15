@@ -493,14 +493,18 @@ void BufferView::changeBuffer(Direction direction)
             QModelIndex newParent = currentIndex.sibling(currentIndex.row() - 1, 0);
             if (currentIndex.row() == 0)
                 newParent = lastNetIndex;
-            if (model()->hasChildren(newParent))
-                resultingIndex = newParent.model()->index(model()->rowCount(newParent) - 1, 0, newParent);
+            if (model()->hasChildren(newParent)) {
+                // Treat an invalid QAbstractItemModel as an invalid QModelIndex
+                resultingIndex = (newParent.model() ? newParent.model()->index(model()->rowCount(newParent) - 1, 0, newParent) : QModelIndex());
+            }
             else
                 resultingIndex = newParent;
         }
         else {
-            if (model()->hasChildren(currentIndex))
-                resultingIndex = currentIndex.model()->index(0, 0, currentIndex);
+            if (model()->hasChildren(currentIndex)) {
+                // Treat an invalid QAbstractItemModel as an invalid QModelIndex
+                resultingIndex = (currentIndex.model() ? currentIndex.model()->index(0, 0, currentIndex) : QModelIndex());
+            }
             else
                 resultingIndex = currentIndex.sibling(currentIndex.row() + 1, 0);
         }
@@ -509,8 +513,10 @@ void BufferView::changeBuffer(Direction direction)
     if (!resultingIndex.isValid()) {
         if (direction == Forward)
             resultingIndex = model()->index(0, 0, QModelIndex());
-        else
+        else {
+            // Assume model is valid
             resultingIndex = lastNetIndex.model()->index(model()->rowCount(lastNetIndex) - 1, 0, lastNetIndex);
+        }
     }
 
     selectionModel()->setCurrentIndex(resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
