@@ -273,6 +273,7 @@ public:
         QString awaymessage;
         QString attachperform;
         QString detachperform;
+        QString skipcaps;
         NetworkId networkid;
         IdentityId identityid;
         int messagerateburstsize;

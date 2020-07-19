@@ -800,6 +800,8 @@ void PostgreSqlStorage::bindNetworkInfo(QSqlQuery& query, const NetworkInfo& inf
     query.bindValue(":messagerateburstsize", info.messageRateBurstSize);
     query.bindValue(":messageratedelay", info.messageRateDelay);
     query.bindValue(":unlimitedmessagerate", info.unlimitedMessageRate);
+    query.bindValue(":skipcaps", info.skipCapsToString());
+
     if (info.networkId.isValid())
         query.bindValue(":networkid", info.networkId.toInt());
 }
@@ -947,6 +949,7 @@ std::vector<NetworkInfo> PostgreSqlStorage::networks(UserId user)
         net.messageRateBurstSize = networksQuery.value(20).toUInt();
         net.messageRateDelay = networksQuery.value(21).toUInt();
         net.unlimitedMessageRate = networksQuery.value(22).toBool();
+        net.skipCapsFromString(networksQuery.value(23).toString());
 
         serversQuery.bindValue(":networkid", net.networkId.toInt());
         safeExec(serversQuery);
@@ -2424,6 +2427,8 @@ bool PostgreSqlMigrationWriter::writeMo(const NetworkMO& network)
     bindValue(26, network.messagerateburstsize);
     bindValue(27, network.messageratedelay);
     bindValue(28, network.unlimitedmessagerate);
+    // Skipped IRCv3 caps
+    bindValue(29, network.skipcaps);
     return exec();
 }
 

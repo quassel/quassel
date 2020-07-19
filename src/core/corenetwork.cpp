@@ -20,6 +20,8 @@
 
 #include "corenetwork.h"
 
+#include <algorithm>
+
 #include <QDebug>
 #include <QHostInfo>
 #include <QTextBoundaryFinder>
@@ -1075,6 +1077,11 @@ void CoreNetwork::resetTokenBucket()
 
 void CoreNetwork::serverCapAdded(const QString& capability)
 {
+    // Exclude skipped capabilities
+    if (skipCaps().contains(capability)) {
+        return;
+    }
+
     // Check if it's a known capability; if so, add it to the list
     // Handle special cases first
     if (capability == IrcCap::SASL) {
@@ -1099,7 +1106,7 @@ void CoreNetwork::serverCapAcknowledged(const QString& capability)
     }
 
     // Handle capabilities that require further messages sent to the IRC server
-    // If you change this list, ALSO change the list in CoreNetwork::capsRequiringServerMessages
+    // If you change this list, ALSO change the list in CoreNetwork::capsRequiringConfiguration
     if (capability == IrcCap::SASL) {
         // If SASL mechanisms specified, limit to what's accepted for authentication
         // if the current identity has a cert set, use SASL EXTERNAL
@@ -1253,6 +1260,26 @@ void CoreNetwork::retryCapsIndividually()
 
 void CoreNetwork::beginCapNegotiation()
 {
+    // Check if any available capabilities have been disabled
+    QStringList capsSkipped;
+    if (!skipCaps().isEmpty() && !caps().isEmpty()) {
+        // Find the entries that are common to skipCaps() and caps().  This represents any
+        // capabilities supported by the server that were skipped.
+
+        // Both skipCaps() and caps() are already lowercase
+        // std::set_intersection requires sorted lists, and we can't modify the original lists.
+        //
+        // skipCaps() should already be sorted.  caps() is intentionally not sorted elsewhere so
+        // Quassel can show the capabilities in the order transmitted by the network.
+        auto sortedCaps = caps();
+        sortedCaps.sort();
+
+        // Find the intersection between skipped caps and server-supplied caps
+        std::set_intersection(skipCaps().cbegin(), skipCaps().cend(),
+                              sortedCaps.cbegin(), sortedCaps.cend(),
+                              std::back_inserter(capsSkipped));
+    }
+
     if (!capsPendingNegotiation()) {
         // No capabilities are queued for request, determine the reason why
         QString capStatusMsg;
@@ -1283,6 +1310,16 @@ void CoreNetwork::beginCapNegotiation()
             capStatusMsg
         ));
 
+        if (!capsSkipped.isEmpty()) {
+            // Mention that some capabilities are skipped
+            showMessage(NetworkInternalMessage(
+                Message::Server,
+                BufferInfo::StatusBuffer,
+                "",
+                tr("Quassel is configured to ignore some capabilities (skipped: %1)").arg(capsSkipped.join(", "))
+            ));
+        }
+
         // End any ongoing capability negotiation, allowing connection to continue
         endCapNegotiation();
         return;
@@ -1295,6 +1332,16 @@ void CoreNetwork::beginCapNegotiation()
         "",
         tr("Ready to negotiate (found: %1)").arg(caps().join(", "))
     ));
+
+    if (!capsSkipped.isEmpty()) {
+        // Mention that some capabilities are skipped
+        showMessage(NetworkInternalMessage(
+            Message::Server,
+            BufferInfo::StatusBuffer,
+            "",
+            tr("Quassel is configured to ignore some capabilities (skipped: %1)").arg(capsSkipped.join(", "))
+        ));
+    }
 
     // Build a list of queued capabilities, starting with individual, then bundled, only adding the
     // comma separator between the two if needed (both individual and bundled caps exist).

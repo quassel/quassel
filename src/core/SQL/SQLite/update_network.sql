@@ -20,5 +20,6 @@ messageratedelay = :messageratedelay,
 unlimitedmessagerate = :unlimitedmessagerate,
 usesasl = :usesasl,
 saslaccount = :saslaccount,
-saslpassword = :saslpassword
+saslpassword = :saslpassword,
+skipcaps = :skipcaps
 WHERE networkid = :networkid AND userid = :userid

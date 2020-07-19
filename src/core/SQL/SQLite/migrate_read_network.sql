@@ -3,5 +3,5 @@ SELECT networkid, userid, networkname, identityid, encodingcodec, decodingcodec,
        useautoreconnect, autoreconnectinterval, autoreconnectretries, unlimitedconnectretries,
        rejoinchannels, connected, usermode, awaymessage, attachperform, detachperform,
        usesasl, saslaccount, saslpassword, usecustomessagerate, messagerateburstsize,
-       messageratedelay, unlimitedmessagerate
+       messageratedelay, unlimitedmessagerate, skipcaps
 FROM network

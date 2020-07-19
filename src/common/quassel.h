@@ -143,6 +143,7 @@ public:
         LongMessageId,        ///< 64-bit IDs for messages
         SyncedCoreInfo,       ///< CoreInfo dynamically updated using signals
         LoadBacklogForwards,  ///< Allow loading backlog in ascending order, old to new
+        SkipIrcCaps,          ///< Control what IRCv3 capabilities are skipped during negotiation
     };
     Q_ENUMS(Feature)
 

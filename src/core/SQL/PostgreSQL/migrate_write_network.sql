@@ -4,5 +4,5 @@ INSERT INTO network (networkid, userid, networkname, identityid, encodingcodec, 
                      autoreconnectretries, unlimitedconnectretries, rejoinchannels, connected,
                      usermode, awaymessage, attachperform, detachperform, usesasl, saslaccount,
                      saslpassword, usecustomessagerate, messagerateburstsize, messageratedelay,
-                     unlimitedmessagerate)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     unlimitedmessagerate, skipcaps)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
