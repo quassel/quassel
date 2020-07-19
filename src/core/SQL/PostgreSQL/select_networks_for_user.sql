@@ -2,6 +2,6 @@ SELECT networkid, networkname, identityid, servercodec, encodingcodec, decodingc
        userandomserver, perform, useautoidentify, autoidentifyservice, autoidentifypassword,
        useautoreconnect, autoreconnectinterval, autoreconnectretries, unlimitedconnectretries,
        rejoinchannels, usesasl, saslaccount, saslpassword, usecustomessagerate,
-       messagerateburstsize, messageratedelay, unlimitedmessagerate
+       messagerateburstsize, messageratedelay, unlimitedmessagerate, skipcaps
 FROM network
 WHERE userid = :userid

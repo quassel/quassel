@@ -105,6 +105,7 @@ NetworkInfo Network::networkInfo() const
     info.serverList = serverList();
     info.useRandomServer = useRandomServer();
     info.perform = perform();
+    info.skipCaps = skipCaps();
     info.useAutoIdentify = useAutoIdentify();
     info.autoIdentifyService = autoIdentifyService();
     info.autoIdentifyPassword = autoIdentifyPassword();
@@ -142,6 +143,8 @@ void Network::setNetworkInfo(const NetworkInfo& info)
         setUseRandomServer(info.useRandomServer);
     if (info.perform != perform())
         setPerform(info.perform);
+    if (info.skipCaps != skipCaps())
+        setSkipCaps(info.skipCaps);
     if (info.useAutoIdentify != useAutoIdentify())
         setUseAutoIdentify(info.useAutoIdentify);
     if (info.autoIdentifyService != autoIdentifyService())
@@ -638,6 +641,19 @@ void Network::setPerform(const QStringList& perform)
     emit configChanged();
 }
 
+void Network::setSkipCaps(const QStringList& skipCaps)
+{
+    _skipCaps = skipCaps;
+    // Ensure the list of skipped capabilities remains sorted
+    //
+    // This becomes important in CoreNetwork::beginCapNegotiation() when finding the intersection of
+    // available capabilities and skipped capabilities.  It's a bit more efficient to sort on first
+    // initialization and changes afterwards instead of on every (re)connection to the IRC network.
+    _skipCaps.sort();
+    SYNC(ARG(skipCaps))
+    emit configChanged();
+}
+
 void Network::setUseAutoIdentify(bool use)
 {
     _useAutoIdentify = use;
@@ -1109,11 +1125,42 @@ void Network::determinePrefixes() const
  * NetworkInfo
  ************************************************************************/
 
+QString NetworkInfo::skipCapsToString() const {
+    // Sort the list of capabilities when rendering to a string.  This isn't required as
+    // Network::setSkipCaps() will sort as well, but this looks nicer when displayed to the user.
+    // This also results in the list being sorted before storing in the database, too.
+    auto sortedSkipCaps = skipCaps;
+    sortedSkipCaps.sort();
+
+    // IRCv3 capabilities are transmitted space-separated, so it should be safe to assume spaces
+    // won't ever be inside them
+    //
+    // See https://ircv3.net/specs/core/capability-negotiation
+    return sortedSkipCaps.join(" ");
+}
+
+void NetworkInfo::skipCapsFromString(const QString& flattenedSkipCaps) {
+    // IRCv3 capabilities should all use lowercase capability names, though it's not strictly
+    // required by the specification.  Quassel currently converts all caps to lowercase before doing
+    // any comparisons.
+    //
+    // This would only become an issue if two capabilities have the same name and only differ by
+    // case, or if an IRC server transmits an uppercase capability and compares case-sensitively.
+    //
+    // (QString::toLower() is always done in the C locale, so locale-dependent case-sensitivity
+    //  won't ever be an issue, thankfully.)
+    //
+    // See Network::addCap(), Network::acknowledgeCap(), and friends
+    // And https://ircv3.net/specs/core/capability-negotiation
+    skipCaps = flattenedSkipCaps.toLower().split(" ", QString::SplitBehavior::SkipEmptyParts);
+}
+
 bool NetworkInfo::operator==(const NetworkInfo& other) const
 {
     return     networkName               == other.networkName
             && serverList                == other.serverList
             && perform                   == other.perform
+            && skipCaps                  == other.skipCaps
             && autoIdentifyService       == other.autoIdentifyService
             && autoIdentifyPassword      == other.autoIdentifyPassword
             && saslAccount               == other.saslAccount
@@ -1149,6 +1196,7 @@ QDataStream& operator<<(QDataStream& out, const NetworkInfo& info)
     i["NetworkName"]               = info.networkName;
     i["ServerList"]                = toVariantList(info.serverList);
     i["Perform"]                   = info.perform;
+    i["SkipCaps"]                  = info.skipCaps;
     i["AutoIdentifyService"]       = info.autoIdentifyService;
     i["AutoIdentifyPassword"]      = info.autoIdentifyPassword;
     i["SaslAccount"]               = info.saslAccount;
@@ -1181,6 +1229,7 @@ QDataStream& operator>>(QDataStream& in, NetworkInfo& info)
     info.networkName               = i["NetworkName"].toString();
     info.serverList                = fromVariantList<Network::Server>(i["ServerList"].toList());
     info.perform                   = i["Perform"].toStringList();
+    info.skipCaps                  = i["SkipCaps"].toStringList();
     info.autoIdentifyService       = i["AutoIdentifyService"].toString();
     info.autoIdentifyPassword      = i["AutoIdentifyPassword"].toString();
     info.saslAccount               = i["SaslAccount"].toString();
@@ -1210,7 +1259,8 @@ QDebug operator<<(QDebug dbg, const NetworkInfo& i)
     dbg.nospace() << "(id = " << i.networkId << " name = " << i.networkName << " identity = " << i.identity
                   << " codecForServer = " << i.codecForServer << " codecForEncoding = " << i.codecForEncoding
                   << " codecForDecoding = " << i.codecForDecoding << " serverList = " << i.serverList
-                  << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform << " useAutoIdentify = " << i.useAutoIdentify
+                  << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform
+                  << " skipCaps = " << i.skipCaps << " useAutoIdentify = " << i.useAutoIdentify
                   << " autoIdentifyService = " << i.autoIdentifyService << " autoIdentifyPassword = " << i.autoIdentifyPassword
                   << " useSasl = " << i.useSasl << " saslAccount = " << i.saslAccount << " saslPassword = " << i.saslPassword
                   << " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval

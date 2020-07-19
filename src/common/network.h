@@ -69,6 +69,7 @@ class COMMON_EXPORT Network : public SyncableObject
     Q_PROPERTY(int connectionState READ connectionState WRITE setConnectionState)
     Q_PROPERTY(bool useRandomServer READ useRandomServer WRITE setUseRandomServer)
     Q_PROPERTY(QStringList perform READ perform WRITE setPerform)
+    Q_PROPERTY(QStringList skipCaps READ skipCaps WRITE setSkipCaps)
     Q_PROPERTY(bool useAutoIdentify READ useAutoIdentify WRITE setUseAutoIdentify)
     Q_PROPERTY(QString autoIdentifyService READ autoIdentifyService WRITE setAutoIdentifyService)
     Q_PROPERTY(QString autoIdentifyPassword READ autoIdentifyPassword WRITE setAutoIdentifyPassword)
@@ -281,6 +282,12 @@ public:
     inline const ServerList& serverList() const { return _serverList; }
     inline bool useRandomServer() const { return _useRandomServer; }
     inline const QStringList& perform() const { return _perform; }
+    /**
+     * Gets the list of skipped (not auto-negotiated) capabilities.
+     *
+     * @returns QStringList of skippped capabilities
+     */
+    inline const QStringList skipCaps() const { return _skipCaps; }
     inline bool useAutoIdentify() const { return _useAutoIdentify; }
     inline const QString& autoIdentifyService() const { return _autoIdentifyService; }
     inline const QString& autoIdentifyPassword() const { return _autoIdentifyPassword; }
@@ -433,6 +440,12 @@ public slots:
     void setServerList(const QVariantList& serverList);
     void setUseRandomServer(bool);
     void setPerform(const QStringList&);
+    /**
+     * Sets the list of skipped (not auto-negotiated) capabilities
+     *
+     * @param skipCaps QStringList of skipped (not auto-negotiated) capabilities
+     */
+    void setSkipCaps(const QStringList& skipCaps);
     void setUseAutoIdentify(bool);
     void setAutoIdentifyService(const QString&);
     void setAutoIdentifyPassword(const QString&);
@@ -531,7 +544,7 @@ public slots:
     /**
      * Clears all capabilities from the list of available capabilities.
      *
-     * This also removes the capability from the list of acknowledged capabilities.
+     * This also removes all capabilities from the list of acknowledged capabilities.
      */
     void clearCaps();
 
@@ -566,7 +579,7 @@ public slots:
     /**
      * Initialize the list of enabled (acknowledged) capabilities.
      *
-     * @param[in] caps QVariantList of QString indicating enabled (acknowledged) capabilities and values
+     * @param[in] capsEnabled QVariantList of QString indicating enabled (acknowledged) capabilities
      */
     inline void initSetCapsEnabled(const QVariantList& capsEnabled) { _capsEnabled = fromVariantList<QString>(capsEnabled); }
     inline void initSetServerList(const QVariantList& serverList) { _serverList = fromVariantList<Server>(serverList); }
@@ -734,9 +747,11 @@ private:
     QStringList _capsEnabled;  /// Enabled capabilities that received 'CAP ACK'
     // _capsEnabled uses the same values from the <name>=<value> pairs stored in _caps
 
+
     ServerList _serverList;
     bool _useRandomServer;
     QStringList _perform;
+    QStringList _skipCaps;  ///< Capabilities to skip during negotiation (keep list sorted!)
 
     bool _useAutoIdentify;
     QString _autoIdentifyService;
@@ -779,6 +794,7 @@ struct COMMON_EXPORT NetworkInfo
 
     Network::ServerList serverList;
     QStringList perform;
+    QStringList skipCaps;           ///< Capabilities to skip during negotiation
 
     QString autoIdentifyService{"NickServ"};
     QString autoIdentifyPassword;
@@ -811,6 +827,20 @@ struct COMMON_EXPORT NetworkInfo
 public:
     bool operator==(const NetworkInfo& other) const;
     bool operator!=(const NetworkInfo& other) const;
+
+    /**
+     * Gets the list of skipped capabilities in a space-separated string
+     *
+     * @see skipCaps
+     * @return QString representing skipCaps with each cap separated by a space
+     */
+    QString skipCapsToString() const;
+    /**
+     * Sets the list of skipped capabilities from a space-separated string
+     *
+     * @param flattenedSkipCaps QString representing skipCaps with each cap separated by a space
+     */
+    void skipCapsFromString(const QString& flattenedSkipCaps);
 };
 
 COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const NetworkInfo& info);

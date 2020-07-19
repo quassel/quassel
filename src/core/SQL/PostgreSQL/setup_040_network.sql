@@ -28,5 +28,6 @@ CREATE TABLE network (
        messagerateburstsize INTEGER NOT NULL DEFAULT 5,     -- Maximum messages at once
        messageratedelay INTEGER NOT NULL DEFAULT 2200,      -- Delay between future messages (milliseconds)
        unlimitedmessagerate boolean NOT NULL DEFAULT FALSE, -- Disable rate limits
+       skipcaps TEXT,                                       -- Space-separated IRCv3 caps to not auto-negotiate
        UNIQUE (userid, networkname)
 )

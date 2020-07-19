@@ -773,6 +773,7 @@ void SqliteStorage::bindNetworkInfo(QSqlQuery& query, const NetworkInfo& info)
     query.bindValue(":messagerateburstsize", info.messageRateBurstSize);
     query.bindValue(":messageratedelay", info.messageRateDelay);
     query.bindValue(":unlimitedmessagerate", info.unlimitedMessageRate ? 1 : 0);
+    query.bindValue(":skipcaps", info.skipCapsToString());
     if (info.networkId.isValid())
         query.bindValue(":networkid", info.networkId.toInt());
 }
@@ -970,6 +971,7 @@ std::vector<NetworkInfo> SqliteStorage::networks(UserId user)
                 net.messageRateBurstSize = networksQuery.value(20).toUInt();
                 net.messageRateDelay = networksQuery.value(21).toUInt();
                 net.unlimitedMessageRate = networksQuery.value(22).toInt() == 1 ? true : false;
+                net.skipCapsFromString(networksQuery.value(23).toString());
 
                 serversQuery.bindValue(":networkid", net.networkId.toInt());
                 safeExec(serversQuery);
@@ -2494,6 +2496,8 @@ bool SqliteMigrationReader::readMo(NetworkMO& network)
     network.messagerateburstsize = value(26).toInt();
     network.messageratedelay = value(27).toUInt();
     network.unlimitedmessagerate = value(28).toInt() == 1 ? true : false;
+    // Skipped IRCv3 caps
+    network.skipcaps = value(29).toString();
     return true;
 }
 

@@ -255,6 +255,7 @@ bool Serializers::deserialize(QDataStream& stream, const Quassel::Features& feat
     info.serverList = fromVariantList<Network::Server>(i["ServerList"].toList());
     info.useRandomServer = i["UseRandomServer"].toBool();
     info.perform = i["Perform"].toStringList();
+    info.skipCaps = i["SkipCaps"].toStringList();
     info.useAutoIdentify = i["UseAutoIdentify"].toBool();
     info.autoIdentifyService = i["AutoIdentifyService"].toString();
     info.autoIdentifyPassword = i["AutoIdentifyPassword"].toString();

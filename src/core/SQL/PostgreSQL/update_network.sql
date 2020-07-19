@@ -20,6 +20,7 @@ unlimitedmessagerate = :unlimitedmessagerate,
 rejoinchannels = :rejoinchannels,
 usesasl = :usesasl,
 saslaccount = :saslaccount,
-saslpassword = :saslpassword
+saslpassword = :saslpassword,
+skipcaps = :skipcaps
 WHERE userid = :userid AND networkid = :networkid
 

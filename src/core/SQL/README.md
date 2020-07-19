@@ -168,6 +168,9 @@ In client-side code, test for a feature with...
 if (Client::isCoreFeatureEnabled(Quassel::Feature::FeatureName)) { ... }
 ```
 
+Depending on the type of protocol change, you might also need to update
+[`serializers.cpp`][file-cpp-serializers] and related files.
+
 8.  **Test everything!  Upgrade, migrate, new setups, new client/old core,
 old client/new core, etc.**
 
@@ -245,3 +248,4 @@ Thank you for reading this guide and good luck with your changes!
 [file-cpp-sqlite]: ../sqlitestorage.cpp
 [file-sh-upgradeschema]: upgradeSchema.sh
 [file-h-quassel]: ../../common/quassel.h
+[file-cpp-serializers]: ../../common/serializers/serializers.cpp
