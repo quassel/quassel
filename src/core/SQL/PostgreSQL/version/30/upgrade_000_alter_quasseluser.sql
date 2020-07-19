@@ -1,0 +1,3 @@
+ALTER TABLE quasseluser
+ALTER COLUMN username TYPE TEXT,
+ALTER COLUMN authenticator TYPE TEXT

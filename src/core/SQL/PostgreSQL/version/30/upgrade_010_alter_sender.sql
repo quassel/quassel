@@ -1,0 +1,2 @@
+ALTER TABLE sender
+ALTER COLUMN sender TYPE TEXT

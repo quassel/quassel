@@ -1,0 +1,2 @@
+ALTER TABLE identity_nick
+ALTER COLUMN nick TYPE TEXT
