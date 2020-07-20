@@ -352,7 +352,7 @@
              <bool>true</bool>
             </property>
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -368,7 +368,7 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab">
+        <widget class="QWidget" name="connectionTab">
          <attribute name="title">
           <string>Connection</string>
          </attribute>
@@ -658,7 +658,7 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab_2">
+        <widget class="QWidget" name="autoIdentifyTab">
          <attribute name="title">
           <string>Auto Identify</string>
          </attribute>
@@ -881,14 +881,137 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="advancedTab">
+        <widget class="QWidget" name="featuresTab">
+         <attribute name="title">
+          <string>Features</string>
+         </attribute>
+         <attribute name="toolTip">
+          <string>Configure the modern IRC messaging features Quassel supports</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <item>
+           <widget class="QWidget" name="enableCapsStatusWidget" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="enableCapsStatusIcon">
+               <property name="text">
+                <string notr="true">[icon]</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="enableCapsStatusLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>These features require support from the network</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="enableCapsStatusDetails">
+               <property name="text">
+                <string>Details...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="enableCapsConfigWidget" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QPushButton" name="enableCapsAdvanced">
+                 <property name="toolTip">
+                  <string>Configure which IRC capabilities Quassel will ignore during negotiation</string>
+                 </property>
+                 <property name="text">
+                  <string>Advanced...</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>13</width>
+                   <height>35</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QLabel" name="enableCapsReconnectNotice">
+               <property name="text">
+                <string>&lt;i&gt;Changes apply after reconnecting to the network&lt;/i&gt;</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>178</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="encodingsTab">
          <attribute name="title">
           <string>Encodings</string>
          </attribute>
          <attribute name="toolTip">
-          <string>Configure advanced settings such as message encodings and automatic reconnect</string>
+          <string>Configure advanced settings such as message encodings</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
+         <layout class="QVBoxLayout" name="verticalLayout_13">
           <item>
            <widget class="QGroupBox" name="useCustomEncodings">
             <property name="enabled">
@@ -1046,6 +1169,8 @@ This setting defines the encoding for messages that are not UTF-8.</string>
   <tabstop>autoIdentify</tabstop>
   <tabstop>autoIdentifyService</tabstop>
   <tabstop>autoIdentifyPassword</tabstop>
+  <tabstop>enableCapsStatusDetails</tabstop>
+  <tabstop>enableCapsAdvanced</tabstop>
   <tabstop>useCustomEncodings</tabstop>
   <tabstop>sendEncoding</tabstop>
   <tabstop>recvEncoding</tabstop>

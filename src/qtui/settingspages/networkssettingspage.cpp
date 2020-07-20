@@ -67,6 +67,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)
     disconnectedIcon = icon::get("network-disconnect");
 
     // Status icons
+    infoIcon = icon::get({"emblem-information", "dialog-information"});
     successIcon = icon::get({"emblem-success", "dialog-information"});
     unavailableIcon = icon::get({"emblem-unavailable", "dialog-warning"});
     questionIcon = icon::get({"emblem-question", "dialog-question", "dialog-information"});
@@ -176,6 +177,20 @@ void NetworksSettingsPage::load()
                                                      tr("Your Quassel core does not support this feature"),
                                                      tr("You need a Quassel core v0.13.0 or newer in order to "
                                                         "modify message rate limits.")));
+    }
+
+    if (!Client::isConnected() || Client::isCoreFeatureEnabled(Quassel::Feature::SkipIrcCaps)) {
+        // Either disconnected or IRCv3 capability skippping supported, enable configuration and
+        // hide warning.  Don't show the warning needlessly when disconnected.
+        ui.enableCapsConfigWidget->setEnabled(true);
+        ui.enableCapsStatusLabel->setText(tr("These features require support from the network"));
+        ui.enableCapsStatusIcon->setPixmap(infoIcon.pixmap(16));
+    }
+    else {
+        // Core does not IRCv3 capability skipping, show warning and disable configuration
+        ui.enableCapsConfigWidget->setEnabled(false);
+        ui.enableCapsStatusLabel->setText(tr("Your Quassel core is too old to configure IRCv3 features"));
+        ui.enableCapsStatusIcon->setPixmap(unavailableIcon.pixmap(16));
     }
 
     // Hide the SASL EXTERNAL notice until a network's shown.  Stops it from showing while loading
@@ -982,6 +997,73 @@ void NetworksSettingsPage::on_saslStatusDetails_clicked()
     }
 }
 
+void NetworksSettingsPage::on_enableCapsStatusDetails_clicked()
+{
+    if (!Client::isConnected() || Client::isCoreFeatureEnabled(Quassel::Feature::SkipIrcCaps)) {
+        // Either disconnected or IRCv3 capability skippping supported
+
+        // Try to get a list of currently enabled features
+        QStringList sortedCapsEnabled;
+        // Check if a network is selected
+        if (ui.networkList->selectedItems().count()) {
+            // Get the underlying Network from the selected network
+            NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+            const Network* net = Client::network(netid);
+            if (net && Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation)) {
+                // Capability negotiation is supported, network exists.
+                // If the network is disconnected, the list of enabled capabilities will be empty,
+                // no need to check for that specifically.
+                // Sorting isn't required, but it looks nicer.
+                sortedCapsEnabled = net->capsEnabled();
+                sortedCapsEnabled.sort();
+            }
+        }
+
+        // Try to explain IRCv3 network features in a friendly way, including showing the currently
+        // enabled features if available
+        auto messageText = QString("<p>%1</p></br><p>%2</p>")
+                .arg(tr("Quassel makes use of newer IRC features when supported by the IRC network."
+                        "  If desired, you can disable unwanted or problematic features here."),
+                     tr("The <a href=\"https://ircv3.net/irc/\">IRCv3 website</a> provides more "
+                        "technical details on the IRCv3 capabilities powering these features."));
+
+        if (!sortedCapsEnabled.isEmpty()) {
+            // Format the capabilities within <code></code> blocks
+            auto formattedCaps = QString("<code>%1</code>")
+                    .arg(sortedCapsEnabled.join("</code>, <code>"));
+
+            // Add the currently enabled capabilities to the list
+            // This creates a new QString, but this code is not performance-critical.
+            messageText = messageText.append(QString("<p><i>%1</i></p>").arg(
+                                                 tr("Currently enabled IRCv3 capabilities for this "
+                                                    "network: %1").arg(formattedCaps)));
+        }
+
+        QMessageBox::information(this, tr("Configuring network features"), messageText);
+    }
+    else {
+        // Core does not IRCv3 capability skipping, show warning
+        QMessageBox::warning(this, tr("Configuring network features unsupported"),
+                             QString("<p><b>%1</b></p></br><p>%2</p>")
+                             .arg(tr("Your Quassel core is too old to configure IRCv3 network features"),
+                                  tr("You need a Quassel core v0.14.0 or newer to control what network "
+                                     "features Quassel will use.")));
+    }
+}
+
+void NetworksSettingsPage::on_enableCapsAdvanced_clicked()
+{
+    if (currentId == 0)
+        return;
+
+    CapsEditDlg dlg(networkInfos[currentId].skipCapsToString(), this);
+    if (dlg.exec() == QDialog::Accepted) {
+        networkInfos[currentId].skipCapsFromString(dlg.skipCapsString());
+        displayNetwork(currentId);
+        widgetHasChanged();
+    }
+}
+
 IdentityId NetworksSettingsPage::defaultIdentity() const
 {
     IdentityId defaultId = 0;
@@ -1211,6 +1293,47 @@ void ServerEditDlg::updateSslPort(bool isChecked)
         // Had been using the SSL port, use the plain-text default
         ui.port->setValue(Network::PORT_PLAINTEXT);
     }
+}
+
+/**************************************************************************
+ * CapsEditDlg
+ *************************************************************************/
+
+CapsEditDlg::CapsEditDlg(const QString& oldSkipCapsString, QWidget* parent)
+    : QDialog(parent)
+    , oldSkipCapsString(oldSkipCapsString)
+{
+    ui.setupUi(this);
+
+    // Connect to the reset button to reset the text
+    // This provides an explicit way to "get back to defaults" in case someone changes settings to
+    // experiment
+    QPushButton* defaultsButton = ui.buttonBox->button(QDialogButtonBox::RestoreDefaults);
+    connect(defaultsButton, &QPushButton::clicked, this, &CapsEditDlg::defaultSkipCaps);
+
+    if (oldSkipCapsString.isEmpty()) {
+        // Disable Reset button
+        on_skipCapsEdit_textChanged("");
+    }
+    else {
+        ui.skipCapsEdit->setText(oldSkipCapsString);
+    }
+}
+
+
+QString CapsEditDlg::skipCapsString() const
+{
+    return ui.skipCapsEdit->text();
+}
+
+void CapsEditDlg::defaultSkipCaps()
+{
+    ui.skipCapsEdit->setText("");
+}
+
+void CapsEditDlg::on_skipCapsEdit_textChanged(const QString& text)
+{
+    ui.buttonBox->button(QDialogButtonBox::RestoreDefaults)->setDisabled(text.isEmpty());
 }
 
 /**************************************************************************

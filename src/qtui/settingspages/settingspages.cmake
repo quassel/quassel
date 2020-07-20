@@ -36,6 +36,7 @@ set(SP_SOURCES
 
 set(SP_FORMS
     buffervieweditdlg.ui
+    capseditdlg.ui
     coreaccounteditdlg.ui
     createidentitydlg.ui
     identityeditwidget.ui
