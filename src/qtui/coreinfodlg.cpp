@@ -43,7 +43,7 @@ CoreInfoDlg::CoreInfoDlg(QWidget* parent)
     coreInfoResynchronized();
 
     // Warning icon
-    ui.coreUnsupportedIcon->setPixmap(icon::get("dialog-warning").pixmap(16));
+    ui.coreUnsupportedIcon->setPixmap(icon::get({"emblem-unavailable", "dialog-warning"}).pixmap(16));
 
     updateUptime();
     startTimer(1000);

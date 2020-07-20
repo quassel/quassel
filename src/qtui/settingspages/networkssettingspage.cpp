@@ -67,8 +67,9 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)
     disconnectedIcon = icon::get("network-disconnect");
 
     // Status icons
-    infoIcon = icon::get("dialog-information");
-    warningIcon = icon::get("dialog-warning");
+    successIcon = icon::get({"emblem-success", "dialog-information"});
+    unavailableIcon = icon::get({"emblem-unavailable", "dialog-warning"});
+    questionIcon = icon::get({"emblem-question", "dialog-question", "dialog-information"});
 
     foreach (int mib, QTextCodec::availableMibs()) {
         QByteArray codec = QTextCodec::codecForMib(mib)->name();
@@ -706,23 +707,23 @@ void NetworksSettingsPage::setSASLStatus(const CapSupportStatus saslStatus)
             // There's no capability negotiation or network doesn't exist.  Don't assume
             // anything.
             ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Could not check if supported by network")));
-            ui.saslStatusIcon->setPixmap(infoIcon.pixmap(16));
+            ui.saslStatusIcon->setPixmap(questionIcon.pixmap(16));
             break;
         case CapSupportStatus::Disconnected:
             // Disconnected from network, no way to check.
             ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Cannot check if supported when disconnected")));
-            ui.saslStatusIcon->setPixmap(infoIcon.pixmap(16));
+            ui.saslStatusIcon->setPixmap(questionIcon.pixmap(16));
             break;
         case CapSupportStatus::MaybeUnsupported:
             // The network doesn't advertise support for SASL PLAIN.  Here be dragons.
             ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Not currently supported by network")));
-            ui.saslStatusIcon->setPixmap(warningIcon.pixmap(16));
+            ui.saslStatusIcon->setPixmap(unavailableIcon.pixmap(16));
             break;
         case CapSupportStatus::MaybeSupported:
             // The network advertises support for SASL PLAIN.  Encourage using it!
             // Unfortunately we don't know for sure if it's desired or functional.
             ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Supported by network")));
-            ui.saslStatusIcon->setPixmap(infoIcon.pixmap(16));
+            ui.saslStatusIcon->setPixmap(successIcon.pixmap(16));
             break;
         }
     }

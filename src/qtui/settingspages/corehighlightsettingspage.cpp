@@ -79,7 +79,7 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget* parent)
     connect(Client::instance(), &Client::connected, this, &CoreHighlightSettingsPage::clientConnected);
 
     // Warning icon
-    ui.coreUnsupportedIcon->setPixmap(icon::get("dialog-warning").pixmap(16));
+    ui.coreUnsupportedIcon->setPixmap(icon::get({"emblem-unavailable", "dialog-warning"}).pixmap(16));
 
     // Set up client/monolithic remote highlights information
     // Local highlights are considered legacy
