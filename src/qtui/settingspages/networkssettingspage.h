@@ -27,6 +27,7 @@
 #include "network.h"
 #include "settingspage.h"
 
+#include "ui_capseditdlg.h"
 #include "ui_networkadddlg.h"
 #include "ui_networkeditdlg.h"
 #include "ui_networkssettingspage.h"
@@ -114,6 +115,16 @@ private slots:
      */
     void on_saslStatusDetails_clicked();
 
+    /**
+     * Event handler for Features status Details button
+     */
+    void on_enableCapsStatusDetails_clicked();
+
+    /**
+     * Event handler for Features Advanced edit button
+     */
+    void on_enableCapsAdvanced_clicked();
+
 private:
     /**
      * Status of capability support
@@ -137,7 +148,7 @@ private:
     QIcon connectedIcon, connectingIcon, disconnectedIcon;
 
     // Status icons
-    QIcon successIcon, unavailableIcon, questionIcon;
+    QIcon infoIcon, successIcon, unavailableIcon, questionIcon;
 
     CapSupportStatus _saslStatusSelected;  /// Status of SASL support for currently-selected network
 
@@ -227,6 +238,25 @@ private slots:
 
 private:
     Ui::ServerEditDlg ui;
+};
+
+class CapsEditDlg : public QDialog
+{
+    Q_OBJECT
+
+public:
+    CapsEditDlg(const QString& oldSkipCapsString, QWidget* parent = nullptr);
+
+    QString skipCapsString() const;
+
+private slots:
+    void defaultSkipCaps();
+    void on_skipCapsEdit_textChanged(const QString&);
+
+private:
+    Ui::CapsEditDlg ui;
+
+    QString oldSkipCapsString;
 };
 
 class SaveNetworksDlg : public QDialog
