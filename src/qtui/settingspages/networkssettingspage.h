@@ -137,7 +137,7 @@ private:
     QIcon connectedIcon, connectingIcon, disconnectedIcon;
 
     // Status icons
-    QIcon infoIcon, warningIcon;
+    QIcon successIcon, unavailableIcon, questionIcon;
 
     CapSupportStatus _saslStatusSelected;  /// Status of SASL support for currently-selected network
 

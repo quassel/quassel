@@ -81,7 +81,7 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget* parent)
     ui.highlightTable->horizontalHeader()->setSectionResizeMode(HighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 
     // Information icon
-    ui.localHighlightsIcon->setPixmap(icon::get("dialog-information").pixmap(16));
+    ui.localHighlightsIcon->setPixmap(icon::get({"emblem-information", "dialog-information"}).pixmap(16));
 
     connect(ui.add, &QAbstractButton::clicked, this, [this]() { addNewRow(); });
     connect(ui.remove, &QAbstractButton::clicked, this, &HighlightSettingsPage::removeSelectedRows);
