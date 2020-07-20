@@ -80,6 +80,13 @@ namespace IrcCap {
     const QString CHGHOST = "chghost";
 
     /**
+     * Server sending own messages back.
+     *
+     * https://ircv3.net/specs/extensions/echo-message-3.2.html
+     */
+    const QString ECHO_MESSAGE = "echo-message";
+
+    /**
      * Extended join information.
      *
      * http://ircv3.net/specs/extensions/extended-join-3.1.html
@@ -173,6 +180,7 @@ namespace IrcCap {
                                               AWAY_NOTIFY,
                                               CAP_NOTIFY,
                                               CHGHOST,
+                                              //ECHO_MESSAGE, // Postponed for message pending UI with batch + labeled-response
                                               EXTENDED_JOIN,
                                               INVITE_NOTIFY,
                                               MESSAGE_TAGS,
