@@ -799,6 +799,12 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo& bufferInfo, const QStr
 #endif
 }
 
+void CoreUserInputHandler::handleSetname(const BufferInfo& bufferInfo, const QString& msg)
+{
+    Q_UNUSED(bufferInfo)
+    emit putCmd("SETNAME", serverEncode(msg));
+}
+
 void CoreUserInputHandler::handleShowkey(const BufferInfo& bufferInfo, const QString& msg)
 {
     QString bufname = bufferInfo.bufferName().isNull() ? "" : bufferInfo.bufferName();

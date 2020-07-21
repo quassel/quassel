@@ -94,6 +94,13 @@ namespace IrcCap {
     const QString SASL = "sasl";
 
     /**
+     * Allows updating realname without reconnecting
+     *
+     * https://ircv3.net/specs/extensions/setname
+     */
+    const QString SETNAME = "setname";
+
+    /**
      * Userhost in names replies.
      *
      * http://ircv3.net/specs/extensions/userhost-in-names-3.2.html
@@ -147,6 +154,7 @@ namespace IrcCap {
                                               EXTENDED_JOIN,
                                               MULTI_PREFIX,
                                               SASL,
+                                              SETNAME,
                                               USERHOST_IN_NAMES,
                                               SERVER_TIME,
                                               Vendor::TWITCH_MEMBERSHIP,

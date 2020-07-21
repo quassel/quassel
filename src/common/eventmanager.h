@@ -110,6 +110,7 @@ public:
         IrcEventTagmsg,
         IrcEventTopic,
         IrcEventError,  /// ERROR message from server
+        IrcEventSetname,     ///< Updated realname information
         IrcEventWallops,
         IrcEventRawPrivmsg,  ///< Undecoded privmsg (still needs CTCP parsing)
         IrcEventRawNotice,   ///< Undecoded notice (still needs CTCP parsing)
