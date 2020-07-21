@@ -119,7 +119,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         qDebug() << "IRC net" << net->networkId() << "<<" << tags << prefix << cmd << params;
     }
 
-    if (tags.contains(IrcTags::SERVER_TIME)) {
+    if (net->capEnabled(IrcCap::SERVER_TIME) && tags.contains(IrcTags::SERVER_TIME)) {
         QDateTime serverTime = QDateTime::fromString(tags[IrcTags::SERVER_TIME], "yyyy-MM-ddThh:mm:ss.zzzZ");
         serverTime.setTimeSpec(Qt::UTC);
         if (serverTime.isValid()) {
