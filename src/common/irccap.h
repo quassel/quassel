@@ -49,6 +49,13 @@ namespace IrcCap {
     const uint ACCOUNT_NOTIFY_WHOX_NUM = 369;
 
     /**
+     * Send account information as a tag with all commands sent by a user.
+     *
+     * http://ircv3.net/specs/extensions/account-notify-3.1.html
+     */
+    const QString ACCOUNT_TAG = "account-tag";
+
+    /**
      * Away change notification.
      *
      * http://ircv3.net/specs/extensions/away-notify-3.1.html
@@ -155,6 +162,7 @@ namespace IrcCap {
      * List of capabilities currently implemented and requested during capability negotiation.
      */
     const QStringList knownCaps = QStringList{ACCOUNT_NOTIFY,
+                                              ACCOUNT_TAG,
                                               AWAY_NOTIFY,
                                               CAP_NOTIFY,
                                               CHGHOST,

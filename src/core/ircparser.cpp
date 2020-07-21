@@ -129,6 +129,26 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         }
     }
 
+    if (net->capEnabled(IrcCap::ACCOUNT_TAG) && tags.contains(IrcTags::ACCOUNT)) {
+        // Whenever account-tag is specified, update the relevant IrcUser if it exists
+        // Logged-out status is handled in specific commands (PRIVMSG, NOTICE, etc)
+        //
+        // Don't use "updateNickFromMask" here to ensure this only updates existing IrcUsers and
+        // won't create a new IrcUser.  This guards against an IRC server setting "account" tag in
+        // nonsensical places, e.g. for messages that are not user sent.
+        IrcUser* ircuser = net->ircUser(prefix);
+        if (ircuser) {
+            ircuser->setAccount(tags[IrcTags::ACCOUNT]);
+        }
+
+        // NOTE: if "account-tag" is enabled and no "account" tag is sent, the given user isn't
+        // logged in ONLY IF it is a user-initiated command.  Quassel follows a mixture of what
+        // other clients do here - only marking as logged out via PRIVMSG/NOTICE, but marking logged
+        // in via any message.
+        //
+        // See https://ircv3.net/specs/extensions/account-tag-3.2
+    }
+
     QList<Event*> events;
     EventManager::EventType type = EventManager::Invalid;
 
@@ -169,7 +189,24 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
         if (checkParamCount(cmd, params, 1)) {
             QString senderNick = nickFromMask(prefix);
-            net->updateNickFromMask(prefix);
+            // Fetch/create the relevant IrcUser, and store it for later updates
+            IrcUser* ircuser = net->updateNickFromMask(prefix);
+
+            // Handle account-tag
+            if (ircuser && net->capEnabled(IrcCap::ACCOUNT_TAG)) {
+                if (tags.contains(IrcTags::ACCOUNT)) {
+                    // Account tag available, set account.
+                    // This duplicates the generic account-tag handling in case a new IrcUser object
+                    // was just created.
+                    ircuser->setAccount(tags[IrcTags::ACCOUNT]);
+                }
+                else {
+                    // PRIVMSG is user sent; it's safe to assume the user has logged out.
+                    // "*" is used to represent logged-out.
+                    ircuser->setAccount("*");
+                }
+            }
+
             // Check if the sender is our own nick.  If so, treat message as if sent by ourself.
             // See http://ircv3.net/specs/extensions/echo-message-3.2.html
             // Cache the result to avoid multiple redundant comparisons
@@ -212,6 +249,9 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             // Cache the result to avoid multiple redundant comparisons
             bool isSelfMessage = net->isMyNick(nickFromMask(prefix));
 
+            // Only update from the prefix once during the loop
+            bool updatedFromPrefix = false;
+
             QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
@@ -248,7 +288,29 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                         if (!isSelfMessage) {
                             target = nickFromMask(prefix);
                         }
-                        net->updateNickFromMask(prefix);
+
+                        if (!updatedFromPrefix) {
+                            // Don't repeat this within the loop, the prefix doesn't change
+                            updatedFromPrefix = true;
+
+                            // Fetch/create the relevant IrcUser, and store it for later updates
+                            IrcUser* ircuser = net->updateNickFromMask(prefix);
+
+                            // Handle account-tag
+                            if (ircuser && net->capEnabled(IrcCap::ACCOUNT_TAG)) {
+                                if (tags.contains(IrcTags::ACCOUNT)) {
+                                    // Account tag available, set account.
+                                    // This duplicates the generic account-tag handling in case a
+                                    // new IrcUser object was just created.
+                                    ircuser->setAccount(tags[IrcTags::ACCOUNT]);
+                                }
+                                else {
+                                    // NOTICE is user sent; it's safe to assume the user has
+                                    // logged out.  "*" is used to represent logged-out.
+                                    ircuser->setAccount("*");
+                                }
+                            }
+                        }
                     }
                 }
 
