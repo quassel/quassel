@@ -87,6 +87,13 @@ namespace IrcCap {
     const QString EXTENDED_JOIN = "extended-join";
 
     /**
+     * Standardized invite notifications.
+     *
+     * https://ircv3.net/specs/extensions/invite-notify-3.2
+     */
+    const QString INVITE_NOTIFY = "invite-notify";
+
+    /**
      * Additional metadata on a per-message basis
      *
      * https://ircv3.net/specs/extensions/message-tags
@@ -167,6 +174,7 @@ namespace IrcCap {
                                               CAP_NOTIFY,
                                               CHGHOST,
                                               EXTENDED_JOIN,
+                                              INVITE_NOTIFY,
                                               MESSAGE_TAGS,
                                               MULTI_PREFIX,
                                               SASL,
