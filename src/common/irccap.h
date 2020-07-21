@@ -80,6 +80,13 @@ namespace IrcCap {
     const QString EXTENDED_JOIN = "extended-join";
 
     /**
+     * Additional metadata on a per-message basis
+     *
+     * https://ircv3.net/specs/extensions/message-tags
+     */
+    const QString MESSAGE_TAGS = "message-tags";
+
+    /**
      * Multiple mode prefixes in MODE and WHO replies.
      *
      * http://ircv3.net/specs/extensions/multi-prefix-3.1.html
@@ -152,6 +159,7 @@ namespace IrcCap {
                                               CAP_NOTIFY,
                                               CHGHOST,
                                               EXTENDED_JOIN,
+                                              MESSAGE_TAGS,
                                               MULTI_PREFIX,
                                               SASL,
                                               SETNAME,
