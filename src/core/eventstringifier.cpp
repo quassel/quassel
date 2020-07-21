@@ -251,7 +251,18 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric* e)
 
 void EventStringifier::processIrcEventInvite(IrcEvent* e)
 {
-    displayMsg(e, Message::Invite, tr("%1 invited you to channel %2").arg(e->nick(), e->params().at(1)));
+    if (!checkParamCount(e, 2))
+        return;
+
+    // TODO: provide a nicer UI for invite notifications
+    QString target = e->params().at(0);
+    QString channel = e->params().at(1);
+    if (e->network()->isMyNick(target)) {
+        displayMsg(e, Message::Invite, tr("%1 invited you to channel %2").arg(e->nick(), channel));
+    }
+    else {
+        displayMsg(e, Message::Invite, tr("%1 invited %2 to channel %3").arg(e->nick(), target, channel));
+    }
 }
 
 void EventStringifier::processIrcEventJoin(IrcEvent* e)
