@@ -789,6 +789,25 @@ void CoreSessionEventProcessor::processIrcEventError(IrcEvent* e)
     }
 }
 
+
+// IRCv3 SETNAME - ":nick!user@host SETNAME :realname goes here"
+// Example:  :batman!~batman@bat.cave SETNAME :Bruce Wayne <bruce@wayne.enterprises>
+//
+// See https://ircv3.net/specs/extensions/setname
+void CoreSessionEventProcessor::processIrcEventSetname(IrcEvent* e)
+{
+    if (checkParamCount(e, 1)) {
+        IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
+        if (!ircuser) {
+            qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
+            return;
+        }
+
+        QString newname = e->params().at(0);
+        ircuser->setRealName(newname);
+    }
+}
+
 #ifdef HAVE_QCA2
 void CoreSessionEventProcessor::processKeyEvent(KeyEvent* e)
 {
