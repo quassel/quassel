@@ -78,7 +78,7 @@ p, li { white-space: pre-wrap; }
              <bool>true</bool>
             </property>
             <property name="textInteractionFlags">
-             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+             <set>Qt::TextBrowserInteraction</set>
             </property>
            </widget>
           </item>

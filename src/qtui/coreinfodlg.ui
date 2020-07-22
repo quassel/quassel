@@ -28,6 +28,12 @@
        <property name="text">
         <string notr="true">&lt;core version&gt;</string>
        </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::TextBrowserInteraction</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="0">

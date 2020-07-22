@@ -43,6 +43,12 @@
           <property name="text">
            <string notr="true">v0.13-pre (0.12.0+372 git-12df418)</string>
           </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::TextBrowserInteraction</set>
+          </property>
          </widget>
         </item>
         <item row="1" column="0">
