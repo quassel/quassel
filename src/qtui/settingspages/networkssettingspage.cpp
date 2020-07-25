@@ -372,11 +372,15 @@ void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
         if (net->connectionState() != Network::Disconnected) {
             // Network exists and is connected, check available capabilities...
             // [SASL]
-            if (net->saslMaybeSupports(IrcCap::SaslMech::PLAIN)) {
-                setSASLStatus(CapSupportStatus::MaybeSupported);
+            // Quassel switches between SASL PLAIN and SASL EXTERNAL based on the existence of an
+            // SSL certificate on the identity - check EXTERNAL if CertID exists, PLAIN if not
+            bool usingSASLExternal = displayedNetworkHasCertId();
+            if ((usingSASLExternal && net->saslMaybeSupports(IrcCap::SaslMech::EXTERNAL))
+                    || (!usingSASLExternal && net->saslMaybeSupports(IrcCap::SaslMech::PLAIN))) {
+                setCapSASLStatus(CapSupportStatus::MaybeSupported, usingSASLExternal);
             }
             else {
-                setSASLStatus(CapSupportStatus::MaybeUnsupported);
+                setCapSASLStatus(CapSupportStatus::MaybeUnsupported, usingSASLExternal);
             }
 
             // Add additional capability-dependent interface updates here
@@ -384,7 +388,7 @@ void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
         else {
             // Network is disconnected
             // [SASL]
-            setSASLStatus(CapSupportStatus::Disconnected);
+            setCapSASLStatus(CapSupportStatus::Disconnected);
 
             // Add additional capability-dependent interface updates here
         }
@@ -393,7 +397,7 @@ void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
         // Capability negotiation is not supported and/or network doesn't exist.
         // Don't assume anything and reset all capability-dependent interface elements to neutral.
         // [SASL]
-        setSASLStatus(CapSupportStatus::Unknown);
+        setCapSASLStatus(CapSupportStatus::Unknown);
 
         // Add additional capability-dependent interface updates here
     }
@@ -730,11 +734,12 @@ void NetworksSettingsPage::clientNetworkCapsUpdated()
     }
 }
 
-void NetworksSettingsPage::setSASLStatus(const CapSupportStatus saslStatus)
+void NetworksSettingsPage::setCapSASLStatus(const CapSupportStatus saslStatus, bool usingSASLExternal)
 {
-    if (_saslStatusSelected != saslStatus) {
+    if (_capSaslStatusSelected != saslStatus || _capSaslStatusUsingExternal != usingSASLExternal) {
         // Update the cached copy of SASL status used with the Details dialog
-        _saslStatusSelected = saslStatus;
+        _capSaslStatusSelected = saslStatus;
+        _capSaslStatusUsingExternal = usingSASLExternal;
 
         // Update the user interface
         switch (saslStatus) {
@@ -750,14 +755,23 @@ void NetworksSettingsPage::setSASLStatus(const CapSupportStatus saslStatus)
             ui.saslStatusIcon->setPixmap(questionIcon.pixmap(16));
             break;
         case CapSupportStatus::MaybeUnsupported:
-            // The network doesn't advertise support for SASL PLAIN.  Here be dragons.
+            // The network doesn't advertise support for SASL PLAIN/EXTERNAL.  Here be dragons.
             ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Not currently supported by network")));
             ui.saslStatusIcon->setPixmap(unavailableIcon.pixmap(16));
             break;
         case CapSupportStatus::MaybeSupported:
-            // The network advertises support for SASL PLAIN.  Encourage using it!
+            // The network advertises support for SASL PLAIN/EXTERNAL.  Encourage using it!
             // Unfortunately we don't know for sure if it's desired or functional.
-            ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Supported by network")));
+            if (usingSASLExternal) {
+                // SASL EXTERNAL is used
+                // With SASL v3.1, it's not possible to reliably tell if SASL EXTERNAL is supported,
+                // or just SASL PLAIN.  Use less assertive phrasing.
+                ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("May be supported by network")));
+            }
+            else {
+                // SASL PLAIN is used
+                ui.saslStatusLabel->setText(QString("<i>%1</i>").arg(tr("Supported by network")));
+            }
             ui.saslStatusIcon->setPixmap(successIcon.pixmap(16));
             break;
         }
@@ -766,24 +780,28 @@ void NetworksSettingsPage::setSASLStatus(const CapSupportStatus saslStatus)
 
 void NetworksSettingsPage::sslUpdated()
 {
-    if (_cid && !_cid->sslKey().isNull()) {
-        ui.saslContents->setDisabled(true);
+    if (displayedNetworkHasCertId()) {
+        ui.saslPlainContents->setDisabled(true);
         ui.saslExtInfo->setHidden(false);
     }
     else {
-        ui.saslContents->setDisabled(false);
+        ui.saslPlainContents->setDisabled(false);
         // Directly re-enabling causes the widgets to ignore the parent "Use SASL Authentication"
         // state to indicate whether or not it's disabled.  To workaround this, keep track of
         // whether or not "Use SASL Authentication" is enabled, then quickly uncheck/recheck the
         // group box.
         if (!ui.sasl->isChecked()) {
-            // SASL is not enabled, uncheck/recheck the group box to re-disable saslContents.
-            // Leaving saslContents disabled doesn't work as that prevents it from re-enabling if
+            // SASL is not enabled, uncheck/recheck the group box to re-disable saslPlainContents.
+            // Leaving saslPlainContents disabled doesn't work as that prevents it from re-enabling if
             // sasl is later checked.
             ui.sasl->setChecked(true);
             ui.sasl->setChecked(false);
         }
         ui.saslExtInfo->setHidden(true);
+    }
+    // Update whether SASL PLAIN or SASL EXTERNAL is used to detect SASL status
+    if (currentId != 0) {
+        setNetworkCapStates(currentId);
     }
 }
 
@@ -968,7 +986,7 @@ void NetworksSettingsPage::on_saslStatusDetails_clicked()
         bool useWarningIcon = false;
 
         // Determine which explanation to show
-        switch (_saslStatusSelected) {
+        switch (_capSaslStatusSelected) {
         case CapSupportStatus::Unknown:
             saslStatusHeader = tr("Could not check if SASL supported by network");
             saslStatusExplanation = tr("Quassel could not check if \"%1\" supports SASL.  This may "
@@ -984,17 +1002,41 @@ void NetworksSettingsPage::on_saslStatusDetails_clicked()
                                         .arg(netName);
             break;
         case CapSupportStatus::MaybeUnsupported:
-            saslStatusHeader = tr("SASL not currently supported by network");
-            saslStatusExplanation = tr("The network \"%1\" does not currently support SASL.  "
-                                       "However, support might be added later on.")
-                                        .arg(netName);
+            if (displayedNetworkHasCertId()) {
+                // SASL EXTERNAL is used
+                saslStatusHeader = tr("SASL EXTERNAL not currently supported by network");
+                saslStatusExplanation = tr("The network \"%1\" does not currently support SASL "
+                                           "EXTERNAL for SSL certificate authentication.  However, "
+                                           "support might be added later on.")
+                                           .arg(netName);
+            }
+            else {
+                // SASL PLAIN is used
+                saslStatusHeader = tr("SASL not currently supported by network");
+                saslStatusExplanation = tr("The network \"%1\" does not currently support SASL.  "
+                                           "However, support might be added later on.")
+                                           .arg(netName);
+            }
             useWarningIcon = true;
             break;
         case CapSupportStatus::MaybeSupported:
-            saslStatusHeader = tr("SASL supported by network");
-            saslStatusExplanation = tr("The network \"%1\" supports SASL.  In most cases, you "
-                                       "should use SASL instead of NickServ identification.")
-                                        .arg(netName);
+            if (displayedNetworkHasCertId()) {
+                // SASL EXTERNAL is used
+                // With SASL v3.1, it's not possible to reliably tell if SASL EXTERNAL is supported,
+                // or just SASL PLAIN.  Caution about this in the details dialog.
+                saslStatusHeader = tr("SASL EXTERNAL may be supported by network");
+                saslStatusExplanation = tr("The network \"%1\" may support SASL EXTERNAL for SSL "
+                                           "certificate authentication.  In most cases, you should "
+                                           "use SASL instead of NickServ identification.")
+                                            .arg(netName);
+            }
+            else {
+                // SASL PLAIN is used
+                saslStatusHeader = tr("SASL supported by network");
+                saslStatusExplanation = tr("The network \"%1\" supports SASL.  In most cases, you "
+                                           "should use SASL instead of NickServ identification.")
+                                            .arg(netName);
+            }
             break;
         }
 
@@ -1093,6 +1135,12 @@ IdentityId NetworksSettingsPage::defaultIdentity() const
             defaultId = id;
     }
     return defaultId;
+}
+
+bool NetworksSettingsPage::displayedNetworkHasCertId() const
+{
+    // Check if the CertIdentity exists and that it has a non-null SSL key set
+    return (_cid && !_cid->sslKey().isNull());
 }
 
 /**************************************************************************

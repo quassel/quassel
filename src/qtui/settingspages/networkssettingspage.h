@@ -150,7 +150,8 @@ private:
     // Status icons
     QIcon infoIcon, successIcon, unavailableIcon, questionIcon;
 
-    CapSupportStatus _saslStatusSelected;  /// Status of SASL support for currently-selected network
+    CapSupportStatus _capSaslStatusSelected;  ///< Status of SASL support for selected network
+    bool _capSaslStatusUsingExternal{false};  ///< Whether SASL support status is for SASL EXTERNAL
 
     void reset();
     bool testHasChanged();
@@ -161,11 +162,19 @@ private:
     IdentityId defaultIdentity() const;
 
     /**
+     * Get whether or not the displayed network's identity has SSL certs associated with it
+     *
+     * @return True if the currently displayed network has SSL certs set, otherwise false
+     */
+    bool displayedNetworkHasCertId() const;
+
+    /**
      * Update the SASL settings interface according to the given SASL state
      *
-     * @param[in] saslStatus Current status of SASL support.
+     * @param saslStatus         Current status of SASL support.
+     * @param usingSASLExternal  If true, SASL support status is for SASL EXTERNAL, else SASL PLAIN
      */
-    void setSASLStatus(const CapSupportStatus saslStatus);
+    void setCapSASLStatus(const CapSupportStatus saslStatus, bool usingSASLExternal = false);
 };
 
 class NetworkAddDlg : public QDialog
