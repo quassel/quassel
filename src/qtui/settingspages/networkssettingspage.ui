@@ -953,6 +953,24 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
               <number>0</number>
              </property>
              <item>
+              <widget class="QCheckBox" name="enableCapServerTime">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>&lt;p&gt;Let the IRC network control the timestamps for messages, such as when viewing messages from the past.&lt;/p&gt;
+&lt;p&gt;This is useful when connecting to bouncers, IRC bridges, or networks that send messages you've missed when reconnecting.&lt;/p&gt;
+&lt;p&gt;&lt;i&gt;Toggles the IRCv3 'server-time' capability.&lt;/i&gt;&lt;/p&gt;</string>
+               </property>
+               <property name="text">
+                <string>Use network timestamps for messages</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <layout class="QHBoxLayout" name="horizontalLayout_9">
                <item>
                 <widget class="QPushButton" name="enableCapsAdvanced">
@@ -1170,6 +1188,7 @@ This setting defines the encoding for messages that are not UTF-8.</string>
   <tabstop>autoIdentifyService</tabstop>
   <tabstop>autoIdentifyPassword</tabstop>
   <tabstop>enableCapsStatusDetails</tabstop>
+  <tabstop>enableCapServerTime</tabstop>
   <tabstop>enableCapsAdvanced</tabstop>
   <tabstop>useCustomEncodings</tabstop>
   <tabstop>sendEncoding</tabstop>

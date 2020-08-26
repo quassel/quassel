@@ -91,7 +91,8 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)
                                     ui.sendEncoding,         ui.recvEncoding,         ui.serverEncoding,
                                     ui.autoReconnect,        ui.reconnectInterval,    ui.reconnectRetries,
                                     ui.unlimitedRetries,     ui.rejoinOnReconnect,    ui.useCustomMessageRate,
-                                    ui.messageRateBurstSize, ui.messageRateDelay,     ui.unlimitedMessageRate},
+                                    ui.messageRateBurstSize, ui.messageRateDelay,     ui.unlimitedMessageRate,
+                                    ui.enableCapServerTime},
                                    this,
                                    &NetworksSettingsPage::widgetHasChanged);
 
@@ -641,6 +642,8 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         ui.messageRateBurstSize->setValue(info.messageRateBurstSize);
         // Convert milliseconds (integer) into seconds (double)
         ui.messageRateDelay->setValue(info.messageRateDelay / 1000.0f);
+        // Skipped IRCv3 capabilities
+        ui.enableCapServerTime->setChecked(!info.skipCaps.contains(IrcCap::SERVER_TIME));
     }
     else {
         // just clear widgets
@@ -693,6 +696,14 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo& info)
     // Convert seconds (double) into milliseconds (integer)
     info.messageRateDelay = static_cast<quint32>((ui.messageRateDelay->value() * 1000));
     info.unlimitedMessageRate = ui.unlimitedMessageRate->isChecked();
+    // Skipped IRCv3 capabilities
+    if (ui.enableCapServerTime->isChecked()) {
+        // Capability enabled, remove it from the skip list
+        info.skipCaps.removeAll(IrcCap::SERVER_TIME);
+    } else if (!info.skipCaps.contains(IrcCap::SERVER_TIME)) {
+        // Capability disabled and not in the skip list, add it
+        info.skipCaps.append(IrcCap::SERVER_TIME);
+    }
 }
 
 void NetworksSettingsPage::clientNetworkCapsUpdated()
