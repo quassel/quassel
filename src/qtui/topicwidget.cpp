@@ -152,13 +152,17 @@ void TopicWidget::setTopic(const QModelIndex& index)
         }
     }
 
-    _topic = sanitizeTopic(newtopic);
-    _readonly = readonly;
+    QString sanitizedNewTopic = sanitizeTopic(newtopic);
+    if (readonly != _readonly || sanitizedNewTopic != _topic)
+    {
+        _topic = sanitizedNewTopic;
+        _readonly = readonly;
 
-    ui.topicEditButton->setVisible(!_readonly);
-    ui.topicLabel->setText(_topic);
-    ui.topicLineEdit->setPlainText(_topic);
-    switchPlain();
+        ui.topicEditButton->setVisible(!_readonly);
+        ui.topicLabel->setText(_topic);
+        ui.topicLineEdit->setPlainText(_topic);
+        switchPlain();
+    }
 }
 
 void TopicWidget::setReadOnly(const bool& readonly)
