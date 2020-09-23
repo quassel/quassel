@@ -573,12 +573,21 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         // this is only needed when the core supports SASL EXTERNAL
         if (Client::isCoreFeatureEnabled(Quassel::Feature::SaslExternal)) {
             if (_cid) {
+                // Clean up existing CertIdentity
                 disconnect(_cid, &CertIdentity::sslSettingsUpdated, this, &NetworksSettingsPage::sslUpdated);
                 delete _cid;
+                _cid = nullptr;
             }
-            _cid = new CertIdentity(*Client::identity(info.identity), this);
-            _cid->enableEditSsl(true);
-            connect(_cid, &CertIdentity::sslSettingsUpdated, this, &NetworksSettingsPage::sslUpdated);
+            auto *identity = Client::identity(info.identity);
+            if (identity) {
+                // Connect new CertIdentity
+                _cid = new CertIdentity(*identity, this);
+                _cid->enableEditSsl(true);
+                connect(_cid, &CertIdentity::sslSettingsUpdated, this, &NetworksSettingsPage::sslUpdated);
+            }
+            else {
+                qWarning() << "NetworksSettingsPage::displayNetwork can't find Identity for IdentityId:" << info.identity;
+            }
         }
 
         ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
