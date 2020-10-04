@@ -86,7 +86,7 @@ BufferWidget::BufferWidget(QWidget* parent)
     s.initAndNotify("AutoMarkerLineOnLostFocus", this, &BufferWidget::setAutoMarkerLineOnLostFocus, true);
 
     BacklogSettings backlogSettings;
-    backlogSettings.initAndNotify("EnsureBacklogOnBufferShow", this, &BufferWidget::setEnsureBacklogOnBufferShow);
+    backlogSettings.initAndNotify("EnsureBacklogOnBufferShow", this, &BufferWidget::setEnsureBacklogOnBufferShow, true);
 }
 
 BufferWidget::~BufferWidget()
