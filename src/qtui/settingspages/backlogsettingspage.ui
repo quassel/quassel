@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>446</width>
-    <height>325</height>
+    <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,6 +61,22 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="ensureBacklogOnBufferShow">
+     <property name="toolTip">
+      <string>When switching to a chat, more backlog will be fetched if no messages are shown yet or the scrollbar isn't visible.  Useful when not fetching any initial backlog.</string>
+     </property>
+     <property name="text">
+      <string>Fetch backlog if needed when switching chats</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string notr="true">EnsureBacklogOnBufferShow</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -78,6 +94,9 @@
      </item>
      <item>
       <widget class="QComboBox" name="requesterType">
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
        <item>
         <property name="text">
          <string>Fixed amount per chat</string>
@@ -86,6 +105,11 @@
        <item>
         <property name="text">
          <string>Unread messages per chat</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Only fetch when needed</string>
         </property>
        </item>
        <item>
@@ -113,7 +137,7 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -310,6 +334,91 @@ You can also choose to fetch additional older chatlines to provide a better cont
           <size>
            <width>20</width>
            <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_3">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>&lt;p&gt;On modern cores (v0.13.0 or newer), no backlog will be fetched.  The core keeps track of chat activity automatically.&lt;br/&gt;
+&lt;i&gt;Note: Chat Monitor won't show past messages.&lt;/i&gt;
+&lt;/p&gt;
+&lt;p&gt;On older cores, this requester fetches a fixed amount of lines for each chat window from the backlog.&lt;/p&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="toolTip">
+            <string>Amount of messages per buffer that are requested after the core connection has been established.</string>
+           </property>
+           <property name="text">
+            <string>For legacy cores, initial backlog amount:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="asNeededLegacyBacklogAmount">
+           <property name="specialValueText">
+            <string/>
+           </property>
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>99999</number>
+           </property>
+           <property name="singleStep">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>500</number>
+           </property>
+           <property name="settingsKey" stdset="0">
+            <string notr="true">AsNeededLegacyBacklogAmount</string>
+           </property>
+           <property name="defaultValue" stdset="0">
+            <number>500</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>263</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>47</height>
           </size>
          </property>
         </spacer>

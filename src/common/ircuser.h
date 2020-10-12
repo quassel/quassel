@@ -131,6 +131,9 @@ public:
         _awayChanged = false;
     }
 
+    void partChannelInternal(IrcChannel* channel, bool skip_sync = false);
+    void quitInternal(bool skip_sync = false);
+
 public slots:
     void setUser(const QString& user);
     void setHost(const QString& host);
@@ -166,9 +169,9 @@ public slots:
      */
     void joinChannel(IrcChannel* channel, bool skip_channel_join = false);
     void joinChannel(const QString& channelname);
-    void partChannel(IrcChannel* channel, bool skip_sync = false);
+    void partChannel(IrcChannel* channel);
     void partChannel(const QString& channelname);
-    void quit(bool skip_sync = false);
+    void quit();
 
     void addUserModes(const QString& modes);
     void removeUserModes(const QString& modes);

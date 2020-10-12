@@ -24,17 +24,14 @@
 
 #include "identity.h"
 
-#ifdef HAVE_SSL
-#    include <QSslCertificate>
-#    include <QSslKey>
-#endif  // HAVE_SSL
+#include <QSslCertificate>
+#include <QSslKey>
 
 class SignalProxy;
 
 // ========================================
 //  CoreCertManager
 // ========================================
-#ifdef HAVE_SSL
 class CoreIdentity;
 class CORE_EXPORT CoreCertManager : public CertManager
 {
@@ -43,22 +40,18 @@ class CORE_EXPORT CoreCertManager : public CertManager
 public:
     CoreCertManager(CoreIdentity* identity);
 
-#    ifdef HAVE_SSL
     const QSslKey& sslKey() const override;
     const QSslCertificate& sslCert() const override;
 
 public slots:
     void setSslKey(const QByteArray& encoded) override;
     void setSslCert(const QByteArray& encoded) override;
-#    endif
 
     void setId(IdentityId id);
 
 private:
     CoreIdentity* _identity{nullptr};
 };
-
-#endif  // HAVE_SSL
 
 // =========================================
 //  CoreIdentity
@@ -74,25 +67,20 @@ public:
 
     void synchronize(SignalProxy* proxy);
 
-#ifdef HAVE_SSL
     inline const QSslKey& sslKey() const { return _sslKey; }
     inline void setSslKey(const QSslKey& key) { _sslKey = key; }
     void setSslKey(const QByteArray& encoded);
     inline const QSslCertificate& sslCert() const { return _sslCert; }
     inline void setSslCert(const QSslCertificate& cert) { _sslCert = cert; }
     void setSslCert(const QByteArray& encoded);
-#endif /* HAVE_SSL */
 
 private:
-#ifdef HAVE_SSL
     QSslKey _sslKey;
     QSslCertificate _sslCert;
 
     CoreCertManager _certManager;
-#endif
 };
 
-#ifdef HAVE_SSL
 inline const QSslKey& CoreCertManager::sslKey() const
 {
     return _identity->sslKey();
@@ -102,5 +90,3 @@ inline const QSslCertificate& CoreCertManager::sslCert() const
 {
     return _identity->sslCert();
 }
-
-#endif

@@ -75,12 +75,10 @@ IdentityEditWidget::IdentityEditWidget(QWidget* parent)
 
     ui.detachAwayEnabled->setVisible(!Client::internalCore());
 
-#ifdef HAVE_SSL
     ui.sslKeyGroupBox->setAcceptDrops(true);
     ui.sslKeyGroupBox->installEventFilter(this);
     ui.sslCertGroupBox->setAcceptDrops(true);
     ui.sslCertGroupBox->installEventFilter(this);
-#endif
 
     if (Client::isCoreFeatureEnabled(Quassel::Feature::AwayFormatTimestamp)) {
         // Core allows formatting %%timestamp%% messages in away strings.  Update tooltips.
@@ -172,10 +170,8 @@ void IdentityEditWidget::displayIdentity(CertIdentity* id, CertIdentity* saveId)
     ui.kickReason->setText(id->kickReason());
     ui.partReason->setText(id->partReason());
     ui.quitReason->setText(id->quitReason());
-#ifdef HAVE_SSL
     showKeyState(id->sslKey());
     showCertState(id->sslCert());
-#endif
 }
 
 void IdentityEditWidget::saveToIdentity(CertIdentity* id)
@@ -202,11 +198,9 @@ void IdentityEditWidget::saveToIdentity(CertIdentity* id)
     id->setKickReason(ui.kickReason->text().remove(linebreaks));
     id->setPartReason(ui.partReason->text().remove(linebreaks));
     id->setQuitReason(ui.quitReason->text().remove(linebreaks));
-#ifdef HAVE_SSL
     id->setSslKey(
         QSslKey(ui.keyTypeLabel->property("sslKey").toByteArray(), (QSsl::KeyAlgorithm)(ui.keyTypeLabel->property("sslKeyType").toInt())));
     id->setSslCert(QSslCertificate(ui.certOrgLabel->property("sslCert").toByteArray()));
-#endif
 }
 
 void IdentityEditWidget::on_addNick_clicked()
@@ -304,7 +298,6 @@ void IdentityEditWidget::setSslState(SslState state)
     }
 }
 
-#ifdef HAVE_SSL
 bool IdentityEditWidget::eventFilter(QObject* watched, QEvent* event)
 {
     bool isCert = (watched == ui.sslCertGroupBox);
@@ -464,5 +457,3 @@ void IdentityEditWidget::showCertState(const QSslCertificate& cert)
     }
     ui.certOrgLabel->setProperty("sslCert", cert.toPem());
 }
-
-#endif  // HAVE_SSL

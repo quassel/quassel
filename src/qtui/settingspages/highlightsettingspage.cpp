@@ -31,9 +31,7 @@
 #include "uisettings.h"
 
 HighlightSettingsPage::HighlightSettingsPage(QWidget* parent)
-    : SettingsPage(tr("Interface"),
-                   // In Monolithic mode, local highlights are replaced by remote highlights
-                   Quassel::runMode() == Quassel::Monolithic ? tr("Legacy Highlights") : tr("Local Highlights"),
+    : SettingsPage(tr("Interface"), tr("Legacy Highlights"),
                    parent)
 {
     ui.setupUi(this);
@@ -85,17 +83,6 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget* parent)
     // Information icon
     ui.localHighlightsIcon->setPixmap(icon::get("dialog-information").pixmap(16));
 
-    // Set up client/monolithic local highlights information
-    if (Quassel::runMode() == Quassel::Monolithic) {
-        // We're running in Monolithic mode, core/client version in total sync.  Discourage the use
-        // of local (legacy) highlights as it's identical to setting remote highlights.
-        ui.localHighlightsLabel->setText(tr("Legacy Highlights are replaced by Highlights"));
-    }
-    else {
-        // We're running in client/split mode, allow for splitting the details.
-        ui.localHighlightsLabel->setText(tr("Local Highlights apply to this device only"));
-    }
-
     connect(ui.add, &QAbstractButton::clicked, this, [this]() { addNewRow(); });
     connect(ui.remove, &QAbstractButton::clicked, this, &HighlightSettingsPage::removeSelectedRows);
     // TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
@@ -117,7 +104,7 @@ bool HighlightSettingsPage::hasDefaults() const
 
 void HighlightSettingsPage::defaults()
 {
-    ui.highlightCurrentNick->setChecked(true);
+    ui.highlightNoNick->setChecked(true);
     ui.nicksCaseSensitive->setChecked(false);
     emptyTable();
 
@@ -265,34 +252,16 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem* item)
 
 void HighlightSettingsPage::on_localHighlightsDetails_clicked()
 {
-    // Show information specific to client/monolithic differences
-    if (Quassel::runMode() == Quassel::Monolithic) {
-        // We're running in Monolithic mode, core/client version in total sync.  Discourage the use
-        // of local (legacy) highlights as it's identical to setting remote highlights.
-        QMessageBox::information(this,
-                                 tr("Legacy Highlights vs. Highlights"),
-                                 QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>")
-                                     .arg(tr("Legacy Highlights are replaced by Highlights"),
-                                          tr("These highlights will keep working for now, but you should move to "
-                                             "the improved highlight rules when you can."),
-                                          tr("Configure the new style of highlights in "
-                                             "<i>%1</i>.")
-                                              .arg(tr("Highlights"))));
-    }
-    else {
-        // We're running in client/split mode, allow for splitting the details.
-        QMessageBox::information(this,
-                                 tr("Local Highlights vs. Remote Highlights"),
-                                 QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>")
-                                     .arg(tr("Local Highlights apply to this device only"),
-                                          tr("Highlights configured on this page only apply to your current "
-                                             "device."),
-                                          tr("Configure highlights for all of your devices in "
-                                             "<i>%1</i>.")
-                                              .arg(tr("Remote Highlights").replace(" ", "&nbsp;"))));
-        // Re-use translations of "Remote Highlights" as this is a word-for-word reference, forcing
-        // all spaces to be non-breaking
-    }
+    // Discourage the use of local (legacy) highlights.  When not running in Monolithic mode, they
+    // need to be kept around for pre-0.13 cores.
+    QMessageBox::information(this,
+                             tr("Legacy Highlights vs. Highlights"),
+                             QString("<p><b>%1</b></p></br><p>%2</p></br><p>%3</p>")
+                             .arg(tr("Legacy Highlights are replaced by Highlights"),
+                                  tr("These highlights will keep working for now, but you should move to "
+                                     "the improved highlight rules when you can."),
+                                  tr("Configure the new style of highlights in <i>%1</i>.")
+                                  .arg(tr("Highlights"))));
 }
 
 void HighlightSettingsPage::load()

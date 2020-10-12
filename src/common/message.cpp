@@ -71,7 +71,6 @@ QDataStream& operator<<(QDataStream& out, const Message& msg)
     Q_ASSERT(SignalProxy::current());
     Q_ASSERT(SignalProxy::current()->targetPeer());
 
-    // We do not serialize the sender prefixes until we have a new protocol or client-features implemented
     out << msg.msgId();
 
     if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {

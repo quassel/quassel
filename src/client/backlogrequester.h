@@ -39,6 +39,7 @@ public:
         InvalidRequester = 0,
         PerBufferFixed,
         PerBufferUnread,
+        AsNeeded,              ///< Only request backlog on cores without Feature::BufferActivitySync
         GlobalUnread
     };
 
@@ -113,4 +114,21 @@ public:
 private:
     int _limit;
     int _additional;
+};
+
+// ========================================
+//  AS NEEDED BACKLOG REQUESTER
+// ========================================
+/**
+ * Backlog requester that only fetches initial backlog when the core doesn't support buffer activity
+ * tracking
+ */
+class AsNeededBacklogRequester : public BacklogRequester
+{
+public:
+    AsNeededBacklogRequester(ClientBacklogManager* backlogManager);
+    void requestBacklog(const BufferIdList& bufferIds) override;
+
+private:
+    int _legacyBacklogCount;
 };

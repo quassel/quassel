@@ -291,17 +291,9 @@ void IrcUser::joinChannel(const QString& channelname)
     joinChannel(network()->newIrcChannel(channelname));
 }
 
-void IrcUser::partChannel(IrcChannel* channel, bool skip_sync)
+void IrcUser::partChannel(IrcChannel* channel)
 {
-    if (_channels.contains(channel)) {
-        _channels.remove(channel);
-        disconnect(channel, nullptr, this, nullptr);
-        channel->part(this);
-        QString channelName = channel->name();
-        if (!skip_sync) SYNC_OTHER(partChannel, ARG(channelName))
-        if (_channels.isEmpty() && !network()->isMe(this))
-            quit(skip_sync);
-    }
+    partChannelInternal(channel, false);
 }
 
 void IrcUser::partChannel(const QString& channelname)
@@ -315,7 +307,25 @@ void IrcUser::partChannel(const QString& channelname)
     }
 }
 
-void IrcUser::quit(bool skip_sync)
+void IrcUser::partChannelInternal(IrcChannel* channel, bool skip_sync)
+{
+    if (_channels.contains(channel)) {
+        _channels.remove(channel);
+        disconnect(channel, nullptr, this, nullptr);
+        channel->part(this);
+        QString channelName = channel->name();
+        if (!skip_sync) SYNC_OTHER(partChannel, ARG(channelName))
+        if (_channels.isEmpty() && !network()->isMe(this))
+            quitInternal(skip_sync);
+    }
+}
+
+void IrcUser::quit()
+{
+    quitInternal(false);
+}
+
+void IrcUser::quitInternal(bool skip_sync)
 {
     QList<IrcChannel*> channels = _channels.values();
     _channels.clear();
@@ -324,7 +334,7 @@ void IrcUser::quit(bool skip_sync)
         channel->part(this);
     }
     network()->removeIrcUser(this);
-    if (!skip_sync) SYNC(NO_ARG)
+    if (!skip_sync) SYNC_OTHER(quit, NO_ARG)
     emit quited();
 }
 

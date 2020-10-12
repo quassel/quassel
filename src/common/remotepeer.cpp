@@ -23,13 +23,8 @@
 #include <QtEndian>
 
 #include <QHostAddress>
+#include <QSslSocket>
 #include <QTimer>
-
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#else
-#    include <QTcpSocket>
-#endif
 
 #include "proxyline.h"
 #include "remotepeer.h"
@@ -57,12 +52,10 @@ RemotePeer::RemotePeer(::AuthHandler* authHandler, QTcpSocket* socket, Compresso
     connect(socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::error), this, &RemotePeer::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &Peer::disconnected);
 
-#ifdef HAVE_SSL
     auto* sslSocket = qobject_cast<QSslSocket*>(socket);
     if (sslSocket) {
         connect(sslSocket, &QSslSocket::encrypted, this, [this]() { emit secureStateChanged(true); });
     }
-#endif
 
     connect(_compressor, &Compressor::readyRead, this, &RemotePeer::onReadyRead);
     connect(_compressor, &Compressor::error, this, &RemotePeer::onCompressionError);
@@ -181,11 +174,9 @@ bool RemotePeer::isSecure() const
     if (socket()) {
         if (isLocal())
             return true;
-#ifdef HAVE_SSL
         auto* sslSocket = qobject_cast<QSslSocket*>(socket());
         if (sslSocket && sslSocket->isEncrypted())
             return true;
-#endif
     }
     return false;
 }

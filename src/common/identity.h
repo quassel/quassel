@@ -25,6 +25,8 @@
 #include <QByteArray>
 #include <QDataStream>
 #include <QMetaType>
+#include <QSslCertificate>
+#include <QSslKey>
 #include <QString>
 #include <QStringList>
 
@@ -160,10 +162,6 @@ QDataStream& operator>>(QDataStream& in, Identity& identity);
 
 Q_DECLARE_METATYPE(Identity)
 
-#ifdef HAVE_SSL
-#    include <QSslCertificate>
-#    include <QSslKey>
-
 class COMMON_EXPORT CertManager : public SyncableObject
 {
     Q_OBJECT
@@ -186,5 +184,3 @@ public slots:
     inline virtual void setSslKey(const QByteArray& encoded) { SYNC(ARG(encoded)) }
     inline virtual void setSslCert(const QByteArray& encoded) { SYNC(ARG(encoded)) }
 };
-
-#endif  // HAVE_SSL

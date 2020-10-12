@@ -22,13 +22,11 @@
 
 #include <QtEndian>
 
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#endif
+#include <QSslSocket>
 
 #include "core.h"
 
-CoreAuthHandler::CoreAuthHandler(QTcpSocket* socket, QObject* parent)
+CoreAuthHandler::CoreAuthHandler(QSslSocket* socket, QObject* parent)
     : AuthHandler(parent)
     , _peer(nullptr)
     , _metricsServer(Core::instance()->metricsServer())
@@ -336,22 +334,13 @@ bool CoreAuthHandler::isLocal() const
 
 void CoreAuthHandler::startSsl()
 {
-#ifdef HAVE_SSL
-    auto* sslSocket = qobject_cast<QSslSocket*>(socket());
-    Q_ASSERT(sslSocket);
-
     qDebug() << qPrintable(tr("Starting encryption for Client:")) << _peer->description();
-    connect(sslSocket, selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &CoreAuthHandler::onSslErrors);
-    sslSocket->flush();  // ensure that the write cache is flushed before we switch to ssl (bug 682)
-    sslSocket->startServerEncryption();
-#endif /* HAVE_SSL */
+    connect(socket(), selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &CoreAuthHandler::onSslErrors);
+    socket()->flush();  // ensure that the write cache is flushed before we switch to ssl (bug 682)
+    socket()->startServerEncryption();
 }
 
-#ifdef HAVE_SSL
 void CoreAuthHandler::onSslErrors()
 {
-    auto* sslSocket = qobject_cast<QSslSocket*>(socket());
-    Q_ASSERT(sslSocket);
-    sslSocket->ignoreSslErrors();
+    socket()->ignoreSslErrors();
 }
-#endif

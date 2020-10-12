@@ -237,7 +237,7 @@ void LegacyPeer::dispatch(const RegisterClient& msg)
 
     // FIXME only in compat mode
     m["ProtocolVersion"] = protocolVersion;
-    m["UseSsl"] = msg.sslSupported;
+    m["UseSsl"] = true;
 #ifndef QT_NO_COMPRESS
     m["UseCompression"] = true;
 #else

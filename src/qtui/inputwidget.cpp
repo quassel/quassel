@@ -68,6 +68,7 @@ InputWidget::InputWidget(QWidget* parent)
     ui.boldButton->setIcon(icon::get("format-text-bold"));
     ui.italicButton->setIcon(icon::get("format-text-italic"));
     ui.underlineButton->setIcon(icon::get("format-text-underline"));
+    ui.strikethroughButton->setIcon(icon::get("format-text-strikethrough"));
     ui.clearButton->setIcon(icon::get("edit-clear"));
     ui.encryptionIconLabel->hide();
 
@@ -374,6 +375,11 @@ void InputWidget::toggleFormatUnderline()
     setFormatUnderline(!ui.underlineButton->isChecked());
 }
 
+void InputWidget::toggleFormatStrikethrough()
+{
+    setFormatStrikethrough(!ui.strikethroughButton->isChecked());
+}
+
 void InputWidget::clearFormat()
 {
     // Clear all formatting for selection (not global)
@@ -514,6 +520,7 @@ void InputWidget::setFormatClear(const bool global)
     QTextCharFormat fmt;
     fmt.setFontWeight(QFont::Normal);
     fmt.setFontUnderline(false);
+    fmt.setFontStrikeOut(false);
     fmt.setFontItalic(false);
     fmt.clearForeground();
     fmt.clearBackground();
@@ -528,6 +535,7 @@ void InputWidget::setFormatClear(const bool global)
     ui.boldButton->setChecked(false);
     ui.italicButton->setChecked(false);
     ui.underlineButton->setChecked(false);
+    ui.strikethroughButton->setChecked(false);
 }
 
 void InputWidget::setFormatBold(const bool bold)
@@ -558,6 +566,16 @@ void InputWidget::setFormatUnderline(const bool underline)
     mergeFormatOnSelection(fmt);
     // Make sure UI state follows
     ui.underlineButton->setChecked(underline);
+}
+
+void InputWidget::setFormatStrikethrough(const bool strike)
+{
+    // Apply formatting
+    QTextCharFormat fmt;
+    fmt.setFontStrikeOut(strike);
+    mergeFormatOnSelection(fmt);
+    // Make sure UI state follows
+    ui.strikethroughButton->setChecked(strike);
 }
 
 void InputWidget::mergeFormatOnSelection(const QTextCharFormat& format)
@@ -608,6 +626,11 @@ void InputWidget::on_underlineButton_clicked(bool checked)
     setFormatUnderline(checked);
 }
 
+void InputWidget::on_strikethroughButton_clicked(bool checked)
+{
+    setFormatStrikethrough(checked);
+}
+
 void InputWidget::on_italicButton_clicked(bool checked)
 {
     setFormatItalic(checked);
@@ -618,6 +641,7 @@ void InputWidget::fontChanged(const QFont& f)
     ui.boldButton->setChecked(f.bold());
     ui.italicButton->setChecked(f.italic());
     ui.underlineButton->setChecked(f.underline());
+    ui.strikethroughButton->setChecked(f.strikeOut());
 }
 
 void InputWidget::colorChosen(QAction* action)

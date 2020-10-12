@@ -323,8 +323,18 @@ void CoreSession::recvMessageFromServer(RawMessage msg)
     // check for HardStrictness ignore
     CoreNetwork* currentNetwork = network(msg.networkId);
     QString networkName = currentNetwork ? currentNetwork->networkName() : QString("");
-    if (_ignoreListManager.match(msg, networkName) == IgnoreListManager::HardStrictness)
+    switch (_ignoreListManager.match(msg, networkName)) {
+    case IgnoreListManager::StrictnessType::HardStrictness:
+        // Drop the message permanently
         return;
+    case IgnoreListManager::StrictnessType::SoftStrictness:
+        // Mark the message as (dynamically) ignored
+        msg.flags |= Message::Flag::Ignored;
+        break;
+    case IgnoreListManager::StrictnessType::UnmatchedStrictness:
+        // Keep the message unmodified
+        break;
+    }
 
     if (currentNetwork && _highlightRuleManager.match(msg, currentNetwork->myNick(), currentNetwork->identityPtr()->nicks()))
         msg.flags |= Message::Flag::Highlight;
@@ -529,17 +539,11 @@ Protocol::SessionState CoreSession::sessionState() const
 /*** Identity Handling ***/
 void CoreSession::createIdentity(const Identity& identity, const QVariantMap& additional)
 {
-#ifndef HAVE_SSL
-    Q_UNUSED(additional)
-#endif
-
     CoreIdentity coreIdentity(identity);
-#ifdef HAVE_SSL
     if (additional.contains("KeyPem"))
         coreIdentity.setSslKey(additional["KeyPem"].toByteArray());
     if (additional.contains("CertPem"))
         coreIdentity.setSslCert(additional["CertPem"].toByteArray());
-#endif
     qDebug() << Q_FUNC_INFO;
     IdentityId id = Core::createIdentity(user(), coreIdentity);
     if (!id.isValid())

@@ -44,9 +44,7 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget* parent)
     connect(Client::instance(), &Client::identityRemoved, this, &IdentitiesSettingsPage::clientIdentityRemoved);
 
     connect(ui.identityEditor, &IdentityEditWidget::widgetHasChanged, this, &IdentitiesSettingsPage::widgetHasChanged);
-#ifdef HAVE_SSL
     connect(ui.identityEditor, &IdentityEditWidget::requestEditSsl, this, &IdentitiesSettingsPage::continueUnsecured);
-#endif
 
     currentId = 0;
 }
@@ -55,7 +53,6 @@ void IdentitiesSettingsPage::coreConnectionStateChanged(bool connected)
 {
     setEnabled(connected);
     if (connected) {
-#ifdef HAVE_SSL
         if (Client::signalProxy()->isSecure()) {
             ui.identityEditor->setSslState(IdentityEditWidget::AllowSsl);
             _editSsl = true;
@@ -64,9 +61,6 @@ void IdentitiesSettingsPage::coreConnectionStateChanged(bool connected)
             ui.identityEditor->setSslState(IdentityEditWidget::UnsecureSsl);
             _editSsl = false;
         }
-#else
-        ui.identityEditor->setSslState(IdentityEditWidget::NoSsl);
-#endif
         load();
     }
     else {
@@ -75,7 +69,6 @@ void IdentitiesSettingsPage::coreConnectionStateChanged(bool connected)
     }
 }
 
-#ifdef HAVE_SSL
 void IdentitiesSettingsPage::continueUnsecured()
 {
     _editSsl = true;
@@ -87,8 +80,6 @@ void IdentitiesSettingsPage::continueUnsecured()
 
     ui.identityEditor->setSslState(IdentityEditWidget::AllowSsl);
 }
-
-#endif
 
 void IdentitiesSettingsPage::save()
 {
@@ -169,12 +160,10 @@ bool IdentitiesSettingsPage::testHasChanged()
         if (currentId != 0) {
             changedIdentities.removeAll(currentId);
             CertIdentity temp(currentId, this);
-#ifdef HAVE_SSL
             // we need to set the cert and key manually, as they aren't synced
             CertIdentity* old = identities[currentId];
             temp.setSslKey(old->sslKey());
             temp.setSslCert(old->sslCert());
-#endif
             ui.identityEditor->saveToIdentity(&temp);
             temp.setIdentityName(identities[currentId]->identityName());
             if (temp != *Client::identity(currentId) || temp.isDirty())
@@ -217,13 +206,9 @@ bool IdentitiesSettingsPage::aboutToSave()
 void IdentitiesSettingsPage::clientIdentityCreated(IdentityId id)
 {
     auto* identity = new CertIdentity(*Client::identity(id), this);
-#ifdef HAVE_SSL
     identity->enableEditSsl(_editSsl);
-#endif
     insertIdentity(identity);
-#ifdef HAVE_SSL
     connect(identity, &CertIdentity::sslSettingsUpdated, this, &IdentitiesSettingsPage::clientIdentityUpdated);
-#endif
     connect(Client::identity(id), &SyncableObject::updatedRemotely, this, &IdentitiesSettingsPage::clientIdentityUpdated);
 }
 
@@ -329,9 +314,7 @@ void IdentitiesSettingsPage::on_addIdentity_clicked()
         }
         id = -id.toInt();
         auto* newId = new CertIdentity(id, this);
-#ifdef HAVE_SSL
         newId->enableEditSsl(_editSsl);
-#endif
         if (dlg.duplicateId() != 0) {
             // duplicate
             newId->copyFrom(*identities[dlg.duplicateId()]);
@@ -440,9 +423,7 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity*>& toCreate,
             }
             connect(cid, &SyncableObject::updatedRemotely, this, &SaveIdentitiesDlg::clientEvent);
             Client::updateIdentity(id->id(), id->toVariantMap());
-#ifdef HAVE_SSL
             id->requestUpdateSslSettings();
-#endif
         }
         foreach (IdentityId id, toRemove) {
             Client::removeIdentity(id);

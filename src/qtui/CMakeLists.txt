@@ -45,6 +45,7 @@ target_sources(${TARGET} PRIVATE
     settingsdlg.cpp
     settingspagedlg.cpp
     simplenetworkeditor.cpp
+    sslinfodlg.cpp
     systemtray.cpp
     systrayanimationnotificationbackend.cpp
     systraynotificationbackend.cpp
@@ -80,6 +81,7 @@ target_sources(${TARGET} PRIVATE
     settingsdlg.ui
     settingspagedlg.ui
     simplenetworkeditor.ui
+    sslinfodlg.ui
     systrayanimationconfigwidget.ui
     topicwidget.ui
 )
@@ -170,13 +172,6 @@ if (HAVE_WEBENGINE)
     target_link_libraries(${TARGET} PRIVATE
         Qt5::WebEngine
         Qt5::WebEngineWidgets)
-endif()
-
-if (HAVE_SSL)
-    target_sources(${TARGET} PRIVATE
-        sslinfodlg.cpp
-        sslinfodlg.ui
-    )
 endif()
 
 if (LibsnoreQt5_FOUND)

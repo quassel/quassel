@@ -18,18 +18,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef IDENTITYEDITWIDGET_H
-#define IDENTITYEDITWIDGET_H
+#pragma once
+
+#include <QSslCertificate>
+#include <QSslKey>
+
+#include "clientidentity.h"
 
 #include "ui_identityeditwidget.h"
 #include "ui_nickeditdlg.h"
-
-#ifdef HAVE_SSL
-#    include <QSslCertificate>
-#    include <QSslKey>
-#endif
-
-#include "clientidentity.h"
 
 class IdentityEditWidget : public QWidget
 {
@@ -53,9 +50,7 @@ public slots:
     void showAdvanced(bool advanced);
 
 protected:
-#ifdef HAVE_SSL
     bool eventFilter(QObject* watched, QEvent* event) override;
-#endif
 
 signals:
     void requestEditSsl();
@@ -68,27 +63,21 @@ private slots:
     void on_nickUp_clicked();
     void on_nickDown_clicked();
 
-#ifdef HAVE_SSL
     void on_clearOrLoadKeyButton_clicked();
     void on_clearOrLoadCertButton_clicked();
-#endif
     void setWidgetStates();
 
-#ifdef HAVE_SSL
     void sslDragEnterEvent(QDragEnterEvent* event);
     void sslDropEvent(QDropEvent* event, bool isCert);
-#endif
 
 private:
     Ui::IdentityEditWidget ui;
     bool _editSsl;
 
-#ifdef HAVE_SSL
     QSslKey keyByFilename(const QString& filename);
     void showKeyState(const QSslKey& key);
     QSslCertificate certByFilename(const QString& filename);
     void showCertState(const QSslCertificate& cert);
-#endif
 
     bool testHasChanged();
 };
@@ -111,5 +100,3 @@ private:
     QString oldNick;
     QStringList existing;
 };
-
-#endif  // IDENTITYEDITWIDGET_H

@@ -241,10 +241,8 @@ const Identity* Client::identity(IdentityId id)
 void Client::createIdentity(const CertIdentity& id)
 {
     QVariantMap additional;
-#ifdef HAVE_SSL
     additional["KeyPem"] = id.sslKey().toPem();
     additional["CertPem"] = id.sslCert().toPem();
-#endif
     emit instance()->requestCreateIdentity(id, additional);
 }
 

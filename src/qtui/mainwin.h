@@ -148,9 +148,7 @@ private slots:
     void userAuthenticationRequired(CoreAccount*, bool* valid, const QString& errorMessage);
     void handleNoSslInClient(bool* accepted);
     void handleNoSslInCore(bool* accepted);
-#ifdef HAVE_SSL
     void handleSslErrors(const QSslSocket* socket, bool* accepted, bool* permanently);
-#endif
 
     void onConfigureNetworksTriggered();
     void onConfigureViewsTriggered();
@@ -190,6 +188,13 @@ private slots:
      * @seealso InputWidget::toggleFormatUnderline()
      */
     void onFormatUnderlineTriggered();
+
+     /**
+     * Toggle the strikethrough of the input widget selected or typed text
+     *
+     * @seealso InputWidget::toggleFormatStrikethrough()
+     */
+    void onFormatStrikethroughTriggered();
 
     /**
      * Clear the formatting of the input widget selected or typed text

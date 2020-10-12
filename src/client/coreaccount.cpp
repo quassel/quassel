@@ -26,7 +26,6 @@ CoreAccount::CoreAccount(AccountId accountId)
     _internal = false;
     _port = 4242;
     _storePassword = false;
-    _useSsl = true;
     _proxyType = QNetworkProxy::DefaultProxy;
     _proxyPort = 8080;
 }
@@ -76,11 +75,6 @@ void CoreAccount::setPort(uint port)
     _port = port;
 }
 
-void CoreAccount::setUseSsl(bool useSsl)
-{
-    _useSsl = useSsl;
-}
-
 void CoreAccount::setProxyType(QNetworkProxy::ProxyType type)
 {
     _proxyType = type;
@@ -121,7 +115,6 @@ QVariantMap CoreAccount::toVariantMap(bool forcePassword) const
     v["StorePassword"] = storePassword();
     v["HostName"] = hostName();
     v["Port"] = port();
-    v["UseSSL"] = useSsl();
     v["ProxyType"] = proxyType();
     v["ProxyUser"] = proxyUser();
     v["ProxyPassword"] = proxyPassword();
@@ -141,7 +134,6 @@ void CoreAccount::fromVariantMap(const QVariantMap& v)
     setStorePassword(v.value("StorePassword").toBool());
     setHostName(v.value("HostName").toString());
     setPort(v.value("Port").toUInt());
-    setUseSsl(v.value("UseSSL").toBool());
     setProxyType((QNetworkProxy::ProxyType)v.value("ProxyType").toInt());
     setProxyUser(v.value("ProxyUser").toString());
     setProxyPassword(v.value("ProxyPassword").toString());
@@ -172,7 +164,6 @@ QDebug operator<<(QDebug dbg, const CoreAccount& acc)
                   << qPrintable(QString(", StorePassword:")) << acc.storePassword()
                   << qPrintable(QString(", HostName:")) << acc.hostName()
                   << qPrintable(QString(", Port:")) << acc.port()
-                  << qPrintable(QString(", UseSSL:")) << acc.useSsl()
                   << qPrintable(QString(", ProxyType:")) << acc.proxyType()
                   << qPrintable(QString(", ProxyUser:")) << acc.proxyUser()
                   << qPrintable(QString(", ProxyPassword:")) << acc.proxyPassword()

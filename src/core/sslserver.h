@@ -20,15 +20,12 @@
 
 #pragma once
 
-#ifdef HAVE_SSL
+#include <QFile>
+#include <QSslCertificate>
+#include <QSslKey>
+#include <QTcpServer>
 
-#    include <QFile>
-#    include <QLinkedList>
-#    include <QSslCertificate>
-#    include <QSslKey>
-#    include <QTcpServer>
-
-#    include "metricsserver.h"
+#include "metricsserver.h"
 
 class SslServer : public QTcpServer
 {
@@ -36,9 +33,6 @@ class SslServer : public QTcpServer
 
 public:
     SslServer(QObject* parent = nullptr);
-
-    bool hasPendingConnections() const override { return !_pendingConnections.isEmpty(); }
-    QTcpSocket* nextPendingConnection() override;
 
     const QSslCertificate& certificate() const { return _cert; }
     const QSslKey& key() const { return _key; }
@@ -75,7 +69,6 @@ private:
 
     MetricsServer* _metricsServer{nullptr};
 
-    QLinkedList<QTcpSocket*> _pendingConnections;
     QSslCertificate _cert;
     QSslKey _key;
     QList<QSslCertificate> _ca;
@@ -87,5 +80,3 @@ private:
 
     QDateTime _certificateExpires;
 };
-
-#endif  // HAVE_SSL

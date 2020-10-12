@@ -39,6 +39,7 @@ target_sources(${TARGET} PRIVATE
     sessionthread.cpp
     sqlauthenticator.cpp
     sqlitestorage.cpp
+    sslserver.cpp
     storage.cpp
 
     # needed for automoc
@@ -55,10 +56,6 @@ target_link_libraries(${TARGET}
 
 if (HAVE_UMASK)
     set_property(SOURCE oidentdconfiggenerator.cpp APPEND PROPERTY COMPILE_DEFINITIONS HAVE_UMASK)
-endif()
-
-if (HAVE_SSL)
-    target_sources(${TARGET} PRIVATE sslserver.cpp)
 endif()
 
 if (Ldap_FOUND)

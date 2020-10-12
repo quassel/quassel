@@ -20,8 +20,11 @@
 
 #include "chatmonitorsettingspage.h"
 
+#include <QMessageBox>
 #include <QVariant>
 
+#include "backlogrequester.h"
+#include "backlogsettings.h"
 #include "buffermodel.h"
 #include "bufferview.h"
 #include "bufferviewconfig.h"
@@ -67,6 +70,10 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget* parent)
     connect(ui.alwaysOwn, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
     connect(ui.showBacklog, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
     connect(ui.includeRead, &QAbstractButton::toggled, this, &ChatMonitorSettingsPage::widgetHasChanged);
+
+    // AsNeededBacklogRequester conflicts with showing backlog in Chat Monitor
+    BacklogSettings backlogSettings;
+    backlogSettings.initAndNotify("RequesterType", this, &ChatMonitorSettingsPage::setRequesterType, BacklogRequester::AsNeeded);
 }
 
 bool ChatMonitorSettingsPage::hasDefaults() const
@@ -278,4 +285,35 @@ void ChatMonitorSettingsPage::switchOperationMode(int idx)
         ui.labelActiveBuffers->setText(tr("Ignore:"));
     }
     widgetHasChanged();
+}
+
+void ChatMonitorSettingsPage::setRequesterType(const QVariant& v)
+{
+    bool usingAsNeededRequester = (v.toInt() == BacklogRequester::AsNeeded);
+    ui.showBacklogUnavailableDetails->setVisible(usingAsNeededRequester);
+    if (usingAsNeededRequester) {
+        ui.showBacklog->setText(tr("Show messages from backlog (not available)"));
+    }
+    else {
+        ui.showBacklog->setText(tr("Show messages from backlog"));
+    }
+}
+
+void ChatMonitorSettingsPage::on_showBacklogUnavailableDetails_clicked()
+{
+    // Explain that backlog fetching is disabled, so backlog messages won't show up
+    //
+    // Technically, backlog messages *will* show up once fetched, e.g. after clicking on a buffer.
+    // This might be too trivial of a detail to warrant explaining, though.
+    QMessageBox::information(this,
+                             tr("Messages from backlog are not fetched"),
+                             QString("<p>%1</p><p>%2</p>")
+                                     .arg(tr("No initial backlog will be fetched when using the backlog request method of <i>%1</i>.")
+                                             .arg(tr("Only fetch when needed").replace(" ", "&nbsp;")),
+                                          tr("Configure this in the <i>%1</i> settings page.")
+                                             .arg(tr("Backlog Fetching").replace(" ", "&nbsp;"))
+                                     )
+    );
+    // Re-use translations of "Only fetch when needed" and "Backlog Fetching" as this is a
+    // word-for-word reference, forcing all spaces to be non-breaking
 }

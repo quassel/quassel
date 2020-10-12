@@ -23,10 +23,8 @@
 #include <utility>
 
 #include <QHostAddress>
+#include <QSslSocket>
 #include <QStringList>
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#endif
 
 #include "client.h"
 #include "quassel.h"
@@ -298,7 +296,7 @@ void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickT
 
 NotificationSettings::HighlightNickType NotificationSettings::highlightNick() const
 {
-    return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick", CurrentNick).toInt();
+    return (NotificationSettings::HighlightNickType)localValue("Highlights/HighlightNick", NoNick).toInt();
 }
 
 void NotificationSettings::setNicksCaseSensitive(bool cs)

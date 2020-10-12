@@ -569,6 +569,12 @@ void TreeModel::debug_rowsAboutToBeRemoved(const QModelIndex& parent, int start,
         parentItem = rootItem;
     qDebug() << "debug_rowsAboutToBeRemoved" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
 
+    // Make sure model is valid first
+    if (!parent.model()) {
+        qDebug() << "Parent model is not valid!" << end;
+        return;
+    }
+
     QModelIndex child;
     for (int i = end; i >= start; i--) {
         child = parent.model()->index(i, 0, parent);
@@ -584,6 +590,12 @@ void TreeModel::debug_rowsInserted(const QModelIndex& parent, int start, int end
     if (!parentItem)
         parentItem = rootItem;
     qDebug() << "debug_rowsInserted:" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
+
+    // Make sure model is valid first
+    if (!parent.model()) {
+        qDebug() << "Parent model is not valid!" << end;
+        return;
+    }
 
     QModelIndex child;
     for (int i = start; i <= end; i++) {

@@ -84,11 +84,13 @@ ChatLine[bg-color="0f"] { background: #c0c0c0; }
 ChatLine[format="bold"]      { font-weight: bold;}
 ChatLine[format="italic"]    { font-style: italic; }
 ChatLine[format="underline"] { font-style: underline; }
+ChatLine[format="strikethrough"] { font-style: strikethrough; }
 
     // for sender
     ChatLine[format="bold", sender="self"]      { foreground: #323232; font-weight: bold; }
     ChatLine[format="italic", sender="self"]    { foreground: #323232; font-style: italic; }
     ChatLine[format="underline", sender="self"] { foreground: #323232; font-style: underline; }
+    ChatLine[format="strikethrough", sender="self"] { foreground: #323232; font-style: strikethrough; }
 
 // ChatView message colors
 ChatLine#notice { foreground: #916409; }

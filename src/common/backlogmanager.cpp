@@ -32,6 +32,12 @@ QVariantList BacklogManager::requestBacklogFiltered(BufferId bufferId, MsgId fir
     return QVariantList();
 }
 
+QVariantList BacklogManager::requestBacklogForward(BufferId bufferId, MsgId first, MsgId last, int limit, int type, int flags)
+{
+    REQUEST(ARG(bufferId), ARG(first), ARG(last), ARG(limit), ARG(type), ARG(flags))
+    return QVariantList();
+}
+
 QVariantList BacklogManager::requestBacklogAll(MsgId first, MsgId last, int limit, int additional)
 {
     REQUEST(ARG(first), ARG(last), ARG(limit), ARG(additional))

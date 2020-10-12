@@ -21,12 +21,7 @@
 #include "clientauthhandler.h"
 
 #include <QtEndian>
-
-#ifdef HAVE_SSL
-#    include <QSslSocket>
-#else
-#    include <QTcpSocket>
-#endif
+#include <QSslSocket>
 
 #include "client.h"
 #include "clientsettings.h"
@@ -51,24 +46,9 @@ void ClientAuthHandler::connectToCore()
 {
     CoreAccountSettings s;
 
-#ifdef HAVE_SSL
     auto* socket = new QSslSocket(this);
     // make sure the warning is shown if we happen to connect without SSL support later
     s.setAccountValue("ShowNoClientSslWarning", true);
-#else
-    if (_account.useSsl()) {
-        if (s.accountValue("ShowNoClientSslWarning", true).toBool()) {
-            bool accepted = false;
-            emit handleNoSslInClient(&accepted);
-            if (!accepted) {
-                emit errorMessage(tr("Unencrypted connection canceled"));
-                return;
-            }
-            s.setAccountValue("ShowNoClientSslWarning", false);
-        }
-    }
-    QTcpSocket* socket = new QTcpSocket(this);
-#endif
 
 #ifndef QT_NO_NETWORKPROXY
     QNetworkProxy proxy;
@@ -179,10 +159,7 @@ void ClientAuthHandler::onSocketConnected()
         stream.setVersion(QDataStream::Qt_4_2);
 
         quint32 magic = Protocol::magic;
-#ifdef HAVE_SSL
-        if (_account.useSsl())
-            magic |= Protocol::Encryption;
-#endif
+        magic |= Protocol::Encryption;
         magic |= Protocol::Compression;
 
         stream << magic;
@@ -275,7 +252,7 @@ void ClientAuthHandler::setPeer(RemotePeer* peer)
     connect(_peer, &RemotePeer::transferProgress, this, &ClientAuthHandler::transferProgress);
 
     // The legacy protocol enables SSL later, after registration
-    if (!_account.useSsl() || _legacy)
+    if (_legacy)
         startRegistration();
     // otherwise, do it now
     else
@@ -286,13 +263,7 @@ void ClientAuthHandler::startRegistration()
 {
     emit statusMessage(tr("Synchronizing to core..."));
 
-    // useSsl will be ignored by non-legacy peers
-    bool useSsl = false;
-#ifdef HAVE_SSL
-    useSsl = _account.useSsl();
-#endif
-
-    _peer->dispatch(Protocol::RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate, useSsl));
+    _peer->dispatch(Protocol::RegisterClient(Quassel::Features{}, Quassel::buildInfo().fancyVersionString, Quassel::buildInfo().commitDate));
 }
 
 void ClientAuthHandler::handle(const Protocol::ClientDenied& msg)
@@ -310,7 +281,7 @@ void ClientAuthHandler::handle(const Protocol::ClientRegistered& msg)
     _peer->setFeatures(std::move(msg.features));
 
     // The legacy protocol enables SSL at this point
-    if (_legacy && _account.useSsl())
+    if (_legacy)
         checkAndEnableSsl(msg.sslSupported);
     else
         onConnectionReady();
@@ -403,21 +374,16 @@ void ClientAuthHandler::handle(const Protocol::SessionState& msg)
 
 void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
 {
-#ifndef HAVE_SSL
-    Q_UNUSED(coreSupportsSsl);
-#else
     CoreAccountSettings s;
-    if (coreSupportsSsl && _account.useSsl()) {
+    if (coreSupportsSsl) {
         // Make sure the warning is shown next time we don't have SSL in the core
         s.setAccountValue("ShowNoCoreSslWarning", true);
 
-        auto* sslSocket = qobject_cast<QSslSocket*>(socket());
-        Q_ASSERT(sslSocket);
-        connect(sslSocket, &QSslSocket::encrypted, this, &ClientAuthHandler::onSslSocketEncrypted);
-        connect(sslSocket, selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &ClientAuthHandler::onSslErrors);
+        connect(socket(), &QSslSocket::encrypted, this, &ClientAuthHandler::onSslSocketEncrypted);
+        connect(socket(), selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &ClientAuthHandler::onSslErrors);
         qDebug() << "Starting encryption...";
-        sslSocket->flush();
-        sslSocket->startClientEncryption();
+        socket()->flush();
+        socket()->startClientEncryption();
     }
     else {
         if (s.accountValue("ShowNoCoreSslWarning", true).toBool()) {
@@ -436,10 +402,8 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
         else
             startRegistration();
     }
-#endif
 }
 
-#ifdef HAVE_SSL
 
 void ClientAuthHandler::onSslSocketEncrypted()
 {
@@ -464,9 +428,6 @@ void ClientAuthHandler::onSslSocketEncrypted()
 
 void ClientAuthHandler::onSslErrors()
 {
-    auto* socket = qobject_cast<QSslSocket*>(sender());
-    Q_ASSERT(socket);
-
     CoreAccountSettings s;
     QByteArray knownDigest = s.accountValue("SslCert").toByteArray();
     ClientAuthHandler::DigestVersion knownDigestVersion = static_cast<ClientAuthHandler::DigestVersion>(
@@ -475,11 +436,11 @@ void ClientAuthHandler::onSslErrors()
     QByteArray calculatedDigest;
     switch (knownDigestVersion) {
     case ClientAuthHandler::DigestVersion::Md5:
-        calculatedDigest = socket->peerCertificate().digest(QCryptographicHash::Md5);
+        calculatedDigest = socket()->peerCertificate().digest(QCryptographicHash::Md5);
         break;
 
     case ClientAuthHandler::DigestVersion::Sha2_512:
-        calculatedDigest = socket->peerCertificate().digest(QCryptographicHash::Sha512);
+        calculatedDigest = socket()->peerCertificate().digest(QCryptographicHash::Sha512);
         break;
 
     default:
@@ -489,7 +450,7 @@ void ClientAuthHandler::onSslErrors()
     if (knownDigest != calculatedDigest) {
         bool accepted = false;
         bool permanently = false;
-        emit handleSslErrors(socket, &accepted, &permanently);
+        emit handleSslErrors(socket(), &accepted, &permanently);
 
         if (!accepted) {
             requestDisconnect(tr("Unencrypted connection canceled"));
@@ -497,7 +458,7 @@ void ClientAuthHandler::onSslErrors()
         }
 
         if (permanently) {
-            s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
+            s.setAccountValue("SslCert", socket()->peerCertificate().digest(QCryptographicHash::Sha512));
             s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
         }
         else {
@@ -506,11 +467,9 @@ void ClientAuthHandler::onSslErrors()
         }
     }
     else if (knownDigestVersion != ClientAuthHandler::DigestVersion::Latest) {
-        s.setAccountValue("SslCert", socket->peerCertificate().digest(QCryptographicHash::Sha512));
+        s.setAccountValue("SslCert", socket()->peerCertificate().digest(QCryptographicHash::Sha512));
         s.setAccountValue("SslCertDigestVersion", ClientAuthHandler::DigestVersion::Latest);
     }
 
-    socket->ignoreSslErrors();
+    socket()->ignoreSslErrors();
 }
-
-#endif /* HAVE_SSL */

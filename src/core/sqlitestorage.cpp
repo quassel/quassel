@@ -503,13 +503,8 @@ IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity& identity)
         query.bindValue(":kickreason", identity.kickReason());
         query.bindValue(":partreason", identity.partReason());
         query.bindValue(":quitreason", identity.quitReason());
-#ifdef HAVE_SSL
         query.bindValue(":sslcert", identity.sslCert().toPem());
         query.bindValue(":sslkey", identity.sslKey().toPem());
-#else
-        query.bindValue(":sslcert", QByteArray());
-        query.bindValue(":sslkey", QByteArray());
-#endif
 
         lockForWrite();
         safeExec(query);
@@ -581,13 +576,8 @@ bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity& identity)
         query.bindValue(":kickreason", identity.kickReason());
         query.bindValue(":partreason", identity.partReason());
         query.bindValue(":quitreason", identity.quitReason());
-#ifdef HAVE_SSL
         query.bindValue(":sslcert", identity.sslCert().toPem());
         query.bindValue(":sslkey", identity.sslKey().toPem());
-#else
-        query.bindValue(":sslcert", QByteArray());
-        query.bindValue(":sslkey", QByteArray());
-#endif
         query.bindValue(":identityid", identity.id().toInt());
         safeExec(query);
         watchQuery(query);
@@ -687,10 +677,8 @@ std::vector<CoreIdentity> SqliteStorage::identities(UserId user)
             identity.setKickReason(query.value(15).toString());
             identity.setPartReason(query.value(16).toString());
             identity.setQuitReason(query.value(17).toString());
-#ifdef HAVE_SSL
             identity.setSslCert(query.value(18).toByteArray());
             identity.setSslKey(query.value(19).toByteArray());
-#endif
 
             nickQuery.bindValue(":identityid", identity.id().toInt());
             QList<QString> nicks;
@@ -2059,6 +2047,94 @@ std::vector<Message> SqliteStorage::requestMsgsFiltered(
         query.bindValue(":type", typeRaw);
         int flagsRaw = flags;
         query.bindValue(":flags", flagsRaw);
+
+        safeExec(query);
+        watchQuery(query);
+
+        while (query.next()) {
+            Message msg(
+                // As of SQLite schema version 31, timestamps are stored in milliseconds
+                // instead of seconds.  This nets us more precision as well as simplifying
+                // 64-bit time.
+                QDateTime::fromMSecsSinceEpoch(query.value(1).toLongLong()),
+                bufferInfo,
+                (Message::Type)query.value(2).toInt(),
+                query.value(8).toString(),
+                query.value(4).toString(),
+                query.value(5).toString(),
+                query.value(6).toString(),
+                query.value(7).toString(),
+                Message::Flags{query.value(3).toInt()});
+            msg.setMsgId(query.value(0).toLongLong());
+            messagelist.push_back(std::move(msg));
+        }
+    }
+    db.commit();
+    unlock();
+
+    return messagelist;
+}
+
+std::vector<Message> SqliteStorage::requestMsgsForward(
+    UserId user, BufferId bufferId, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+{
+    std::vector<Message> messagelist;
+
+    QSqlDatabase db = logDb();
+    db.transaction();
+
+    bool error = false;
+    BufferInfo bufferInfo;
+    {
+        // code dupication from getBufferInfo:
+        // this is due to the impossibility of nesting transactions and recursive locking
+        QSqlQuery bufferInfoQuery(db);
+        bufferInfoQuery.prepare(queryString("select_buffer_by_id"));
+        bufferInfoQuery.bindValue(":userid", user.toInt());
+        bufferInfoQuery.bindValue(":bufferid", bufferId.toInt());
+
+        lockForRead();
+        safeExec(bufferInfoQuery);
+        error = !watchQuery(bufferInfoQuery) || !bufferInfoQuery.first();
+        if (!error) {
+            bufferInfo = BufferInfo(bufferInfoQuery.value(0).toInt(),
+                                    bufferInfoQuery.value(1).toInt(),
+                                    (BufferInfo::Type)bufferInfoQuery.value(2).toInt(),
+                                    0,
+                                    bufferInfoQuery.value(4).toString());
+            error = !bufferInfo.isValid();
+        }
+    }
+    if (error) {
+        db.rollback();
+        unlock();
+        return messagelist;
+    }
+
+    {
+        QSqlQuery query(db);
+        query.prepare(queryString("select_messagesForward"));
+
+        if (first == -1) {
+            query.bindValue(":firstmsg", std::numeric_limits<qint64>::min());
+        } else {
+            query.bindValue(":firstmsg", first.toQint64());
+        }
+
+        if (last == -1) {
+            query.bindValue(":lastmsg", std::numeric_limits<qint64>::max());
+        } else {
+            query.bindValue(":lastmsg", last.toQint64());
+        }
+
+        query.bindValue(":bufferid", bufferId.toInt());
+
+        int typeRaw = type;
+        int flagsRaw = flags;
+        query.bindValue(":type", typeRaw);
+        query.bindValue(":flags", flagsRaw);
+
+        query.bindValue(":limit", limit);
 
         safeExec(query);
         watchQuery(query);
