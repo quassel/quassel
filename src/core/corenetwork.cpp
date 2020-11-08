@@ -1086,8 +1086,9 @@ void CoreNetwork::serverCapAdded(const QString& capability)
     // Handle special cases first
     if (capability == IrcCap::SASL) {
         // Only request SASL if it's enabled
-        if (networkInfo().useSasl)
+        if (useSasl()) {
             queueCap(capability);
+        }
     }
     else if (IrcCap::knownCaps.contains(capability)) {
         // Handling for general known capabilities
@@ -1367,7 +1368,7 @@ void CoreNetwork::sendNextCap()
     else {
         // No pending desired capabilities, capability negotiation finished
         // If SASL requested but not available, print a warning
-        if (networkInfo().useSasl && !capEnabled(IrcCap::SASL))
+        if (useSasl() && !capEnabled(IrcCap::SASL))
             showMessage(NetworkInternalMessage(
                 Message::Error,
                 BufferInfo::StatusBuffer,
