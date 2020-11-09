@@ -1,4 +1,7 @@
 #!/bin/bash
+# Don't consider packaging a success if any commands fail
+# See http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
 
 myname=$0
 if [ -s "$myname" ] && [ -x "$myname" ]; then
@@ -45,17 +48,18 @@ QUASSEL_VERSION=$(git describe)
 BUILDTYPE=$1
 
 # check the working dir
-WORKINGDIR=$2
-if [[ ! -n $2 ]]; then
-    WORKINGDIR="."
-fi
+# Default to "." using Bash default-value syntax
+WORKINGDIR="${2:-.}"
 WORKINGDIR="${WORKINGDIR}/"
 PACKAGETMPDIR="${WORKINGDIR}PACKAGE_TMP_DIR_${BUILDTYPE}"
 QUASSEL_DMG="Quassel${BUILDTYPE}_MacOSX-x86_64_${QUASSEL_VERSION}.dmg"
 
-ADDITIONAL_PLUGINS=",$3"
-if [[ ! -n $3 ]]; then
+# Default to null string
+if [[ -z ${3:-} ]]; then
 	ADDITIONAL_PLUGINS=""
+else
+	# Options provided, append to list
+	ADDITIONAL_PLUGINS=",$3"
 fi
 
 echo "ADDITIONAL_PLUGINS: ${ADDITIONAL_PLUGINS}"
@@ -80,6 +84,38 @@ case $BUILDTYPE in
 	exit 1
 	;;
 esac
-PACKAGESIZE=$(echo "$(du -ms ${PACKAGETMPDIR} | cut -f1) * 1.1" | bc)
-hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -size ${PACKAGESIZE}M -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
+
+echo "Creating macOS disk image with hdiutil: 'Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}'"
+
+# hdiutil seems to have a bit of a reputation for failing to create disk images
+# for various reasons.
+#
+# If you've come here to see why on earth your macOS build is failing despite
+# making changes entirely unrelated to macOS, you have my sympathy.
+#
+# There are two main approaches:
+#
+# 1.  Let hdiutil calculate a size automatically
+#
+# 2.  Separately calculate the size with a margin of error, then specify this
+#     to hdiutil during disk image creation.
+#
+# Both seem to have caused issues, but in recent tests, option #1 seemed more
+# reliable.
+#
+# Option 1:
+
+hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
+
+# If hdiutil changes over time and fails often, you can try the other option.
+#
+# Option 2:
+#
+#PACKAGESIZE_MARGIN="1.1"
+#PACKAGESIZE=$(echo "$(du -ms ${PACKAGETMPDIR} | cut -f1) * $PACKAGESIZE_MARGIN" | bc)
+#echo "PACKAGESIZE: $PACKAGESIZE MB"
+#hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -size ${PACKAGESIZE}M -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
+
+
+# Regardless of choice, clean up the packaging temporary directory
 rm -rf ${PACKAGETMPDIR}
