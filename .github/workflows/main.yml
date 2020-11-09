@@ -224,7 +224,6 @@ jobs:
       run: ls -lhR artifacts
 
     - name: Check artifacts
-      continue-on-error: true # macOS packaging is unreliable
       run: |
         # Sanity check: We should have exactly 5 files matching the given patterns
         [[ 5 -eq $(find artifacts/ \( -type f -name 'Quassel*.dmg' -o -name 'quassel*.exe' -o -name 'quassel*.7z' \) -printf '.' | wc -c) ]]
