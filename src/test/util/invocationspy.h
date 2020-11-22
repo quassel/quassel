@@ -94,12 +94,12 @@ public:
      * Provides the value the spy was last notified with.
      *
      * @note The value is only valid if wait() returned with true.
-     * @returns The value given to notify(), or boost::none if the spy wasn't notified
+     * @returns The value given to notify(), or std::nullopt if the spy wasn't notified
      */
     T value() const { return *_value; }
 
 private:
-    boost::optional<T> _value;
+    std::optional<T> _value;
 };
 
 // -----------------------------------------------------------------------------------------------------------------------------------------

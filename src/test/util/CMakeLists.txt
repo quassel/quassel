@@ -7,7 +7,6 @@ target_sources(${TARGET} PRIVATE
 
 target_link_libraries(${TARGET}
     PUBLIC
-        Boost::boost
         Quassel::Common
         Quassel::Test::Global
 )

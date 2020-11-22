@@ -20,7 +20,7 @@ function(check_and_set_linker_flag flag name outvar)
 endfunction()
 
 # General compile settings
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED OFF)    # Rely on compile features if standard is not supported
 set(CMAKE_CXX_EXTENSIONS OFF)           # We like to be standard conform
 

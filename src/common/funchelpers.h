@@ -26,7 +26,7 @@
 #include <type_traits>
 #include <utility>
 
-#include <boost/optional.hpp>
+#include <optional>
 
 #include <QDebug>
 #include <QVariant>
@@ -97,14 +97,14 @@ auto invokeWithArgs(const Callable& c, Args&&... args)
 
 // Helper for unpacking the argument list via an index sequence
 template<typename Callable, std::size_t ...Is, typename ArgsTuple = typename FunctionTraits<Callable>::ArgsTuple>
-boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantList& args, std::index_sequence<Is...>)
+std::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantList& args, std::index_sequence<Is...>)
 {
     // Sanity check that all types can be converted
     std::array<bool, std::tuple_size<ArgsTuple>::value> convertible{{args[Is].canConvert<std::decay_t<std::tuple_element_t<Is, ArgsTuple>>>()...}};
     for (size_t i = 0; i < convertible.size(); ++i) {
         if (!convertible[i]) {
             qWarning() << "Cannot convert parameter" << i << "from type" << args[static_cast<int>(i)].typeName() << "to expected argument type";
-            return boost::none;
+            return std::nullopt;
         }
     }
 
@@ -126,17 +126,17 @@ boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantLi
  * @param c    Callable
  * @param args Arguments to be given to the callable
  * @returns An optional containing a QVariant with the return value if the callable could be invoked with
- *          the given list of arguments; otherwise boost::none
+ *          the given list of arguments; otherwise std::nullopt
  */
 template<typename Callable>
-boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantList& args)
+std::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantList& args)
 {
     using ArgsTuple = typename FunctionTraits<Callable>::ArgsTuple;
     constexpr auto tupleSize = std::tuple_size<ArgsTuple>::value;
 
     if (tupleSize != args.size()) {
         qWarning().nospace() << "Argument count mismatch! Expected: " << tupleSize << ", actual: " << args.size();
-        return boost::none;
+        return std::nullopt;
     }
     return detail::invokeWithArgsList(c, args, std::make_index_sequence<tupleSize>{});
 }
@@ -153,14 +153,14 @@ boost::optional<QVariant> invokeWithArgsList(const Callable& c, const QVariantLi
  * @param c    Callable
  * @param args Arguments to be given to the member function
  * @returns An optional containing a QVariant with the return value if the member function could be invoked with
- *          the given list of arguments; otherwise boost::none
+ *          the given list of arguments; otherwise std::nullopt
  */
 template<typename R, typename C, typename ...Args>
-boost::optional<QVariant> invokeWithArgsList(C* object, R(C::*func)(Args...), const QVariantList& args)
+std::optional<QVariant> invokeWithArgsList(C* object, R(C::*func)(Args...), const QVariantList& args)
 {
     if (sizeof...(Args) != args.size()) {
         qWarning().nospace() << "Argument count mismatch! Expected: " << sizeof...(Args) << ", actual: " << args.size();
-        return boost::none;
+        return std::nullopt;
     }
     return detail::invokeWithArgsList([object, func](Args&&... args) {
         return (object->*func)(std::forward<decltype(args)>(args)...);
