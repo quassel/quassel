@@ -19,6 +19,9 @@ import os.path
 
 from subprocess import Popen, PIPE
 
+# Handling Qt properties
+import macosx_qt
+
 # ==============================
 #  Constants
 # ==============================
@@ -55,40 +58,11 @@ class InstallQt(object):
         if not skipInstallQtConf:
             self.installQtConf()
 
-    def qtProperty(self, qtProperty):
-        """
-        Query persistent property of Qt via qmake
-        """
-        VALID_PROPERTIES = ['QT_INSTALL_PREFIX',
-                            'QT_INSTALL_DATA',
-                            'QT_INSTALL_DOCS',
-                            'QT_INSTALL_HEADERS',
-                            'QT_INSTALL_LIBS',
-                            'QT_INSTALL_BINS',
-                            'QT_INSTALL_PLUGINS',
-                            'QT_INSTALL_IMPORTS',
-                            'QT_INSTALL_TRANSLATIONS',
-                            'QT_INSTALL_CONFIGURATION',
-                            'QT_INSTALL_EXAMPLES',
-                            'QT_INSTALL_DEMOS',
-                            'QMAKE_MKSPECS',
-                            'QMAKE_VERSION',
-                            'QT_VERSION'
-                            ]
-        if qtProperty not in VALID_PROPERTIES:
-            return None
-
-        qmakeProcess = Popen('qmake -query %s' % qtProperty, shell=True, stdout=PIPE, stderr=PIPE)
-        result = qmakeProcess.stdout.read().strip()
-        qmakeProcess.stdout.close()
-        qmakeProcess.wait()
-        return result
-
     def findFrameworkPath(self):
-        self.sourceFrameworkPath = self.qtProperty('QT_INSTALL_LIBS')
+        self.sourceFrameworkPath = macosx_qt.qtProperty('QT_INSTALL_LIBS')
 
     def findPluginsPath(self):
-        self.sourcePluginsPath = self.qtProperty('QT_INSTALL_PLUGINS')
+        self.sourcePluginsPath = macosx_qt.qtProperty('QT_INSTALL_PLUGINS')
 
     def findPlugin(self, pluginname):
         qmakeProcess = Popen('find %s -name %s' % (self.sourcePluginsPath, pluginname), shell=True, stdout=PIPE, stderr=PIPE)

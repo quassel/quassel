@@ -18,6 +18,9 @@ import os.path
 import sys
 import commands
 
+# Handling Qt properties
+import macosx_qt
+
 # ==============================
 #  Constants
 # ==============================
@@ -60,10 +63,20 @@ def createPlist(bundleName, bundleVersion):
     template = templateFile.read()
     templateFile.close()
 
+    # Get the minimum macOS deployment version
+    QT_MACOSX_DEPLOYMENT_TARGET = macosx_qt.qtMakespec('QMAKE_MACOSX_DEPLOYMENT_TARGET')
+    # Keep in sync with QMAKE_MACOSX_DEPLOYMENT_TARGET
+    # See https://doc.qt.io/qt-5/macos.html
+    if QT_MACOSX_DEPLOYMENT_TARGET is None:
+        # Something went wrong
+        sys.exit("Could not determine 'QMAKE_MACOSX_DEPLOYMENT_TARGET', check build scripts")
+    print("Qt macOS deployment target (minimum version): %s" % QT_MACOSX_DEPLOYMENT_TARGET)
+
     plistFile = file(CONTENTS_DIR + "Info.plist", 'w')
     plistFile.write(template % {"BUNDLE_NAME": bundleName,
                                 "ICON_FILE": "quassel.icns",
-                                "BUNDLE_VERSION": bundleVersion})
+                                "BUNDLE_VERSION": bundleVersion,
+                                "QT_MACOSX_DEPLOYMENT_TARGET": QT_MACOSX_DEPLOYMENT_TARGET})
     plistFile.close()
 
 def convertIconset():

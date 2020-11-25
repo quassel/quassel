@@ -87,6 +87,14 @@ esac
 
 echo "Creating macOS disk image with hdiutil: 'Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}'"
 
+# Modern macOS versions support APFS, however default to HFS+ for now in order
+# to ensure old macOS versions can parse the package and display the warning
+# about being out of date.  This mirrors the approach taken by Qt's macdeployqt
+# tool.  In the future if this isn't needed, just remove "-fs HFS+" to revert
+# to default.
+#
+# See https://doc.qt.io/qt-5/macos-deployment.html
+
 # hdiutil seems to have a bit of a reputation for failing to create disk images
 # for various reasons.
 #
@@ -105,7 +113,7 @@ echo "Creating macOS disk image with hdiutil: 'Quassel ${BUILDTYPE} - ${QUASSEL_
 #
 # Option 1:
 
-hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
+hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -fs HFS+ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
 
 # If hdiutil changes over time and fails often, you can try the other option.
 #
@@ -114,7 +122,7 @@ hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -volname "Quassel ${BUIL
 #PACKAGESIZE_MARGIN="1.1"
 #PACKAGESIZE=$(echo "$(du -ms ${PACKAGETMPDIR} | cut -f1) * $PACKAGESIZE_MARGIN" | bc)
 #echo "PACKAGESIZE: $PACKAGESIZE MB"
-#hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -size ${PACKAGESIZE}M -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
+#hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -fs HFS+ -size ${PACKAGESIZE}M -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}${QUASSEL_DMG}" >/dev/null
 
 
 # Regardless of choice, clean up the packaging temporary directory

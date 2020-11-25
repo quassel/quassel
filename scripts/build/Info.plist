@@ -34,5 +34,7 @@
 	<string>© 2005-2020, Quassel IRC Team</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
+	<key>LSMinimumSystemVersion</key>
+	<string>%(QT_MACOSX_DEPLOYMENT_TARGET)s</string>
 </dict>
 </plist>
