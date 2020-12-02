@@ -101,7 +101,18 @@ jobs:
       run: git fetch -f origin $GITHUB_REF:$GITHUB_REF
 
     - name: Install dependencies
-      run: brew update && brew install boost ccache ninja qca qt5
+      # Skip "brew update" as it can trigger 50+ minutes of updating.
+      # GitHub Actions intentionally disables the default auto-update on their
+      # macOS CI images (and macOS CI images usually update once a week).
+      #
+      # See https://github.com/actions/virtual-environments/issues/2173
+      # > We've set no auto-update intentionally here [...]
+      # And https://github.com/microsoft/appcenter/issues/293
+      #
+      # If Homebrew begins failing in the future due to out-of-date versions,
+      # it can be re-enabled here as follows...
+      # run: brew update && [below command]
+      run: brew install boost ccache ninja qca qt5
 
     - name: Get timestamp
       id: get-timestamp
