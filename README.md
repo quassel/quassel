@@ -20,9 +20,7 @@ as well as in this repository's [`ChangeLog`][repo-changelog].
 ## Downloading
 Official, stable downloads are provided on the [Quassel IRC download page](https://quassel-irc.org/downloads).
 
-Automated Windows and macOS builds are available via the [GitHub Actions tab][ci-status-page].  Pick a build, then download the appropriate artifact.
-
-*NOTE: As of this writing, you need to log into GitHub to download the automated builds.  This [issue is being tracked with GitHub](https://github.com/actions/upload-artifact/issues/51 ).*
+Untested, automated builds are available [for Windows](https://nightly.link/quassel/quassel/workflows/main/master/Windows.zip ) and [for macOS](https://nightly.link/quassel/quassel/workflows/main/master/macOS.zip ).  More details at [the nightly.link page](https://nightly.link/quassel/quassel/workflows/main/master ), by `oprypin`.  Or, if you are logged in to GitHub, pick any build from the [GitHub Actions tab][ci-status-page].
 
 Unofficial builds and testing versions are [contributed by several community members](https://bugs.quassel-irc.org/projects/quassel-irc/wiki#Unofficial-builds).
 
