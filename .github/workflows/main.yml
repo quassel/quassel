@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dist: [ debian-stable, debian-testing, ubuntu-xenial, ubuntu-bionic, ubuntu-eoan, ubuntu-focal ]
+        dist: [ debian-stable, debian-testing, ubuntu-xenial, ubuntu-bionic, ubuntu-focal, ubuntu-groovy ]
         cxx: [ 'g++', 'clang++' ]
         with-kde: [ -DWITH_KDE=ON ]
         extra-options: [ -DWITH_WEBENGINE=ON ]
