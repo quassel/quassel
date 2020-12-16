@@ -1,9 +1,11 @@
+/.cache
+/.kdev4
+/.idea
+/.vscode
 /build*
 /cmake-build-*
 *.pyc
 tags
-/.kdev4
-/.idea
 
 # Qt Creator configuration
 CMakeLists.txt.user*
