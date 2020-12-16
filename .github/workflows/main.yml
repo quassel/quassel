@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     container: quassel/quassel-build-env:${{ matrix.dist }}
     strategy:
+      fail-fast: false
       matrix:
         dist: [ debian-stable, debian-testing, ubuntu-xenial, ubuntu-bionic, ubuntu-eoan, ubuntu-focal ]
         cxx: [ gcc, clang++ ]
