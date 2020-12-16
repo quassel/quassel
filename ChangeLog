@@ -13,6 +13,57 @@ changes, the git history at <https://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.14.0 (Unreleased)
+===========================
+
+NOTE:  Database schema format change, no downgrade possible!
+
+* New baseline for minimum build requirements and dependencies: Ubuntu 16.04 "Xenial Xerus"
+  - GCC 5 or Clang 3.4
+  - CMake 3.5
+  - Qt 5.5.0
+* New dependencies:
+  - Boost (v1.54 or later, build-time only)
+  - zlib (bundled miniz has been removed)
+* Remove support for building against Qt4/KDE4
+* Require SSL support in Qt
+* Support many more features of IRCv3
+* Support the HAProxy protocol
+* Provide a daemon providing Prometheus metrics
+* Deprecate local highlight settings (prefer synced ones instead)
+* Improve configuration of SASL PLAIN and EXTERNAL
+* Add button for strike-through format
+* Allow choosing the account to connect to via command-line option
+* Make database schema migration more robust
+* Make backlog fetch more efficient, allow for fetch-on-demand
+* Make syncing and other aspects of the core/client protocol more efficient
+* Make RPC implementation more efficient
+* Improve log output
+* Clean up and modernize large parts of the code base
+  - Replace the Qt 4 string-based connect syntax by function pointers
+  - Fix many clang-tidy findings
+  - Reformat ALL the code using clang-format instead of Uncrustify, with some style changes
+* Modernize build system
+* Support building shared libraries via the ENABLE_SHARED CMake option (defaults to on)
+* Introduce support for (and a small selection of) unit tests via the BUILD_TESTING CMake option
+* Use Github Actions as CI system, replacing Travis and Appveyor
+* Many smaller fixes
+* Improve documentation and UI help
+* Update translations
+
+Version 0.13.1 (2019-02-15)
+===========================
+
+* Fix backlog message fetching that was broken when using Qt4
+* Improve output to syslog
+* Make upgrading the database schema more robust in case of interruption
+* Fix alignment of buttons in the input widget
+* Fix bug where the nicklist would be hidden on first start
+* Allow configuring the listen addresses for the built-in identd (--ident-listen)
+* Honor core options even if it was just configured via environment variables
+* Fix syncing of auto reconnect retries in network settings
+* Update translations
+
 Version 0.13.0 (2018-11-17)
 ===========================
 
@@ -21,7 +72,7 @@ NOTE²: Database migration may take a long time (hours for big databases),
        and temporarily require double the disk space until migration is
        complete!
 
-* Use Qt 5 by default (this will be the last release still supporting Qt4)
+* Use Qt 5 by default (this will be the last feature release still supporting Qt4)
 * New branding (application icon)
 * UI improvements
   - Improve ChatView color settings
