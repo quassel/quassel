@@ -45,7 +45,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -Wvla
         -Werror=return-type
         "$<$<BOOL:${FATAL_WARNINGS}>:-Werror>"
-        -Wno-error=deprecated  # Don't break on Qt upgrades
+        -Wno-error=deprecated-declarations  # Don't break on Qt upgrades
         -Wno-unknown-pragmas
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
     )
