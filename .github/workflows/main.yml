@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         dist: [ debian-stable, debian-testing, ubuntu-xenial, ubuntu-bionic, ubuntu-eoan, ubuntu-focal ]
-        cxx: [ gcc, clang++ ]
+        cxx: [ 'g++', 'clang++' ]
         with-kde: [ -DWITH_KDE=ON ]
         extra-options: [ -DWITH_WEBENGINE=ON ]
         include:
@@ -39,6 +39,7 @@ jobs:
         CCACHE_BASEDIR: ${{ github.workspace }}
         CCACHE_DIR: ${{ github.workspace }}/ccache
         CCACHE_MAXSIZE: 100M
+        CXX: ${{ matrix.cxx }}
 
     steps:
     - name: Check out source code
