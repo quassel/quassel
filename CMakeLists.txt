@@ -180,6 +180,33 @@ set_package_properties(Qt5 PROPERTIES TYPE REQUIRED
 )
 message(STATUS "Found Qt ${Qt5Core_VERSION}")
 
+# Determine minimum deployment target for macOS supported by Qt
+if(APPLE)
+    if(NOT QMAKE_MACOSX_DEPLOYMENT_TARGET)
+        # qmake cannot be queried directly for QMAKE_MACOSX_DEPLOYMENT_TARGET (it is a mkspec, not a property).
+        # Instead, invoke qmake on an empty project file, which causes it to output the relevant keys and their values
+        # for subsequent parsing.
+        # A file named .qmake.stash is always created, so remove it (and empty.pro) afterwards.
+        set(qmakeEmptyProjectFile "${CMAKE_BINARY_DIR}/empty.pro")
+        set(qmakeStashFile "${CMAKE_BINARY_DIR}/.qmake.stash")
+        file(WRITE ${qmakeEmptyProjectFile} "")
+        get_target_property(QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+        execute_process(
+            COMMAND ${QMAKE_EXECUTABLE} -E ${qmakeEmptyProjectFile}
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            OUTPUT_VARIABLE qmakeOutput
+        )
+        file(REMOVE ${qmakeEmptyProjectFile} ${qmakeStashFile})
+        string(REGEX MATCH "QMAKE_MACOSX_DEPLOYMENT_TARGET[ ]*=[ ]*([0-9.]+)" foo ${qmakeOutput})
+        if(NOT CMAKE_MATCH_1)
+            message(FATAL_ERROR "Could not determine the deployment target for Qt")
+        endif()
+        set(QMAKE_MACOSX_DEPLOYMENT_TARGET ${CMAKE_MATCH_1} CACHE INTERNAL "")
+        mark_as_advanced(QMAKE_MACOSX_DEPLOYMENT_TARGET)
+    endif()
+    message(STATUS "Minimum macOS version supported by Qt: ${QMAKE_MACOSX_DEPLOYMENT_TARGET}")
+endif()
+
 # Check for SSL support in Qt
 cmake_push_check_state(RESET)
 set(CMAKE_REQUIRED_LIBRARIES Qt5::Core)
