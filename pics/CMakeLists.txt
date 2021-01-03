@@ -10,3 +10,11 @@ if (WANT_MONO OR WANT_QTCLIENT)
         qt-logo-32.png
     )
 endif()
+
+# On macOS, the individual icons should be converted into an iconset
+add_custom_command(
+    COMMENT "Creating iconset for macOS"
+    OUTPUT quassel.icns
+    COMMAND iconutil ARGS -c icns -o ${CMAKE_CURRENT_BINARY_DIR}/quassel.icns ${CMAKE_CURRENT_SOURCE_DIR}/quassel.iconset
+)
+add_custom_target(MacOsIcons DEPENDS quassel.icns)
