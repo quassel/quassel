@@ -91,6 +91,143 @@ function(quassel_add_module _module)
 endfunction()
 
 ###################################################################################################
+# Adds an executable target for Quassel.
+#
+# quassel_add_executable(<target> COMPONENT <Core|Client|Mono> [SOURCES src1 src2...] [LIBRARIES lib1 lib2...])
+#
+# This function supports the creation of either of the three hardcoded executable targets: Core, Client, and Mono.
+# Given sources and libraries are added to the target.
+#
+# On macOS, the creation of bundles and corresponding DMG files is supported and can be enabled by setting the
+# BUNDLE option to ON.
+#
+function(quassel_add_executable _target)
+    set(options)
+    set(oneValueArgs COMPONENT)
+    set(multiValueArgs SOURCES LIBRARIES)
+    cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    # Set up some hard-coded data based on the component to be built
+    if(ARG_COMPONENT STREQUAL "Core")
+        set(DEFINE BUILD_CORE)
+        set(WIN32 FALSE)
+        set(BUNDLE_NAME "Quassel Core")
+    elseif(ARG_COMPONENT STREQUAL "Client")
+        set(DEFINE BUILD_QTUI)
+        set(WIN32 TRUE)
+        set(BUNDLE_NAME "Quassel Client")
+    elseif(ARG_COMPONENT STREQUAL "Mono")
+        set(DEFINE BUILD_MONO)
+        set(WIN32 TRUE)
+        set(BUNDLE_NAME "Quassel")
+    else()
+        message(FATAL_ERROR "quassel_executable requires a COMPONENT argument with one of the values 'Core', 'Client' or 'Mono'")
+    endif()
+
+    add_executable(${_target} ${ARG_SOURCES})
+    set_property(TARGET ${_target} APPEND PROPERTY COMPILE_DEFINITIONS ${DEFINE})
+    set_target_properties(${_target} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+        WIN32_EXECUTABLE ${WIN32}  # Ignored on non-Windows platforms
+    )
+    target_link_libraries(${_target} PUBLIC ${ARG_LIBRARIES})  # Link publicly, so plugin detection for bundles work
+
+    # Prepare bundle creation on macOS
+    if(APPLE AND BUNDLE)
+        set(BUNDLE_PATH "${CMAKE_INSTALL_PREFIX}/${BUNDLE_NAME}.app")
+        set(DMG_PATH "${CMAKE_INSTALL_PREFIX}/Quassel${ARG_COMPONENT}_MacOSX-x86_64_${QUASSEL_VERSION_STRING}.dmg")
+
+        # Generate an appropriate Info.plist
+        set(BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/Info_${ARG_COMPONENT}.plist")
+        configure_file(${CMAKE_SOURCE_DIR}/cmake/MacOSXBundleInfo.plist.in ${BUNDLE_INFO_PLIST} @ONLY)
+
+        # Set some bundle-specific properties
+        set_target_properties(${_target} PROPERTIES
+            MACOSX_BUNDLE TRUE
+            MACOSX_BUNDLE_INFO_PLIST "${BUNDLE_INFO_PLIST}"
+            OUTPUT_NAME "${BUNDLE_NAME}"
+        )
+    endif()
+
+    # Install main target; this will also create an initial bundle skeleton if appropriate
+    install(TARGETS ${_target}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX}  # Ignored when not creating a bundle
+        COMPONENT ${ARG_COMPONENT}
+    )
+
+    # Once the bundle skeleton has been created and the main executable installed, finalize bundle creation and build DMGs
+    if(APPLE AND BUNDLE)
+        # We cannot rely on Qt's macdeployqt for deploying plugins, because it will unconditionally install a bunch of unneeded ones,
+        # dragging in unwanted dependencies.
+        # Instead, transitively determine all Qt modules that the Quassel executable links against, and deploy only the plugins belonging
+        # to those modules.
+        # macdeployqt will take care of fixing up dependencies afterwards.
+        function(find_transitive_link_deps target var)
+            if(TARGET ${target})
+                get_target_property(libs ${target} LINK_LIBRARIES)
+                if(libs)
+                    foreach(lib IN LISTS libs)
+                        if(NOT lib IN_LIST ${var})
+                            list(APPEND ${var} ${lib})
+                            find_transitive_link_deps(${lib} ${var})
+                        endif()
+                    endforeach()
+                endif()
+                set(${var} ${${var}} PARENT_SCOPE)
+            endif()
+        endfunction()
+
+        find_transitive_link_deps(${_target} link_deps)
+        # TODO CMake 3.6: use list(FILTER...)
+        foreach(dep IN LISTS link_deps)
+            if(${dep} MATCHES "^Qt5::.*")
+                list(APPEND qt_deps ${dep})
+            endif()
+        endforeach()
+
+        foreach(module IN LISTS qt_deps)
+            string(REPLACE "::" "" module ${module})
+            foreach(plugin ${${module}_PLUGINS})
+                install(
+                    FILES $<TARGET_PROPERTY:${plugin},LOCATION>
+                    DESTINATION ${BUNDLE_PATH}/Contents/PlugIns/$<TARGET_PROPERTY:${plugin},QT_PLUGIN_TYPE>
+                    COMPONENT ${ARG_COMPONENT}
+                )
+            endforeach()
+        endforeach()
+
+        # Generate iconset and deploy it as well as a qt.conf enabling plugins
+        add_dependencies(${_target} MacOsIcons)
+        install(
+            FILES ${CMAKE_SOURCE_DIR}/data/qt.conf ${CMAKE_BINARY_DIR}/pics/quassel.icns
+            DESTINATION ${BUNDLE_PATH}/Contents/Resources
+            COMPONENT ${ARG_COMPONENT}
+        )
+
+        # Determine the location of macdeployqt. Not available directly via CMake, so look for it in qmake's bindir...
+        get_target_property(QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+        get_filename_component(qt_bin_dir ${QMAKE_EXECUTABLE} DIRECTORY)
+        find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS ${qt_bin_dir} REQUIRED)
+
+        # Generate and invoke post-install script, finalizing the bundle and creating a DMG image
+        #set(BUNDLE_PATH $ENV{DESTDIR}/${BUNDLE_PATH})
+        configure_file(${CMAKE_SOURCE_DIR}/cmake/FinalizeBundle.cmake.in ${CMAKE_BINARY_DIR}/FinalizeBundle_${ARG_COMPONENT}.cmake @ONLY)
+        install(CODE "
+                execute_process(
+                    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/FinalizeBundle_${ARG_COMPONENT}.cmake
+                    RESULT_VARIABLE result
+                )
+                if(NOT result EQUAL 0)
+                    message(FATAL_ERROR \"Finalizing bundle failed.\")
+                endif()
+            "
+            COMPONENT ${ARG_COMPONENT}
+        )
+    endif()
+endfunction()
+
+###################################################################################################
 # Provides a library that contains data files as a Qt resource (.qrc).
 #
 # quassel_add_resource(QrcName

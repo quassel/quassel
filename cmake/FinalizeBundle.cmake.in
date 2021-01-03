@@ -1,0 +1,63 @@
+include(BundleUtilities)
+
+# After the relevant targets, support files, as well as plugins have already been installed into the bundle structure,
+# the bundle must still be made standalone by copying the required frameworks and making them position-independent.
+# This is generally called "fixing up" the bundle.
+#
+# Principally there are two ways to do that: Qt's official macdeployqt tool, and CMake's BundleUtilities.
+#
+# Some frameworks, in particular QtWebEngineCore, come with nested bundles. In order for them to work correctly, the Frameworks directory
+# from the main bundle must be symlinked into the nested bundle, otherwise dependencies cannot be resolved.
+# Neither macdeployqt (shockingly) nor BundleUtilities can handle this properly. The former simply ignores nested bundles and thus
+# does not fix them up at all. The latter scans for additional binaries and tries fixing them up, but there is no way to inject
+# creation of the Frameworks symlink between the copy and the fixup steps.
+#
+# The working solution implemented here is to first run macdeployqt (which also handles some Qt-specific quirks), then symlink Frameworks
+# into the nested bundles (if any), then use BundleUtilities to perform the remaining fixups and verify the bundle.
+
+# Since we're in the install phase, DESTDIR might be set
+set(BUNDLE_PATH "$ENV{DESTDIR}@BUNDLE_PATH@")
+set(DMG_PATH    "$ENV{DESTDIR}@DMG_PATH@")
+
+# First, use Qt's official tool, macdeployqt, for deploying the needed Qt Frameworks into the bundle
+message(STATUS "Deploying Qt Frameworks in bundle \"${BUNDLE_PATH}\"")
+execute_process(
+    # Don't deploy plugins - we've already installed the selection relevant for our target!
+    COMMAND @MACDEPLOYQT_EXECUTABLE@ "${BUNDLE_PATH}" -verbose=1 -no-plugins
+    RESULT_VARIABLE result
+)
+if(NOT result EQUAL 0)
+    message(FATAL_ERROR "Deploying Qt Frameworks failed.")
+endif()
+
+# Scan for nested bundles and symlink the main bundle's Frameworks directory into them
+message(STATUS "Checking for nested bundles")
+execute_process(
+    COMMAND find "${BUNDLE_PATH}" -mindepth 1 -type d -name "*.app"
+    OUTPUT_VARIABLE nested_bundles
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+if(nested_bundles)
+    string(REPLACE "\n" ";" nested_bundles ${nested_bundles})
+    foreach(nested_bundle IN LISTS nested_bundles)
+        message(STATUS "Symlinking Frameworks into nested bundle \"${nested_bundle}\"")
+        file(RELATIVE_PATH path "${nested_bundle}/Contents" "${BUNDLE_PATH}/Contents/Frameworks")
+        execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${path}" "${nested_bundle}/Contents/Frameworks")
+    endforeach()
+else()
+    message("Checking for nested bundles - none found")
+endif()
+
+# Now fixup the whole thing using CMake's own tooling, which (unlike macdeployqt) will take care of any additional internal executables
+message(STATUS "Fixing up bundle...")
+fixup_bundle("${BUNDLE_PATH}" "" "")
+
+# Create the DMG image
+message(STATUS "Creating DMG image...")
+execute_process(
+    COMMAND hdiutil create "${DMG_PATH}" -srcfolder "${BUNDLE_PATH}" -format "UDBZ" -fs "HFS+" -volname "Quassel IRC"
+    RESULT_VARIABLE result
+)
+if(NOT result EQUAL 0)
+    message(FATAL_ERROR "Creating DMG image failed.")
+endif()

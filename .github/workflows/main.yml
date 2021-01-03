@@ -142,24 +142,25 @@ jobs:
         mkdir build
         cd build && cmake $GITHUB_WORKSPACE \
                           -GNinja \
+                          -DWANT_CORE=ON \
+                          -DWANT_QTCLIENT=ON \
+                          -DWANT_MONO=ON \
                           -DCMAKE_PREFIX_PATH=/usr/local/opt/qt/lib/cmake \
+                          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/bundles \
                           -DCMAKE_BUILD_TYPE=Release \
                           -DBUILD_TESTING=ON \
                           -DFATAL_WARNINGS=OFF \
-                          -DDEPLOY=ON \
-                          -DENABLE_SHARED=OFF
+                          -DENABLE_SHARED=OFF \
+                          -DBUNDLE=ON \
 
     - name: Build
-      run: |
-        # Deploy scripts require qmake in the path
-        export PATH=$PATH:/usr/local/opt/qt5/bin
-        cd build && ninja
+      run: cd build && ninja
 
     - name: Run tests
       run: cd build && ctest
 
     - name: Install
-      run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
+      run: cd build && ninja install
 
     - name: Print ccache stats
       run: ccache -s
@@ -168,7 +169,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: macOS
-        path: ${{ github.workspace }}/build/*.dmg
+        path: ${{ github.workspace }}/bundles/*.dmg
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
   build-windows:
