@@ -1,5 +1,4 @@
 add_subdirectory(common)
-add_subdirectory(main)
 if (BUILD_CORE)
     add_subdirectory(core)
 endif()
@@ -12,3 +11,5 @@ endif()
 if (BUILD_TESTING)
     add_subdirectory(test)
 endif()
+
+add_subdirectory(main)

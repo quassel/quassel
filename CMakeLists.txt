@@ -93,6 +93,10 @@ if (APPLE)
     find_library(CARBON_LIBRARY Carbon)
     mark_as_advanced(CARBON_LIBRARY)
     link_libraries(${CARBON_LIBRARY})
+
+    # Whether to enable the creation of bundles and DMG images
+    cmake_dependent_option(BUNDLE "Create bundles and DMG images" OFF "APPLE" OFF)
+    add_feature_info(BUNDLE BUNDLE "Create bundles and DMG images")
 endif()
 
 # Always embed on Windows or OSX; never embed when enabling KDE integration
@@ -101,14 +105,13 @@ if (WIN32 OR APPLE)
     set(EMBED_DEFAULT ON)
 endif()
 cmake_dependent_option(EMBED_DATA "Embed icons and translations into the binaries instead of installing them" ${EMBED_DEFAULT}
-                                   "NOT WIN32;NOT WITH_KDE" ${EMBED_DEFAULT})
+                                  "NOT WIN32;NOT WITH_KDE" ${EMBED_DEFAULT})
 if (NOT EMBED_DEFAULT)
     add_feature_info(EMBED_DATA EMBED_DATA "Embed icons and translations in the binaries instead of installing them")
 endif()
 
-# The following options are not for end-user consumption, so don't list them in the feature summary
+# The following option is not for end-user consumption, so don't list it in the feature summary
 option(FATAL_WARNINGS "Make compile warnings fatal (most useful for CI builds)" OFF)
-cmake_dependent_option(DEPLOY "Add required libs to bundle resources and create a dmg" OFF "APPLE" OFF)
 
 # List of authenticators and the cmake flags to build them
 # (currently that's just LDAP, but more can be added here).

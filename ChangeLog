@@ -47,6 +47,7 @@ NOTE:  Database schema format change, no downgrade possible!
 * Support building shared libraries via the ENABLE_SHARED CMake option (defaults to on)
 * Introduce support for (and a small selection of) unit tests via the BUILD_TESTING CMake option
 * Use Github Actions as CI system, replacing Travis and Appveyor
+* Revamp bundle/DMG creation on macOS
 * Many smaller fixes
 * Improve documentation and UI help
 * Update translations
