@@ -1652,7 +1652,7 @@ Message::Types SqliteStorage::bufferActivity(BufferId bufferId, MsgId lastSeenMs
     QSqlDatabase db = logDb();
     db.transaction();
 
-    Message::Types result = Message::Types(nullptr);
+    Message::Types result{};
     {
         QSqlQuery query(db);
         query.prepare(queryString("select_buffer_bufferactivity"));
