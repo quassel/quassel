@@ -21,6 +21,7 @@
 #include "sslserver.h"
 
 #include <QDateTime>
+#include <QSslConfiguration>
 #include <QSslSocket>
 
 #include "core.h"
@@ -62,9 +63,13 @@ void SslServer::incomingConnection(qintptr socketDescriptor)
     auto* socket = new QSslSocket(this);
     if (socket->setSocketDescriptor(socketDescriptor)) {
         if (isCertValid()) {
-            socket->setLocalCertificate(_cert);
-            socket->setPrivateKey(_key);
-            socket->addCaCertificates(_ca);
+            auto config = socket->sslConfiguration();
+            config.setLocalCertificate(_cert);
+            config.setPrivateKey(_key);
+            auto certificates = config.caCertificates();
+            certificates += _ca;
+            config.setCaCertificates(certificates);
+            socket->setSslConfiguration(config);
         }
         addPendingConnection(socket);
     }
@@ -215,7 +220,8 @@ QSslKey SslServer::loadKey(QFile* keyFile)
     return key;
 }
 
-void SslServer::setMetricsServer(MetricsServer* metricsServer) {
+void SslServer::setMetricsServer(MetricsServer* metricsServer)
+{
     _metricsServer = metricsServer;
     if (_metricsServer) {
         _metricsServer->setCertificateExpires(_certificateExpires);
