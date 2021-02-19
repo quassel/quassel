@@ -73,13 +73,13 @@ QByteArray Cipher::decrypt(QByteArray cipherText)
     bool error = false;  // used to flag non cbc, seems like good practice not to parse w/o regard for set encryption type
 
     // if we get cbc
-    if (cipherText.mid(0, 5) == "+OK *") {
+    if (cipherText.mid(0, 5) == "+OK *" || cipherText.mid(0, 6) == "mcps *") {
         // if we have cbc
         if (m_cbc)
-            cipherText = cipherText.mid(5);
+            cipherText = (cipherText.mid(0, 5) == "+OK *") ? cipherText.mid(5) : cipherText.mid(6);
         // if we don't
         else {
-            cipherText = cipherText.mid(5);
+            cipherText = (cipherText.mid(0, 5) == "+OK *") ? cipherText.mid(5) : cipherText.mid(6);
             pfx = "ERROR_NONECB: ";
             error = true;
         }
