@@ -54,9 +54,11 @@ QString IrcDecoder::parseTagValue(const QString& value)
                 result.append(*it);
             }
             escaped = false;
-        } else if (it->unicode() == '\\') {
+        }
+        else if (it->unicode() == '\\') {
             escaped = true;
-        } else {
+        }
+        else {
             result.append(*it);
         }
     }
@@ -125,9 +127,15 @@ QHash<IrcTagKey, QString> IrcDecoder::parseTags(const std::function<QString(cons
         if (key.clientTag) {
             rawKey.remove(0, 1);
         }
-        QList<QString> splitByVendorAndKey = rawKey.split('/');
-        if (!splitByVendorAndKey.isEmpty()) key.key = splitByVendorAndKey.takeLast();
-        if (!splitByVendorAndKey.isEmpty()) key.vendor = splitByVendorAndKey.takeLast();
+
+        int splitIndex = rawKey.lastIndexOf('/');
+        if (splitIndex > 0 && splitIndex + 1 < rawKey.length()) {
+            key.key = rawKey.mid(splitIndex + 1);
+            key.vendor = rawKey.left(splitIndex);
+        }
+        else {
+            key.key = rawKey;
+        }
         tags[key] = parseTagValue(rawValue);
     }
     return tags;
@@ -155,7 +163,12 @@ QByteArray IrcDecoder::parseParameter(const QByteArray& raw, int& start)
     }
 }
 
-void IrcDecoder::parseMessage(const std::function<QString(const QByteArray&)>& decode, const QByteArray& rawMsg, QHash<IrcTagKey, QString>& tags, QString& prefix, QString& command, QList<QByteArray>& parameters)
+void IrcDecoder::parseMessage(const std::function<QString(const QByteArray&)>& decode,
+                              const QByteArray& rawMsg,
+                              QHash<IrcTagKey, QString>& tags,
+                              QString& prefix,
+                              QString& command,
+                              QList<QByteArray>& parameters)
 {
     int start = 0;
     skipEmptyParts(rawMsg, start);
@@ -170,7 +183,6 @@ void IrcDecoder::parseMessage(const std::function<QString(const QByteArray&)>& d
         QByteArray param = parseParameter(rawMsg, start);
         skipEmptyParts(rawMsg, start);
         params.append(param);
-
     }
     parameters = params;
 }
