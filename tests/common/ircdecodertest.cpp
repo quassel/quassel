@@ -150,6 +150,30 @@ TEST(IrcDecoderTest, with_tags)
                           {IrcTagKey("rt"), "ql7"}},
                          "",
                          "foo"));
+
+    EXPECT_EQ(parse("@a=b foo"),
+              IrcMessage(
+                  {{IrcTagKey("a"),  "b"}},
+                  "",
+                  "foo"));
+
+    EXPECT_EQ(parse("@example.com/a=b foo"),
+              IrcMessage(
+                  {{IrcTagKey("example.com", "a"),  "b"}},
+                  "",
+                  "foo"));
+
+    EXPECT_EQ(parse("@example.com/subfolder/to/a=b foo"),
+              IrcMessage(
+                  {{IrcTagKey("example.com/subfolder/to", "a"),  "b"}},
+                  "",
+                  "foo"));
+
+    EXPECT_EQ(parse("@v\\/e\\/n\\/d\\/o\\/r/tag=b foo"),
+              IrcMessage(
+                  {{IrcTagKey("v\\/e\\/n\\/d\\/o\\/r", "tag"),  "b"}},
+                  "",
+                  "foo"));
 }
 
 TEST(IrcDecoderTest, with_escaped_tags)

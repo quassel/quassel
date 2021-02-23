@@ -208,6 +208,34 @@ TEST(IrcEncoderTest, tags_with_no_value_and_space_filled_trailing)
                          {"bar", "baz", "  "})).data());
 }
 
+TEST(IrcEncoderTest, tags_with_invalid_vendor)
+{
+    EXPECT_STRCASEEQ(
+        "@a=b foo",
+        write(IrcMessage(
+            {{IrcTagKey("a"),  "b"}},
+            "",
+            "foo")).data());
+    EXPECT_STRCASEEQ(
+        "@example.com/a=b foo",
+        write(IrcMessage(
+            {{IrcTagKey("example.com", "a"),  "b"}},
+            "",
+            "foo")).data());
+    EXPECT_STRCASEEQ(
+        "@example.com/subfolder/to/a=b foo",
+        write(IrcMessage(
+            {{IrcTagKey("example.com/subfolder/to", "a"),  "b"}},
+            "",
+            "foo")).data());
+    EXPECT_STRCASEEQ(
+        "@v\\/e\\/n\\/d\\/o\\/r/tag=b foo",
+        write(IrcMessage(
+            {{IrcTagKey("v\\/e\\/n\\/d\\/o\\/r", "tag"),  "b"}},
+            "",
+            "foo")).data());
+}
+
 TEST(IrcEncoderTest, tags_with_escaped_values)
 {
     std::vector<std::string> expected{
