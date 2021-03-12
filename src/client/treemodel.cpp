@@ -45,7 +45,6 @@ private:
 AbstractTreeItem::AbstractTreeItem(AbstractTreeItem* parent)
     : QObject(parent)
     , _flags(Qt::ItemIsSelectable | Qt::ItemIsEnabled)
-    , _treeItemFlags(nullptr)
 {}
 
 bool AbstractTreeItem::newChild(AbstractTreeItem* item)
@@ -102,7 +101,7 @@ void AbstractTreeItem::removeAllChilds()
     childIter = _childItems.begin();
     while (childIter != _childItems.end()) {
         child = *childIter;
-        child->setTreeItemFlags(nullptr);  // disable self deletion, as this would only fuck up consitency and the child gets deleted anyways
+        child->setTreeItemFlags({});  // disable self deletion, as this would only fuck up consitency and the child gets deleted anyways
         child->removeAllChilds();
         ++childIter;
     }

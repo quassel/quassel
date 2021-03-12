@@ -87,8 +87,8 @@ protected:
 
 private:
     QList<AbstractTreeItem*> _childItems;
-    Qt::ItemFlags _flags;
-    TreeItemFlags _treeItemFlags;
+    Qt::ItemFlags _flags{};
+    TreeItemFlags _treeItemFlags{};
 
     void removeChildLater(AbstractTreeItem* child);
     inline void checkForDeletion()
