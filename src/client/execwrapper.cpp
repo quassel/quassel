@@ -22,6 +22,7 @@
 
 #include <QFile>
 #include <QTextCodec>
+#include <QRegularExpression>
 
 #include "client.h"
 #include "messagemodel.h"
@@ -47,28 +48,32 @@ ExecWrapper::ExecWrapper(QObject* parent)
 void ExecWrapper::start(const BufferInfo& info, const QString& command)
 {
     _bufferInfo = info;
-    QString params;
+    _scriptName.clear();
 
-    QRegExp rx(R"(^\s*(\S+)(\s+(.*))?$)");
-    if (!rx.exactMatch(command)) {
+    QStringList params;
+
+    static const QRegularExpression rx{R"(^\s*(\S+)(\s+(.*))?$)"};
+    auto match = rx.match(command);
+    if (!match.hasMatch()) {
         emit error(tr("Invalid command string for /exec: %1").arg(command));
     }
     else {
-        _scriptName = rx.cap(1);
-        params = rx.cap(3);
+        _scriptName = match.captured(1);
+        static const QRegularExpression splitRx{"\\s+"};
+        params = match.captured(3).split(splitRx, QString::SkipEmptyParts);
     }
 
     // Make sure we don't execute something outside a script dir
-    if (_scriptName.contains("../") || _scriptName.contains("..\\"))
+    if (_scriptName.contains("../") || _scriptName.contains("..\\")) {
         emit error(tr(R"(Name "%1" is invalid: ../ or ..\ are not allowed!)").arg(_scriptName));
-
-    else {
+    }
+    else if (!_scriptName.isEmpty()) {
         foreach (QString scriptDir, Quassel::scriptDirPaths()) {
             QString fileName = scriptDir + _scriptName;
             if (!QFile::exists(fileName))
                 continue;
             _process.setWorkingDirectory(scriptDir);
-            _process.start('"' + fileName + "\" " + params);
+            _process.start(_scriptName, params);
             return;
         }
         emit error(tr("Could not find script \"%1\"").arg(_scriptName));
