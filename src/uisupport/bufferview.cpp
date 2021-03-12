@@ -728,7 +728,7 @@ BufferViewDock::BufferViewDock(BufferViewConfig* config, QWidget* parent)
 void BufferViewDock::setLocked(bool locked)
 {
     if (locked) {
-        setFeatures(nullptr);
+        setFeatures({});
     }
     else {
         setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);

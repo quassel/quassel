@@ -30,7 +30,7 @@ class IrcConnectionWizard : public QWizard
     Q_OBJECT
 
 public:
-    IrcConnectionWizard(QWidget* parent = nullptr, Qt::WindowFlags flags = nullptr);
+    IrcConnectionWizard(QWidget* parent = nullptr, Qt::WindowFlags flags = {});
 
     static QWizardPage* createIntroductionPage(QWidget* parent = nullptr);
 
