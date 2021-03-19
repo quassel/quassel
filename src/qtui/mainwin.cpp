@@ -923,12 +923,12 @@ void MainWin::showNotificationsDlg()
 
 void MainWin::onConfigureNetworksTriggered()
 {
-    SettingsPageDlg{new NetworksSettingsPage{}}.exec();
+    SettingsPageDlg{new NetworksSettingsPage{}, this}.exec();
 }
 
 void MainWin::onConfigureViewsTriggered()
 {
-    SettingsPageDlg{new BufferViewSettingsPage{}}.exec();
+    SettingsPageDlg{new BufferViewSettingsPage{}, this}.exec();
 }
 
 void MainWin::onLockLayoutToggled(bool lock)
@@ -1519,7 +1519,7 @@ void MainWin::awayLogDestroyed()
 
 void MainWin::showSettingsDlg()
 {
-    auto dlg = new SettingsDlg();
+    auto dlg = new SettingsDlg(this);
 
     // Category: Interface
     dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
@@ -1564,7 +1564,7 @@ void MainWin::showSettingsDlg()
 
 void MainWin::showAboutDlg()
 {
-    AboutDlg{}.exec();
+    AboutDlg{this}.exec();
 }
 
 void MainWin::showShortcutsDlg()
@@ -1576,7 +1576,7 @@ void MainWin::showShortcutsDlg()
     }
     dlg.configure(true);
 #else
-    SettingsPageDlg{new ShortcutsSettingsPage{QtUi::actionCollections()}}.exec();
+    SettingsPageDlg{new ShortcutsSettingsPage{QtUi::actionCollections()}, this}.exec();
 #endif
 }
 
