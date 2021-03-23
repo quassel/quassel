@@ -238,7 +238,7 @@ NickListDock::NickListDock(const QString& title, QWidget* parent)
 void NickListDock::setLocked(bool locked)
 {
     if (locked) {
-        setFeatures(nullptr);
+        setFeatures({});
     }
     else {
         setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);

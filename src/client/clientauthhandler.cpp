@@ -410,7 +410,11 @@ void ClientAuthHandler::onSslSocketEncrypted()
     auto* socket = qobject_cast<QSslSocket*>(sender());
     Q_ASSERT(socket);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
     if (!socket->sslErrors().count()) {
+#else
+    if (!socket->sslHandshakeErrors().count()) {
+#endif
         // Cert is valid, so we don't want to store it as known
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;

@@ -67,12 +67,19 @@ void SslInfoDlg::setCurrentCert(int index)
     ui.issuerState->setText(issuerInfo(cert, QSslCertificate::StateOrProvinceName));
     ui.issuerCity->setText(issuerInfo(cert, QSslCertificate::LocalityName));
 
-    if (socket()->sslErrors().isEmpty())
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    const auto& sslErrors = socket()->sslErrors();
+#else
+    const auto& sslErrors = socket()->sslHandshakeErrors();
+#endif
+    if (sslErrors.isEmpty()) {
         ui.trusted->setText(tr("Yes"));
+    }
     else {
         QString errorString = tr("No, for the following reasons:<ul>");
-        foreach (const QSslError& error, socket()->sslErrors())
+        for (const auto& error : sslErrors) {
             errorString += "<li>" + error.errorString() + "</li>";
+        }
         errorString += "</ul>";
         ui.trusted->setText(errorString);
     }

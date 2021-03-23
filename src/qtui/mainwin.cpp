@@ -1384,8 +1384,14 @@ void MainWin::handleNoSslInCore(bool* accepted)
 void MainWin::handleSslErrors(const QSslSocket* socket, bool* accepted, bool* permanently)
 {
     QString errorString = "<ul>";
-    foreach (const QSslError error, socket->sslErrors())
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    for (const auto& error : socket->sslErrors()) {
+#else
+    for (const auto& error : socket->sslHandshakeErrors()) {
+#endif
         errorString += QString("<li>%1</li>").arg(error.errorString());
+    }
     errorString += "</ul>";
 
     QMessageBox box(QMessageBox::Warning,
