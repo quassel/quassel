@@ -1,0 +1,163 @@
+// "Quassel Classic" stylesheet for Quassel IRC
+// written by elbryan <fabiano 'dot' francesconi 'at' gmail 'dot' com>
+
+// Basics
+ChatLine {
+  foreground: palette(text);
+}
+
+ChatLine[label="highlight"] {
+  background: #FDBF78;
+}
+
+ChatLine::sender[label="highlight"] {
+  background: #FDBF78;
+  font-weight:bold;
+  foreground: #aa000;  
+}
+
+ChatLine[label="selected"] {
+  foreground: palette(highlighted-text);
+  background: palette(highlight);
+}
+
+ChatLine::sender {
+  foreground: #0000aa;
+}
+
+ChatLine::sender[sender="self"] {
+  font-style: italic;
+  foreground: #0000ff;
+}
+
+ChatLine[sender="self"] { foreground: #323232; }
+
+ChatLine::timestamp { foreground: #707c70; }
+ChatLine::timestamp[sender="self"] { foreground: #707c70; }
+ChatLine::timestamp[label="highlight"] { foreground: #000000; }
+
+Palette { marker-line: #ff0000; }
+
+ChatLine::url { foreground: #3a42e6; }
+ChatLine::url[sender="self"] { foreground: #3a42e6; }
+ChatLine::url[label="highlight"] { foreground: #3a42e6; }
+
+//ChatLine::nick { font-weight: bold; }
+ChatLine::nick[sender="self"] { font-weight: bold; }
+ChatLine::nick[label="highlight"] { foreground: #0000aa; }
+
+// mIRC colors
+ChatLine[fg-color="00"] { foreground: #ffffff; }
+ChatLine[bg-color="00"] { background: #ffffff; }
+ChatLine[fg-color="01"] { foreground: #000000; }
+ChatLine[bg-color="01"] { background: #000000; }
+ChatLine[fg-color="02"] { foreground: #000080; }
+ChatLine[bg-color="02"] { background: #000080; }
+ChatLine[fg-color="03"] { foreground: #008000; }
+ChatLine[bg-color="03"] { background: #008000; }
+ChatLine[fg-color="04"] { foreground: #ff0000; }
+ChatLine[bg-color="04"] { background: #ff0000; }
+ChatLine[fg-color="05"] { foreground: #800000; }
+ChatLine[bg-color="05"] { background: #800000; }
+ChatLine[fg-color="06"] { foreground: #800080; }
+ChatLine[bg-color="06"] { background: #800080; }
+ChatLine[fg-color="07"] { foreground: #ffa500; }
+ChatLine[bg-color="07"] { background: #ffa500; }
+ChatLine[fg-color="08"] { foreground: #ffff00; }
+ChatLine[bg-color="08"] { background: #ffff00; }
+ChatLine[fg-color="09"] { foreground: #00ff00; }
+ChatLine[bg-color="09"] { background: #00ff00; }
+ChatLine[fg-color="0a"] { foreground: #008080; }
+ChatLine[bg-color="0a"] { background: #008080; }
+ChatLine[fg-color="0b"] { foreground: #00ffff; }
+ChatLine[bg-color="0b"] { background: #00ffff; }
+ChatLine[fg-color="0c"] { foreground: #4169e1; }
+ChatLine[bg-color="0c"] { background: #4169e1; }
+ChatLine[fg-color="0d"] { foreground: #ff00ff; }
+ChatLine[bg-color="0d"] { background: #ff00ff; }
+ChatLine[fg-color="0e"] { foreground: #808080; }
+ChatLine[bg-color="0e"] { background: #808080; }
+ChatLine[fg-color="0f"] { foreground: #c0c0c0; }
+ChatLine[bg-color="0f"] { background: #c0c0c0; }
+
+    // for sender
+    ChatLine[fg-color="00", sender="self"] { foreground: #ffffff; }
+    ChatLine[bg-color="00", sender="self"] { background: #ffffff; }
+    ChatLine[fg-color="01", sender="self"] { foreground: #000000; }
+    ChatLine[bg-color="01", sender="self"] { background: #000000; }
+    ChatLine[fg-color="02", sender="self"] { foreground: #000080; }
+    ChatLine[bg-color="02", sender="self"] { background: #000080; }
+    ChatLine[fg-color="03", sender="self"] { foreground: #008000; }
+    ChatLine[bg-color="03", sender="self"] { background: #008000; }
+    ChatLine[fg-color="04", sender="self"] { foreground: #ff0000; }
+    ChatLine[bg-color="04", sender="self"] { background: #ff0000; }
+    ChatLine[fg-color="05", sender="self"] { foreground: #800000; }
+    ChatLine[bg-color="05", sender="self"] { background: #800000; }
+    ChatLine[fg-color="06", sender="self"] { foreground: #800080; }
+    ChatLine[bg-color="06", sender="self"] { background: #800080; }
+    ChatLine[fg-color="07", sender="self"] { foreground: #ffa500; }
+    ChatLine[bg-color="07", sender="self"] { background: #ffa500; }
+    ChatLine[fg-color="08", sender="self"] { foreground: #ffff00; }
+    ChatLine[bg-color="08", sender="self"] { background: #ffff00; }
+    ChatLine[fg-color="09", sender="self"] { foreground: #00ff00; }
+    ChatLine[bg-color="09", sender="self"] { background: #00ff00; }
+    ChatLine[fg-color="0a", sender="self"] { foreground: #008080; }
+    ChatLine[bg-color="0a", sender="self"] { background: #008080; }
+    ChatLine[fg-color="0b", sender="self"] { foreground: #00ffff; }
+    ChatLine[bg-color="0b", sender="self"] { background: #00ffff; }
+    ChatLine[fg-color="0c", sender="self"] { foreground: #4169e1; }
+    ChatLine[bg-color="0c", sender="self"] { background: #4169e1; }
+    ChatLine[fg-color="0d", sender="self"] { foreground: #ff00ff; }
+    ChatLine[bg-color="0d", sender="self"] { background: #ff00ff; }
+    ChatLine[fg-color="0e", sender="self"] { foreground: #808080; }
+    ChatLine[bg-color="0e", sender="self"] { background: #808080; }
+    ChatLine[fg-color="0f", sender="self"] { foreground: #c0c0c0; }
+    ChatLine[bg-color="0f", sender="self"] { background: #c0c0c0; }
+
+// mIRC formats
+ChatLine[format="bold"]      { font-weight: bold;}
+ChatLine[format="italic"]    { font-style: italic; }
+ChatLine[format="underline"] { font-style: underline; }
+
+    // for sender
+    ChatLine[format="bold", sender="self"]      { foreground: #323232; font-weight: bold; }
+    ChatLine[format="italic", sender="self"]    { foreground: #323232; font-style: italic; }
+    ChatLine[format="underline", sender="self"] { foreground: #323232; font-style: underline; }
+
+// ChatView message colors
+ChatLine#notice { foreground: #916409; }
+
+ChatLine#action { foreground: #000088; }
+
+ChatLine::nick#action[label="highlight"] {
+  foreground: #323232; 
+  font-weight: bold;
+}
+
+ChatLine#nick { foreground: #917b3a; }
+ChatLine#mode { foreground: #ff7700; }
+ChatLine#join { foreground: #009600; }
+ChatLine#part { foreground: #b32626; }
+ChatLine#quit { foreground: #990000; }
+ChatLine#kick { foreground: #990000; }
+ChatLine#kill { foreground: #990000; }
+ChatLine#server { foreground: #916409; }
+ChatLine#info { foreground: #916409; }
+ChatLine#error { foreground: #916409; }
+ChatLine#daychange { foreground: #ff0000; }
+ChatLine#topic { foreground: #d47d31; }
+
+// BufferView Colors
+ChatListItem[type="query"] { foreground: #303030; }
+ChatListItem[type="query", state="away"] { foreground: #a0a0a4; }
+ChatListItem[type="query", state="unread-message"] { foreground: #ff8000; }
+ChatListItem[type="network"] { foreground: #707c70; }
+
+ChatListItem[state="inactive"] { foreground: #a0a0a4; }
+ChatListItem[state="channel-event"] { foreground: #000099; }
+ChatListItem[state="unread-message"] { foreground: #990000; }
+ChatListItem[state="highlighted"] { foreground: #FF8C1A; }
+
+// NickView Colors
+NickListItem[type="category"] { foreground: #707c70; }
+NickListItem[type="user", state="away"] { foreground: #a0a0a4; }

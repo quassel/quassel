@@ -1,0 +1,128 @@
+// Temerity Stylesheet for Quassel; by Disethas.
+
+// This file is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; version 2 of the License.
+
+// FONTS
+
+// Georgia is on nearly every computer. 
+// You can download HaxrCorp S8 here: http://www.dafont.com/haxrcorp-s8.font
+
+// TAKE AWAY THE COMMENT LINES TO ENABLE
+// ChatLine { font: normal 10pt "Georgia"; }
+// ChatListItem { font: bold 16pt "HaxrCorp S8"; }
+// NickListItem { font: bold 16pt "HaxrCorp S8"; }
+
+
+// DARK COLORS
+// Darkest Brown: #110b08, Darker Brown: #322319, Dark Brown: #584132
+// LIGHT COLORS
+// White: #fffaf8, Grey: #c5c3b7, Darker Grey: #aba99e, Darkest Grey: #8a887e, Yellowish White: #fffcd5, Pale Yellow: #ffedab, Orangey Gold: #d38c45
+// MISC COLORS
+// Action Purple: #8755aa, Deep Green: #2e9629, Wine: #963e56, Rusty Ochre (Error): #96591c, Rusty Gold: #ae8932
+// NAME COLORS
+// Gold: #fffcd5, Red: #b42c11, Olive: #5d962b, Blue: #3b73c8, Orange: #eb7317, Sky: #67aac8, Violet: #755bf5, Tan: #c4ad95, Ochre: #b44811
+// WINDOW COLORS
+// Link: #4883ed, Light Field: #f9f6f3, Main: #dcd5d2, Highlights: #e9e2de, Lowlights: #b6aeab
+
+// Background
+ChatView { background: #110b08; }
+
+// Chat Colors
+ChatLine::timestamp { foreground: #fffcd5; }
+
+ChatLine#plain { foreground: #fffaf8; }
+ChatLine#notice { foreground: #c5c3b7; }
+ChatLine#action { foreground: #8755aa; }
+ChatLine#nick { foreground: #2e9629; }
+ChatLine#mode { foreground: #2e9629; font-weight: bold; }
+ChatLine#join { foreground: #2e9629; }
+ChatLine#part { foreground: #ae8932; }
+ChatLine#quit { foreground: #963e56; }
+ChatLine#kick { foreground: #963e56; }
+ChatLine#kill { foreground: #963e56; }
+ChatLine#server { foreground: #c5c3b7; }
+ChatLine#info { foreground: #ae8932; }
+ChatLine#error { foreground: #96591c; }
+ChatLine#daychange { foreground: #ae8932; }
+ChatLine#topic { foreground: #c5c3b7; background: #110b08; }
+
+// Marker Line
+Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 #d38c45, stop: 0.1 transparent); }
+
+// Highlight
+ChatLine[label="highlight"] {
+  foreground: #ffedab;
+  background: #322319;
+}
+
+// Sender Colors
+
+ChatLine::sender#plain[sender="self"] { foreground: #ffb217; }
+
+ChatLine::sender#plain[sender="00"] { foreground: #b42c11; }
+ChatLine::sender#plain[sender="01"] { foreground: #5d962b; }
+ChatLine::sender#plain[sender="02"] { foreground: #3b73c8; }
+ChatLine::sender#plain[sender="03"] { foreground: #eb7317; }
+ChatLine::sender#plain[sender="04"] { foreground: #67aac8; }
+ChatLine::sender#plain[sender="05"] { foreground: #755bf5; }
+ChatLine::sender#plain[sender="06"] { foreground: #c4ad95; }
+ChatLine::sender#plain[sender="07"] { foreground: #b44811; }
+ChatLine::sender#plain[sender="08"] { foreground: #b42c11; }
+ChatLine::sender#plain[sender="09"] { foreground: #5d962b; }
+ChatLine::sender#plain[sender="0a"] { foreground: #3b73c8; }
+ChatLine::sender#plain[sender="0b"] { foreground: #eb7317; }
+ChatLine::sender#plain[sender="0c"] { foreground: #67aac8; }
+ChatLine::sender#plain[sender="0d"] { foreground: #755bf5; }
+ChatLine::sender#plain[sender="0e"] { foreground: #c4ad95; }
+ChatLine::sender#plain[sender="0f"] { foreground: #b44811; }
+
+// Chat List Colors
+ChatListItem[type="network"] { foreground: #584132;}
+ChatListItem { foreground: #322319; }
+ChatListItem[state="inactive"] { foreground: #8a887e; }
+ChatListItem[state="channel-event"] { foreground: #2e9629; }
+ChatListItem[state="unread-message"] { foreground: #3b73c8; }
+ChatListItem[state="highlighted"] { foreground: #d38c45; background: #fffcd5; }
+ChatListItem[type="query"] { foreground: #584132;}
+ChatListItem[type="query", state="unread-message"] { foreground: #3b73c8; background: #fffcd5; }
+ChatListItem[type="query", state="highlighted"] { foreground: #d38c45; background: #fffcd5; }
+ChatListItem[type="query", state="away"] { foreground: #b42c11;}
+BufferView { background: #f9f6f3; }
+
+
+// Nick List Colors
+NickListItem[type="category"] { foreground: #584132; }
+NickListItem[type="user"] { foreground: #322319; }
+NickListItem[type="user", state="away"] { foreground: #b42c11; }
+NickView { background: #f9f6f3; }
+
+// Input Field
+MultiLineEdit { background: #f9f6f3; color: #110b08; }
+
+// Topic Field Background
+StyledLabel#topicLabel { background: #110b08; }
+
+// Window Colors
+Palette {
+  link: #4883ed; link-visited: #4883ed;
+
+  window: #dcd5d2; window-text: #322319; text: #322319;
+
+  light: #e9e2de; midlight: #e9e2de;  button: #dcd5d2;
+  mid: #dcd5d2; dark: #b6aeab; button-text: #584132; }
+
+// Miscellaneous Colors
+QTreeView::item:selected { color: #584132; }
+ChatMonitorSettingsPage BufferView::item { color: #110b08; }QTreeView#settingsTree { background: #fffaf8; }
+QTreeView::item#settingsTree { color: #110b08; }
+QLineEdit:enabled { background: #f9f6f3; color: #110b08; }
+QSpinBox:enabled { background: #f9f6f3; color: #110b08; }
+QTableWidget { background-color: #f9f6f3; color: #110b08; }
+QListWidget { background-color: #f9f6f3; color: #110b08; }
+
+QTableView {
+  alternate-background-color: #c5c3b7;
+  background-color: #f9f6f3;
+  color: #110b08; }
