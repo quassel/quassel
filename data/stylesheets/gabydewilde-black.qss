@@ -1,0 +1,7 @@
+ChatView { background: #000000; color: #32FC00;  }
+NickView { background: #000000; color: #32FC00;  }
+BufferView { background: #000000; color: #32FC00;  }
+QTextEdit { background: #000000; color: #32FC00;  }
+StyledLabel#topicLabel { background: #000000; color: #32FC00;  }
+TopicWidget { background: #000000; color: #32FC00;  }
+Palette { background: #333333; color: #32FC00;  }

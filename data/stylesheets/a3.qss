@@ -1,0 +1,304 @@
+// Quassel Style Sheet
+// Creator: balintx - qss.ath.cx
+// Codename: Nexus BETA
+// Based on: darkChocolate, darkOne, MJ12 pirosas
+// 
+
+QFrame
+{
+  background: #333333;
+}
+
+QCheckBox::indicator {
+  background-color: #000000;
+  color: #04ff00;
+}
+
+QCheckBox::indicator:checked {
+  background-color: #04ff00;
+  color: #000000;
+  spacing: 3px;
+}
+
+QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:pressed
+{
+  border: 1px solid #04ff00;
+}
+
+QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed
+{
+  border: 1px solid #000000;
+}
+
+ChatLine[label="highlight"] {
+  background: #04ff00;
+  foreground: #131313;
+  font-weight: bold;
+}
+
+ChatLine::timestamp { foreground: #707c70; }
+
+ChatLine#plain { foreground: #debc85; }
+ChatLine#notice { foreground: #916409; }
+ChatLine#action { foreground: #04ff00; }
+ChatLine#nick { foreground: #debc85; }
+ChatLine#mode { foreground: #000FF0; }
+ChatLine#join { foreground: #04ff00; }
+ChatLine#part { foreground: #767676; }
+ChatLine#quit { foreground: #ff0000; }
+ChatLine#kick { foreground: #debc85; }
+ChatLine#kill { background: #131313; foreground: #ff0000; font-weight: bold; }
+ChatLine#server { foreground: #916409; }
+ChatLine#info { foreground: #916409; }
+ChatLine#error { foreground: #916409; }
+ChatLine#daychange { foreground: #916409; }
+ChatLine#topic { background: #131313; foreground: #fffd96; }
+ChatLine#netsplit-join { background: #131313; foreground: #ff0000; font-weight: bold; }
+ChatLine#netsplit-quit { background: #131313; foreground: #ff0000; font-weight: bold; }
+
+//Backgrounds
+ChatView { background: #000000; }
+BufferView { background: #000000; }
+ChatWidget { background: grey;}
+NickView { background: #000000;}
+TopicWidget { background: #ABCABC;}
+MultiLineEdit { background: #131313; color: #debc95; }
+
+// Sender Colors
+ChatLine::sender#plain[sender="self"] { foreground: #8f8e90; }
+
+ChatLine::sender#plain[sender="00"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="01"] { foreground: #e2c000; }
+ChatLine::sender#plain[sender="02"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="03"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="04"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="05"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="06"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="07"] { foreground: #3176b3; }
+ChatLine::sender#plain[sender="08"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="09"] { foreground: #8e55e9; }
+ChatLine::sender#plain[sender="0a"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="0b"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="0c"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="0d"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="0e"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="0f"] { foreground: #3176b3; }
+
+// BufferView Colors
+ChatListItem { foreground: #ffffff; }
+ChatListItem[state="inactive"] { foreground: #4d4d4d; }
+ChatListItem[state="channel-event"] { foreground: #ffff80; }
+ChatListItem[state="unread-message"] { foreground: #ffff00; }
+ChatListItem[state="highlighted"] { foreground: #04ff00; }
+QListView::item:hover, QListView::item:selected
+{
+  background: #04ff00;
+}
+QListView
+{
+  background: #131313;
+}
+// NickView Colors
+NickListItem[type="category"] { foreground: #4d4d4d; }
+NickListItem[type="user"] { foreground: #a0a0a0; }
+NickListItem[type="user", state="away"] { foreground: #4d4d4d; }
+
+Palette {
+  link: #5fffbf; link-visited: #5fffbf; marker-line: #04ff00;
+  window: #333333; window-text: #00FF00; text: #04ff00;
+  light: #ffff00; midlight: #333333; button: #131313;
+  mid: #202553; dark: #000533; }
+Palette::button-text
+{
+  foreground: #04ff00;
+  background: #131313;
+  color: #04ff00;
+}
+
+QLineEdit:enabled { background: #131313; color: #debc85; }
+QSpinBox:enabled { background: #131313; color: #debc85; }
+
+QTreeView
+{
+  background: #000000;
+}
+
+QTreeView::item:selected
+{
+  border: 1px solid #debc85;
+  border-radius: 5px;
+  background: #debc85;
+  color: #000000;
+  padding: 2px;
+}
+
+QTreeView::item:hover
+{
+  border: 1px solid #debc85;
+  border-radius: 5px;
+}
+
+QLineEdit { background: #BCBCBC; }
+QToolTip
+{
+  background: #131313;
+  color: #04ff00;
+  border: 1px solid #04ff00;
+  border-radius: 5px;
+}
+QTableWidget { color: #debc85; alternate-background: #131313; }
+QTableView
+{
+  background: #000000;
+  alternate-background: #131313;
+  color: #04ff00;
+}
+QListWidget { color: #debc85; alternate-background: #131313; }
+QTableView {
+selection-background-color: #04ff00;
+background-color: #131313;
+foreground-color: #04ff00;
+color: #04ff00;
+}
+
+QPushButton
+{
+  background: #131313;
+  color: #04ff00;
+  border: 1px solid #8f8e90;
+  border-radius: 6px;
+  padding: 3px;
+}
+
+QPushButton::selected, QPushButton::hover
+{
+  border: 1px solid #04ff00;
+  padding: 2px;
+}
+
+QPushButton::pressed
+{
+  border: 2px solid #04ff50;
+}
+
+QPushButton::disabled
+{
+  border: 1px solid #8f8e90;
+  background: #131313;
+  color: grey;
+  padding: 2px;
+}
+
+QHeader {
+  background: #131313;
+  color: #04ff00;
+}
+
+QMenu {
+  background: #131313;
+  color: #04ff00;
+}
+
+QTextBrowser
+{
+  color: #04ff00;
+}
+
+QMenu::item:selected
+{
+  background-color: #04ff00;
+  color: #131313;
+}
+
+QMenu::item:disabled
+{
+  background-color: #131313;
+  color: grey;
+}
+
+QMenuBar {
+  background-color: #131313;
+  color: #04ff00;
+}
+
+QMenuBar::item:selected
+{
+  background-color: #04ff00;
+  color: #131313;
+  border: 1px solid #131313;
+}
+
+QMenuBar::item:disabled
+{
+  background-color: #131313;
+  color: grey;
+}
+
+QListView {
+  background-color: #131313;
+  color: #04ff00;
+}
+
+QListView::item:selected, QListView::item:hover
+{
+  background-color: #04ff00;
+  color: #131313;
+}
+
+QComboBox
+{
+  background-color: #131313;
+  color: #04ff00;
+}
+
+QList {
+  background-color: #131313;
+  color: #04ff00;
+}
+
+QList::item:selected
+{
+  background-color: #04ff00;
+  color: #131313;
+}
+
+QProgressBar {
+  border: 2px solid grey;
+  border-radius: 5px;
+}
+
+
+QProgressBar::chunk {
+  background-color: #131313;
+  color: #04ff00;
+}
+
+QTabWidget
+{
+  background-color: #131313;
+  color: #04ff00;
+}
+
+QTabBar::tab
+{
+  background: #131313;
+  color: #04ff00;
+  border: 1px solid #8f8e90;
+  border-bottom-color: #000000;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 2px;
+  min-width: 8px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover
+{
+ border-color: #04ff00;
+ border-bottom-color: #000000;
+}
+
+QToolBox::tab:selected
+{
+  background-color: #04ff00;
+  color: #131313;
+}

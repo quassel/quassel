@@ -1,0 +1,98 @@
+// QWater theme Version 1.0
+
+// Copyright (C) Maarten Andriessen <maarten714@gmail.com>
+
+// This file is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; version 2 of the License.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, see <http://www.gnu.org/licenses/>.
+
+// ChangeLog:
+
+// Version 1.0
+// - First release.
+
+
+// Custom ChatView Colors
+ChatView { background: #042E4A; }
+Palette {
+  marker-line: qlineargradient( x1: 0, y1: 0, x2: 0, y2: 1,
+				stop: 0 red, stop: 0.1 transparent );
+}
+
+ChatLine[label="highlight"] { foreground: #000000; background: #FF8D0A; }
+
+ChatLine::url[label="highlight"] {
+  foreground: #5fffbf;
+  background: #FF8D0A; }
+
+ChatLine::timestamp { foreground: #b9bec8; }
+
+ChatLine#plain { foreground: #50AFCC; }
+ChatLine#notice { foreground: #aaaaff; }
+ChatLine#action { foreground: #00fafa; }
+ChatLine#nick { foreground: #E7A6FF; }
+ChatLine#mode { foreground: #66EBFF; }
+ChatLine#join { foreground: #5fffbf; }
+ChatLine#part { foreground: #ED95AB; }
+ChatLine#quit { foreground: #ED95AB; }
+ChatLine#kick { foreground: #F0F073; }
+ChatLine#kill { foreground: #FF3B3B; }
+ChatLine#server { foreground: #c8fafa; }
+ChatLine#info { foreground: #aaaaff; }
+ChatLine#error { foreground: #ffff00; }
+ChatLine#daychange { foreground: #aaaaff; }
+ChatLine#topic { foreground: #E7A6FF; }
+
+// Sender Colors
+ChatLine::sender { foreground: #3bb9ff; }
+ChatLine::sender[sender="self"] { foreground: #ff55ff; }
+
+// BufferView Colors
+BufferView { background: #042E4A; }
+ChatListItem { foreground: #50AFCC; }
+ChatListItem[state="inactive"] { foreground: #b9bec8; }
+ChatListItem[state="channel-event"] { foreground: #00fafa; }
+ChatListItem[state="unread-message"] { foreground: #FF8D0A; }
+ChatListItem[state="highlighted"] { foreground: #ff5555; }
+
+ChatMonitorSettingsPage BufferView::item { color: #50AFCC; }
+
+// NickView Colors
+NickView { background: #042E4A; }
+NickListItem[type="category"] { foreground: #00fafa; font-weight: bold; }
+NickListItem[type="user"] { foreground: #00fafa; }
+NickListItem[type="user", state="away"] { foreground: #50AFCC; }
+
+// Miscellaneous Colors
+QTreeView::item:selected { color: #042E4A; }
+QTreeView#settingsTree { background: #042E4A; }
+QTreeView::item#settingsTree { color: #50AFCC; }
+QTreeView::item:selected#settingsTree { color: #042E4A; }
+QLineEdit:enabled { background: #042E4A; color: #50AFCC; }
+QSpinBox:enabled { background: #042E4A; color: #50AFCC; }
+QTableWidget { background-color: #042E4A; color: #50AFCC; }
+QListWidget { background-color: #042E4A; color: #50AFCC; }
+
+QTableView {
+  alternate-background-color: #00006b;
+  background-color: #042E4A;
+  color: #50AFCC; }
+
+Palette {
+  link: #FFC182; link-visited: #FFC182;
+
+  window: #3C879E; window-text: #000000; text: #000000;
+
+  light: #042E4A; midlight: #606593;  button: #404573;
+  mid: #202553; dark: #66EBFF; button-text: #545454; }
+
+StyledLabel#topicLabel { background: #042E4A; }
+MultiLineEdit { background: #042E4A; color: #50AFCC; }

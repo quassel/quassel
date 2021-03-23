@@ -1,0 +1,539 @@
+/**
+**   ____            _     ___  ___                  _          _ 
+**  |  _ \          | |    |  \/  |                 | |        (_)
+**  | | \ |__ _ _ __| | __ | .  . | ___  _ __   ___ | | __ __ _ _ 
+**  | | | | _` | '__| |/ / | |\/| |/ _ \| '_ \ / _ \| |/ // _` | |
+**  | |_/ /(_| | |  |   <  | |  | | (_) | | | | (_) |   <| (_| | |
+**  |____/\__,_|_|  |_|\_\ \_|  |_/\___/|_| |_|\___/|_|\_\\__,_|_|
+**                                                                
+**      Quassel Theme
+** 
+** Author: Chris Holland (Zren on Freenode/GitHub)
+*/
+
+/**
+** Theme Notes:
+**  - This theme is designed to work on top of the Fusion or the Plastique client style.
+**    It will look weird on almost all the others (including the system default).
+**    (Settings > Configure Quassel (F7) > Interface > Client Style)
+*/
+ 
+/**
+** Helpful Links:
+**  - QT:
+**      http://qt-project.org/doc/qt-4.8/stylesheet-syntax.html
+**      http://doc.qt.nokia.com/4.7-snapshot/stylesheet-reference.html
+**      http://doc.qt.nokia.com/4.7-snapshot/stylesheet-examples.html
+**  - Plastique Client Style:
+**      https://qt.gitorious.org/qt/qt/source/src/gui/styles/qplastiquestyle.cpp
+**      https://github.com/mirror/qt/blob/4.8/src/gui/styles/qplastiquestyle.cpp
+**  - Quassel Stylesheet Gallery:
+**      http://bugs.quassel-irc.org/projects/1/wiki/Stylesheet_Gallery
+**      http://bugs.quassel-irc.org/projects/1/wiki/Stylesheet_Gallery#DarkMonokaiqss
+*/
+ 
+/**
+**  - QSS Notes:
+**      Quassel stylesheets also support Palette { role: color; } for setting the system
+**      palette. See the QPalette docs for available roles, and convert them into qss-style
+**      attributes, so ButtonText would become button-text or see qssparser.cpp In fact,
+**      qssparser.cpp is the authorative source for Quassel's qss syntax that contains all
+**      the extensions over standard Qt qss syntax.
+**      See:
+**          http://qt-project.org/doc/qt-4.8/qpalette.html#ColorRole-enum
+**          https://github.com/quassel/quassel/blob/master/src/uisupport/qssparser.cpp
+**  
+*/
+
+Palette {
+    /* Window colors */
+    window: #2b2b2b;
+    background: #212121;
+    foreground: #ffffff;
+    
+    base: #131313;
+    alternate-base: #42403B;
+    
+    /* Just setting palette(tooltip-base) doesn't work as intended so we set it in
+    ** a QTooltip{} rule as well.
+    */
+    tooltip-base: #131313; // palette(base)
+    tooltip-text: white; // palette(text)
+    
+    /* The following attributes should be done in a scale */
+    light: #444444; // Tab Borders, Scrollbar handle grips, Titled Panel border (Settings)
+    midlight: #333333; // ?
+    button: #292929; // Menu BG, Scrollbar and Button base.
+    mid: #252525; // Titled Panel border (Settings)
+    dark: #202020; // TreeView [-] and ... color (Also various borders in Windows Client Style)
+    shadow: #1d1d1d; // ?
+    
+    
+    /* Text colors */
+    text: white;
+    button-text: #B6B3AB;
+    
+    //highlight: #00ff00;
+    //highlight-text: #000000;
+    
+    /* Link colors */
+    link: #539FA3;
+    link-visited: #845B90;
+    
+    /* Color of the marker line in the chat view. BG Node that is overlayed on the first new ChatLine. */
+    // 0 -> 0.1 (sharp line)
+    marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ff0000, stop: 0.1 #ff0000, stop: 0.1 transparent);
+}
+
+/*
+** Base Object Colors
+*/
+
+/* Tables */
+// QTreeView#settingsTree -> Tree in the Settings popup.
+
+QTreeView, QTableView {
+    alternate-background-color: rgba(0,0,0, 64);
+    // background-color: palette(shadow);
+    border: 0px;
+}
+
+QTreeView {
+  selection-background-color: transparent;
+}
+
+QTreeView::item:focus {
+  border: none;
+}
+
+QTreeView::item:selected {
+  border: none;
+  border-radius: 3px;
+  color: palette(button-text);
+}
+
+QTreeView::item:hover {
+  border-radius: 3px;
+  background: #000000; /* palette(dark); */
+}
+
+
+QTreeView::item:selected:active{
+  color: palette(button-text);
+  background: #040404; /* palette(dark); */
+}
+
+QTreeView::item:selected:!active {
+  color: palette(button-text);
+  background: #080808; /* palette(shadow); */
+}
+
+// QTreeView::item { color: #debc85; }
+// QTreeView::item:selected { color: #00004b; }
+// QTreeView#settingsTree { background: #131313; }
+
+
+/* Scrollbar */
+/* From Quassel Wiki: http://sprunge.us/iZGB */
+QScrollBar {
+    //background: transparent;
+    background: palette(base);
+    margin: 0;
+}
+QScrollBar:hover {
+    /* Optional: Subtle accent of scrolling area on hover */
+    background: #161616; /* base +2 */
+}
+QScrollBar:vertical {
+    width: 8px;
+}
+QScrollBar:horizontal {
+    height: 8px;
+}
+
+QScrollBar::handle {
+    padding: 0;
+    margin: 2px;
+    border-radius: 2px;
+    border: 2px solid palette(midlight);
+    background: palette(midlight);
+}
+
+QScrollBar::handle:vertical {
+    min-height: 20px;
+    min-width: 0px;
+}
+
+QScrollBar::handle:horizontal {
+    min-width: 20px;
+    min-height: 0px;
+}
+QScrollBar::handle:hover {
+    border-color: palette(light);
+    background: palette(light);
+}
+QScrollBar::handle:pressed {
+    background: palette(highlight);
+    border-color: palette(highlight);
+}
+
+QScrollBar::add-line , QScrollBar::sub-line {
+    height: 0px;
+    border: 0px;
+}
+QScrollBar::up-arrow, QScrollBar::down-arrow {
+    border: 0px;
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: none;
+}
+
+/* Input Box */
+MultiLineEdit {
+    //background: palette(base);
+    //color: palette(foreground);
+}
+
+/* Widgets */
+/* http://doc.qt.nokia.com/4.7-snapshot/qdockwidget.html */
+//QMainWindow,
+QMainWindow QAbstractScrollArea {
+    //border: 0; // Remove borders.
+    border: 1px solid palette(shadow);
+}
+
+QMainWindow {
+    //background: palette(mid); // Main window trim
+}
+
+/* Splitter */
+/* The splits between QDockWidgets and QMainWindow is a different element. */
+QSplitter::handle, 
+QMainWindow::separator {
+	background: palette(dark);
+}
+QSplitter::handle:horizontal:hover, 
+QMainWindow::separator:vertical:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 palette(window), stop: 0.5 palette(light), stop: 1 palette(window));
+}
+
+QSplitter::handle:vertical:hover, 
+QMainWindow::separator:horizontal:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 palette(window), stop: 0.5 palette(light), stop: 1 palette(window));
+}
+
+/* Menu Bar / Context Menues */
+QMenu {
+    margin: 5px; // A bit of nice padding around menu items.
+}
+
+/* ToolTip */
+/* Note: You cannot create transparent sections in the popup box without a mask set. Thus the black edges outside the rounded borders. */
+QToolTip {
+    border: 2px solid #202020; // palette(dark)
+    border-radius: 2px;
+    background: #131313; // palette(base)
+    color: white; // palette(text)
+}
+
+/* Tabs */
+/* 
+    The palette is designed for the selected one to be darker. So we need to change it. Decided to do a simple line.
+    tab:bottom and tab:top reverse y1 and y2 on the linear gradients.
+    
+    Tab Shadow: #444444 (light)
+    Tab Hover: #666
+    Tab Selected: palette(highlight)
+*/
+    
+//QTabWidget{}
+//QTabWidget::pane {}
+
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+QTabBar::tab {
+    min-width: 30px;
+    height: 20px;
+}
+
+QTabBar::tab:bottom:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 palette(highlight), stop: 0.2 palette(highlight), stop: 0.2 transparent);
+}
+
+QTabBar::tab:top:selected {
+    background: qlineargradient(x1: 0, y1: 1, x2: 0, y2: 0, stop: 0 palette(highlight), stop: 0.2 palette(highlight), stop: 0.2 transparent);
+}
+
+QTabBar::tab:!selected {
+    color: #888;
+}
+
+QTabBar::tab:bottom:!selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 palette(light), stop: 0.2 palette(light), stop: 0.2 transparent);
+}
+
+QTabBar::tab:top:!selected {
+    background: qlineargradient(x1: 0, y1: 1, x2: 0, y2: 0, stop: 0 palette(light), stop: 0.2 palette(light), stop: 0.2 transparent);
+}
+
+QTabBar::tab:!selected:hover {
+    color: #aaa;
+}
+
+QTabBar::tab:bottom:!selected:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #666, stop: 0.2 #666, stop: 0.2 transparent);
+}
+
+QTabBar::tab:top:!selected:hover {
+    background: qlineargradient(x1: 0, y1: 1, x2: 0, y2: 0, stop: 0 #666, stop: 0.2 #666, stop: 0.2 transparent);
+}
+
+/*
+** Quassel CSS
+*/
+
+/* Main Chat Background Override */
+ChatView {
+    background: palette(base);
+}
+
+
+/* Font */
+// Will not override if selectors are doubled up eg: "ChatLine, MultiLineEdit {}"
+// These will override anything set in Quassel's Settings.
+/**
+ * Don't bold or style MultiLineEdit text in any way otherwise you will be
+ * prone to get weird behaviour in submitting from the Input box.
+ * It will randomly bold your input if you do.
+ */
+ChatLine {
+    //font-family: "MingLiU_HKSCS-ExtB", "Courier New", Courier, Monotype;
+    
+    //font-size: 13pt;
+    //font-weight: bold;
+    }
+MultiLineEdit {
+    //font-family: "MingLiU_HKSCS-ExtB", "Courier New", Courier, Monotype;
+    
+    //font-size: 20px;
+    //font-weight: normal;
+    }
+ChatLine#plain {
+    //font-weight: bold;
+    }
+
+/* Font: UI Global Font */
+QWidget {
+    //font-family: consolas;
+    }
+ChatListItem {
+    font-family: consolas;
+    }
+NickListItem {
+    font-family: consolas;
+    }
+StyledLabel#topicLabel {
+    font-family: consolas;
+    font-size: 14px;
+    }
+
+
+/* Topic Box */
+StyledLabel#topicLabel { background: palette(base);  font-family: consolas; }
+    
+/* Buffer / Channel List */
+/**
+    state: inactive, channel-event, unread-message, highlighted
+    type: query, channel, network
+**/
+ChatListItem { foreground: #888888; }
+ChatListItem[state="inactive"] { foreground: #555555; }
+ChatListItem[state="channel-event"] { foreground: #888888; }
+ChatListItem[state="unread-message"] { foreground: #85A83F; }
+ChatListItem[state="highlighted"] { foreground: #FFAA00; }
+
+ChatListItem[type="network", state="unread-message"] {foreground: #999999; }
+ChatListItem[type="network", state="highlighted"] {foreground: #999999; }
+ChatListItem[type="query", state="unread-message"] { foreground: #FFAA00; }
+
+
+/* Nick List */
+/**
+    state: away
+    type: user, category
+**/
+NickListItem[type="category"] { foreground: #debc85; }
+NickListItem[type="user"] { foreground: #cccccc; }
+NickListItem[type="user", state="away"] { foreground: #666666; }
+
+
+
+/* Chatbox Line Formatting */
+
+ChatLine[label="highlight"] {
+    foreground: #8db7bd;
+    background: #192527; // 3a557b
+}
+
+/*
+** Option: Bold highlighted text, but not the timestamp.
+*/
+/*
+ChatLine[label="highlight"] { font-weight: bold; }
+ChatLine::timestamp[label="highlight"]{ font-weight: normal; }
+*/
+
+/* Slight accent on the first two columns */
+ChatLine::sender { background: #101010; }
+ChatLine::timestamp { background: #101010; }
+/*ChatLine::contents { background: #101010; }*/
+
+ChatLine::sender[label="highlight"] { foreground: #5e7c80; background: #162224; }
+ChatLine::timestamp[label="highlight"] { foreground: #5e7c80; background: #162224; }
+
+ChatLine::timestamp {  }
+
+/* ::contents == Message */
+ChatLine::contents {
+  /* Can only set background */
+}
+
+ChatLine#plain { foreground: #b8b8bb; }
+ChatLine#notice { foreground: #A6E22E; }
+ChatLine#action { foreground: #F92672; font-style: italic; }
+ChatLine#nick { foreground: #75715E; }
+ChatLine#mode { foreground: #75715E; font-weight: bold; }
+ChatLine#join { foreground: #75715E; }
+ChatLine#part { foreground: #75715E; }
+ChatLine#quit { foreground: #75715E; }
+ChatLine#kick { foreground: #75715E; }
+ChatLine#kill { foreground: #75715E; }
+ChatLine#server { foreground: #A6E22E; }
+ChatLine#info { foreground: #A6E22E; }
+ChatLine#error { foreground: #FD971F; }
+ChatLine#daychange { foreground: #A6E22E; }
+ChatLine#topic { foreground: #FD971F; }
+//ChatLine#netsplit { foreground: #996633; } // Old
+ChatLine#netsplit-join { foreground: #996633; }
+ChatLine#netsplit-quit { foreground: #996633; }
+
+ChatLine::timestamp {
+    foreground: #707C70;
+    // Resets the timestemp font during #action and other possible formatting.
+    font-style: normal; 
+    font-weight: normal;
+}
+
+ChatLine::url {
+    foreground: palette(link);
+    //font-style: underline; // Uncomment if you always want an underline on links.
+}
+
+/* Sender Colors */
+ChatLine::sender#plain[sender="self"] { foreground: #779; }
+
+
+/* Uncomment this is you want all senders the same color: */
+// ChatLine::sender#plain { foreground: #2828B9; }
+
+/**
+ * The following are the sixteen colours used for the senders.
+ * The names are calculated by taking the hash of the nickname.
+ * Then take the modulo (the remainder) when divided by 16.
+ */
+ChatLine::sender#plain[sender="0"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="1"] { foreground: #8e55e9; }
+ChatLine::sender#plain[sender="2"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="3"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="4"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="5"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="6"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="7"] { foreground: #3176b3; }
+ChatLine::sender#plain[sender="8"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="9"] { foreground: #8e55e9; }
+ChatLine::sender#plain[sender="a"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="b"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="c"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="d"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="e"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="f"] { foreground: #3176b3; }
+
+
+/*
+** mIRC formats
+*/
+ChatLine[format="bold"] { font-weight: bold;}
+ChatLine[format="italic"] { font-style: italic; }
+ChatLine[format="underline"] { font-style: underline; }
+
+/* Make black text appear lighter as our theme has a dark background. */
+ChatLine[fg-color="1"] { foreground: #444; }
+ChatLine[bg-color="1"] { background: #444; }
+
+/* Blues are hard to read as well. */
+ChatLine[fg-color="2"] { foreground: #15a; }
+ChatLine[bg-color="2"] { background: #15a; }
+ChatLine[fg-color="c"] { foreground: #15f; }
+ChatLine[bg-color="c"] { background: #15f; }
+
+/* A list of all the colors for easy convienience */
+/*
+ChatLine[fg-color="0"] { foreground: white; }
+ChatLine[bg-color="0"] { background: white; }
+ChatLine[fg-color="1"] { foreground: black; }
+ChatLine[bg-color="1"] { background: black; }
+ChatLine[fg-color="2"] { foreground: navy; }
+ChatLine[bg-color="2"] { background: navy; }
+ChatLine[fg-color="3"] { foreground: green; }
+ChatLine[bg-color="3"] { background: green; }
+ChatLine[fg-color="4"] { foreground: red; }
+ChatLine[bg-color="4"] { background: red; }
+ChatLine[fg-color="5"] { foreground: darkred; }
+ChatLine[bg-color="5"] { background: darkred; }
+ChatLine[fg-color="6"] { foreground: purple; }
+ChatLine[bg-color="6"] { background: purple; }
+ChatLine[fg-color="7"] { foreground: orange; }
+ChatLine[bg-color="7"] { background: orange; }
+ChatLine[fg-color="8"] { foreground: yellow; }
+ChatLine[bg-color="8"] { background: yellow; }
+ChatLine[fg-color="9"] { foreground: lightgreen; }
+ChatLine[bg-color="9"] { background: lightgreen; }
+ChatLine[fg-color="a"] { foreground: teal; }
+ChatLine[bg-color="a"] { background: teal; }
+ChatLine[fg-color="b"] { foreground: lightcyan; }
+ChatLine[bg-color="b"] { background: lightcyan; }
+ChatLine[fg-color="c"] { foreground: blue; }
+ChatLine[bg-color="c"] { background: blue; }
+ChatLine[fg-color="d"] { foreground: pink; }
+ChatLine[bg-color="d"] { background: pink; }
+ChatLine[fg-color="e"] { foreground: gray; }
+ChatLine[bg-color="e"] { background: gray; }
+ChatLine[fg-color="f"] { foreground: lightgray; }
+ChatLine[bg-color="f"] { background: lightgray; }
+*/
+
+
+/*
+** Experimental
+*/
+BufferViewDock[active=true] {
+    /* The circle is hardcoded into the title. */
+    /* Color only changes on a refresh (F5) (so it's pointless). */
+    /* Also colors the border in Breeze. */
+    //color: palette(highlight); 
+}
+
+/*
+** OS X: Workaround Pallete {} bug
+**  - https://stackoverflow.com/questions/19748752/qt-style-qpalettewindowtext-color-reverts-after-application-starts     
+*/
+
+QWidget {
+    color: white;
+}
+
