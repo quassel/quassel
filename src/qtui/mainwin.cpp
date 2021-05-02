@@ -809,7 +809,7 @@ void MainWin::changeActiveBufferView(int bufferViewId)
 void MainWin::showPasswordChangeDlg()
 {
     if (Client::isCoreFeatureEnabled(Quassel::Feature::PasswordChange)) {
-        PasswordChangeDlg{}.exec();
+        PasswordChangeDlg{this}.exec();
     }
     else {
         QMessageBox box(QMessageBox::Warning,
@@ -918,7 +918,7 @@ void MainWin::hideCurrentBuffer()
 
 void MainWin::showNotificationsDlg()
 {
-    SettingsPageDlg{new NotificationsSettingsPage{}}.exec();
+    SettingsPageDlg{new NotificationsSettingsPage{}, this}.exec();
 }
 
 void MainWin::onConfigureNetworksTriggered()
@@ -1355,7 +1355,7 @@ void MainWin::setDisconnectedState()
 void MainWin::userAuthenticationRequired(CoreAccount* account, bool* valid, const QString& errorMessage)
 {
     Q_UNUSED(errorMessage)
-    CoreConnectAuthDlg dlg(account);
+    CoreConnectAuthDlg dlg(account, this);
     *valid = (dlg.exec() == QDialog::Accepted);
 }
 
@@ -1407,7 +1407,7 @@ void MainWin::handleSslErrors(const QSslSocket* socket, bool* accepted, bool* pe
         box.exec();
         role = box.buttonRole(box.clickedButton());
         if (role == QMessageBox::HelpRole) {
-            SslInfoDlg dlg(socket);
+            SslInfoDlg dlg(socket, this);
             dlg.exec();
         }
     } while (role == QMessageBox::HelpRole);
@@ -1432,7 +1432,7 @@ void MainWin::handleCoreConnectionError(const QString& error)
 
 void MainWin::showCoreConnectionDlg()
 {
-    CoreConnectDlg dlg;
+    CoreConnectDlg dlg{this};
     if (dlg.exec() == QDialog::Accepted) {
         AccountId accId = dlg.selectedAccount();
         if (accId.isValid())
@@ -1480,7 +1480,7 @@ void MainWin::showChannelList(NetworkId netId, const QString& channelFilters, bo
 
 void MainWin::showNetworkConfig(NetworkId netId)
 {
-    SettingsPageDlg dlg{new NetworksSettingsPage{}};
+    SettingsPageDlg dlg{new NetworksSettingsPage{}, this};
     if (netId.isValid())
         qobject_cast<NetworksSettingsPage*>(dlg.currentPage())->bufferList_Open(netId);
     dlg.exec();
@@ -1488,7 +1488,7 @@ void MainWin::showNetworkConfig(NetworkId netId)
 
 void MainWin::showIgnoreList(QString newRule)
 {
-    SettingsPageDlg dlg{new IgnoreListSettingsPage{}};
+    SettingsPageDlg dlg{new IgnoreListSettingsPage{}, this};
     // prepare config dialog for new rule
     if (!newRule.isEmpty())
         qobject_cast<IgnoreListSettingsPage*>(dlg.currentPage())->editIgnoreRule(newRule);
@@ -1497,7 +1497,7 @@ void MainWin::showIgnoreList(QString newRule)
 
 void MainWin::showCoreInfoDlg()
 {
-    CoreInfoDlg{}.exec();
+    CoreInfoDlg{this}.exec();
 }
 
 void MainWin::showAwayLog()
