@@ -64,10 +64,5 @@ if (WANT_MONO OR WANT_QTCLIENT)
             # Install Quassel-specific ones from Oxygen into hicolor as fallback
             install(DIRECTORY oxygen/ DESTINATION ${CMAKE_INSTALL_ICONDIR}/hicolor)
         endif()
-
-        # For a system install, also copy to pixmaps
-        if (CMAKE_INSTALL_PREFIX STREQUAL "/usr")
-            install(FILES hicolor/48x48/apps/quassel.png DESTINATION /usr/share/pixmaps)
-        endif()
     endif()
 endif()
