@@ -65,7 +65,7 @@ QString AboutDlg::about() const
     QString res{tr("<b>A modern, distributed IRC Client</b><br><br>"
                    "&copy;%1 by the Quassel Project<br>"
                    "<a href=\"https://quassel-irc.org\">https://quassel-irc.org</a><br>"
-                   "<a href=\"irc://irc.freenode.net/quassel\">#quassel</a> on <a href=\"https://www.freenode.net\">Freenode</a><br><br>"
+                   "<a href=\"irc://irc.libera.chat/quassel\">#quassel</a> on <a href=\"https://libera.chat\">Libera Chat</a><br><br>"
                    "Quassel IRC is dual-licensed under <a href=\"https://www.gnu.org/licenses/gpl-2.0.txt\">GPLv2</a> and "
                    "<a href=\"https://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
                    "<a href=\"https://api.kde.org/frameworks/breeze-icons/html\">Breeze icon theme</a> &copy; Uri Herrera and others, "
