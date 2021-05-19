@@ -47,9 +47,8 @@ documentation.
 
 IRC is the preferred means of getting in touch with the developers.
 
-The Quassel IRC Team can be contacted on **`Freenode/#quassel`**
-(or **`#quassel.de`**).  If you have trouble getting Quassel to connect,
-you can use [Freenode's webchat][help-freenode].
+The Quassel IRC Team can be contacted on **`Libera Chat/#quassel`**
+(or **`#quassel.de`**). 
 
 We always welcome new users in our channels!
 
@@ -65,7 +64,6 @@ Thanks for reading,
 
 [web-home]: https://quassel-irc.org
 [dev-email]: mailto:devel@quassel-irc.org
-[help-freenode]: https://webchat.freenode.net?channels=%23quassel
 [repo-changelog]: ChangeLog
 [ci-badge]: https://github.com/quassel/quassel/workflows/Quassel%20CI/badge.svg?branch=master
 [ci-status-page]: https://github.com/quassel/quassel/actions?query=branch%3Amaster
