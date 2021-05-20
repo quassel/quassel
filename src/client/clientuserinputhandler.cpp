@@ -91,13 +91,18 @@ void ClientUserInputHandler::handleExec(const BufferInfo& bufferInfo, const QStr
 
 void ClientUserInputHandler::handleJoin(const BufferInfo& bufferInfo, const QString& text)
 {
-    if (text.isEmpty()) {
-        Client::messageModel()->insertErrorMessage(bufferInfo, tr("/JOIN expects a channel"));
-        return;
+    auto channelName = text;
+    if (channelName.isEmpty()) {
+        if (bufferInfo.type() == BufferInfo::ChannelBuffer) {
+            channelName = bufferInfo.bufferName();
+        } else {
+            Client::messageModel()->insertErrorMessage(bufferInfo, tr("/JOIN expects a channel"));
+            return;
+        }
     }
-    switchBuffer(bufferInfo.networkId(), text.section(' ', 0, 0));
+    switchBuffer(bufferInfo.networkId(), channelName.section(' ', 0, 0));
     // send to core
-    defaultHandler("JOIN", bufferInfo, text);
+    defaultHandler("JOIN", bufferInfo, channelName);
 }
 
 void ClientUserInputHandler::handleQuery(const BufferInfo& bufferInfo, const QString& text)
