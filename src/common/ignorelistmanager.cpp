@@ -23,6 +23,8 @@
 #include <QDebug>
 #include <QStringList>
 
+#include "util.h"
+
 int IgnoreListManager::indexOf(const QString& ignore) const
 {
     for (int i = 0; i < _ignoreList.count(); i++) {
@@ -131,10 +133,12 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(
         if (item.scope() == GlobalScope || (item.scope() == NetworkScope && item.scopeRuleMatcher().match(network))
             || (item.scope() == ChannelScope && item.scopeRuleMatcher().match(bufferName))) {
             QString str;
-            if (item.type() == MessageIgnore)
-                str = msgContents;
-            else
+            if (item.type() == MessageIgnore) {
+                // TODO: Make this configurable?  Pre-0.14, format codes were not removed
+                str = stripFormatCodes(msgContents);
+            } else {
                 str = msgSender;
+            }
 
             //      qDebug() << "IgnoreListManager::match: ";
             //      qDebug() << "string: " << str;
