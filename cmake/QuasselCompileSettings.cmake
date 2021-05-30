@@ -83,17 +83,17 @@ elseif(MSVC)
     # CMake puts /W3 in CMAKE_CXX_FLAGS which will be appended later, so we need to replace
     string(REPLACE "/W3" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-    # Silence annoying/useless warnings
-    #   C4127: conditional expression is constant
+    # Silence warnings that are hard or impossible to avoid
+    #   C4127: conditional expression is constant [in qvector.h as of Qt 5.15.2]
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4127")
-    #   C4244: 'identifier': conversion from 't1' to 't2', possible loss of data
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244")
-    #   C4456: declaration of 'identifier' hides previous local declaration
+    #   C4456: declaration of 'identifier' hides previous local declaration [caused by foreach macro, among others]
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4456")
-    #   C4458: declaration of 'identifier' hides class member
+    #   C4458: declaration of 'identifier' hides class member [caused by MOC for Peer::_id]
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4458")
-    #   C4996: deprecation warnings
+    #   C4996: deprecation warnings [unavoidable due to wide range of supported Qt versions]
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996")
+    #   C5240: 'nodiscard': attribute is ignored in this syntactic position [in qcolor.h as of Qt 5.15.2]
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd5240")
 
     # Link against the correct version of the C runtime
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/NODEFAULTLIB:libcmt /DEFAULTLIB:msvcrt ${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
