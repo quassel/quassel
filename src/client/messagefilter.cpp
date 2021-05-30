@@ -185,7 +185,7 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex& sourcePar
         if (redirectionTarget & BufferSettings::CurrentBuffer && !(flags & Message::Backlog)) {
             BufferId redirectedTo = sourceModel()->data(sourceIdx, MessageModel::RedirectedToRole).value<BufferId>();
             if (!redirectedTo.isValid()) {
-                BufferId redirectedTo = Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
+                redirectedTo = Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
                 if (redirectedTo.isValid())
                     sourceModel()->setData(sourceIdx, QVariant::fromValue(redirectedTo), MessageModel::RedirectedToRole);
             }
