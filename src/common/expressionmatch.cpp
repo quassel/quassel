@@ -384,10 +384,14 @@ void ExpressionMatch::cacheRegEx()
 
 QRegularExpression ExpressionMatch::regExFactory(const QString& regExString, bool caseSensitive)
 {
-    // Construct the regular expression object, setting case sensitivity as appropriate
-    QRegularExpression newRegEx = QRegularExpression(regExString,
-                                                     caseSensitive ? QRegularExpression::PatternOption::NoPatternOption
-                                                                   : QRegularExpression::PatternOption::CaseInsensitiveOption);
+    // This is required, else extra-ASCII codepoints get treated as word boundaries
+    QRegularExpression::PatternOptions options = QRegularExpression::UseUnicodePropertiesOption;
+
+    if (!caseSensitive) {
+        options |= QRegularExpression::CaseInsensitiveOption;
+    }
+
+    QRegularExpression newRegEx = QRegularExpression(regExString, options);
 
     // Check if rule is valid
     if (!newRegEx.isValid()) {

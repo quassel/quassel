@@ -453,3 +453,106 @@ TEST(ExpressionMatchTest, testInvalidRegEx)
     // Assert literal match fails
     EXPECT_FALSE(invalidRegExMatch.match("*network"));
 }
+
+
+TEST(ExpressionMatchTest, matchPhraseUnicode)
+{
+    // Escape Unicode color emoji as a workaround for bug with libXft, otherwise, color emoji may
+    // crash "git gui" and "gitk"
+    // This has no impact on Quassel or the tests themselves
+    //
+    // See https://unix.stackexchange.com/questions/629281/gitk-crashes-when-viewing-commit-containing-emoji-x-error-of-failed-request-ba
+    const QString UnicodeEmojiFire("\xf0\x9f\x94\xa5");
+    const QString UnicodeEmojiFox("\xf0\x9f\xa6\x8a");
+
+    // Simple phrase, case-insensitive, ASCII
+    ExpressionMatch simpleMatchASCII =
+            ExpressionMatch("V", ExpressionMatch::MatchMode::MatchPhrase, false);
+    // Simple phrase, case-insensitive, ASCII Unicode mix
+    ExpressionMatch simpleMatchUniASCII =
+            ExpressionMatch("räv", ExpressionMatch::MatchMode::MatchPhrase, false);
+    // Simple phrase, case-insensitive, full Unicode
+    ExpressionMatch simpleMatchUnicode =
+            ExpressionMatch("狐", ExpressionMatch::MatchMode::MatchPhrase, false);
+    // Simple phrase, case-insensitive, emoji
+    ExpressionMatch simpleMatchEmoji =
+            ExpressionMatch(UnicodeEmojiFox, ExpressionMatch::MatchMode::MatchPhrase, false);
+
+    // Assert valid and not empty
+    ASSERT_TRUE(simpleMatchASCII.isValid());
+    EXPECT_FALSE(simpleMatchASCII.isEmpty());
+    ASSERT_TRUE(simpleMatchUniASCII.isValid());
+    EXPECT_FALSE(simpleMatchUniASCII.isEmpty());
+    ASSERT_TRUE(simpleMatchUnicode.isValid());
+    EXPECT_FALSE(simpleMatchUnicode.isEmpty());
+    ASSERT_TRUE(simpleMatchEmoji.isValid());
+    EXPECT_FALSE(simpleMatchEmoji.isEmpty());
+
+    // Assert basic match succeeds
+    EXPECT_TRUE(simpleMatchASCII.match("V"));
+    EXPECT_TRUE(simpleMatchUniASCII.match("räv"));
+    EXPECT_TRUE(simpleMatchUnicode.match("狐"));
+    EXPECT_TRUE(simpleMatchEmoji.match(UnicodeEmojiFox));
+
+    // Assert classic word boundaries succeed
+    EXPECT_TRUE(simpleMatchASCII.match("V: hello"));
+    EXPECT_TRUE(simpleMatchUniASCII.match("\"räv\""));
+    EXPECT_TRUE(simpleMatchUnicode.match("狐."));
+    EXPECT_TRUE(simpleMatchEmoji.match("(" + UnicodeEmojiFox  + ")"));
+
+    // Assert non-word-boundary Unicode is NOT treated as a word boundary
+    // > ASCII nickname (most common case with spam)
+    EXPECT_FALSE(simpleMatchASCII.match("TÜV Västra"));
+    // > ASCII/Unicode mix
+    EXPECT_FALSE(simpleMatchUniASCII.match("rävīoli"));
+    // > Full unicode
+    EXPECT_FALSE(simpleMatchUnicode.match("九尾の狐"));
+
+    // Assert emoji are treated as word boundaries
+    EXPECT_TRUE(simpleMatchASCII.match(UnicodeEmojiFire + "V" + UnicodeEmojiFire));
+    EXPECT_TRUE(simpleMatchEmoji.match(UnicodeEmojiFire + UnicodeEmojiFox));
+
+    // Assert Unicode case folding does NOT happen (ä -> a)
+    EXPECT_FALSE(simpleMatchUniASCII.match("rav"));
+}
+
+
+TEST(ExpressionMatchTest, matchRegExUnicode)
+{
+    // Word character (letter and digit) regex, case-insensitive
+    ExpressionMatch simpleMatchSixWordChar =
+            ExpressionMatch(R"(\w{6})",
+                            ExpressionMatch::MatchMode::MatchRegEx, false);
+    // Digit regex, case-insensitive
+    ExpressionMatch simpleMatchThreeDigit =
+            ExpressionMatch(R"(\d{3})",
+                            ExpressionMatch::MatchMode::MatchRegEx, false);
+    ExpressionMatch simpleMatchAnyDigit =
+            ExpressionMatch(R"(\d+)",
+                            ExpressionMatch::MatchMode::MatchRegEx, false);
+
+    // Assert valid and not empty
+    ASSERT_TRUE(simpleMatchSixWordChar.isValid());
+    EXPECT_FALSE(simpleMatchSixWordChar.isEmpty());
+    ASSERT_TRUE(simpleMatchThreeDigit.isValid());
+    EXPECT_FALSE(simpleMatchThreeDigit.isEmpty());
+    ASSERT_TRUE(simpleMatchAnyDigit.isValid());
+    EXPECT_FALSE(simpleMatchAnyDigit.isEmpty());
+
+    // Assert ASCII matches
+    EXPECT_TRUE(simpleMatchSixWordChar.match("abc123"));
+    EXPECT_TRUE(simpleMatchThreeDigit.match("123"));
+    EXPECT_TRUE(simpleMatchAnyDigit.match("1"));
+
+    // Assert Unicode matches
+    EXPECT_TRUE(simpleMatchSixWordChar.match("áwá๑2๓"));
+    //
+    // "Unicode Characters in the 'Number, Decimal Digit' Category"
+    // Thai digits
+    // See https://www.fileformat.info/info/unicode/category/Nd/list.htm
+    EXPECT_TRUE(simpleMatchThreeDigit.match("๑2๓"));
+    EXPECT_TRUE(simpleMatchAnyDigit.match("๑"));
+
+    // Assert wrong content doesn't match
+    EXPECT_FALSE(simpleMatchAnyDigit.match("áwá"));
+}
