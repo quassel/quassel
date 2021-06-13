@@ -48,7 +48,8 @@ documentation.
 IRC is the preferred means of getting in touch with the developers.
 
 The Quassel IRC Team can be contacted on **`Libera Chat/#quassel`**
-(or **`#quassel.de`**). 
+(or **`#quassel.de`**).  If you have trouble getting Quassel to connect,
+you can use [Libera Chat's web client](https://web.libera.chat/?channels=#quassel).
 
 We always welcome new users in our channels!
 
