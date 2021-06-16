@@ -83,7 +83,8 @@ AliasManager::AliasList AliasManager::defaults()
     AliasList aliases;
     aliases << Alias("j", "/join $0") << Alias("ns", "/quote nickserv $0") << Alias("nickserv", "/quote nickserv $0")
             << Alias("cs", "/quote chanserv $0") << Alias("chanserv", "/quote chanserv $0") << Alias("hs", "/quote hostserv $0")
-            << Alias("hostserv", "/quote hostserv $0") << Alias("wii", "/whois $0 $0") << Alias("back", "/quote away");
+            << Alias("hostserv", "/quote hostserv $0") << Alias("wii", "/whois $0 $0") << Alias("back", "/quote away")
+            << Alias("raw", "/quote $0");
 
 #ifdef Q_OS_LINUX
     // let's add aliases for scripts that only run on linux
