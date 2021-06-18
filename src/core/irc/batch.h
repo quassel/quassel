@@ -5,7 +5,6 @@
 
 struct Batch
 {
-    NetworkId networkId;
     QString key;
     QString type;
     QList<QString> params;
@@ -14,12 +13,10 @@ struct Batch
     QList<Batch> children;
 
     explicit Batch(
-        NetworkId networkId,
         QString key,
         QString type,
         QList<QString> params
     ) :
-        networkId(networkId),
         key(std::move(key)),
         type(std::move(type)),
         params(std::move(params))
