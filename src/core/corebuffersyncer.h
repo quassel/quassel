@@ -84,6 +84,12 @@ public slots:
 
     void storeDirtyIds();
 
+signals:
+    void doRemoveBuffer(BufferId);
+
+private slots:
+    void onBufferRemoved(BufferId buffer);
+
 protected:
     void customEvent(QEvent* event) override;
 

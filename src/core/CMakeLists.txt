@@ -7,6 +7,7 @@ target_sources(${TARGET} PRIVATE
     corealiasmanager.cpp
     coreapplication.cpp
     coreauthhandler.cpp
+    backgroundtaskhandler.cpp
     corebacklogmanager.cpp
     corebasichandler.cpp
     corebuffersyncer.cpp
