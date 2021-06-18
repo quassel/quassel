@@ -53,7 +53,8 @@ SslServer::SslServer(QObject* parent)
         // do not proceed, throw an exception and quit. This prevents the core from falling
         // back to a plaintext-only core when they should be expecting SSL/TLS only.
         if (Quassel::isOptionSet("require-ssl")) {
-            throw ExitException{EXIT_FAILURE, tr("--require-ssl is set, but no SSL certificate is available. Exiting.")};
+            throw ExitException{EXIT_FAILURE, tr("--require-ssl is set, but no SSL certificate is available. Exiting.\n"
+                                                 "Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.")};
         }
         if (!sslWarningShown) {
             qWarning() << "SslServer: Unable to set certificate file\n"
