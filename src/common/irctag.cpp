@@ -36,7 +36,15 @@ bool operator==(const IrcTagKey& a, const IrcTagKey& b)
 
 bool operator<(const IrcTagKey& a, const IrcTagKey& b)
 {
-    return a.vendor < b.vendor || a.key < b.key || a.clientTag < b.clientTag;
+    if (a.vendor == b.vendor) {
+        if (a.key == b.key) {
+            return a.clientTag < b.clientTag;
+        } else {
+            return a.key < b.key;
+        }
+    } else {
+        return a.vendor < b.vendor;
+    }
 }
 
 QDebug operator<<(QDebug dbg, const IrcTagKey& i) {
