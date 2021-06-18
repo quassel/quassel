@@ -5,21 +5,25 @@
 
 struct Batch
 {
-    QString key;
-    QString type;
-    QList<QString> params;
+    QByteArray key;
+    QByteArray type;
+    QList<QByteArray> params;
+    QHash<IrcTagKey, QString> tags;
     QList<IrcMessage> messages;
     Batch* parent;
     QList<Batch> children;
 
     explicit Batch(
-        QString key,
-        QString type,
-        QList<QString> params
+        QByteArray key,
+        QByteArray type,
+        QList<QByteArray> params,
+        QHash<IrcTagKey, QString> tags
     ) :
         key(std::move(key)),
         type(std::move(type)),
-        params(std::move(params))
+        params(std::move(params)),
+        tags(std::move(tags)),
+        parent(nullptr)
     {}
 
     friend void addMessage(Batch& batch, const IrcMessage& message);

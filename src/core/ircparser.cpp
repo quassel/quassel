@@ -120,8 +120,99 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         return net->serverDecode(data);
     }, rawMsg, tags, prefix, cmd, params);
 
-    processMessage(net,IrcMessage(e->timestamp(), rawMsg, tags, prefix, cmd, params));
+    auto message = IrcMessage(e->timestamp(), rawMsg, tags, prefix, cmd, params);
+    if (!batchMessage(net, message)) {
+        processMessage(net, message);
+    }
 }
+
+void IrcParser::closeBatch(CoreNetwork* net, const QString& key) {
+    auto& networkBatches = _batches[net->networkId()];
+    if (!key.isEmpty()) {
+        if (networkBatches.contains(key)) {
+            Batch& batch = networkBatches[key].value();
+            processBatch(net, batch);
+            networkBatches.remove(key);
+        } else {
+            // Invalid batch key
+            qInfo() << "Invalid batch key" << key;
+        }
+    }
+}
+
+void IrcParser::createBatch(CoreNetwork* net, Batch batch, const QString& parentKey) {
+    auto& networkBatches = _batches[net->networkId()];
+    if (!parentKey.isEmpty()) {
+        if (networkBatches.contains(parentKey)) {
+            Batch& parent = networkBatches[parentKey].value();
+            addChild(parent, batch);
+        } else {
+            // Invalid parent
+            qInfo() << "Invalid parent key" << batch << parentKey;
+        }
+    }
+    networkBatches[batch.key] = batch;
+}
+
+bool IrcParser::batchMessage(CoreNetwork* net, const IrcMessage& message) {
+    if (message.cmd.compare("BATCH", Qt::CaseInsensitive) == 0) {
+        auto params = message.params;
+        if (params.isEmpty()) {
+            qInfo() << "Invalid batch: no key given";
+            return false;
+        }
+
+        auto key = params.takeFirst();
+
+        if (key.startsWith('+')) {
+            if (params.isEmpty()) {
+                qInfo() << "Invalid batch: no type given";
+                return false;
+            }
+
+            auto type = params.takeFirst();
+            const Batch& batch = Batch(key.mid(1), type, params, message.tags);
+            createBatch(
+                net,
+                batch,
+                message.tags[IrcTags::BATCH]
+            );
+            return true;
+        } else if (key.startsWith('-')) {
+            closeBatch(net, key.mid(1));
+            return true;
+        } else {
+            qInfo() << "Invalid batch key" << key;
+            // Invalid batch key
+            return true;
+        }
+    } else if (message.tags.contains(IrcTags::BATCH)) {
+        const QString& batchTag = message.tags[IrcTags::BATCH];
+        auto& networkBatches = _batches[net->networkId()];
+        if (networkBatches.contains(batchTag)) {
+            Batch& batch = networkBatches[batchTag].value();
+            addMessage(batch, message);
+            return true;
+        } else {
+            qInfo() << "Invalid batch key" << batchTag;
+            // Invalid batch key
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+void IrcParser::processBatch(CoreNetwork* net, const Batch& batch) {
+    for (auto& message : batch.messages) {
+        processMessage(net, message);
+    }
+
+    for (auto& child : batch.children) {
+        processBatch(net, child);
+    }
+}
+
 void IrcParser::processMessage(CoreNetwork* net,
                                IrcMessage message)
 {  // Log the message if enabled and network ID matches or allows all
@@ -330,10 +421,10 @@ void IrcParser::processMessage(CoreNetwork* net,
                 // Don't allow key exchange in channels, and don't allow it for self-messages.
                 bool keyExchangeAllowed = (!net->isChannelName(target) && !isSelfMessage);
                 if (message.params[1].startsWith("DH1080_INIT") && keyExchangeAllowed) {
-                    events << new KeyEvent(EventManager::KeyEvent, net, message.tags, message.prefix, target, KeyEvent::Init, params[1].mid(12));
+                    events << new KeyEvent(EventManager::KeyEvent, net, message.tags, message.prefix, target, KeyEvent::Init, message.params[1].mid(12));
                 }
                 else if (message.params[1].startsWith("DH1080_FINISH") && keyExchangeAllowed) {
-                    events << new KeyEvent(EventManager::KeyEvent, net, message.tags, message.prefix, target, KeyEvent::Finish, params[1].mid(14));
+                    events << new KeyEvent(EventManager::KeyEvent, net, message.tags, message.prefix, target, KeyEvent::Finish, message.params[1].mid(14));
                 }
                 else
 #endif

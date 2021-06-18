@@ -2,36 +2,31 @@
 
 uint qHash(const Batch& key)
 {
-    return qHash(QString("%1 %2")
-                 .arg(key.networkId.toInt())
-                 .arg(key.key));
+    return qHash(key.key);
 }
 
 bool operator==(const Batch& a, const Batch& b)
 {
-    return a.networkId == b.networkId && a.key == b.key;
+    return a.key == b.key;
 }
 
 bool operator<(const Batch& a, const Batch& b)
 {
-    if (a.networkId == b.networkId) {
-        return a.key < b.key;
-    } else {
-        return a.networkId < b.networkId;
-    }
+    return a.key < b.key;
 }
 
 QDebug operator<<(QDebug o, const Batch& m) {
-    return o << QString("Batch{network=%1, batch=%2, type=%3")
-        .arg(m.networkId.toInt())
-        .arg(m.key, m.type);
+    return o.nospace().noquote()
+           << "Batch{batch="<< m.key
+           << ", type="<< m.type
+           << ", tags="<< m.tags
+           << "}";
 }
 
 std::ostream& operator<<(std::ostream& o, const Batch& m) {
-    return o << QString("BatchKey{network=%1, batch=%2, type=%3")
-                    .arg(m.networkId.toInt())
-                    .arg(m.key, m.type)
-                    .toStdString();
+    return o << "Batch{batch="<< m.key.toStdString()
+             << ", type="<< m.type.toStdString()
+             << "}";
 }
 
 void addMessage(Batch& batch, const IrcMessage& message) {

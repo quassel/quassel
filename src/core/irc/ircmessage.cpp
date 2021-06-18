@@ -2,6 +2,8 @@
 
 QDebug operator<<(QDebug o, const IrcMessage& m)
 {
+    bool autoInsert = o.autoInsertSpaces();
+    o.setAutoInsertSpaces(false);
     o << "(tags={";
     QHashIterator<IrcTagKey, QString> tagIterator(m.tags);
     while (tagIterator.hasNext()) {
@@ -22,6 +24,7 @@ QDebug operator<<(QDebug o, const IrcMessage& m)
           << "', ";
     }
     o << "])";
+    o.setAutoInsertSpaces(autoInsert);
     return o;
 }
 
