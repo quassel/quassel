@@ -48,7 +48,9 @@ bool operator<(const IrcTagKey& a, const IrcTagKey& b)
 }
 
 QDebug operator<<(QDebug dbg, const IrcTagKey& i) {
-    return dbg << QString(("(clientTag = %1, vendor = %2,key = %3")).arg(i.clientTag).arg(i.vendor).arg(i.key);
+    return dbg << QString("(clientTag = %1, vendor = %2,key = %3")
+                      .arg(i.clientTag)
+                      .arg(i.vendor, i.key);
 }
 
 std::ostream& operator<<(std::ostream& o, const IrcTagKey& i) {
