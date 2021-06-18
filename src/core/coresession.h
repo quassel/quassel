@@ -28,6 +28,7 @@
 #include <QString>
 #include <QVariant>
 
+#include "backgroundtaskhandler.h"
 #include "corealiasmanager.h"
 #include "corehighlightrulemanager.h"
 #include "coreignorelistmanager.h"
@@ -102,6 +103,7 @@ public:
     inline HighlightRuleManager* highlightRuleManager() { return &_highlightRuleManager; }
     inline CoreTransferManager* transferManager() const { return _transferManager; }
     inline CoreDccConfig* dccConfig() const { return _dccConfig; }
+    inline BackgroundTaskHandler* backgroundTaskHandler() const { return _backgroundTaskHandler; }
 
     //   void attachNetworkConnection(NetworkConnection *conn);
 
@@ -192,6 +194,8 @@ signals:
 
     void disconnectFromCore();
 
+    void bufferRemoved(BufferId);
+
 protected:
     void customEvent(QEvent* event) override;
 
@@ -219,6 +223,8 @@ private:
 
     /// Hook for converting events to the old displayMsg() handlers
     Q_INVOKABLE void processMessageEvent(MessageEvent* event);
+
+    BackgroundTaskHandler* _backgroundTaskHandler;
 
     UserId _user;
 

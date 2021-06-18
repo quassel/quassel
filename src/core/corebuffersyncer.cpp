@@ -21,7 +21,6 @@
 #include "corebuffersyncer.h"
 
 #include <algorithm>
-#include <iterator>
 #include <set>
 
 #include "core.h"
@@ -29,6 +28,7 @@
 #include "coresession.h"
 #include "ircchannel.h"
 #include "util.h"
+#include "backgroundtaskhandler.h"
 
 class PurgeEvent : public QEvent
 {
@@ -48,6 +48,18 @@ CoreBufferSyncer::CoreBufferSyncer(CoreSession* parent)
     , _coreSession(parent)
     , _purgeBuffers(false)
 {
+    connect(
+        parent->backgroundTaskHandler(),
+        &BackgroundTaskHandler::onBufferDeleted,
+        this,
+        &CoreBufferSyncer::onBufferRemoved
+    );
+    connect(
+        this,
+        &CoreBufferSyncer::doRemoveBuffer,
+        parent->backgroundTaskHandler(),
+        &BackgroundTaskHandler::deleteBuffer
+    );
     connect(parent, &CoreSession::displayMsg, this, &CoreBufferSyncer::addBufferActivity);
     connect(parent, &CoreSession::displayMsg, this, &CoreBufferSyncer::addCoreHighlight);
 }
@@ -126,8 +138,11 @@ void CoreBufferSyncer::removeBuffer(BufferId bufferId)
             return;
         }
     }
-    if (Core::removeBuffer(_coreSession->user(), bufferId))
-        BufferSyncer::removeBuffer(bufferId);
+    emit doRemoveBuffer(bufferId);
+}
+
+void CoreBufferSyncer::onBufferRemoved(BufferId bufferId) {
+    BufferSyncer::removeBuffer(bufferId);
 }
 
 void CoreBufferSyncer::renameBuffer(BufferId bufferId, QString newName)

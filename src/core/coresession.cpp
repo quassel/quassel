@@ -59,6 +59,7 @@ public:
 
 CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled, QObject* parent)
     : QObject(parent)
+    , _backgroundTaskHandler(new BackgroundTaskHandler(this))
     , _user(uid)
     , _strictIdentEnabled(strictIdentEnabled)
     , _signalProxy(new SignalProxy(SignalProxy::Server, this))
