@@ -48,4 +48,11 @@ namespace IrcTags
      * https://ircv3.net/specs/extensions/batch
      */
     const IrcTagKey BATCH = IrcTagKey{"", "batch", false};
+
+    /**
+     * Labeled Response.
+     *
+     * https://ircv3.net/specs/extensions/labeled-response
+     */
+    const IrcTagKey LABELED_RESPONSE = IrcTagKey{"", "labeled-response", false};
 }
