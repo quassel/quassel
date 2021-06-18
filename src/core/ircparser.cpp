@@ -120,32 +120,36 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         return net->serverDecode(data);
     }, rawMsg, tags, prefix, cmd, params);
 
-    // Log the message if enabled and network ID matches or allows all
+    processMessage(net,IrcMessage(e->timestamp(), rawMsg, tags, prefix, cmd, params));
+}
+void IrcParser::processMessage(CoreNetwork* net,
+                               IrcMessage message)
+{  // Log the message if enabled and network ID matches or allows all
     if (_debugLogParsedIrc && (_debugLogParsedNetId == -1 || net->networkId().toInt() == _debugLogParsedNetId)) {
         // Include network ID
-        qDebug() << "IRC net" << net->networkId() << "<<" << tags << prefix << cmd << params;
+        qDebug() << "IRC net" << net->networkId() << "<<" << message.tags << message.prefix << message.cmd << message.params;
     }
 
-    if (net->capEnabled(IrcCap::SERVER_TIME) && tags.contains(IrcTags::SERVER_TIME)) {
-        QDateTime serverTime = QDateTime::fromString(tags[IrcTags::SERVER_TIME], "yyyy-MM-ddThh:mm:ss.zzzZ");
+    if (net->capEnabled(IrcCap::SERVER_TIME) && message.tags.contains(IrcTags::SERVER_TIME)) {
+        QDateTime serverTime = QDateTime::fromString(message.tags[IrcTags::SERVER_TIME], "yyyy-MM-ddThh:mm:ss.zzzZ");
         serverTime.setTimeSpec(Qt::UTC);
         if (serverTime.isValid()) {
-            e->setTimestamp(serverTime);
+            message.timestamp = serverTime;
         } else {
-            qDebug() << "Invalid timestamp from server-time tag:" << tags[IrcTags::SERVER_TIME];
+            qDebug() << "Invalid timestamp from server-time tag:" << message.tags[IrcTags::SERVER_TIME];
         }
     }
 
-    if (net->capEnabled(IrcCap::ACCOUNT_TAG) && tags.contains(IrcTags::ACCOUNT)) {
+    if (net->capEnabled(IrcCap::ACCOUNT_TAG) && message.tags.contains(IrcTags::ACCOUNT)) {
         // Whenever account-tag is specified, update the relevant IrcUser if it exists
         // Logged-out status is handled in specific commands (PRIVMSG, NOTICE, etc)
         //
         // Don't use "updateNickFromMask" here to ensure this only updates existing IrcUsers and
         // won't create a new IrcUser.  This guards against an IRC server setting "account" tag in
         // nonsensical places, e.g. for messages that are not user sent.
-        IrcUser* ircuser = net->ircUser(prefix);
+        IrcUser* ircuser = net->ircUser(message.prefix);
         if (ircuser) {
-            ircuser->setAccount(tags[IrcTags::ACCOUNT]);
+            ircuser->setAccount(message.tags[IrcTags::ACCOUNT]);
         }
 
         // NOTE: if "account-tag" is enabled and no "account" tag is sent, the given user isn't
@@ -160,20 +164,20 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     EventManager::EventType type = EventManager::Invalid;
 
     QString messageTarget;
-    uint num = cmd.toUInt();
+    uint num = message.cmd.toUInt();
     if (num > 0) {
         // numeric reply
-        if (params.count() == 0) {
-            qWarning() << "Message received from server violates RFC and is ignored!" << rawMsg;
+        if (message.params.count() == 0) {
+            qWarning() << "Message received from server violates RFC and is ignored!" << message.raw;
             return;
         }
         // numeric replies have the target as first param (RFC 2812 - 2.4). this is usually our own nick. Remove this!
-        messageTarget = net->serverDecode(params.takeFirst());
+        messageTarget = net->serverDecode(message.params.takeFirst());
         type = EventManager::IrcEventNumeric;
     }
     else {
         // any other irc command
-        QString typeName = QLatin1String("IrcEvent") + cmd.at(0).toUpper() + cmd.mid(1).toLower();
+        QString typeName = QLatin1String("IrcEvent") + message.cmd.at(0).toUpper() + message.cmd.mid(1).toLower();
         type = EventManager::eventTypeByName(typeName);
         if (type == EventManager::Invalid) {
             type = EventManager::eventTypeByName("IrcEventUnknown");
@@ -194,18 +198,18 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     case EventManager::IrcEventPrivmsg:
         defaultHandling = false;  // this might create a list of events
 
-        if (checkParamCount(cmd, params, 1)) {
-            QString senderNick = nickFromMask(prefix);
+        if (checkParamCount(message.cmd, message.params, 1)) {
+            QString senderNick = nickFromMask(message.prefix);
             // Fetch/create the relevant IrcUser, and store it for later updates
-            IrcUser* ircuser = net->updateNickFromMask(prefix);
+            IrcUser* ircuser = net->updateNickFromMask(message.prefix);
 
             // Handle account-tag
             if (ircuser && net->capEnabled(IrcCap::ACCOUNT_TAG)) {
-                if (tags.contains(IrcTags::ACCOUNT)) {
+                if (message.tags.contains(IrcTags::ACCOUNT)) {
                     // Account tag available, set account.
                     // This duplicates the generic account-tag handling in case a new IrcUser object
                     // was just created.
-                    ircuser->setAccount(tags[IrcTags::ACCOUNT]);
+                    ircuser->setAccount(message.tags[IrcTags::ACCOUNT]);
                 }
                 else {
                     // PRIVMSG is user sent; it's safe to assume the user has logged out.
@@ -219,9 +223,9 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             // Cache the result to avoid multiple redundant comparisons
             bool isSelfMessage = net->isMyNick(senderNick);
 
-            QByteArray msg = params.count() < 2 ? QByteArray() : params.at(1);
+            QByteArray msg = message.params.count() < 2 ? QByteArray() : message.params.at(1);
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(message.params.at(0)).split(',', QString::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 // For self-messages, keep the target, don't set it to the senderNick
@@ -231,13 +235,13 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                 // consider including this within an if (!isSelfMessage) block
                 msg = decrypt(net, target, msg);
 
-                IrcEventRawMessage* rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg,
-                                                                        net,
-                                                                        tags,
-                                                                        msg,
-                                                                        prefix,
-                                                                        target,
-                                                                        e->timestamp());
+                auto* rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawPrivmsg,
+                                                          net,
+                                                          message.tags,
+                                                          msg,
+                                                          message.prefix,
+                                                          target,
+                                                          message.timestamp);
                 if (isSelfMessage) {
                     // Self-messages need processed differently, tag as such via flag.
                     rawMessage->setFlag(EventManager::Self);
@@ -250,16 +254,16 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     case EventManager::IrcEventNotice:
         defaultHandling = false;
 
-        if (checkParamCount(cmd, params, 2)) {
+        if (checkParamCount(message.cmd, message.params, 2)) {
             // Check if the sender is our own nick.  If so, treat message as if sent by ourself.
             // See http://ircv3.net/specs/extensions/echo-message-3.2.html
             // Cache the result to avoid multiple redundant comparisons
-            bool isSelfMessage = net->isMyNick(nickFromMask(prefix));
+            bool isSelfMessage = net->isMyNick(nickFromMask(message.prefix));
 
             // Only update from the prefix once during the loop
             bool updatedFromPrefix = false;
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(message.params.at(0)).split(',', QString::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 QString target = *targetIter;
@@ -268,7 +272,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                 // :ChanServ!ChanServ@services. NOTICE egst :[#apache] Welcome, this is #apache. Please read the in-channel topic message.
                 // This channel is being logged by IRSeekBot. If you have any question please see http://blog.freenode.net/?p=68
                 if (!net->isChannelName(target)) {
-                    QString decMsg = net->serverDecode(params.at(1));
+                    QString decMsg = net->serverDecode(message.params.at(1));
                     QRegExp welcomeRegExp(R"(^\[([^\]]+)\] )");
                     if (welcomeRegExp.indexIn(decMsg) != -1) {
                         QString channelname = welcomeRegExp.cap(1);
@@ -277,13 +281,13 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                         CoreIrcChannel* chan = static_cast<CoreIrcChannel*>(net->ircChannel(channelname)); // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
                         if (chan && !chan->receivedWelcomeMsg()) {
                             chan->setReceivedWelcomeMsg();
-                            events << new MessageEvent(Message::Notice, net, decMsg, prefix, channelname, Message::None, e->timestamp());
+                            events << new MessageEvent(Message::Notice, net, decMsg, message.prefix, channelname, Message::None, message.timestamp);
                             continue;
                         }
                     }
                 }
 
-                if (prefix.isEmpty() || target == "AUTH") {
+                if (message.prefix.isEmpty() || target == "AUTH") {
                     target = QString();
                 }
                 else {
@@ -293,7 +297,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                     if (!net->isChannelName(target)) {
                         // For self-messages, keep the target, don't set it to the sender prefix
                         if (!isSelfMessage) {
-                            target = nickFromMask(prefix);
+                            target = nickFromMask(message.prefix);
                         }
 
                         if (!updatedFromPrefix) {
@@ -301,15 +305,15 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                             updatedFromPrefix = true;
 
                             // Fetch/create the relevant IrcUser, and store it for later updates
-                            IrcUser* ircuser = net->updateNickFromMask(prefix);
+                            IrcUser* ircuser = net->updateNickFromMask(message.prefix);
 
                             // Handle account-tag
                             if (ircuser && net->capEnabled(IrcCap::ACCOUNT_TAG)) {
-                                if (tags.contains(IrcTags::ACCOUNT)) {
+                                if (message.tags.contains(IrcTags::ACCOUNT)) {
                                     // Account tag available, set account.
                                     // This duplicates the generic account-tag handling in case a
                                     // new IrcUser object was just created.
-                                    ircuser->setAccount(tags[IrcTags::ACCOUNT]);
+                                    ircuser->setAccount(message.tags[IrcTags::ACCOUNT]);
                                 }
                                 else {
                                     // NOTICE is user sent; it's safe to assume the user has
@@ -325,22 +329,22 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                 // Handle DH1080 key exchange
                 // Don't allow key exchange in channels, and don't allow it for self-messages.
                 bool keyExchangeAllowed = (!net->isChannelName(target) && !isSelfMessage);
-                if (params[1].startsWith("DH1080_INIT") && keyExchangeAllowed) {
-                    events << new KeyEvent(EventManager::KeyEvent, net, tags, prefix, target, KeyEvent::Init, params[1].mid(12));
+                if (message.params[1].startsWith("DH1080_INIT") && keyExchangeAllowed) {
+                    events << new KeyEvent(EventManager::KeyEvent, net, message.tags, message.prefix, target, KeyEvent::Init, params[1].mid(12));
                 }
-                else if (params[1].startsWith("DH1080_FINISH") && keyExchangeAllowed) {
-                    events << new KeyEvent(EventManager::KeyEvent, net, tags, prefix, target, KeyEvent::Finish, params[1].mid(14));
+                else if (message.params[1].startsWith("DH1080_FINISH") && keyExchangeAllowed) {
+                    events << new KeyEvent(EventManager::KeyEvent, net, message.tags, message.prefix, target, KeyEvent::Finish, params[1].mid(14));
                 }
                 else
 #endif
                 {
-                    IrcEventRawMessage* rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawNotice,
+                    auto* rawMessage = new IrcEventRawMessage(EventManager::IrcEventRawNotice,
                                                                             net,
-                                                                            tags,
-                                                                            params[1],
-                                                                            prefix,
+                                                                            message.tags,
+                                                                            message.params[1],
+                                                                            message.prefix,
                                                                             target,
-                                                                            e->timestamp());
+                                                                            message.timestamp);
                     if (isSelfMessage) {
                         // Self-messages need processed differently, tag as such via flag.
                         rawMessage->setFlag(EventManager::Self);
@@ -353,61 +357,63 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
         // the following events need only special casing for param decoding
     case EventManager::IrcEventKick:
-        if (params.count() >= 3) {  // we have a reason
-            decParams << net->serverDecode(params.at(0)) << net->serverDecode(params.at(1));
-            decParams << net->channelDecode(decParams.first(), params.at(2));  // kick reason
+        if (message.params.count() >= 3) {  // we have a reason
+            decParams << net->serverDecode(message.params.at(0)) << net->serverDecode(message.params.at(1));
+            decParams << net->channelDecode(decParams.first(), message.params.at(2));  // kick reason
         }
         break;
 
     case EventManager::IrcEventPart:
-        if (params.count() >= 2) {
-            QString channel = net->serverDecode(params.at(0));
+        if (message.params.count() >= 2) {
+            QString channel = net->serverDecode(message.params.at(0));
             decParams << channel;
-            decParams << net->userDecode(nickFromMask(prefix), params.at(1));
-            net->updateNickFromMask(prefix);
+            decParams << net->userDecode(nickFromMask(message.prefix), message.params.at(1));
+            net->updateNickFromMask(message.prefix);
         }
         break;
 
     case EventManager::IrcEventQuit:
-        if (params.count() >= 1) {
-            decParams << net->userDecode(nickFromMask(prefix), params.at(0));
-            net->updateNickFromMask(prefix);
+        if (message.params.count() >= 1) {
+            decParams << net->userDecode(nickFromMask(message.prefix), message.params.at(0));
+            net->updateNickFromMask(message.prefix);
         }
         break;
 
     case EventManager::IrcEventTagmsg:
         defaultHandling = false;  // this might create a list of events
 
-        if (checkParamCount(cmd, params, 1)) {
-            QString senderNick = nickFromMask(prefix);
-            net->updateNickFromMask(prefix);
+        if (checkParamCount(message.cmd, message.params, 1)) {
+            QString senderNick = nickFromMask(message.prefix);
+            net->updateNickFromMask(message.prefix);
             // Check if the sender is our own nick.  If so, treat message as if sent by ourself.
             // See http://ircv3.net/specs/extensions/echo-message-3.2.html
             // Cache the result to avoid multiple redundant comparisons
             bool isSelfMessage = net->isMyNick(senderNick);
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(message.params.at(0)).split(',', QString::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 // For self-messages, keep the target, don't set it to the senderNick
                 QString target = net->isChannelName(*targetIter) || net->isStatusMsg(*targetIter) || isSelfMessage ? *targetIter : senderNick;
 
-                IrcEvent* tagMsg = new IrcEvent(EventManager::IrcEventTagmsg, net, tags, prefix, {target});
+                auto* tagMsg = new IrcEvent(EventManager::IrcEventTagmsg, net, message.tags, message.prefix, {target});
                 if (isSelfMessage) {
                     // Self-messages need processed differently, tag as such via flag.
                     tagMsg->setFlag(EventManager::Self);
                 }
-                tagMsg->setTimestamp(e->timestamp());
+                tagMsg->setTimestamp(message.timestamp);
                 events << tagMsg;
             }
         }
         break;
 
     case EventManager::IrcEventTopic:
-        if (params.count() >= 1) {
-            QString channel = net->serverDecode(params.at(0));
+        if (message.params.count() >= 1) {
+            QString channel = net->serverDecode(message.params.at(0));
             decParams << channel;
-            decParams << (params.count() >= 2 ? net->channelDecode(channel, decrypt(net, channel, params.at(1), true)) : QString());
+            decParams << (message.params.count() >= 2
+                              ? net->channelDecode(channel, decrypt(net, channel, message.params.at(1), true))
+                              : QString());
         }
         break;
 
@@ -415,37 +421,39 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
         {
             // Update hostmask info first.  This will create the nick if it doesn't exist, e.g.
             // away-notify data being sent before JOIN messages.
-            net->updateNickFromMask(prefix);
+            net->updateNickFromMask(message.prefix);
             // Separate nick in order to separate server and user decoding
-            QString nick = nickFromMask(prefix);
+            QString nick = nickFromMask(message.prefix);
             decParams << nick;
-            decParams << (params.count() >= 1 ? net->userDecode(nick, params.at(0)) : QString());
+            decParams << (message.params.count() >= 1
+                              ? net->userDecode(nick, message.params.at(0))
+                              : QString());
         }
         break;
 
     case EventManager::IrcEventNumeric:
         switch (num) {
         case RPL_AWAY:
-            if (params.count() >= 2) {
-                QString nick = net->serverDecode(params.at(0));
+            if (message.params.count() >= 2) {
+                QString nick = net->serverDecode(message.params.at(0));
                 decParams << nick;
-                decParams << net->userDecode(nick, params.at(1));
+                decParams << net->userDecode(nick, message.params.at(1));
             }
             break;
 
         case RPL_TOPIC:
-            if (params.count() >= 2) {
-                QString channel = net->serverDecode(params.at(0));
+            if (message.params.count() >= 2) {
+                QString channel = net->serverDecode(message.params.at(0));
                 decParams << channel;
-                decParams << net->channelDecode(channel, decrypt(net, channel, params.at(1), true));
+                decParams << net->channelDecode(channel, decrypt(net, channel, message.params.at(1), true));
             }
             break;
 
         case RPL_TOPICWHOTIME:
-            if (params.count() >= 3) {
-                QString channel = net->serverDecode(params.at(0));
-                decParams << channel << net->serverDecode(params.at(1));
-                decParams << net->channelDecode(channel, params.at(2));
+            if (message.params.count() >= 3) {
+                QString channel = net->serverDecode(message.params.at(0));
+                decParams << channel << net->serverDecode(message.params.at(1));
+                decParams << net->channelDecode(channel, message.params.at(2));
             }
             break;
         case ERR_NOTREGISTERED:
@@ -455,13 +463,15 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                 // into a nicer message since it's not a real error.
                 defaultHandling = false;
                 events << new MessageEvent(Message::Server,
-                                           e->network(),
+                                           net,
                                            tr("Capability negotiation not supported"),
                                            QString(),
                                            QString(),
                                            Message::None,
-                                           e->timestamp());
+                                           message.timestamp);
             }
+            break;
+        default:
             break;
         }
 
@@ -470,8 +480,8 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     }
 
     if (defaultHandling && type != EventManager::Invalid) {
-        for (int i = decParams.count(); i < params.count(); i++)
-            decParams << net->serverDecode(params.at(i));
+        for (int i = decParams.count(); i < message.params.count(); i++)
+            decParams << net->serverDecode(message.params.at(i));
 
         // We want to trim the last param just in case, except for PRIVMSG and NOTICE
         // ... but those happen to be the only ones not using defaultHandling anyway
@@ -480,11 +490,11 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
         IrcEvent* event;
         if (type == EventManager::IrcEventNumeric)
-            event = new IrcEventNumeric(num, net, tags, prefix, messageTarget);
+            event = new IrcEventNumeric(num, net, message.tags, message.prefix, messageTarget);
         else
-            event = new IrcEvent(type, net, tags, prefix);
+            event = new IrcEvent(type, net, message.tags, message.prefix);
         event->setParams(decParams);
-        event->setTimestamp(e->timestamp());
+        event->setTimestamp(message.timestamp);
         events << event;
     }
 

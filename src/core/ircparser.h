@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "irc/ircmessage.h"
+
 #include "coresession.h"
 #include "irctag.h"
 
@@ -48,6 +50,11 @@ protected:
 
     // no-op if we don't have crypto support!
     QByteArray decrypt(Network* network, const QString& target, const QByteArray& message, bool isTopic = false);
+
+    void processMessage(
+        CoreNetwork* net,
+        IrcMessage ircMessage
+    );
 
 private:
     CoreSession* _coreSession;

@@ -41,6 +41,8 @@ target_sources(${TARGET} PRIVATE
     sqlitestorage.cpp
     sslserver.cpp
     storage.cpp
+        irc/batch.cpp
+    irc/ircmessage.cpp
 
     # needed for automoc
     coreeventmanager.h
