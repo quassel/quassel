@@ -35,6 +35,13 @@
 #    include "keyevent.h"
 #endif
 
+enum IrcNumeric : uint32_t {
+    RPL_AWAY = 301,
+    RPL_TOPIC = 332,
+    RPL_TOPICWHOTIME = 333,
+    ERR_NOTREGISTERED = 451,
+};
+
 IrcParser::IrcParser(CoreSession* session)
     : QObject(session)
     , _coreSession(session)
@@ -418,7 +425,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
     case EventManager::IrcEventNumeric:
         switch (num) {
-        case 301: /* RPL_AWAY */
+        case RPL_AWAY:
             if (params.count() >= 2) {
                 QString nick = net->serverDecode(params.at(0));
                 decParams << nick;
@@ -426,7 +433,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             }
             break;
 
-        case 332: /* RPL_TOPIC */
+        case RPL_TOPIC:
             if (params.count() >= 2) {
                 QString channel = net->serverDecode(params.at(0));
                 decParams << channel;
@@ -434,14 +441,14 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             }
             break;
 
-        case 333: /* Topic set by... */
+        case RPL_TOPICWHOTIME:
             if (params.count() >= 3) {
                 QString channel = net->serverDecode(params.at(0));
                 decParams << channel << net->serverDecode(params.at(1));
                 decParams << net->channelDecode(channel, params.at(2));
             }
             break;
-        case 451: /* You have not registered... */
+        case ERR_NOTREGISTERED:
             if (messageTarget.compare("CAP", Qt::CaseInsensitive) == 0) {
                 // :irc.server.com 451 CAP :You have not registered
                 // If server doesn't support capabilities, it will report this message.  Turn it
