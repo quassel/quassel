@@ -1,5 +1,13 @@
 #include "ircmessage.h"
 
+bool operator==(const IrcMessage& a, const IrcMessage& b)
+{
+    return a.tags == b.tags
+               && a.prefix == b.prefix
+               && a.cmd == b.cmd
+               && a.params == b.params;
+}
+
 QDebug operator<<(QDebug o, const IrcMessage& m)
 {
     bool autoInsert = o.autoInsertSpaces();

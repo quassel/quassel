@@ -18,55 +18,41 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "irctag.h"
+#pragma once
 
-uint qHash(const IrcTagKey& key)
+#include "irctagkey.h"
+
+/**
+ * This namespace contains commonly used message tags, similar to the IrcCaps
+ * namespace used for IRCv3 capabilities.
+ */
+namespace IrcTags
 {
-    QString clientTag;
-    if (key.clientTag) {
-        clientTag = "+";
-    }
-    return qHash(QString(clientTag + key.vendor + "/" + key.key));
-}
+    /**
+     * Services account status with user messages
+     *
+     * https://ircv3.net/specs/extensions/account-tag-3.2
+     */
+    const IrcTagKey ACCOUNT = IrcTagKey{"", "account", false};
 
-bool operator==(const IrcTagKey& a, const IrcTagKey& b)
-{
-    return a.vendor == b.vendor && a.key == b.key && a.clientTag == b.clientTag;
-}
+    /**
+     * Server time for messages.
+     *
+     * https://ircv3.net/specs/extensions/server-time-3.2.html
+     */
+    const IrcTagKey SERVER_TIME = IrcTagKey{"", "time", false};
 
-bool operator<(const IrcTagKey& a, const IrcTagKey& b)
-{
-    if (a.vendor == b.vendor) {
-        if (a.key == b.key) {
-            return a.clientTag < b.clientTag;
-        } else {
-            return a.key < b.key;
-        }
-    } else {
-        return a.vendor < b.vendor;
-    }
-}
+    /**
+     * Message Batches.
+     *
+     * https://ircv3.net/specs/extensions/batch
+     */
+    const IrcTagKey BATCH = IrcTagKey{"", "batch", false};
 
-QDebug operator<<(QDebug dbg, const IrcTagKey& i) {
-    if (i.vendor.isEmpty()) {
-        dbg.noquote() << QString("%1%2")
-            .arg(i.clientTag ? "+" : "", i.key);
-        return dbg;
-    } else {
-        dbg.noquote() << QString("%1%2/%3")
-            .arg(i.clientTag ? "+" : "", i.vendor, i.key);
-        return dbg;
-    }
-}
-
-std::ostream& operator<<(std::ostream& o, const IrcTagKey& i) {
-    std::string result;
-    if (i.clientTag)
-        result += "+";
-    if (!i.vendor.isEmpty()) {
-        result += i.vendor.toStdString();
-        result += "/";
-    }
-    result += i.key.toStdString();
-    return o << result;
+    /**
+     * Labeled Response.
+     *
+     * https://ircv3.net/specs/extensions/labeled-response
+     */
+    const IrcTagKey LABELED_RESPONSE = IrcTagKey{"", "labeled-response", false};
 }

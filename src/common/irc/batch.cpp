@@ -29,7 +29,7 @@ std::ostream& operator<<(std::ostream& o, const Batch& m) {
              << "}";
 }
 
-void addMessage(Batch& batch, const IrcMessage& message) {
+void addMessage(Batch& batch, const ParsedMessage& message) {
     batch.messages << message;
 }
 

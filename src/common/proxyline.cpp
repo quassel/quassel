@@ -20,7 +20,7 @@
 
 #include "proxyline.h"
 
-#include "ircdecoder.h"
+#include "irc/ircdecoder.h"
 
 ProxyLine ProxyLine::parseProxyLine(const QByteArray& line)
 {

@@ -39,7 +39,7 @@
 #endif
 
 // IRCv3 capabilities
-#include "irccap.h"
+#include "irc/irccap.h"
 
 CoreSessionEventProcessor::CoreSessionEventProcessor(CoreSession* session)
     : BasicHandler("handleCtcp", session)
@@ -851,9 +851,12 @@ void CoreSessionEventProcessor::processKeyEvent(KeyEvent* e)
                                            e->target(),
                                            Message::None,
                                            e->timestamp()));
-            QList<QByteArray> p;
-            p << net->serverEncode(e->target()) << net->serverEncode("DH1080_FINISH ") + pubKey;
-            net->putCmd("NOTICE", p);
+            net->sendMessage(IrcMessage(
+                {},
+                {},
+                "NOTICE",
+                net->serverEncode({e->target(), "DH1080_FINISH " + pubKey})
+            ));
         }
     }
     else {

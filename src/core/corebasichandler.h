@@ -18,12 +18,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef COREBASICHANDLER_H
-#define COREBASICHANDLER_H
+#pragma once
 
 #include <QString>
 #include <QStringList>
 
+#include "irc/ircmessage.h"
 #include "basichandler.h"
 #include "corenetwork.h"
 #include "message.h"
@@ -52,6 +52,8 @@ public:
     QList<QByteArray> userEncode(const QString& userNick, const QStringList& stringlist);
 
 signals:
+    void sendMessage(const IrcMessage& message, bool prepend = false);
+    void displayMessage(const IrcMessage& message);
     void displayMsg(const NetworkInternalMessage& msg);
 
     /**
@@ -60,40 +62,7 @@ signals:
      * @see CoreNetwork::putRawLine()
      */
     void putRawLine(const QByteArray& msg, bool prepend = false);
-
-    /**
-     * Sends the command with encoded parameters, with optional prefix or high priority.
-     *
-     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray(), const
-     * QHash<IrcTagKey, QString>& tags = {}, bool prepend = false)
-     */
-    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString>& tags = {}, bool prepend = false);
-
-    /**
-     * Sends the command for each set of encoded parameters, with optional prefix or high priority.
-     *
-     * @see CoreNetwork::putCmd(const QString &cmd, const QList<QList<QByteArray>> &params, const QByteArray &prefix = QByteArray(), const
-     * QHash<IrcTagKey, QString>& tags = {}, bool prepend = false)
-     */
-    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString>& tags = {}, bool prepend = false);
-
 protected:
-    /**
-     * Sends the command with one parameter, with optional prefix or high priority.
-     *
-     * @param[in] cmd      Command to send, ignoring capitalization
-     * @param[in] param    Parameter for the command, encoded within a QByteArray
-     * @param[in] prefix   Optional command prefix
-     * @param[in] tags     Optional command tags
-     * @param[in] prepend
-     * @parmblock
-     * If true, the command is prepended into the start of the queue, otherwise, it's appended to
-     * the end.  This should be used sparingly, for if either the core or the IRC server cannot
-     * maintain PING/PONG replies, the other side will close the connection.
-     * @endparmblock
-     */
-    void putCmd(const QString& cmd, const QByteArray& param, const QByteArray& prefix = QByteArray(), const QHash<IrcTagKey, QString>& tags = {}, bool prepend = false);
-
     inline CoreNetwork* network() const { return _network; }
     inline CoreSession* coreSession() const { return _network->coreSession(); }
 
@@ -102,5 +71,3 @@ protected:
 private:
     CoreNetwork* _network;
 };
-
-#endif

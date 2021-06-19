@@ -24,8 +24,9 @@
 #include "coresession.h"
 #include "coreuserinputhandler.h"
 #include "ctcpevent.h"
-#include "irctags.h"
 #include "messageevent.h"
+
+#include "irc/irctags.h"
 
 const QByteArray XDELIM = "\001";
 
@@ -385,20 +386,28 @@ void CtcpParser::query(CoreNetwork* net, const QString& bufname, const QString& 
                                    << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, splitMsg)));
     };
 
-    net->putCmd(cmd, net->splitMessage(cmd, message, cmdGenerator));
+    for (const auto& params : net->splitMessage(cmd, message, cmdGenerator)) {
+        net->sendMessage(IrcMessage(
+            {},
+            {},
+            cmd,
+            params
+        ));
+    }
 }
 
 void CtcpParser::reply(CoreNetwork* net, const QString& bufname, const QString& ctcpTag, const QString& message)
 {
-    QList<QByteArray> params;
-    params << net->serverEncode(bufname) << lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message)));
-    net->putCmd("NOTICE", params);
+    net->sendMessage(IrcMessage(
+        {},
+        {},
+        "NOTICE",
+        {net->serverEncode(bufname), lowLevelQuote(pack(net->serverEncode(ctcpTag), net->userEncode(bufname, message)))}
+    ));;
 }
 
 void CtcpParser::packedReply(CoreNetwork* net, const QString& bufname, const QList<QByteArray>& replies)
 {
-    QList<QByteArray> params;
-
     int answerSize = 0;
     for (int i = 0; i < replies.count(); i++) {
         answerSize += replies.at(i).size();
@@ -410,7 +419,10 @@ void CtcpParser::packedReply(CoreNetwork* net, const QString& bufname, const QLi
         quotedReply.append(replies.at(i));
     }
 
-    params << net->serverEncode(bufname) << quotedReply;
-    // FIXME user proper event
-    net->putCmd("NOTICE", params);
+    net->sendMessage(IrcMessage(
+        {},
+        {},
+        "NOTICE",
+        {net->serverEncode(bufname), quotedReply}
+    ));
 }

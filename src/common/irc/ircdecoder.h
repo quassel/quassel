@@ -24,7 +24,8 @@
 
 #include <functional>
 
-#include "irctag.h"
+#include "ircmessage.h"
+#include "irctagkey.h"
 
 class COMMON_EXPORT IrcDecoder
 {
@@ -33,12 +34,9 @@ public:
      * Parses an IRC message
      * @param decode Decoder to be used for decoding the message
      * @param rawMsg Raw Message
-     * @param tags[out] Parsed map of IRCv3 message tags
-     * @param prefix[out] Parsed prefix
-     * @param command[out] Parsed command
-     * @param parameters[out] Parsed list of parameters
+     * @return IrcMessage
      */
-    static void parseMessage(const std::function<QString(const QByteArray&)>& decode, const QByteArray& raw, QHash<IrcTagKey, QString>& tags, QString& prefix, QString& command, QList<QByteArray>& parameters);
+    static IrcMessage parseMessage(const std::function<QString(const QByteArray&)>& decode, const QByteArray& raw);
 
     /**
      * Extracts a space-delimited fragment from an IRC message
