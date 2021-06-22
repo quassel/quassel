@@ -789,7 +789,7 @@ void Network::setUnlimitedMessageRate(bool unlimitedRate)
 
 void Network::addSupport(const QString& param, const QString& value)
 {
-    if (!_supports.contains(param)) {
+    if (!_supports.contains(param) || _supports[param] != value) {
         _supports[param] = value;
         SYNC(ARG(param), ARG(value))
     }
