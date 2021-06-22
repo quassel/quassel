@@ -41,4 +41,11 @@ namespace IrcTags
      * https://ircv3.net/specs/extensions/server-time-3.2.html
      */
     const IrcTagKey SERVER_TIME = IrcTagKey{"", "time", false};
+
+    /**
+     * Message Batches.
+     *
+     * https://ircv3.net/specs/extensions/batch
+     */
+    const IrcTagKey BATCH = IrcTagKey{"", "batch", false};
 }
