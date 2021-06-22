@@ -143,6 +143,13 @@ namespace IrcCap {
     const QString SERVER_TIME = "server-time";
 
     /**
+     * Message batches.
+     *
+     * https://ircv3.net/specs/extensions/batch
+     */
+    const QString BATCH = "batch";
+
+    /**
      * Vendor-specific capabilities
      */
     namespace Vendor {
@@ -189,6 +196,7 @@ namespace IrcCap {
                                               SETNAME,
                                               USERHOST_IN_NAMES,
                                               SERVER_TIME,
+                                              BATCH,
                                               Vendor::TWITCH_MEMBERSHIP,
                                               Vendor::ZNC_SELF_MESSAGE};
     // NOTE: If you modify the knownCaps list, update the constants above as needed.

@@ -31,10 +31,11 @@
 #include "corenetworkconfig.h"
 #include "coresession.h"
 #include "coreuserinputhandler.h"
-#include "ircencoder.h"
-#include "irccap.h"
-#include "irctag.h"
 #include "networkevent.h"
+
+#include "irc/irccap.h"
+#include "irc/ircencoder.h"
+#include "irc/irctagkey.h"
 
 CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     : Network(networkid, session)
@@ -158,6 +159,14 @@ QString CoreNetwork::userDecode(const QString& userNick, const QByteArray& strin
     return decodeString(string);
 }
 
+QList<QByteArray> CoreNetwork::serverEncode(const QStringList& list) const
+{
+    QList<QByteArray> result;
+    for (const QString& element :  list)
+        result << serverEncode(element);
+    return result;
+}
+
 QByteArray CoreNetwork::channelEncode(const QString& bufferName, const QString& string) const
 {
     if (!bufferName.isEmpty()) {
@@ -168,12 +177,28 @@ QByteArray CoreNetwork::channelEncode(const QString& bufferName, const QString& 
     return encodeString(string);
 }
 
+QList<QByteArray> CoreNetwork::channelEncode(const QString& bufferName, const QStringList& list) const
+{
+    QList<QByteArray> result;
+    for (const QString& element :  list)
+        result << channelEncode(bufferName, element);
+    return result;
+}
+
 QByteArray CoreNetwork::userEncode(const QString& userNick, const QString& string) const
 {
     IrcUser* user = ircUser(userNick);
     if (user)
         return user->encodeString(string);
     return encodeString(string);
+}
+
+QList<QByteArray> CoreNetwork::userEncode(const QString& userNick, const QStringList& list) const
+{
+    QList<QByteArray> result;
+    for (const QString& element :  list)
+        result << userEncode(userNick, element);
+    return result;
 }
 
 void CoreNetwork::connectToIrc(bool reconnecting)
@@ -377,17 +402,31 @@ void CoreNetwork::putRawLine(const QByteArray& s, bool prepend)
     }
 }
 
-void CoreNetwork::putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString>& tags, bool prepend)
+void CoreNetwork::sendMessage(const IrcMessage& message, bool prepend)
 {
-    putRawLine(IrcEncoder::writeMessage(tags, prefix, cmd, params), prepend);
-}
+    const auto& buffer = IrcEncoder::writeMessage([&](const QString& data) {
+      return serverEncode(data);
+    }, message);
 
-void CoreNetwork::putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix, const QHash<IrcTagKey, QString>& tags, bool prependAll)
-{
-    QListIterator<QList<QByteArray>> i(params);
-    while (i.hasNext()) {
-        QList<QByteArray> msg = i.next();
-        putCmd(cmd, msg, prefix, tags, prependAll);
+    if (_tokenBucket > 0 || (_skipMessageRates && _msgQueue.isEmpty())) {
+        // If there's tokens remaining, ...
+        // Or rate limits don't apply AND no messages are in queue (to prevent out-of-order), ...
+        // Send the message now.
+        writeToSocket(buffer);
+    }
+    else {
+        // Otherwise, queue the message for later
+        if (prepend) {
+            // Jump to the start, skipping other messages
+            _msgQueue.prepend(buffer);
+        }
+        else {
+            // Add to back, waiting in order
+            _msgQueue.append(buffer);
+        }
+        if (_metricsServer) {
+            _metricsServer->messageQueue(userId(), _msgQueue.size());
+        }
     }
 }
 

@@ -36,8 +36,7 @@
 #include "widgethelpers.h"
 
 // IRCv3 capabilities
-#include "irccap.h"
-
+#include "irc/irccap.h"
 #include "settingspages/identitiessettingspage.h"
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)

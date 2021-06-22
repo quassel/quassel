@@ -22,7 +22,7 @@
 
 #include <QDebug>
 
-#include "irctag.h"
+#include "irctagkey.h"
 
 QString IrcDecoder::parseTagValue(const QString& value)
 {
@@ -163,26 +163,21 @@ QByteArray IrcDecoder::parseParameter(const QByteArray& raw, int& start)
     }
 }
 
-void IrcDecoder::parseMessage(const std::function<QString(const QByteArray&)>& decode,
-                              const QByteArray& rawMsg,
-                              QHash<IrcTagKey, QString>& tags,
-                              QString& prefix,
-                              QString& command,
-                              QList<QByteArray>& parameters)
+IrcMessage IrcDecoder::parseMessage(const std::function<QString(const QByteArray&)>& decode, const QByteArray& raw)
 {
     int start = 0;
-    skipEmptyParts(rawMsg, start);
-    tags = parseTags(decode, rawMsg, start);
-    skipEmptyParts(rawMsg, start);
-    prefix = parsePrefix(decode, rawMsg, start);
-    skipEmptyParts(rawMsg, start);
-    command = parseCommand(decode, rawMsg, start);
-    skipEmptyParts(rawMsg, start);
+    skipEmptyParts(raw, start);
+    auto tags = parseTags(decode, raw, start);
+    skipEmptyParts(raw, start);
+    auto prefix = parsePrefix(decode, raw, start);
+    skipEmptyParts(raw, start);
+    auto command = parseCommand(decode, raw, start);
+    skipEmptyParts(raw, start);
     QList<QByteArray> params;
-    while (start != rawMsg.length()) {
-        QByteArray param = parseParameter(rawMsg, start);
-        skipEmptyParts(rawMsg, start);
+    while (start != raw.length()) {
+        QByteArray param = parseParameter(raw, start);
+        skipEmptyParts(raw, start);
         params.append(param);
     }
-    parameters = params;
+    return IrcMessage(tags, prefix, command, params);
 }

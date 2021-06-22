@@ -95,7 +95,13 @@ void CoreUserInputHandler::issueAway(const QString& msg, bool autoCheck, const b
     if (me)
         me->setAwayMessage(awayMsg);
 
-    putCmd("AWAY", serverEncode(awayMsg));
+
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "AWAY",
+        {serverEncode(awayMsg)}
+    ));
 }
 
 void CoreUserInputHandler::handleBan(const BufferInfo& bufferInfo, const QString& msg)
@@ -161,8 +167,12 @@ void CoreUserInputHandler::banOrUnban(const BufferInfo& bufferInfo, const QStrin
     }
 
     QString banMode = ban ? "+b" : "-b";
-    QString banMsg = QString("MODE %1 %2 %3").arg(banChannel, banMode, banUser);
-    emit putRawLine(serverEncode(banMsg));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "MODE",
+        serverEncode({banChannel, banMode, banUser})
+    ));;
 }
 
 void CoreUserInputHandler::handleCtcp(const BufferInfo& bufferInfo, const QString& msg)
@@ -287,14 +297,20 @@ void CoreUserInputHandler::doMode(const BufferInfo& bufferInfo, const QChar& add
 
     while (!nickList.isEmpty()) {
         int amount = qMin(nickList.count(), maxModes);
-        QString m = addOrRemove;
+        QString modeString = addOrRemove;
         for (int i = 0; i < amount; i++)
-            m += mode;
+            modeString += mode;
         QStringList params;
-        params << bufferInfo.bufferName() << m;
+        params << bufferInfo.bufferName()
+               << modeString;
         for (int i = 0; i < amount; i++)
             params << nickList.takeFirst();
-        emit putCmd("MODE", serverEncode(params));
+        emit sendMessage(IrcMessage(
+            {},
+            {},
+            "MODE",
+            serverEncode(params)
+        ));
     }
 }
 
@@ -325,9 +341,12 @@ void CoreUserInputHandler::handleOp(const BufferInfo& bufferInfo, const QString&
 
 void CoreUserInputHandler::handleInvite(const BufferInfo& bufferInfo, const QString& msg)
 {
-    QStringList params;
-    params << msg << bufferInfo.bufferName();
-    emit putCmd("INVITE", serverEncode(params));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "INVITE",
+        serverEncode({msg, bufferInfo.bufferName()})
+ ));
 }
 
 void CoreUserInputHandler::handleJoin(const BufferInfo& bufferInfo, const QString& msg)
@@ -378,7 +397,12 @@ void CoreUserInputHandler::handleJoin(const BufferInfo& bufferInfo, const QStrin
             encodedParams = serverEncode(params);
             // check if it fits in one command
             if (lastParamOverrun(cmd, encodedParams) == 0) {
-                emit putCmd(cmd, encodedParams);
+                emit sendMessage(IrcMessage(
+                    {},
+                    {},
+                    "JOIN",
+                    encodedParams
+                ));
             }
             else if (slicesize > 1) {
                 // back to start of slice, try again with half the amount of channels
@@ -447,9 +471,12 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo& bufferInfo, const QStrin
             tr("Failed to initiate key exchange with %1.").arg(target)
         ));
     else {
-        QList<QByteArray> params;
-        params << serverEncode(target) << serverEncode("DH1080_INIT ") + pubKey;
-        emit putCmd("NOTICE", params);
+        emit sendMessage(IrcMessage(
+            {},
+            {},
+            "NOTICE",
+            serverEncode({target, "DH1080_INIT " + pubKey})
+        ));
         emit displayMsg(NetworkInternalMessage(
             Message::Info,
             typeByTarget(bufname),
@@ -478,9 +505,12 @@ void CoreUserInputHandler::handleKick(const BufferInfo& bufferInfo, const QStrin
     if (reason.isEmpty())
         reason = network()->identityPtr()->kickReason();
 
-    QList<QByteArray> params;
-    params << serverEncode(bufferInfo.bufferName()) << serverEncode(nick) << channelEncode(bufferInfo.bufferName(), reason);
-    emit putCmd("KICK", params);
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "KICK",
+        {serverEncode(bufferInfo.bufferName()), serverEncode(nick), channelEncode(bufferInfo.bufferName(), reason)}
+    ));
 }
 
 void CoreUserInputHandler::handleKill(const BufferInfo& bufferInfo, const QString& msg)
@@ -488,15 +518,24 @@ void CoreUserInputHandler::handleKill(const BufferInfo& bufferInfo, const QStrin
     Q_UNUSED(bufferInfo)
     QString nick = msg.section(' ', 0, 0, QString::SectionSkipEmpty);
     QString pass = msg.section(' ', 1, -1, QString::SectionSkipEmpty);
-    QList<QByteArray> params;
-    params << serverEncode(nick) << serverEncode(pass);
-    emit putCmd("KILL", params);
+
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "KILL",
+        serverEncode({nick, pass})
+    ));
 }
 
 void CoreUserInputHandler::handleList(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putCmd("LIST", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "LIST",
+        serverEncode(msg.split(' ', QString::SkipEmptyParts))
+    ));
 }
 
 void CoreUserInputHandler::handleMe(const BufferInfo& bufferInfo, const QString& msg)
@@ -551,7 +590,12 @@ void CoreUserInputHandler::handleMode(const BufferInfo& bufferInfo, const QStrin
     }
 
     // TODO handle correct encoding for buffer modes (channelEncode())
-    emit putCmd("MODE", serverEncode(params));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "MODE",
+        serverEncode(params)
+    ));
 }
 
 // TODO: show privmsgs
@@ -578,22 +622,29 @@ void CoreUserInputHandler::handleNick(const BufferInfo& bufferInfo, const QStrin
 {
     Q_UNUSED(bufferInfo)
     QString nick = msg.section(' ', 0, 0);
-    emit putCmd("NICK", serverEncode(nick));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "NICK",
+        {serverEncode(nick)}
+    ));
 }
 
 void CoreUserInputHandler::handleNotice(const BufferInfo& bufferInfo, const QString& msg)
 {
     QString bufferName = msg.section(' ', 0, 0);
-    QList<QByteArray> params;
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
     QStringList messages = msg.section(' ', 1).split(QChar::LineFeed);
 
     for (const auto& message : messages) {
         // Handle each separated message independently
-        params.clear();
-        params << serverEncode(bufferName) << channelEncode(bufferInfo.bufferName(), message);
-        emit putCmd("NOTICE", params);
+        emit sendMessage(IrcMessage(
+            {},
+            {},
+            "NOTICE",
+            {serverEncode(bufferName), channelEncode(bufferInfo.bufferName(), message)}
+        ));
         if (!network()->capEnabled(IrcCap::ECHO_MESSAGE)) {
             emit displayMsg(NetworkInternalMessage(
                 Message::Notice,
@@ -610,12 +661,16 @@ void CoreUserInputHandler::handleNotice(const BufferInfo& bufferInfo, const QStr
 void CoreUserInputHandler::handleOper(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putRawLine(serverEncode(QString("OPER %1").arg(msg)));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "OPER",
+        serverEncode(msg.split(' '))
+    ));
 }
 
 void CoreUserInputHandler::handlePart(const BufferInfo& bufferInfo, const QString& msg)
 {
-    QList<QByteArray> params;
     QString partReason;
 
     // msg might contain either a channel name and/or a reaon, so we have to check if the first word is a known channel
@@ -631,8 +686,12 @@ void CoreUserInputHandler::handlePart(const BufferInfo& bufferInfo, const QStrin
     if (partReason.isEmpty())
         partReason = network()->identityPtr()->partReason();
 
-    params << serverEncode(channelName) << channelEncode(bufferInfo.bufferName(), partReason);
-    emit putCmd("PART", params);
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "PART",
+        {serverEncode(channelName), channelEncode(bufferInfo.bufferName(), partReason)}
+    ));
 }
 
 void CoreUserInputHandler::handlePing(const BufferInfo& bufferInfo, const QString& msg)
@@ -644,7 +703,12 @@ void CoreUserInputHandler::handlePing(const BufferInfo& bufferInfo, const QStrin
         param = QTime::currentTime().toString("hh:mm:ss.zzz");
 
     // Take priority so this won't get stuck behind other queued messages.
-    putCmd("PING", serverEncode(param), {}, {}, true);
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "PING",
+        {serverEncode(param)}
+    ), true);
 }
 
 void CoreUserInputHandler::handlePrint(const BufferInfo& bufferInfo, const QString& msg)
@@ -711,7 +775,12 @@ void CoreUserInputHandler::handleQuit(const BufferInfo& bufferInfo, const QStrin
 void CoreUserInputHandler::issueQuit(const QString& reason, bool forceImmediate)
 {
     // If needing an immediate QUIT (e.g. core shutdown), prepend this to the queue
-    emit putCmd("QUIT", serverEncode(reason), {}, {}, forceImmediate);
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "QUIT",
+        {serverEncode(reason)}
+    ), forceImmediate);
 }
 
 void CoreUserInputHandler::handleQuote(const BufferInfo& bufferInfo, const QString& msg)
@@ -812,7 +881,12 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo& bufferInfo, const QStr
 void CoreUserInputHandler::handleSetname(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putCmd("SETNAME", serverEncode(msg));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "SETNAME",
+        {serverEncode(msg)}
+    ));
 }
 
 void CoreUserInputHandler::handleShowkey(const BufferInfo& bufferInfo, const QString& msg)
@@ -890,26 +964,49 @@ void CoreUserInputHandler::handleTopic(const BufferInfo& bufferInfo, const QStri
     QList<QByteArray> params;
     params << serverEncode(bufferInfo.bufferName());
 
+    QString topic;
     if (!msg.isEmpty()) {
 #ifdef HAVE_QCA2
-        params << encrypt(bufferInfo.bufferName(), channelEncode(bufferInfo.bufferName(), msg));
+        topic = encrypt(bufferInfo.bufferName(), channelEncode(bufferInfo.bufferName(), msg));
 #else
-        params << channelEncode(bufferInfo.bufferName(), msg);
+        topic = channelEncode(bufferInfo.bufferName(), msg);
 #endif
     }
 
-    emit putCmd("TOPIC", params);
+
+    if (msg.isEmpty()) {
+        emit sendMessage(IrcMessage(
+            {},
+            {},
+            "TOPIC",
+            {serverEncode(bufferInfo.bufferName())}
+        ));
+    } else {
+        emit sendMessage(IrcMessage(
+            {},
+            {},
+            "TOPIC",
+            {serverEncode(bufferInfo.bufferName()), encrypt(bufferInfo.bufferName(), channelEncode(bufferInfo.bufferName(), msg))}
+        ));
+    }
 }
 
 void CoreUserInputHandler::handleVoice(const BufferInfo& bufferInfo, const QString& msg)
 {
     QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
-    QString m = "+";
+    QString modeString = "+";
     for (int i = 0; i < nicks.count(); i++)
-        m += 'v';
+        modeString += 'v';
     QStringList params;
-    params << bufferInfo.bufferName() << m << nicks;
-    emit putCmd("MODE", serverEncode(params));
+    params << bufferInfo.bufferName()
+           << modeString
+           << nicks;
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "MODE",
+        serverEncode(params)
+    ));
 }
 
 void CoreUserInputHandler::handleWait(const BufferInfo& bufferInfo, const QString& msg)
@@ -935,25 +1032,45 @@ void CoreUserInputHandler::handleWait(const BufferInfo& bufferInfo, const QStrin
 void CoreUserInputHandler::handleWho(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putCmd("WHO", serverEncode(msg.split(' ')));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "WHO",
+        serverEncode(msg.split(' '))
+    ));
 }
 
 void CoreUserInputHandler::handleWhois(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putCmd("WHOIS", serverEncode(msg.split(' ')));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "WHOIS",
+        serverEncode(msg.split(' '))
+    ));
 }
 
 void CoreUserInputHandler::handleWhowas(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putCmd("WHOWAS", serverEncode(msg.split(' ')));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        "WHOWAS",
+        serverEncode(msg.split(' '))
+    ));
 }
 
 void CoreUserInputHandler::defaultHandler(QString cmd, const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo);
-    emit putCmd(serverEncode(cmd.toUpper()), serverEncode(msg.split(" ")));
+    emit sendMessage(IrcMessage(
+        {},
+        {},
+        serverEncode(cmd.toUpper()),
+        serverEncode(msg.split(' '))
+    ));
 }
 
 void CoreUserInputHandler::putPrivmsg(const QString& target,
@@ -976,7 +1093,14 @@ void CoreUserInputHandler::putPrivmsg(const QString& target,
         return QList<QByteArray>() << targetEnc << splitMsgEnc;
     };
 
-    putCmd(cmd, network()->splitMessage(cmd, message, cmdGenerator));
+    for (const auto& splitMessage : network()->splitMessage(cmd, message, cmdGenerator)) {
+        emit sendMessage(IrcMessage(
+            {},
+            {},
+            cmd,
+            splitMessage
+        ));
+    }
 }
 
 // returns 0 if the message will not be chopped by the irc server or number of chopped bytes if message is too long
@@ -1013,31 +1137,31 @@ int CoreUserInputHandler::lastParamOverrun(const QString& cmd, const QList<QByte
     }
 }
 
-#ifdef HAVE_QCA2
-QByteArray CoreUserInputHandler::encrypt(const QString& target, const QByteArray& message_, bool* didEncrypt) const
+QByteArray CoreUserInputHandler::encrypt(const QString& target, const QByteArray& message, bool* didEncrypt) const
 {
     if (didEncrypt)
         *didEncrypt = false;
-
-    if (message_.isEmpty())
-        return message_;
+#ifdef HAVE_QCA2
+    if (message.isEmpty())
+        return message;
 
     if (!Cipher::neededFeaturesAvailable())
-        return message_;
+        return message;
 
     Cipher* cipher = network()->cipher(target);
     if (!cipher || cipher->key().isEmpty())
-        return message_;
+        return message;
 
-    QByteArray message = message_;
-    bool result = cipher->encrypt(message);
+    QByteArray result = message;
+    bool success = cipher->encrypt(result);
     if (didEncrypt)
-        *didEncrypt = result;
-
+        *didEncrypt = success;
+    return result;
+#else
     return message;
+#endif
 }
 
-#endif
 
 void CoreUserInputHandler::timerEvent(QTimerEvent* event)
 {

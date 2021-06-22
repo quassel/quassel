@@ -24,9 +24,10 @@
 
 #include <utility>
 
-#include "irctag.h"
 #include "networkevent.h"
 #include "util.h"
+
+#include "irc/irctagkey.h"
 
 class COMMON_EXPORT IrcEvent : public NetworkEvent
 {

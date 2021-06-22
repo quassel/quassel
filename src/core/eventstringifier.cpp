@@ -22,8 +22,9 @@
 
 #include "coresession.h"
 #include "ctcpevent.h"
-#include "irctags.h"
 #include "messageevent.h"
+
+#include "irc/irctags.h"
 
 EventStringifier::EventStringifier(CoreSession* parent)
     : BasicHandler("handleCtcp", parent)

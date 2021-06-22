@@ -27,15 +27,10 @@ CoreBasicHandler::CoreBasicHandler(CoreNetwork* parent)
     , _network(parent)
 {
     connect(this, &CoreBasicHandler::displayMsg, network(), &CoreNetwork::onDisplayMsg);
-    connect(this, &CoreBasicHandler::putRawLine, network(), &CoreNetwork::putRawLine);
     connect(this,
-            selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, const QHash<IrcTagKey, QString>&, bool>(&CoreBasicHandler::putCmd),
+            &CoreBasicHandler::sendMessage,
             network(),
-            selectOverload<const QString&, const QList<QByteArray>&, const QByteArray&, const QHash<IrcTagKey, QString>&, bool>(&CoreNetwork::putCmd));
-    connect(this,
-            selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, const QHash<IrcTagKey, QString>&, bool>(&CoreBasicHandler::putCmd),
-            network(),
-            selectOverload<const QString&, const QList<QList<QByteArray>>&, const QByteArray&, const QHash<IrcTagKey, QString>&, bool>(&CoreNetwork::putCmd));
+            &CoreNetwork::sendMessage);
 }
 
 QString CoreBasicHandler::serverDecode(const QByteArray& string)
@@ -130,11 +125,4 @@ BufferInfo::Type CoreBasicHandler::typeByTarget(const QString& target) const
         return BufferInfo::ChannelBuffer;
 
     return BufferInfo::QueryBuffer;
-}
-
-void CoreBasicHandler::putCmd(const QString& cmd, const QByteArray& param, const QByteArray& prefix, const QHash<IrcTagKey, QString>& tags, bool prepend)
-{
-    QList<QByteArray> list;
-    list << param;
-    emit putCmd(cmd, list, prefix, tags, prepend);
 }

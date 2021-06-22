@@ -124,9 +124,7 @@ private:
                     std::function<QByteArray(const QString&, const QString&)> encodeFunc,
                     Cipher* cipher = nullptr);
 
-#ifdef HAVE_QCA2
     QByteArray encrypt(const QString& target, const QByteArray& message, bool* didEncrypt = nullptr) const;
-#endif
 
     struct Command
     {
