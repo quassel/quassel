@@ -277,10 +277,11 @@ void ContextMenuActionProvider::addNetworkItemActions(QMenu* menu, const QModelI
     if (!network)
         return;
 
-    addAction(ShowNetworkConfig, menu, index);
-    menu->addSeparator();
+
     addAction(NetworkConnect, menu, network->connectionState() == Network::Disconnected);
     addAction(NetworkDisconnect, menu, network->connectionState() != Network::Disconnected);
+    menu->addSeparator();
+    addAction(ShowNetworkConfig, menu, index);
     menu->addSeparator();
     addAction(ShowChannelList, menu, index, ActiveState);
     addAction(JoinChannel, menu, index, ActiveState);
