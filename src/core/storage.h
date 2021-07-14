@@ -155,6 +155,12 @@ public:
      */
     virtual QString getUserAuthenticator(const UserId userid) = 0;
 
+    //! Get the outgoing IP address to be used for a given user.
+    /** \param userId The users Id
+     *  \return The host address to use for this user, if existing
+     */
+    virtual QHostAddress getUserOutgoingIp(UserId userId) = 0;
+
     //! Determine the UserId of the internal user
     /** \return A valid UserId if the password matches the username; 0 else
      */

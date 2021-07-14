@@ -3,5 +3,6 @@ CREATE TABLE quasseluser (
        username TEXT UNIQUE NOT NULL,
        password TEXT NOT NULL,
        hashversion integer NOT NULL DEFAULT 0,
-       authenticator TEXT NOT NULL DEFAULT 'Database'
+       authenticator TEXT NOT NULL DEFAULT 'Database',
+       outgoing_ip TEXT NOT NULL DEFAULT ''
 )
