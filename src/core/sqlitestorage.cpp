@@ -319,6 +319,30 @@ QString SqliteStorage::getUserAuthenticator(const UserId userid)
     return authenticator;
 }
 
+QHostAddress SqliteStorage::getUserOutgoingIp(UserId userId)
+{
+    QHostAddress hostAddress{};
+
+    {
+        QSqlQuery query(logDb());
+        query.prepare(queryString("select_outgoing_ip"));
+        query.bindValue(":userid", userId.toInt());
+
+        lockForRead();
+        safeExec(query);
+
+        if (query.first()) {
+            QString hostAddressString = query.value(0).toString();
+            if (!hostAddressString.isEmpty()) {
+                hostAddress = QHostAddress(hostAddressString);
+            }
+        }
+    }
+    unlock();
+
+    return hostAddress;
+}
+
 UserId SqliteStorage::internalUser()
 {
     UserId userId;
