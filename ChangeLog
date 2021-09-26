@@ -25,9 +25,14 @@ NOTE:  Database schema format change, no downgrade possible!
 * New dependencies:
   - Boost (v1.54 or later, build-time only)
   - zlib (bundled miniz has been removed)
+* Support building against Qt 5.15 (and all prior versions down to and including Qt 5.5)
 * Remove support for building against Qt4/KDE4
 * Require SSL support in Qt
+* Don't silently fall back to unencrypted client/core communication if certificate cannot be loaded
+* Properly escape LDAP usernames to prevent injection or bypassing authentication
+* Strip format codes in ignore list rules (this might affect pre-existing rules)
 * Support many more features of IRCv3
+* Improve window handling under Wayland
 * Support the HAProxy protocol
 * Provide a daemon providing Prometheus metrics
 * Deprecate local highlight settings (prefer synced ones instead)
@@ -51,6 +56,8 @@ NOTE:  Database schema format change, no downgrade possible!
 * Many smaller fixes
 * Improve documentation and UI help
 * Update translations
+* Update bundled iconsets and application icons
+* Update default network and documentation to point to our new home Libera IRC (since Freenode killed itself)
 
 Version 0.13.1 (2019-02-15)
 ===========================
