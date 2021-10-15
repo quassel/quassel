@@ -3,7 +3,16 @@
 # and attaching Windows and macOS builds, as well as the source archive.
 name: Quassel CI
 
-on: [ push, pull_request ]
+on:
+  push:
+  pull_request:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # Run at 13:37 on the 14th of every month (odd time to reduce load)
+    - cron: '37 13 14 * *'
+
+# Can't use simpler definition of [ push, pull_request, schedule ]
+# See https://www.jeffgeerling.com/blog/2020/running-github-actions-workflow-on-schedule-and-other-events
 
 defaults:
   run:
