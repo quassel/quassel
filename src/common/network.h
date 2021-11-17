@@ -42,7 +42,7 @@
 #include "util.h"
 
 // IRCv3 capabilities
-#include "irccap.h"
+#include "irc/irccap.h"
 
 // defined below!
 struct NetworkInfo;

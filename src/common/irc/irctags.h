@@ -18,39 +18,41 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include "irctag.h"
+#pragma once
 
-uint qHash(const IrcTagKey& key)
+#include "irctagkey.h"
+
+/**
+ * This namespace contains commonly used message tags, similar to the IrcCaps
+ * namespace used for IRCv3 capabilities.
+ */
+namespace IrcTags
 {
-    QString clientTag;
-    if (key.clientTag) {
-        clientTag = "+";
-    }
-    return qHash(QString(clientTag + key.vendor + "/" + key.key));
-}
+    /**
+     * Services account status with user messages
+     *
+     * https://ircv3.net/specs/extensions/account-tag-3.2
+     */
+    const IrcTagKey ACCOUNT = IrcTagKey{"", "account", false};
 
-bool operator==(const IrcTagKey& a, const IrcTagKey& b)
-{
-    return a.vendor == b.vendor && a.key == b.key && a.clientTag == b.clientTag;
-}
+    /**
+     * Server time for messages.
+     *
+     * https://ircv3.net/specs/extensions/server-time-3.2.html
+     */
+    const IrcTagKey SERVER_TIME = IrcTagKey{"", "time", false};
 
-bool operator<(const IrcTagKey& a, const IrcTagKey& b)
-{
-    return a.vendor < b.vendor || a.key < b.key || a.clientTag < b.clientTag;
-}
+    /**
+     * Message Batches.
+     *
+     * https://ircv3.net/specs/extensions/batch
+     */
+    const IrcTagKey BATCH = IrcTagKey{"", "batch", false};
 
-QDebug operator<<(QDebug dbg, const IrcTagKey& i) {
-    return dbg << QString(("(clientTag = %1, vendor = %2,key = %3")).arg(i.clientTag).arg(i.vendor).arg(i.key);
-}
-
-std::ostream& operator<<(std::ostream& o, const IrcTagKey& i) {
-    std::string result;
-    if (i.clientTag)
-        result += "+";
-    if (!i.vendor.isEmpty()) {
-        result += i.vendor.toStdString();
-        result += "/";
-    }
-    result += i.key.toStdString();
-    return o << result;
+    /**
+     * Labeled Response.
+     *
+     * https://ircv3.net/specs/extensions/labeled-response
+     */
+    const IrcTagKey LABELED_RESPONSE = IrcTagKey{"", "labeled-response", false};
 }

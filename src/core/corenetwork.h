@@ -33,9 +33,11 @@
 #include "coreircchannel.h"
 #include "coreircuser.h"
 #include "coresession.h"
-#include "irccap.h"
-#include "irctag.h"
 #include "network.h"
+
+#include "irc/irccap.h"
+#include "irc/ircmessage.h"
+#include "irc/irctagkey.h"
 
 class CoreIdentity;
 class CoreUserInputHandler;
@@ -68,12 +70,18 @@ public:
 
     //! Encode a string using the server (network) encoding.
     inline QByteArray serverEncode(const QString& string) const { return encodeServerString(string); }
+    //! Encode a list of strings using the server (network) encoding.
+    QList<QByteArray> serverEncode(const QStringList& list) const;
 
     //! Encode a string using the channel-specific encoding, if set, and use the standard encoding else.
     QByteArray channelEncode(const QString& channelName, const QString& string) const;
+    //! Encode a list of strings using the channel-specific encoding, if set, and use the standard encoding else.
+    QList<QByteArray> channelEncode(const QString& channelName, const QStringList& list) const;
 
     //! Encode a string using the user-specific encoding, if set, and use the standard encoding else.
     QByteArray userEncode(const QString& userNick, const QString& string) const;
+    //! Encode a list of strings using the user-specific encoding, if set, and use the standard encoding else.
+    QList<QByteArray> userEncode(const QString& userNick, const QStringList& list) const;
 
     inline QString channelKey(const QString& channel) const { return _channelKeys.value(channel.toLower(), QString()); }
 
@@ -263,9 +271,7 @@ public slots:
     /**
      * Sends the command with encoded parameters, with optional prefix or high priority.
      *
-     * @param[in] cmd      Command to send, ignoring capitalization
-     * @param[in] params   Parameters for the command, encoded within a QByteArray
-     * @param[in] prefix   Optional command prefix
+     * @param[in] message  Irc Message to send
      * @param[in] prepend
      * @parmblock
      * If true, the command is prepended into the start of the queue, otherwise, it's appended to
@@ -273,26 +279,8 @@ public slots:
      * maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString> &tags = {}, bool prepend = false);
-
-    /**
-     * Sends the command for each set of encoded parameters, with optional prefix or high priority.
-     *
-     * @param[in] cmd         Command to send, ignoring capitalization
-     * @param[in] params
-     * @parmblock
-     * List of parameter lists for the command, encoded within a QByteArray.  The command will be
-     * sent multiple times, once for each set of params stored within the outer list.
-     * @endparmblock
-     * @param[in] prefix      Optional command prefix
-     * @param[in] prependAll
-     * @parmblock
-     * If true, ALL of the commands are prepended into the start of the queue, otherwise, they're
-     * appended to the end.  This should be used sparingly, for if either the core or the IRC server
-     * cannot maintain PING/PONG replies, the other side will close the connection.
-     * @endparmblock
-     */
-    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString> &tags = {}, bool prependAll = false);
+    void sendMessage(const IrcMessage& message, bool prepend = false);
+    //void displayMessage(const IrcMessage& message, bool prepend = false);
 
     void setChannelJoined(const QString& channel);
     void setChannelParted(const QString& channel);

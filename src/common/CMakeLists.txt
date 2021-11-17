@@ -25,10 +25,6 @@ target_sources(${TARGET} PRIVATE
     ircchannel.cpp
     ircevent.cpp
     irclisthelper.cpp
-    ircdecoder.cpp
-    ircencoder.cpp
-    irctag.cpp
-    irctags.h
     ircuser.cpp
     logger.cpp
     message.cpp
@@ -52,13 +48,19 @@ target_sources(${TARGET} PRIVATE
     types.cpp
     util.cpp
 
+    irc/batch.cpp
+    irc/ircmessage.cpp
+    irc/ircdecoder.cpp
+    irc/ircencoder.cpp
+    irc/irctagkey.cpp
+    irc/parsedmessage.cpp
+
     serializers/serializers.cpp
 
     protocols/datastream/datastreampeer.cpp
     protocols/legacy/legacypeer.cpp
 
     # needed for automoc
-    irccap.h
     protocol.h
 )
 

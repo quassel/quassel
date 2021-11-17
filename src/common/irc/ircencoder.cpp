@@ -20,68 +20,65 @@
 
 #include "ircencoder.h"
 
-QByteArray IrcEncoder::writeMessage(const QHash<IrcTagKey, QString>& tags,
-                                   const QByteArray& prefix,
-                                   const QString& cmd,
-                                   const QList<QByteArray>& params)
+QByteArray IrcEncoder::writeMessage(const std::function<QByteArray(const QString&)>& encode, const IrcMessage& message)
 {
     QByteArray msg;
-    writeTags(msg, tags);
-    writePrefix(msg, prefix);
-    writeCommand(msg, cmd);
-    writeParams(msg, params);
+    writeTags(msg, encode, message.tags);
+    writePrefix(msg, encode, message.prefix);
+    writeCommand(msg, encode, message.cmd);
+    writeParams(msg, message.params);
     return msg;
 }
 
-void IrcEncoder::writeTagValue(QByteArray& msg, const QString& value)
+QString IrcEncoder::writeTagValue(const QString& value)
 {
     QString it = value;
-    msg += it.replace("\\", R"(\\)")
+    return it.replace("\\", R"(\\)")
              .replace(";", R"(\:)")
              .replace(" ", R"(\s)")
              .replace("\r", R"(\r)")
              .replace("\n", R"(\n)");
 }
 
-void IrcEncoder::writeTags(QByteArray& msg, const QHash<IrcTagKey, QString>& tags)
+void IrcEncoder::writeTags(QByteArray& msg, const std::function<QByteArray(const QString&)>& encode, const QHash<IrcTagKey, QString>& tags)
 {
     if (!tags.isEmpty()) {
-        msg += "@";
+        msg += encode("@");
         bool isFirstTag = true;
-        for (const IrcTagKey& key : tags.keys()) {
+        for (auto key = tags.keyBegin(), end = tags.keyEnd(); key != end; ++key) {
             if (!isFirstTag) {
                 // We join tags with semicolons
-                msg += ";";
+                msg += encode(";");
             }
-            if (key.clientTag) {
-                msg += "+";
+            if (key->clientTag) {
+                msg += encode("+");
             }
-            if (!key.vendor.isEmpty()) {
-                msg += key.vendor;
-                msg += "/";
+            if (!key->vendor.isEmpty()) {
+                msg += encode(key->vendor);
+                msg += encode("/");
             }
-            msg += key.key;
-            if (!tags[key].isEmpty()) {
-                msg += "=";
-                writeTagValue(msg, tags[key]);
+            msg += key->key;
+            if (!tags[*key].isEmpty()) {
+                msg += encode("=");
+                msg += encode(writeTagValue(tags[*key]));
             }
 
             isFirstTag = false;
         }
-        msg += " ";
+        msg += encode(" ");
     }
 }
 
-void IrcEncoder::writePrefix(QByteArray& msg, const QByteArray& prefix)
+void IrcEncoder::writePrefix(QByteArray& msg, const std::function<QByteArray(const QString&)>& encode, const QString& prefix)
 {
     if (!prefix.isEmpty()) {
-        msg += ":" + prefix + " ";
+        msg += ":" + encode(prefix) + " ";
     }
 }
 
-void IrcEncoder::writeCommand(QByteArray& msg, const QString& cmd)
+void IrcEncoder::writeCommand(QByteArray& msg, const std::function<QByteArray(const QString&)>& encode, const QString& cmd)
 {
-    msg += cmd.toUpper().toLatin1();
+    msg += encode(cmd.toUpper());
 }
 
 void IrcEncoder::writeParams(QByteArray& msg, const QList<QByteArray>& params)

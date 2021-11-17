@@ -20,8 +20,10 @@
 
 #pragma once
 
+#include "irc/batch.h"
+#include "irc/parsedmessage.h"
+
 #include "coresession.h"
-#include "irctag.h"
 
 class Event;
 class EventManager;
@@ -49,8 +51,15 @@ protected:
     // no-op if we don't have crypto support!
     QByteArray decrypt(Network* network, const QString& target, const QByteArray& message, bool isTopic = false);
 
+    void processMessage(CoreNetwork* net, ParsedMessage ircMessage);
+    bool batchMessage(CoreNetwork* net, const ParsedMessage& ircMessage);
+    void createBatch(CoreNetwork* net, Batch batch, const QString& parentKey);
+    void closeBatch(CoreNetwork* net, const QString& key);
+    void processBatch(CoreNetwork* net, const Batch& batch);
+
 private:
     CoreSession* _coreSession;
+    QHash<NetworkId, QHash<QString, boost::optional<Batch>>> _batches;
 
     bool _debugLogRawIrc;      ///< If true, include raw IRC socket messages in the debug log
     qint32 _debugLogRawNetId;  ///< Network ID for logging raw IRC socket messages, or -1 for all
