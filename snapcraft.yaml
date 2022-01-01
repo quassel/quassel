@@ -1,5 +1,5 @@
 name: quasselcore
-version: "0.14-rc2"
+version: "0.14.0"
 summary: Modern, cross-platform IRC client (core)
 description: |
  This is a modern, cross-platform, distributed IRC client. One
