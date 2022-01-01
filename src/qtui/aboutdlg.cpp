@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2020 by the Quassel Project                        *
+ *   Copyright (C) 2005-2022 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -75,7 +75,7 @@ QString AboutDlg::about() const
                    "licensed under the "
                    "<a href=\"https://github.com/KDE/oxygen-icons/blob/master/COPYING\">LGPLv3</a>.<br><br>"
                    "Please use <a href=\"https://bugs.quassel-irc.org\">https://bugs.quassel-irc.org</a> to report bugs.")
-                    .arg("2005-2020")};
+                    .arg("2005-2022")};
 
     return res;
 }

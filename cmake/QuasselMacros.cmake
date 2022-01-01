@@ -1,6 +1,6 @@
 # This file contains various functions and macros useful for building Quassel.
 #
-# (C) 2014-2020 by the Quassel Project <devel@quassel-irc.org>
+# (C) 2014-2022 by the Quassel Project <devel@quassel-irc.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
