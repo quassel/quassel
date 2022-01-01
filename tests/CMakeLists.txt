@@ -1,2 +1,4 @@
 add_subdirectory(common)
-add_subdirectory(core)
+if (BUILD_CORE)
+    add_subdirectory(core)
+endif()
