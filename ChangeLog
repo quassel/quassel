@@ -13,7 +13,7 @@ changes, the git history at <https://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.14.0 (Unreleased)
+Version 0.14.0 (2022-01-01)
 ===========================
 
 NOTE:  Database schema format change, no downgrade possible!
