@@ -3,9 +3,9 @@
 
 # Quassel version
 set(QUASSEL_MAJOR  0)
-set(QUASSEL_MINOR 13)
-set(QUASSEL_PATCH 92)
-set(QUASSEL_VERSION_STRING "0.14-rc2")
+set(QUASSEL_MINOR 14)
+set(QUASSEL_PATCH  0)
+set(QUASSEL_VERSION_STRING "0.14.0")
 
 # Get additional version information from Git
 include(GetGitRevisionDescription)
