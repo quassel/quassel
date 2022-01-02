@@ -305,7 +305,7 @@ QByteArray Cipher::blowfishCBC(QByteArray cipherText, bool direction)
     }
     else {
         temp = QByteArray::fromBase64(temp);
-        // supposedly nescessary if we get a truncated message also allows for decryption of 'crazy'
+        // supposedly necessary if we get a truncated message also allows for decryption of 'crazy'
         // en/decoding clients that use STANDARDIZED PADDING TECHNIQUES
         while ((temp.length() % 8) != 0)
             temp.append('\0');

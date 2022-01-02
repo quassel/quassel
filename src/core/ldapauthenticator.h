@@ -33,7 +33,7 @@
 
 // Link against LDAP.
 /* We should use openldap on windows if at all possible, rather than trying to
- * write some kind of compatiblity routine.
+ * write some kind of compatibility routine.
 #ifdef Q_CC_MSVC
 #include <windows.h>
 #include <winldap.h>

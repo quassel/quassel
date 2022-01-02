@@ -48,7 +48,7 @@ public:
     void userQuit(const QString& sender, const QStringList& channels, const QString& msg);
 
     //! Remove a user from the netsplit
-    /** Call this method if a user joined after a netsplit occured.
+    /** Call this method if a user joined after a netsplit occurred.
      *
      * \param sender   The sender string of the joined user
      * \param channel The channel that user shares with us
@@ -107,7 +107,7 @@ signals:
      * for every channel.
      * \param net     The network
      * \param channel The IRC channel
-     * \param users   A list of all users that quitted in that channel
+     * \param users   A list of all users that quit in that channel
      * \param quitMessage The Quitmessage and thus the servers that got split
      */
     void netsplitQuit(Network* net, const QString& channel, const QStringList& users, const QString& quitMessage);

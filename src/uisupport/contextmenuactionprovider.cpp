@@ -137,7 +137,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject* parent)
     _nickIgnoreMenuAction->setMenu(ignoreMenu);
 
     // These are disabled actions used as descriptions
-    // They don't need any of the Action fancyness so we use plain QActions
+    // They don't need any of the Action fanciness so we use plain QActions
     _ignoreDescriptions << new QAction(tr("Add Ignore Rule"), this);
     _ignoreDescriptions << new QAction(tr("Existing Rules"), this);
     foreach (QAction* act, _ignoreDescriptions)

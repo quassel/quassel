@@ -125,18 +125,18 @@ private slots:
     /** This slot handles a bulk-join after a netsplit is over
      * \param net     The network
      * \param channel The channel the users joined
-     * \param users   The list of users that joind the channel
+     * \param users   The list of users that joined the channel
      * \param modes   The list of modes the users get set
-     * \param quitMessage The message we received when the netsplit occured
+     * \param quitMessage The message we received when the netsplit occurred
      */
     void handleNetsplitJoin(Network* net, const QString& channel, const QStringList& users, const QStringList& modes, const QString& quitMessage);
 
     //! Quits after a netsplit
-    /** This slot handles a bulk-quit after a netsplit occured
+    /** This slot handles a bulk-quit after a netsplit occurred
      * \param net     The network
-     * \param channel The channel the users quitted
+     * \param channel The channel the users quit
      * \param users   The list of users that got split
-     * \param quitMessage The message we received when the netsplit occured
+     * \param quitMessage The message we received when the netsplit occurred
      */
     void handleNetsplitQuit(Network* net, const QString& channel, const QStringList& users, const QString& quitMessage);
 

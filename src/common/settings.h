@@ -128,7 +128,7 @@ protected:
      * Default implementation just returns the given key.
      *
      * @param key Key given to notify()
-     * @returns Key that should be used for notfication
+     * @returns Key that should be used for notifcation
      */
     virtual QString keyForNotify(const QString& key) const;
 

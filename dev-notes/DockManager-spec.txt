@@ -1,6 +1,6 @@
 DBus Interface Specification
 
-Docky implements the DockManager specificiation as well as a custom DBus specification.
+Docky implements the DockManager specification as well as a custom DBus specification.
 DockManager DBus Interface Specification
 
 DBus unique path: net.launchpad.DockManager

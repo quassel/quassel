@@ -101,7 +101,7 @@ void AbstractTreeItem::removeAllChilds()
     childIter = _childItems.begin();
     while (childIter != _childItems.end()) {
         child = *childIter;
-        child->setTreeItemFlags({});  // disable self deletion, as this would only fuck up consitency and the child gets deleted anyways
+        child->setTreeItemFlags({});  // disable self deletion, as this would only fuck up consistency and the child gets deleted anyways
         child->removeAllChilds();
         ++childIter;
     }
@@ -517,7 +517,7 @@ void TreeModel::beginRemoveChilds(int firstRow, int lastRow)
         disconnect(parentItem->child(i), nullptr, this, nullptr);
     }
 
-    // consitency checks
+    // consistency checks
     QModelIndex parent = indexByItem(parentItem);
     Q_ASSERT(firstRow <= lastRow);
     Q_ASSERT(parentItem->childCount() > lastRow);

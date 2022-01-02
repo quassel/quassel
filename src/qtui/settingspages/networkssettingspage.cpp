@@ -358,7 +358,7 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem* item)
 
 void NetworksSettingsPage::resetNetworkCapStates()
 {
-    // Set the status to a blank (invalid) network ID, reseting all UI
+    // Set the status to a blank (invalid) network ID, resetting all UI
     setNetworkCapStates(NetworkId());
 }
 
@@ -1156,7 +1156,7 @@ NetworkAddDlg::NetworkAddDlg(QStringList exist, QWidget* parent)
 
     // Whenever useSSL is toggled, update the port number if not changed from the default
     connect(ui.useSSL, &QAbstractButton::toggled, this, &NetworkAddDlg::updateSslPort);
-    // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
+    // Do NOT call updateSslPort when loading settings, otherwise port settings may be overridden.
     // If useSSL is later changed to be checked by default, change port's default value, too.
 
     if (Client::isCoreFeatureEnabled(Quassel::Feature::VerifyServerSSL)) {
@@ -1306,7 +1306,7 @@ ServerEditDlg::ServerEditDlg(const Network::Server& server, QWidget* parent)
 
     // Whenever useSSL is toggled, update the port number if not changed from the default
     connect(ui.useSSL, &QAbstractButton::toggled, this, &ServerEditDlg::updateSslPort);
-    // Do NOT call updateSslPort when loading settings, otherwise port settings may be overriden.
+    // Do NOT call updateSslPort when loading settings, otherwise port settings may be overridden.
     // If useSSL is later changed to be checked by default, change port's default value, too.
 
     if (Client::isCoreFeatureEnabled(Quassel::Feature::VerifyServerSSL)) {

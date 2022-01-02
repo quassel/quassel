@@ -37,7 +37,7 @@
 **      Quassel stylesheets also support Palette { role: color; } for setting the system
 **      palette. See the QPalette docs for available roles, and convert them into qss-style
 **      attributes, so ButtonText would become button-text or see qssparser.cpp In fact,
-**      qssparser.cpp is the authorative source for Quassel's qss syntax that contains all
+**      qssparser.cpp is the authoritative source for Quassel's qss syntax that contains all
 **      the extensions over standard Qt qss syntax.
 **      See:
 **          http://qt-project.org/doc/qt-4.8/qpalette.html#ColorRole-enum
@@ -80,7 +80,7 @@ Palette {
     link: #539FA3;
     link-visited: #845B90;
     
-    /* Color of the marker line in the chat view. BG Node that is overlayed on the first new ChatLine. */
+    /* Color of the marker line in the chat view. BG Node that is overlaid on the first new ChatLine. */
     // 0 -> 0.1 (sharp line)
     marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #586e75, stop: 0.1 #586e75, stop: 0.1 transparent);
 }
@@ -230,7 +230,7 @@ QMainWindow::separator:horizontal:hover {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 palette(window), stop: 0.5 palette(light), stop: 1 palette(window));
 }
 
-/* Menu Bar / Context Menues */
+/* Menu Bar / Context Menus */
 QMenu {
     margin: 5px; // A bit of nice padding around menu items.
 }
@@ -468,7 +468,7 @@ ChatLine#netsplit-quit { foreground: #586e75; }
 
 ChatLine::timestamp {
     foreground: #586e75;
-    // Resets the timestemp font during #action and other possible formatting.
+    // Resets the timestamp font during #action and other possible formatting.
     font-style: normal; 
     font-weight: normal;
 }
@@ -537,7 +537,7 @@ ChatLine[bg-color="2"] { background: #15a; }
 ChatLine[fg-color="c"] { foreground: #15f; }
 ChatLine[bg-color="c"] { background: #15f; }
 
-/* A list of all the colors for easy convienience */
+/* A list of all the colors for easy convenience */
 /*
 ChatLine[fg-color="0"] { foreground: white; }
 ChatLine[bg-color="0"] { background: white; }
@@ -585,7 +585,7 @@ BufferViewDock[active=true] {
 }
 
 /*
-** OS X: Workaround Pallete {} bug
+** OS X: Workaround Palette {} bug
 **  - https://stackoverflow.com/questions/19748752/qt-style-qpalettewindowtext-color-reverts-after-application-starts     
 */
 

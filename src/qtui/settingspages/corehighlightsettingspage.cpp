@@ -54,7 +54,7 @@ CoreHighlightSettingsPage::CoreHighlightSettingsPage(QWidget* parent)
     connect(ui.ignoredAdd, &QAbstractButton::clicked, this, [this]() { addNewIgnoredRow(); });
     connect(ui.ignoredRemove, &QAbstractButton::clicked, this, &CoreHighlightSettingsPage::removeSelectedIgnoredRows);
 
-    // TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
+    // TODO: search for a better signal (one that emits every time a selection has been changed for one item)
     connect(ui.highlightTable, &QTableWidget::itemClicked, this, &CoreHighlightSettingsPage::selectHighlightRow);
     connect(ui.ignoredTable, &QTableWidget::itemClicked, this, &CoreHighlightSettingsPage::selectIgnoredRow);
 

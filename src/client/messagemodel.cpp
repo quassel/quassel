@@ -127,7 +127,7 @@ void MessageModel::insertMessageGroup(const QList<Message>& msglist)
     Message dayChangeMsg;
 
     if (start > 0) {
-        // check if the preceeding msg is a daychange message and if so if
+        // check if the preceding msg is a daychange message and if so if
         // we have to drop or relocate it at the end of this chunk
         int prevIdx = start - 1;
         if (messageItemAt(prevIdx)->msgType() == Message::DayChange && messageItemAt(prevIdx)->timestamp() > msglist.at(0).timestamp()) {
@@ -150,7 +150,7 @@ void MessageModel::insertMessageGroup(const QList<Message>& msglist)
         // check if we need to insert a daychange message at the end of the this group
 
         // if this assert triggers then indexForId() would have found a spot right before a DayChangeMsg
-        // this should never happen as daychange messages share the msgId with the preceeding message
+        // this should never happen as daychange messages share the msgId with the preceding message
         Q_ASSERT(messageItemAt(start)->msgType() != Message::DayChange);
         QDateTime nextTs = messageItemAt(start)->timestamp();
         QDateTime prevTs = msglist.last().timestamp();
@@ -188,7 +188,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
     /* short description:
      * 1) first we check where the message with the highest msgId from msglist would be inserted
      * 2) check that position for dupe
-     * 3) determine the messageId of the preceeding msg
+     * 3) determine the messageId of the preceding msg
      * 4) insert as many msgs from msglist with with msgId larger then the just determined id
      *    those messages are automatically less then the msg of the position we just determined in 1)
      */
@@ -204,7 +204,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
     QList<Message>::const_iterator iter;
     if (inOrder) {
         iter = msglist.constEnd();
-        --iter;  // this op is safe as we've allready passed an empty check
+        --iter;  // this op is safe as we've already passed an empty check
     }
     else {
         iter = msglist.constBegin();

@@ -54,7 +54,7 @@ protected:
 
 private:
     /**
-     * Migrate settings if neccessary and possible
+     * Migrate settings if necessary and possible
      *
      * If unsuccessful (major version changed, minor version upgrade failed), returning false, the
      * settings are in an unknown state and the client should quit.

@@ -38,7 +38,7 @@ AbstractSqlStorage::AbstractSqlStorage(QObject* parent)
 
 AbstractSqlStorage::~AbstractSqlStorage()
 {
-    // disconnect the connections, so their deletion is no longer interessting for us
+    // disconnect the connections, so their deletion is no longer interesting for us
     QHash<QThread*, Connection*>::iterator conIter;
     for (conIter = _connectionPool.begin(); conIter != _connectionPool.end(); ++conIter) {
         QSqlDatabase::removeDatabase(conIter.value()->name());

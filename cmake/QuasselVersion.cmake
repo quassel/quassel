@@ -25,7 +25,7 @@ if (GIT_HEAD)
     endif()
 endif()
 
-# If not in a Git repo try to read GIT_HEAD and GIT_DESCRIBE from enviroment
+# If not in a Git repo try to read GIT_HEAD and GIT_DESCRIBE from environment
 if (NOT GIT_HEAD OR NOT GIT_DESCRIBE)
   if (DEFINED ENV{GIT_HEAD})
       set(GIT_HEAD $ENV{GIT_HEAD})

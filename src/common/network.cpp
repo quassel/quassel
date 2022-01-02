@@ -844,7 +844,7 @@ void Network::removeCap(const QString& capability)
         // Remove from the list of available capabilities.
         _caps.remove(_capLowercase);
         // Remove it from the acknowledged list if it was previously acknowledged.  The SYNC call
-        // ensures this propogates to the other side.
+        // ensures this propagates to the other side.
         // Use removeOne() for speed; no more than one due to contains() check in acknowledgeCap().
         _capsEnabled.removeOne(_capLowercase);
         SYNC(ARG(capability))

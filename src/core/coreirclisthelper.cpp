@@ -73,13 +73,13 @@ bool CoreIrcListHelper::dispatchQuery(const NetworkId& netId, const QString& que
 bool CoreIrcListHelper::endOfChannelList(const NetworkId& netId)
 {
     if (_queryTimeoutByNetId.contains(netId)) {
-        // If we recieved an actual RPL_LISTEND, remove the timer
+        // If we received an actual RPL_LISTEND, remove the timer
         int timerId = _queryTimeoutByNetId.take(netId)->timerId();
         _queryTimeoutByTimerId.remove(timerId);
     }
 
     if (_queuedQuery.contains(netId)) {
-        // we're no longer interessted in the current data. drop it and issue a new request.
+        // we're no longer interested in the current data. drop it and issue a new request.
         return dispatchQuery(netId, _queuedQuery.take(netId));
     }
     else if (_channelLists.contains(netId)) {

@@ -194,7 +194,7 @@ public:
      *
      *  \param user        The core user
      *  \param networkInfo a NetworkInfo definition to store the newly created ID in
-     *  \return true if successfull.
+     *  \return true if successful.
      */
     static bool createNetwork(UserId user, NetworkInfo& info);
 
@@ -203,7 +203,7 @@ public:
      *
      *  \param user        The core user
      *  \param networkInfo The Updated NetworkInfo
-     *  \return true if successfull.
+     *  \return true if successful.
      */
     static inline bool updateNetwork(UserId user, const NetworkInfo& info) { return instance()->_storage->updateNetwork(user, info); }
 
@@ -212,7 +212,7 @@ public:
      *
      *  \param user        The core user
      *  \param networkId   The network to delete
-     *  \return true if successfull.
+     *  \return true if successful.
      */
     static inline bool removeNetwork(UserId user, const NetworkId& networkId)
     {
@@ -357,7 +357,7 @@ public:
      *  \param networkId The network id
      *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
      *  \param buffer    The buffer name (if empty, the net's status buffer is returned)
-     *  \param create    Whether or not the buffer should be created if it doesnt exist
+     *  \param create    Whether or not the buffer should be created if it doesn't exist
      *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
     static inline BufferInfo bufferInfo(
@@ -499,7 +499,7 @@ public:
      *
      *  \param user      The user who is the owner of the buffer
      *  \param bufferId  The bufferId
-     *  \return true if successfull
+     *  \return true if successful
      */
     static inline bool removeBuffer(const UserId& user, const BufferId& bufferId)
     {
@@ -511,7 +511,7 @@ public:
      *  \param user      The id of the buffer owner
      *  \param bufferId  The bufferId
      *  \param newName   The new name of the buffer
-     *  \return true if successfull
+     *  \return true if successful
      */
     static inline bool renameBuffer(const UserId& user, const BufferId& bufferId, const QString& newName)
     {
@@ -523,7 +523,7 @@ public:
      *  \param user      The id of the buffer owner
      *  \param bufferId1 The bufferId of the remaining buffer
      *  \param bufferId2 The buffer that is about to be removed
-     *  \return true if successfulln
+     *  \return true if successful
      */
     static inline bool mergeBuffersPermanently(const UserId& user, const BufferId& bufferId1, const BufferId& bufferId2)
     {

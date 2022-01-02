@@ -47,7 +47,7 @@ bool BufferHotListFilter::filterAcceptsRow(int source_row, const QModelIndex& so
     if (!firstUnreadMsgId.isValid())
         return false;
 
-    // filter out statusbuffers (it's accessable as networkitem)
+    // filter out statusbuffers (it's accessible as networkitem)
     BufferInfo::Type bufferType = (BufferInfo::Type)sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt();
     if (bufferType == BufferInfo::StatusBuffer) {
         NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt();

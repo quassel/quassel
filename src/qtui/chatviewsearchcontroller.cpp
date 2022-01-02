@@ -41,7 +41,7 @@ void ChatViewSearchController::setSearchString(const QString& searchString)
     _searchString = searchString;
     if (_scene) {
         if (!searchString.startsWith(oldSearchString) || oldSearchString.isEmpty()) {
-            // we can't reuse our all findings... cler the scene and do it all over
+            // we can't reuse our all findings... clear the scene and do it all over
             updateHighlights();
         }
         else {

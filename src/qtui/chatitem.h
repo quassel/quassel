@@ -287,7 +287,7 @@ private:
     qreal choppedTrailing;
 };
 
-//! Acts as a proxy for Action signals targetted at a ContentsChatItem
+//! Acts as a proxy for Action signals targeted at a ContentsChatItem
 /** Since a ChatItem is not a QObject, hence cannot receive signals, we use a static ActionProxy
  *  as a receiver instead. This avoids having to handle ChatItem actions (e.g. context menu entries)
  *  outside the ChatItem.

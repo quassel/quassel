@@ -85,7 +85,7 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget* parent)
 
     connect(ui.add, &QAbstractButton::clicked, this, [this]() { addNewRow(); });
     connect(ui.remove, &QAbstractButton::clicked, this, &HighlightSettingsPage::removeSelectedRows);
-    // TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
+    // TODO: search for a better signal (one that emits every time a selection has been changed for one item)
     connect(ui.highlightTable, &QTableWidget::itemClicked, this, &HighlightSettingsPage::selectRow);
 
     connect(ui.highlightAllNicks, &QAbstractButton::clicked, this, &HighlightSettingsPage::widgetHasChanged);
