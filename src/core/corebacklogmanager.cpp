@@ -58,7 +58,7 @@ QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, MsgId first, 
             last = oldestMessage;
         }
 
-        // only fetch additional messages if they continue seemlessly
+        // only fetch additional messages if they continue seamlessly
         // that is, if the list of messages is not truncated by the limit
         if (last == oldestMessage) {
             msgList = Core::requestMsgs(coreSession()->user(), bufferId, -1, last, additional);
@@ -96,7 +96,7 @@ QVariantList CoreBacklogManager::requestBacklogFiltered(BufferId bufferId, MsgId
             last = oldestMessage;
         }
 
-        // only fetch additional messages if they continue seemlessly
+        // only fetch additional messages if they continue seamlessly
         // that is, if the list of messages is not truncated by the limit
         if (last == oldestMessage) {
             msgList = Core::requestMsgsFiltered(coreSession()->user(), bufferId, -1, last, additional, Message::Types{type}, Message::Flags{flags});

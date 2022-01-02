@@ -193,7 +193,7 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
             command = command.replace(QString("$%1:ident").arg(j), (ircUser && !ircUser->user().isEmpty()) ? ircUser->user() : QString("*"));
 
             // Nickname
-            // Must be replaced last to avoid interferring with more specific aliases
+            // Must be replaced last to avoid interfering with more specific aliases
             command = command.replace(QString("$%1").arg(j), params[j - 1]);
         }
         command = command.replace("$0", msg);

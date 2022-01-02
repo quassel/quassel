@@ -44,8 +44,8 @@
 /*****************************************
  * The TreeView showing the Buffers
  *****************************************/
-// Please be carefull when reimplementing methods which are used to inform the view about changes to the data
-// to be on the safe side: call QTreeView's method aswell (or TreeViewTouch's)
+// Please be careful when reimplementing methods which are used to inform the view about changes to the data
+// to be on the safe side: call QTreeView's method as well (or TreeViewTouch's)
 BufferView::BufferView(QWidget* parent)
     : TreeViewTouch(parent)
 {

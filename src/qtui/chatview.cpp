@@ -112,7 +112,7 @@ bool ChatView::event(QEvent* event)
     }
 
     if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen) {
-        // Enable scrolling by draging, disable selecting/clicking content
+        // Enable scrolling by dragging, disable selecting/clicking content
         setDragMode(QGraphicsView::ScrollHandDrag);
         setInteractive(false);
         // if scrollbar is not visible we need to request backlog below else we need to accept
@@ -191,7 +191,7 @@ void ChatView::resizeEvent(QResizeEvent* event)
 
     // if scrolling to bottom, do it immediately.
     if (atBottom) {
-        // we can reduce viewport updates if we scroll to the bottom allready at the beginning
+        // we can reduce viewport updates if we scroll to the bottom already at the beginning
         verticalScrollBar()->setValue(verticalScrollBar()->maximum());
     }
 

@@ -111,7 +111,7 @@ bool QtUiApplication::migrateSettings()
         return true;
     }
     else if (versionMinor < VERSION_MINOR_CURRENT) {
-        // We're upgrading - apply the neccessary upgrades from each interim version
+        // We're upgrading - apply the necessary upgrades from each interim version
         // curVersion will never equal VERSION_MINOR_CURRENT, as it represents the version before
         // the most recent applySettingsMigration() call.
         for (uint curVersion = versionMinor; curVersion < VERSION_MINOR_CURRENT; curVersion++) {

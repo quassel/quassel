@@ -61,7 +61,7 @@ private slots:
     void disconnectClicked(int peerId);
 
     /**
-     * Event handler for core unspported Details button
+     * Event handler for core unsupported Details button
      */
     void on_coreUnsupportedDetails_clicked();
 

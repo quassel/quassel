@@ -1401,7 +1401,7 @@ bool SqliteStorage::renameBuffer(const UserId& user, const BufferId& bufferId, c
         safeExec(query);
 
         error = query.lastError().isValid();
-        // unexepcted error occured (19 == constraint violation)
+        // unexpected error occurred (19 == constraint violation)
         if (error && query.lastError().nativeErrorCode() != QLatin1String{"19"}) {
             watchQuery(query);
         }

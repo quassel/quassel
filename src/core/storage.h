@@ -45,7 +45,7 @@ public:
     {
         IsReady,      // ready to go
         NeedsSetup,   // need basic setup (ask the user for input)
-        NotAvailable  // remove the storage backend from the list of avaliable backends
+        NotAvailable  // remove the storage backend from the list of available backends
     };
 
     enum HashVersion
@@ -107,7 +107,7 @@ public:
 
     //! Makes temp data persistent
     /** This Method is periodically called by the Quassel Core to make temporary
-     *  data persistant. This reduces the data loss drastically in the
+     *  data persistent. This reduces the data loss drastically in the
      *  unlikely case of a Core crash.
      */
     virtual void sync() = 0;
@@ -214,7 +214,7 @@ public:
     /**
      *  \param user        The core user
      *  \param networkInfo The Updated NetworkInfo
-     *  \return true if successfull.
+     *  \return true if successful.
      */
     virtual bool updateNetwork(UserId user, const NetworkInfo& info) = 0;
 
@@ -223,7 +223,7 @@ public:
      *
      *  \param user        The core user
      *  \param networkId   The network to delete
-     *  \return true if successfull.
+     *  \return true if successful.
      */
     virtual bool removeNetwork(UserId user, const NetworkId& networkId) = 0;
 
@@ -322,7 +322,7 @@ public:
      *  \param networkId The network id
      *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
      *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
-     *  \param create    Whether or not the buffer should be created if it doesnt exist
+     *  \param create    Whether or not the buffer should be created if it doesn't exist
      *  \return The BufferInfo corresponding to the given network and buffer name, or an invalid BufferInfo if not found
      */
     virtual BufferInfo bufferInfo(UserId user, const NetworkId& networkId, BufferInfo::Type type, const QString& buffer = "", bool create = true)
@@ -355,7 +355,7 @@ public:
     /** This call cannot be reverted!
      *  \param user      The user who is the owner of the buffer
      *  \param bufferId  The bufferId
-     *  \return true if successfull
+     *  \return true if successful
      */
     virtual bool removeBuffer(const UserId& user, const BufferId& bufferId) = 0;
 
@@ -364,7 +364,7 @@ public:
      *  \param user      The id of the buffer owner
      *  \param bufferId  The bufferId
      *  \param newName   The new name of the buffer
-     *  \return true if successfull
+     *  \return true if successful
      */
     virtual bool renameBuffer(const UserId& user, const BufferId& bufferId, const QString& newName) = 0;
 
@@ -373,7 +373,7 @@ public:
      *  \param user      The id of the buffer owner
      *  \param bufferId1 The bufferId of the remaining buffer
      *  \param bufferId2 The buffer that is about to be removed
-     *  \return true if successfull
+     *  \return true if successful
      */
     virtual bool mergeBuffersPermanently(const UserId& user, const BufferId& bufferId1, const BufferId& bufferId2) = 0;
 

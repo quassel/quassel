@@ -22,7 +22,7 @@
 
 #include <QStringList>
 
-const int VERSION = 1;  /// Settings version for backwords/forwards incompatible changes
+const int VERSION = 1;  /// Settings version for backwards/forwards incompatible changes
 
 // This is used if no VersionMinor key exists, e.g. upgrading from a Quassel version before this
 // change.  This shouldn't be increased from 1; instead, change the logic in Core::Core() and

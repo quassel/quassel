@@ -214,7 +214,7 @@ void ChatItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 
     //  layout()->draw(painter, QPointF(0,0), formats, boundingRect());
 
-    // Debuging Stuff
+    // Debugging Stuff
     // uncomment partially or all of the following stuff:
     //
     // 0) alternativ painter color for debug stuff

@@ -40,7 +40,7 @@ public:
     {
         IsReady,      // ready to go
         NeedsSetup,   // need basic setup (ask the user for input)
-        NotAvailable  // remove the authenticator backend from the list of avaliable authenticators.
+        NotAvailable  // remove the authenticator backend from the list of available authenticators.
     };
 
 public slots:

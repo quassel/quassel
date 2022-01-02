@@ -83,7 +83,7 @@ public:
     inline virtual bool isSelectable() const { return true; }
 
     //! The key this settings page stores its values under
-    /** This needs to be overriden to enable automatic loading/saving/hasChanged checking of widgets.
+    /** This needs to be overridden to enable automatic loading/saving/hasChanged checking of widgets.
      *  The child widgets' values will be stored in client settings under this key. Every widget that
      *  should be automatically handled needs to have a \c settingsKey property set, and should also provide
      *  a \c defaultValue property.
@@ -109,7 +109,7 @@ public:
      */
     inline virtual bool aboutToSave() { return true; }
 
-    //! sets checked state depending on \checked and stores the value for later comparision
+    //! sets checked state depending on \checked and stores the value for later comparison
     static void load(QCheckBox* box, bool checked);
     static bool hasChanged(QCheckBox* box);
     static void load(QComboBox* box, int index);

@@ -132,7 +132,7 @@ BufferIdList ClientBacklogManager::filterNewBufferIds(const BufferIdList& buffer
 
 void ClientBacklogManager::checkForBacklog(const QList<BufferId>& bufferIds)
 {
-    // we ingore all backlogrequests until we had our initial request
+    // we ignore all backlogrequests until we had our initial request
     if (!_initBacklogRequested) {
         return;
     }

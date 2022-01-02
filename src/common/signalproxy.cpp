@@ -190,7 +190,7 @@ bool SignalProxy::addPeer(Peer* peer)
 void SignalProxy::removeAllPeers()
 {
     Q_ASSERT(proxyMode() == Server || peerCount() <= 1);
-    // wee need to copy that list since we modify it in the loop
+    // we need to copy that list since we modify it in the loop
     QList<Peer*> peers = _peerMap.values();
     for (auto peer : peers) {
         removePeer(peer);
@@ -656,7 +656,7 @@ QVariantList SignalProxy::peerData()
         QVariantMap data;
         data["id"] = peer->id();
         data["clientVersion"] = peer->clientVersion();
-        // We explicitly rename this, as, due to the Debian reproducability changes, buildDate isn’t actually the build
+        // We explicitly rename this, as, due to the Debian reproducibility changes, buildDate isn’t actually the build
         // date anymore, but on newer clients the date of the last git commit
         data["clientVersionDate"] = peer->buildDate();
         data["remoteAddress"] = peer->address();

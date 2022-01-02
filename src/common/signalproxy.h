@@ -283,7 +283,7 @@ private:
 private:
     QHash<int, Peer*> _peerMap;
 
-    // containg a list of argtypes for fast access
+    // contains a list of argtypes for fast access
     QHash<const QMetaObject*, ExtendedMetaObject*> _extendedMetaObjects;
 
     std::unordered_multimap<QByteArray, std::unique_ptr<SlotObjectBase>, Hash<QByteArray>> _attachedSlots;  ///< Attached slot objects

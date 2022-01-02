@@ -1695,7 +1695,7 @@ void MainWin::messagesInserted(const QModelIndex& parent, int start, int end)
         if (hasFocus && bufId == Client::bufferModel()->currentBuffer())
             continue;
 
-        // only show notifications for higlights or queries
+        // only show notifications for highlights or queries
         if (bufType != BufferInfo::QueryBuffer && !(flags & Message::Highlight))
             continue;
 

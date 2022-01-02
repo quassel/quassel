@@ -1197,7 +1197,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
         return;
 
     // param[0] is either "=", "*" or "@" indicating a public, private or secret channel
-    // we don't use this information at the time beeing
+    // we don't use this information at the time being
     QString channelname = e->params()[1];
 
     IrcChannel* channel = e->network()->ircChannel(channelname);
@@ -1381,7 +1381,7 @@ void CoreSessionEventProcessor::processIrcEvent432(IrcEventNumeric* e)
 
     QString errnick;
     if (e->params().count() < 2) {
-        // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
+        // handle unreal-ircd bug, where unreal ircd doesn't supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
         // nick @@@
         // :irc.scortum.moep.net 432  @@@ :Erroneous Nickname: Illegal characters
         // correct server reply:

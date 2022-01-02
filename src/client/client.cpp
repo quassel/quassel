@@ -602,7 +602,7 @@ void Client::purgeKnownBufferIds()
 void Client::bufferRemoved(BufferId bufferId)
 {
     // select a sane buffer (status buffer)
-    /* we have to manually select a buffer because otherwise inconsitent changes
+    /* we have to manually select a buffer because otherwise inconsistent changes
      * to the model might occur:
      * the result of a buffer removal triggers a change in the selection model.
      * the newly selected buffer might be a channel that hasn't been selected yet
