@@ -4,8 +4,8 @@
 # Quassel version
 set(QUASSEL_MAJOR  0)
 set(QUASSEL_MINOR 14)
-set(QUASSEL_PATCH  0)
-set(QUASSEL_VERSION_STRING "0.14.0")
+set(QUASSEL_PATCH 50)
+set(QUASSEL_VERSION_STRING "0.15-pre")
 
 # Get additional version information from Git
 include(GetGitRevisionDescription)
