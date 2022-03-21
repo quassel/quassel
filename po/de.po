@@ -5782,7 +5782,7 @@ msgstr ": "
 #: ../src/qtui/settingspages/inputwidgetsettingspage.ui:265
 msgctxt "InputWidgetSettingsPage|"
 msgid "Add space after nick when completing mid-sentence"
-msgstr "Nach Tabvervollständigung innerhalb eines Satzes Leerzechen einfügen"
+msgstr "Nach Tabvervollständigung innerhalb eines Satzes Leerzeichen einfügen"
 
 #: ../src/qtui/settingspages/inputwidgetsettingspage.cpp:24
 msgctxt "InputWidgetSettingsPage|"
