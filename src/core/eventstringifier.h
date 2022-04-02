@@ -94,6 +94,9 @@ public:
     Q_INVOKABLE void processIrcEvent432(IrcEvent* event);  // ERR_ERRONEUSNICKNAME
     Q_INVOKABLE void processIrcEvent433(IrcEvent* event);  // ERR_NICKNAMEINUSE
     Q_INVOKABLE void processIrcEvent437(IrcEvent* event);  // ERR_UNAVAILRESOURCE
+    Q_INVOKABLE void processIrcEvent704(IrcEvent* event);  // RPL_HELPSTART
+    Q_INVOKABLE void processIrcEvent705(IrcEvent* event);  // RPL_HELPTXT
+    Q_INVOKABLE void processIrcEvent706(IrcEvent* event);  // RPL_ENDOFHELP
 
     // Q_INVOKABLE void processIrcEvent(IrcEvent *event);
 
