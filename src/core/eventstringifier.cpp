@@ -783,6 +783,15 @@ void EventStringifier::processIrcEvent437(IrcEvent* e)
     displayMsg(e, Message::Error, tr("Nick/channel is temporarily unavailable: %1").arg(e->params()[0]));
 }
 
+/* ERR_HELPNOTFOUND */
+void EventStringifier::processIrcEvent524(IrcEvent* e)
+{
+    if (!checkParamCount(e, 2))
+        return;
+
+    displayMsg(e, Message::Error, tr("[Help] %1").arg(e->params()[1]));
+}
+
 /* RPL_HELPSTART */
 void EventStringifier::processIrcEvent704(IrcEvent* e)
 {
