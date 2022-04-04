@@ -789,7 +789,7 @@ void EventStringifier::processIrcEvent704(IrcEvent* e)
     if (!checkParamCount(e, 2))
         return;
 
-    displayMsg(e, Message::Error, tr("[Help] %1").arg(e->params()[1]));
+    displayMsg(e, Message::Server, tr("[Help] %1").arg(e->params()[1]));
 }
 
 /* RPL_HELPTXT */
@@ -798,7 +798,7 @@ void EventStringifier::processIrcEvent705(IrcEvent* e)
     if (!checkParamCount(e, 2))
         return;
 
-    displayMsg(e, Message::Error, tr("[Help] %1").arg(e->params()[1]));
+    displayMsg(e, Message::Server, tr("[Help] %1").arg(e->params()[1]));
 }
 
 /* RPL_ENDOFHELP */
@@ -807,7 +807,7 @@ void EventStringifier::processIrcEvent706(IrcEvent* e)
     if (!checkParamCount(e, 2))
         return;
 
-    displayMsg(e, Message::Error, tr("[Help] %1").arg(e->params()[1]));
+    displayMsg(e, Message::Server, tr("[Help] %1").arg(e->params()[1]));
 }
 
 // template
