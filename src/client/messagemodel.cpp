@@ -359,16 +359,57 @@ void MessageModel::changeOfDay()
 {
     _dayChangeTimer.setInterval(DAY_IN_MSECS);
     if (!messagesIsEmpty()) {
+        // Starting from the newest* message in the model
         int idx = messageCount();
+
+        // Search in reverse-chronological* order while both...
+        //   A. More messages remain (idx > 0)
+        //   B. The next oldest* message (idx - 1) is still more recent than the active day change
         while (idx > 0 && messageItemAt(idx - 1)->timestamp() > _nextDayChange) {
+            // Move the current index to point to the next older* message (idx - 1)
             idx--;
         }
-        beginInsertRows(QModelIndex(), idx, idx);
-        Message dayChangeMsg = Message::ChangeOfDay(_nextDayChange);
-        dayChangeMsg.setMsgId(messageItemAt(idx - 1)->msgId());
-        insertMessage__(idx, dayChangeMsg);
-        endInsertRows();
+        // *NOTE 1: With IRCv3 server-time, messages sorted by index may not be in chronological
+        //          order!  This assumption cannot always be relied upon.
+
+        if (idx == 0) {
+            // All loaded messages are newer than this day change event.  Greetings time traveler!
+            // Example (changing from Day1 to Day2):
+            // idx -> [0] Day2-A
+            //        [1] Day2-B
+            //
+            // This may happen by receiving messages from an IRCv3 "server-time"-enabled server that
+            // specifies timestamps in the future (e.g. if clocks are not precisely synced), or if
+            // Quassel's internal day change timer gets off track.
+            //
+            // This should be relatively rare.  Log a message so we can track this in the wild.
+            // (Use "idx" rather than "idx - 1" due to the decrement in the while loop)
+            qDebug() << Q_FUNC_INFO << "Oldest message with MsgId" << messageItemAt(idx)->msgId()
+                     << "has a timestamp of" << messageItemAt(idx)->timestamp()
+                     << "which is newer than day change" << _nextDayChange
+                     << ".  Skipping inserting a DayChange message.";
+
+            // With no older messages to reference, there's no need for a Day Change message.
+        } else {
+            // "idx" points to the oldest* message that's still newer than the current day change.
+            // Example (changing from Day1 to Day2):
+            //        [0] Day1-A
+            //        [1] Day1-B
+            // idx -> [2] Day2-A
+            //        [3] Day2-B
+            //
+            // *NOTE: See earlier NOTE 1 - chronological order isn't guaranteed.
+            //
+            // Insert the Day Change message before idx.
+            beginInsertRows(QModelIndex(), idx, idx);
+            Message dayChangeMsg = Message::ChangeOfDay(_nextDayChange);
+            // Duplicate the MsgId of the message right before this day change
+            dayChangeMsg.setMsgId(messageItemAt(idx - 1)->msgId());
+            insertMessage__(idx, dayChangeMsg);
+            endInsertRows();
+        }
     }
+    // Advance the day change tracker to the next day change
     _nextDayChange = _nextDayChange.addMSecs(DAY_IN_MSECS);
 }
 
