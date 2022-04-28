@@ -561,21 +561,25 @@ QStringList Quassel::scriptDirPaths()
     return res;
 }
 
-QString Quassel::translationDirPath()
+QStringList Quassel::translationDirPaths()
 {
-    if (instance()->_translationDirPath.isEmpty()) {
-        // We support only one translation dir; fallback mechanisms wouldn't work else.
-        // This means that if we have a $data/translations dir, the internal :/i18n resource won't be considered.
-        foreach (const QString& dir, dataDirPaths()) {
-            if (QFile::exists(dir + "translations/")) {
-                instance()->_translationDirPath = dir + "translations/";
-                break;
+    if (instance()->_translationDirPaths.isEmpty()) {
+        // Add all potentially valid translation directories; fallback is handled on load.
+        for (auto dir : dataDirPaths()) {
+            if (QDir(dir + "translations/").exists()) {
+                instance()->_translationDirPaths.append(dir + "translations/");
             }
         }
-        if (instance()->_translationDirPath.isEmpty())
-            instance()->_translationDirPath = ":/i18n/";
+
+        // Add the internal ":/i18n/" resource if it exists
+        if (QDir(":/i18n/").exists()) {
+            instance()->_translationDirPaths.append(":/i18n/");
+        }
+        qDebug().noquote().nospace()
+                << "Translation paths: \"" << instance()->_translationDirPaths.join("\", \"")
+                << "\", with Qt fallback: \"" << QLibraryInfo::location(QLibraryInfo::TranslationsPath) << "\"";
     }
-    return instance()->_translationDirPath;
+    return instance()->_translationDirPaths;
 }
 
 void Quassel::loadTranslation(const QLocale& locale)
@@ -598,17 +602,50 @@ void Quassel::loadTranslation(const QLocale& locale)
     quasselTranslator = new QTranslator(qApp);
     quasselTranslator->setObjectName("QuasselTr");
 
+    bool successQt = false;
+    bool successQuassel = false;
+    // On macOS, specify the filename and directory
+    // On other platforms, specify the locale, filename, prefix (empty), and directory
+    for (auto dir : translationDirPaths()) {
 #ifndef Q_OS_MAC
-    bool success = qtTranslator->load(locale, QString("qt_"), translationDirPath());
-    if (!success)
-        qtTranslator->load(locale, QString("qt_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    quasselTranslator->load(locale, QString(""), translationDirPath());
+        if (!successQt && qtTranslator->load(locale, QString("qt_"), QString(""), dir)) {
 #else
-    bool success = qtTranslator->load(QString("qt_%1").arg(locale.name()), translationDirPath());
-    if (!success)
-        qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    quasselTranslator->load(QString("%1").arg(locale.name()), translationDirPath());
+        if (!successQt && qtTranslator->load(QString("qt_%1").arg(locale.name()), dir)) {
 #endif
+            // Found Qt translations
+            successQt = true;
+        }
+#ifndef Q_OS_MAC
+        if (!successQuassel && quasselTranslator->load(locale, QString(""), QString(""), dir)) {
+#else
+        if (!successQuassel && quasselTranslator->load(QString("%1").arg(locale.name()), dir)) {
+#endif
+            // Found Quassel translations
+            successQuassel = true;
+        }
+        if (successQt && successQuassel) {
+            // Found both Qt and Quassel translations, stop searching
+            break;
+        }
+    }
+
+    if (!successQt) {
+        // Fall back to Qt library translations path
+#ifndef Q_OS_MAC
+        successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+#else
+        // Filename, directory
+        successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+#endif
+    }
+
+    if (!successQt && !successQuassel) {
+        qWarning() << "Failed to load both Qt and Quassel translations";
+    } else if (!successQt) {
+        qWarning() << "Failed to load Qt translations";
+    } else if (!successQuassel) {
+        qWarning() << "Failed to load Quassel translations";
+    }
 
     qApp->installTranslator(quasselTranslator);
     qApp->installTranslator(qtTranslator);
