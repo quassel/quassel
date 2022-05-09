@@ -53,6 +53,8 @@ jobs:
     steps:
     - name: Check out source code
       uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Get timestamp
       id: get-timestamp
@@ -113,6 +115,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0  # so git-describe works
+        submodules: recursive
 
     - name: Fetch tag information
       if: startsWith(github.ref, 'refs/tags/')
@@ -194,6 +197,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0  # so git-describe works
+        submodules: recursive
 
     - name: Fetch tag information
       if: startsWith(github.ref, 'refs/tags/')
@@ -240,6 +244,8 @@ jobs:
     steps:
     - name: Check out source code
       uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Fetch tag information
       if: startsWith(github.ref, 'refs/tags/')
@@ -271,7 +277,14 @@ jobs:
       run: |
         mkdir assets
         TAGNAME=$(git rev-parse --abbrev-ref $GITHUB_REF)
-        git archive --format=tar --prefix=quassel-$TAGNAME/ $TAGNAME | xz > assets/quassel-$TAGNAME.tar.xz
+        PREFIX=quassel-$TAGNAME/
+        TAR_BASE=assets/quassel-$TAGNAME
+        git archive --format=tar --prefix=$PREFIX -o $TAR_BASE.tar $TAGNAME
+        git submodule foreach --recursive "git archive --prefix=$PREFIX -o $TAR_BASE-\$sha1.tar HEAD"
+        # Workaround for https://lists.gnu.org/archive/html/bug-tar/2008-08/msg00002.html
+        for t in $TAR_BASE-*.tar; do tar --concatenate --file=$TAR_BASE.tar.xz "$t"; done
+        xz $TAR_BASE.tar
+        rm $TAR_BASE-*.tar
 
     - name: Prepare packages for release
       if: startsWith(github.ref, 'refs/tags/')
