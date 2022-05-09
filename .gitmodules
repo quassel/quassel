@@ -1,0 +1,4 @@
+[submodule "quassel-i18n"]
+	path = po
+	url = https://github.com/quassel/quassel-i18n.git
+	branch = master
