@@ -73,7 +73,7 @@ void ExecWrapper::start(const BufferInfo& info, const QString& command)
             if (!QFile::exists(fileName))
                 continue;
             _process.setWorkingDirectory(scriptDir);
-            _process.start(_scriptName, params);
+            _process.start(fileName, params);
             return;
         }
         emit error(tr("Could not find script \"%1\"").arg(_scriptName));
