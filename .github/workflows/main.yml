@@ -107,7 +107,7 @@ jobs:
       with:
         # Newer Xcode versions may not officially be supported by Qt
         # Check https://doc.qt.io/qt-5/macos.html
-        xcode-version: '12.4.0'
+        xcode-version: '13.x'
 
     - name: Check out source code
       uses: actions/checkout@v2
