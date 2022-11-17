@@ -136,7 +136,7 @@ void PerBufferUnreadBacklogRequester::requestBacklog(const BufferIdList& bufferI
 //  AS NEEDED BACKLOG REQUESTER
 // ========================================
 AsNeededBacklogRequester::AsNeededBacklogRequester(ClientBacklogManager* backlogManager)
-    : BacklogRequester(false, BacklogRequester::AsNeeded, backlogManager)
+    : BacklogRequester(true, BacklogRequester::AsNeeded, backlogManager)
 {
     BacklogSettings backlogSettings;
     _legacyBacklogCount = backlogSettings.asNeededLegacyBacklogAmount();
