@@ -35,7 +35,6 @@
 
 #    include "icon.h"
 #    include "qtui.h"
-#    include "quassel.h"
 #    include "statusnotifieritemdbus.h"
 
 constexpr int kProtocolVersion{0};
