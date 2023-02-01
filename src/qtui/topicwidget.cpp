@@ -261,7 +261,7 @@ bool TopicWidget::eventFilter(QObject* obj, QEvent* event)
 QString TopicWidget::sanitizeTopic(const QString& topic)
 {
     // Normally, you don't have new lines in topic messages
-    // But the use of "plain text" functionnality from Qt replaces
+    // But the use of "plain text" functionality from Qt replaces
     // some unicode characters with a new line, which then triggers
     // a stack overflow later
 
@@ -269,10 +269,10 @@ QString TopicWidget::sanitizeTopic(const QString& topic)
     for(int i = 0; i< result.length(); i++)
     {
         QChar a = result.at(i);
-        if (a.isPrint()) 
+            if (a.isPrint()) 
             continue;
-        else
-        result[i] = QChar('?');
+            else
+            result[i] = QChar('?');
     }
 
     return result;
