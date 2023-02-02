@@ -270,9 +270,9 @@ QString TopicWidget::sanitizeTopic(const QString& topic)
     {
         QChar a = result.at(i);
             if (a.isPrint()) 
-            continue;
+                continue;
             else
-            result[i] = QChar('?');
+                result[i] = QChar('?');
     }
 
     return result;
