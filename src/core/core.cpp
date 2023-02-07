@@ -183,8 +183,13 @@ void Core::init()
             if (writeError) {
                 throw ExitException{EXIT_FAILURE, tr("Cannot write quasselcore configuration; probably a permission problem.")};
             }
-
+            
             qInfo() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
+            
+            QString disable_basic_setup = environment.value("DISABLE_BASIC_SETUP");
+            if (disable_basic_setup == "true") {
+                throw ExitException{EXIT_FAILURE, tr("Unable to enter basic setup as it has been disabled. Exiting...")};
+            }
         }
     }
 
