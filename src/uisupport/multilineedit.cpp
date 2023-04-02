@@ -73,6 +73,13 @@ MultiLineEdit::MultiLineEdit(QWidget* parent)
     _mircColorMap["15"] = "#c0c0c0";
 }
 
+MultiLineEdit::~MultiLineEdit()
+{
+#if defined HAVE_SONNET && !defined HAVE_KDE
+    delete _spellCheckDecorator;
+#endif
+}
+
 #if defined HAVE_SONNET && !defined HAVE_KDE
 Sonnet::Highlighter* MultiLineEdit::highlighter() const
 {
