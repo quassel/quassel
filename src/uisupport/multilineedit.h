@@ -52,6 +52,7 @@ public:
     };
 
     MultiLineEdit(QWidget* parent = nullptr);
+    ~MultiLineEdit() override;
 
     void setCustomFont(const QFont&);  // should be used instead setFont(), so we can set our size correctly
 
