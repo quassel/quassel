@@ -114,13 +114,14 @@ AboutData& AboutData::addCredits(std::initializer_list<AboutPerson> credits)
 
 KAboutData AboutData::kAboutData() const
 {
-    KAboutData aboutData(Quassel::buildInfo().applicationName, tr("Quassel IRC"), Quassel::buildInfo().plainVersionString);
+    KAboutData aboutData(Quassel::buildInfo().clientApplicationName, tr("Quassel IRC"), Quassel::buildInfo().plainVersionString);
     aboutData.addLicense(KAboutLicense::GPL_V2);
     aboutData.addLicense(KAboutLicense::GPL_V3);
     aboutData.setShortDescription(tr("A modern, distributed IRC client"));
     aboutData.setProgramLogo(QVariant::fromValue(QImage(":/pics/quassel-logo.png")));
     aboutData.setBugAddress("https://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
     aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
+    aboutData.setDesktopFileName(Quassel::buildInfo().clientApplicationName);
 
     for (const auto& person : authors()) {
         aboutData.addAuthor(person.prettyName(), person.task(), person.emailAddress());
