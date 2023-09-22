@@ -108,7 +108,13 @@ endif()
 
 # Mac build stuff
 if (APPLE)
+  if(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "arm64")
+    set(CMAKE_OSX_ARCHITECTURES "arm64")
+    message(STATUS "Building for Apple Silicon Mac")
+  else()
     set(CMAKE_OSX_ARCHITECTURES "x86_64")
+    message(STATUS "Building for Intel Mac")
+  endif()
     add_compile_options(
         -mmacosx-version-min=10.9
         -stdlib=libc++
