@@ -30,7 +30,11 @@
 #include "qtuisettings.h"
 #include "types.h"
 
-QtUiApplication::QtUiApplication(int& argc, char** argv)
+#ifdef Q_OS_MAC
+#include "cocoahelper.h"
+#endif
+
+QtUiApplication::QtUiApplication(int &argc, char **argv)
     : QApplication(argc, argv)
 {
 #if QT_VERSION >= 0x050600
@@ -58,6 +62,10 @@ void QtUiApplication::init()
 
         // Needs to happen after UI init, so the MainWin quit handler is registered first
         Quassel::registerQuitHandler(quitHandler());
+
+#ifdef Q_OS_MAC
+        CocoaHelper::configure();
+#endif
 
         resumeSessionIfPossible();
     });
