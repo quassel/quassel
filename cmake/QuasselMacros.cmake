@@ -135,7 +135,7 @@ function(quassel_add_executable _target)
     # Prepare bundle creation on macOS
     if(APPLE AND BUNDLE)
         set(BUNDLE_PATH "${CMAKE_INSTALL_PREFIX}/${BUNDLE_NAME}.app")
-        set(DMG_PATH "${CMAKE_INSTALL_PREFIX}/Quassel${ARG_COMPONENT}_MacOSX-${CMAKE_OSX_ARCHITECTURES}_${QUASSEL_VERSION_STRING}.dmg")
+        set(DMG_PATH "${CMAKE_INSTALL_PREFIX}/Quassel${ARG_COMPONENT}_macOS-${CMAKE_OSX_ARCHITECTURES}_${QUASSEL_VERSION_STRING}.dmg")
 
         # Generate an appropriate Info.plist
         set(BUNDLE_INFO_PLIST "${CMAKE_CURRENT_BINARY_DIR}/Info_${ARG_COMPONENT}.plist")
