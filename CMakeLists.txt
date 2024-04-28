@@ -212,13 +212,14 @@ endif()
 
 # Check for SSL support in Qt
 cmake_push_check_state(RESET)
-set(CMAKE_REQUIRED_LIBRARIES Qt5::Core)
+set(CMAKE_REQUIRED_LIBRARIES Qt5::Core Qt5::Network)
+set(CMAKE_REQUIRED_FLAGS -std=c++14)
 check_cxx_source_compiles("
-    #include \"qglobal.h\"
-    #if defined QT_NO_SSL
-    #  error \"No SSL support\"
-    #endif
-    int main() {}"
+    #include <QSslSocket>
+    int main() {
+        QSslSocket sock;
+        return 0;
+    }"
     HAVE_SSL)
 cmake_pop_check_state()
 
