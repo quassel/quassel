@@ -92,15 +92,13 @@ QVariant CoreAccountModel::data(const QModelIndex& index, int role) const
     if (!index.isValid() || index.row() >= rowCount() || index.column() >= 1)
         return QVariant();
 
-    const CoreAccount& acc = accounts().at(index.row());
-
     switch (role) {
     case Qt::DisplayRole:
-        return acc.accountName();
+        return accounts().at(index.row()).accountName();
     case AccountIdRole:
-        return QVariant::fromValue(acc.accountId());
+        return QVariant::fromValue(accounts().at(index.row()).accountId());
     case UuidRole:
-        return acc.uuid().toString();
+        return accounts().at(index.row()).uuid().toString();
 
     default:
         return QVariant();
