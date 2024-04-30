@@ -182,7 +182,7 @@ public:
      */
     static QString findDataFilePath(const QString& filename);
 
-    static QString translationDirPath();
+    static QStringList translationDirPaths();
 
     //! Returns a list of directories we look for scripts in
     /** We look for a subdirectory named "scripts" in the configdir and in all datadir paths.
@@ -253,7 +253,7 @@ private:
     QString _coreDumpFileName;
     QString _configDirPath;
     QStringList _dataDirPaths;
-    QString _translationDirPath;
+    QStringList _translationDirPaths;
 
     QCommandLineParser _cliParser;
 
