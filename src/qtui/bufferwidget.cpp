@@ -213,6 +213,13 @@ bool BufferWidget::eventFilter(QObject* watched, QEvent* event)
         return false;
 
     switch (keyEvent->key()) {
+	case Qt::Key_U:
+		if (!(keyEvent->modifiers() & Qt::ControlModifier))
+			return false;
+		else {
+			inputLine->clear();
+			return true;
+		}
     case Qt::Key_Up:
     case Qt::Key_Down:
         if (!(keyEvent->modifiers() & Qt::ShiftModifier))
