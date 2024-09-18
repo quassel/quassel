@@ -1,6 +1,6 @@
 [Global]
 IconName=quassel
-DesktopEntry=quassel
+DesktopEntry=@DESKTOP_FILE@
 Comment=Quassel IRC
 Comment[ast]=Quassel IRC
 Comment[ca]=Xat IRC Quassel
