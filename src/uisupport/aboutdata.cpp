@@ -114,7 +114,7 @@ AboutData& AboutData::addCredits(std::initializer_list<AboutPerson> credits)
 
 KAboutData AboutData::kAboutData() const
 {
-    KAboutData aboutData(Quassel::buildInfo().clientApplicationName, tr("Quassel IRC"), Quassel::buildInfo().plainVersionString);
+    KAboutData aboutData(Quassel::buildInfo().applicationName, tr("Quassel IRC"), Quassel::buildInfo().plainVersionString);
     aboutData.addLicense(KAboutLicense::GPL_V2);
     aboutData.addLicense(KAboutLicense::GPL_V3);
     aboutData.setShortDescription(tr("A modern, distributed IRC client"));
