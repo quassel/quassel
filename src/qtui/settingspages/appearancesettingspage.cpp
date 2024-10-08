@@ -85,10 +85,21 @@ void AppearanceSettingsPage::initStyleComboBox()
 
 void AppearanceSettingsPage::initLanguageComboBox()
 {
-    QDir i18nDir(Quassel::translationDirPath(), "*.qm");
+    // Fetch all translation files across all translation paths
+    QStringList translationFiles;
+    for (auto dir : Quassel::translationDirPaths()) {
+        QDir i18nDir(dir, "*.qm");
+        translationFiles.append(i18nDir.entryList());
+    }
+
+    if (translationFiles.isEmpty()) {
+        qWarning() << "Could not find any translation files inside translation paths:"
+                   << Quassel::translationDirPaths();
+        return;
+    }
 
     QRegExp rx("(qt_)?([a-zA-Z_]+)\\.qm");
-    foreach (QString translationFile, i18nDir.entryList()) {
+    foreach (QString translationFile, translationFiles) {
         if (!rx.exactMatch(translationFile))
             continue;
         if (!rx.cap(1).isEmpty())
