@@ -232,11 +232,6 @@ void TopicWidget::switchPlain()
 // filter for the input widget to switch back to normal mode
 bool TopicWidget::eventFilter(QObject* obj, QEvent* event)
 {
-    if (event->type() == QEvent::FocusOut && !_mouseEntered) {
-        switchPlain();
-        return true;
-    }
-
     if (event->type() == QEvent::Enter) {
         _mouseEntered = true;
     }
