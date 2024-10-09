@@ -40,14 +40,14 @@ bool Cipher::setKey(QByteArray key)
         return false;
     }
 
+    m_key = key;
+
     if (key.mid(0, 4).toLower() == "ecb:") {
         m_cbc = false;
-        m_key = key.mid(4);
     }
     // strip cbc: if included
     else if (key.mid(0, 4).toLower() == "cbc:") {
         m_cbc = true;
-        m_key = key.mid(4);
     }
     else {
         //    if(Preferences::self()->encryptionType())
@@ -55,7 +55,7 @@ bool Cipher::setKey(QByteArray key)
         //    else
         //    default to CBC
         m_cbc = true;
-        m_key = key;
+        m_key.prepend("cbc:");
     }
     return true;
 }
@@ -70,43 +70,44 @@ bool Cipher::setType(const QString& type)
 QByteArray Cipher::decrypt(QByteArray cipherText)
 {
     QByteArray pfx = "";
-    bool error = false;  // used to flag non cbc, seems like good practice not to parse w/o regard for set encryption type
+
+    bool ciphertext_is_cbc = false;
+    bool ciphertext_is_ecb = false;
+    unsigned ciphertext_offset = 0;
 
     // if we get cbc
     if (cipherText.mid(0, 5) == "+OK *") {
-        // if we have cbc
-        if (m_cbc)
-            cipherText = cipherText.mid(5);
-        // if we don't
-        else {
-            cipherText = cipherText.mid(5);
-            pfx = "ERROR_NONECB: ";
-            error = true;
-        }
+        ciphertext_is_cbc = true;
+        ciphertext_offset = 5;
     }
-    // if we get ecb
-    else if (cipherText.mid(0, 4) == "+OK " || cipherText.mid(0, 5) == "mcps ") {
-        // if we had cbc
-        if (m_cbc) {
-            cipherText = (cipherText.mid(0, 4) == "+OK ") ? cipherText.mid(4) : cipherText.mid(5);
-            pfx = "ERROR_NONCBC: ";
-            error = true;
-        }
-        // if we don't
-        else {
-            if (cipherText.mid(0, 4) == "+OK ")
-                cipherText = cipherText.mid(4);
-            else
-                cipherText = cipherText.mid(5);
-        }
+    else if (cipherText.mid(0, 6) == "mcps *") {
+        ciphertext_is_cbc = true;
+        ciphertext_offset = 6;
     }
-    // all other cases we fail
-    else
+    else if (cipherText.mid(0, 4) == "+OK ") {
+        ciphertext_is_ecb = true;
+        ciphertext_offset = 4;
+    }
+    else if (cipherText.mid(0, 5) == "mcps ") {
+        ciphertext_is_ecb = true;
+        ciphertext_offset = 5;
+    }
+    else {
+        // no known cipher header
         return cipherText;
+    }
+    
+    if (m_cbc && ciphertext_is_ecb) {
+        pfx = "ERROR_NONCBC: ";
+    }
+    else if (!m_cbc && ciphertext_is_cbc) {
+        pfx = "ERROR_NONECB: ";
+    }
+
+    cipherText = cipherText.mid(ciphertext_offset);
 
     QByteArray temp;
-    // (if cbc and no error we parse cbc) || (if ecb and error we parse cbc)
-    if ((m_cbc && !error) || (!m_cbc && error)) {
+    if (ciphertext_is_cbc) {
         temp = blowfishCBC(cipherText, false);
 
         if (temp == cipherText) {
@@ -134,10 +135,11 @@ QByteArray Cipher::decrypt(QByteArray cipherText)
     return cipherText;
 }
 
-QByteArray Cipher::initKeyExchange()
+QByteArray Cipher::initKeyExchange(bool wants_cbc)
 {
     QCA::Initializer init;
     m_tempKey = QCA::KeyGenerator().createDH(QCA::DLGroup(m_primeNum, QCA::BigInteger(2))).toDH();
+    m_wantscbc = wants_cbc;
 
     if (m_tempKey.isNull())
         return QByteArray();
@@ -191,11 +193,16 @@ QByteArray Cipher::parseInitKeyX(QByteArray key)
 
     if (isCBC)
         sharedKey.prepend("cbc:");
+    else
+        sharedKey.prepend("ecb:"); // default=cbc so need to force ecb for clients which only support ecb
 
     bool success = setKey(sharedKey);
 
     if (!success)
         return QByteArray();
+
+    m_peerwantscbc = isCBC;
+    m_wantscbc = isCBC; // the peer requested cipher mode, so we handle accordingly.
 
     return publicKey.toBase64().append('A');
 }
@@ -203,6 +210,13 @@ QByteArray Cipher::parseInitKeyX(QByteArray key)
 bool Cipher::parseFinishKeyX(QByteArray key)
 {
     QCA::Initializer init;
+
+    bool peer_wants_cbc = false;
+
+    if (key.endsWith(" CBC")) {
+        peer_wants_cbc = true; // allow cbc even if we requested ecb and peer overrides it to cbc
+        key.chop(4);
+    }
 
     if (key.length() != 181)
         return false;
@@ -225,7 +239,13 @@ bool Cipher::parseFinishKeyX(QByteArray key)
     while (sharedKey.endsWith('='))
         sharedKey.chop(1);
 
+    if (peer_wants_cbc) // if we choose to lbock cbc when we requested ecb use this bool for logic check: m_wantscbc
+        sharedKey.prepend("cbc:");
+    else
+        sharedKey.prepend("ecb:"); // default=cbc so need to force ecb for clients which only support ecb
+
     bool success = setKey(sharedKey);
+    m_peerwantscbc = peer_wants_cbc;
 
     return success;
 }
@@ -312,7 +332,7 @@ QByteArray Cipher::blowfishCBC(QByteArray cipherText, bool direction)
     }
 
     QCA::Direction dir = (direction) ? QCA::Encode : QCA::Decode;
-    QCA::Cipher cipher(m_type, QCA::Cipher::CBC, QCA::Cipher::NoPadding, dir, m_key, QCA::InitializationVector(QByteArray("0")));
+    QCA::Cipher cipher(m_type, QCA::Cipher::CBC, QCA::Cipher::NoPadding, dir, m_key.mid(4), QCA::InitializationVector(QByteArray("0")));
     QByteArray temp2 = cipher.update(QCA::MemoryRegion(temp)).toByteArray();
     temp2 += cipher.final().toByteArray();
 
@@ -348,7 +368,7 @@ QByteArray Cipher::blowfishECB(QByteArray cipherText, bool direction)
     }
 
     QCA::Direction dir = (direction) ? QCA::Encode : QCA::Decode;
-    QCA::Cipher cipher(m_type, QCA::Cipher::ECB, QCA::Cipher::NoPadding, dir, m_key);
+    QCA::Cipher cipher(m_type, QCA::Cipher::ECB, QCA::Cipher::NoPadding, dir, m_key.mid(4));
     QByteArray temp2 = cipher.update(QCA::MemoryRegion(temp)).toByteArray();
     temp2 += cipher.final().toByteArray();
 

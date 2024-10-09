@@ -410,19 +410,43 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo& bufferInfo, const QStrin
 
     QStringList parms = msg.split(' ', QString::SkipEmptyParts);
 
-    if (parms.count() == 0 && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
-        parms.prepend(bufferInfo.bufferName());
-    else if (parms.count() != 1) {
+    QString target;
+    if (!bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages() ) {
+        target = bufferInfo.bufferName(); // default is current buffer
+    }
+
+    bool wants_cbc = false; // default
+    bool decode_error = false;
+    
+    if (parms.count() > 0) {
+        if (parms.at(0) == "-cbc") {
+            wants_cbc = true;
+            if (parms.count() == 2) {
+                target = parms.at(1);
+            }
+            else if(parms.count() > 2) {
+                decode_error = true;
+            }
+        }
+        else{
+            if (parms.count() == 1) {
+                target = parms.at(0);
+            }
+            else {
+                decode_error = true;
+            }
+        }
+    }
+
+    if (decode_error) {
         emit displayMsg(NetworkInternalMessage(
             Message::Info,
             typeByTarget(bufname),
             bufname,
-            tr("[usage] /keyx [<nick>] Initiates a DH1080 key exchange with the target.")
+            tr("[usage] /keyx [-cbc] [<nick>] Initiates a DH1080 key exchange with the target.")
         ));
         return;
     }
-
-    QString target = parms.at(0);
 
     if (network()->isChannelName(target)) {
         emit displayMsg(NetworkInternalMessage(
@@ -438,7 +462,7 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo& bufferInfo, const QStrin
     if (!cipher)  // happens when there is no CoreIrcChannel for the target
         return;
 
-    QByteArray pubKey = cipher->initKeyExchange();
+    QByteArray pubKey = cipher->initKeyExchange(wants_cbc);
     if (pubKey.isEmpty())
         emit displayMsg(NetworkInternalMessage(
             Message::Error,
@@ -448,7 +472,7 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo& bufferInfo, const QStrin
         ));
     else {
         QList<QByteArray> params;
-        params << serverEncode(target) << serverEncode("DH1080_INIT ") + pubKey;
+        params << serverEncode(target) << serverEncode("DH1080_INIT ") + pubKey + (wants_cbc ? " CBC" : "");
         emit putCmd("NOTICE", params);
         emit displayMsg(NetworkInternalMessage(
             Message::Info,
@@ -865,7 +889,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo& bufferInfo, const QSt
         Message::Info,
         typeByTarget(bufname),
         bufname,
-        tr("The key for %1 is %2:%3").arg(target, network()->cipherUsesCBC(target) ? "CBC" : "ECB", QString(key))
+        tr("The key for %1 is (Cipher Mode %2) %3").arg(target, network()->cipherUsesCBC(target) ? "CBC" : "ECB", QString(key))
     ));
 
 #else
