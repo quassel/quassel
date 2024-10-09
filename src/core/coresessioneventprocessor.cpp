@@ -846,22 +846,41 @@ void CoreSessionEventProcessor::processKeyEvent(KeyEvent* e)
             net->setCipherKey(e->target(), c->key());
             emit newEvent(new MessageEvent(Message::Info,
                                            e->network(),
-                                           tr("Your key is set and messages will be encrypted."),
+                                           tr("Your key (Cipher Mode %1) is set and messages will be encrypted.").arg((c->usesCBC() ? "CBC" : "ECB")),
                                            e->prefix(),
                                            e->target(),
                                            Message::None,
                                            e->timestamp()));
             QList<QByteArray> p;
-            p << net->serverEncode(e->target()) << net->serverEncode("DH1080_FINISH ") + pubKey;
+            p << net->serverEncode(e->target()) << net->serverEncode("DH1080_FINISH ") + pubKey + (c->usesCBC() ? " CBC" : "" );
             net->putCmd("NOTICE", p);
         }
     }
     else {
         if (c->parseFinishKeyX(e->key())) {
             net->setCipherKey(e->target(), c->key());
+            // some information in case other modes are used than requested
+            if (c->wewantCbc() && !c->peerwantsCbc() && !c->usesCBC()) {
+                emit newEvent(new MessageEvent(Message::Info,
+                                           e->network(),
+                                           tr("We requested CBC mode but peer did not acknowledge CBC, using ECB mode."),
+                                           e->prefix(),
+                                           e->target(),
+                                           Message::None,
+                                           e->timestamp()));
+            }
+            else if (!c->wewantCbc() && c->peerwantsCbc() && c->usesCBC()) {
+                emit newEvent(new MessageEvent(Message::Info,
+                                           e->network(),
+                                           tr("We requested ECB mode but peer overrides to CBC, using CBC mode."),
+                                           e->prefix(),
+                                           e->target(),
+                                           Message::None,
+                                           e->timestamp()));
+            }
             emit newEvent(new MessageEvent(Message::Info,
                                            e->network(),
-                                           tr("Your key is set and messages will be encrypted."),
+                                           tr("Your key (Cipher Mode %1) is set and messages will be encrypted.").arg((c->usesCBC() ? "CBC" : "ECB")),
                                            e->prefix(),
                                            e->target(),
                                            Message::None,

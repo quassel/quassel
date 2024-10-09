@@ -25,12 +25,14 @@ public:
     QByteArray decrypt(QByteArray cipher);
     QByteArray decryptTopic(QByteArray cipher);
     bool encrypt(QByteArray& cipher);
-    QByteArray initKeyExchange();
+    QByteArray initKeyExchange(bool wants_cbc);
     QByteArray parseInitKeyX(QByteArray key);
     bool parseFinishKeyX(QByteArray key);
     bool setKey(QByteArray key);
     QByteArray key() { return m_key; }
     bool setType(const QString& type);
+    bool wewantCbc() { return m_wantscbc; }
+    bool peerwantsCbc() { return m_peerwantscbc; }
     QString type() { return m_type; }
     static bool neededFeaturesAvailable();
     inline bool usesCBC() { return m_cbc; }
@@ -47,6 +49,8 @@ private:
     QCA::DHPrivateKey m_tempKey;
     QCA::BigInteger m_primeNum;
     QString m_type;
+    bool m_wantscbc;
+    bool m_peerwantscbc;
     bool m_cbc;
 };
 
