@@ -81,7 +81,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        osversion: [13, latest]
+        osversion: [14, latest]
 
     steps:
     - name: Select Xcode version
@@ -89,7 +89,7 @@ jobs:
       with:
         # Newer Xcode versions may not officially be supported by Qt
         # Check https://doc.qt.io/qt-5/macos.html
-        xcode-version: '14.x'
+        xcode-version: '15.x'
 
     - name: Check out source code
       uses: actions/checkout@v4
@@ -148,9 +148,9 @@ jobs:
       run: cd build && ninja install
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: macOS
+        name: macOS-${{ matrix.osversion }}
         path: ${{ github.workspace }}/bundles/*.dmg
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ jobs:
       run: python $CRAFT --no-cache --src-dir $WORKSPACE --package quassel/quassel
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Windows
         path: ${{ github.workspace }}/packages/*
