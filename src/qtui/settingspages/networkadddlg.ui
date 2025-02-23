@@ -105,7 +105,7 @@
            <number>65535</number>
           </property>
           <property name="value">
-           <number>6667</number>
+           <number>6697</number>
           </property>
          </widget>
         </item>
@@ -132,6 +132,9 @@
         </property>
         <property name="text">
          <string>Use encrypted connection</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
