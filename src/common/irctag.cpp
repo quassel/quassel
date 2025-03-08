@@ -36,11 +36,27 @@ bool operator==(const IrcTagKey& a, const IrcTagKey& b)
 
 bool operator<(const IrcTagKey& a, const IrcTagKey& b)
 {
-    return a.vendor < b.vendor || a.key < b.key || a.clientTag < b.clientTag;
+    if (a.vendor == b.vendor) {
+        if (a.key == b.key) {
+            return a.clientTag < b.clientTag;
+        } else {
+            return a.key < b.key;
+        }
+    } else {
+        return a.vendor < b.vendor;
+    }
 }
 
 QDebug operator<<(QDebug dbg, const IrcTagKey& i) {
-    return dbg << QString(("(clientTag = %1, vendor = %2,key = %3")).arg(i.clientTag).arg(i.vendor).arg(i.key);
+    if (i.vendor.isEmpty()) {
+        dbg.noquote() << QString("%1%2")
+            .arg(i.clientTag ? "+" : "", i.key);
+        return dbg;
+    } else {
+        dbg.noquote() << QString("%1%2/%3")
+            .arg(i.clientTag ? "+" : "", i.vendor, i.key);
+        return dbg;
+    }
 }
 
 std::ostream& operator<<(std::ostream& o, const IrcTagKey& i) {
