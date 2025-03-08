@@ -68,6 +68,7 @@ public:
 
     std::vector<BufferInfo> buffers() const;
     inline UserId user() const { return _user; }
+    QHostAddress outgoingIp() const { return _outgoingIp; }
     CoreNetwork* network(NetworkId) const;
     CoreIdentity* identity(IdentityId) const;
 
@@ -273,6 +274,7 @@ private:
     CoreIgnoreListManager _ignoreListManager;
     CoreHighlightRuleManager _highlightRuleManager;
     MetricsServer* _metricsServer{nullptr};
+    QHostAddress _outgoingIp;
 };
 
 struct NetworkInternalMessage
