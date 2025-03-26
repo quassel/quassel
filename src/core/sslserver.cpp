@@ -36,6 +36,9 @@ SslServer::SslServer(QObject* parent)
     if (Quassel::isOptionSet("ssl-cert")) {
         _sslCertPath = Quassel::optionValue("ssl-cert");
     }
+    else if (Quassel::isOptionSet("tls-cert")) {
+        _sslCertPath = Quassel::optionValue("tls-cert");
+    }
     else {
         _sslCertPath = Quassel::configDirPath() + "quasselCert.pem";
     }
@@ -43,23 +46,26 @@ SslServer::SslServer(QObject* parent)
     if (Quassel::isOptionSet("ssl-key")) {
         _sslKeyPath = Quassel::optionValue("ssl-key");
     }
+    else if (Quassel::isOptionSet("tls-key")) {
+        _sslKeyPath = Quassel::optionValue("tls-key");
+    }
     else {
         _sslKeyPath = _sslCertPath;
     }
 
     // Initialize the certificates for first-time usage
     if (!loadCerts()) {
-        // If the core is unable to load a certificate, and "--require-ssl" is specified,
+        // If the core is unable to load a certificate, and "--require-ssl"/"--require-tls" is specified,
         // do not proceed, throw an exception and quit. This prevents the core from falling
         // back to a plaintext-only core when they should be expecting SSL/TLS only.
-        if (Quassel::isOptionSet("require-ssl")) {
-            throw ExitException{EXIT_FAILURE, tr("--require-ssl is set, but no SSL certificate is available. Exiting.\n"
-                                                 "Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.")};
+        if (Quassel::isOptionSet("require-ssl") || Quassel::isOptionSet("require-tls")) {
+            throw ExitException{EXIT_FAILURE, tr("--require-ssl/--require-tls is set, but no SSL/TLS certificate is available. Exiting.\n"
+                                                 "Please see https://quassel-irc.org/faq/cert to learn how to enable SSL/TLS support.")};
         }
         if (!sslWarningShown) {
             qWarning() << "SslServer: Unable to set certificate file\n"
-                       << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-                       << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+                       << "          Quassel Core will still work, but cannot provide SSL/TLS for client connections.\n"
+                       << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL/TLS support.";
             sslWarningShown = true;
         }
     }
@@ -101,13 +107,13 @@ bool SslServer::reloadCerts()
         // error if something goes wrong, in order to simplify checking if it's working.
         if (isCertValid()) {
             qWarning() << "SslServer: Unable to reload certificate file, reverting\n"
-                       << "          Quassel Core will use the previous key to provide SSL for client connections.\n"
-                       << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+                       << "          Quassel Core will use the previous key to provide SSL/TLS for client connections.\n"
+                       << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL/TLS support.";
         }
         else {
             qWarning() << "SslServer: Unable to reload certificate file\n"
-                       << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-                       << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+                       << "          Quassel Core will still work, but cannot provide SSL/TLS for client connections.\n"
+                       << "          Please see https://quassel-irc.org/faq/cert to learn how to enable SSL/TLS support.";
         }
         return false;
     }
