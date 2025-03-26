@@ -34,6 +34,7 @@ ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject* parent)
     , _account(account)
     , _probing(false)
     , _legacy(false)
+    , _tls(false)
     , _connectionFeatures(0)
 {}
 
@@ -71,8 +72,12 @@ void ClientAuthHandler::connectToCore()
 
     setSocket(socket);
     connect(socket, &QAbstractSocket::stateChanged, this, &ClientAuthHandler::onSocketStateChanged);
-    connect(socket, &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
-    connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onSocketConnected);
+    if (Quassel::isOptionSet("implicit-tls")) {
+        connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onImplicitTLSSocketConnected);
+    } else {
+        connect(socket, &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
+        connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onSocketConnected);
+    }
 
     emit statusMessage(tr("Connecting to %1...").arg(_account.accountName()));
     socket->connectToHost(_account.hostName(), _account.port());
@@ -140,6 +145,70 @@ void ClientAuthHandler::onSocketDisconnected()
     }
 
     AuthHandler::onSocketDisconnected();
+}
+
+void ClientAuthHandler::onImplicitTLSSocketConnected()
+{
+    if (_peer) {
+        qWarning() << Q_FUNC_INFO << "Peer already exists!";
+        return;
+    }
+
+    socket()->setSocketOption(QAbstractSocket::KeepAliveOption, true);
+
+    if (!_tls) {
+        connect(socket(), &QSslSocket::encrypted, this, &ClientAuthHandler::onImplicitTlsSocketEncrypted);
+        connect(socket(), selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &ClientAuthHandler::onSslErrors);
+        qDebug() << Q_FUNC_INFO << "Starting implicit encryption...";
+        socket()->flush();
+        socket()->startClientEncryption();
+    } else {
+        qWarning() << Q_FUNC_INFO << "TLS connection already established!";
+    }
+}
+
+void ClientAuthHandler::onImplicitTlsSocketEncrypted()
+{
+    qDebug() << Q_FUNC_INFO << "Implicit TLS connection established...";
+
+    auto* tls_socket = qobject_cast<QSslSocket*>(sender());
+    Q_ASSERT(tls_socket);
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    if (!tls_socket->sslErrors().count()) {
+#else
+    if (!tls_socket->sslHandshakeErrors().count()) {
+#endif
+        // Cert is valid, so we don't want to store it as known
+        // That way, a warning will appear in case it becomes invalid at some point
+        CoreAccountSettings s;
+        s.setAccountValue("SSLCert", QString());
+        s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+    }
+
+    _probing = true;
+
+    // TLS established, handle probe responses properly
+    connect(socket(), &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
+
+    QDataStream stream(socket());
+    stream.setVersion(QDataStream::Qt_4_2);
+
+    quint32 magic = Protocol::magic;
+    magic |= Protocol::Compression;
+    // Note that the core will think that we don't support encryption
+
+    stream << magic;
+
+    PeerFactory::ProtoList protos = PeerFactory::supportedProtocols();
+    for (int i = 0; i < protos.count(); ++i) {
+        quint32 reply = protos[i].first;
+        reply |= protos[i].second << 8;
+        if (i == protos.count() - 1)
+            reply |= 0x80000000;  // end list
+        stream << reply;
+    }
+
+    socket()->flush();  // make sure the probing data is sent immediately
 }
 
 void ClientAuthHandler::onSocketConnected()
@@ -374,6 +443,13 @@ void ClientAuthHandler::handle(const Protocol::SessionState& msg)
 
 void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
 {
+    if (Quassel::isOptionSet("implicit-tls")) {
+        qDebug() << "Encryption has already been established, finalising";
+        emit encrypted(true);
+        startRegistration();
+        return;
+    }
+
     CoreAccountSettings s;
     if (coreSupportsSsl) {
         // Make sure the warning is shown next time we don't have SSL in the core

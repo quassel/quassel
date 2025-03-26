@@ -94,6 +94,8 @@ private slots:
     void onSocketStateChanged(QAbstractSocket::SocketState state);
     void onSocketError(QAbstractSocket::SocketError) override;
     void onSocketDisconnected() override;
+    void onImplicitTLSSocketConnected();
+    void onImplicitTlsSocketEncrypted();
     void onReadyRead();
 
     void onSslSocketEncrypted();
@@ -111,5 +113,6 @@ private:
     CoreAccount _account;
     bool _probing;
     bool _legacy;
+    bool _tls;
     quint8 _connectionFeatures;
 };
