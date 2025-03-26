@@ -337,6 +337,7 @@ void Quassel::setupCliParser()
             {"qss", tr("Load a custom application stylesheet."), tr("file.qss")},
             {"hidewindow", tr("Start the client minimized to the system tray.")},
             {"account", tr("Account id to connect to on startup."), tr("account"), "0"},
+            {"implicit-tls", tr("Force implicit TLS connection when connecting to the core")},
         };
     }
 
