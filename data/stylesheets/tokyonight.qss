@@ -1,0 +1,121 @@
+/**
+*   _        _                      _       _     _
+*  | |      | |                    (_)     | |   | |
+*  | |_ ___ | | ___   _  ___  _ __  _  __ _| |__ | |_
+*  | __/ _ \| |/ / | | |/ _ \| '_ \| |/ _` | '_ \| __|
+*  | || (_) |   <| |_| | (_) | | | | | (_| | | | | |_
+*   \__\___/|_|\_\\__, |\___/|_| |_|_|\__, |_| |_|\__|
+*                  __/ |               __/ |
+*                 |___/               |___/
+*
+*      Quassel Theme
+* 
+* Author: Johannes Huber (johu on Libera.Chat/GitHub)
+*/
+
+// Custom ChatView Colors
+Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 #ff007c, stop: 0.1 transparent); }
+
+ChatView { background: #222436; }
+
+ChatLine[label="highlight"] {
+  foreground: #ffffff;
+  background: #ff007c;
+}
+
+ChatLine::timestamp { foreground: #585b70; }
+
+ChatLine#plain { foreground: #7dcfff; }
+ChatLine#notice { foreground: #ff966c; }
+ChatLine#action { foreground: #89ddff; font-weight: bold; font-style: italic; }
+ChatLine#nick { foreground: #fca7ea; }
+ChatLine#mode { foreground: #3e68d7; font-weight: bold; }
+ChatLine#join { foreground: #c3e88d; }
+ChatLine#part { foreground: #fca7ea; }
+ChatLine#quit { foreground: #c53b53; }
+ChatLine#kick { foreground: #fca7ea; }
+ChatLine#kill { foreground: #fca7ea; }
+ChatLine#server { foreground: #ff966c; }
+ChatLine#info { foreground: #ff966c; }
+ChatLine#error { foreground: #c53b53; }
+ChatLine#daychange { foreground: #ff966c; }
+ChatLine#topic { foreground: #fca7ea; }
+
+
+// Sender Colors
+ChatLine::sender#plain[sender="self"] { foreground: #c53b53; }
+
+ChatLine::sender#plain[sender="00"] { foreground: #fca7ea; }
+ChatLine::sender#plain[sender="01"] { foreground: #c099ff; }
+ChatLine::sender#plain[sender="02"] { foreground: #ff757f; }
+ChatLine::sender#plain[sender="03"] { foreground: #c3e88d; }
+ChatLine::sender#plain[sender="04"] { foreground: #94e2d5; }
+ChatLine::sender#plain[sender="05"] { foreground: #b4befe; }
+ChatLine::sender#plain[sender="06"] { foreground: #ff966c; }
+ChatLine::sender#plain[sender="07"] { foreground: #3e68d7; }
+ChatLine::sender#plain[sender="08"] { foreground: #ff007c; }
+ChatLine::sender#plain[sender="09"] { foreground: #41a6b5; }
+ChatLine::sender#plain[sender="0a"] { foreground: #c53b53; }
+ChatLine::sender#plain[sender="0b"] { foreground: #ffc777; }
+ChatLine::sender#plain[sender="0c"] { foreground: #0db9d7; }
+ChatLine::sender#plain[sender="0d"] { foreground: #4fd6be; }
+ChatLine::sender#plain[sender="0e"] { foreground: #7a88cf; }
+ChatLine::sender#plain[sender="0f"] { foreground: #65bcff; }
+
+// BufferView Colors
+ChatListItem { foreground: #82aaff; }
+ChatListItem[state="inactive"] { foreground: #6c7086; }
+ChatListItem[state="channel-event"] { foreground: #c3e88d; }
+ChatListItem[state="unread-message"] { foreground: #ff966c; }
+ChatListItem[state="highlighted"] { foreground: #c099ff; }
+BufferView { background: #222436; }
+
+// NickView Colors
+NickListItem[type="category"] { foreground: #444a73; }
+NickListItem[type="user"] { foreground: #82aaff; }
+NickListItem[type="user", state="away"] { foreground: #6c7086; }
+NickView { background: #222436; }
+
+MultiLineEdit { background: #222436; color: #82aaff; }
+StyledLabel#topicLabel { background: #222436; }
+ChatLine#topic { foreground: #82aaff; }
+
+// Miscellaneous Colors
+QTreeView::item:selected { color: #94e2d5; }
+ChatMonitorSettingsPage BufferView::item { color: #7dcfff; }
+QTreeView#settingsTree { background: #222436; }
+QTreeView::item#settingsTree { color: #7dcfff; }
+QLineEdit:enabled { background: #222436; color: #7dcfff; }
+QSpinBox:enabled { background: #222436; color: #7dcfff; }
+QTableWidget { background-color: #222436; color: #7dcfff; }
+QListWidget { background-color: #222436; color: #7dcfff; }
+
+QTableView {
+  alternate-background-color: #45475a;
+  background-color: #313244;
+  color: #bac2de;
+}
+
+Palette {
+  base: #313244;
+
+  link: #c3e88d;
+  link-visited: #ffc777;
+
+  window: #2f334d;
+  window-text: #9399b2;
+  text: #9399b2;
+
+  light: #2f334d;
+  midlight: #2f334d;
+  mid: #3e68d7;
+  dark: #a6adc8;
+  button: #2f334d;
+  button-text: #a6adc8;
+
+  tooltip-base: #222436;
+  tooltip-text: #0db9d7;
+}
+
+StyledLabel#topicLabel { background: #222436; }
+MultiLineEdit { background: #222436; color: #7dcfff; }
