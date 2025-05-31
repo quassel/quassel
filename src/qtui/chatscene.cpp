@@ -35,8 +35,6 @@
 
 #ifdef HAVE_WEBENGINE
 #    include <QWebEngineView>
-#elif defined HAVE_WEBKIT
-#    include <QWebView>
 #endif
 
 #include "chatitem.h"
@@ -119,7 +117,7 @@ ChatScene::ChatScene(QAbstractItemModel* model, QString idString, qreal width, C
     connect(model, &QAbstractItemModel::rowsRemoved, this, &ChatScene::rowsRemoved);
     connect(model, &QAbstractItemModel::dataChanged, this, &ChatScene::dataChanged);
 
-#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
+#if defined HAVE_WEBENGINE
     webPreview.timer.setSingleShot(true);
     connect(&webPreview.timer, &QTimer::timeout, this, &ChatScene::webPreviewNextStep);
 #endif
@@ -1151,9 +1149,9 @@ void ChatScene::updateSceneRect(const QRectF& rect)
 }
 
 // ========================================
-//  Webkit/WebEngine Only stuff
+//  WebEngine Only stuff
 // ========================================
-#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
+#if defined HAVE_WEBENGINE
 void ChatScene::loadWebPreview(ChatItem* parentItem, const QUrl& url, const QRectF& urlRect)
 {
     if (!_showWebPreview)
@@ -1281,7 +1279,7 @@ void ChatScene::clearWebPreview(ChatItem* parentItem)
 #endif
 
 // ========================================
-//  end of webkit only
+//  end of WebEngine only
 // ========================================
 
 // Local configuration caching

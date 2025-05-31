@@ -23,12 +23,9 @@
 #ifdef HAVE_WEBENGINE
 #    include <QWebEngineSettings>
 #    include <QWebEngineView>
-#elif defined HAVE_WEBKIT
-#    include <QWebSettings>
-#    include <QWebView>
 #endif
 
-#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
+#if defined HAVE_WEBENGINE
 
 #    include <QGraphicsProxyWidget>
 #    include <QPainter>
@@ -66,9 +63,6 @@ WebPreviewItem::WebPreviewItem(const QUrl& url)
 #    ifdef HAVE_WEBENGINE
     QWebEngineView* webView = new CustomWebView(proxyItem);
     webView->settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, false);
-#    elif defined HAVE_WEBKIT
-    QWebView* webView = new QWebView;
-    webView->settings()->setAttribute(QWebSettings::JavascriptEnabled, false);
 #    endif
     webView->load(url);
     webView->setDisabled(true);
@@ -95,4 +89,4 @@ void WebPreviewItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
     painter->drawRoundedRect(boundingRect(), 10, 10);
 }
 
-#endif  //#ifdef HAVE_WEBKIT || HAVE_WEBENGINE
+#endif  //#ifdef HAVE_WEBENGINE
