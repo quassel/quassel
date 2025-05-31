@@ -78,9 +78,6 @@ add_feature_info(WITH_BUNDLED_ICONS WITH_BUNDLED_ICONS "Install required icons f
 option(WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)" OFF)
 add_feature_info(WITH_OXYGEN_ICONS WITH_OXYGEN_ICONS "Support the Oxygen icon theme (KDE4)")
 
-# For this, the feature info is added after we know if QtWebkit is installed
-option(WITH_WEBKIT "WebKit support (for link previews) (legacy)" OFF)
-
 # For this, the feature info is added after we know if QtWebEngine is installed
 option(WITH_WEBENGINE "WebEngine support (for link previews)" ON)
 
@@ -300,30 +297,6 @@ if (BUILD_GUI)
         set(HAVE_WEBENGINE true)
     endif()
     add_feature_info("WITH_WEBENGINE, QtWebEngine and QtWebEngineWidgets modules" HAVE_WEBENGINE "Support showing previews for URLs in chat")
-
-    if (NOT HAVE_WEBENGINE)
-        if (WITH_WEBKIT)
-            find_package(Qt5WebKit QUIET)
-            set_package_properties(Qt5WebKit PROPERTIES TYPE OPTIONAL
-                URL "https://www.qt.io/"
-                DESCRIPTION "a WebKit implementation for Qt"
-                PURPOSE     "Needed for displaying previews for URLs in chat"
-                )
-            if (Qt5WebKit_FOUND)
-                find_package(Qt5WebKitWidgets QUIET)
-                set_package_properties(Qt5WebKitWidgets PROPERTIES TYPE OPTIONAL
-                    URL "https://www.qt.io/"
-                    DESCRIPTION "widgets for Qt's WebKit implementation"
-                    PURPOSE     "Needed for displaying previews for URLs in chat"
-                    )
-            endif()
-        endif()
-
-        if (WITH_WEBKIT AND Qt5WebKitWidgets_FOUND)
-            set(HAVE_WEBKIT true)
-        endif()
-        add_feature_info("WITH_WEBKIT, QtWebKit and QtWebKitWidgets modules" HAVE_WEBKIT "Support showing previews for URLs in chat (legacy)")
-    endif()
 
     # KDE Frameworks
     ################

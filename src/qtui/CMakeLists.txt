@@ -159,14 +159,6 @@ if (Qt5DBus_FOUND)
     )
 endif()
 
-if (HAVE_WEBKIT)
-    target_compile_definitions(${TARGET} PRIVATE -DHAVE_WEBKIT)
-    target_link_libraries(${TARGET} PRIVATE
-        Qt5::WebKit
-        Qt5::WebKitWidgets
-    )
-endif()
-
 if (HAVE_WEBENGINE)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_WEBENGINE)
     target_link_libraries(${TARGET} PRIVATE

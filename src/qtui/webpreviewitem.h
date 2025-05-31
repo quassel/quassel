@@ -21,7 +21,7 @@
 #ifndef WEBPREVIEWITEM_H
 #define WEBPREVIEWITEM_H
 
-#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
+#if defined HAVE_WEBENGINE
 
 #    include <QGraphicsItem>
 
@@ -36,6 +36,6 @@ private:
     QRectF _boundingRect;
 };
 
-#endif  //#ifdef HAVE_WEBKIT || HAVE_WEBENGINE
+#endif  //#ifdef HAVE_WEBENGINE
 
 #endif  // WEBPREVIEWITEM_H

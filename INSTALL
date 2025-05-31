@@ -104,13 +104,6 @@ options here:
     the QtWebEngine module to be available, and increases the client's RAM usage
     by *a lot* if enabled at runtime. The default is ON.
 
--DWITH_WEBKIT=OFF
-    Use WebKit for showing previews of webpages linked in the chat. Requires
-    the QtWebKit module to be available, and increases the client's RAM usage
-    by *a lot* if enabled at runtime.
-    Note that WebKit support is deprecated and mostly unmaintained in Qt, and
-    should no longer be used for security reasons. The default is OFF.
-
 -DEMBED_DATA=(ON|OFF)
     Specifies whether Quassel's data files (icons, translations and so on)
     should be installed normally, or embedded into the binaries. The latter is
