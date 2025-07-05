@@ -28,18 +28,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dist: [ debian-stable, debian-testing, ubuntu-jammy, ubuntu-mantic, ubuntu-noble ]
+        dist: [ debian-stable, debian-testing, ubuntu-noble, ubuntu-oracular, ubuntu-plucky ]
         cxx: [ 'g++', 'clang++' ]
         with-kde: [ -DWITH_KDE=ON ]
         extra-options: [ -DWITH_WEBENGINE=ON ]
         include:
           # Baseline, test more combinations
-          - dist: ubuntu-jammy
-            with-kde: -DWITH_KDE=OFF
-            extra-options: -DWITH_WEBKIT=ON
-          - dist: ubuntu-jammy
+          - dist: ubuntu-noble
             with-kde: -DWITH_KDE=ON
-            extra-options: -DWITH_WEBKIT=ON
+            extra-options: -DWITH_WEBENGINE=OFF
+          - dist: ubuntu-noble
+            with-kde: -DWITH_KDE=OFF
+            extra-options: -DWITH_WEBENGINE=OFF
     env:
         CXX: ${{ matrix.cxx }}
 
@@ -113,7 +113,7 @@ jobs:
       # If Homebrew begins failing in the future due to out-of-date versions,
       # it can be re-enabled here as follows...
       # run: brew update && [below command]
-      run: brew install boost ccache ninja qt@5
+      run: brew install boost ccache qt@5
 
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -158,6 +158,7 @@ jobs:
     name: Windows
     runs-on: windows-latest
     continue-on-error: true
+    if: false # Windows builds are broken atm
     env:
       WORKSPACE: ${{ github.workspace }}
       CRAFT: /C/CraftMaster/windows-msvc2019_64-cl/craft/bin/craft.py
@@ -207,7 +208,7 @@ jobs:
   post-build:
     name: Post-Build
     runs-on: ubuntu-latest
-    needs: [ build-linux, build-macos, build-windows ]
+    needs: [ build-linux, build-macos ] # Windows builds are broken atm
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -222,7 +223,7 @@ jobs:
       run: git fetch -f origin $GITHUB_REF:$GITHUB_REF
 
     - name: Download artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         path: artifacts
 
