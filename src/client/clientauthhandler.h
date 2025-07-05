@@ -94,7 +94,7 @@ private slots:
     void onSocketStateChanged(QAbstractSocket::SocketState state);
     void onSocketError(QAbstractSocket::SocketError) override;
     void onSocketDisconnected() override;
-    void onImplicitTLSSocketConnected();
+    void onImplicitTlsSocketConnected();
     void onImplicitTlsSocketEncrypted();
     void onReadyRead();
 

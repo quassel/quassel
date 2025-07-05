@@ -73,7 +73,7 @@ void ClientAuthHandler::connectToCore()
     setSocket(socket);
     connect(socket, &QAbstractSocket::stateChanged, this, &ClientAuthHandler::onSocketStateChanged);
     if (Quassel::isOptionSet("implicit-tls")) {
-        connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onImplicitTLSSocketConnected);
+        connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onImplicitTlsSocketConnected);
     } else {
         connect(socket, &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
         connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onSocketConnected);
@@ -147,7 +147,7 @@ void ClientAuthHandler::onSocketDisconnected()
     AuthHandler::onSocketDisconnected();
 }
 
-void ClientAuthHandler::onImplicitTLSSocketConnected()
+void ClientAuthHandler::onImplicitTlsSocketConnected()
 {
     if (_peer) {
         qWarning() << Q_FUNC_INFO << "Peer already exists!";
@@ -181,7 +181,7 @@ void ClientAuthHandler::onImplicitTlsSocketEncrypted()
         // Cert is valid, so we don't want to store it as known
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;
-        s.setAccountValue("SSLCert", QString());
+        s.setAccountValue("SslCert", QString());
         s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
     }
 
@@ -494,7 +494,7 @@ void ClientAuthHandler::onSslSocketEncrypted()
         // Cert is valid, so we don't want to store it as known
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;
-        s.setAccountValue("SSLCert", QString());
+        s.setAccountValue("SslCert", QString());
         s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
     }
 
