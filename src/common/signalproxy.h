@@ -344,8 +344,8 @@ bool SignalProxy::attachSlot(const QByteArray& signalName, typename FunctionTrai
 {
     // Create a wrapper function that invokes the member function pointer for the receiver instance
     attachSlotObject(signalName, std::make_unique<SlotObject<Slot>>(receiver, [receiver, slot = std::move(slot)](auto&&... args) {
-        (receiver->*slot)(std::forward<decltype(args)>(args)...);
-    }));
+                         (receiver->*slot)(std::forward<decltype(args)>(args)...);
+                     }));
     return true;
 }
 
@@ -413,7 +413,8 @@ public:
     SlotObject(const QObject* context, Callable callable)
         : SlotObjectBase(context)
         , _callable(std::move(callable))
-    {}
+    {
+    }
 
     // See base class
     bool invoke(const QVariantList& params) const override

@@ -22,13 +22,15 @@
 
 #include <QDebug>
 #include <QMetaProperty>
+#include <QMetaType>
 
 #include "signalproxy.h"
 #include "util.h"
 
 SyncableObject::SyncableObject(QObject* parent)
     : SyncableObject(QString{}, parent)
-{}
+{
+}
 
 SyncableObject::SyncableObject(const QString& objectName, QObject* parent)
     : QObject(parent)
@@ -89,14 +91,14 @@ QVariantMap SyncableObject::toVariantMap()
         if (!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
             continue;
 
-        QVariant::Type variantType = QVariant::nameToType(method.typeName());
-        if (variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
+        QMetaType metaType = QMetaType::fromName(method.typeName());
+        if (metaType.id() == QMetaType::UnknownType && !QByteArray(method.typeName()).isEmpty()) {
             qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.methodSignature()
                        << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
             continue;
         }
 
-        QVariant value(variantType, (const void*)nullptr);
+        QVariant value = QVariant::fromValue(metaType.create());
         QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
         QMetaObject::invokeMethod(this, methodname.toLatin1(), genericvalue);
 

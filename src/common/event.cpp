@@ -27,7 +27,8 @@
 
 Event::Event(EventManager::EventType type)
     : _type(type)
-{}
+{
+}
 
 Event::Event(EventManager::EventType type, QVariantMap& map)
     : _type(type)
@@ -48,7 +49,7 @@ Event::Event(EventManager::EventType type, QVariantMap& map)
         setTimestamp(QDateTime::fromMSecsSinceEpoch(map.take("timestamp").toLongLong()));
     }
     else {
-        setTimestamp(QDateTime::fromTime_t(map.take("timestamp").toUInt()));
+        setTimestamp(QDateTime::fromSecsSinceEpoch(map.take("timestamp").toUInt()));
     }
 }
 
@@ -64,7 +65,7 @@ void Event::toVariantMap(QVariantMap& map) const
         map["timestamp"] = timestamp().toMSecsSinceEpoch();
     }
     else {
-        map["timestamp"] = timestamp().toTime_t();
+        map["timestamp"] = timestamp().toSecsSinceEpoch();
     }
 }
 
