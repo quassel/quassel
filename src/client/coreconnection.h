@@ -22,7 +22,7 @@
 
 #include "client-export.h"
 
-#include <QNetworkConfigurationManager>
+#include <QNetworkInformation>
 #include <QPointer>
 #include <QSslSocket>
 #include <QTimer>
@@ -141,7 +141,7 @@ private slots:
     void reconnectIntervalChanged(const QVariant& interval);
     void reconnectTimeout();
 
-    void onlineStateChanged(bool isOnline);
+    void onlineStateChanged(QNetworkInformation::Reachability reachability);
 
 private:
     QPointer<ClientAuthHandler> _authHandler;
@@ -162,7 +162,7 @@ private:
     CoreAccount _account;
     CoreAccountModel* accountModel() const;
 
-    QPointer<QNetworkConfigurationManager> _qNetworkConfigurationManager;
+    QPointer<QNetworkInformation> _qNetworkInformation;
 
     friend class CoreConfigWizard;
 };

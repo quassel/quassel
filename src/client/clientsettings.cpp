@@ -23,6 +23,7 @@
 #include <utility>
 
 #include <QHostAddress>
+#include <QNetworkInformation>
 #include <QSslSocket>
 #include <QStringList>
 
@@ -31,14 +32,16 @@
 
 ClientSettings::ClientSettings(QString g)
     : Settings(g, Quassel::buildInfo().clientApplicationName)
-{}
+{
+}
 
 /***********************************************************************************************/
 
 CoreAccountSettings::CoreAccountSettings(QString subgroup)
     : ClientSettings("CoreAccounts")
     , _subgroup(std::move(subgroup))
-{}
+{
+}
 
 QString CoreAccountSettings::keyForNotify(const QString& key) const
 {
@@ -212,7 +215,8 @@ void CoreAccountSettings::clearAccounts()
 
 CoreConnectionSettings::CoreConnectionSettings()
     : ClientSettings("CoreConnection")
-{}
+{
+}
 
 void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
 {
@@ -221,9 +225,11 @@ void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
 
 CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode() const
 {
-    auto mode = localValue("NetworkDetectionMode", UseQNetworkConfigurationManager).toInt();
-    if (mode == 0)
-        mode = UseQNetworkConfigurationManager;  // UseSolid is gone, map that to the new default
+    auto mode = localValue("NetworkDetectionMode", UseQNetworkInformation).toInt();
+    // Map deprecated UseSolid (0 in older versions) to UseQNetworkInformation
+    if (mode == 0) {
+        mode = UseQNetworkInformation;
+    }
     return static_cast<NetworkDetectionMode>(mode);
 }
 
@@ -262,7 +268,8 @@ int CoreConnectionSettings::reconnectInterval() const
 
 NotificationSettings::NotificationSettings()
     : ClientSettings("Notification")
-{}
+{
+}
 
 void NotificationSettings::setValue(const QString& key, const QVariant& data)
 {
@@ -315,7 +322,8 @@ bool NotificationSettings::nicksCaseSensitive() const
 
 TabCompletionSettings::TabCompletionSettings()
     : ClientSettings("TabCompletion")
-{}
+{
+}
 
 void TabCompletionSettings::setCompletionSuffix(const QString& suffix)
 {
@@ -344,7 +352,7 @@ void TabCompletionSettings::setSortMode(SortMode mode)
 
 TabCompletionSettings::SortMode TabCompletionSettings::sortMode() const
 {
-    return static_cast<SortMode>(localValue("SortMode"), LastActivity);
+    return static_cast<SortMode>(localValue("SortMode", LastActivity).toInt());
 }
 
 void TabCompletionSettings::setCaseSensitivity(Qt::CaseSensitivity cs)
@@ -354,7 +362,7 @@ void TabCompletionSettings::setCaseSensitivity(Qt::CaseSensitivity cs)
 
 Qt::CaseSensitivity TabCompletionSettings::caseSensitivity() const
 {
-    return (Qt::CaseSensitivity)localValue("CaseSensitivity", Qt::CaseInsensitive).toInt();
+    return static_cast<Qt::CaseSensitivity>(localValue("CaseSensitivity", Qt::CaseInsensitive).toInt());
 }
 
 void TabCompletionSettings::setUseLastSpokenTo(bool use)
@@ -373,7 +381,8 @@ bool TabCompletionSettings::useLastSpokenTo() const
 
 ItemViewSettings::ItemViewSettings(const QString& group)
     : ClientSettings(group)
-{}
+{
+}
 
 bool ItemViewSettings::displayTopicInTooltip() const
 {
