@@ -619,7 +619,7 @@ bool Core::startListening()
     uint port = Quassel::optionValue("port").toUInt();
 
     const QString listen = Quassel::optionValue("listen");
-    const QStringList listen_list = listen.split(",", QString::SkipEmptyParts);
+    const QStringList listen_list = listen.split(",", Qt::SkipEmptyParts);
     if (listen_list.size() > 0) {
         foreach (const QString listen_term, listen_list) {  // TODO: handle multiple interfaces for same TCP version gracefully
             QHostAddress addr;

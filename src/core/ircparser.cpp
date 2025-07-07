@@ -214,7 +214,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
             QByteArray msg = params.count() < 2 ? QByteArray() : params.at(1);
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(params.at(0)).split(',', Qt::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 // For self-messages, keep the target, don't set it to the senderNick
@@ -252,7 +252,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             // Only update from the prefix once during the loop
             bool updatedFromPrefix = false;
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(params.at(0)).split(',', Qt::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 QString target = *targetIter;
@@ -379,7 +379,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             // Cache the result to avoid multiple redundant comparisons
             bool isSelfMessage = net->isMyNick(senderNick);
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(params.at(0)).split(',', Qt::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 // For self-messages, keep the target, don't set it to the senderNick

@@ -440,7 +440,7 @@ QString ExpressionMatch::convertFromMultiPhrase(const QString& originalRule)
     // Use QStringList instead of std::vector<QString> to make use of Qt's built-in .join() method
     QStringList components = {};
     // Split on "\n"
-    for (auto&& component : originalRule.split("\n", QString::SkipEmptyParts)) {
+    for (auto&& component : originalRule.split("\n", Qt::SkipEmptyParts)) {
         // Don't trim whitespace to maintain consistency with single phrase matching
         // As trimming is not performed, empty components will already be skipped.  This means " "
         // is considered a valid matching phrase.

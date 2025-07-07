@@ -1231,7 +1231,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
     // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
     bool _useCapMultiPrefix = coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX);
 
-    for (QString nick : e->params()[2].split(' ', QString::SkipEmptyParts)) {
+    for (QString nick : e->params()[2].split(' ', Qt::SkipEmptyParts)) {
         QString mode;
 
         if (_useCapMultiPrefix) {

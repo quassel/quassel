@@ -148,7 +148,7 @@ void QssParser::parsePaletteBlock(const QString& decl, const QString& contents)
         return;
     }
     if (!rx.cap(1).isEmpty()) {
-        QStringList groups = rx.cap(1).split(':', QString::SkipEmptyParts);
+        QStringList groups = rx.cap(1).split(':', Qt::SkipEmptyParts);
         foreach (QString g, groups) {
             if ((g == "normal" || g == "active") && !colorGroups.contains(QPalette::Active))
                 colorGroups.append(QPalette::Active);
@@ -160,7 +160,7 @@ void QssParser::parsePaletteBlock(const QString& decl, const QString& contents)
     }
 
     // Now let's go through the roles
-    foreach (QString line, contents.split(';', QString::SkipEmptyParts)) {
+    foreach (QString line, contents.split(';', Qt::SkipEmptyParts)) {
         int idx = line.indexOf(':');
         if (idx <= 0) {
             qWarning() << Q_FUNC_INFO << tr("Invalid palette role assignment: %1").arg(line.trimmed());
@@ -276,7 +276,7 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
     // Next up: conditional (formats, labels, nickhash)
     static const QRegExp condRx(R"lit(\s*([\w\-]+)\s*=\s*"(\w+)"\s*)lit");
     if (!conditions.isEmpty()) {
-        foreach (const QString& cond, conditions.split(',', QString::SkipEmptyParts)) {
+        foreach (const QString& cond, conditions.split(',', Qt::SkipEmptyParts)) {
             if (!condRx.exactMatch(cond)) {
                 qWarning() << Q_FUNC_INFO << tr("Invalid condition %1").arg(cond);
                 return invalid;
@@ -369,7 +369,7 @@ UiStyle::ItemFormatType QssParser::parseItemFormatType(const QString& decl)
     if (!properties.isEmpty()) {
         QHash<QString, QString> props;
         static const QRegExp propRx(R"lit(\s*([\w\-]+)\s*=\s*"([\w\-]+)"\s*)lit");
-        foreach (const QString& prop, properties.split(',', QString::SkipEmptyParts)) {
+        foreach (const QString& prop, properties.split(',', Qt::SkipEmptyParts)) {
             if (!propRx.exactMatch(prop)) {
                 qWarning() << Q_FUNC_INFO << tr("Invalid proplist %1").arg(prop);
                 return ItemFormatType::Invalid;
@@ -432,7 +432,7 @@ QTextCharFormat QssParser::parseFormat(const QString& qss)
 {
     QTextCharFormat format;
 
-    foreach (QString line, qss.split(';', QString::SkipEmptyParts)) {
+    foreach (QString line, qss.split(';', Qt::SkipEmptyParts)) {
         int idx = line.indexOf(':');
         if (idx <= 0) {
             qWarning() << Q_FUNC_INFO << tr("Invalid property declaration: %1").arg(line.trimmed());
@@ -716,7 +716,7 @@ void QssParser::parseFont(const QString& value, QTextCharFormat* format)
     format->setFontUnderline(false);
     format->setFontStrikeOut(false);
     format->setFontWeight(QFont::Normal);
-    QStringList proplist = rx.cap(1).split(' ', QString::SkipEmptyParts);
+    QStringList proplist = rx.cap(1).split(' ', Qt::SkipEmptyParts);
     foreach (QString prop, proplist) {
         if (prop == "normal")
             ;  // pass
