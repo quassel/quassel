@@ -25,6 +25,7 @@
 
 #include <QApplication>
 #include <QColor>
+#include <QMetaType>
 
 #include "buffersettings.h"
 #include "icon.h"
@@ -34,15 +35,14 @@
 #include "util.h"
 
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
-bool UiStyle::_useCustomTimestampFormat;                  /// If true, use the custom timestamp format
-QString UiStyle::_timestampFormatString;                  /// Timestamp format
-QString UiStyle::_systemTimestampFormatString;            /// Cached copy of system locale timestamp format
-UiStyle::SenderPrefixMode UiStyle::_senderPrefixDisplay;  /// Display of prefix modes before sender
-bool UiStyle::_showSenderBrackets;                        /// If true, show brackets around sender names
+bool UiStyle::_useCustomTimestampFormat;
+QString UiStyle::_timestampFormatString;
+QString UiStyle::_systemTimestampFormatString;
+UiStyle::SenderPrefixMode UiStyle::_senderPrefixDisplay;
+bool UiStyle::_showSenderBrackets;
 
 namespace {
 
-// Extended mIRC colors as defined in https://modern.ircdocs.horse/formatting.html#colors-16-98
 QColor extendedMircColor(int number)
 {
     static const std::vector<QColor> colorMap = {"#470000", "#472100", "#474700", "#324700", "#004700", "#00472c", "#004747", "#002747",
@@ -77,36 +77,32 @@ UiStyle::UiStyle(QObject* parent)
     , _voiceIconLimit{UserCategoryItem::categoryFromModes("v")}
 {
     static bool registered = []() {
-        qRegisterMetaType<FormatList>();
-        qRegisterMetaTypeStreamOperators<FormatList>();
+        qRegisterMetaType<FormatList>("UiStyle::FormatList");
+        qRegisterMetaType<Format>("UiStyle::Format");
+        qRegisterMetaType<MessageLabel>("UiStyle::MessageLabel");
+        qRegisterMetaType<SenderPrefixMode>("UiStyle::SenderPrefixMode");
         return true;
     }();
     Q_UNUSED(registered)
 
     _uiStylePalette = QVector<QBrush>(static_cast<int>(ColorRole::NumRoles), QBrush());
 
-    // Now initialize the mapping between FormatCodes and FormatTypes...
     _formatCodes["%O"] = FormatType::Base;
     _formatCodes["%B"] = FormatType::Bold;
     _formatCodes["%I"] = FormatType::Italic;
     _formatCodes["%U"] = FormatType::Underline;
     _formatCodes["%S"] = FormatType::Strikethrough;
-
     _formatCodes["%DN"] = FormatType::Nick;
     _formatCodes["%DH"] = FormatType::Hostmask;
     _formatCodes["%DC"] = FormatType::ChannelName;
     _formatCodes["%DM"] = FormatType::ModeFlags;
     _formatCodes["%DU"] = FormatType::Url;
 
-    // Initialize fallback defaults
-    // NOTE: If you change this, update qtui/chatviewsettings.h, too.  More explanations available
-    // in there.
     setUseCustomTimestampFormat(false);
     setTimestampFormatString(" hh:mm:ss");
     setSenderPrefixDisplay(UiStyle::SenderPrefixMode::HighestMode);
     enableSenderBrackets(false);
 
-    // BufferView / NickView settings
     UiStyleSettings s;
     s.initAndNotify("ShowItemViewIcons", this, &UiStyle::showItemViewIconsChanged, true);
     s.initAndNotify("AllowMircColors", this, &UiStyle::allowMircColorsChanged, true);
