@@ -8,7 +8,7 @@ target_sources(${TARGET} PRIVATE
 target_link_libraries(${TARGET}
     PUBLIC
         GTest::GTest
-        Qt5::Core
-        Qt5::Test
+        ${QT_FULL}::Core
+        ${QT_FULL}::Test
         Quassel::Common
 )

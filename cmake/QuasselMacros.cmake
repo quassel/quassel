@@ -54,7 +54,7 @@ function(quassel_add_module _module)
     add_library(${target} ${buildmode} "")
     add_library(${alias} ALIAS ${target})
 
-    target_link_libraries(${target} PRIVATE Qt5::Core)
+    target_link_libraries(${target} PRIVATE ${QT_FULL}::Core)
     target_include_directories(${target}
         PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR} # for generated files
@@ -181,7 +181,7 @@ function(quassel_add_executable _target)
         find_transitive_link_deps(${_target} link_deps)
         # TODO CMake 3.6: use list(FILTER...)
         foreach(dep IN LISTS link_deps)
-            if(${dep} MATCHES "^Qt5::.*")
+            if(${dep} MATCHES "^Qt6::.*")
                 list(APPEND qt_deps ${dep})
             endif()
         endforeach()
@@ -206,7 +206,7 @@ function(quassel_add_executable _target)
         )
 
         # Determine the location of macdeployqt. Not available directly via CMake, so look for it in qmake's bindir...
-        get_target_property(QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+        get_target_property(QMAKE_EXECUTABLE ${QT_FULL}::qmake IMPORTED_LOCATION)
         get_filename_component(qt_bin_dir ${QMAKE_EXECUTABLE} DIRECTORY)
         find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS ${qt_bin_dir} REQUIRED)
 
@@ -288,7 +288,7 @@ function(quassel_add_resource _name)
     add_custom_command(VERBATIM
         COMMENT "Generating ${qrc_src}"
         COMMAND ${cat_cmd} "$<SHELL_PATH:${qrc_filepath}>"
-                | "$<SHELL_PATH:$<TARGET_FILE:Qt5::rcc>>" --name "${lower_name}" --output "$<SHELL_PATH:${qrc_srcpath}>" -
+                | "$<SHELL_PATH:$<TARGET_FILE:Qt6::rcc>>" --name "${lower_name}" --output "$<SHELL_PATH:${qrc_srcpath}>" -
         DEPENDS ${qrc_target}
         MAIN_DEPENDENCY ${qrc_filepath}
         OUTPUT ${qrc_srcpath}
@@ -314,7 +314,7 @@ endfunction()
 #
 # The test name is given in CamelCase as first and mandatory parameter. The corresponding source file
 # is expected the lower-cased test name plus the .cpp extension.
-# The test case is automatically linked against Qt5::Test, GMock, Quassel::Common and
+# The test case is automatically linked against Qt::Test, GMock, Quassel::Common and
 # Quassel::Test::Main, which contains the main function. This main function also instantiates a
 # QCoreApplication, so the event loop can be used in test cases.
 #
@@ -335,7 +335,7 @@ function(quassel_add_test _target)
     set(srcfile ${lower_target}.cpp)
 
     list(APPEND ARG_LIBRARIES
-        Qt5::Test
+        ${QT_FULL}::Test
         Quassel::Common
         Quassel::Test::Global
         Quassel::Test::Main
