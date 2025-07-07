@@ -61,7 +61,7 @@ bool OidentdConfigGenerator::init()
     // the ability to bind to an IP on client sockets.
 
     _quasselStanzaTemplate = QString("lport %1 { reply \"%2\" } #%3\n");
-    _quasselStanzaRx = QRegExp(QString(R"(^lport .* \{ .* \} #%1\r?\n)").arg(_configTag));
+    _quasselStanzaRx = QRegularExpression(QString(R"(^lport .* \{ .* \} #%1\r?\n)").arg(_configTag));
 
     // initially remove all Quassel stanzas that might be present
     if (parseConfig(false) && writeConfig())

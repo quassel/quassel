@@ -69,7 +69,7 @@ bool isChannelName(const QString& str)
 
 QString stripFormatCodes(QString message)
 {
-    static QRegExp regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
+    static QRegularExpression regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
     return message.remove(regEx);
 }
 
@@ -235,7 +235,7 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
     //   .*       matches zero or more characters, not including newlines
     // Note that '\' must be escaped as '\\'
     // Helpful interactive website for debugging and explaining:  https://regex101.com/
-    QRegExp regExpMatchTime("%%(.*)%%");
+    QRegularExpression regExpMatchTime("%%(.*)%%");
 
     // Preserve the smallest groups possible to allow for multiple %%blocks%%
     regExpMatchTime.setMinimal(true);

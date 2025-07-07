@@ -98,7 +98,7 @@ void AppearanceSettingsPage::initLanguageComboBox()
         return;
     }
 
-    QRegExp rx("(qt_)?([a-zA-Z_]+)\\.qm");
+    QRegularExpression rx("(qt_)?([a-zA-Z_]+)\\.qm");
     foreach (QString translationFile, translationFiles) {
         if (!rx.exactMatch(translationFile))
             continue;

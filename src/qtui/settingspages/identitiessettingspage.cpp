@@ -455,8 +455,8 @@ NickEditDlg::NickEditDlg(const QString& old, QStringList exist, QWidget* parent)
     // TODO: add max nicklength according to ISUPPORT
     QString letter = "A-Za-z";
     QString special = R"([-`{-})";
-    QRegExp rx(QString("[%1%2][%1%2\\d-]*").arg(letter, special));
-    ui.nickEdit->setValidator(new QRegExpValidator(rx, ui.nickEdit));
+    QRegularExpression rx(QString("[%1%2][%1%2\\d-]*").arg(letter, special));
+    ui.nickEdit->setValidator(new QRegularExpressionValidator(rx, ui.nickEdit));
     if (old.isEmpty()) {
         // new nick
         setWindowTitle(tr("Add Nickname"));

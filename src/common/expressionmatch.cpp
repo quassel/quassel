@@ -816,7 +816,7 @@ void ExpressionMatch::generateFromMultiWildcard(const QString& originalRule, boo
     invertComponents.removeDuplicates();
 
     // Create full regular expressions by...
-    // > Anchoring to start and end of string to mimic QRegExp's .exactMatch() handling, "^...$"
+    // > Anchoring to start and end of string to mimic QRegularExpression's .exactMatch() handling, "^...$"
     // > Enclosing within a non-capturing group to avoid overhead of text extraction, "(?:...)"
     // > Flattening normal and inverted rules using the regex OR character "...|..."
     //
@@ -857,22 +857,22 @@ QString ExpressionMatch::wildcardToRegEx(const QString& expression)
 
     // We're taking a little bit different of a route...
     //
-    // Original QRegExp::Wildcard rules:
+    // Original QRegularExpression::Wildcard rules:
     // --------------------------
     // Wildcard | Regex | Outcome
     // ---------|-------|--------
     // *        | .*    | zero or more of any character
     // ?        | .     | any single character
     //
-    // NOTE 1: This is QRegExp::Wildcard, not QRegExp::WildcardUnix
+    // NOTE 1: This is QRegularExpression::Wildcard, not QRegularExpression::WildcardUnix
     //
     // NOTE 2: We are ignoring the "[...]" character-class matching functionality of
-    // QRegExp::Wildcard as that feature's a bit more complex and can be handled with full-featured
+    // QRegularExpression::Wildcard as that feature's a bit more complex and can be handled with full-featured
     // regexes.
     //
     // See https://doc.qt.io/qt-5/qregexp.html#wildcard-matching
     //
-    // Quassel originally did not use QRegExp::WildcardUnix, which prevented escaping "*" and "?" in
+    // Quassel originally did not use QRegularExpression::WildcardUnix, which prevented escaping "*" and "?" in
     // messages.  Unfortunately, spam messages might decide to use both, so offering a way to escape
     // makes sense.
     //
@@ -914,16 +914,16 @@ QString ExpressionMatch::wildcardToRegEx(const QString& expression)
 
     // Fix up the result
     //
-    // NOTE: In theory, regular expression lookbehind could solve this.  Unfortunately, QRegExp does
+    // NOTE: In theory, regular expression lookbehind could solve this.  Unfortunately, QRegularExpression does
     // not support lookbehind, and it's theoretically inefficient, anyways.  Just use an approach
-    // similar to that taken by QRegExp's official wildcard mode.
+    // similar to that taken by QRegularExpression's official wildcard mode.
     //
     // Lookbehind example (that we can't use):
     // (?<!abc)test    Negative lookbehind - don't match if "test" is proceeded by "abc"
     //
     // See https://code.qt.io/cgit/qt/qtbase.git/tree/src/corelib/tools/qregexp.cpp
     //
-    // NOTE: We don't copy QRegExp's mode as QRegularExpression has more special characters.  We
+    // NOTE: We don't copy QRegularExpression's mode as QRegularExpression has more special characters.  We
     // can't use the same escaping code, hence calling the appropriate QReg[...]::escape() above.
 
     // Prepare to loop!
@@ -1040,7 +1040,7 @@ QString ExpressionMatch::wildcardToRegEx(const QString& expression)
         }
     }
 
-    // Anchoring to simulate QRegExp::exactMatch() is handled in
+    // Anchoring to simulate QRegularExpression::exactMatch() is handled in
     // ExpressionMatch::convertFromWildcard()
     return result;
 }

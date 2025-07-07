@@ -20,7 +20,7 @@
 
 #include "tabcompleter.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "action.h"
 #include "actioncollection.h"
@@ -78,8 +78,8 @@ void TabCompleter::buildCompletionList()
     if (!_currentNetwork)
         return;
 
-    QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegExp(R"([^#\w\d-_\[\]{}|`^.\\])"), -1, -1);
-    QRegExp regex(QString(R"(^[-_\[\]{}|`^.\\]*)").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
+    QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegularExpression(R"([^#\w\d-_\[\]{}|`^.\\])"), -1, -1);
+    QRegularExpression regex(QString(R"(^[-_\[\]{}|`^.\\]*)").append(QRegularExpression::escape(tabAbbrev)), Qt::CaseInsensitive);
 
     // channel completion - add all channels of the current network to the map
     if (tabAbbrev.startsWith('#')) {

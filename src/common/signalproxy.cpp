@@ -844,14 +844,14 @@ QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod& metho
     int upperCharPos;
     if (method.methodType() == QMetaMethod::Slot) {
         // we take evertyhing from the first uppercase char if it's slot
-        upperCharPos = methodname.indexOf(QRegExp("[A-Z]"));
+        upperCharPos = methodname.indexOf(QRegularExpression("[A-Z]"));
         if (upperCharPos == -1)
             return QString();
         methodname = methodname.mid(upperCharPos);
     }
     else {
         // and if it's a signal we discard everything from the last uppercase char
-        upperCharPos = methodname.lastIndexOf(QRegExp("[A-Z]"));
+        upperCharPos = methodname.lastIndexOf(QRegularExpression("[A-Z]"));
         if (upperCharPos == -1)
             return QString();
         methodname = methodname.left(upperCharPos);

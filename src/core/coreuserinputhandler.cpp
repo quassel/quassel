@@ -20,7 +20,7 @@
 
 #include "coreuserinputhandler.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ctcpparser.h"
 #include "util.h"
@@ -145,7 +145,7 @@ void CoreUserInputHandler::banOrUnban(const BufferInfo& bufferInfo, const QStrin
             return;
         }
 
-        static QRegExp ipAddress(R"(\d+\.\d+\.\d+\.\d+)");
+        static QRegularExpression ipAddress(R"(\d+\.\d+\.\d+\.\d+)");
         if (ipAddress.exactMatch(generalizedHost)) {
             int lastDotPos = generalizedHost.lastIndexOf('.') + 1;
             generalizedHost.replace(lastDotPos, generalizedHost.length() - lastDotPos, '*');
@@ -336,7 +336,7 @@ void CoreUserInputHandler::handleJoin(const BufferInfo& bufferInfo, const QStrin
 
     // trim spaces before chans or keys
     QString sane_msg = msg;
-    sane_msg.replace(QRegExp(", +"), ",");
+    sane_msg.replace(QRegularExpression(", +"), ",");
     QStringList params = sane_msg.trimmed().split(" ");
 
     QStringList chans = params[0].split(",", Qt::SkipEmptyParts);
@@ -1075,7 +1075,7 @@ void CoreUserInputHandler::timerEvent(QTimerEvent* event)
     event->accept();
 
     // the stored command might be the result of an alias expansion, so we need to split it up again
-    QStringList commands = rawCommand.split(QRegExp("; ?"));
+    QStringList commands = rawCommand.split(QRegularExpression("; ?"));
     for (const QString& command : commands) {
         handleUserInput(bufferInfo, command);
     }

@@ -249,7 +249,7 @@ void Quassel::setupBuildInfo()
     }
     else {
         // analyze what we got from git-describe
-        static const QRegExp rx{"(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$"};
+        static const QRegularExpression rx{"(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$"};
         if (rx.exactMatch(buildInfo.generatedVersion)) {
             QString distance = rx.cap(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(rx.cap(1), rx.cap(2));
             buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}.arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));

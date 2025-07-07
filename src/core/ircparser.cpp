@@ -262,7 +262,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                 // This channel is being logged by IRSeekBot. If you have any question please see http://blog.freenode.net/?p=68
                 if (!net->isChannelName(target)) {
                     QString decMsg = net->serverDecode(params.at(1));
-                    QRegExp welcomeRegExp(R"(^\[([^\]]+)\] )");
+                    QRegularExpression welcomeRegExp(R"(^\[([^\]]+)\] )");
                     if (welcomeRegExp.indexIn(decMsg) != -1) {
                         QString channelname = welcomeRegExp.cap(1);
                         decMsg = decMsg.mid(welcomeRegExp.matchedLength());

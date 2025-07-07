@@ -86,7 +86,7 @@ QString Storage::hashPasswordSha2_512(const QString& password)
 
 bool Storage::checkHashedPasswordSha2_512(const QString& password, const QString& hashedPassword)
 {
-    QRegExp colonSplitter("\\:");
+    QRegularExpression colonSplitter("\\:");
     QStringList hashedPasswordAndSalt = hashedPassword.split(colonSplitter);
 
     if (hashedPasswordAndSalt.size() == 2) {

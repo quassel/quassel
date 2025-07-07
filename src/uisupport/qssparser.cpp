@@ -81,12 +81,12 @@ void QssParser::processStyleSheet(QString& ss)
         return;
 
     // Remove C-style comments /* */ or //
-    static QRegExp commentRx(R"((//.*(\n|$)|/\*.*\*/))");
+    static QRegularExpression commentRx(R"((//.*(\n|$)|/\*.*\*/))");
     commentRx.setMinimal(true);
     ss.remove(commentRx);
 
     // Palette definitions first, so we can apply roles later on
-    static const QRegExp paletterx("(Palette[^{]*)\\{([^}]+)\\}");
+    static const QRegularExpression paletterx("(Palette[^{]*)\\{([^}]+)\\}");
     int pos = 0;
     while ((pos = paletterx.indexIn(ss, pos)) >= 0) {
         parsePaletteBlock(paletterx.cap(1).trimmed(), paletterx.cap(2).trimmed());
@@ -94,7 +94,7 @@ void QssParser::processStyleSheet(QString& ss)
     }
 
     // Now we can parse the rest of our custom blocks
-    static const QRegExp blockrx("((?:ChatLine|ChatListItem|NickListItem)[^{]*)\\{([^}]+)\\}");
+    static const QRegularExpression blockrx("((?:ChatLine|ChatListItem|NickListItem)[^{]*)\\{([^}]+)\\}");
     pos = 0;
     while ((pos = blockrx.indexIn(ss, pos)) >= 0) {
         // qDebug() << blockrx.cap(1) << blockrx.cap(2);
@@ -142,7 +142,7 @@ void QssParser::parsePaletteBlock(const QString& decl, const QString& contents)
     QList<QPalette::ColorGroup> colorGroups;
 
     // Check if we want to apply this palette definition for particular ColorGroups
-    static const QRegExp rx("Palette((:(normal|active|inactive|disabled))*)");
+    static const QRegularExpression rx("Palette((:(normal|active|inactive|disabled))*)");
     if (!rx.exactMatch(decl)) {
         qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
         return;
@@ -195,7 +195,7 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
 
     const std::pair<UiStyle::FormatType, UiStyle::MessageLabel> invalid{FormatType::Invalid, MessageLabel::None};
 
-    static const QRegExp rx(R"(ChatLine(?:::(\w+))?(?:#([\w\-]+))?(?:\[([=-,\"\w\s]+)\])?)");
+    static const QRegularExpression rx(R"(ChatLine(?:::(\w+))?(?:#([\w\-]+))?(?:\[([=-,\"\w\s]+)\])?)");
     // $1: subelement; $2: msgtype; $3: conditionals
     if (!rx.exactMatch(decl)) {
         qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
@@ -274,7 +274,7 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
     }
 
     // Next up: conditional (formats, labels, nickhash)
-    static const QRegExp condRx(R"lit(\s*([\w\-]+)\s*=\s*"(\w+)"\s*)lit");
+    static const QRegularExpression condRx(R"lit(\s*([\w\-]+)\s*=\s*"(\w+)"\s*)lit");
     if (!conditions.isEmpty()) {
         foreach (const QString& cond, conditions.split(',', Qt::SkipEmptyParts)) {
             if (!condRx.exactMatch(cond)) {
@@ -353,7 +353,7 @@ UiStyle::ItemFormatType QssParser::parseItemFormatType(const QString& decl)
 {
     using ItemFormatType = UiStyle::ItemFormatType;
 
-    static const QRegExp rx(R"((Chat|Nick)ListItem(?:\[([=-,\"\w\s]+)\])?)");
+    static const QRegularExpression rx(R"((Chat|Nick)ListItem(?:\[([=-,\"\w\s]+)\])?)");
     // $1: item type; $2: properties
     if (!rx.exactMatch(decl)) {
         qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
@@ -368,7 +368,7 @@ UiStyle::ItemFormatType QssParser::parseItemFormatType(const QString& decl)
     QString type, state;
     if (!properties.isEmpty()) {
         QHash<QString, QString> props;
-        static const QRegExp propRx(R"lit(\s*([\w\-]+)\s*=\s*"([\w\-]+)"\s*)lit");
+        static const QRegularExpression propRx(R"lit(\s*([\w\-]+)\s*=\s*"([\w\-]+)"\s*)lit");
         foreach (const QString& prop, properties.split(',', Qt::SkipEmptyParts)) {
             if (!propRx.exactMatch(prop)) {
                 qWarning() << Q_FUNC_INFO << tr("Invalid proplist %1").arg(prop);
@@ -532,7 +532,7 @@ QBrush QssParser::parseBrush(const QString& str, bool* ok)
         //   [0-9]     Match any digit from 0-9
         // Note that '\' must be escaped as '\\'
         // Helpful interactive website for debugging and explaining:  https://regex101.com/
-        static const QRegExp rx(R"(palette\s*\(\s*([a-z-0-9]+)\s*\))");
+        static const QRegularExpression rx(R"(palette\s*\(\s*([a-z-0-9]+)\s*\))");
         if (!rx.exactMatch(str)) {
             qWarning() << Q_FUNC_INFO << tr("Invalid palette color role specification: %1").arg(str);
             return QBrush();
@@ -546,7 +546,7 @@ QBrush QssParser::parseBrush(const QString& str, bool* ok)
     }
     else if (str.startsWith("qlineargradient")) {
         static const QString rxFloat(R"(\s*(-?\s*[0-9]*\.?[0-9]+)\s*)");
-        static const QRegExp rx(QString(R"(qlineargradient\s*\(\s*x1:%1,\s*y1:%1,\s*x2:%1,\s*y2:%1,(.+)\))").arg(rxFloat));
+        static const QRegularExpression rx(QString(R"(qlineargradient\s*\(\s*x1:%1,\s*y1:%1,\s*x2:%1,\s*y2:%1,(.+)\))").arg(rxFloat));
         if (!rx.exactMatch(str)) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient declaration: %1").arg(str);
             return QBrush();
@@ -569,7 +569,7 @@ QBrush QssParser::parseBrush(const QString& str, bool* ok)
     }
     else if (str.startsWith("qconicalgradient")) {
         static const QString rxFloat(R"(\s*(-?\s*[0-9]*\.?[0-9]+)\s*)");
-        static const QRegExp rx(QString(R"(qconicalgradient\s*\(\s*cx:%1,\s*cy:%1,\s*angle:%1,(.+)\))").arg(rxFloat));
+        static const QRegularExpression rx(QString(R"(qconicalgradient\s*\(\s*cx:%1,\s*cy:%1,\s*angle:%1,(.+)\))").arg(rxFloat));
         if (!rx.exactMatch(str)) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient declaration: %1").arg(str);
             return QBrush();
@@ -591,7 +591,7 @@ QBrush QssParser::parseBrush(const QString& str, bool* ok)
     }
     else if (str.startsWith("qradialgradient")) {
         static const QString rxFloat(R"(\s*(-?\s*[0-9]*\.?[0-9]+)\s*)");
-        static const QRegExp rx(QString(R"(qradialgradient\s*\(\s*cx:%1,\s*cy:%1,\s*radius:%1,\s*fx:%1,\s*fy:%1,(.+)\))").arg(rxFloat));
+        static const QRegularExpression rx(QString(R"(qradialgradient\s*\(\s*cx:%1,\s*cy:%1,\s*radius:%1,\s*fx:%1,\s*fy:%1,(.+)\))").arg(rxFloat));
         if (!rx.exactMatch(str)) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient declaration: %1").arg(str);
             return QBrush();
@@ -646,7 +646,7 @@ QColor QssParser::parseColor(const QString& str)
         }
     }
     else {
-        static const QRegExp rx("#?[0-9A-Fa-z]+");
+        static const QRegularExpression rx("#?[0-9A-Fa-z]+");
         if (rx.exactMatch(str))
             return QColor(str);
     }
@@ -657,7 +657,7 @@ QColor QssParser::parseColor(const QString& str)
 QssParser::ColorTuple QssParser::parseColorTuple(const QString& str)
 {
     ColorTuple result;
-    static const QRegExp rx(R"(\(((\s*[0-9]{1,3}%?\s*)(,\s*[0-9]{1,3}%?\s*)*)\))");
+    static const QRegularExpression rx(R"(\(((\s*[0-9]{1,3}%?\s*)(,\s*[0-9]{1,3}%?\s*)*)\))");
     if (!rx.exactMatch(str.trimmed())) {
         return ColorTuple();
     }
@@ -686,7 +686,7 @@ QGradientStops QssParser::parseGradientStops(const QString& str_)
     QString str = str_;
     QGradientStops result;
     static const QString rxFloat("(0?\\.[0-9]+|[01])");  // values between 0 and 1
-    static const QRegExp rx(QString(R"(\s*,?\s*stop:\s*(%1)\s+([^:]+)(,\s*stop:|$))").arg(rxFloat));
+    static const QRegularExpression rx(QString(R"(\s*,?\s*stop:\s*(%1)\s+([^:]+)(,\s*stop:|$))").arg(rxFloat));
     int idx;
     while ((idx = rx.indexIn(str)) == 0) {
         qreal x = rx.cap(1).toDouble();
@@ -706,7 +706,7 @@ QGradientStops QssParser::parseGradientStops(const QString& str_)
 
 void QssParser::parseFont(const QString& value, QTextCharFormat* format)
 {
-    static const QRegExp rx(
+    static const QRegularExpression rx(
         "((?:(?:normal|italic|oblique|underline|strikethrough|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
     if (!rx.exactMatch(value)) {
         qWarning() << Q_FUNC_INFO << tr("Invalid font specification: %1").arg(value);
@@ -782,7 +782,7 @@ void QssParser::parseFontWeight(const QString& value, QTextCharFormat* format)
 
 void QssParser::parseFontSize(const QString& value, QTextCharFormat* format)
 {
-    static const QRegExp rx("(\\d+)(pt|px)");
+    static const QRegularExpression rx("(\\d+)(pt|px)");
     if (!rx.exactMatch(value)) {
         qWarning() << Q_FUNC_INFO << tr("Invalid font size specification: %1").arg(value);
         return;
