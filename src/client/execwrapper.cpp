@@ -60,7 +60,7 @@ void ExecWrapper::start(const BufferInfo& info, const QString& command)
     else {
         _scriptName = match.captured(1);
         static const QRegularExpression splitRx{"\\s+"};
-        params = match.captured(3).split(splitRx, QString::SkipEmptyParts);
+        params = match.captured(3).split(splitRx, Qt::SkipEmptyParts);
     }
 
     // Make sure we don't execute something outside a script dir

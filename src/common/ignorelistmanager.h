@@ -133,7 +133,7 @@ public:
             if (type == CtcpIgnore) {
                 // This is not performance-intensive; sticking with QRegExp for Qt 4 is fine
                 // Split based on whitespace characters
-                QStringList split(contents().split(QRegExp("\\s+"), QString::SkipEmptyParts));
+                QStringList split(contents().split(QRegExp("\\s+"), Qt::SkipEmptyParts));
                 // Match on the first item, handling empty rules/matches
                 if (!split.isEmpty()) {
                     // Take the first item as the sender

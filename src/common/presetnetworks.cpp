@@ -73,7 +73,7 @@ NetworkInfo PresetNetworks::networkInfo(const QString& networkName)
         s.beginGroup(info.networkName);
         foreach (QString server, s.value("Servers").toStringList()) {
             bool ssl = false;
-            QStringList splitserver = server.split(':', QString::SkipEmptyParts);
+            QStringList splitserver = server.split(':', Qt::SkipEmptyParts);
             if (splitserver.count() != 2) {
                 qWarning() << "Invalid server entry in networks.conf:" << server;
                 continue;

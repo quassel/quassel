@@ -185,7 +185,7 @@ void Quassel::setupEnvironment()
     if (xdgDataVar.isEmpty())
         xdgDataVar = QLatin1String("/usr/local/share:/usr/share");  // sane defaults
 
-    QStringList xdgDirs = xdgDataVar.split(QLatin1Char(':'), QString::SkipEmptyParts);
+    QStringList xdgDirs = xdgDataVar.split(QLatin1Char(':'), Qt::SkipEmptyParts);
 
     // Add our install prefix (if we're not in a bindir, this just adds the current workdir)
     QString appDir = QCoreApplication::applicationDirPath();
@@ -513,7 +513,7 @@ QStringList Quassel::dataDirPaths()
         dataDirNames << "/usr/local/share"
                      << "/usr/share";
     else
-        dataDirNames << xdgDataDirs.split(':', QString::SkipEmptyParts);
+        dataDirNames << xdgDataDirs.split(':', Qt::SkipEmptyParts);
 
     // Just in case, also check our install prefix
     dataDirNames << QCoreApplication::applicationDirPath() + "/../share";

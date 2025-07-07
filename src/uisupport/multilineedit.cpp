@@ -698,7 +698,7 @@ void MultiLineEdit::on_returnPressed(QString text)
     }
 
     if (!text.isEmpty()) {
-        foreach (const QString& line, text.split('\n', QString::SkipEmptyParts)) {
+        foreach (const QString& line, text.split('\n', Qt::SkipEmptyParts)) {
             if (line.isEmpty())
                 continue;
             addToHistory(line);
@@ -723,7 +723,7 @@ void MultiLineEdit::on_textChanged()
         if (!pasteProtectionEnabled())
             newText.replace('\n', ' ');
         else if (newText.contains('\n')) {
-            QStringList lines = newText.split('\n', QString::SkipEmptyParts);
+            QStringList lines = newText.split('\n', Qt::SkipEmptyParts);
             clear();
 
             if (lines.count() >= 4) {

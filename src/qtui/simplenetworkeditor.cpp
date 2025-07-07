@@ -78,7 +78,7 @@ void SimpleNetworkEditor::saveToNetworkInfo(NetworkInfo& networkInfo)
 
 QStringList SimpleNetworkEditor::defaultChannels() const
 {
-    return ui.channelList->toPlainText().split("\n", QString::SkipEmptyParts);
+    return ui.channelList->toPlainText().split("\n", Qt::SkipEmptyParts);
 }
 
 void SimpleNetworkEditor::setDefaultChannels(const QStringList& channels)

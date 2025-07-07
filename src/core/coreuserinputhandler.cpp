@@ -212,7 +212,7 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo& bufferInfo, const QStr
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
@@ -279,7 +279,7 @@ void CoreUserInputHandler::doMode(const BufferInfo& bufferInfo, const QChar& add
         }
     }
     else {
-        nickList = nicks.split(' ', QString::SkipEmptyParts);
+        nickList = nicks.split(' ', Qt::SkipEmptyParts);
     }
 
     if (nickList.count() == 0)
@@ -339,7 +339,7 @@ void CoreUserInputHandler::handleJoin(const BufferInfo& bufferInfo, const QStrin
     sane_msg.replace(QRegExp(", +"), ",");
     QStringList params = sane_msg.trimmed().split(" ");
 
-    QStringList chans = params[0].split(",", QString::SkipEmptyParts);
+    QStringList chans = params[0].split(",", Qt::SkipEmptyParts);
     QStringList keys;
     if (params.count() > 1)
         keys = params[1].split(",");
@@ -408,7 +408,7 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo& bufferInfo, const QStrin
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     QString target;
     if (!bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages() ) {
@@ -520,7 +520,7 @@ void CoreUserInputHandler::handleKill(const BufferInfo& bufferInfo, const QStrin
 void CoreUserInputHandler::handleList(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putCmd("LIST", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
+    emit putCmd("LIST", serverEncode(msg.split(' ', Qt::SkipEmptyParts)));
 }
 
 void CoreUserInputHandler::handleMe(const BufferInfo& bufferInfo, const QString& msg)
@@ -553,7 +553,7 @@ void CoreUserInputHandler::handleMode(const BufferInfo& bufferInfo, const QStrin
 {
     Q_UNUSED(bufferInfo)
 
-    QStringList params = msg.split(' ', QString::SkipEmptyParts);
+    QStringList params = msg.split(' ', Qt::SkipEmptyParts);
     if (!params.isEmpty()) {
         if (params[0] == "-reset" && params.count() == 1) {
             network()->resetPersistentModes();
@@ -754,7 +754,7 @@ void CoreUserInputHandler::handleSay(const BufferInfo& bufferInfo, const QString
 
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
-    QStringList messages = msg.split(QChar::LineFeed, QString::SkipEmptyParts);
+    QStringList messages = msg.split(QChar::LineFeed, Qt::SkipEmptyParts);
 
     for (const auto& message : messages) {
         // Handle each separated message independently
@@ -793,7 +793,7 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo& bufferInfo, const QStr
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     if (parms.count() == 1 && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
@@ -856,7 +856,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo& bufferInfo, const QSt
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
@@ -927,7 +927,7 @@ void CoreUserInputHandler::handleTopic(const BufferInfo& bufferInfo, const QStri
 
 void CoreUserInputHandler::handleVoice(const BufferInfo& bufferInfo, const QString& msg)
 {
-    QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+    QStringList nicks = msg.split(' ', Qt::SkipEmptyParts);
     QString m = "+";
     for (int i = 0; i < nicks.count(); i++)
         m += 'v';
