@@ -139,7 +139,8 @@ public:
         // so enabling useSsl offers a more secure default.
         Server()
             : proxyHost("localhost")
-        {}
+        {
+        }
 
         Server(QString host, uint port, QString password, bool useSsl, bool sslVerify)
             : host(std::move(host))
@@ -150,7 +151,8 @@ public:
             , proxyType(QNetworkProxy::Socks5Proxy)
             , proxyHost("localhost")
             , proxyPort(8080)
-        {}
+        {
+        }
 
         bool operator==(const Server& other) const;
         bool operator!=(const Server& other) const;
@@ -192,7 +194,7 @@ public:
      * @param prefix Prefix to be translated.
      */
     QString prefixToMode(const QString& prefix) const;
-    inline QString prefixToMode(const QCharRef& prefix) const { return prefixToMode(QString(prefix)); }
+    inline QString prefixToMode(const QChar& prefix) const { return prefixToMode(QString(prefix)); }
     inline QString prefixesToModes(const QString& prefix) const
     {
         QString modes;
@@ -209,7 +211,7 @@ public:
      * @param prefix Prefix to be translated.
      */
     QString modeToPrefix(const QString& mode) const;
-    inline QString modeToPrefix(const QCharRef& mode) const { return modeToPrefix(QString(mode)); }
+    inline QString modeToPrefix(const QChar& mode) const { return modeToPrefix(QString(mode)); }
     inline QString modesToPrefixes(const QString& mode) const
     {
         QString prefixes;
@@ -257,7 +259,7 @@ public:
     /**@}*/
 
     ChannelModeType channelModeType(const QString& mode);
-    inline ChannelModeType channelModeType(const QCharRef& mode) { return channelModeType(QString(mode)); }
+    inline ChannelModeType channelModeType(const QChar& mode) { return channelModeType(QString(mode)); }
 
     inline const QString& networkName() const { return _networkName; }
     inline const QString& currentServer() const { return _currentServer; }
@@ -747,7 +749,6 @@ private:
     QStringList _capsEnabled;  /// Enabled capabilities that received 'CAP ACK'
     // _capsEnabled uses the same values from the <name>=<value> pairs stored in _caps
 
-
     ServerList _serverList;
     bool _useRandomServer;
     QStringList _perform;
@@ -794,7 +795,7 @@ struct COMMON_EXPORT NetworkInfo
 
     Network::ServerList serverList;
     QStringList perform;
-    QStringList skipCaps;           ///< Capabilities to skip during negotiation
+    QStringList skipCaps;  ///< Capabilities to skip during negotiation
 
     QString autoIdentifyService{"NickServ"};
     QString autoIdentifyPassword;
