@@ -31,6 +31,8 @@
 #include <QLibraryInfo>
 #include <QMetaEnum>
 #include <QMetaType>
+#include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QTranslator>
 #include <QUuid>
@@ -65,7 +67,7 @@ void Quassel::init(RunMode runMode)
 {
     _runMode = runMode;
 
-    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    QRandomGenerator::global()->seed(QTime::currentTime().msecsSinceStartOfDay());
 
     setupSignalHandling();
     setupEnvironment();
@@ -211,11 +213,14 @@ void Quassel::setupBuildInfo()
         buildInfo.commitDate = QString(DIST_DATE);
     }
 
+    QRegularExpressionMatch match;
+    QString distance;
+
     // create a nice version string
     if (buildInfo.generatedVersion.isEmpty()) {
         if (!buildInfo.commitHash.isEmpty()) {
             // dist version
-            buildInfo.plainVersionString = QString{"v%1 (dist-%2)"}.arg(buildInfo.baseVersion).arg(buildInfo.commitHash.left(7));
+            buildInfo.plainVersionString = QString{"v%1 (dist-%2)"}.arg(buildInfo.baseVersion, buildInfo.commitHash.left(7));
             buildInfo.fancyVersionString = QString{"v%1 (dist-<a href=\"https://github.com/quassel/quassel/commit/%3\">%2</a>)"}
                                                .arg(buildInfo.baseVersion)
                                                .arg(buildInfo.commitHash.left(7))
@@ -229,12 +234,20 @@ void Quassel::setupBuildInfo()
     else {
         // analyze what we got from git-describe
         static const QRegularExpression rx{"(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$"};
-        if (rx.exactMatch(buildInfo.generatedVersion)) {
-            QString distance = rx.cap(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(rx.cap(1), rx.cap(2));
-            buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}.arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));
+        QRegularExpressionMatch match = rx.match(buildInfo.generatedVersion);
+        if (match.hasMatch()) {
+            QString distance = match.captured(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(match.captured(1), match.captured(2));
+            buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}.arg(buildInfo.baseVersion,
+                                                                           distance,
+                                                                           match.captured(3),
+                                                                           match.captured(4));
             if (!buildInfo.commitHash.isEmpty()) {
                 buildInfo.fancyVersionString = QString{"v%1 (%2git-<a href=\"https://github.com/quassel/quassel/commit/%5\">%3</a>%4)"}
-                                                   .arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4), buildInfo.commitHash);
+                                                   .arg(buildInfo.baseVersion,
+                                                        distance,
+                                                        match.captured(3),
+                                                        match.captured(4),
+                                                        buildInfo.commitHash);
             }
         }
         else {
@@ -571,7 +584,7 @@ QStringList Quassel::translationDirPaths()
             instance()->_translationDirPaths.append(":/i18n/");
         }
         qDebug().noquote().nospace() << "Translation paths: \"" << instance()->_translationDirPaths.join("\", \"")
-                                     << "\", with Qt fallback: \"" << QLibraryInfo::location(QLibraryInfo::TranslationsPath) << "\"";
+                                     << "\", with Qt fallback: \"" << QLibraryInfo::path(QLibraryInfo::TranslationsPath) << "\"";
     }
     return instance()->_translationDirPaths;
 }
@@ -629,7 +642,7 @@ void Quassel::loadTranslation(const QLocale& locale)
         successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 #else
         // Filename, directory
-        successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::path(QLibraryInfo::TranslationsPath));
 #endif
     }
 

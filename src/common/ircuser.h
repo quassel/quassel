@@ -1,152 +1,62 @@
-/***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
- *   devel@quassel-irc.org                                                 *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) version 3.                                           *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
- ***************************************************************************/
-
-#pragma once
-
-#include "common-export.h"
+#ifndef IRCUSER_H
+#define IRCUSER_H
 
 #include <optional>
 
 #include <QDateTime>
-#include <QSet>
-#include <QString>
-#include <QStringConverter>
+#include <QHash>
+#include <QObject>
 #include <QStringList>
-#include <QVariantMap>
 
 #include "syncableobject.h"
 #include "types.h"
 
-class SignalProxy;
-class Network;
 class IrcChannel;
+class Network;
 
 class COMMON_EXPORT IrcUser : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT
 
-    Q_PROPERTY(QString user READ user WRITE setUser)
-    Q_PROPERTY(QString host READ host WRITE setHost)
-    Q_PROPERTY(QString nick READ nick WRITE setNick)
-    Q_PROPERTY(QString realName READ realName WRITE setRealName)
-    Q_PROPERTY(QString account READ account WRITE setAccount)
-    Q_PROPERTY(bool away READ isAway WRITE setAway)
-    Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage)
-    Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime)
-    Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime)
-    Q_PROPERTY(QString server READ server WRITE setServer)
-    Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator)
-    Q_PROPERTY(QDateTime lastAwayMessageTime READ lastAwayMessageTime WRITE setLastAwayMessageTime)
-    Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply)
-    Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost)
-    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
-
-    Q_PROPERTY(QStringList channels READ channels)
-    Q_PROPERTY(QString userModes READ userModes WRITE setUserModes)
-
 public:
     IrcUser(const QString& hostmask, Network* network);
 
+    QString hostmask() const;
+
+    inline QString nick() const { return _nick; }
     inline QString user() const { return _user; }
     inline QString host() const { return _host; }
-    inline QString nick() const { return _nick; }
     inline QString realName() const { return _realName; }
-    /**
-     * Account name, e.g. NickServ/SASL account
-     *
-     * @return Account name if logged in, * if logged out, or empty string if unknown
-     */
-    inline QString account() const { return _account; }
-    QString hostmask() const;
-    inline bool isAway() const { return _away; }
     inline QString awayMessage() const { return _awayMessage; }
-    QDateTime idleTime();
+    inline bool away() const { return _away; }
+    inline QDateTime idleTime();
     inline QDateTime loginTime() const { return _loginTime; }
     inline QString server() const { return _server; }
     inline QString ircOperator() const { return _ircOperator; }
     inline QDateTime lastAwayMessageTime() const { return _lastAwayMessageTime; }
     inline QString whoisServiceReply() const { return _whoisServiceReply; }
     inline QString suserHost() const { return _suserHost; }
+    inline QString account() const { return _account; }
     inline bool encrypted() const { return _encrypted; }
+    inline QString userModes() const { return _userModes; }
+    QStringList channels() const;
+    inline QDateTime idleTimeSet() const { return _idleTimeSet; }
     inline Network* network() const { return _network; }
 
-    inline QString userModes() const { return _userModes; }
-
-    QStringList channels() const;
-
-    // user-specific encodings
-    inline std::optional<QStringConverter> codecForEncoding() const { return _codecForEncoding; }
-    inline std::optional<QStringConverter> codecForDecoding() const { return _codecForDecoding; }
-    void setCodecForEncoding(const QString& codecName);
-    void setCodecForEncoding(std::optional<QStringConverter> codec);
-    void setCodecForDecoding(const QString& codecName);
-    void setCodecForDecoding(std::optional<QStringConverter> codec);
+    inline std::optional<QStringConverter::Encoding> codecForEncoding() const { return _codecForEncoding; }
+    inline std::optional<QStringConverter::Encoding> codecForDecoding() const { return _codecForDecoding; }
+    void setCodecForEncoding(const QString& name);
+    void setCodecForDecoding(const QString& name);
 
     QString decodeString(const QByteArray& text) const;
     QByteArray encodeString(const QString& string) const;
-
-    // only valid on client side, these are not synced!
-    inline QDateTime lastChannelActivity(BufferId id) const { return _lastActivity.value(id); }
-    void setLastChannelActivity(BufferId id, const QDateTime& time);
-    inline QDateTime lastSpokenTo(BufferId id) const { return _lastSpokenTo.value(id); }
-    void setLastSpokenTo(BufferId id, const QDateTime& time);
-
-    /**
-     * Gets whether or not the away state has changed since it was last acknowledged
-     *
-     * Away state is marked as changed by any modification to away status (away/here, message)
-     *
-     * NOTE: On servers lacking support for IRCv3 away-notify, this won't update until an autoWHO-
-     * run for away/here changes, or until sending a message to the user for away message changes.
-     *
-     * @see IrcUser::acknowledgeAwayChanged()
-     *
-     * @return True if current away state is unchanged from last acknowledgement, otherwise false
-     */
-    inline bool hasAwayChanged() const { return _awayChanged; }
-
-    /**
-     * Sets the last away state change as acknowledged
-     *
-     * @see IrcUser::hasAwayChanged()
-     */
-    inline void acknowledgeAwayChanged()
-    {
-        // Don't sync this as individual clients may suppress different kinds of behaviors
-        _awayChanged = false;
-    }
-
-    void partChannelInternal(IrcChannel* channel, bool skip_sync = false);
-    void quitInternal(bool skip_sync = false);
 
 public slots:
     void setUser(const QString& user);
     void setHost(const QString& host);
     void setNick(const QString& nick);
     void setRealName(const QString& realName);
-    /**
-     * Set account name, e.g. NickServ/SASL account
-     *
-     * @param[in] account Account name if logged in, * if logged out, or empty string if unknown
-     */
     void setAccount(const QString& account);
     void setAway(bool away);
     void setAwayMessage(const QString& awayMessage);
@@ -154,105 +64,71 @@ public slots:
     void setLoginTime(const QDateTime& loginTime);
     void setServer(const QString& server);
     void setIrcOperator(const QString& ircOperator);
-    // setLastAwayMessage is only called by legacy (pre-0.13) cores, which automatically gets
-    // converted to setting the appropriate lastAwayMessageTime.  Do not use this in new code.
     void setLastAwayMessage(int lastAwayMessage);
     void setLastAwayMessageTime(const QDateTime& lastAwayMessageTime);
     void setWhoisServiceReply(const QString& whoisServiceReply);
     void setSuserHost(const QString& suserHost);
     void setEncrypted(bool encrypted);
-    void updateHostmask(const QString& mask);
-
     void setUserModes(const QString& modes);
-
-    /*!
-     * \brief joinChannel Called when user joins some channel, this function inserts the channel to internal list of channels this user is in.
-     * \param channel Pointer to a channel this user just joined
-     * \param skip_channel_join If this is false, this function will also call IrcChannel::joinIrcUser, can be set to true as a performance tweak.
-     */
+    void addUserModes(const QString& modes);
+    void removeUserModes(const QString& modes);
+    void updateHostmask(const QString& mask);
     void joinChannel(IrcChannel* channel, bool skip_channel_join = false);
     void joinChannel(const QString& channelname);
     void partChannel(IrcChannel* channel);
     void partChannel(const QString& channelname);
     void quit();
 
-    void addUserModes(const QString& modes);
-    void removeUserModes(const QString& modes);
+    void setLastChannelActivity(BufferId buffer, const QDateTime& time);
+    void setLastSpokenTo(BufferId buffer, const QDateTime& time);
 
 signals:
-    //   void userSet(QString user);
-    //   void hostSet(QString host);
-    void nickSet(QString newnick);  // needed in NetworkModel
-                                    //   void realNameSet(QString realName);
-    void awaySet(bool away);        // needed in NetworkModel
-                                    //   void awayMessageSet(QString awayMessage);
-                                    //   void idleTimeSet(QDateTime idleTime);
-                                    //   void loginTimeSet(QDateTime loginTime);
-                                    //   void serverSet(QString server);
-                                    //   void ircOperatorSet(QString ircOperator);
-                                    //   void lastAwayMessageTimeSet(QDateTime lastAwayMessageTime);
-                                    //   void whoisServiceReplySet(QString whoisServiceReply);
-                                    //   void suserHostSet(QString suserHost);
+    void nickSet(const QString& nick);
+    void userModesSet(const QString& modes);
+    void userModesAdded(const QString& modes);
+    void userModesRemoved(const QString& modes);
+    void awaySet(bool away);
     void encryptedSet(bool encrypted);
-
-    void userModesSet(QString modes);
-    void userModesAdded(QString modes);
-    void userModesRemoved(QString modes);
-
-    // void channelJoined(QString channel);
-    void channelParted(QString channel);
     void quited();
+    void lastChannelActivityUpdated(BufferId buffer, const QDateTime& time);
+    void lastSpokenToUpdated(BufferId buffer, const QDateTime& time);
 
-    void lastChannelActivityUpdated(BufferId id, const QDateTime& newTime);
-    void lastSpokenToUpdated(BufferId id, const QDateTime& newTime);
+protected:
+    void markAwayChanged() {}
 
 private slots:
-    void updateObjectName();
     void channelDestroyed();
 
 private:
-    inline bool operator==(const IrcUser& ircuser2) { return (_nick.toLower() == ircuser2.nick().toLower()); }
-
-    inline bool operator==(const QString& nickname) { return (_nick.toLower() == nickname.toLower()); }
-
-    /**
-     * Sets the last away state change as unacknowledged
-     *
-     * @see IrcUser::hasAwayChanged()
-     */
-    inline void markAwayChanged() { _awayChanged = true; }
+    void updateObjectName();
+    void quitInternal(bool skip_sync = false);
+    void partChannelInternal(IrcChannel* channel, bool skip_sync);
 
     bool _initialized;
-
     QString _nick;
     QString _user;
     QString _host;
     QString _realName;
-    QString _account;  /// Account name, e.g. NickServ/SASL account
     QString _awayMessage;
     bool _away;
-    QString _server;
     QDateTime _idleTime;
     QDateTime _idleTimeSet;
     QDateTime _loginTime;
+    QString _server;
     QString _ircOperator;
     QDateTime _lastAwayMessageTime;
     QString _whoisServiceReply;
     QString _suserHost;
+    QString _account;
     bool _encrypted;
-
-    QSet<IrcChannel*> _channels;
     QString _userModes;
 
     Network* _network;
-
-    std::optional<QStringConverter> _codecForEncoding;
-    std::optional<QStringConverter> _codecForDecoding;
-
+    std::optional<QStringConverter::Encoding> _codecForEncoding;
+    std::optional<QStringConverter::Encoding> _codecForDecoding;
+    QSet<IrcChannel*> _channels;
     QHash<BufferId, QDateTime> _lastActivity;
     QHash<BufferId, QDateTime> _lastSpokenTo;
-
-    // Given it's never been acknowledged, assume changes exist on IrcUser creation
-    /// Tracks if changes in away state (away/here, message) have yet to be acknowledged
-    bool _awayChanged = true;
 };
+
+#endif  // IRCUSER_H

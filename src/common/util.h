@@ -42,10 +42,10 @@ COMMON_EXPORT QString stripAcceleratorMarkers(const QString&);
 COMMON_EXPORT QString secondsToString(int timeInSeconds);
 
 //! Take a string and decode it using the specified text codec, recognizing utf8.
-/** This function takes a string and first checks if it is encoded in utf8, in which case it is
- *  decoded appropriately. Otherwise, the specified text codec is used to transform the string.
+/** This function takes a string and first checks if it is encoded in utf8, in which case it
+ *  is decoded appropriately. Otherwise, the specified text codec is used to transform the string.
  *  \param input The input string containing encoded data
- *  \param encoding The encoding we use if the input is not utf8
+ *  \param encoding The encoding to use if the input is not utf8
  *  \return The decoded string.
  */
 COMMON_EXPORT QString decodeString(const QByteArray& input, QStringConverter::Encoding encoding = QStringConverter::Utf8);
@@ -66,7 +66,7 @@ template<typename T>
 QVariantList toVariantList(const QList<T>& list)
 {
     QVariantList variants;
-    for (int i = 0; i < list.count(); i++) {
+    for (int i = 0; i < list.size(); i++) {
         variants << QVariant::fromValue(list[i]);
     }
     return variants;
@@ -76,7 +76,7 @@ template<typename T>
 QList<T> fromVariantList(const QVariantList& variants)
 {
     QList<T> list;
-    for (int i = 0; i < variants.count(); i++) {
+    for (int i = 0; i < variants.size(); i++) {
         list << variants[i].value<T>();
     }
     return list;

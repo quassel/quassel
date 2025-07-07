@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2025 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "signalproxy.h"
+
 #include <algorithm>
 #include <utility>
 
@@ -25,12 +27,12 @@
 #include <QHostAddress>
 #include <QMetaMethod>
 #include <QMetaProperty>
+#include <QRegularExpression>
 #include <QSslSocket>
 #include <QThread>
 
 #include "peer.h"
 #include "protocol.h"
-#include "signalproxy.h"
 #include "syncableobject.h"
 #include "types.h"
 #include "util.h"
@@ -43,7 +45,8 @@ public:
     RemovePeerEvent(Peer* peer)
         : QEvent(QEvent::Type(SignalProxy::RemovePeerEvent))
         , peer(peer)
-    {}
+    {
+    }
     Peer* peer;
 };
 
@@ -289,9 +292,9 @@ void SignalProxy::attachSlotObject(const QByteArray& signalName, std::unique_ptr
     _attachedSlots.emplace(QMetaObject::normalizedSignature(signalName.constData()), std::move(slotObject));
 }
 
-void SignalProxy::detachSlotObjects(const QObject *context)
+void SignalProxy::detachSlotObjects(const QObject* context)
 {
-    for (auto&& it = _attachedSlots.begin(); it != _attachedSlots.end(); ) {
+    for (auto&& it = _attachedSlots.begin(); it != _attachedSlots.end();) {
         if (it->second->context() == context) {
             it = _attachedSlots.erase(it);
         }
@@ -400,14 +403,14 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
     QVariant returnValue;
     int returnType = eMeta->returnType(slotId);
     if (returnType != QMetaType::Void)
-        returnValue = QVariant(static_cast<QVariant::Type>(returnType));
+        returnValue = QVariant(QMetaType(returnType));
 
     if (!invokeSlot(receiver, slotId, syncMessage.params, returnValue, peer)) {
         qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", eMeta->methodName(slotId).constData());
         return;
     }
 
-    if (returnValue.type() != QVariant::Invalid && eMeta->receiveMap().contains(slotId)) {
+    if (returnValue.metaType() != QMetaType(QMetaType::UnknownType) && eMeta->receiveMap().contains(slotId)) {
         int receiverId = eMeta->receiveMap()[slotId];
         QVariantList returnParams;
         if (eMeta->argTypes(receiverId).count() > 1)
@@ -504,7 +507,7 @@ bool SignalProxy::invokeSlot(QObject* receiver, int methodId, const QVariantList
             qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
             return false;
         }
-        if (args[i] != QMetaType::type(params[i].typeName())) {
+        if (args[i] != QMetaType(params[i].metaType()).id()) {
             qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << eMeta->methodName(methodId);
             return false;
         }
@@ -512,7 +515,7 @@ bool SignalProxy::invokeSlot(QObject* receiver, int methodId, const QVariantList
         _a[i + 1] = const_cast<void*>(params[i].constData());
     }
 
-    if (returnValue.type() != QVariant::Invalid)
+    if (returnValue.metaType() != QMetaType(QMetaType::UnknownType))
         _a[0] = const_cast<void*>(returnValue.constData());
 
     Qt::ConnectionType type = QThread::currentThread() == receiver->thread() ? Qt::DirectConnection : Qt::QueuedConnection;
@@ -577,14 +580,16 @@ void SignalProxy::customEvent(QEvent* event)
 
 void SignalProxy::sync_call__(const SyncableObject* obj, SignalProxy::ProxyMode modeType, const char* funcname, va_list ap)
 {
-    // qDebug() << obj << modeType << "(" << _proxyMode << ")" << funcname;
     if (modeType != _proxyMode)
         return;
 
     ExtendedMetaObject* eMeta = extendedMetaObject(obj);
+    if (!eMeta) {
+        qWarning() << "No extended meta object for" << obj->metaObject()->className();
+        return;
+    }
 
     QVariantList params;
-
     const QList<int>& argTypes = eMeta->argTypes(eMeta->methodId(QByteArray(funcname)));
 
     for (int i = 0; i < argTypes.size(); i++) {
@@ -594,7 +599,7 @@ void SignalProxy::sync_call__(const SyncableObject* obj, SignalProxy::ProxyMode 
             qWarning() << "        - make sure all your data types are known by the Qt MetaSystem";
             return;
         }
-        params << QVariant(argTypes[i], va_arg(ap, void*));
+        params << QVariant(QMetaType(argTypes[i]), va_arg(ap, void*));
     }
 
     if (_restrictMessageTarget) {
@@ -603,8 +608,9 @@ void SignalProxy::sync_call__(const SyncableObject* obj, SignalProxy::ProxyMode 
                 dispatch(peer, SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
         }
     }
-    else
+    else {
         dispatch(SyncMessage(eMeta->metaObject()->className(), obj->objectName(), QByteArray(funcname), params));
+    }
 }
 
 void SignalProxy::disconnectDevice(QIODevice* dev, const QString& reason)
@@ -714,7 +720,8 @@ void SignalProxy::setTargetPeer(Peer* targetPeer)
 
 SignalProxy::SlotObjectBase::SlotObjectBase(const QObject* context)
     : _context{context}
-{}
+{
+}
 
 const QObject* SignalProxy::SlotObjectBase::context() const
 {
@@ -811,7 +818,7 @@ const QHash<int, int>& SignalProxy::ExtendedMetaObject::receiveMap()
             params = signature.mid(paramsPos);
 
             methodName = methodName.replace("request", "receive");
-            params = params.left(params.count() - 1) + ", " + returnTypeName + ")";
+            params = params.left(params.size() - 1) + ", " + returnTypeName + ")";
 
             signature = QMetaObject::normalizedSignature(methodName + params);
             receiverId = _meta->indexOfSlot(signature);
@@ -864,13 +871,13 @@ QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod& metho
 
 SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaMethod& method)
     : _methodName(SignalProxy::ExtendedMetaObject::methodName(method))
-    , _returnType(QMetaType::type(method.typeName()))
+    , _returnType(QMetaType::fromName(method.typeName()).id())
 {
     // determine argTypes
     QList<QByteArray> paramTypes = method.parameterTypes();
     QList<int> argTypes;
     for (int i = 0; i < paramTypes.count(); i++) {
-        argTypes.append(QMetaType::type(paramTypes[i]));
+        argTypes.append(QMetaType::fromName(paramTypes[i]).id());
     }
     _argTypes = argTypes;
 

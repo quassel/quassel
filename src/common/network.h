@@ -49,8 +49,6 @@
 // defined below!
 struct NetworkInfo;
 
-// TODO: ConnectionInfo to propagate and sync the current state of NetworkConnection, encodings etcpp
-
 class COMMON_EXPORT Network : public SyncableObject
 {
     Q_OBJECT
@@ -67,7 +65,6 @@ class COMMON_EXPORT Network : public SyncableObject
     Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding)
     Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity)
     Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected)
-    // Q_PROPERTY(Network::ConnectionState connectionState READ connectionState WRITE setConnectionState)
     Q_PROPERTY(int connectionState READ connectionState WRITE setConnectionState)
     Q_PROPERTY(bool useRandomServer READ useRandomServer WRITE setUseRandomServer)
     Q_PROPERTY(QStringList perform READ perform WRITE setPerform)
@@ -184,7 +181,6 @@ public:
     bool isStatusMsg(const QString& target) const;
 
     inline bool isConnected() const { return _connected; }
-    // Network::ConnectionState connectionState() const;
     inline int connectionState() const { return _connectionState; }
 
     /**@{*/
@@ -257,7 +253,7 @@ public:
     }
     /**@}*/
 
-    ChannelModeType channelModeType(const QString& mode);
+    ChannelModeType channelModeType(const QString& mode) const;
     inline ChannelModeType channelModeType(const QChar& mode) const { return channelModeType(QString(mode)); }
 
     inline QStringList channelPrefixes() const { return _channelPrefixes; }
@@ -327,11 +323,8 @@ public slots:
     void setMyNick(const QString& mynick);
     void setLatency(int latency);
     void setCodecForServer(const QByteArray& codecName);
-    void setCodecForServer(std::optional<QStringConverter> codec);
     void setCodecForEncoding(const QByteArray& codecName);
-    void setCodecForEncoding(std::optional<QStringConverter> codec);
     void setCodecForDecoding(const QByteArray& codecName);
-    void setCodecForDecoding(std::optional<QStringConverter> codec);
     void setIdentity(IdentityId identity);
     void setConnected(bool connected);
     void setConnectionState(int state);
@@ -441,13 +434,13 @@ private:
     QStringList _enabledCaps;
 
     // encoding stuff
-    std::optional<QStringConverter> _codecForServer;
-    std::optional<QStringConverter> _codecForEncoding;
-    std::optional<QStringConverter> _codecForDecoding;
+    std::optional<QStringConverter::Encoding> _codecForServer;
+    std::optional<QStringConverter::Encoding> _codecForEncoding;
+    std::optional<QStringConverter::Encoding> _codecForDecoding;
 
-    static std::optional<QStringConverter> _defaultCodecForServer;
-    static std::optional<QStringConverter> _defaultCodecForEncoding;
-    static std::optional<QStringConverter> _defaultCodecForDecoding;
+    static std::optional<QStringConverter::Encoding> _defaultCodecForServer;
+    static std::optional<QStringConverter::Encoding> _defaultCodecForEncoding;
+    static std::optional<QStringConverter::Encoding> _defaultCodecForDecoding;
 
     mutable QMutex _capsMutex;
 };

@@ -36,7 +36,8 @@ public:
     QueuedQuasselEvent(Event* event)
         : QEvent(QEvent::User)
         , event(event)
-    {}
+    {
+    }
     Event* event;
 };
 
@@ -45,7 +46,8 @@ public:
 // ============================================================
 EventManager::EventManager(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 QMetaEnum EventManager::eventEnum()
 {
@@ -87,20 +89,6 @@ Event* EventManager::createEvent(const QVariantMap& map)
     Network* net = networkById(m.take("network").toInt());
     return Event::fromVariantMap(m, net);
 }
-
-/* NOTE:
-   Registering and calling handlers works fine even if they specify a subclass of Event as their parameter.
-   However, this most probably is a result from a reinterpret_cast somewhere deep inside Qt, so there is *no*
-   type safety. If the event sent is of the wrong class type, you'll get a neat segfault!
-   Thus, we need to make sure that events are of the correct class type when sending!
-
-   We might add a registration-time check later, which will require matching the enum base name (e.g. "IrcEvent") with
-   the type the handler claims to support. This still won't protect us from someone sending an IrcEvent object
-   with an enum type "NetworkIncoming", for example.
-
-   Another way would be to add a check into the various Event subclasses, such that the ctor matches the given event type
-   with the actual class. Possibly (optionally) using rtti...
-*/
 
 int EventManager::findEventType(const QString& methodSignature_, const QString& methodPrefix) const
 {
@@ -179,7 +167,7 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject* object
         return;
     }
     Handler handler(object, methodIndex, priority);
-    foreach (EventType event, events) {
+    for (EventType event : events) {
         if (isFilter) {
             registeredFilters()[event].append(handler);
             qDebug() << "Registered event filter for" << event << "in" << object;
@@ -266,27 +254,43 @@ void EventManager::dispatchEvent(Event* event)
     }
 
     // now dispatch the event
-    QList<Handler>::const_iterator it;
-    for (it = handlers.begin(); it != handlers.end() && !event->isStopped(); ++it) {
-        QObject* obj = it->object;
+    for (const Handler& handler : handlers) {
+        if (event->isStopped())
+            break;
 
-        if (ignored.contains(obj))  // object has filtered the event
+        QObject* obj = handler.object;
+        if (!obj || ignored.contains(obj))  // object has filtered the event or was deleted
             continue;
 
+        const QMetaMethod method = obj->metaObject()->method(handler.methodIndex);
+        if (!method.isValid()) {
+            qWarning() << Q_FUNC_INFO << "Invalid method for handler in" << obj;
+            continue;
+        }
+
         if (filters.contains(obj)) {  // we have a filter, so let's check if we want to deliver the event
-            Handler filter = filters.value(obj);
+            const Handler& filter = filters.value(obj);
+            const QMetaMethod filterMethod = obj->metaObject()->method(filter.methodIndex);
+            if (!filterMethod.isValid()) {
+                qWarning() << Q_FUNC_INFO << "Invalid filter method in" << obj;
+                continue;
+            }
+
             bool result = false;
-            void* param[] = {Q_RETURN_ARG(bool, result).data(), Q_ARG(Event*, event).data()};
-            obj->qt_metacall(QMetaObject::InvokeMetaMethod, filter.methodIndex, param);
+            if (!filterMethod.invoke(obj, Qt::DirectConnection, Q_RETURN_ARG(bool, result), Q_ARG(Event*, event))) {
+                qWarning() << Q_FUNC_INFO << "Failed to invoke filter" << filterMethod.methodSignature() << "in" << obj;
+                continue;
+            }
             if (!result) {
                 ignored.insert(obj);
-                continue;  // mmmh, event filter told us to not accept
+                continue;  // event filter told us not to accept
             }
         }
 
-        // finally, deliverance!
-        void* param[] = {nullptr, Q_ARG(Event*, event).data()};
-        obj->qt_metacall(QMetaObject::InvokeMetaMethod, it->methodIndex, param);
+        // finally, invoke the handler
+        if (!method.invoke(obj, Qt::DirectConnection, Q_ARG(Event*, event))) {
+            qWarning() << Q_FUNC_INFO << "Failed to invoke handler" << method.methodSignature() << "in" << obj;
+        }
     }
 
     // that's it
@@ -295,26 +299,24 @@ void EventManager::dispatchEvent(Event* event)
 
 void EventManager::insertHandlers(const QList<Handler>& newHandlers, QList<Handler>& existing, bool checkDupes)
 {
-    foreach (const Handler& handler, newHandlers) {
-        if (existing.isEmpty())
+    for (const Handler& handler : newHandlers) {
+        if (existing.isEmpty()) {
             existing.append(handler);
+        }
         else {
             // need to insert it at the proper position, but only if we don't yet have a handler for this event and object!
             bool insert = true;
             QList<Handler>::iterator insertpos = existing.end();
-            QList<Handler>::iterator it = existing.begin();
-            while (it != existing.end()) {
+            for (auto it = existing.begin(); it != existing.end(); ++it) {
                 if (checkDupes && handler.object == it->object) {
                     insert = false;
                     break;
                 }
                 if (insertpos == existing.end() && handler.priority > it->priority)
                     insertpos = it;
-
-                ++it;
             }
             if (insert)
-                existing.insert(it, handler);
+                existing.insert(insertpos, handler);
         }
     }
 }
@@ -323,7 +325,7 @@ void EventManager::insertHandlers(const QList<Handler>& newHandlers, QList<Handl
 // fun things could happen if you used the registerEventFilter() methods in the wrong order though
 void EventManager::insertFilters(const QList<Handler>& newFilters, QHash<QObject*, Handler>& existing)
 {
-    foreach (const Handler& filter, newFilters) {
+    for (const Handler& filter : newFilters) {
         if (!existing.contains(filter.object))
             existing[filter.object] = filter;
     }

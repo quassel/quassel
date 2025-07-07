@@ -21,6 +21,7 @@
 #include "ircuser.h"
 
 #include <QDebug>
+#include <QTimeZone>
 
 #include "ircchannel.h"
 #include "network.h"
@@ -28,7 +29,7 @@
 #include "util.h"
 
 IrcUser::IrcUser(const QString& hostmask, Network* network)
-    : SyncableObject(network)
+    : SyncableObject(static_cast<QObject*>(network))
     , _initialized(false)
     , _nick(nickFromMask(hostmask))
     , _user(userFromMask(hostmask))
@@ -44,7 +45,7 @@ IrcUser::IrcUser(const QString& hostmask, Network* network)
     , _network(network)
 {
     updateObjectName();
-    _lastAwayMessageTime.setTimeSpec(Qt::UTC);
+    _lastAwayMessageTime.setTimeZone(QTimeZone("UTC"));
     _lastAwayMessageTime.setMSecsSinceEpoch(0);
 }
 
@@ -78,28 +79,18 @@ QStringList IrcUser::channels() const
 
 void IrcUser::setCodecForEncoding(const QString& name)
 {
-    setCodecForEncoding(QStringConverter::encodingForName(name.toLatin1()));
-}
-
-void IrcUser::setCodecForEncoding(std::optional<QStringConverter> codec)
-{
-    _codecForEncoding = codec;
+    _codecForEncoding = QStringConverter::encodingForName(name.toLatin1());
 }
 
 void IrcUser::setCodecForDecoding(const QString& name)
 {
-    setCodecForDecoding(QStringConverter::encodingForName(name.toLatin1()));
-}
-
-void IrcUser::setCodecForDecoding(std::optional<QStringConverter> codec)
-{
-    _codecForDecoding = codec;
+    _codecForDecoding = QStringConverter::encodingForName(name.toLatin1());
 }
 
 QString IrcUser::decodeString(const QByteArray& text) const
 {
     if (_codecForDecoding) {
-        QStringDecoder decoder(*_codecForDecoding);
+        QStringDecoder decoder(*_codecForDecoding, QStringConverter::Flag::Default);
         return decoder.decode(text);
     }
     return network()->decodeString(text);
@@ -108,7 +99,7 @@ QString IrcUser::decodeString(const QByteArray& text) const
 QByteArray IrcUser::encodeString(const QString& string) const
 {
     if (_codecForEncoding) {
-        QStringEncoder encoder(*_codecForEncoding);
+        QStringEncoder encoder(*_codecForEncoding, QStringConverter::Flag::Default);
         return encoder.encode(string);
     }
     return network()->encodeString(string);
@@ -193,18 +184,15 @@ void IrcUser::setIrcOperator(const QString& ircOperator)
     }
 }
 
-// This function is only ever called by SYNC calls from legacy cores (pre-0.13).
-// Therefore, no SYNC call is needed here.
 void IrcUser::setLastAwayMessage(int lastAwayMessage)
 {
 #if QT_VERSION >= 0x050800
     QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage);
 #else
     // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
     QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000);
 #endif
-    lastAwayMessageTime.setTimeSpec(Qt::UTC);
+    lastAwayMessageTime.setTimeZone(QTimeZone("UTC"));
     setLastAwayMessageTime(lastAwayMessageTime);
 }
 
@@ -364,7 +352,7 @@ void IrcUser::addUserModes(const QString& modes)
 
     // Don't needlessly sync when no changes are made
     bool changesMade = false;
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         if (!_userModes.contains(modes[i])) {
             _userModes += modes[i];
             changesMade = true;
@@ -382,7 +370,7 @@ void IrcUser::removeUserModes(const QString& modes)
     if (modes.isEmpty())
         return;
 
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         _userModes.remove(modes[i]);
     }
     SYNC(ARG(modes))

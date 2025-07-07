@@ -27,6 +27,7 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QDebug>
+#include <QRegularExpression>
 #include <QStringConverter>
 #include <QTimeZone>
 #include <QVector>
@@ -64,12 +65,12 @@ bool isChannelName(const QString& str)
     if (str.isEmpty())
         return false;
     static constexpr std::array<quint8, 4> prefixes{{'#', '&', '!', '+'}};
-    return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return c == str[0]; });
+    return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return QChar(c) == str[0]; });
 }
 
 QString stripFormatCodes(QString message)
 {
-    static QRegularExpression regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
+    static QRegularExpression regEx("\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]");
     return message.remove(regEx);
 }
 
@@ -77,8 +78,7 @@ QString stripAcceleratorMarkers(const QString& label_)
 {
     QString label = label_;
     int p = 0;
-    forever
-    {
+    while (true) {
         p = label.indexOf('&', p);
         if (p < 0 || p + 1 >= label.length())
             break;
@@ -91,10 +91,10 @@ QString stripAcceleratorMarkers(const QString& label_)
     return label;
 }
 
-QString decodeString(const QByteArray& input, const std::optional<QStringConverter>& codec)
+QString decodeString(const QByteArray& input, QStringConverter::Encoding encoding)
 {
-    if (codec && utf8DetectionBlacklist.contains(codec->encoding())) {
-        QStringDecoder decoder(*codec);
+    if (encoding == QStringConverter::Utf16 || encoding == QStringConverter::Utf32) {
+        QStringDecoder decoder(encoding);
         return decoder.decode(input);
     }
 
@@ -134,11 +134,8 @@ QString decodeString(const QByteArray& input, const std::optional<QStringConvert
         QStringDecoder decoder(QStringConverter::Utf8);
         return decoder.decode(input);
     }
-    if (codec) {
-        QStringDecoder decoder(*codec);
-        return decoder.decode(input);
-    }
-    return QString::fromLatin1(input);
+    QStringDecoder decoder(encoding);
+    return decoder.decode(input);
 }
 
 uint editingDistance(const QString& s1, const QString& s2)
@@ -150,7 +147,7 @@ uint editingDistance(const QString& s1, const QString& s2)
     for (uint i = 0; i < n; i++)
         matrix[i][0] = i;
 
-    for (uint i = 0; i < m; i++)
+    for (uint i = 0; m > 0 && i < m; i++)
         matrix[0][i] = i;
 
     uint min;
@@ -178,13 +175,11 @@ uint editingDistance(const QString& s1, const QString& s2)
 
 QString secondsToString(int timeInSeconds)
 {
-    static QVector<std::pair<int, QString>> timeUnit{std::make_pair(365 * 24 * 60 * 60,
-                                                                    QCoreApplication::translate("Quassel::secondsToString()", "year")),
-                                                     std::make_pair(24 * 60 * 60,
-                                                                    QCoreApplication::translate("Quassel::secondsToString()", "day")),
-                                                     std::make_pair(60 * 60, QCoreApplication::translate("Quassel::secondsToString()", "h")),
-                                                     std::make_pair(60, QCoreApplication::translate("Quassel::secondsToString()", "min")),
-                                                     std::make_pair(1, QCoreApplication::translate("Quassel::secondsToString()", "sec"))};
+    static QVector<std::pair<int, QString>> timeUnit{{365 * 24 * 60 * 60, QCoreApplication::translate("Quassel::secondsToString()", "year")},
+                                                     {24 * 60 * 60, QCoreApplication::translate("Quassel::secondsToString()", "day")},
+                                                     {60 * 60, QCoreApplication::translate("Quassel::secondsToString()", "h")},
+                                                     {60, QCoreApplication::translate("Quassel::secondsToString()", "min")},
+                                                     {1, QCoreApplication::translate("Quassel::secondsToString()", "sec")}};
 
     if (timeInSeconds != 0) {
         QStringList returnString;
@@ -198,16 +193,16 @@ QString secondsToString(int timeInSeconds)
         return returnString.join(", ");
     }
 
-    return QString("%1 %2").arg(QString::number(timeInSeconds), timeUnit.last().second);
+    return QString("%1 %2").arg(QString::number(timeInSeconds), timeUnit.back().second);
 }
 
 QByteArray prettyDigest(const QByteArray& digest)
 {
     QByteArray hexDigest = digest.toHex().toUpper();
     QByteArray prettyDigest;
-    prettyDigest.fill(':', hexDigest.count() + (hexDigest.count() / 2) - 1);
+    prettyDigest.fill(':', hexDigest.size() + (hexDigest.size() / 2) - 1);
 
-    for (int i = 0; i * 2 < hexDigest.count(); i++) {
+    for (int i = 0; i * 2 < hexDigest.size(); i++) {
         prettyDigest.replace(i * 3, 2, hexDigest.mid(i * 2, 2));
     }
     return prettyDigest;
@@ -216,7 +211,7 @@ QByteArray prettyDigest(const QByteArray& digest)
 QString formatCurrentDateTimeInString(const QString& formatStr)
 {
     // Work on a copy of the string to avoid modifying the input string
-    QString formattedStr = QString(formatStr);
+    QString formattedStr = formatStr;
 
     // Exit early if there's nothing to format
     if (formattedStr.isEmpty())
@@ -224,65 +219,40 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
 
     // Find %%<text>%% in string. Replace inside text formatted to QDateTime with the current
     // timestamp, using %%%% as an escape for multiple %% signs.
-    // For example:
-    // Simple:   "All Quassel clients vanished from the face of the earth... %%hh:mm:ss%%"
-    // > Result:  "All Quassel clients vanished from the face of the earth... 23:20:34"
-    // Complex:  "Away since %%hh:mm%% on %%dd.MM%% - %%%% not here %%%%"
-    // > Result:  "Away since 23:20 on 21.05 - %% not here %%"
-    //
-    // Match groups of double % signs - Some text %%inside here%%, and even %%%%:
-    //   %%(.*)%%
-    //   (...)    marks a capturing group
-    //   .*       matches zero or more characters, not including newlines
-    // Note that '\' must be escaped as '\\'
-    // Helpful interactive website for debugging and explaining:  https://regex101.com/
-    QRegularExpression regExpMatchTime("%%(.*)%%");
+    static QRegularExpression regExpMatchTime("%%(.*?)%%", QRegularExpression::UseUnicodePropertiesOption);
 
-    // Preserve the smallest groups possible to allow for multiple %%blocks%%
-    regExpMatchTime.setMinimal(true);
-
-    // NOTE: Move regExpMatchTime to a static regular expression if used anywhere that performance
-    // matters.
-
-    // Don't allow a runaway regular expression to loop for too long.  This might not happen.. but
-    // when dealing with user input, better to be safe..?
+    // Don't allow a runaway regular expression to loop for too long.
     int numIterations = 0;
 
     // Find each group of %%text here%% starting from the beginning
-    int index = regExpMatchTime.indexIn(formattedStr);
-    int matchLength;
-    QString matchedFormat;
-    while (index >= 0 && numIterations < 512) {
+    QRegularExpressionMatchIterator it = regExpMatchTime.globalMatch(formattedStr);
+    while (it.hasNext() && numIterations < 512) {
+        QRegularExpressionMatch match = it.next();
+        int index = match.capturedStart();
         // Get the total length of the matched expression
-        matchLength = regExpMatchTime.cap(0).length();
+        int matchLength = match.captured(0).length();
         // Get the format string, e.g. "this text here" from "%%this text here%%"
-        matchedFormat = regExpMatchTime.cap(1);
-        // Check that there's actual characters inside.  A quadruple % (%%%%) represents two %%
-        // signs.
+        QString matchedFormat = match.captured(1);
+        // Check that there's actual characters inside
         if (matchedFormat.length() > 0) {
-            // Format the string according to the current date and time.  Invalid time format
+            // Format the string according to the current date and time. Invalid time format
             // strings are ignored.
             formattedStr.replace(index, matchLength, QDateTime::currentDateTime().toString(matchedFormat));
             // Subtract the length of the removed % signs
-            // E.g. "%%h:mm ap%%" turns into "h:mm ap", removing four % signs, thus -4.  This is
-            // used below to determine how far to advance when looking for the next formatting code.
             matchLength -= 4;
         }
         else if (matchLength == 4) {
             // Remove two of the four percent signs, so '%%%%' escapes to '%%'
             formattedStr.remove(index, 2);
-            // Subtract the length of the removed % signs, this time removing two % signs, thus -2.
+            // Subtract the length of the removed % signs
             matchLength -= 2;
         }
         else {
-            // If neither of these match, something went wrong.  Don't modify it to be safe.
+            // If neither of these match, something went wrong. Don't modify it to be safe.
             qDebug() << "Unexpected time format when parsing string, no matchedFormat, matchLength "
                         "should be 4, actually is"
                      << matchLength;
         }
-
-        // Find the next group of %%text here%% starting from where the last group ended
-        index = regExpMatchTime.indexIn(formattedStr, index + matchLength);
         numIterations++;
     }
 
@@ -291,12 +261,11 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
 
 QString tryFormatUnixEpoch(const QString& possibleEpochDate, Qt::DateFormat dateFormat, bool useUTC)
 {
-    // Does the string resemble a Unix epoch?  Parse as 64-bit time
+    // Does the string resemble a Unix epoch? Parse as 64-bit time
     qint64 secsSinceEpoch = possibleEpochDate.toLongLong();
     if (secsSinceEpoch == 0) {
-        // Parsing either failed, or '0' was sent.  No need to distinguish; either way, it's not
+        // Parsing either failed, or '0' was sent. No need to distinguish; either way, it's not
         // useful as epoch.
-        // See https://doc.qt.io/qt-5/qstring.html#toLongLong
         return possibleEpochDate;
     }
 
@@ -305,8 +274,7 @@ QString tryFormatUnixEpoch(const QString& possibleEpochDate, Qt::DateFormat date
 #if QT_VERSION >= 0x050800
     date.setSecsSinceEpoch(secsSinceEpoch);
 #else
-    // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
+    // toSecsSinceEpoch() was added in Qt 5.8. Manually downconvert to seconds for now.
     date.setMSecsSinceEpoch(secsSinceEpoch * 1000);
 #endif
 
@@ -314,16 +282,7 @@ QString tryFormatUnixEpoch(const QString& possibleEpochDate, Qt::DateFormat date
     if (useUTC) {
         // Return UTC time
         if (dateFormat == Qt::DateFormat::ISODate) {
-            // Replace the "T" date/time separator with " " for readability.  This isn't quite the
-            // ISO 8601 spec (it specifies omitting the "T" entirely), but RFC 3339 allows this.
-            // Go with RFC 3339 for human readability that's still machine-parseable, too.
-            //
-            // Before: 2018-06-21T21:35:52Z
-            // After:  2018-06-21 21:35:52Z
-            //         ..........^ (10th character)
-            //
-            // See https://en.wikipedia.org/wiki/ISO_8601#cite_note-32
-            // And https://www.ietf.org/rfc/rfc3339.txt
+            // Replace the "T" date/time separator with " " for readability.
             return date.toUTC().toString(dateFormat).replace(10, 1, " ");
         }
         else {
@@ -331,8 +290,7 @@ QString tryFormatUnixEpoch(const QString& possibleEpochDate, Qt::DateFormat date
         }
     }
     else if (dateFormat == Qt::DateFormat::ISODate) {
-        // Add in ISO local timezone information via special handling below
-        // formatDateTimeToOffsetISO() handles converting "T" to " "
+        // Add in ISO local timezone information
         return formatDateTimeToOffsetISO(date);
     }
     else {
@@ -348,18 +306,6 @@ QString formatDateTimeToOffsetISO(const QDateTime& dateTime)
         return "formatDateTimeToISO() invalid date/time";
     }
 
-    // Replace the "T" date/time separator with " " for readability.  This isn't quite the ISO 8601
-    // spec (it specifies omitting the "T" entirely), but RFC 3339 allows this.  Go with RFC 3339
-    // for human readability that's still machine-parseable, too.
-    //
-    // Before: 2018-08-22T18:43:10-05:00
-    // After:  2018-08-22 18:43:10-05:00
-    //         ..........^ (10th character)
-    //
-    // See https://en.wikipedia.org/wiki/ISO_8601#cite_note-32
-    // And https://www.ietf.org/rfc/rfc3339.txt
-
-    // The expected way to get a UTC offset on ISO 8601 dates
-    // Remove the "T" date/time separator
+    // Replace the "T" date/time separator with " " for readability.
     return dateTime.toOffsetFromUtc(dateTime.offsetFromUtc()).toString(Qt::ISODate).replace(10, 1, " ");
 }
