@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include <QDataStream>
+#include <QMetaType>
+
 #include "messagemodel.h"
 #include "uistyle.h"
 
@@ -41,7 +44,6 @@ public:
 
     virtual inline void invalidateWrapList() { _wrapList.clear(); }
 
-    /// Used to store information about words to be used for wrapping
     struct Word
     {
         quint16 start;
@@ -67,3 +69,18 @@ private:
     static unsigned char* TextBoundaryFinderBuffer;
     static int TextBoundaryFinderBufferSize;
 };
+
+// Streaming operators for Word
+inline QDataStream& operator<<(QDataStream& out, const ChatLineModelItem::Word& word)
+{
+    out << word.start << word.width << word.trailing;
+    return out;
+}
+
+inline QDataStream& operator>>(QDataStream& in, ChatLineModelItem::Word& word)
+{
+    in >> word.start >> word.width >> word.trailing;
+    return in;
+}
+
+Q_DECLARE_METATYPE(ChatLineModelItem::Word)
