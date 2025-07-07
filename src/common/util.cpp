@@ -26,15 +26,15 @@
 
 #include <QCoreApplication>
 #include <QDateTime>
-#include <QTimeZone>
 #include <QDebug>
-#include <QTextCodec>
+#include <QStringConverter>
+#include <QTimeZone>
 #include <QVector>
 
 #include "quassel.h"
 
-// MIBenum values from http://www.iana.org/assignments/character-sets/character-sets.xml#table-character-sets-1
-static QList<int> utf8DetectionBlacklist = QList<int>() << 39 /* ISO-2022-JP */;
+// Encoding values from http://www.iana.org/assignments/character-sets/character-sets.xml#table-character-sets-1
+static QList<QStringConverter::Encoding> utf8DetectionBlacklist = {QStringConverter::Utf16, QStringConverter::Utf32};
 
 QString nickFromMask(const QString& mask)
 {
@@ -91,15 +91,16 @@ QString stripAcceleratorMarkers(const QString& label_)
     return label;
 }
 
-QString decodeString(const QByteArray& input, QTextCodec* codec)
+QString decodeString(const QByteArray& input, const std::optional<QStringConverter>& codec)
 {
-    if (codec && utf8DetectionBlacklist.contains(codec->mibEnum()))
-        return codec->toUnicode(input);
+    if (codec && utf8DetectionBlacklist.contains(codec->encoding())) {
+        QStringDecoder decoder(*codec);
+        return decoder.decode(input);
+    }
 
     // First, we check if it's utf8. It is very improbable to encounter a string that looks like
     // valid utf8, but in fact is not. This means that if the input string passes as valid utf8, it
     // is safe to assume that it is.
-    // Q_ASSERT(sizeof(const char) == sizeof(quint8));  // In God we trust...
     bool isUtf8 = true;
     int cnt = 0;
     for (uchar c : input) {
@@ -130,14 +131,14 @@ QString decodeString(const QByteArray& input, QTextCodec* codec)
         break;  // 8 bit char, but not utf8!
     }
     if (isUtf8 && cnt == 0) {
-        QString s = QString::fromUtf8(input);
-        // qDebug() << "Detected utf8:" << s;
-        return s;
+        QStringDecoder decoder(QStringConverter::Utf8);
+        return decoder.decode(input);
     }
-    // QTextCodec *codec = QTextCodec::codecForName(encoding.toLatin1());
-    if (!codec)
-        return QString::fromLatin1(input);
-    return codec->toUnicode(input);
+    if (codec) {
+        QStringDecoder decoder(*codec);
+        return decoder.decode(input);
+    }
+    return QString::fromLatin1(input);
 }
 
 uint editingDistance(const QString& s1, const QString& s2)

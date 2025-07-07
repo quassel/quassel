@@ -22,9 +22,12 @@
 
 #include "common-export.h"
 
+#include <optional>
+
 #include <QDateTime>
 #include <QSet>
 #include <QString>
+#include <QStringConverter>
 #include <QStringList>
 #include <QVariantMap>
 
@@ -90,12 +93,12 @@ public:
     QStringList channels() const;
 
     // user-specific encodings
-    inline QTextCodec* codecForEncoding() const { return _codecForEncoding; }
-    inline QTextCodec* codecForDecoding() const { return _codecForDecoding; }
+    inline std::optional<QStringConverter> codecForEncoding() const { return _codecForEncoding; }
+    inline std::optional<QStringConverter> codecForDecoding() const { return _codecForDecoding; }
     void setCodecForEncoding(const QString& codecName);
-    void setCodecForEncoding(QTextCodec* codec);
+    void setCodecForEncoding(std::optional<QStringConverter> codec);
     void setCodecForDecoding(const QString& codecName);
-    void setCodecForDecoding(QTextCodec* codec);
+    void setCodecForDecoding(std::optional<QStringConverter> codec);
 
     QString decodeString(const QByteArray& text) const;
     QByteArray encodeString(const QString& string) const;
@@ -238,14 +241,13 @@ private:
     QString _suserHost;
     bool _encrypted;
 
-    // QSet<QString> _channels;
     QSet<IrcChannel*> _channels;
     QString _userModes;
 
     Network* _network;
 
-    QTextCodec* _codecForEncoding;
-    QTextCodec* _codecForDecoding;
+    std::optional<QStringConverter> _codecForEncoding;
+    std::optional<QStringConverter> _codecForDecoding;
 
     QHash<BufferId, QDateTime> _lastActivity;
     QHash<BufferId, QDateTime> _lastSpokenTo;

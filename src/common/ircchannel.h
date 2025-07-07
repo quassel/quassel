@@ -22,9 +22,12 @@
 
 #include "common-export.h"
 
+#include <optional>
+
 #include <QHash>
 #include <QSet>
 #include <QString>
+#include <QStringConverter>
 #include <QStringList>
 #include <QVariantMap>
 
@@ -65,12 +68,12 @@ public:
     QStringList modeValueList(const QChar& mode) const;
     QString channelModeString() const;
 
-    inline QTextCodec* codecForEncoding() const { return _codecForEncoding; }
-    inline QTextCodec* codecForDecoding() const { return _codecForDecoding; }
+    inline std::optional<QStringConverter> codecForEncoding() const { return _codecForEncoding; }
+    inline std::optional<QStringConverter> codecForDecoding() const { return _codecForDecoding; }
     void setCodecForEncoding(const QString& codecName);
-    void setCodecForEncoding(QTextCodec* codec);
+    void setCodecForEncoding(std::optional<QStringConverter> codec);
     void setCodecForDecoding(const QString& codecName);
-    void setCodecForDecoding(QTextCodec* codec);
+    void setCodecForDecoding(std::optional<QStringConverter> codec);
 
     QString decodeString(const QByteArray& text) const;
     QByteArray encodeString(const QString& string) const;
@@ -99,11 +102,11 @@ public slots:
     void addChannelMode(const QChar& mode, const QString& value);
     void removeChannelMode(const QChar& mode, const QString& value);
 
-    // init geters
+    // init getters
     QVariantMap initUserModes() const;
     QVariantMap initChanModes() const;
 
-    // init seters
+    // init setters
     void initSetUserModes(const QVariantMap& usermodes);
     void initSetChanModes(const QVariantMap& chanModes);
 
@@ -142,8 +145,8 @@ private:
 
     Network* _network;
 
-    QTextCodec* _codecForEncoding;
-    QTextCodec* _codecForDecoding;
+    std::optional<QStringConverter> _codecForEncoding;
+    std::optional<QStringConverter> _codecForDecoding;
 
     QHash<QChar, QStringList> _A_channelModes;
     QHash<QChar, QString> _B_channelModes;
