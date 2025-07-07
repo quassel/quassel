@@ -208,7 +208,7 @@ bool QtUiApplication::applySettingsMigration(QtUiSettings settings, const uint n
 
                 // Convert the main rule to regular expression, mirroring the conversion to wildcard
                 // format from QtUiMessageProcessor::checkForHighlight()
-                highlightRule["Name"] = "(^|\\W)" + QRegExp::escape(highlightRule["Name"].toString()) + "(\\W|$)";
+                highlightRule["Name"] = "(^|\\W)" + QRegularExpression::escape(highlightRule["Name"].toString()) + "(\\W|$)";
 
                 // Save the rule back
                 highlightList[index] = highlightRule;

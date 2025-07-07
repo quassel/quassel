@@ -24,7 +24,7 @@
 
 #include <utility>
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QString>
 #include <QStringList>
 
@@ -131,9 +131,9 @@ public:
         {
             // Handle CTCP ignores
             if (type == CtcpIgnore) {
-                // This is not performance-intensive; sticking with QRegExp for Qt 4 is fine
+                // This is not performance-intensive; sticking with QRegularExpression for Qt 4 is fine
                 // Split based on whitespace characters
-                QStringList split(contents().split(QRegExp("\\s+"), Qt::SkipEmptyParts));
+                QStringList split(contents().split(QRegularExpression("\\s+"), Qt::SkipEmptyParts));
                 // Match on the first item, handling empty rules/matches
                 if (!split.isEmpty()) {
                     // Take the first item as the sender

@@ -432,7 +432,7 @@ void EventStringifier::processIrcEventWallops(IrcEvent* e)
 /* RPL_ISUPPORT */
 void EventStringifier::processIrcEvent005(IrcEvent* e)
 {
-    if (!e->params().last().contains(QRegExp("are supported (by|on) this server")))
+    if (!e->params().last().contains(QRegularExpression("are supported (by|on) this server")))
         displayMsg(e, Message::Error, tr("Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected behavior!"), e->prefix());
     displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
 }

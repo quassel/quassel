@@ -131,7 +131,7 @@ QString Identity::defaultNick()
 #endif
 
     // cleaning forbidden characters from nick
-    QRegExp rx(QString("(^[\\d-]+|[^A-Za-z0-9\x5b-\x60\x7b-\x7d])"));  // NOLINT(modernize-raw-string-literal)
+    QRegularExpression rx(QString("(^[\\d-]+|[^A-Za-z0-9\x5b-\x60\x7b-\x7d])"));  // NOLINT(modernize-raw-string-literal)
     nick.remove(rx);
     return nick;
 }

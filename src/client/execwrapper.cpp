@@ -125,7 +125,7 @@ void ExecWrapper::processError(QProcess::ProcessError err)
 void ExecWrapper::processReadStdout()
 {
     QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput());
-    str.replace(QRegExp("\r\n?"), "\n");
+    str.replace(QRegularExpression("\r\n?"), "\n");
     _stdoutBuffer.append(str);
     int idx;
     while ((idx = _stdoutBuffer.indexOf('\n')) >= 0) {
@@ -137,7 +137,7 @@ void ExecWrapper::processReadStdout()
 void ExecWrapper::processReadStderr()
 {
     QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError());
-    str.replace(QRegExp("\r\n?"), "\n");
+    str.replace(QRegularExpression("\r\n?"), "\n");
     _stderrBuffer.append(str);
     int idx;
     while ((idx = _stderrBuffer.indexOf('\n')) >= 0) {

@@ -606,7 +606,7 @@ bool MultiLineEdit::mircCodesChanged(QTextCursor& cursor, QTextCursor& peekcurso
 QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
 {
     QStringList words;
-    QRegExp mircCode = QRegExp("(\x02|\x1d|\x1f|\x03|\x1E)", Qt::CaseSensitive);
+    QRegularExpression mircCode = QRegularExpression("(\x02|\x1d|\x1f|\x03|\x1E)", Qt::CaseSensitive);
 
     int posLeft = 0;
     int posRight = 0;

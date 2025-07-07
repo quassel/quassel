@@ -138,8 +138,8 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
         return;
     }
 
-    QRegExp paramRangeR(R"(\$(\d+)\.\.(\d*))");
-    QStringList commands = alias.split(QRegExp("; ?"));
+    QRegularExpression paramRangeR(R"(\$(\d+)\.\.(\d*))");
+    QStringList commands = alias.split(QRegularExpression("; ?"));
     QStringList params = msg.split(' ');
     QStringList expandedCommands;
     for (int i = 0; i < commands.count(); i++) {

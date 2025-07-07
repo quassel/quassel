@@ -142,7 +142,7 @@ void UiStyle::loadStyleSheet()
         if (customSheet.isEmpty()) {
             // MIGRATION: changed default install path for data from /usr/share/apps to /usr/share
             if (customSheetPath.startsWith("/usr/share/apps/quassel")) {
-                customSheetPath.replace(QRegExp("^/usr/share/apps"), "/usr/share");
+                customSheetPath.replace(QRegularExpression("^/usr/share/apps"), "/usr/share");
                 customSheet = loadStyleSheet("file:///" + customSheetPath, true);
                 if (!customSheet.isEmpty()) {
                     s.setValue("CustomStyleSheetPath", customSheetPath);
@@ -213,9 +213,9 @@ void UiStyle::updateSystemTimestampFormat()
     //   (X|Y)  Match either X or Y, exactly
     //
     // Note that '\' must be escaped as '\\'
-    // QRegExp does not support (?> ...), so it's replaced with standard matching, (...)
+    // QRegularExpression does not support (?> ...), so it's replaced with standard matching, (...)
     // Helpful interactive website for debugging and explaining:  https://regex101.com/
-    const QRegExp regExpMatchAMPM(".*(\\b|_)(A|AP)(\\b|_).*", Qt::CaseInsensitive);
+    const QRegularExpression regExpMatchAMPM(".*(\\b|_)(A|AP)(\\b|_).*", Qt::CaseInsensitive);
 
     if (regExpMatchAMPM.exactMatch(QLocale().timeFormat(QLocale::ShortFormat))) {
         // AM/PM style used
@@ -808,7 +808,7 @@ QString UiStyle::mircToInternal(const QString& mirc_)
     // Hex colors, as specified in https://modern.ircdocs.horse/formatting.html#hex-color
     // %Dhf#rrggbb is foreground, %Dhb#rrggbb is background
     {
-        static const QRegExp rx{"[\\da-fA-F]{6}"};
+        static const QRegularExpression rx{"[\\da-fA-F]{6}"};
         int pos = 0;
         while (true) {
             if (pos >= mirc.length())
