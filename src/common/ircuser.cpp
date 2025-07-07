@@ -21,7 +21,6 @@
 #include "ircuser.h"
 
 #include <QDebug>
-#include <QTextCodec>
 
 #include "ircchannel.h"
 #include "network.h"
@@ -38,15 +37,11 @@ IrcUser::IrcUser(const QString& hostmask, Network* network)
     , _awayMessage()
     , _away(false)
     , _server()
-    ,
-    // _idleTime(QDateTime::currentDateTime()),
-    _ircOperator()
+    , _ircOperator()
     , _lastAwayMessageTime()
     , _whoisServiceReply()
     , _encrypted(false)
     , _network(network)
-    , _codecForEncoding(nullptr)
-    , _codecForDecoding(nullptr)
 {
     updateObjectName();
     _lastAwayMessageTime.setTimeSpec(Qt::UTC);
@@ -75,8 +70,7 @@ QDateTime IrcUser::idleTime()
 QStringList IrcUser::channels() const
 {
     QStringList chanList;
-    IrcChannel* channel;
-    foreach (channel, _channels) {
+    for (IrcChannel* channel : _channels) {
         chanList << channel->name();
     }
     return chanList;
@@ -84,35 +78,38 @@ QStringList IrcUser::channels() const
 
 void IrcUser::setCodecForEncoding(const QString& name)
 {
-    setCodecForEncoding(QTextCodec::codecForName(name.toLatin1()));
+    setCodecForEncoding(QStringConverter::encodingForName(name.toLatin1()));
 }
 
-void IrcUser::setCodecForEncoding(QTextCodec* codec)
+void IrcUser::setCodecForEncoding(std::optional<QStringConverter> codec)
 {
     _codecForEncoding = codec;
 }
 
 void IrcUser::setCodecForDecoding(const QString& name)
 {
-    setCodecForDecoding(QTextCodec::codecForName(name.toLatin1()));
+    setCodecForDecoding(QStringConverter::encodingForName(name.toLatin1()));
 }
 
-void IrcUser::setCodecForDecoding(QTextCodec* codec)
+void IrcUser::setCodecForDecoding(std::optional<QStringConverter> codec)
 {
     _codecForDecoding = codec;
 }
 
 QString IrcUser::decodeString(const QByteArray& text) const
 {
-    if (!codecForDecoding())
-        return network()->decodeString(text);
-    return ::decodeString(text, codecForDecoding());
+    if (_codecForDecoding) {
+        QStringDecoder decoder(*_codecForDecoding);
+        return decoder.decode(text);
+    }
+    return network()->decodeString(text);
 }
 
 QByteArray IrcUser::encodeString(const QString& string) const
 {
-    if (codecForEncoding()) {
-        return codecForEncoding()->fromUnicode(string);
+    if (_codecForEncoding) {
+        QStringEncoder encoder(*_codecForEncoding);
+        return encoder.encode(string);
     }
     return network()->encodeString(string);
 }
@@ -314,7 +311,8 @@ void IrcUser::partChannelInternal(IrcChannel* channel, bool skip_sync)
         disconnect(channel, nullptr, this, nullptr);
         channel->part(this);
         QString channelName = channel->name();
-        if (!skip_sync) SYNC_OTHER(partChannel, ARG(channelName))
+        if (!skip_sync)
+            SYNC_OTHER(partChannel, ARG(channelName))
         if (_channels.isEmpty() && !network()->isMe(this))
             quitInternal(skip_sync);
     }
@@ -329,12 +327,13 @@ void IrcUser::quitInternal(bool skip_sync)
 {
     QList<IrcChannel*> channels = _channels.values();
     _channels.clear();
-    foreach (IrcChannel* channel, channels) {
+    for (IrcChannel* channel : channels) {
         disconnect(channel, nullptr, this, nullptr);
         channel->part(this);
     }
     network()->removeIrcUser(this);
-    if (!skip_sync) SYNC_OTHER(quit, NO_ARG)
+    if (!skip_sync)
+        SYNC_OTHER(quit, NO_ARG)
     emit quited();
 }
 

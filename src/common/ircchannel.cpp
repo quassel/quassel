@@ -23,7 +23,6 @@
 #include <QDebug>
 #include <QHashIterator>
 #include <QMapIterator>
-#include <QTextCodec>
 
 #include "ircuser.h"
 #include "network.h"
@@ -36,8 +35,6 @@ IrcChannel::IrcChannel(const QString& channelname, Network* network)
     , _topic(QString())
     , _encrypted(false)
     , _network(network)
-    , _codecForEncoding(nullptr)
-    , _codecForDecoding(nullptr)
 {
     setObjectName(QString::number(network->networkId().toInt()) + "/" + channelname);
 }
@@ -85,35 +82,38 @@ QString IrcChannel::userModes(const QString& nick) const
 
 void IrcChannel::setCodecForEncoding(const QString& name)
 {
-    setCodecForEncoding(QTextCodec::codecForName(name.toLatin1()));
+    setCodecForEncoding(QStringConverter::encodingForName(name.toLatin1()));
 }
 
-void IrcChannel::setCodecForEncoding(QTextCodec* codec)
+void IrcChannel::setCodecForEncoding(std::optional<QStringConverter> codec)
 {
     _codecForEncoding = codec;
 }
 
 void IrcChannel::setCodecForDecoding(const QString& name)
 {
-    setCodecForDecoding(QTextCodec::codecForName(name.toLatin1()));
+    setCodecForDecoding(QStringConverter::encodingForName(name.toLatin1()));
 }
 
-void IrcChannel::setCodecForDecoding(QTextCodec* codec)
+void IrcChannel::setCodecForDecoding(std::optional<QStringConverter> codec)
 {
     _codecForDecoding = codec;
 }
 
 QString IrcChannel::decodeString(const QByteArray& text) const
 {
-    if (!codecForDecoding())
-        return network()->decodeString(text);
-    return ::decodeString(text, _codecForDecoding);
+    if (_codecForDecoding) {
+        QStringDecoder decoder(*_codecForDecoding);
+        return decoder.decode(text);
+    }
+    return network()->decodeString(text);
 }
 
 QByteArray IrcChannel::encodeString(const QString& string) const
 {
-    if (codecForEncoding()) {
-        return _codecForEncoding->fromUnicode(string);
+    if (_codecForEncoding) {
+        QStringEncoder encoder(*_codecForEncoding);
+        return encoder.encode(string);
     }
     return network()->encodeString(string);
 }
@@ -147,7 +147,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& m
         return;
 
     if (users.count() != modes.count()) {
-        qWarning() << "IrcChannel::addUsers(): number of nicks does not match number of modes!";
+        qWarning() << "IrcChannel::joinIrcUsers(): number of nicks does not match number of modes!";
         return;
     }
 
@@ -181,10 +181,6 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& m
         ircuser->joinChannel(this, true);
         connect(ircuser, &IrcUser::nickSet, this, selectOverload<QString>(&IrcChannel::ircUserNickSet));
 
-        // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
-        // If you wonder why there is no counterpart to ircUserJoined:
-        // the joins are propagated by the ircuser. The signal ircUserJoined is only for convenience
-
         newNicks << ircuser->nick();
         newModes << sortedModes[i];
         newUsers << ircuser;
@@ -200,7 +196,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& m
 void IrcChannel::joinIrcUsers(const QStringList& nicks, const QStringList& modes)
 {
     QList<IrcUser*> users;
-    foreach (QString nick, nicks)
+    for (const QString& nick : nicks)
         users << network()->newIrcUser(nick);
     joinIrcUsers(users, modes);
 }
@@ -219,8 +215,6 @@ void IrcChannel::part(IrcUser* ircuser)
     if (isKnownUser(ircuser)) {
         _userModes.remove(ircuser);
         ircuser->partChannel(this);
-        // If you wonder why there is no counterpart to ircUserParted:
-        // the joins are propagted by the ircuser. The signal ircUserParted is only for convenience
         disconnect(ircuser, nullptr, this, nullptr);
         emit ircUserParted(ircuser);
 
@@ -229,7 +223,7 @@ void IrcChannel::part(IrcUser* ircuser)
             //  -> clean up the channel and destroy it
             QList<IrcUser*> users = _userModes.keys();
             _userModes.clear();
-            foreach (IrcUser* user, users) {
+            for (IrcUser* user : users) {
                 disconnect(user, nullptr, this, nullptr);
                 user->partChannelInternal(this, true);
             }
@@ -411,51 +405,7 @@ void IrcChannel::ircUserNickSet(QString nick)
     emit ircUserNickSet(ircUser, nick);
 }
 
-/*******************************************************************************
- *
- * 3.3 CHANMODES
- *
- *    o  CHANMODES=A,B,C,D
- *
- *    The CHANMODES token specifies the modes that may be set on a channel.
- *    These modes are split into four categories, as follows:
- *
- *    o  Type A: Modes that add or remove an address to or from a list.
- *       These modes always take a parameter when sent by the server to a
- *       client; when sent by a client, they may be specified without a
- *       parameter, which requests the server to display the current
- *       contents of the corresponding list on the channel to the client.
- *    o  Type B: Modes that change a setting on the channel.  These modes
- *       always take a parameter.
- *    o  Type C: Modes that change a setting on the channel. These modes
- *       take a parameter only when set; the parameter is absent when the
- *       mode is removed both in the client's and server's MODE command.
- *    o  Type D: Modes that change a setting on the channel. These modes
- *       never take a parameter.
- *
- *    If the server sends any additional types after these 4, the client
- *    MUST ignore them; this is intended to allow future extension of this
- *    token.
- *
- *    The IRC server MUST NOT list modes in CHANMODES which are also
- *    present in the PREFIX parameter; however, for completeness, modes
- *    described in PREFIX may be treated as type B modes.
- *
- ******************************************************************************/
-
-/*******************************************************************************
- * Short Version:
- * A --> add/remove from List
- * B --> set value or remove
- * C --> set value or remove
- * D --> on/off
- *
- * B and C behave very similar... we store the data in different datastructures
- * for future compatibility
- ******************************************************************************/
-
 // NOTE: the behavior of addChannelMode and removeChannelMode depends on the type of mode
-// see list above for chanmode types
 void IrcChannel::addChannelMode(const QChar& mode, const QString& value)
 {
     Network::ChannelModeType modeType = network()->channelModeType(mode);
@@ -560,8 +510,7 @@ QStringList IrcChannel::modeValueList(const QChar& mode) const
         if (_A_channelModes.contains(mode))
             return _A_channelModes[mode];
         break;
-    default:
-        ;
+    default:;
     }
     return {};
 }

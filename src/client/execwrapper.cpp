@@ -21,8 +21,8 @@
 #include "execwrapper.h"
 
 #include <QFile>
-#include <QTextCodec>
 #include <QRegularExpression>
+#include <QStringConverter>
 
 #include "client.h"
 #include "messagemodel.h"
@@ -124,7 +124,8 @@ void ExecWrapper::processError(QProcess::ProcessError err)
 
 void ExecWrapper::processReadStdout()
 {
-    QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput());
+    QStringDecoder decoder(QStringConverter::System);
+    QString str = decoder.decode(_process.readAllStandardOutput());
     str.replace(QRegularExpression("\r\n?"), "\n");
     _stdoutBuffer.append(str);
     int idx;
@@ -136,7 +137,8 @@ void ExecWrapper::processReadStdout()
 
 void ExecWrapper::processReadStderr()
 {
-    QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError());
+    QStringDecoder decoder(QStringConverter::System);
+    QString str = decoder.decode(_process.readAllStandardError());
     str.replace(QRegularExpression("\r\n?"), "\n");
     _stderrBuffer.append(str);
     int idx;

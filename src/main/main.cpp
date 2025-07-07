@@ -27,7 +27,6 @@
 #endif /* HAVE_UMASK */
 
 #include <QCoreApplication>
-#include <QTextCodec>
 
 #ifdef BUILD_CORE
 #    include "coreapplication.h"
