@@ -23,6 +23,7 @@
 #    include <sys/types.h>
 #endif /* HAVE_UMASK */
 
+#include <QRegularExpression>
 #include <QString>
 
 #include "corenetwork.h"
@@ -168,5 +169,5 @@ bool OidentdConfigGenerator::writeConfig()
 
 bool OidentdConfigGenerator::lineByUs(const QByteArray& line)
 {
-    return _quasselStanzaRx.exactMatch(line);
+    return _quasselStanzaRx.match(QString::fromLatin1(line)).hasMatch();
 }

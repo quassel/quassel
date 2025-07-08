@@ -23,10 +23,25 @@
 #include <random>
 
 #include <QCryptographicHash>
+#include <QRegularExpression>  // Added for QRegularExpression
+
+// Helper function to convert HashVersion to QString
+static QString hashVersionToString(Storage::HashVersion version)
+{
+    switch (version) {
+    case Storage::HashVersion::Sha1:
+        return "Sha1";
+    case Storage::HashVersion::Sha2_512:
+        return "Sha2_512";
+    default:
+        return QString("Unknown (%1)").arg(static_cast<int>(version));
+    }
+}
 
 Storage::Storage(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 QString Storage::hashPassword(const QString& password)
 {
@@ -47,7 +62,7 @@ bool Storage::checkHashedPassword(const UserId user, const QString& password, co
         break;
 
     default:
-        qWarning() << "Password hash version" << QString(version) << "is not supported, please reset password";
+        qWarning() << "Password hash version" << hashVersionToString(version) << "is not supported, please reset password";
     }
 
     if (passwordCorrect && version < Storage::HashVersion::Latest) {

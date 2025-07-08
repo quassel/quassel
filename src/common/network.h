@@ -364,7 +364,7 @@ public slots:
     void addSupport(const QString& param, const QString& value = QString());
     void removeSupport(const QString& param);
     void setCapNegotiationStatus(const QString& status);
-    void addCap(const QString& capability);
+    void addCap(const QString& capability, const QString& value = QString());
     void acknowledgeCap(const QString& capability);
     void removeCap(const QString& capability);
     void clearCaps();

@@ -23,6 +23,7 @@
 #include <algorithm>
 
 #include <QCoreApplication>
+#include <QRandomGenerator>
 
 #include "coreauthhandler.h"
 #include "coresession.h"
@@ -61,7 +62,8 @@ public:
         : QEvent(QEvent::Type(Core::AddClientEventId))
         , peer(p)
         , userId(uid)
-    {}
+    {
+    }
     RemotePeer* peer;
     UserId userId;
 };
@@ -394,11 +396,11 @@ QString Core::setupCoreForInternalUsage()
 {
     Q_ASSERT(!_registeredStorageBackends.empty());
 
-    qsrand(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    QRandomGenerator rng(QDateTime::currentDateTime().toMSecsSinceEpoch());
     int pass = 0;
     for (int i = 0; i < 10; i++) {
         pass *= 10;
-        pass += qrand() % 10;
+        pass += rng.bounded(10);
     }
 
     // mono client currently needs sqlite
@@ -631,26 +633,28 @@ bool Core::startListening()
                 case QAbstractSocket::IPv6Protocol:
                     if (_v6server.listen(addr, port)) {
                         qInfo() << qPrintable(tr("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
-                                              .arg(addr.toString())
-                                              .arg(_v6server.serverPort())
-                                              .arg(Quassel::buildInfo().protocolVersion));
+                                                  .arg(addr.toString())
+                                                  .arg(_v6server.serverPort())
+                                                  .arg(Quassel::buildInfo().protocolVersion));
                         success = true;
                     }
                     else
-                        qWarning() << qPrintable(tr("Could not open IPv6 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_v6server.errorString()));
+                        qWarning() << qPrintable(
+                            tr("Could not open IPv6 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_v6server.errorString()));
                     break;
                 case QAbstractSocket::IPv4Protocol:
                     if (_server.listen(addr, port)) {
                         qInfo() << qPrintable(tr("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
-                                              .arg(addr.toString())
-                                              .arg(_server.serverPort())
-                                              .arg(Quassel::buildInfo().protocolVersion));
+                                                  .arg(addr.toString())
+                                                  .arg(_server.serverPort())
+                                                  .arg(Quassel::buildInfo().protocolVersion));
                         success = true;
                     }
                     else {
                         // if v6 succeeded on Any, the port will be already in use - don't display the error then
                         if (!success || _server.serverError() != QAbstractSocket::AddressInUseError)
-                            qWarning() << qPrintable(tr("Could not open IPv4 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_server.errorString()));
+                            qWarning() << qPrintable(
+                                tr("Could not open IPv4 interface %1:%2: %3").arg(addr.toString()).arg(port).arg(_server.errorString()));
                     }
                     break;
                 default:
@@ -1019,7 +1023,7 @@ bool Core::createUser()
 {
     QTextStream out(stdout);
     QTextStream in(stdin);
-    out << "Add a new user:" << endl;
+    out << "Add a new user:" << Qt::endl;
     out << "Username: ";
     out.flush();
     QString username = in.readLine().trimmed();
@@ -1028,11 +1032,11 @@ bool Core::createUser()
     out << "Password: ";
     out.flush();
     QString password = in.readLine().trimmed();
-    out << endl;
+    out << Qt::endl;
     out << "Repeat Password: ";
     out.flush();
     QString password2 = in.readLine().trimmed();
-    out << endl;
+    out << Qt::endl;
     enableStdInEcho();
 
     if (password != password2) {
@@ -1045,7 +1049,7 @@ bool Core::createUser()
     }
 
     if (_configured && _storage->addUser(username, password).isValid()) {
-        out << "Added user " << username << " successfully!" << endl;
+        out << "Added user " << username << " successfully!" << Qt::endl;
         return true;
     }
     else {
@@ -1060,26 +1064,26 @@ bool Core::changeUserPass(const QString& username)
     QTextStream in(stdin);
     UserId userId = _storage->getUserId(username);
     if (!userId.isValid()) {
-        out << "User " << username << " does not exist." << endl;
+        out << "User " << username << " does not exist." << Qt::endl;
         return false;
     }
 
     if (!canChangeUserPassword(userId)) {
-        out << "User " << username << " is configured through an auth provider that has forbidden manual password changing." << endl;
+        out << "User " << username << " is configured through an auth provider that has forbidden manual password changing." << Qt::endl;
         return false;
     }
 
-    out << "Change password for user: " << username << endl;
+    out << "Change password for user: " << username << Qt::endl;
 
     disableStdInEcho();
     out << "New Password: ";
     out.flush();
     QString password = in.readLine().trimmed();
-    out << endl;
+    out << Qt::endl;
     out << "Repeat Password: ";
     out.flush();
     QString password2 = in.readLine().trimmed();
-    out << endl;
+    out << Qt::endl;
     enableStdInEcho();
 
     if (password != password2) {
@@ -1092,7 +1096,7 @@ bool Core::changeUserPass(const QString& username)
     }
 
     if (_configured && _storage->updateUser(userId, password)) {
-        out << "Password changed successfully!" << endl;
+        out << "Password changed successfully!" << Qt::endl;
         return true;
     }
     else {
@@ -1189,11 +1193,11 @@ QVariantMap Core::promptForSettings(const Backend* backend)
 
     QTextStream out(stdout);
     QTextStream in(stdin);
-    out << "Default values are in brackets" << endl;
+    out << "Default values are in brackets" << Qt::endl;
 
     for (int i = 0; i + 2 < setupData.size(); i += 3) {
         QString key = setupData[i].toString();
-        out << setupData[i + 1].toString() << " [" << setupData[i + 2].toString() << "]: " << flush;
+        out << setupData[i + 1].toString() << " [" << setupData[i + 2].toString() << "]: " << Qt::flush;
 
         bool noEcho = key.toLower().contains("password");
         if (noEcho) {
@@ -1201,14 +1205,14 @@ QVariantMap Core::promptForSettings(const Backend* backend)
         }
         QString input = in.readLine().trimmed();
         if (noEcho) {
-            out << endl;
+            out << Qt::endl;
             enableStdInEcho();
         }
 
         QVariant value{setupData[i + 2]};
         if (!input.isEmpty()) {
-            switch (value.type()) {
-            case QVariant::Int:
+            switch (value.typeId()) {
+            case QMetaType::Int:
                 value = input.toInt();
                 break;
             default:

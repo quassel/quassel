@@ -434,12 +434,12 @@ void Network::setCapNegotiationStatus(const QString& status)
     }
 }
 
-void Network::addCap(const QString& capability)
+void Network::addCap(const QString& capability, const QString& value)
 {
     QMutexLocker locker(&_capsMutex);
     if (!_availableCaps.contains(capability)) {
         _availableCaps << capability;
-        SYNC_OTHER(addCap, ARG(capability))
+        SYNC_OTHER(addCap, ARG(capability), ARG(value))
     }
 }
 

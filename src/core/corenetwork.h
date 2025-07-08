@@ -192,15 +192,14 @@ public:
     const QStringList capsRequiringConfiguration = QStringList{IrcCap::SASL};
 
 public slots:
-    void setMyNick(const QString& mynick) override;
+    void setMyNick(const QString& mynick);
+    void requestConnect() const;
+    void requestDisconnect() const;
+    void requestSetNetworkInfo(const NetworkInfo& info);
 
-    void requestConnect() const override;
-    void requestDisconnect() const override;
-    void requestSetNetworkInfo(const NetworkInfo& info) override;
-
-    void setUseAutoReconnect(bool) override;
-    void setAutoReconnectInterval(quint32) override;
-    void setAutoReconnectRetries(quint16) override;
+    void setUseAutoReconnect(bool);
+    void setAutoReconnectInterval(quint32);
+    void setAutoReconnectRetries(quint16);
 
     void setPingInterval(int interval);
 
@@ -273,7 +272,11 @@ public slots:
      * maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString& cmd, const QList<QByteArray>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString> &tags = {}, bool prepend = false);
+    void putCmd(const QString& cmd,
+                const QList<QByteArray>& params,
+                const QByteArray& prefix = {},
+                const QHash<IrcTagKey, QString>& tags = {},
+                bool prepend = false);
 
     /**
      * Sends the command for each set of encoded parameters, with optional prefix or high priority.
@@ -292,7 +295,11 @@ public slots:
      * cannot maintain PING/PONG replies, the other side will close the connection.
      * @endparmblock
      */
-    void putCmd(const QString& cmd, const QList<QList<QByteArray>>& params, const QByteArray& prefix = {}, const QHash<IrcTagKey, QString> &tags = {}, bool prependAll = false);
+    void putCmd(const QString& cmd,
+                const QList<QList<QByteArray>>& params,
+                const QByteArray& prefix = {},
+                const QHash<IrcTagKey, QString>& tags = {},
+                bool prependAll = false);
 
     void setChannelJoined(const QString& channel);
     void setChannelParted(const QString& channel);
@@ -413,10 +420,7 @@ public slots:
      */
     inline void resetPongReplyPending() { _pongReplyPending = false; }
 
-    void onDisplayMsg(const NetworkInternalMessage& msg)
-    {
-        emit displayMsg(RawMessage(networkId(), msg));
-    }
+    void onDisplayMsg(const NetworkInternalMessage& msg) { emit displayMsg(RawMessage(networkId(), msg)); }
 
 signals:
     void recvRawServerMsg(const QString&);
@@ -443,8 +447,8 @@ signals:
                             qint64 socketId);
 
 protected:
-    inline IrcChannel* ircChannelFactory(const QString& channelname) override { return new CoreIrcChannel(channelname, this); }
-    inline IrcUser* ircUserFactory(const QString& hostmask) override { return new CoreIrcUser(hostmask, this); }
+    inline IrcChannel* ircChannelFactory(const QString& channelname) { return new CoreIrcChannel(channelname, this); }
+    inline IrcUser* ircUserFactory(const QString& hostmask) { return new CoreIrcUser(hostmask, this); }
 
 protected slots:
     // TODO: remove cached cipher keys, when appropriate
@@ -495,10 +499,7 @@ private slots:
     void writeToSocket(const QByteArray& data);
 
 private:
-    void showMessage(const NetworkInternalMessage& msg)
-    {
-        emit displayMsg(RawMessage(networkId(), msg));
-    }
+    void showMessage(const NetworkInternalMessage& msg) { emit displayMsg(RawMessage(networkId(), msg)); }
 
 private:
     CoreSession* _coreSession;
