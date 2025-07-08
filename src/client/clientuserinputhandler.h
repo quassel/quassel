@@ -21,6 +21,8 @@
 #ifndef CLIENTUSERINPUTHANDLER_H_
 #define CLIENTUSERINPUTHANDLER_H_
 
+#include <QRegularExpression>  // Added for QRegularExpression
+
 #include "basichandler.h"
 
 class BufferInfo;

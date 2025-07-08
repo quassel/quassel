@@ -30,7 +30,7 @@ public:
     inline QString realName() const { return _realName; }
     inline QString awayMessage() const { return _awayMessage; }
     inline bool away() const { return _away; }
-    inline QDateTime idleTime();
+    QDateTime idleTime();
     inline QDateTime loginTime() const { return _loginTime; }
     inline QString server() const { return _server; }
     inline QString ircOperator() const { return _ircOperator; }

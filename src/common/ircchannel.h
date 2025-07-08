@@ -1,3 +1,23 @@
+/***************************************************************************
+ *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
 #ifndef IRCCHANNEL_H
 #define IRCCHANNEL_H
 
@@ -24,6 +44,7 @@ public:
     QString topic() const { return _topic; }
     QString password() const { return _password; }
     bool encrypted() const { return _encrypted; }
+    QString modes() const;  // Added getter for channel modes
 
     inline std::optional<QStringConverter::Encoding> codecForEncoding() const { return _codecForEncoding; }
     inline std::optional<QStringConverter::Encoding> codecForDecoding() const { return _codecForDecoding; }
@@ -56,6 +77,16 @@ public slots:
     void addChannelMode(const QString& mode, const QString& param = QString());
     void removeChannelMode(const QString& mode, const QString& param = QString());
 
+signals:
+    void topicChanged(const QString& topic);
+    void encryptedChanged(bool encrypted);
+    void usersJoined(const QStringList& nicks, const QStringList& modes);
+    void userParted(IrcUser* user);
+    void parted();
+    void userModesChanged(IrcUser* user, const QString& modes);
+    void userModeAdded(IrcUser* user, const QString& mode);
+    void userModeRemoved(IrcUser* user, const QString& mode);
+
 private slots:
     void ircUserNickSet(const QString& newnick);
     void userDestroyed();
@@ -69,6 +100,7 @@ private:
     std::optional<QStringConverter::Encoding> _codecForEncoding;
     std::optional<QStringConverter::Encoding> _codecForDecoding;
     QHash<IrcUser*, QString> _userModes;
+    QHash<QString, QString> _channelModes;  // Added to store channel modes
 
     friend class Network;
 };
