@@ -1,22 +1,5 @@
-/***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
- *   devel@quassel-irc.org                                                 *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) version 3.                                           *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2005-2025 Quassel Project <devel@quassel-irc.org>
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
 
@@ -171,9 +154,24 @@ protected:
     QSqlQuery executePreparedQuery(const QString& queryname, const QVariant& param, QSqlDatabase& db);
     void deallocateQuery(const QString& queryname, const QSqlDatabase& db);
 
-    void savePoint(const QString& handle, const QSqlDatabase& db) { db.exec(QString("SAVEPOINT %1").arg(handle)); }
-    void rollbackSavePoint(const QString& handle, const QSqlDatabase& db) { db.exec(QString("ROLLBACK TO SAVEPOINT %1").arg(handle)); }
-    void releaseSavePoint(const QString& handle, const QSqlDatabase& db) { db.exec(QString("RELEASE SAVEPOINT %1").arg(handle)); }
+    void savePoint(const QString& handle, const QSqlDatabase& db)
+    {
+        QSqlQuery query(db);
+        query.prepare(QString("SAVEPOINT %1").arg(handle));
+        query.exec();
+    }
+    void rollbackSavePoint(const QString& handle, const QSqlDatabase& db)
+    {
+        QSqlQuery query(db);
+        query.prepare(QString("ROLLBACK TO SAVEPOINT %1").arg(handle));
+        query.exec();
+    }
+    void releaseSavePoint(const QString& handle, const QSqlDatabase& db)
+    {
+        QSqlQuery query(db);
+        query.prepare(QString("RELEASE SAVEPOINT %1").arg(handle));
+        query.exec();
+    }
 
 private:
     void bindNetworkInfo(QSqlQuery& query, const NetworkInfo& info);
@@ -230,7 +228,8 @@ private:
         Sequence(const char* table, const char* field)
             : table(table)
             , field(field)
-        {}
+        {
+        }
     };
 
     QSet<int> _validIdentities;

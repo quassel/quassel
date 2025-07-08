@@ -34,7 +34,8 @@
 int AbstractSqlStorage::_nextConnectionId = 0;
 AbstractSqlStorage::AbstractSqlStorage(QObject* parent)
     : Storage(parent)
-{}
+{
+}
 
 AbstractSqlStorage::~AbstractSqlStorage()
 {
@@ -134,9 +135,9 @@ Storage::State AbstractSqlStorage::init(const QVariantMap& settings, const QProc
 
     if (installedSchemaVersion() < schemaVersion()) {
         qInfo() << qPrintable(tr("Installed database schema (version %1) is not up to date. Upgrading to "
-                                  "version %2...  This may take a while for major upgrades.")
-                                   .arg(installedSchemaVersion())
-                                   .arg(schemaVersion()));
+                                 "version %2...  This may take a while for major upgrades.")
+                                  .arg(installedSchemaVersion())
+                                  .arg(schemaVersion()));
         emit dbUpgradeInProgress(true);
         auto upgradeResult = upgradeDb();
         emit dbUpgradeInProgress(false);
@@ -188,7 +189,7 @@ std::vector<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::setupQueri
     std::vector<SqlQueryResource> queries;
     // The current schema is stored in the root folder, including setup scripts.
     QDir dir = QDir(QString(":/SQL/%1/").arg(displayName()));
-    foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
+    for (const QFileInfo& fileInfo : dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
         queries.emplace_back(queryString(fileInfo.baseName()), fileInfo.baseName());
     }
     return queries;
@@ -204,11 +205,13 @@ bool AbstractSqlStorage::setup(const QVariantMap& settings, const QProcessEnviro
     }
 
     db.transaction();
-    foreach (auto queryResource, setupQueries()) {
-        QSqlQuery query = db.exec(queryResource.queryString);
+    for (const auto& queryResource : setupQueries()) {
+        QSqlQuery query(db);
+        query.prepare(queryResource.queryString);
+        query.exec();
         if (!watchQuery(query)) {
-            qCritical() << qPrintable(QString("Unable to setup Logging Backend!  Setup query failed (step: %1).")
-                                      .arg(queryResource.queryFilename));
+            qCritical() << qPrintable(
+                QString("Unable to setup Logging Backend!  Setup query failed (step: %1).").arg(queryResource.queryFilename));
             db.rollback();
             return false;
         }
@@ -226,7 +229,7 @@ std::vector<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::upgradeQue
     std::vector<SqlQueryResource> queries;
     // Upgrade queries are stored in the 'version/##' subfolders.
     QDir dir = QDir(QString(":/SQL/%1/version/%2/").arg(displayName()).arg(version));
-    foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
+    for (const QFileInfo& fileInfo : dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
         queries.emplace_back(queryString(fileInfo.baseName(), version), fileInfo.baseName());
     }
     return queries;
@@ -248,13 +251,13 @@ bool AbstractSqlStorage::upgradeDb()
     bool resumingUpgrade = !previousLaunchUpgradeStep.isEmpty();
 
     for (int ver = installedSchemaVersion() + 1; ver <= schemaVersion(); ver++) {
-        foreach (auto queryResource, upgradeQueries(ver)) {
+        for (const auto& queryResource : upgradeQueries(ver)) {
             if (resumingUpgrade) {
                 // An upgrade was interrupted.  Check if this matches the the last successful query.
                 if (previousLaunchUpgradeStep == queryResource.queryFilename) {
                     // Found the matching query!
                     qInfo() << qPrintable(QString("Resuming interrupted upgrade for schema version %1 (last step: %2)")
-                                          .arg(QString::number(ver), previousLaunchUpgradeStep));
+                                              .arg(QString::number(ver), previousLaunchUpgradeStep));
 
                     // Stop searching for queries
                     resumingUpgrade = false;
@@ -268,11 +271,14 @@ bool AbstractSqlStorage::upgradeDb()
             }
 
             // Run the upgrade query
-            QSqlQuery query = db.exec(queryResource.queryString);
+            QSqlQuery query(db);
+            query.prepare(queryResource.queryString);
+            query.exec();
             if (!watchQuery(query)) {
                 // Individual upgrade query failed, bail out
-                qCritical() << qPrintable(QString("Unable to upgrade Logging Backend!  Upgrade query in schema version %1 failed (step: %2).")
-                                          .arg(QString::number(ver), queryResource.queryFilename));
+                qCritical() << qPrintable(
+                    QString("Unable to upgrade Logging Backend!  Upgrade query in schema version %1 failed (step: %2).")
+                        .arg(QString::number(ver), queryResource.queryFilename));
                 return false;
             }
             else {
@@ -293,7 +299,7 @@ bool AbstractSqlStorage::upgradeDb()
             qCritical() << qPrintable(QString("Unable to resume interrupted upgrade in Logging "
                                               "Backend!  Missing upgrade step in schema version %1 "
                                               "(expected step: %2)")
-                                      .arg(QString::number(ver), previousLaunchUpgradeStep));
+                                          .arg(QString::number(ver), previousLaunchUpgradeStep));
             return false;
         }
 
@@ -327,7 +333,7 @@ int AbstractSqlStorage::schemaVersion()
     bool ok;
     // Schema versions are stored in the 'version/##' subfolders.
     QDir dir = QDir(QString(":/SQL/%1/version/").arg(displayName()));
-    foreach (QFileInfo fileInfo, dir.entryInfoList()) {
+    for (const QFileInfo& fileInfo : dir.entryInfoList()) {
         if (!fileInfo.isDir())
             continue;
 
@@ -341,13 +347,11 @@ int AbstractSqlStorage::schemaVersion()
     return _schemaVersion;
 }
 
-
 QString AbstractSqlStorage::schemaVersionUpgradeStep()
 {
     // By default, assume there's no pending upgrade
     return {};
 }
-
 
 bool AbstractSqlStorage::watchQuery(QSqlQuery& query)
 {
@@ -357,34 +361,33 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery& query)
             qCritical() << "unhandled Error in QSqlQuery!";
         qCritical() << "                  last Query:\n" << qPrintable(query.lastQuery());
         qCritical() << "              executed Query:\n" << qPrintable(query.executedQuery());
-        QVariantMap boundValues = query.boundValues();
         QStringList valueStrings;
-        QVariantMap::const_iterator iter;
-        for (iter = boundValues.constBegin(); iter != boundValues.constEnd(); ++iter) {
+        QVariantList boundValues = query.boundValues();
+        for (int i = 0; i < boundValues.size(); ++i) {
             QString value;
             QSqlField field;
             if (query.driver()) {
                 // let the driver do the formatting
-                field.setType(iter.value().type());
-                if (iter.value().isNull())
+                field.setMetaType(boundValues[i].metaType());
+                if (boundValues[i].isNull())
                     field.clear();
                 else
-                    field.setValue(iter.value());
+                    field.setValue(boundValues[i]);
                 value = query.driver()->formatValue(field);
             }
             else {
-                switch (iter.value().type()) {
-                case QVariant::Invalid:
+                switch (boundValues[i].metaType().id()) {
+                case QMetaType::UnknownType:
                     value = "NULL";
                     break;
-                case QVariant::Int:
-                    value = iter.value().toString();
+                case QMetaType::Int:
+                    value = boundValues[i].toString();
                     break;
                 default:
-                    value = QString("'%1'").arg(iter.value().toString());
+                    value = QString("'%1'").arg(boundValues[i].toString());
                 }
             }
-            valueStrings << QString("%1=%2").arg(iter.key(), value);
+            valueStrings << QString(":%1=%2").arg(i).arg(value);
         }
         qCritical() << "                bound Values:" << qPrintable(valueStrings.join(", "));
         qCritical() << "                  Error Code:" << qPrintable(query.lastError().nativeErrorCode());
@@ -409,7 +412,8 @@ void AbstractSqlStorage::connectionDestroyed()
 AbstractSqlStorage::Connection::Connection(const QString& name, QObject* parent)
     : QObject(parent)
     , _name(name.toLatin1())
-{}
+{
+}
 
 AbstractSqlStorage::Connection::~Connection()
 {
@@ -504,7 +508,8 @@ void AbstractSqlMigrator::dumpStatus()
 // ========================================
 AbstractSqlMigrationReader::AbstractSqlMigrationReader()
     : AbstractSqlMigrator()
-{}
+{
+}
 
 bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter* writer)
 {

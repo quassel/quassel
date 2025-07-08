@@ -54,7 +54,8 @@ class ProcessMessagesEvent : public QEvent
 public:
     ProcessMessagesEvent()
         : QEvent(QEvent::User)
-    {}
+    {
+    }
 };
 
 CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled, QObject* parent)
@@ -91,21 +92,23 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     connect(p, &SignalProxy::connected, this, &CoreSession::clientsConnected);
     connect(p, &SignalProxy::disconnected, this, &CoreSession::clientsDisconnected);
 
-    p->attachSlot(SIGNAL(sendInput(BufferInfo,QString)), this, &CoreSession::msgFromClient);
+    p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, &CoreSession::msgFromClient);
     p->attachSignal(this, &CoreSession::displayMsg);
     p->attachSignal(this, &CoreSession::displayStatusMsg);
 
     p->attachSignal(this, &CoreSession::identityCreated);
     p->attachSignal(this, &CoreSession::identityRemoved);
-    p->attachSlot(SIGNAL(createIdentity(Identity,QVariantMap)), this, selectOverload<const Identity&, const QVariantMap&>(&CoreSession::createIdentity));
+    p->attachSlot(SIGNAL(createIdentity(Identity, QVariantMap)),
+                  this,
+                  selectOverload<const Identity&, const QVariantMap&>(&CoreSession::createIdentity));
     p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, &CoreSession::removeIdentity);
 
     p->attachSignal(this, &CoreSession::networkCreated);
     p->attachSignal(this, &CoreSession::networkRemoved);
-    p->attachSlot(SIGNAL(createNetwork(NetworkInfo,QStringList)), this,&CoreSession::createNetwork);
+    p->attachSlot(SIGNAL(createNetwork(NetworkInfo, QStringList)), this, &CoreSession::createNetwork);
     p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, &CoreSession::removeNetwork);
 
-    p->attachSlot(SIGNAL(changePassword(PeerPtr,QString,QString,QString)), this, &CoreSession::changePassword);
+    p->attachSlot(SIGNAL(changePassword(PeerPtr, QString, QString, QString)), this, &CoreSession::changePassword);
     p->attachSignal(this, &CoreSession::passwordChanged);
 
     p->attachSlot(SIGNAL(kickClient(int)), this, &CoreSession::kickClient);
@@ -356,16 +359,14 @@ void CoreSession::recvStatusMsgFromServer(QString msg)
 
 void CoreSession::processMessageEvent(MessageEvent* event)
 {
-    recvMessageFromServer(RawMessage{
-        event->timestamp(),
-        event->networkId(),
-        event->msgType(),
-        event->bufferType(),
-        event->target().isNull() ? "" : event->target(),
-        event->text().isNull() ? "" : event->text(),
-        event->sender().isNull() ? "" : event->sender(),
-        event->msgFlags()
-    });
+    recvMessageFromServer(RawMessage{event->timestamp(),
+                                     event->networkId(),
+                                     event->msgType(),
+                                     event->bufferType(),
+                                     event->target().isNull() ? "" : event->target(),
+                                     event->text().isNull() ? "" : event->text(),
+                                     event->sender().isNull() ? "" : event->sender(),
+                                     event->msgFlags()});
 }
 
 std::vector<BufferInfo> CoreSession::buffers() const
@@ -487,7 +488,8 @@ QString CoreSession::senderPrefixes(const QString& sender, const BufferInfo& buf
         return {};
     }
 
-    const QString modes = currentChannel->userModes(nickFromMask(sender).toLower());
+    IrcUser* user = currentNetwork->ircUser(nickFromMask(sender));
+    const QString modes = user ? currentChannel->userModes(user) : QString();
     return currentNetwork->modesToPrefixes(modes);
 }
 
@@ -614,14 +616,15 @@ void CoreSession::createNetwork(const NetworkInfo& info_, const QStringList& per
         // create persistent chans
         QRegularExpression rx(R"(\s*(\S+)(?:\s*(\S+))?\s*)");
         for (const QString& channel : persistentChans) {
-            if (!rx.exactMatch(channel)) {
+            auto match = rx.match(channel);
+            if (!match.hasMatch()) {
                 qWarning() << QString("Invalid persistent channel declaration: %1").arg(channel);
                 continue;
             }
-            Core::bufferInfo(user(), info.networkId, BufferInfo::ChannelBuffer, rx.cap(1), true);
-            Core::setChannelPersistent(user(), info.networkId, rx.cap(1), true);
-            if (!rx.cap(2).isEmpty())
-                Core::setPersistentChannelKey(user(), info.networkId, rx.cap(1), rx.cap(2));
+            Core::bufferInfo(user(), info.networkId, BufferInfo::ChannelBuffer, match.captured(1), true);
+            Core::setChannelPersistent(user(), info.networkId, match.captured(1), true);
+            if (!match.captured(2).isEmpty())
+                Core::setPersistentChannelKey(user(), info.networkId, match.captured(1), match.captured(2));
         }
 
         CoreNetwork* net = new CoreNetwork(id, this);
@@ -629,7 +632,30 @@ void CoreSession::createNetwork(const NetworkInfo& info_, const QStringList& per
         connect(net, &CoreNetwork::displayStatusMsg, this, &CoreSession::recvStatusMsgFromServer);
         connect(net, &CoreNetwork::disconnected, this, &CoreSession::networkDisconnected);
 
-        net->setNetworkInfo(info);
+        net->setNetworkName(info.networkName);
+        net->setIdentity(info.identity);
+        net->setCodecForServer(info.codecForServer);
+        net->setCodecForEncoding(info.codecForEncoding);
+        net->setCodecForDecoding(info.codecForDecoding);
+        net->setServerList(info.serverList);
+        net->setUseRandomServer(info.useRandomServer);
+        net->setPerform(info.perform);
+        net->setSkipCaps(info.skipCaps);
+        net->setUseAutoIdentify(info.useAutoIdentify);
+        net->setAutoIdentifyService(info.autoIdentifyService);
+        net->setAutoIdentifyPassword(info.autoIdentifyPassword);
+        net->setUseSasl(info.useSasl);
+        net->setSaslAccount(info.saslAccount);
+        net->setSaslPassword(info.saslPassword);
+        net->setUseAutoReconnect(info.useAutoReconnect);
+        net->setAutoReconnectInterval(info.autoReconnectInterval);
+        net->setAutoReconnectRetries(info.autoReconnectRetries);
+        net->setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
+        net->setRejoinChannels(info.rejoinChannels);
+        net->setUseCustomMessageRate(info.useCustomMessageRate);
+        net->setMessageRateBurstSize(info.messageRateBurstSize);
+        net->setMessageRateDelay(info.messageRateDelay);
+        net->setUnlimitedMessageRate(info.unlimitedMessageRate);
         net->setProxy(signalProxy());
         _networks[id] = net;
         signalProxy()->synchronize(net);
@@ -706,11 +732,11 @@ void CoreSession::clientsConnected()
         identity = net->identityPtr();
         if (!identity)
             continue;
-        me = net->me();
+        me = net->ircUser(net->myNick());
         if (!me)
             continue;
 
-        if (identity->detachAwayEnabled() && me->isAway()) {
+        if (identity->detachAwayEnabled() && me->away()) {
             net->userInputHandler()->handleAway(BufferInfo(), QString());
         }
     }
@@ -733,14 +759,14 @@ void CoreSession::clientsDisconnected()
         identity = net->identityPtr();
         if (!identity)
             continue;
-        me = net->me();
+        me = net->ircUser(net->myNick());
         if (!me)
             continue;
 
-        if (identity->detachAwayEnabled() && !me->isAway()) {
+        if (identity->detachAwayEnabled() && !me->away()) {
             if (!identity->detachAwayReason().isEmpty())
                 awayReason = identity->detachAwayReason();
-            net->setAutoAwayActive(true);
+            net->updateAutoAway(true);
             // Allow handleAway() to format the current date/time in the string.
             net->userInputHandler()->handleAway(BufferInfo(), awayReason);
         }
