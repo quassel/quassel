@@ -104,9 +104,9 @@ if (APPLE)
         option(WITH_NOTIFICATION_CENTER "OS X Notification Center support" ON)
         add_feature_info(WITH_NOTIFICATION_CENTER WITH_NOTIFICATION_CENTER "Use the OS X Notification Center")
     endif()
-    find_library(CARBON_LIBRARY Carbon)
-    mark_as_advanced(CARBON_LIBRARY)
-    link_libraries(${CARBON_LIBRARY})
+    find_library(FOUNDATION_FRAMEWORK Foundation)
+    mark_as_advanced(FOUNDATION_FRAMEWORK)
+    link_libraries(${FOUNDATION_FRAMEWORK})
 
     # Whether to enable the creation of bundles and DMG images
     cmake_dependent_option(BUNDLE "Create bundles and DMG images" OFF "APPLE" OFF)
@@ -244,7 +244,6 @@ if (NOT HAVE_SSL)
 endif()
 
 # Optional Qt components
-
 find_package(${QT_FULL}LinguistTools QUIET)
 set_package_properties(${QT_FULL}LinguistTools PROPERTIES TYPE RECOMMENDED
     DESCRIPTION "contains tools for handling translation files"
@@ -259,15 +258,15 @@ if (BUILD_GUI)
             DESCRIPTION "D-Bus support for Qt"
             PURPOSE     "Needed for supporting D-Bus-based notifications and tray icon, used by most modern desktop environments"
         )
-    if (${QT_FULL}DBus_FOUND)
-        find_package(dbusmenu-qt${QT_VERSION} QUIET CONFIG)
-        set_package_properties(dbusmenu-qt${QT_VERSION} PROPERTIES TYPE RECOMMENDED
-            URL "https://launchpad.net/libdbusmenu-qt"
-            DESCRIPTION "a library implementing the DBusMenu specification"
-            PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
-        )
+        if (${QT_FULL}DBus_FOUND)
+            find_package(dbusmenu-qt${QT_VERSION} QUIET CONFIG)
+            set_package_properties(dbusmenu-qt${QT_VERSION} PROPERTIES TYPE RECOMMENDED
+                URL "https://launchpad.net/libdbusmenu-qt"
+                DESCRIPTION "a library implementing the DBusMenu specification"
+                PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
+            )
+        endif()
     endif()
-endif()
 
     find_package(${QT_FULL}Multimedia QUIET)
     set_package_properties(${QT_FULL}Multimedia PROPERTIES TYPE RECOMMENDED

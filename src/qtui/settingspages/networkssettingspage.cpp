@@ -74,8 +74,8 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)
     // Populate encoding comboboxes with available QStringConverter encodings
     for (int i = 0; i < static_cast<int>(QStringConverter::Encoding::LastEncoding); ++i) {
         auto encoding = static_cast<QStringConverter::Encoding>(i);
-        if (auto codec = QStringConverter(encoding, QStringConverter::Flag::Default)) {
-            QByteArray codecName = codec.name();
+        if (QStringConverter::encodingForName(QStringConverter::nameForEncoding(encoding))) {
+            QByteArray codecName = QStringConverter::nameForEncoding(encoding);
             ui.sendEncoding->addItem(QString::fromLatin1(codecName));
             ui.recvEncoding->addItem(QString::fromLatin1(codecName));
             ui.serverEncoding->addItem(QString::fromLatin1(codecName));
@@ -126,7 +126,7 @@ void NetworksSettingsPage::save()
             ++i;
         }
         else {
-            if ((*i) != Client::network((*i).networkId)->networkInfo()) {
+            if ((*i) != Client::network((*i).networkId)->toNetworkInfo()) {
                 toUpdate.append(*i);
             }
             ++i;
@@ -197,7 +197,7 @@ void NetworksSettingsPage::load()
     // Reset network capability status in case no valid networks get selected (a rare situation)
     resetNetworkCapStates();
 
-    foreach (NetworkId netid, Client::networkIds()) {
+    for (NetworkId netid : Client::networkIds()) {
         clientNetworkAdded(netid);
     }
     ui.networkList->setCurrentRow(0);
@@ -250,7 +250,7 @@ bool NetworksSettingsPage::testHasChanged()
     foreach (NetworkId id, networkInfos.keys()) {
         if (id < 0)
             return true;
-        if (Client::network(id)->networkInfo() != networkInfos[id])
+        if (Client::network(id)->toNetworkInfo() != networkInfos[id])
             return true;
     }
     return false;
@@ -342,41 +342,30 @@ void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
 {
     const Network* net = Client::network(id);
     if (net && Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation)) {
-        // Capability negotiation is supported, network exists.
-        // Check if the network is connected.  Don't use net->isConnected() as that won't be true
-        // during capability negotiation when capabilities are added and removed.
         if (net->connectionState() != Network::Disconnected) {
-            // Network exists and is connected, check available capabilities...
-            // [SASL]
-            // Quassel switches between SASL PLAIN and SASL EXTERNAL based on the existence of an
-            // SSL certificate on the identity - check EXTERNAL if CertID exists, PLAIN if not
             bool usingSASLExternal = displayedNetworkHasCertId();
-            if ((usingSASLExternal && net->saslMaybeSupports(IrcCap::SaslMech::EXTERNAL))
-                || (!usingSASLExternal && net->saslMaybeSupports(IrcCap::SaslMech::PLAIN))) {
+            if ((usingSASLExternal && net->enabledCaps().contains("sasl") && net->enabledCaps().contains("sasl-external"))
+                || (!usingSASLExternal && net->enabledCaps().contains("sasl"))) {
                 setCapSASLStatus(CapSupportStatus::MaybeSupported, usingSASLExternal);
             }
             else {
                 setCapSASLStatus(CapSupportStatus::MaybeUnsupported, usingSASLExternal);
             }
-
-            // Add additional capability-dependent interface updates here
         }
         else {
-            // Network is disconnected
-            // [SASL]
             setCapSASLStatus(CapSupportStatus::Disconnected);
-
-            // Add additional capability-dependent interface updates here
         }
     }
     else {
-        // Capability negotiation is not supported and/or network doesn't exist.
-        // Don't assume anything and reset all capability-dependent interface elements to neutral.
-        // [SASL]
         setCapSASLStatus(CapSupportStatus::Unknown);
-
-        // Add additional capability-dependent interface updates here
     }
+
+    // Capability negotiation is not supported and/or network doesn't exist.
+    // Don't assume anything and reset all capability-dependent interface elements to neutral.
+    // [SASL]
+    setCapSASLStatus(CapSupportStatus::Unknown);
+
+    // Add additional capability-dependent interface updates here
 }
 
 void NetworksSettingsPage::coreConnectionStateChanged(bool state)
@@ -457,16 +446,15 @@ QListWidgetItem* NetworksSettingsPage::networkItem(NetworkId id) const
 
 void NetworksSettingsPage::clientNetworkAdded(NetworkId id)
 {
+    const Network* net = Client::network(id);
+    networkInfos[id] = net->toNetworkInfo();
     insertNetwork(id);
     // connect(Client::network(id), &Network::updatedRemotely, this, &NetworksSettingsPage::clientNetworkUpdated);
     connect(Client::network(id), &Network::configChanged, this, &NetworksSettingsPage::clientNetworkUpdated);
 
-    connect(Client::network(id), &Network::connectionStateSet, this, &NetworksSettingsPage::networkConnectionStateChanged);
-    connect(Client::network(id), &Network::connectionError, this, &NetworksSettingsPage::networkConnectionError);
-
     // Handle capability changes in case a server dis/connects with the settings window open.
-    connect(Client::network(id), &Network::capAdded, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
-    connect(Client::network(id), &Network::capRemoved, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
+    connect(Client::network(id), &Network::connected, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
+    connect(Client::network(id), &Network::disconnected, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
 }
 
 void NetworksSettingsPage::clientNetworkUpdated()
@@ -476,7 +464,7 @@ void NetworksSettingsPage::clientNetworkUpdated()
         qWarning() << "Update request for unknown network received!";
         return;
     }
-    networkInfos[net->networkId()] = net->networkInfo();
+    networkInfos[net->networkId()] = net->toNetworkInfo();
     setItemState(net->networkId());
     if (net->networkId() == currentId)
         displayNetwork(net->networkId());
@@ -519,7 +507,7 @@ void NetworksSettingsPage::networkConnectionError(const QString&) {}
 
 QListWidgetItem* NetworksSettingsPage::insertNetwork(NetworkId id)
 {
-    NetworkInfo info = Client::network(id)->networkInfo();
+    NetworkInfo info = Client::network(id)->toNetworkInfo();
     networkInfos[id] = info;
     return insertNetwork(info);
 }
@@ -1030,15 +1018,10 @@ void NetworksSettingsPage::on_enableCapsStatusDetails_clicked()
         QStringList sortedCapsEnabled;
         // Check if a network is selected
         if (ui.networkList->selectedItems().count()) {
-            // Get the underlying Network from the selected network
             NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
             const Network* net = Client::network(netid);
             if (net && Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation)) {
-                // Capability negotiation is supported, network exists.
-                // If the network is disconnected, the list of enabled capabilities will be empty,
-                // no need to check for that specifically.
-                // Sorting isn't required, but it looks nicer.
-                sortedCapsEnabled = net->capsEnabled();
+                sortedCapsEnabled = net->enabledCaps();
                 sortedCapsEnabled.sort();
             }
         }
@@ -1081,9 +1064,9 @@ void NetworksSettingsPage::on_enableCapsAdvanced_clicked()
     if (currentId == 0)
         return;
 
-    CapsEditDlg dlg(networkInfos[currentId].skipCapsToString(), this);
+    CapsEditDlg dlg(networkInfos[currentId].skipCaps.join(','), this);
     if (dlg.exec() == QDialog::Accepted) {
-        networkInfos[currentId].skipCapsFromString(dlg.skipCapsString());
+        networkInfos[currentId].skipCaps = dlg.skipCapsString().split(',', Qt::SkipEmptyParts);
         displayNetwork(currentId);
         widgetHasChanged();
     }

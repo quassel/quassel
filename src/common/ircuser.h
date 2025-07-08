@@ -1,12 +1,32 @@
+/***************************************************************************
+ *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
 #ifndef IRCUSER_H
 #define IRCUSER_H
 
 #include <optional>
 
-#include <QDateTime>
 #include <QHash>
 #include <QObject>
 #include <QStringList>
+#include <QTimeZone>
 
 #include "syncableobject.h"
 #include "types.h"
@@ -21,8 +41,9 @@ class COMMON_EXPORT IrcUser : public SyncableObject
 
 public:
     IrcUser(const QString& hostmask, Network* network);
-
     QString hostmask() const;
+    QDateTime idleTime();
+    QStringList channels() const;
 
     inline QString nick() const { return _nick; }
     inline QString user() const { return _user; }
@@ -30,19 +51,16 @@ public:
     inline QString realName() const { return _realName; }
     inline QString awayMessage() const { return _awayMessage; }
     inline bool away() const { return _away; }
-    QDateTime idleTime();
     inline QDateTime loginTime() const { return _loginTime; }
     inline QString server() const { return _server; }
     inline QString ircOperator() const { return _ircOperator; }
-    inline QDateTime lastAwayMessageTime() const { return _lastAwayMessageTime; }
     inline QString whoisServiceReply() const { return _whoisServiceReply; }
     inline QString suserHost() const { return _suserHost; }
     inline QString account() const { return _account; }
     inline bool encrypted() const { return _encrypted; }
     inline QString userModes() const { return _userModes; }
-    QStringList channels() const;
-    inline QDateTime idleTimeSet() const { return _idleTimeSet; }
     inline Network* network() const { return _network; }
+    inline QDateTime lastAwayMessageTime() const { return _lastAwayMessageTime; }
 
     inline std::optional<QStringConverter::Encoding> codecForEncoding() const { return _codecForEncoding; }
     inline std::optional<QStringConverter::Encoding> codecForDecoding() const { return _codecForDecoding; }
@@ -51,6 +69,9 @@ public:
 
     QString decodeString(const QByteArray& text) const;
     QByteArray encodeString(const QString& string) const;
+
+    QDateTime lastSpokenTo(BufferId buffer) const;         // Added for tabcompleter.cpp
+    QDateTime lastChannelActivity(BufferId buffer) const;  // Added for tabcompleter.cpp
 
 public slots:
     void setUser(const QString& user);
@@ -72,15 +93,15 @@ public slots:
     void setUserModes(const QString& modes);
     void addUserModes(const QString& modes);
     void removeUserModes(const QString& modes);
+    void setLastChannelActivity(BufferId buffer, const QDateTime& time);
+    void setLastSpokenTo(BufferId buffer, const QDateTime& time);
+
     void updateHostmask(const QString& mask);
     void joinChannel(IrcChannel* channel, bool skip_channel_join = false);
     void joinChannel(const QString& channelname);
     void partChannel(IrcChannel* channel);
     void partChannel(const QString& channelname);
     void quit();
-
-    void setLastChannelActivity(BufferId buffer, const QDateTime& time);
-    void setLastSpokenTo(BufferId buffer, const QDateTime& time);
 
 signals:
     void nickSet(const QString& nick);
@@ -93,17 +114,10 @@ signals:
     void lastChannelActivityUpdated(BufferId buffer, const QDateTime& time);
     void lastSpokenToUpdated(BufferId buffer, const QDateTime& time);
 
-protected:
-    void markAwayChanged() {}
-
 private slots:
     void channelDestroyed();
 
 private:
-    void updateObjectName();
-    void quitInternal(bool skip_sync = false);
-    void partChannelInternal(IrcChannel* channel, bool skip_sync);
-
     bool _initialized;
     QString _nick;
     QString _user;
@@ -122,13 +136,17 @@ private:
     QString _account;
     bool _encrypted;
     QString _userModes;
-
     Network* _network;
-    std::optional<QStringConverter::Encoding> _codecForEncoding;
-    std::optional<QStringConverter::Encoding> _codecForDecoding;
     QSet<IrcChannel*> _channels;
     QHash<BufferId, QDateTime> _lastActivity;
     QHash<BufferId, QDateTime> _lastSpokenTo;
+    std::optional<QStringConverter::Encoding> _codecForEncoding;
+    std::optional<QStringConverter::Encoding> _codecForDecoding;
+
+    void updateObjectName();
+    void markAwayChanged();
+    void quitInternal(bool skip_sync);
+    void partChannelInternal(IrcChannel* channel, bool skip_sync);
 };
 
 #endif  // IRCUSER_H

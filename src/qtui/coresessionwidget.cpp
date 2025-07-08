@@ -41,9 +41,11 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.labelVersionDate->setText(QString("<i>%1</i>").arg(tr("Unknown date")));
     }
     else {
-        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString(), Qt::DateFormat::DefaultLocaleShortDate));
+        QDateTime versionDate = QDateTime::fromString(map["clientVersionDate"].toString(), Qt::ISODate);
+        ui.labelVersionDate->setText(QLocale().toString(versionDate, QLocale::ShortFormat));
     }
-    ui.labelUptime->setText(map["connectedSince"].toDateTime().toLocalTime().toString(Qt::DateFormat::DefaultLocaleShortDate));
+    QDateTime connectedSince = map["connectedSince"].toDateTime().toLocalTime();
+    ui.labelUptime->setText(QLocale().toString(connectedSince, QLocale::ShortFormat));
     if (map["location"].toString().isEmpty()) {
         ui.labelLocation->hide();
         ui.labelLocationTitle->hide();
@@ -57,15 +59,8 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.disconnectButton->setToolTip(tr("End the client's session, disconnecting it"));
     }
     else {
-        // For any active sessions to be displayed, the core must support this feature.  We can
-        // assume the client doesn't support being remotely disconnected.
-        //
-        // (During the development of 0.13, there was a period of time where active sessions existed
-        //  but did not provide the disconnect option.  We can overlook this.)
-
         // Either core or client doesn't support it, disable the option
         ui.disconnectButton->setEnabled(false);
-        // Assuming the client lacks support, set the tooltip accordingly
         ui.disconnectButton->setToolTip(
             QString("<p>%1</p><p><b>%2</b></p>")
                 .arg(tr("End the client's session, disconnecting it"), tr("This client does not support being remotely disconnected")));

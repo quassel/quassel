@@ -278,11 +278,11 @@ IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem& it
 
     connect(ui.ignoreRuleLineEdit, &QLineEdit::textChanged, this, &IgnoreListEditDlg::widgetHasChanged);
     connect(ui.scopeRuleTextEdit, &QPlainTextEdit::textChanged, this, &IgnoreListEditDlg::widgetHasChanged);
-    connect(&_typeButtonGroup, selectOverload<int>(&QButtonGroup::buttonClicked), this, &IgnoreListEditDlg::widgetHasChanged);
-    connect(&_strictnessButtonGroup, selectOverload<int>(&QButtonGroup::buttonClicked), this, &IgnoreListEditDlg::widgetHasChanged);
-    connect(&_scopeButtonGroup, selectOverload<int>(&QButtonGroup::buttonClicked), this, &IgnoreListEditDlg::widgetHasChanged);
-    connect(ui.isRegExCheckBox, &QCheckBox::stateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
-    connect(ui.isActiveCheckBox, &QCheckBox::stateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(&_typeButtonGroup, &QButtonGroup::idClicked, this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(&_strictnessButtonGroup, &QButtonGroup::idClicked, this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(&_scopeButtonGroup, &QButtonGroup::idClicked, this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(ui.isRegExCheckBox, &QCheckBox::checkStateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
+    connect(ui.isActiveCheckBox, &QCheckBox::checkStateChanged, this, &IgnoreListEditDlg::widgetHasChanged);
 
     connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QAbstractButton::clicked, this, &IgnoreListEditDlg::aboutToAccept);
     widgetHasChanged();

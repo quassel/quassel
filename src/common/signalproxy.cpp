@@ -99,6 +99,16 @@ SignalProxy* SignalProxy::current()
     return _current;
 }
 
+void SignalProxy::requestConnect(NetworkId id)
+{
+    emit connectNetwork(id);
+}
+
+void SignalProxy::requestDisconnect(NetworkId id)
+{
+    emit disconnectNetwork(id);
+}
+
 void SignalProxy::setProxyMode(ProxyMode mode)
 {
     if (!_peerMap.empty()) {

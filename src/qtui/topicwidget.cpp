@@ -113,7 +113,7 @@ void TopicWidget::setTopic(const QModelIndex& index)
                 newtopic = QString("%1 (%2) | %3 | %4")
                                .arg(network->networkName().toHtmlEscaped())
                                .arg(network->currentServer().toHtmlEscaped())
-                               .arg(tr("Users: %1").arg(network->ircUsers().count()))
+                               .arg(tr("Users: %1").arg(network->ircUsers()->count()))
                                .arg(tr("Lag: %1 msecs").arg(network->latency()));
             }
             else {
@@ -153,8 +153,7 @@ void TopicWidget::setTopic(const QModelIndex& index)
     }
 
     QString sanitizedNewTopic = sanitizeTopic(newtopic);
-    if (readonly != _readonly || sanitizedNewTopic != _topic)
-    {
+    if (readonly != _readonly || sanitizedNewTopic != _topic) {
         _topic = sanitizedNewTopic;
         _readonly = readonly;
 
@@ -266,7 +265,7 @@ QString TopicWidget::sanitizeTopic(const QString& topic)
     // a stack overflow later
 
     QString result(topic);
-    for(int i = 0; i< result.length(); i++) {
+    for (int i = 0; i < result.length(); i++) {
         QChar a = result.at(i);
         if (a.isPrint())
             continue;

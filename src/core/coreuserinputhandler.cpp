@@ -531,6 +531,26 @@ void CoreUserInputHandler::handleMode(const BufferInfo& bufferInfo, const QStrin
     emit putCmd("MODE", serverEncode(params));
 }
 
+// TODO: show privmsgs
+void CoreUserInputHandler::handleMsg(const BufferInfo& bufferInfo, const QString& msg)
+{
+    Q_UNUSED(bufferInfo);
+    if (!msg.contains(' '))
+        return;
+
+    QString target = msg.section(' ', 0, 0);
+    QString msgSection = msg.section(' ', 1);
+
+    std::function<QByteArray(const QString&, const QString&)> encodeFunc =
+        [this](const QString& target, const QString& message) -> QByteArray { return userEncode(target, message); };
+
+#ifdef HAVE_QCA2
+    putPrivmsg(target, msgSection, encodeFunc, network()->cipher(target));
+#else
+    putPrivmsg(target, msgSection, encodeFunc);
+#endif
+}
+
 void CoreUserInputHandler::handleNick(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)

@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
 
 #include <QCoreApplication>
 #include <QDateTime>
@@ -63,11 +64,15 @@ Quassel::Quassel()
 #endif
 }
 
+static std::unique_ptr<QRandomGenerator> randomGenerator;
+
 void Quassel::init(RunMode runMode)
 {
     _runMode = runMode;
 
-    QRandomGenerator::global()->seed(QTime::currentTime().msecsSinceStartOfDay());
+    if (!randomGenerator) {
+        randomGenerator = std::make_unique<QRandomGenerator>(QTime::currentTime().msec());
+    }
 
     setupSignalHandling();
     setupEnvironment();

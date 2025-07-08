@@ -30,6 +30,7 @@
 #include "tabcompleter.h"
 
 const int leftMargin = 3;
+#define MultiLineEditParent QTextEdit
 
 MultiLineEdit::MultiLineEdit(QWidget* parent)
     : MultiLineEditParent(parent)
@@ -75,9 +76,7 @@ MultiLineEdit::MultiLineEdit(QWidget* parent)
 
 MultiLineEdit::~MultiLineEdit()
 {
-#if defined HAVE_SONNET && !defined HAVE_KDE
-    delete _spellCheckDecorator;
-#endif
+    // Empty destructor, may include cleanup if needed
 }
 
 #if defined HAVE_SONNET && !defined HAVE_KDE
@@ -102,7 +101,7 @@ void MultiLineEdit::contextMenuEvent(QContextMenuEvent* event)
     auto action = menu->addAction(tr("Auto Spell Check"));
     action->setCheckable(true);
     action->setChecked(highlighter()->isActive());
-    connect(action, &QAction::toggled, this, &MultiLineEdit::setSpellCheckEnabled);
+    connect(action, &QAction::toggledN, this, &MultiLineEdit::setSpellCheckEnabled);
 
     menu->exec(event->globalPos());
     delete menu;
@@ -196,10 +195,10 @@ void MultiLineEdit::updateSizeHint()
     opt.midLineWidth = midLineWidth();
     opt.state |= QStyle::State_Sunken;
     QWidget* widget = this;
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     widget = 0;
 #endif
-    QSize s = style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(100, h).expandedTo(QApplication::globalStrut()), widget);
+    QSize s = style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(100, h), widget);
     if (s != _sizeHint) {
         _sizeHint = s;
         updateGeometry();
@@ -357,8 +356,7 @@ void MultiLineEdit::keyPressEvent(QKeyEvent* event)
         event->accept();
         return;
 
-    default:
-        ;
+    default:;
     }
 
     if (_emacsMode) {
@@ -606,31 +604,23 @@ bool MultiLineEdit::mircCodesChanged(QTextCursor& cursor, QTextCursor& peekcurso
 QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
 {
     QStringList words;
-    QRegularExpression mircCode = QRegularExpression("(\x02|\x1d|\x1f|\x03|\x1E)", Qt::CaseSensitive);
+    QRegularExpression mircCode = QRegularExpression("(\x02|\x1d|\x1f|\x03|\x1E)");
 
     int posLeft = 0;
-    int posRight = 0;
+    QRegularExpressionMatchIterator it = mircCode.globalMatch(text);
 
-    for (;;) {
-        posRight = mircCode.indexIn(text, posLeft);
-
-        if (posRight < 0) {
-            words << text.mid(posLeft);
-            break;  // no more mirc color codes
-        }
-
+    while (it.hasNext()) {
+        QRegularExpressionMatch match = it.next();
+        int posRight = match.capturedStart();
         if (posLeft < posRight) {
             words << text.mid(posLeft, posRight - posLeft);
-            posLeft = posRight;
         }
+        words << match.captured(0);
+        posLeft = posRight + match.capturedLength(0);
+    }
 
-        posRight = text.indexOf(mircCode.cap(), posRight + 1);
-        if (posRight == -1) {
-            words << text.mid(posLeft);
-            break;  // unclosed color code; can't process
-        }
-        words << text.mid(posLeft, posRight + 1 - posLeft);
-        posLeft = posRight + 1;
+    if (posLeft < text.length()) {
+        words << text.mid(posLeft);
     }
 
     for (int i = 0; i < words.count(); i++) {
@@ -672,10 +662,10 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
             words[i].replace(pos, len, "");
             words[i].replace('\x03', "");
         }
-        words[i].replace("&", "&amp;");
-        words[i].replace("<", "&lt;");
-        words[i].replace(">", "&gt;");
-        words[i].replace("\"", "&quot;");
+        words[i].replace("&", "&");
+        words[i].replace("<", "<");
+        words[i].replace(">", ">");
+        words[i].replace("\"", "");
         if (style.isEmpty()) {
             words[i] = "<span>" + words[i] + "</span>";
         }
@@ -731,7 +721,7 @@ void MultiLineEdit::on_textChanged()
                 msg += "<p>";
                 for (int i = 0; i < 4; i++) {
                     msg += lines[i].left(40).toHtmlEscaped();
-                    if (lines[i].count() > 40)
+                    if (lines[i].length() > 40)
                         msg += "...";
                     msg += "<br />";
                 }

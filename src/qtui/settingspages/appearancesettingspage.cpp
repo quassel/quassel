@@ -24,11 +24,12 @@
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
+#include <QRegularExpressionMatch>
+#include <QStandardPaths>
 #include <QStyleFactory>
 
 #include "buffersettings.h"
 #include "qtui.h"
-#include "qtuisettings.h"
 #include "qtuistyle.h"
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget* parent)
@@ -85,27 +86,26 @@ void AppearanceSettingsPage::initStyleComboBox()
 
 void AppearanceSettingsPage::initLanguageComboBox()
 {
-    // Fetch all translation files across all translation paths
-    QStringList translationFiles;
-    for (auto dir : Quassel::translationDirPaths()) {
+    QStringList translationDirs;
+    for (const QString& dataDir : Quassel::dataDirPaths()) {
+        QString i18nDir = QDir(dataDir).filePath("i18n");
+        if (QDir(i18nDir).exists())
+            translationDirs << i18nDir;
+    }
+
+    static const QRegularExpression rx("(qt_)?([a-zA-Z_]+)\\.qm");
+    QRegularExpressionMatch match;
+    for (const QString& dir : translationDirs) {
         QDir i18nDir(dir, "*.qm");
-        translationFiles.append(i18nDir.entryList());
-    }
-
-    if (translationFiles.isEmpty()) {
-        qWarning() << "Could not find any translation files inside translation paths:"
-                   << Quassel::translationDirPaths();
-        return;
-    }
-
-    QRegularExpression rx("(qt_)?([a-zA-Z_]+)\\.qm");
-    foreach (QString translationFile, translationFiles) {
-        if (!rx.exactMatch(translationFile))
-            continue;
-        if (!rx.cap(1).isEmpty())
-            continue;
-        QLocale locale(rx.cap(2));
-        _locales[QLocale::languageToString(locale.language())] = locale;
+        for (const QString& translationFile : i18nDir.entryList()) {
+            match = rx.match(translationFile);
+            if (!match.hasMatch())
+                continue;
+            if (!match.captured(1).isEmpty())
+                continue;
+            QLocale locale(match.captured(2));
+            _locales[QLocale::languageToString(locale.language())] = locale;
+        }
     }
     foreach (QString language, _locales.keys()) {
         ui.languageComboBox->addItem(language);

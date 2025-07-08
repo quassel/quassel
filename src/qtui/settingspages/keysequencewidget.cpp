@@ -2,17 +2,10 @@
  *   Copyright (C) 2005-2022 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
- *   This class has been inspired by KDE's KKeySequenceWidget and uses     *
- *   some code snippets of its implementation, part of kdelibs.            *
- *   The original file is                                                  *
- *       Copyright (C) 1998 Mark Donohoe <donohoe@kde.org>                 *
- *       Copyright (C) 2001 Ellis Whitehead <ellis@kde.org>                *
- *       Copyright (C) 2007 Andreas Hartmetz <ahartmetz@gmail.com>         *
- *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   (at your option) version 3.                                           *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -25,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "keysequencewidget.h"
+
 #include <QApplication>
 #include <QDebug>
 #include <QHBoxLayout>
@@ -32,20 +27,16 @@
 #include <QMessageBox>
 #include <QToolButton>
 
-// This defines the unicode symbols for special keys (kCommandUnicode and friends)
-#ifdef Q_OS_MAC
-#    include <Carbon/Carbon.h>
-#endif
-
 #include "action.h"
 #include "actioncollection.h"
 #include "icon.h"
-#include "keysequencewidget.h"
+#include "macosutils.h"
 
 KeySequenceButton::KeySequenceButton(KeySequenceWidget* d_, QWidget* parent)
     : QPushButton(parent)
     , d(d_)
-{}
+{
+}
 
 bool KeySequenceButton::event(QEvent* e)
 {
@@ -54,9 +45,9 @@ bool KeySequenceButton::event(QEvent* e)
         return true;
     }
 
-    // The shortcut 'alt+c' ( or any other dialog local action shortcut )
+    // The shortcut 'alt+c' (or any other dialog local action shortcut)
     // ended the recording and triggered the action associated with the
-    // action. In case of 'alt+c' ending the dialog.  It seems that those
+    // action. In case of 'alt+c' ending the dialog. It seems that those
     // ShortcutOverride events get sent even if grabKeyboard() is active.
     if (d->isRecording() && e->type() == QEvent::ShortcutOverride) {
         e->accept();
@@ -158,7 +149,7 @@ KeySequenceWidget::KeySequenceWidget(QWidget* parent)
     : QWidget(parent)
 {
     auto* layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     _keyButton = new KeySequenceButton(this, this);
     _keyButton->setFocusPolicy(Qt::StrongFocus);
@@ -212,7 +203,7 @@ bool KeySequenceWidget::isShiftAsModifierAllowed(int keyQt) const
 {
     // Shift only works as a modifier with certain keys. It's not possible
     // to enter the SHIFT+5 key sequence for me because this is handled as
-    // '%' by qt on my keyboard.
+    // '%' by Qt on my keyboard.
     // The working keys are all hardcoded here :-(
     if (keyQt >= Qt::Key_F1 && keyQt <= Qt::Key_F35)
         return true;
@@ -254,13 +245,13 @@ void KeySequenceWidget::updateShortcutDisplay()
         if (_modifierKeys) {
 #ifdef Q_OS_MAC
             if (_modifierKeys & Qt::META)
-                s += QChar(kControlUnicode);
+                s += QChar(getMacControlUnicode());
             if (_modifierKeys & Qt::ALT)
-                s += QChar(kOptionUnicode);
+                s += QChar(getMacOptionUnicode());
             if (_modifierKeys & Qt::SHIFT)
-                s += QChar(kShiftUnicode);
+                s += QChar(getMacShiftUnicode());
             if (_modifierKeys & Qt::CTRL)
-                s += QChar(kCommandUnicode);
+                s += QChar(getMacCommandUnicode());
 #else
             if (_modifierKeys & Qt::META)
                 s += tr("Meta", "Meta key") + '+';
@@ -298,7 +289,7 @@ void KeySequenceWidget::startRecording()
     _keyButton->grabKeyboard();
 
     if (!QWidget::keyboardGrabber()) {
-        qWarning() << "Failed to grab the keyboard! Most likely qt's nograb option is active";
+        qWarning() << "Failed to grab the keyboard! Most likely Qt's nograb option is active";
     }
 
     _keyButton->setDown(true);

@@ -122,6 +122,11 @@ QStringList IrcChannel::userList() const
     return users;
 }
 
+QList<IrcUser*> IrcChannel::ircUsers() const
+{
+    return _userModes.keys();
+}
+
 void IrcChannel::joinIrcUsers(const QStringList& nicks, const QStringList& modes)
 {
     if (nicks.isEmpty())

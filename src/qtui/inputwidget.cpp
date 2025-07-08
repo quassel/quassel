@@ -44,7 +44,7 @@ InputWidget::InputWidget(QWidget* parent)
     , _networkId(0)
 {
     ui.setupUi(this);
-    connect(ui.ownNick, selectOverload<const QString&>(&QComboBox::activated), this, &InputWidget::changeNick);
+    connect(ui.ownNick, &QComboBox::activated, this, [this](int index) { changeNick(ui.ownNick->itemText(index)); });
 
     layout()->setAlignment(ui.ownNick, Qt::AlignBottom);
     layout()->setAlignment(ui.inputEdit, Qt::AlignBottom);
@@ -131,7 +131,7 @@ InputWidget::InputWidget(QWidget* parent)
 
     ActionCollection* coll = QtUi::actionCollection();
     coll->addAction("FocusInputLine",
-                    new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL + Qt::Key_L)});
+                    new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL | Qt::Key_L)});
 
     connect(inputLine(),
             &MultiLineEdit::textEntered,
@@ -156,7 +156,7 @@ void InputWidget::setCustomFont(const QVariant& v)
     QFont font = v.value<QFont>();
     if (font.family().isEmpty())
         font = QApplication::font();
-    // we don't want font styles as this conflics with mirc code richtext editing
+    // we don't want font styles as this conflicts with mirc code richtext editing
     font.setBold(false);
     font.setItalic(false);
     font.setUnderline(false);
@@ -394,15 +394,15 @@ void InputWidget::setNetwork(NetworkId networkId)
     const Network* previousNet = Client::network(_networkId);
     if (previousNet) {
         disconnect(previousNet, nullptr, this, nullptr);
-        if (previousNet->me())
-            disconnect(previousNet->me(), nullptr, this, nullptr);
+        if (IrcUser* me = previousNet->ircUser(previousNet->myNick()))
+            disconnect(me, nullptr, this, nullptr);
     }
 
     _networkId = networkId;
 
     const Network* network = Client::network(networkId);
     if (network) {
-        connect(network, &Network::identitySet, this, &InputWidget::setIdentity);
+        connect(network, &Network::configChanged, this, [this, network]() { setIdentity(network->identity()); });
         connectMyIrcUser();
         setIdentity(network->identity());
     }
@@ -415,12 +415,12 @@ void InputWidget::setNetwork(NetworkId networkId)
 void InputWidget::connectMyIrcUser()
 {
     const Network* network = currentNetwork();
-    if (network->me()) {
-        connect(network->me(), &IrcUser::nickSet, this, &InputWidget::updateNickSelector);
-        connect(network->me(), &IrcUser::userModesSet, this, &InputWidget::updateNickSelector);
-        connect(network->me(), &IrcUser::userModesAdded, this, &InputWidget::updateNickSelector);
-        connect(network->me(), &IrcUser::userModesRemoved, this, &InputWidget::updateNickSelector);
-        connect(network->me(), &IrcUser::awaySet, this, &InputWidget::updateNickSelector);
+    if (IrcUser* me = network->ircUser(network->myNick())) {
+        connect(me, &IrcUser::nickSet, this, &InputWidget::updateNickSelector);
+        connect(me, &IrcUser::userModesSet, this, &InputWidget::updateNickSelector);
+        connect(me, &IrcUser::userModesAdded, this, &InputWidget::updateNickSelector);
+        connect(me, &IrcUser::userModesRemoved, this, &InputWidget::updateNickSelector);
+        connect(me, &IrcUser::awaySet, this, &InputWidget::updateNickSelector);
         disconnect(network, &Network::myNickSet, this, &InputWidget::connectMyIrcUser);
         updateNickSelector();
     }
@@ -475,7 +475,7 @@ void InputWidget::updateNickSelector() const
     if (nicks.isEmpty())
         return;
 
-    IrcUser* me = net->me();
+    IrcUser* me = net->ircUser(net->myNick());
     if (me) {
         nicks[nickIdx] = net->myNick();
         if (!me->userModes().isEmpty())
@@ -484,7 +484,7 @@ void InputWidget::updateNickSelector() const
 
     ui.ownNick->addItems(nicks);
 
-    if (me && me->isAway())
+    if (me && me->away())
         ui.ownNick->setItemData(nickIdx, icon::get({"im-user-away", "user-away"}), Qt::DecorationRole);
 
     ui.ownNick->setCurrentIndex(nickIdx);
@@ -701,7 +701,8 @@ QIcon InputWidget::createColorToolButtonIcon(const QIcon& icon, const QColor& co
 // MOUSE WHEEL FILTER
 MouseWheelFilter::MouseWheelFilter(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 bool MouseWheelFilter::eventFilter(QObject* obj, QEvent* event)
 {

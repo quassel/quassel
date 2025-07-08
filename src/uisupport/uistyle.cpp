@@ -25,7 +25,7 @@
 
 #include <QApplication>
 #include <QColor>
-#include <QMetaType>
+#include <QRegularExpressionMatch>
 
 #include "buffersettings.h"
 #include "icon.h"
@@ -35,14 +35,15 @@
 #include "util.h"
 
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
-bool UiStyle::_useCustomTimestampFormat;
-QString UiStyle::_timestampFormatString;
-QString UiStyle::_systemTimestampFormatString;
-UiStyle::SenderPrefixMode UiStyle::_senderPrefixDisplay;
-bool UiStyle::_showSenderBrackets;
+bool UiStyle::_useCustomTimestampFormat;                  /// If true, use the custom timestamp format
+QString UiStyle::_timestampFormatString;                  /// Timestamp format
+QString UiStyle::_systemTimestampFormatString;            /// Cached copy of system locale timestamp format
+UiStyle::SenderPrefixMode UiStyle::_senderPrefixDisplay;  /// Display of prefix modes before sender
+bool UiStyle::_showSenderBrackets;                        /// If true, show brackets around sender names
 
 namespace {
 
+// Extended mIRC colors as defined in https://modern.ircdocs.horse/formatting.html#colors-16-98
 QColor extendedMircColor(int number)
 {
     static const std::vector<QColor> colorMap = {"#470000", "#472100", "#474700", "#324700", "#004700", "#00472c", "#004747", "#002747",
@@ -77,32 +78,35 @@ UiStyle::UiStyle(QObject* parent)
     , _voiceIconLimit{UserCategoryItem::categoryFromModes("v")}
 {
     static bool registered = []() {
-        qRegisterMetaType<FormatList>("UiStyle::FormatList");
-        qRegisterMetaType<Format>("UiStyle::Format");
-        qRegisterMetaType<MessageLabel>("UiStyle::MessageLabel");
-        qRegisterMetaType<SenderPrefixMode>("UiStyle::SenderPrefixMode");
+        qRegisterMetaType<FormatList>();
         return true;
     }();
     Q_UNUSED(registered)
 
     _uiStylePalette = QVector<QBrush>(static_cast<int>(ColorRole::NumRoles), QBrush());
 
+    // Now initialize the mapping between FormatCodes and FormatTypes...
     _formatCodes["%O"] = FormatType::Base;
     _formatCodes["%B"] = FormatType::Bold;
     _formatCodes["%I"] = FormatType::Italic;
     _formatCodes["%U"] = FormatType::Underline;
     _formatCodes["%S"] = FormatType::Strikethrough;
+
     _formatCodes["%DN"] = FormatType::Nick;
     _formatCodes["%DH"] = FormatType::Hostmask;
     _formatCodes["%DC"] = FormatType::ChannelName;
     _formatCodes["%DM"] = FormatType::ModeFlags;
     _formatCodes["%DU"] = FormatType::Url;
 
+    // Initialize fallback defaults
+    // NOTE: If you change this, update qtui/chatviewsettings.h, too.  More explanations available
+    // in there.
     setUseCustomTimestampFormat(false);
     setTimestampFormatString(" hh:mm:ss");
     setSenderPrefixDisplay(UiStyle::SenderPrefixMode::HighestMode);
     enableSenderBrackets(false);
 
+    // BufferView / NickView settings
     UiStyleSettings s;
     s.initAndNotify("ShowItemViewIcons", this, &UiStyle::showItemViewIconsChanged, true);
     s.initAndNotify("AllowMircColors", this, &UiStyle::allowMircColorsChanged, true);
@@ -211,9 +215,10 @@ void UiStyle::updateSystemTimestampFormat()
     // Note that '\' must be escaped as '\\'
     // QRegularExpression does not support (?> ...), so it's replaced with standard matching, (...)
     // Helpful interactive website for debugging and explaining:  https://regex101.com/
-    const QRegularExpression regExpMatchAMPM(".*(\\b|_)(A|AP)(\\b|_).*", Qt::CaseInsensitive);
+    const QRegularExpression regExpMatchAMPM(".*(\\b|_)(A|AP)(\\b|_).*", QRegularExpression::CaseInsensitiveOption);
 
-    if (regExpMatchAMPM.exactMatch(QLocale().timeFormat(QLocale::ShortFormat))) {
+    auto match = regExpMatchAMPM.match(QLocale().timeFormat(QLocale::ShortFormat));
+    if (match.hasMatch() && match.capturedStart() == 0 && match.capturedLength() == QLocale().timeFormat(QLocale::ShortFormat).length()) {
         // AM/PM style used
         _systemTimestampFormatString = " h:mm:ss ap";
     }
@@ -815,10 +820,11 @@ QString UiStyle::mircToInternal(const QString& mirc_)
             int i = pos + 1;
             QString ins;
             auto num = mirc.mid(i, 6);
-            if (!num.isEmpty() && rx.exactMatch(num)) {
+            if (!num.isEmpty() && rx.match(num).hasMatch() && rx.match(num).capturedLength() == num.length()) {
                 ins = "%Dhf#" + num.toLower();
                 i += 6;
-                if (i < mirc.length() && mirc[i] == ',' && !(num = mirc.mid(i + 1, 6)).isEmpty() && rx.exactMatch(num)) {
+                if (i < mirc.length() && mirc[i] == ',' && !(num = mirc.mid(i + 1, 6)).isEmpty() && rx.match(num).hasMatch()
+                    && rx.match(num).capturedLength() == num.length()) {
                     ins += "%Dhb#" + num.toLower();
                     i += 7;
                 }
@@ -956,7 +962,7 @@ void UiStyle::StyledMessage::style() const
         break;
     case Message::DayChange: {
         //: Day Change Message
-        t = tr("{Day changed to %1}").arg(timestamp().date().toString(Qt::DefaultLocaleLongDate));
+        t = tr("{Day changed to %1}").arg(QLocale().toString(timestamp().date(), QLocale::LongFormat));
     } break;
     case Message::Topic:
         t = QString("%1").arg(txt);
@@ -1117,12 +1123,12 @@ quint8 UiStyle::StyledMessage::senderHash() const
 
     if (!nick.isEmpty()) {
         int chopCount = 0;
-        while (chopCount < nick.size() && nick.at(nick.count() - 1 - chopCount) == '_')
+        while (chopCount < nick.size() && nick.at(nick.size() - 1 - chopCount) == '_')
             chopCount++;
         if (chopCount < nick.size())
             nick.chop(chopCount);
     }
-    quint16 hash = qChecksum(nick.toLatin1().data(), nick.toLatin1().size());
+    quint16 hash = qChecksum(QByteArrayView(nick.toLatin1()));
     return (_senderHash = (hash & 0xf) + 1);
 }
 

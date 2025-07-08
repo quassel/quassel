@@ -234,9 +234,9 @@ void NetworkModelController::handleNetworkAction(ActionType type, QAction*)
         foreach (NetworkId id, Client::networkIds()) {
             const Network* net = Client::network(id);
             if ((type == NetworkConnectAllWithDropdown || type == NetworkConnectAll) && net->connectionState() == Network::Disconnected)
-                net->requestConnect();
+                Client::signalProxy()->requestConnect(id);
             if ((type == NetworkDisconnectAllWithDropdown || type == NetworkDisconnectAll) && net->connectionState() != Network::Disconnected)
-                net->requestDisconnect();
+                Client::signalProxy()->requestDisconnect(id);
         }
         return;
     }
@@ -251,10 +251,10 @@ void NetworkModelController::handleNetworkAction(ActionType type, QAction*)
 
     switch (type) {
     case NetworkConnect:
-        network->requestConnect();
+        Client::signalProxy()->requestConnect(network->networkId());
         break;
     case NetworkDisconnect:
-        network->requestDisconnect();
+        Client::signalProxy()->requestDisconnect(network->networkId());
         break;
     default:
         break;

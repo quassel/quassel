@@ -182,7 +182,7 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex& index) const
 
         // If we're in Edit Mode, everything except Status Buffers should be hideable.
         if (_editMode && bufferType != BufferInfo::StatusBuffer) {
-            flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
+            flags |= Qt::ItemIsUserCheckable;
         }
     }
     return flags;

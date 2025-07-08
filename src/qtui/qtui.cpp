@@ -344,7 +344,7 @@ void QtUi::refreshIconTheme()
         auto xdgDataDirs = qgetenv("XDG_DATA_DIRS");
         if (!xdgDataDirs.isEmpty())
             xdgDataDirs += ":";
-        xdgDataDirs += _dummyThemeDir->path();
+        xdgDataDirs += _dummyThemeDir->path().toUtf8();
         qputenv("XDG_DATA_DIRS", xdgDataDirs);
 
         QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << _dummyThemeDir->path() + "/icons");
