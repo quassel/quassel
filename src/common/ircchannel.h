@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2025 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -44,7 +44,7 @@ public:
     QString topic() const { return _topic; }
     QString password() const { return _password; }
     bool encrypted() const { return _encrypted; }
-    QString modes() const;  // Added getter for channel modes
+    QString modes() const;
 
     inline std::optional<QStringConverter::Encoding> codecForEncoding() const { return _codecForEncoding; }
     inline std::optional<QStringConverter::Encoding> codecForDecoding() const { return _codecForDecoding; }
@@ -59,6 +59,7 @@ public:
     bool hasUser(IrcUser* user) const;
     QString userModes(IrcUser* user) const;
     QStringList userList() const;
+    QList<IrcUser*> ircUsers() const;  // Added for tabcompleter.cpp
 
     QVariantMap toVariantMap() override;
     void fromVariantMap(const QVariantMap& map) override;
@@ -100,7 +101,7 @@ private:
     std::optional<QStringConverter::Encoding> _codecForEncoding;
     std::optional<QStringConverter::Encoding> _codecForDecoding;
     QHash<IrcUser*, QString> _userModes;
-    QHash<QString, QString> _channelModes;  // Added to store channel modes
+    QHash<QString, QString> _channelModes;
 
     friend class Network;
 };

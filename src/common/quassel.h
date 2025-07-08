@@ -88,21 +88,21 @@ public:
     enum class LegacyFeature : quint32
     {
         SynchronizedMarkerLine = 0x0001,
-        SaslAuthentication     = 0x0002,
-        SaslExternal           = 0x0004,
-        HideInactiveNetworks   = 0x0008,
-        PasswordChange         = 0x0010,
-        CapNegotiation         = 0x0020,
-        VerifyServerSSL        = 0x0040,
-        CustomRateLimits       = 0x0080,
+        SaslAuthentication = 0x0002,
+        SaslExternal = 0x0004,
+        HideInactiveNetworks = 0x0008,
+        PasswordChange = 0x0010,
+        CapNegotiation = 0x0020,
+        VerifyServerSSL = 0x0040,
+        CustomRateLimits = 0x0080,
         // DccFileTransfer     = 0x0100,  // never in use
-        AwayFormatTimestamp    = 0x0200,
-        Authenticators         = 0x0400,
-        BufferActivitySync     = 0x0800,
-        CoreSideHighlights     = 0x1000,
-        SenderPrefixes         = 0x2000,
-        RemoteDisconnect       = 0x4000,
-        ExtendedFeatures       = 0x8000,
+        AwayFormatTimestamp = 0x0200,
+        Authenticators = 0x0400,
+        BufferActivitySync = 0x0800,
+        CoreSideHighlights = 0x1000,
+        SenderPrefixes = 0x2000,
+        RemoteDisconnect = 0x4000,
+        ExtendedFeatures = 0x8000,
     };
     Q_FLAGS(LegacyFeature)
     Q_DECLARE_FLAGS(LegacyFeatures, LegacyFeature)

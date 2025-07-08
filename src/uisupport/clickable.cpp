@@ -22,6 +22,7 @@
 
 #include <QDesktopServices>
 #include <QModelIndex>
+#include <QRegularExpressionMatch>
 #include <QUrl>
 
 #include "buffermodel.h"
@@ -60,12 +61,12 @@ ClickableList ClickableList::fromString(const QString& str)
 
     static QRegularExpression regExp[] = {
         // URL
-        // QRegularExpression(QString("((?:https?://|s?ftp://|irc://|mailto:|www\\.)%1+|%1+\\.[a-z]{2,4}(?:?=/%1+|\\b))%2").arg(urlChars, urlEnd)),
-        QRegularExpression(QString("\\b(%1%2(?:/%3*)?)%4").arg(scheme, authority, urlChars, urlEnd), Qt::CaseInsensitive),
+        QRegularExpression(QString("\\b(%1%2(?:/%3*)?)%4").arg(scheme, authority, urlChars, urlEnd),
+                           QRegularExpression::CaseInsensitiveOption),
 
         // Channel name
         // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
-        QRegularExpression(R"(((?:#|![A-Z0-9]{5})[^,:\s]+(?::[^,:\s]+)?)\b)", Qt::CaseInsensitive)
+        QRegularExpression(R"(((?:#|![A-Z0-9]{5})[^,:\s]+(?::[^,:\s]+)?)\b)", QRegularExpression::CaseInsensitiveOption)
 
         // TODO: Nicks, we'll need a filtering for only matching known nicknames further down if we do this
     };
@@ -89,9 +90,10 @@ ClickableList ClickableList::fromString(const QString& str)
             if (matches[i] < 0 || matchEnd[i] > str.length())
                 continue;
             if (idx >= matchEnd[i]) {
-                matches[i] = regExp[i].indexIn(str, qMax(matchEnd[i], idx));
+                QRegularExpressionMatch match = regExp[i].match(str, qMax(matchEnd[i], idx));
+                matches[i] = match.hasMatch() ? match.capturedStart(1) : -1;
                 if (matches[i] >= 0)
-                    matchEnd[i] = matches[i] + regExp[i].cap(1).length();
+                    matchEnd[i] = matches[i] + match.captured(1).length();
             }
             if (matches[i] >= 0 && matches[i] < minidx) {
                 minidx = matches[i];
@@ -109,7 +111,8 @@ ClickableList ClickableList::fromString(const QString& str)
             }
             if (type == Clickable::Channel) {
                 // don't make clickable if it could be a #number
-                if (QRegularExpression("^#\\d+$").exactMatch(match))
+                QRegularExpression numberCheck("^#\\d+$", QRegularExpression::CaseInsensitiveOption);
+                if (numberCheck.match(match).hasMatch())
                     continue;
             }
             result.emplace_back((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]);
@@ -120,7 +123,7 @@ ClickableList ClickableList::fromString(const QString& str)
 
 Clickable ClickableList::atCursorPos(int idx)
 {
-    foreach (const Clickable& click, *this) {
+    for (const Clickable& click : *this) {
         if (idx >= click.start() && idx < click.start() + click.length())
             return click;
     }

@@ -40,6 +40,37 @@ Network::Network(const NetworkId& networkId, QObject* parent)
     static_cast<QObject*>(this)->setObjectName(QString::number(networkId.toInt()));
 }
 
+NetworkInfo Network::toNetworkInfo() const
+{
+    NetworkInfo info;
+    info.networkId = networkId();
+    info.networkName = networkName();
+    info.identity = identity();
+    info.codecForServer = codecForServer();
+    info.codecForEncoding = codecForEncoding();
+    info.codecForDecoding = codecForDecoding();
+    info.serverList = serverList();
+    info.useRandomServer = useRandomServer();
+    info.perform = perform();
+    info.skipCaps = skipCaps();
+    info.useAutoIdentify = useAutoIdentify();
+    info.autoIdentifyService = autoIdentifyService();
+    info.autoIdentifyPassword = autoIdentifyPassword();
+    info.useSasl = useSasl();
+    info.saslAccount = saslAccount();
+    info.saslPassword = saslPassword();
+    info.useAutoReconnect = useAutoReconnect();
+    info.autoReconnectInterval = autoReconnectInterval();
+    info.autoReconnectRetries = autoReconnectRetries();
+    info.unlimitedReconnectRetries = unlimitedReconnectRetries();
+    info.rejoinChannels = rejoinChannels();
+    info.useCustomMessageRate = useCustomMessageRate();
+    info.messageRateBurstSize = messageRateBurstSize();
+    info.messageRateDelay = messageRateDelay();
+    info.unlimitedMessageRate = unlimitedMessageRate();
+    return info;
+}
+
 Network::~Network()
 {
     removeChansAndUsers();

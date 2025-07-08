@@ -46,7 +46,7 @@
 // IRCv3 capabilities
 #include "irccap.h"
 
-// defined below!
+// Forward declaration of NetworkInfo
 struct NetworkInfo;
 
 class COMMON_EXPORT Network : public SyncableObject
@@ -266,6 +266,7 @@ public:
     inline QString myNick() const { return _myNick; }
     inline int latency() const { return _latency; }
     inline IdentityId identity() const { return _identity; }
+    NetworkInfo toNetworkInfo() const;
     inline ServerList serverList() const { return _serverList; }
     inline bool useRandomServer() const { return _useRandomServer; }
     inline QStringList perform() const { return _perform; }
@@ -291,9 +292,9 @@ public:
     inline const QStringList& enabledCaps() const { return _enabledCaps; }
 
     IrcUser* ircUser(const QString& nickname) const;
-    inline QHash<QString, IrcUser*>* ircUsers() { return &_ircUsers; }
+    inline const QHash<QString, IrcUser*>* ircUsers() const { return &_ircUsers; }
     IrcChannel* ircChannel(const QString& channelname) const;
-    inline QHash<QString, IrcChannel*>* ircChannels() { return &_ircChannels; }
+    inline const QHash<QString, IrcChannel*>* ircChannels() const { return &_ircChannels; }
 
     IrcUser* newIrcUser(const QString& hostmask, const QVariantMap& initData = QVariantMap());
     IrcChannel* newIrcChannel(const QString& channelname, const QVariantMap& initData = QVariantMap());
@@ -481,6 +482,27 @@ struct NetworkInfo
     QVariantMap toVariantMap() const;
     void fromVariantMap(const QVariantMap& map);
 };
+
+// Comparison operators for NetworkInfo
+inline bool operator==(const NetworkInfo& lhs, const NetworkInfo& rhs)
+{
+    return lhs.networkId == rhs.networkId && lhs.networkName == rhs.networkName && lhs.identity == rhs.identity
+           && lhs.codecForServer == rhs.codecForServer && lhs.codecForEncoding == rhs.codecForEncoding
+           && lhs.codecForDecoding == rhs.codecForDecoding && lhs.serverList == rhs.serverList && lhs.useRandomServer == rhs.useRandomServer
+           && lhs.perform == rhs.perform && lhs.skipCaps == rhs.skipCaps && lhs.useAutoIdentify == rhs.useAutoIdentify
+           && lhs.autoIdentifyService == rhs.autoIdentifyService && lhs.autoIdentifyPassword == rhs.autoIdentifyPassword
+           && lhs.useSasl == rhs.useSasl && lhs.saslAccount == rhs.saslAccount && lhs.saslPassword == rhs.saslPassword
+           && lhs.useAutoReconnect == rhs.useAutoReconnect && lhs.autoReconnectInterval == rhs.autoReconnectInterval
+           && lhs.autoReconnectRetries == rhs.autoReconnectRetries && lhs.unlimitedReconnectRetries == rhs.unlimitedReconnectRetries
+           && lhs.rejoinChannels == rhs.rejoinChannels && lhs.useCustomMessageRate == rhs.useCustomMessageRate
+           && lhs.messageRateBurstSize == rhs.messageRateBurstSize && lhs.messageRateDelay == rhs.messageRateDelay
+           && lhs.unlimitedMessageRate == rhs.unlimitedMessageRate;
+}
+
+inline bool operator!=(const NetworkInfo& lhs, const NetworkInfo& rhs)
+{
+    return !(lhs == rhs);
+}
 
 Q_DECLARE_METATYPE(NetworkInfo)
 Q_DECLARE_METATYPE(Network::Server)

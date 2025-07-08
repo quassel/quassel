@@ -177,8 +177,11 @@ endif()
 
 if (WITH_NOTIFICATION_CENTER)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_NOTIFICATION_CENTER)
-    target_sources(${TARGET} PRIVATE osxnotificationbackend.mm)
-    target_link_libraries(${TARGET} PRIVATE "/System/Library/Frameworks/Foundation.framework")
+    target_sources(${TARGET} PRIVATE macosnotificationbackend.mm macosutils.mm)
+    target_link_libraries(${TARGET} PRIVATE
+        "-framework Foundation"
+        "-framework UserNotifications" # Added for osxnotificationbackend.mm
+    )
 endif()
 
 if (WITH_OXYGEN_ICONS)

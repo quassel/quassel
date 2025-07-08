@@ -204,10 +204,12 @@ void ToolBarActionProvider::connectOrDisconnectNet()
     if (!net)
         return;
 
-    if (net->connectionState() == Network::Disconnected)
-        net->requestConnect();
-    else
-        net->requestDisconnect();
+    if (net->connectionState() == Network::Disconnected) {
+        Client::signalProxy()->requestConnect(net->networkId());
+    }
+    else {
+        Client::signalProxy()->requestDisconnect(net->networkId());
+    }
 }
 
 // void ToolBarActionProvider::

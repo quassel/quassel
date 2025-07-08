@@ -49,10 +49,6 @@ IrcUser::IrcUser(const QString& hostmask, Network* network)
     _lastAwayMessageTime.setMSecsSinceEpoch(0);
 }
 
-// ====================
-//  PUBLIC:
-// ====================
-
 QString IrcUser::hostmask() const
 {
     return QString("%1!%2@%3").arg(nick()).arg(user()).arg(host());
@@ -61,8 +57,6 @@ QString IrcUser::hostmask() const
 QDateTime IrcUser::idleTime()
 {
     if ((QDateTime::currentDateTime().toMSecsSinceEpoch() - _idleTimeSet.toMSecsSinceEpoch()) > 1200000) {
-        // 20 * 60 * 1000 = 1200000
-        // 20 minutes have elapsed, clear the known idle time as it's likely inaccurate by now
         _idleTime = QDateTime();
     }
     return _idleTime;
@@ -105,9 +99,6 @@ QByteArray IrcUser::encodeString(const QString& string) const
     return network()->encodeString(string);
 }
 
-// ====================
-//  PUBLIC SLOTS:
-// ====================
 void IrcUser::setUser(const QString& user)
 {
     if (!user.isEmpty() && _user != user) {
@@ -189,7 +180,6 @@ void IrcUser::setLastAwayMessage(int lastAwayMessage)
 #if QT_VERSION >= 0x050800
     QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage);
 #else
-    // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
     QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000);
 #endif
     lastAwayMessageTime.setTimeZone(QTimeZone("UTC"));
@@ -327,7 +317,6 @@ void IrcUser::quitInternal(bool skip_sync)
 
 void IrcUser::channelDestroyed()
 {
-    // private slot!
     auto* channel = static_cast<IrcChannel*>(sender());
     if (_channels.contains(channel)) {
         _channels.remove(channel);
@@ -350,7 +339,6 @@ void IrcUser::addUserModes(const QString& modes)
     if (modes.isEmpty())
         return;
 
-    // Don't needlessly sync when no changes are made
     bool changesMade = false;
     for (int i = 0; i < modes.size(); i++) {
         if (!_userModes.contains(modes[i])) {
@@ -387,4 +375,19 @@ void IrcUser::setLastSpokenTo(BufferId buffer, const QDateTime& time)
 {
     _lastSpokenTo[buffer] = time;
     emit lastSpokenToUpdated(buffer, time);
+}
+
+QDateTime IrcUser::lastSpokenTo(BufferId buffer) const
+{
+    return _lastSpokenTo.value(buffer);
+}
+
+QDateTime IrcUser::lastChannelActivity(BufferId buffer) const
+{
+    return _lastActivity.value(buffer);
+}
+
+void IrcUser::markAwayChanged()
+{
+    emit awaySet(_away);
 }
