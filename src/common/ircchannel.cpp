@@ -35,11 +35,24 @@ IrcChannel::IrcChannel(const QString& channelname, Network* network)
     static_cast<QObject*>(this)->setObjectName(QString::number(network->networkId().toInt()) + "/" + channelname);
 }
 
+QString IrcChannel::modes() const
+{
+    QString modeString;
+    for (auto it = _channelModes.constBegin(); it != _channelModes.constEnd(); ++it) {
+        modeString += it.key();
+        if (!it.value().isEmpty()) {
+            modeString += " " + it.value();
+        }
+    }
+    return modeString;
+}
+
 void IrcChannel::setTopic(const QString& topic)
 {
     if (_topic != topic) {
         _topic = topic;
         SYNC(ARG(topic))
+        emit topicChanged(topic);
     }
 }
 
@@ -56,6 +69,7 @@ void IrcChannel::setEncrypted(bool encrypted)
     if (_encrypted != encrypted) {
         _encrypted = encrypted;
         SYNC(ARG(encrypted))
+        emit encryptedChanged(encrypted);
     }
 }
 
@@ -122,10 +136,11 @@ void IrcChannel::joinIrcUsers(const QStringList& nicks, const QStringList& modes
         if (!_userModes.contains(user)) {
             _userModes[user] = i < modes.size() ? modes[i] : QString();
             connect(user, &QObject::destroyed, this, &IrcChannel::userDestroyed);
-            user->joinChannel(this, true);  // Skip reciprocal join to avoid infinite loop
+            user->joinChannel(this, true);
         }
     }
     SYNC_OTHER(joinIrcUsers, ARG(nicks), ARG(modes))
+    emit usersJoined(nicks, modes);
 }
 
 void IrcChannel::joinIrcUser(IrcUser* user)
@@ -133,10 +148,11 @@ void IrcChannel::joinIrcUser(IrcUser* user)
     if (!_userModes.contains(user)) {
         _userModes[user] = QString();
         connect(user, &QObject::destroyed, this, &IrcChannel::userDestroyed);
-        user->joinChannel(this, true);  // Skip reciprocal join to avoid infinite loop
+        user->joinChannel(this, true);
         QStringList nicks = QStringList() << user->nick();
         QStringList modes = QStringList() << QString();
         SYNC_OTHER(joinIrcUsers, ARG(nicks), ARG(modes))
+        emit usersJoined(nicks, modes);
     }
 }
 
@@ -147,6 +163,7 @@ void IrcChannel::part(IrcUser* user)
         disconnect(user, nullptr, this, nullptr);
         QString nick = user->nick();
         SYNC_OTHER(part, ARG(nick))
+        emit userParted(user);
     }
 }
 
@@ -157,6 +174,7 @@ void IrcChannel::partChannel()
     }
     network()->removeIrcChannel(this);
     SYNC_OTHER(partChannel, NO_ARG)
+    emit parted();
 }
 
 void IrcChannel::setUserModes(IrcUser* user, const QString& modes)
@@ -165,6 +183,7 @@ void IrcChannel::setUserModes(IrcUser* user, const QString& modes)
         _userModes[user] = modes;
         QString nick = user->nick();
         SYNC_OTHER(setUserModes, ARG(nick), ARG(modes))
+        emit userModesChanged(user, modes);
     }
 }
 
@@ -176,6 +195,7 @@ void IrcChannel::addUserMode(IrcUser* user, const QString& mode)
             _userModes[user] = currentModes + mode;
             QString nick = user->nick();
             SYNC_OTHER(addUserMode, ARG(nick), ARG(mode))
+            emit userModeAdded(user, mode);
         }
     }
 }
@@ -189,24 +209,25 @@ void IrcChannel::removeUserMode(IrcUser* user, const QString& mode)
             _userModes[user] = currentModes;
             QString nick = user->nick();
             SYNC_OTHER(removeUserMode, ARG(nick), ARG(mode))
+            emit userModeRemoved(user, mode);
         }
     }
 }
 
 void IrcChannel::addChannelMode(const QString& mode, const QString& param)
 {
-    // Placeholder: implement if channel modes are stored
-    Q_UNUSED(mode)
-    Q_UNUSED(param)
-    SYNC_OTHER(addChannelMode, ARG(mode), ARG(param))
+    if (!mode.isEmpty()) {
+        _channelModes[mode] = param;
+        SYNC_OTHER(addChannelMode, ARG(mode), ARG(param))
+    }
 }
 
 void IrcChannel::removeChannelMode(const QString& mode, const QString& param)
 {
-    // Placeholder: implement if channel modes are stored
-    Q_UNUSED(mode)
-    Q_UNUSED(param)
-    SYNC_OTHER(removeChannelMode, ARG(mode), ARG(param))
+    if (_channelModes.contains(mode)) {
+        _channelModes.remove(mode);
+        SYNC_OTHER(removeChannelMode, ARG(mode), ARG(param))
+    }
 }
 
 void IrcChannel::ircUserNickSet(const QString& newnick)
@@ -251,7 +272,6 @@ void IrcChannel::fromVariantMap(const QVariantMap& map)
 {
     if (map.contains("name")) {
         _name = map["name"].toString().toLower();
-        // Replace updateObjectName() with setObjectName
         static_cast<QObject*>(this)->setObjectName(QString::number(network()->networkId().toInt()) + "/" + _name);
     }
     if (map.contains("topic")) {

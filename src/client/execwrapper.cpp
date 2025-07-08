@@ -101,12 +101,16 @@ void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status)
     }
 
     // empty buffers
-    if (!_stdoutBuffer.isEmpty())
-        foreach (QString msg, _stdoutBuffer.split('\n'))
+    if (!_stdoutBuffer.isEmpty()) {
+        for (const QString& msg : _stdoutBuffer.split('\n')) {
             emit output(msg);
-    if (!_stderrBuffer.isEmpty())
-        foreach (QString msg, _stderrBuffer.split('\n'))
+        }
+    }
+    if (!_stderrBuffer.isEmpty()) {
+        for (const QString& msg : _stderrBuffer.split('\n')) {
             emit error(msg);
+        }
+    }
 
     deleteLater();
 }
