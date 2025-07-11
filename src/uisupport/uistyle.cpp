@@ -489,7 +489,8 @@ void UiStyle::mergeFormat(QTextCharFormat& charFormat, const Format& format, Mes
     if ((format.type & 0xfff00) != FormatType::Base) {  // element format
         for (quint32 mask = 0x00100; mask <= 0x80000; mask <<= 1) {
             if ((format.type & mask) != FormatType::Base) {
-                mergeSubElementFormat(charFormat, format.type & (mask | 0xff), label);
+                mergeSubElementFormat(charFormat,
+                    format.type & (mask | 0xff), label);
             }
         }
     }
@@ -1126,8 +1127,12 @@ quint8 UiStyle::StyledMessage::senderHash() const
         if (chopCount < nick.size())
             nick.chop(chopCount);
     }
-    quint16 hash = qChecksum(nick.toLatin1().data(), nick.toLatin1().size());
-    return (_senderHash = (hash & 0xf) + 1);
+
+
+    // quint16 hash = qChecksum(nick.toLatin1().data(), nick.toLatin1().size());
+    QByteArray nb = nick.toLocal8Bit();
+    quint16 col = (qChecksum(nb, nb.size()) >> ((nb.length() + nb[0]) % 12)) & 0x0f;
+    return (_senderHash = col + 1);
 }
 
 /***********************************************************************************/

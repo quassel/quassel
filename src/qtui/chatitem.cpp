@@ -637,7 +637,12 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w)
     WrapColumnFinder finder(this);
     while (finder.nextWrapColumn(w) > 0)
         lines++;
-    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height());  // cope with negative leading()
+
+    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height()); // cope with negative leading()
+#ifdef Q_OS_MAC
+    spacing *= 1.1 // slightly larger lines to fit emoji
+#endif
+
     qreal h = lines * spacing;
     delete _data;
     _data = nullptr;
@@ -661,7 +666,11 @@ void ContentsChatItem::doLayout(QTextLayout* layout) const
         return;  // empty chatitem
 
     qreal h = 0;
-    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height());  // cope with negative leading()
+    qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height()); // cope with negative leading()
+#ifdef Q_OS_MAC
+    spacing *= 1.1 // slightly larger lines to fit emoji
+#endif
+
     WrapColumnFinder finder(this);
     layout->beginLayout();
     forever
