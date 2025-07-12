@@ -6,21 +6,21 @@
 #ifdef Q_OS_MAC
 #include <QtGlobal>
 #include <Foundation/Foundation.h>
-#include <Carbon/Carbon.h> // For kCommandUnicode, kControlUnicode, etc.
+#include <AppKit/NSEvent.h> // For modern key constants
 
 quint32 getMacCommandUnicode() {
-    return kCommandUnicode;
+    return 0x2318; // ⌘ Command key Unicode
 }
 
 quint32 getMacControlUnicode() {
-    return kControlUnicode;
+    return 0x2303; // ⌃ Control key Unicode  
 }
 
 quint32 getMacOptionUnicode() {
-    return kOptionUnicode;
+    return 0x2325; // ⌥ Option key Unicode
 }
 
 quint32 getMacShiftUnicode() {
-    return kShiftUnicode;
+    return 0x21E7; // ⇧ Shift key Unicode
 }
 #endif

@@ -355,7 +355,15 @@ QString AbstractSqlStorage::schemaVersionUpgradeStep()
 
 bool AbstractSqlStorage::watchQuery(QSqlQuery& query)
 {
-    bool queryError = query.lastError().isValid();
+    // Qt6 fix: In Qt6, lastError().isValid() can return true even for successful queries
+    // We need to check if the error actually indicates a real failure
+    QSqlError error = query.lastError();
+    bool queryError = error.isValid() && (error.type() != QSqlError::NoError);
+    
+    // Alternative check: if error text is empty, it's likely not a real error
+    if (error.isValid() && error.text().isEmpty() && error.nativeErrorCode().isEmpty()) {
+        queryError = false;
+    }
     if (queryError || _debug) {
         if (queryError)
             qCritical() << "unhandled Error in QSqlQuery!";

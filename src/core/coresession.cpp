@@ -83,6 +83,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     , _highlightRuleManager(this)
     , _metricsServer(Core::instance()->metricsServer())
 {
+    qDebug() << "[DEBUG] CoreSession constructor called for user" << uid;
     SignalProxy* p = signalProxy();
     p->setHeartBeatInterval(30);
     p->setMaxHeartBeatCount(60);  // 30 mins until we throw a dead socket out
@@ -107,6 +108,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     p->attachSignal(this, &CoreSession::networkRemoved);
     p->attachSlot(SIGNAL(createNetwork(NetworkInfo, QStringList)), this, &CoreSession::createNetwork);
     p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, &CoreSession::removeNetwork);
+    qDebug() << "[DEBUG] CoreSession: attaching connectNetwork slot";
+    p->attachSlot("2connectNetwork(NetworkId)", this, &CoreSession::connectToNetwork);
+    qDebug() << "[DEBUG] CoreSession: attaching disconnectNetwork slot";
+    p->attachSlot("2disconnectNetwork(NetworkId)", this, &CoreSession::disconnectFromNetwork);
 
     p->attachSlot(SIGNAL(changePassword(PeerPtr, QString, QString, QString)), this, &CoreSession::changePassword);
     p->attachSignal(this, &CoreSession::passwordChanged);
@@ -248,7 +253,21 @@ void CoreSession::saveSessionState() const
 
 void CoreSession::restoreSessionState()
 {
-    for (NetworkId id : Core::connectedNetworks(user())) {
+    auto connectedNets = Core::connectedNetworks(user());
+    qDebug() << "[DEBUG] CoreSession::restoreSessionState() found" << connectedNets.size() << "connected networks to restore";
+    
+    // Also check all networks and their connection states for debugging
+    auto allNets = Core::networks(user());
+    qDebug() << "[DEBUG] CoreSession::restoreSessionState() total networks:" << allNets.size();
+    for (auto netInfo : allNets) {
+        auto net = network(netInfo.networkId);
+        if (net) {
+            qDebug() << "[DEBUG] Network" << netInfo.networkId << "connected:" << net->isConnected();
+        }
+    }
+    
+    for (NetworkId id : connectedNets) {
+        qDebug() << "[DEBUG] CoreSession::restoreSessionState() restoring network" << id;
         auto net = network(id);
         Q_ASSERT(net);
         net->connectToIrc();
@@ -389,8 +408,10 @@ void CoreSession::processMessages()
         const RawMessage& rawMsg = _messageQueue.first();
         bool createBuffer = !(rawMsg.flags & Message::Redirected);
         BufferInfo bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target, createBuffer);
+        qDebug() << "[DEBUG] processMessages: bufferType:" << rawMsg.bufferType << "target:" << rawMsg.target << "createBuffer:" << createBuffer << "bufferInfo.isValid():" << bufferInfo.isValid();
         if (!bufferInfo.isValid()) {
             Q_ASSERT(!createBuffer);
+            qDebug() << "[DEBUG] processMessages: Buffer creation failed, falling back to StatusBuffer";
             bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, BufferInfo::StatusBuffer, "");
         }
         Message msg(rawMsg.timestamp,
@@ -402,8 +423,15 @@ void CoreSession::processMessages()
                     realName(rawMsg.sender, rawMsg.networkId),
                     avatarUrl(rawMsg.sender, rawMsg.networkId),
                     rawMsg.flags);
-        if (Core::storeMessage(msg))
+        bool stored = Core::storeMessage(msg);
+        qDebug() << "[DEBUG] processMessages: Message stored:" << stored << "text:" << msg.contents();
+        qDebug() << "[DEBUG] processMessages: Message flags:" << msg.flags() << "sender:" << msg.sender() << "type:" << msg.type();
+        if (stored) {
+            qDebug() << "[DEBUG] processMessages: Emitting displayMsg signal for bufferId:" << msg.bufferInfo().bufferId();
             emit displayMsg(msg);
+        } else {
+            qDebug() << "[DEBUG] processMessages: Failed to store message, not displaying";
+        }
     }
     else {
         QHash<NetworkId, QHash<QString, BufferInfo>> bufferInfoCache;
@@ -708,6 +736,33 @@ void CoreSession::destroyNetwork(NetworkId id)
         net->deleteLater();
     }
 }
+
+void CoreSession::connectToNetwork(NetworkId networkId)
+{
+    qDebug() << "[DEBUG] CoreSession::connectToNetwork called for network" << networkId << "in thread" << QThread::currentThread();
+    CoreNetwork* net = network(networkId);
+    if (!net) {
+        qWarning() << "CoreSession::connectToNetwork(): Network" << networkId << "not found";
+        return;
+    }
+    
+    qDebug() << "[DEBUG] CoreSession::connectToNetwork: calling net->requestConnect()";
+    net->requestConnect();
+}
+
+void CoreSession::disconnectFromNetwork(NetworkId networkId)
+{
+    qDebug() << "[DEBUG] CoreSession::disconnectFromNetwork called for network" << networkId;
+    CoreNetwork* net = network(networkId);
+    if (!net) {
+        qWarning() << "CoreSession::disconnectFromNetwork(): Network" << networkId << "not found";
+        return;
+    }
+    
+    qDebug() << "[DEBUG] CoreSession::disconnectFromNetwork: calling net->requestDisconnect()";
+    net->requestDisconnect();
+}
+
 
 void CoreSession::renameBuffer(const NetworkId& networkId, const QString& newName, const QString& oldName)
 {

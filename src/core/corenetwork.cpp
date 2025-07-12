@@ -103,6 +103,7 @@ CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
 
 CoreNetwork::~CoreNetwork()
 {
+    qDebug() << Q_FUNC_INFO << "Destroying CoreNetwork with ID:" << networkId();
     disconnect(&socket, nullptr, this, nullptr);
     if (!forceDisconnect()) {
         qWarning() << QString{"Could not disconnect from network %1 (network ID: %2, user ID: %3)"}
@@ -162,9 +163,15 @@ QByteArray CoreNetwork::userEncode(const QString& userNick, const QString& strin
 
 void CoreNetwork::connectToIrc(bool reconnecting)
 {
+    qDebug() << "[DEBUG] CoreNetwork::connectToIrc called for network" << networkId() << "reconnecting:" << reconnecting;
+    
     if (_shuttingDown) {
+        qDebug() << "[DEBUG] CoreNetwork::connectToIrc - shutting down, aborting connection";
         return;
     }
+    
+    // Reset shutdown flag when explicitly connecting
+    _shuttingDown = false;
 
     if (Core::instance()->identServer()) {
         _socketId = Core::instance()->identServer()->addWaitingSocket();
@@ -233,6 +240,7 @@ void CoreNetwork::connectToIrc(bool reconnecting)
         QHostInfo::fromName(server.host);
     }
     if (server.useSsl) {
+        qDebug() << "[DEBUG] Connecting with SSL to" << server.host << "port" << server.port;
         CoreIdentity* identity = identityPtr();
         if (identity) {
             socket.setLocalCertificate(identity->sslCert());
@@ -241,12 +249,29 @@ void CoreNetwork::connectToIrc(bool reconnecting)
         socket.connectToHostEncrypted(server.host, server.port);
     }
     else {
+        qDebug() << "[DEBUG] Connecting without SSL to" << server.host << "port" << server.port;
         socket.connectToHost(server.host, server.port);
     }
 }
 
 void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool withReconnect)
 {
+    qDebug() << Q_FUNC_INFO << "Disconnecting network:" << networkId() << "at address:" << this;
+    _disconnectExpected = true;
+    _quitRequested = requested;
+    if (!withReconnect) {
+        _autoReconnectTimer.stop();
+        _autoReconnectCount = 0;
+    }
+    disablePingTimeout();
+    _msgQueue.clear();
+    if (_metricsServer) {
+        _metricsServer->messageQueue(userId(), 0);
+    }
+    _shuttingDown = true;
+    qDebug() << Q_FUNC_INFO << "Clearing event queue for network:" << networkId();
+    coreSession()->eventManager()->postEvent(nullptr);
+
     _disconnectExpected = true;
     _quitRequested = requested;
     if (!withReconnect) {
@@ -462,9 +487,14 @@ bool CoreNetwork::setAutoWhoDone(const QString& name)
 
 void CoreNetwork::setMyNick(const QString& mynick)
 {
+    qDebug() << "[DEBUG] CoreNetwork::setMyNick called for network" << networkId() << "nick:" << mynick << "connectionState:" << connectionState();
     Network::setMyNick(mynick);
-    if (connectionState() == Network::Initializing)
+    if (connectionState() == Network::Initializing) {
+        qDebug() << "[DEBUG] CoreNetwork::setMyNick calling networkInitialized()";
         networkInitialized();
+    } else {
+        qDebug() << "[DEBUG] CoreNetwork::setMyNick NOT calling networkInitialized() - wrong state:" << connectionState();
+    }
 }
 
 void CoreNetwork::onSocketHasData()
@@ -478,8 +508,14 @@ void CoreNetwork::onSocketHasData()
             s.chop(2);
         else if (s.endsWith("\n"))
             s.chop(1);
-        NetworkDataEvent* event = new NetworkDataEvent(EventManager::NetworkIncoming, this, s);
+        if (_shuttingDown) {
+            qWarning() << Q_FUNC_INFO << "CoreNetwork is shutting down, skipping event emission for network:" << networkId();
+            return;
+        }
+        qDebug() << Q_FUNC_INFO << "Emitting NetworkDataEvent for network:" << networkId() << "at address:" << this;
+        NetworkDataEvent* event = new NetworkDataEvent(EventManager::NetworkIncoming, this, s, this);
         event->setTimestamp(QDateTime::currentDateTimeUtc());
+        qDebug() << Q_FUNC_INFO << "Created NetworkDataEvent at address:" << event << "with network:" << event->network();
         emit newEvent(event);
     }
 }
@@ -543,6 +579,7 @@ void CoreNetwork::onSocketInitialized()
 
 void CoreNetwork::onSocketDisconnected()
 {
+    qDebug() << "[DEBUG] CoreNetwork::onSocketDisconnected() called for network" << networkId();
     disablePingTimeout();
     _msgQueue.clear();
     if (_metricsServer) {
@@ -565,7 +602,9 @@ void CoreNetwork::onSocketDisconnected()
         }
     }
 
+    qDebug() << "[DEBUG] CoreNetwork::onSocketDisconnected() about to call setConnected(false), current state:" << isConnected();
     setConnected(false);
+    qDebug() << "[DEBUG] CoreNetwork::onSocketDisconnected() called setConnected(false), new state:" << isConnected();
     emit disconnected(networkId());
     emit socketDisconnected(identityPtr(), localAddress(), localPort(), peerAddress(), peerPort(), _socketId);
     _disconnectExpected = false;
@@ -613,6 +652,7 @@ void CoreNetwork::onSocketStateChanged(QAbstractSocket::SocketState socketState)
 
 void CoreNetwork::networkInitialized()
 {
+    qDebug() << "[DEBUG] CoreNetwork::networkInitialized() called for network" << networkId();
     setConnectionState(Network::Initialized);
     setConnected(true);
     _disconnectExpected = false;
@@ -705,7 +745,9 @@ void CoreNetwork::restoreUserModes()
         addModes = modesDelta;
     }
 
-    addModes.remove(QRegularExpression(QString("[%1]").arg(currentModes)));
+    if (!currentModes.isEmpty()) {
+        addModes.remove(QRegularExpression(QString("[%1]").arg(currentModes)));
+    }
     if (currentModes.isEmpty())
         removeModes = QString();
     else
@@ -748,12 +790,20 @@ void CoreNetwork::updateIssuedModes(const QString& requestedModes)
     QString addModesOld = _requestedUserModes.section('-', 0, 0);
     QString removeModesOld = _requestedUserModes.section('-', 1);
 
-    addModes.remove(QRegularExpression(QString("[%1]").arg(addModesOld)));
-    addModesOld.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
+    if (!addModesOld.isEmpty()) {
+        addModes.remove(QRegularExpression(QString("[%1]").arg(addModesOld)));
+    }
+    if (!removeModes.isEmpty()) {
+        addModesOld.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
+    }
     addModes += addModesOld;
 
-    removeModes.remove(QRegularExpression(QString("[%1]").arg(removeModesOld)));
-    removeModesOld.remove(QRegularExpression(QString("[%1]").arg(addModes)));
+    if (!removeModesOld.isEmpty()) {
+        removeModes.remove(QRegularExpression(QString("[%1]").arg(removeModesOld)));
+    }
+    if (!addModes.isEmpty()) {
+        removeModesOld.remove(QRegularExpression(QString("[%1]").arg(addModes)));
+    }
     removeModes += removeModesOld;
 
     _requestedUserModes = QString("%1-%2").arg(addModes).arg(removeModes);
@@ -785,14 +835,26 @@ void CoreNetwork::updatePersistentModes(QString addModes, QString removeModes)
     else
         removeModes.remove(QRegularExpression(QString("[^%1]").arg(requestedRemove)));
 
-    persistentAdd.remove(QRegularExpression(QString("[%1]").arg(addModes)));
-    persistentRemove.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
+    if (!addModes.isEmpty()) {
+        persistentAdd.remove(QRegularExpression(QString("[%1]").arg(addModes)));
+    }
+    if (!removeModes.isEmpty()) {
+        persistentRemove.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
+    }
 
-    persistentAdd.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
-    persistentRemove.remove(QRegularExpression(QString("[%1]").arg(addModes)));
+    if (!removeModes.isEmpty()) {
+        persistentAdd.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
+    }
+    if (!addModes.isEmpty()) {
+        persistentRemove.remove(QRegularExpression(QString("[%1]").arg(addModes)));
+    }
 
-    requestedAdd.remove(QRegularExpression(QString("[%1]").arg(addModes)));
-    requestedRemove.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
+    if (!addModes.isEmpty()) {
+        requestedAdd.remove(QRegularExpression(QString("[%1]").arg(addModes)));
+    }
+    if (!removeModes.isEmpty()) {
+        requestedRemove.remove(QRegularExpression(QString("[%1]").arg(removeModes)));
+    }
     _requestedUserModes = QString("%1-%2").arg(requestedAdd).arg(requestedRemove);
 
     persistentAdd += addModes;
@@ -1326,27 +1388,33 @@ Network::Server CoreNetwork::usedServer() const
     return Network::Server();
 }
 
-void CoreNetwork::requestConnect() const
+void CoreNetwork::requestConnect()
 {
+    qDebug() << "[DEBUG] CoreNetwork::requestConnect called for network" << networkId();
     if (_shuttingDown) {
-        return;
+        qDebug() << "[DEBUG] CoreNetwork::requestConnect - was shutting down, resetting flag";
+        _shuttingDown = false;
     }
     if (connectionState() != Disconnected) {
         qWarning() << "Requesting connect while already being connected!";
         return;
     }
-    QMetaObject::invokeMethod(const_cast<CoreNetwork*>(this), "connectToIrc", Qt::QueuedConnection);
+    qDebug() << "[DEBUG] CoreNetwork::requestConnect - invoking connectToIrc";
+    QMetaObject::invokeMethod(this, "connectToIrc", Qt::QueuedConnection);
 }
 
-void CoreNetwork::requestDisconnect() const
+void CoreNetwork::requestDisconnect()
 {
+    qDebug() << "[DEBUG] CoreNetwork::requestDisconnect called for network" << networkId();
     if (_shuttingDown) {
+        qDebug() << "[DEBUG] CoreNetwork::requestDisconnect - shutting down, aborting";
         return;
     }
     if (connectionState() == Disconnected) {
         qWarning() << "Requesting disconnect while not being connected!";
         return;
     }
+    qDebug() << "[DEBUG] CoreNetwork::requestDisconnect - handling quit";
     userInputHandler()->handleQuit(BufferInfo(), QString());
 }
 

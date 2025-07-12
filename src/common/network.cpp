@@ -38,6 +38,10 @@ Network::Network(const NetworkId& networkId, QObject* parent)
     , _networkId(networkId)
 {
     static_cast<QObject*>(this)->setObjectName(QString::number(networkId.toInt()));
+    
+    // Initialize default channel prefixes (RFC 2812 and common extensions)
+    // These will be updated when the server sends RPL_ISUPPORT (005)
+    _channelPrefixes = {"#", "&"};
 }
 
 NetworkInfo Network::toNetworkInfo() const
@@ -216,6 +220,7 @@ void Network::setIdentity(IdentityId identity)
 void Network::setConnected(bool connected)
 {
     if (_connected != connected) {
+        qDebug() << "[DEBUG] Network::setConnected" << networkId() << "changing from" << _connected << "to" << connected;
         _connected = connected;
         SYNC(ARG(connected))
         _connectionState = connected ? ConnectionState::Initialized : ConnectionState::Disconnected;
@@ -601,16 +606,26 @@ IrcUser* Network::newIrcUser(const QString& hostmask, const QVariantMap& initDat
 
     IrcUser* ircUser = new IrcUser(hostmask, this);
     _ircUsers[nick] = ircUser;
-    static_cast<QObject*>(ircUser)->setObjectName(QString("%1/%2").arg(_networkId.toInt()).arg(nick));
+    QString objectName = QString("%1/%2").arg(_networkId.toInt()).arg(nickFromMask(hostmask));
+    static_cast<QObject*>(ircUser)->setObjectName(objectName);
     connect(ircUser, &IrcUser::nickSet, this, &Network::ircUserNickSet);
     connect(ircUser, &QObject::destroyed, this, &Network::ircUserDestroyed);
+
+    qDebug() << "[DEBUG] Network::newIrcUser creating:" << hostmask << "objectName:" << objectName << "nick:" << nick;
 
     if (!initData.isEmpty())
         ircUser->fromVariantMap(initData);
 
-    if (_proxy)
+    if (_proxy) {
+        qDebug() << "[DEBUG] Synchronizing IrcUser:" << objectName << "with proxy";
         _proxy->synchronize(ircUser);
+        // Notify client side to create the IrcUser object
+        SYNC_OTHER(newIrcUserCreated, ARG(hostmask), ARG(initData))
+    } else {
+        qDebug() << "[DEBUG] No proxy available for IrcUser:" << objectName;
+    }
 
+    qDebug() << "[DEBUG] Network::newIrcUser emitting newIrcUserSynced for:" << objectName;
     emit newIrcUserSynced(ircUser);
     return ircUser;
 }
@@ -623,14 +638,26 @@ IrcChannel* Network::newIrcChannel(const QString& channelname, const QVariantMap
 
     IrcChannel* ircChannel = new IrcChannel(channelname, this);
     _ircChannels[chan] = ircChannel;
-    static_cast<QObject*>(ircChannel)->setObjectName(QString("%1/%2").arg(_networkId.toInt()).arg(chan));
+    QString objectName = QString("%1/%2").arg(_networkId.toInt()).arg(channelname);
+    static_cast<QObject*>(ircChannel)->setObjectName(objectName);
+
+    qDebug() << "[DEBUG] Creating IrcChannel:" << channelname << "objectName:" << objectName << "chan:" << chan;
 
     if (!initData.isEmpty())
         ircChannel->fromVariantMap(initData);
 
-    if (_proxy)
+    if (_proxy) {
+        qDebug() << "[DEBUG] Synchronizing IrcChannel:" << objectName << "with proxy";
         _proxy->synchronize(ircChannel);
+        
+        // Also sync the Network object to ensure client receives updated channel list
+        qDebug() << "[DEBUG] Triggering Network sync update for new IrcChannel";
+        SYNC_OTHER(newIrcChannelCreated, ARG(channelname), ARG(initData))
+    } else {
+        qDebug() << "[DEBUG] No proxy available for IrcChannel:" << objectName;
+    }
 
+    emit newIrcChannelSynced(ircChannel);
     return ircChannel;
 }
 
@@ -688,7 +715,7 @@ void Network::ircUserNickSet(const QString& newnick)
     if (_ircUsers.contains(oldnick)) {
         _ircUsers.remove(oldnick);
         _ircUsers[newnickLower] = ircUser;
-        static_cast<QObject*>(ircUser)->setObjectName(QString("%1/%2").arg(_networkId.toInt()).arg(newnickLower));
+        static_cast<QObject*>(ircUser)->setObjectName(QString("%1/%2").arg(_networkId.toInt()).arg(newnick));
     }
 }
 
@@ -712,18 +739,102 @@ QVariantMap Network::initIrcUsersAndChannels() const
     }
     result["IrcUsers"] = users;
     result["IrcChannels"] = channels;
+    
+    qDebug() << "[DEBUG] initIrcUsersAndChannels returning:" << users.size() << "users and" << channels.size() << "channels";
+    qDebug() << "[DEBUG] User keys:" << users.keys();
+    qDebug() << "[DEBUG] Channel keys:" << channels.keys();
+    
     return result;
 }
 
 void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
 {
+    qDebug() << "[DEBUG] initSetIrcUsersAndChannels called on network:" << networkId() << "with" << usersAndChannels.size() << "items";
+    
     QVariantMap users = usersAndChannels["IrcUsers"].toMap();
+    qDebug() << "[DEBUG] Processing" << users.size() << "IrcUsers:" << users.keys();
     for (auto it = users.constBegin(); it != users.constEnd(); ++it) {
+        qDebug() << "[DEBUG] Creating IrcUser from init data:" << it.key();
         newIrcUser(it.key(), it.value().toMap());
     }
+    
     QVariantMap channels = usersAndChannels["IrcChannels"].toMap();
+    qDebug() << "[DEBUG] Processing" << channels.size() << "IrcChannels:" << channels.keys();
     for (auto it = channels.constBegin(); it != channels.constEnd(); ++it) {
+        qDebug() << "[DEBUG] Creating IrcChannel from init data:" << it.key();
         newIrcChannel(it.key(), it.value().toMap());
+    }
+}
+
+void Network::newIrcUserCreated(const QString& hostmask, const QVariantMap& initData)
+{
+    qDebug() << "[DEBUG] newIrcUserCreated called for user:" << hostmask << "on network:" << networkId();
+    
+    // This method is called on the client side when the server creates a new IrcUser
+    // We need to create the IrcUser object on the client side too
+    QString nick = nickFromMask(hostmask).toLower();
+    if (!_ircUsers.contains(nick)) {
+        qDebug() << "[DEBUG] Creating IrcUser on client side:" << hostmask;
+        newIrcUser(hostmask, initData);
+    } else {
+        qDebug() << "[DEBUG] IrcUser already exists on client side:" << hostmask;
+    }
+}
+
+void Network::newIrcChannelCreated(const QString& channelname, const QVariantMap& initData)
+{
+    qDebug() << "[DEBUG] newIrcChannelCreated called for channel:" << channelname << "on network:" << networkId();
+    
+    // This method is called on the client side when the server creates a new IrcChannel
+    // We need to create the IrcChannel object on the client side too
+    if (!ircChannel(channelname)) {
+        qDebug() << "[DEBUG] Creating IrcChannel on client side:" << channelname;
+        newIrcChannel(channelname, initData);
+    } else {
+        qDebug() << "[DEBUG] IrcChannel already exists on client side:" << channelname;
+    }
+}
+
+QVariantMap Network::toVariantMap()
+{
+    qDebug() << "[DEBUG] Network::toVariantMap() called for network" << networkId();
+    
+    QVariantMap map = SyncableObject::toVariantMap();
+    
+    // Include IrcUsers and IrcChannels data
+    QVariantMap usersAndChannels = initIrcUsersAndChannels();
+    
+    // Qt6 doesn't have unite(), use insert() instead
+    for (auto it = usersAndChannels.constBegin(); it != usersAndChannels.constEnd(); ++it) {
+        map.insert(it.key(), it.value());
+    }
+    
+    qDebug() << "[DEBUG] Network::toVariantMap() including" << usersAndChannels.size() << "items from initIrcUsersAndChannels";
+    
+    return map;
+}
+
+void Network::fromVariantMap(const QVariantMap& map)
+{
+    qDebug() << "[DEBUG] Network::fromVariantMap() called for network" << networkId() << "with" << map.size() << "items";
+    qDebug() << "[DEBUG] Map keys:" << map.keys();
+    
+    SyncableObject::fromVariantMap(map);
+    
+    // Handle IrcUsers and IrcChannels data
+    if (map.contains("IrcUsers") || map.contains("IrcChannels")) {
+        QVariantMap usersAndChannels;
+        if (map.contains("IrcUsers")) {
+            usersAndChannels["IrcUsers"] = map["IrcUsers"];
+            qDebug() << "[DEBUG] fromVariantMap found IrcUsers:" << map["IrcUsers"].toMap().keys();
+        }
+        if (map.contains("IrcChannels")) {
+            usersAndChannels["IrcChannels"] = map["IrcChannels"];
+            qDebug() << "[DEBUG] fromVariantMap found IrcChannels:" << map["IrcChannels"].toMap().keys();
+        }
+        
+        qDebug() << "[DEBUG] Network::fromVariantMap() calling initSetIrcUsersAndChannels with" << usersAndChannels.size() << "items";
+        initSetIrcUsersAndChannels(usersAndChannels);
     }
 }
 
@@ -804,6 +915,7 @@ QVariantMap NetworkInfo::toVariantMap() const
     return map;
 }
 
+
 void NetworkInfo::fromVariantMap(const QVariantMap& map)
 {
     networkId = NetworkId(map.value("networkId").toInt());
@@ -831,4 +943,28 @@ void NetworkInfo::fromVariantMap(const QVariantMap& map)
     messageRateBurstSize = map.value("messageRateBurstSize").toUInt();
     messageRateDelay = map.value("messageRateDelay").toUInt();
     unlimitedMessageRate = map.value("unlimitedMessageRate").toBool();
+}
+
+void Network::requestConnect()
+{
+    qDebug() << "[DEBUG] Network::requestConnect called for network" << networkId();
+    qDebug() << "[DEBUG] Network::requestConnect proxy:" << proxy() << "thread:" << QThread::currentThread();
+    // Call the SignalProxy method to emit the signal
+    if (proxy()) {
+        qDebug() << "[DEBUG] Network::requestConnect calling SignalProxy::requestNetworkConnect";
+        proxy()->requestNetworkConnect(networkId());
+        qDebug() << "[DEBUG] Network::requestConnect finished calling SignalProxy::requestNetworkConnect";
+    } else {
+        qDebug() << "[DEBUG] Network::requestConnect - no proxy available!";
+    }
+}
+
+void Network::requestDisconnect()
+{
+    qDebug() << "[DEBUG] Network::requestDisconnect called for network" << networkId();
+    // Call the SignalProxy method to emit the signal
+    if (proxy()) {
+        qDebug() << "[DEBUG] Network::requestDisconnect calling SignalProxy::requestNetworkDisconnect";
+        proxy()->requestNetworkDisconnect(networkId());
+    }
 }

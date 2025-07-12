@@ -22,6 +22,7 @@
 
 #include <QRegularExpression>
 
+#include "core.h"
 #include "ctcpparser.h"
 #include "util.h"
 
@@ -36,6 +37,7 @@ CoreUserInputHandler::CoreUserInputHandler(CoreNetwork* parent)
 
 void CoreUserInputHandler::handleUserInput(const BufferInfo& bufferInfo, const QString& msg)
 {
+    qDebug() << "[DEBUG] handleUserInput called with bufferInfo.type():" << bufferInfo.type() << "bufferName:" << bufferInfo.bufferName() << "msg:" << msg;
     if (msg.isEmpty())
         return;
 
@@ -531,7 +533,6 @@ void CoreUserInputHandler::handleMode(const BufferInfo& bufferInfo, const QStrin
     emit putCmd("MODE", serverEncode(params));
 }
 
-// TODO: show privmsgs
 void CoreUserInputHandler::handleMsg(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo);
@@ -540,6 +541,16 @@ void CoreUserInputHandler::handleMsg(const BufferInfo& bufferInfo, const QString
 
     QString target = msg.section(' ', 0, 0);
     QString msgSection = msg.section(' ', 1);
+
+    // Log outgoing PRIVMSG to query buffer (fixes TODO: show privmsgs)
+    if (!target.startsWith('#') && !target.startsWith('&')) {
+        // This is a private message, create/find query buffer and log the outgoing message
+        BufferInfo queryBuffer = Core::bufferInfo(network()->coreSession()->user(), network()->networkId(), BufferInfo::QueryBuffer, target, true);
+        qDebug() << "[DEBUG] handleMsg: Created/found query buffer for target:" << target << "bufferId:" << queryBuffer.bufferId() << "isValid:" << queryBuffer.isValid();
+        
+        emit displayMsg(
+            NetworkInternalMessage(Message::Plain, BufferInfo::QueryBuffer, target, msgSection, network()->myNick(), Message::Self));
+    }
 
     std::function<QByteArray(const QString&, const QString&)> encodeFunc =
         [this](const QString& target, const QString& message) -> QByteArray { return userEncode(target, message); };
@@ -648,10 +659,14 @@ void CoreUserInputHandler::handleQuery(const BufferInfo& bufferInfo, const QStri
             // handleMsg is a no-op if message is empty
         }
         else {
-            if (!network()->enabledCaps().contains(IrcCap::ECHO_MESSAGE)) {
-                emit displayMsg(
-                    NetworkInternalMessage(Message::Plain, BufferInfo::QueryBuffer, target, message, network()->myNick(), Message::Self));
-            }
+            // Ensure query buffer exists and is properly synchronized before logging message
+            BufferInfo queryBuffer = Core::bufferInfo(network()->coreSession()->user(), network()->networkId(), BufferInfo::QueryBuffer, target, true);
+            qDebug() << "[DEBUG] handleQuery: Created/found query buffer for target:" << target << "bufferId:" << queryBuffer.bufferId() << "isValid:" << queryBuffer.isValid();
+            
+            // Always log outgoing query messages to ensure they appear in chat history
+            emit displayMsg(
+                NetworkInternalMessage(Message::Plain, BufferInfo::QueryBuffer, target, message, network()->myNick(), Message::Self));
+            
             // handleMsg needs the target specified at the beginning of the message
             handleMsg(bufferInfo, target + " " + message);
         }

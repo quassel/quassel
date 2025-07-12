@@ -304,7 +304,9 @@ public:
     void removeChansAndUsers();
 
     QVariantMap initIrcUsersAndChannels() const;
-    void initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels);
+
+    QVariantMap toVariantMap() override;
+    void fromVariantMap(const QVariantMap& map) override;
 
     inline bool autoAwayActive() const { return _autoAwayActive; }
     inline QDateTime lastAwayMessageTime() const { return _lastAwayMessageTime; }
@@ -321,7 +323,7 @@ public:
 public slots:
     void setNetworkName(const QString& networkName);
     void setCurrentServer(const QString& currentServer);
-    void setMyNick(const QString& mynick);
+    virtual void setMyNick(const QString& mynick);
     void setLatency(int latency);
     void setCodecForServer(const QByteArray& codecName);
     void setCodecForEncoding(const QByteArray& codecName);
@@ -372,6 +374,12 @@ public slots:
 
     void updateAutoAway(bool active, const QDateTime& lastAwayMessageTime = QDateTime());
 
+    Q_INVOKABLE void initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels);
+    Q_INVOKABLE void newIrcUserCreated(const QString& hostmask, const QVariantMap& initData);
+    Q_INVOKABLE void newIrcChannelCreated(const QString& channelname, const QVariantMap& initData);
+    Q_INVOKABLE virtual void requestConnect();
+    Q_INVOKABLE virtual void requestDisconnect();
+
 signals:
     void configChanged();
     void connected();
@@ -382,6 +390,7 @@ signals:
 
     void newIrcUserSynced(IrcUser* ircuser);
     void ircUserRemoved(IrcUser* ircuser);
+    void newIrcChannelSynced(IrcChannel* ircChannel);
     void ircChannelRemoved(IrcChannel* ircChannel);
 
 private slots:

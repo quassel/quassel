@@ -71,6 +71,7 @@ public slots:
     void joinIrcUsers(const QStringList& nicks, const QStringList& modes);
     void joinIrcUser(IrcUser* user);
     void part(IrcUser* user);
+    void part(const QString& nick);
     void partChannel();
     void setUserModes(IrcUser* user, const QString& modes);
     void addUserMode(IrcUser* user, const QString& mode);

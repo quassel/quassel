@@ -30,6 +30,7 @@
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QLibraryInfo>
+#include <QLoggingCategory>
 #include <QMetaEnum>
 #include <QMetaType>
 #include <QRandomGenerator>
@@ -39,6 +40,7 @@
 #include <QUuid>
 
 #include "bufferinfo.h"
+#include "ctcpevent.h"
 #include "identity.h"
 #include "logger.h"
 #include "message.h"
@@ -48,6 +50,37 @@
 #include "syncableobject.h"
 #include "types.h"
 #include "version.h"
+
+// Qt6 compatibility: Custom QHostAddress serialization operators for Qt_4_2 format
+QDataStream& operator<<(QDataStream& stream, const QHostAddress& address)
+{
+    // For Qt_4_2 compatibility, we serialize as string
+    if (stream.version() <= QDataStream::Qt_4_2) {
+        stream << address.toString();
+    }
+    else {
+        // Use Qt's native serialization for newer formats
+        stream << address.toString();
+    }
+    return stream;
+}
+
+QDataStream& operator>>(QDataStream& stream, QHostAddress& address)
+{
+    // For Qt_4_2 compatibility, we deserialize from string
+    if (stream.version() <= QDataStream::Qt_4_2) {
+        QString addressString;
+        stream >> addressString;
+        address.setAddress(addressString);
+    }
+    else {
+        // Use Qt's native deserialization for newer formats
+        QString addressString;
+        stream >> addressString;
+        address.setAddress(addressString);
+    }
+    return stream;
+}
 
 #ifndef Q_OS_WIN
 #    include "posixsignalwatcher.h"
@@ -83,9 +116,13 @@ void Quassel::init(RunMode runMode)
 
     setupCliParser();
 
+    // Enable Qt debug output for sync debugging
+    setupQtDebugOutput();
+
     // Don't keep a debug log on the core
     logger()->setup(runMode != RunMode::CoreOnly);
 
+    // These should be called as early as possible
     Network::setDefaultCodecForServer("UTF-8");
     Network::setDefaultCodecForEncoding("UTF-8");
     Network::setDefaultCodecForDecoding("ISO-8859-15");
@@ -158,6 +195,9 @@ void Quassel::registerMetaTypes()
 
     qRegisterMetaType<Protocol::SessionState>("Protocol::SessionState");
     qRegisterMetaType<PeerPtr>("PeerPtr");
+
+    // Register event types for proper event dispatching
+    qRegisterMetaType<CtcpEvent*>("CtcpEvent*");
 }
 
 void Quassel::setupEnvironment()
@@ -305,6 +345,41 @@ void Quassel::handleSignal(AbstractSignalWatcher::Action action)
         logBacktrace(instance()->coreDumpFileName());
         exit(EXIT_FAILURE);
     }
+}
+
+void Quassel::setupQtDebugOutput()
+{
+    // Enable Qt debug output for sync debugging
+    // This can be controlled by environment variables, e.g.:
+    // export QT_LOGGING_RULES="*.debug=true"
+    // export QT_LOGGING_RULES="qt.*.debug=false;*.debug=true"
+
+    // For debugging sync issues, we want to see all debug output
+    // This can be overridden by setting QT_LOGGING_RULES environment variable
+    if (qEnvironmentVariableIsEmpty("QT_LOGGING_RULES")) {
+        // Enable debug logging for our custom debug messages
+        QLoggingCategory::setFilterRules("*.debug=true");
+
+        // You can also set specific categories if needed:
+        // QLoggingCategory::setFilterRules("qt.*.debug=false;quassel.*.debug=true");
+    }
+
+    // Store the original handler before installing our custom one
+    static QtMessageHandler originalHandler = qInstallMessageHandler(nullptr);
+
+    // Install a custom message handler to ensure debug output goes to console
+    qInstallMessageHandler([](QtMsgType type, const QMessageLogContext& context, const QString& msg) {
+        // Call the original handler first if it exists
+        if (originalHandler) {
+            originalHandler(type, context, msg);
+        }
+
+        // Also output [DEBUG] messages to stderr for immediate visibility
+        if (type == QtDebugMsg && msg.contains("[DEBUG]")) {
+            fprintf(stderr, "[DEBUG] %s\n", qPrintable(msg));
+            fflush(stderr);
+        }
+    });
 }
 
 Quassel::RunMode Quassel::runMode()

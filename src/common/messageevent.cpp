@@ -49,7 +49,7 @@ MessageEvent::MessageEvent(Message::Type msgType,
         if (!_target.isEmpty() && network()->prefixes().contains(_target.at(0)))
             _target = _target.mid(1);
 
-        if (_target.startsWith('$') || _target.startsWith('#'))
+        if ((_target.startsWith('$') || _target.startsWith('#')) && _msgType != Message::Part)
             _target = nickFromMask(_sender);
     }
 

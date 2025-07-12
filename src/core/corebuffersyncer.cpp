@@ -87,23 +87,23 @@ void CoreBufferSyncer::storeDirtyIds()
 {
     UserId userId = _coreSession->user();
     MsgId msgId;
-    foreach (BufferId bufferId, dirtyLastSeenBuffers) {
+    for (BufferId bufferId : dirtyLastSeenBuffers) {
         msgId = lastSeenMsg(bufferId);
         if (msgId.isValid())
             Core::setBufferLastSeenMsg(userId, bufferId, msgId);
     }
 
-    foreach (BufferId bufferId, dirtyMarkerLineBuffers) {
+    for (BufferId bufferId : dirtyMarkerLineBuffers) {
         msgId = markerLine(bufferId);
         if (msgId.isValid())
             Core::setBufferMarkerLineMsg(userId, bufferId, msgId);
     }
 
-    foreach (BufferId bufferId, dirtyActivities) {
+    for (BufferId bufferId : dirtyActivities) {
         Core::setBufferActivity(userId, bufferId, activity(bufferId));
     }
 
-    foreach (BufferId bufferId, dirtyHighlights) {
+    for (BufferId bufferId : dirtyHighlights) {
         Core::setHighlightCount(userId, bufferId, highlightCount(bufferId));
     }
 
@@ -138,11 +138,17 @@ void CoreBufferSyncer::removeBuffer(BufferId bufferId)
             return;
         }
     }
+    
+    // Remove buffer from UI immediately for responsive feedback
+    BufferSyncer::removeBuffer(bufferId);
+    
+    // Then do the expensive database deletion in background
     emit doRemoveBuffer(bufferId);
 }
 
 void CoreBufferSyncer::onBufferRemoved(BufferId bufferId) {
-    BufferSyncer::removeBuffer(bufferId);
+    // Buffer already removed from UI in removeBuffer(), this just confirms background deletion completed
+    qDebug() << "Background deletion completed for buffer" << bufferId;
 }
 
 void CoreBufferSyncer::renameBuffer(BufferId bufferId, QString newName)
@@ -211,7 +217,7 @@ void CoreBufferSyncer::purgeBufferIds()
                    [](auto&& bufferInfo) { return bufferInfo.bufferId(); });
 
     QSet<BufferId> storedIds = toQSet(lastSeenBufferIds()) + toQSet(markerLineBufferIds());
-    foreach (BufferId bufferId, storedIds) {
+    for (BufferId bufferId : storedIds) {
         if (actualBuffers.find(bufferId) == actualBuffers.end()) {
             BufferSyncer::removeBuffer(bufferId);
         }

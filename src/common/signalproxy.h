@@ -198,8 +198,8 @@ public:
     void setTargetPeer(Peer* targetPeer);
 
     // Add methods for network connect/disconnect
-    void requestConnect(NetworkId id);
-    void requestDisconnect(NetworkId id);
+    void requestNetworkConnect(NetworkId id);
+    void requestNetworkDisconnect(NetworkId id);
 
 protected:
     void customEvent(QEvent* event) override;

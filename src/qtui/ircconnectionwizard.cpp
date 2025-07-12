@@ -94,7 +94,7 @@ void IrcConnectionWizard::networkReady(NetworkId id)
     disconnect(Client::instance(), &Client::networkCreated, this, &IrcConnectionWizard::networkReady);
     const Network* net = Client::network(id);
     Q_ASSERT(net);
-    Client::signalProxy()->requestConnect(id);
+    const_cast<Network*>(net)->requestConnect();
     deleteLater();
 }
 

@@ -113,7 +113,14 @@ void IgnoreListSettingsPage::deleteSelectedIgnoreRule()
     if (!ui.ignoreListView->selectionModel()->hasSelection())
         return;
 
-    _ignoreListModel.removeIgnoreRule(ui.ignoreListView->selectionModel()->selectedIndexes()[0].row());
+    QModelIndexList selectedIndexes = ui.ignoreListView->selectionModel()->selectedIndexes();
+    if (selectedIndexes.isEmpty())
+        return;
+
+    int row = selectedIndexes[0].row();
+    if (row >= 0 && row < _ignoreListModel.rowCount()) {
+        _ignoreListModel.removeIgnoreRule(row);
+    }
 }
 
 void IgnoreListSettingsPage::newIgnoreRule(const QString& rule)
@@ -124,15 +131,20 @@ void IgnoreListSettingsPage::newIgnoreRule(const QString& rule)
     newItem.setIsRegEx(false);
     newItem.setIsEnabled(true);
 
-    bool enableOkButton = false;
     if (!rule.isEmpty()) {
-        // we're called from contextmenu
         newItem.setContents(rule);
-        enableOkButton = true;
+        if (_ignoreListModel.newIgnoreRule(newItem)) {
+            return;
+        }
+        else {
+            QMessageBox::information(this,
+                                     tr("Rule already exists"), 
+                                     tr("The rule \"%1\" already exists in the ignore list.").arg(rule));
+            return;
+        }
     }
 
-    auto* dlg = new IgnoreListEditDlg(newItem, this, enableOkButton);
-    dlg->enableOkButton(enableOkButton);
+    auto* dlg = new IgnoreListEditDlg(newItem, this, false);
     while (dlg->exec() == QDialog::Accepted) {
         if (!_ignoreListModel.newIgnoreRule(dlg->ignoreListItem())) {
             if (QMessageBox::warning(this,
@@ -158,7 +170,15 @@ void IgnoreListSettingsPage::editSelectedIgnoreRule()
 {
     if (!ui.ignoreListView->selectionModel()->hasSelection())
         return;
-    int row = ui.ignoreListView->selectionModel()->selectedIndexes()[0].row();
+
+    QModelIndexList selectedIndexes = ui.ignoreListView->selectionModel()->selectedIndexes();
+    if (selectedIndexes.isEmpty())
+        return;
+
+    int row = selectedIndexes[0].row();
+    if (row < 0 || row >= _ignoreListModel.rowCount())
+        return;
+
     IgnoreListEditDlg dlg(_ignoreListModel.ignoreListItemAt(row), this);
     dlg.setAttribute(Qt::WA_DeleteOnClose, false);
     if (dlg.exec() == QDialog::Accepted) {
@@ -168,11 +188,14 @@ void IgnoreListSettingsPage::editSelectedIgnoreRule()
 
 void IgnoreListSettingsPage::editIgnoreRule(const QString& ignoreRule)
 {
-    ui.ignoreListView->selectionModel()->select(_ignoreListModel.indexOf(ignoreRule), QItemSelectionModel::Select);
-    if (ui.ignoreListView->selectionModel()->hasSelection())  // && ui.ignoreListView->selectionModel()->selectedIndexes()[0].row() != -1)
+    QModelIndex idx = _ignoreListModel.indexOf(ignoreRule);
+    ui.ignoreListView->selectionModel()->select(idx, QItemSelectionModel::Select);
+    if (ui.ignoreListView->selectionModel()->hasSelection()) {
         editSelectedIgnoreRule();
-    else
+    }
+    else {
         newIgnoreRule(ignoreRule);
+    }
 }
 
 /*
@@ -201,9 +224,16 @@ void IgnoreListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 bool IgnoreListDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index)
 {
     Q_UNUSED(option)
+    
+    // Only handle checkbox events for column 0
+    if (!index.isValid() || index.column() != 0)
+        return false;
+        
     switch (event->type()) {
     case QEvent::MouseButtonRelease:
-        model->setData(index, !index.data().toBool());
+        if (index.row() >= 0 && index.row() < model->rowCount()) {
+            model->setData(index, !index.data().toBool());
+        }
         return true;
     // don't show the default editor for the column
     case QEvent::MouseButtonDblClick:

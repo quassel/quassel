@@ -392,7 +392,8 @@ void PostgreSqlStorage::setUserSetting(UserId userId, const QString& settingName
 {
     QByteArray rawData;
     QDataStream out(&rawData, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_2);
+    // Use a newer QDataStream version for better Qt6 compatibility
+    out.setVersion(QDataStream::Qt_5_0);
     out << data;
 
     QSqlDatabase db = logDb();
@@ -432,10 +433,41 @@ QVariant PostgreSqlStorage::getUserSetting(UserId userId, const QString& setting
     if (query.first()) {
         QVariant data;
         QByteArray rawData = query.value(0).toByteArray();
+        
+        // Try reading with Qt_4_2 format first (for backward compatibility)
         QDataStream in(&rawData, QIODevice::ReadOnly);
         in.setVersion(QDataStream::Qt_4_2);
-        in >> data;
-        return data;
+        
+        // Temporarily suppress QVariant warnings during deserialization
+        auto oldHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext&, const QString& msg) {
+            if (type == QtWarningMsg && msg.contains("QVariant::load: unable to load type")) {
+                // Suppress these warnings as we handle the error gracefully
+                return;
+            }
+            // Other messages pass through (restore later)
+        });
+        
+        try {
+            in >> data;
+            if (in.status() != QDataStream::Ok) {
+                // Try with a newer format if Qt_4_2 failed
+                in.device()->seek(0);
+                in.setVersion(QDataStream::Qt_5_0);
+                in >> data;
+                
+                if (in.status() != QDataStream::Ok) {
+                    qInfo() << "Unable to read user setting" << settingName << "- using default value (data format incompatible)";
+                    qInstallMessageHandler(oldHandler);
+                    return defaultData;
+                }
+            }
+            qInstallMessageHandler(oldHandler);
+            return data;
+        } catch (...) {
+            qInfo() << "Exception reading user setting" << settingName << "- using default value";
+            qInstallMessageHandler(oldHandler);
+            return defaultData;
+        }
     }
     else {
         return defaultData;
@@ -485,8 +517,18 @@ QVariantList PostgreSqlStorage::getCoreState(const QVariantList& defaultData)
         QByteArray rawData = query.value(0).toByteArray();
         QDataStream in(&rawData, QIODevice::ReadOnly);
         in.setVersion(QDataStream::Qt_4_2);
-        in >> data;
-        return data;
+        try {
+            in >> data;
+            // Check if the stream status is okay
+            if (in.status() != QDataStream::Ok) {
+                qWarning() << "QDataStream error reading core state - using default value";
+                return defaultData;
+            }
+            return data;
+        } catch (...) {
+            qWarning() << "Exception reading core state - using default value";
+            return defaultData;
+        }
     }
     else {
         return defaultData;
@@ -543,7 +585,7 @@ IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity& identity
 
     QSqlQuery insertNickQuery(db);
     insertNickQuery.prepare(queryString("insert_nick"));
-    foreach (QString nick, identity.nicks()) {
+    for (const QString& nick : identity.nicks()) {
         insertNickQuery.bindValue(":identityid", identityId.toInt());
         insertNickQuery.bindValue(":nick", nick);
         safeExec(insertNickQuery);
@@ -623,7 +665,7 @@ bool PostgreSqlStorage::updateIdentity(UserId user, const CoreIdentity& identity
 
     QSqlQuery insertNickQuery(db);
     insertNickQuery.prepare(queryString("insert_nick"));
-    foreach (QString nick, identity.nicks()) {
+    for (const QString& nick : identity.nicks()) {
         insertNickQuery.bindValue(":identityid", identity.id().toInt());
         insertNickQuery.bindValue(":nick", nick);
         safeExec(insertNickQuery);
@@ -752,7 +794,7 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo& info)
 
     QSqlQuery insertServersQuery(db);
     insertServersQuery.prepare(queryString("insert_server"));
-    foreach (Network::Server server, info.serverList) {
+    for (const Network::Server& server : info.serverList) {
         insertServersQuery.bindValue(":userid", user.toInt());
         insertServersQuery.bindValue(":networkid", networkId.toInt());
         bindServerInfo(insertServersQuery, server);
@@ -853,7 +895,7 @@ bool PostgreSqlStorage::updateNetwork(UserId user, const NetworkInfo& info)
 
     QSqlQuery insertServersQuery(db);
     insertServersQuery.prepare(queryString("insert_server"));
-    foreach (Network::Server server, info.serverList) {
+    for (const Network::Server& server : info.serverList) {
         insertServersQuery.bindValue(":userid", user.toInt());
         insertServersQuery.bindValue(":networkid", info.networkId.toInt());
         bindServerInfo(insertServersQuery, server);

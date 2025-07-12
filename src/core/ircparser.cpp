@@ -21,7 +21,7 @@
 #include "ircparser.h"
 
 #include <QDebug>
-#include <QRegularExpression>  // Added for QRegularExpression
+#include <QRegularExpression>
 #include <QTimeZone>
 
 #include "corenetwork.h"
@@ -30,7 +30,7 @@
 #include "ircevent.h"
 #include "irctags.h"
 #include "messageevent.h"
-#include "util.h"  // Added for nickFromMask
+#include "util.h"
 
 #ifdef HAVE_QCA2
 #    include "cipher.h"
@@ -82,11 +82,23 @@ QByteArray IrcParser::decrypt(Network* network, const QString& bufferName, const
 
 void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 {
-    auto* net = qobject_cast<CoreNetwork*>(e->network());
-    if (!net) {
-        qWarning() << "Received network event without valid network pointer!";
+    if (!e) {
+        qWarning() << Q_FUNC_INFO << "Received null NetworkDataEvent!";
         return;
     }
+    qDebug() << Q_FUNC_INFO << "Processing NetworkDataEvent at address:" << e;
+    Network* network = e->network();
+    if (!network) {
+        qWarning() << Q_FUNC_INFO << "Null network pointer in NetworkDataEvent at address:" << e;
+        return;
+    }
+    qDebug() << Q_FUNC_INFO << "Network pointer:" << network;
+    auto* net = qobject_cast<CoreNetwork*>(network);
+    if (!net) {
+        qWarning() << Q_FUNC_INFO << "Network is not a CoreNetwork: " << network;
+        return;
+    }
+    qDebug() << Q_FUNC_INFO << "Processing NetworkDataEvent for network:" << net->networkId() << "at address:" << net;
 
     net->resetPingTimeout();
 
@@ -279,8 +291,9 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
     case EventManager::IrcEventKick:
         if (params.count() >= 3) {
-            decParams << net->serverDecode(params.at(0)) << net->serverDecode(params.at(1));
-            decParams << net->channelDecode(decParams.first(), params.at(2));
+            QString channel = net->serverDecode(params.at(0));
+            decParams << channel << net->serverDecode(params.at(1));
+            decParams << net->channelDecode(channel, params.at(2));
             IrcUser* ircuser = net->ircUser(nickFromMask(prefix));
             if (!ircuser) {
                 ircuser = net->newIrcUser(prefix);

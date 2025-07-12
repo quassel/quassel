@@ -98,9 +98,33 @@ void BasicHandler::handle(const QString& member,
         methodName = QString::fromUtf8(metaObject()->method(methodIndex).methodSignature()).split('(').first().toUtf8();
     }
 
-    // Prepare arguments to match original param array
-    QGenericArgument args[10]
-        = {QGenericArgument("QString", static_cast<const void*>(&member)), val0, val1, val2, val3, val4, val5, val6, val7, val8};
+    // Prepare arguments - only add member parameter for default handler
+    QGenericArgument args[10];
+    if (methodIndex == _defaultHandler) {
+        // Default handler needs the member as first parameter
+        args[0] = QGenericArgument("QString", static_cast<const void*>(&member));
+        args[1] = val0;
+        args[2] = val1;
+        args[3] = val2;
+        args[4] = val3;
+        args[5] = val4;
+        args[6] = val5;
+        args[7] = val6;
+        args[8] = val7;
+        args[9] = val8;
+    } else {
+        // Regular handlers don't need the member parameter
+        args[0] = val0;
+        args[1] = val1;
+        args[2] = val2;
+        args[3] = val3;
+        args[4] = val4;
+        args[5] = val5;
+        args[6] = val6;
+        args[7] = val7;
+        args[8] = val8;
+        args[9] = QGenericArgument(); // empty
+    }
 
     // Check parameter count
     const QMetaMethod method = metaObject()->method(methodIndex);
@@ -112,16 +136,16 @@ void BasicHandler::handle(const QString& member,
         success = QMetaObject::invokeMethod(this,
                                             methodName.constData(),
                                             Qt::DirectConnection,
-                                            args[0],  // member
-                                            args[1],  // val0
-                                            args[2],  // val1
-                                            args[3],  // val2
-                                            args[4],  // val3
-                                            args[5],  // val4
-                                            args[6],  // val5
-                                            args[7],  // val6
-                                            args[8],  // val7
-                                            args[9]   // val8
+                                            args[0],
+                                            args[1],
+                                            args[2],
+                                            args[3],
+                                            args[4],
+                                            args[5],
+                                            args[6],
+                                            args[7],
+                                            args[8],
+                                            args[9]
         );
     }
     else {

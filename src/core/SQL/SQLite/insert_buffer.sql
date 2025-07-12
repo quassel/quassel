@@ -1,2 +1,2 @@
-INSERT INTO buffer (userid, networkid, buffername, buffercname, buffertype, joined)
+INSERT OR IGNORE INTO buffer (userid, networkid, buffername, buffercname, buffertype, joined)
 VALUES (:userid, :networkid, :buffername, :buffercname, :buffertype, :joined)

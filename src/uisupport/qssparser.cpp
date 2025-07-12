@@ -82,7 +82,7 @@ void QssParser::processStyleSheet(QString& ss)
         return;
 
     // Remove C-style comments /* */ or //
-    static QRegularExpression commentRx(R"((//.*(\n|$)|/\*.*\*/))");
+    static QRegularExpression commentRx(R"((//.*(\n|$)|/\*[\s\S]*?\*/))");
     commentRx.setPatternOptions(QRegularExpression::MultilineOption);
     ss.remove(commentRx);
 
@@ -172,13 +172,21 @@ void QssParser::parsePaletteBlock(const QString& decl, const QString& contents)
 
     // Now let's go through the roles
     for (const QString& line : contents.split(';', Qt::SkipEmptyParts)) {
-        int idx = line.indexOf(':');
-        if (idx <= 0) {
-            qWarning() << Q_FUNC_INFO << tr("Invalid palette role assignment: %1").arg(line.trimmed());
+        QString trimmedLine = line.trimmed();
+        // Skip empty lines and comments
+        if (trimmedLine.isEmpty() || trimmedLine.startsWith("/*") || trimmedLine.startsWith("//")) {
             continue;
         }
-        QString rolestr = line.left(idx).trimmed();
-        QString brushstr = line.mid(idx + 1).trimmed();
+        int idx = trimmedLine.indexOf(':');
+        if (idx <= 0) {
+            // Only warn about lines that look like they should be role assignments
+            if (trimmedLine.contains(':')) {
+                qWarning() << Q_FUNC_INFO << tr("Invalid palette role assignment: %1").arg(trimmedLine);
+            }
+            continue;
+        }
+        QString rolestr = trimmedLine.left(idx).trimmed();
+        QString brushstr = trimmedLine.mid(idx + 1).trimmed();
 
         if (_paletteColorRoles.contains(rolestr)) {
             QBrush brush = parseBrush(brushstr);
@@ -192,8 +200,12 @@ void QssParser::parsePaletteBlock(const QString& decl, const QString& contents)
         else if (_uiStyleColorRoles.contains(rolestr)) {
             _uiStylePalette[static_cast<int>(_uiStyleColorRoles.value(rolestr))] = parseBrush(brushstr);
         }
-        else
-            qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
+        else {
+            // Only warn about role names that don't look like CSS selectors or comments
+            if (!rolestr.isEmpty() && !rolestr.contains('{') && !rolestr.contains('}') && !rolestr.startsWith("/*")) {
+                qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
+            }
+        }
     }
 }
 
@@ -704,7 +716,7 @@ QGradientStops QssParser::parseGradientStops(const QString& str_)
 {
     QString str = str_;
     QGradientStops result;
-    static const QString rxFloat("(0?\\.[0-9]+|[01])");  // values between 0 and 1
+    static const QString rxFloat("(0(?:\\.[0-9]+)?|1(?:\\.0+)?|\\.[0-9]+)");  // values between 0 and 1
     static const QRegularExpression rx(QString(R"(\s*,?\s*stop:\s*(%1)\s+([a-zA-Z#][^,}]*)(\s*,?\s*(?:stop:|$))").arg(rxFloat));
     QRegularExpressionMatch match;
     while ((match = rx.match(str)).hasMatch()) {

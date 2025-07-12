@@ -330,12 +330,16 @@ void Core::restoreState()
     const QList<QVariant>& activeSessionsFallback = s.coreState().toMap()["ActiveSessions"].toList();
     QVariantList activeSessions = instance()->_storage->getCoreState(activeSessionsFallback);
 
+    qDebug() << "[DEBUG] Core::restoreState() found" << activeSessions.count() << "active sessions";
     if (activeSessions.count() > 0) {
         qInfo() << "Restoring previous core state...";
         for (auto&& v : activeSessions) {
             UserId user = v.value<UserId>();
+            qDebug() << "[DEBUG] Core::restoreState() restoring session for user" << user;
             sessionForUser(user, true);
         }
+    } else {
+        qDebug() << "[DEBUG] Core::restoreState() no active sessions found, auto-connect will not work";
     }
 }
 
@@ -623,7 +627,7 @@ bool Core::startListening()
     const QString listen = Quassel::optionValue("listen");
     const QStringList listen_list = listen.split(",", Qt::SkipEmptyParts);
     if (listen_list.size() > 0) {
-        foreach (const QString listen_term, listen_list) {  // TODO: handle multiple interfaces for same TCP version gracefully
+        for (const QString& listen_term : listen_list) {  // TODO: handle multiple interfaces for same TCP version gracefully
             QHostAddress addr;
             if (!addr.setAddress(listen_term)) {
                 qCritical() << qPrintable(tr("Invalid listen address %1").arg(listen_term));

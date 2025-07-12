@@ -111,7 +111,7 @@ InputWidget::InputWidget(QWidget* parent)
     // Clear formatting button
     connect(ui.clearButton, &QAbstractButton::clicked, this, &InputWidget::clearFormat);
 
-    new TabCompleter(ui.inputEdit);
+    _tabCompleter = new TabCompleter(ui.inputEdit);
 
     UiStyleSettings fs("Fonts");
     fs.notify("UseCustomInputWidgetFont", this, &InputWidget::setUseCustomFont);
@@ -460,8 +460,8 @@ void InputWidget::updateNickSelector() const
 
     const Identity* identity = Client::identity(net->identity());
     if (!identity) {
-        qWarning() << "InputWidget::updateNickSelector(): can't find Identity for Network" << net->networkId()
-                   << "IdentityId:" << net->identity();
+        // No valid identity available (e.g., during connection setup)
+        // This is normal during network initialization, so no need to warn
         return;
     }
 

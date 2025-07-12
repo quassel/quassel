@@ -84,7 +84,7 @@ QVariant IgnoreListModel::data(const QModelIndex& index, int role) const
     case Qt::DisplayRole:
         switch (index.column()) {
         case 1:
-            if (ignoreListManager()[index.row()].type() == IgnoreListManager::SenderIgnore)
+            if (index.row() < ignoreListManager().count() && ignoreListManager()[index.row()].type() == IgnoreListManager::SenderIgnore)
                 return tr("By Sender");
             else
                 return tr("By Message");
@@ -93,10 +93,13 @@ QVariant IgnoreListModel::data(const QModelIndex& index, int role) const
     case Qt::EditRole:
         switch (index.column()) {
         case 0:
+            if (index.row() >= ignoreListManager().count()) return QVariant();
             return ignoreListManager()[index.row()].isEnabled();
         case 1:
+            if (index.row() >= ignoreListManager().count()) return QVariant();
             return ignoreListManager()[index.row()].type();
         case 2:
+            if (index.row() >= ignoreListManager().count()) return QVariant();
             return ignoreListManager()[index.row()].contents();
         default:
             return QVariant();
@@ -118,12 +121,17 @@ bool IgnoreListModel::setData(const QModelIndex& index, const QVariant& value, i
     if (newValue.isNull())
         return false;
 
+    if (index.row() >= cloneIgnoreListManager().count())
+        return false;
+
     switch (index.column()) {
     case 0:
         cloneIgnoreListManager()[index.row()].setIsEnabled(newValue.toBool());
+        emit dataChanged(index, index, {Qt::EditRole, Qt::DisplayRole});
         return true;
     case 1:
         cloneIgnoreListManager()[index.row()].setType((IgnoreListManager::IgnoreType)newValue.toInt());
+        emit dataChanged(index, index, {Qt::EditRole, Qt::DisplayRole});
         return true;
     case 2:
         if (ignoreListManager().contains(newValue.toString())) {
@@ -131,6 +139,7 @@ bool IgnoreListModel::setData(const QModelIndex& index, const QVariant& value, i
         }
         else {
             cloneIgnoreListManager()[index.row()].setContents(newValue.toString());
+            emit dataChanged(index, index, {Qt::EditRole, Qt::DisplayRole});
             return true;
         }
     default:
@@ -178,6 +187,10 @@ void IgnoreListModel::removeIgnoreRule(int index)
         return;
 
     IgnoreListManager& manager = cloneIgnoreListManager();
+    // Double-check bounds against actual manager too
+    if (index >= manager.count())
+        return;
+        
     beginRemoveRows(QModelIndex(), index, index);
     manager.removeAt(index);
     endRemoveRows();
@@ -281,12 +294,18 @@ void IgnoreListModel::clientDisconnected()
 
 const IgnoreListManager::IgnoreListItem& IgnoreListModel::ignoreListItemAt(int row) const
 {
+    if (row < 0 || row >= ignoreListManager().count()) {
+        static const IgnoreListManager::IgnoreListItem emptyItem;
+        return emptyItem;
+    }
     return ignoreListManager()[row];
 }
 
 // FIXME use QModelIndex?
 void IgnoreListModel::setIgnoreListItemAt(int row, const IgnoreListManager::IgnoreListItem& item)
 {
+    if (row < 0 || row >= cloneIgnoreListManager().count())
+        return;
     cloneIgnoreListManager()[row] = item;
     emit dataChanged(createIndex(row, 0), createIndex(row, 2));
 }

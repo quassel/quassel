@@ -32,7 +32,7 @@ IrcChannel::IrcChannel(const QString& channelname, Network* network)
     , _encrypted(false)
     , _network(network)
 {
-    static_cast<QObject*>(this)->setObjectName(QString::number(network->networkId().toInt()) + "/" + channelname);
+    // ObjectName will be set by Network::newIrcChannel()
 }
 
 QString IrcChannel::modes() const
@@ -129,8 +129,13 @@ QList<IrcUser*> IrcChannel::ircUsers() const
 
 void IrcChannel::joinIrcUsers(const QStringList& nicks, const QStringList& modes)
 {
+    // Optimized: Processing user join for channel
+    
     if (nicks.isEmpty())
         return;
+
+    QStringList actuallyJoinedNicks;
+    QStringList actuallyJoinedModes;
 
     for (int i = 0; i < nicks.size(); ++i) {
         IrcUser* user = network()->ircUser(nicks[i]);
@@ -142,10 +147,22 @@ void IrcChannel::joinIrcUsers(const QStringList& nicks, const QStringList& modes
             _userModes[user] = i < modes.size() ? modes[i] : QString();
             connect(user, &QObject::destroyed, this, &IrcChannel::userDestroyed);
             user->joinChannel(this, true);
+            actuallyJoinedNicks << nicks[i];
+            actuallyJoinedModes << (i < modes.size() ? modes[i] : QString());
+            // User added to channel
+        } else {
+            // User already in channel (skipped)
         }
     }
-    SYNC_OTHER(joinIrcUsers, ARG(nicks), ARG(modes))
-    emit usersJoined(nicks, modes);
+    
+    // Only sync and emit signals if we actually added new users
+    if (!actuallyJoinedNicks.isEmpty()) {
+        SYNC_OTHER(joinIrcUsers, ARG(actuallyJoinedNicks), ARG(actuallyJoinedModes))
+        emit usersJoined(actuallyJoinedNicks, actuallyJoinedModes);
+        // Emitted usersJoined signal for new users
+    } else {
+        // No new users added, signal not emitted (optimization)
+    }
 }
 
 void IrcChannel::joinIrcUser(IrcUser* user)
@@ -172,14 +189,26 @@ void IrcChannel::part(IrcUser* user)
     }
 }
 
+void IrcChannel::part(const QString& nick)
+{
+    IrcUser* user = network()->ircUser(nick);
+    if (user) {
+        part(user);
+    } else {
+        qWarning() << Q_FUNC_INFO << "Unknown user:" << nick << "on channel" << name();
+    }
+}
+
 void IrcChannel::partChannel()
 {
     for (auto user : _userModes.keys()) {
         part(user);
     }
+    // Removing channel from network and updating UI
     network()->removeIrcChannel(this);
     SYNC_OTHER(partChannel, NO_ARG)
     emit parted();
+    // Channel part completed successfully
 }
 
 void IrcChannel::setUserModes(IrcUser* user, const QString& modes)
