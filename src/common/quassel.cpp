@@ -719,7 +719,7 @@ void Quassel::loadTranslation(const QLocale& locale)
     if (!successQt) {
         // Fall back to Qt library translations path
 #ifndef Q_OS_MAC
-        successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::path(QLibraryInfo::TranslationsPath));
 #else
         // Filename, directory
         successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::path(QLibraryInfo::TranslationsPath));
