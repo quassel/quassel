@@ -101,7 +101,7 @@ void MultiLineEdit::contextMenuEvent(QContextMenuEvent* event)
     auto action = menu->addAction(tr("Auto Spell Check"));
     action->setCheckable(true);
     action->setChecked(highlighter()->isActive());
-    connect(action, &QAction::toggledN, this, &MultiLineEdit::setSpellCheckEnabled);
+    connect(action, &QAction::toggled, this, &MultiLineEdit::setSpellCheckEnabled);
 
     menu->exec(event->globalPos());
     delete menu;
