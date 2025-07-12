@@ -54,14 +54,14 @@ public:
         Failed,
         Rejected
     };
-    Q_ENUMS(State)
+    Q_ENUM(Status)
 
     enum class Direction
     {
         Send,
         Receive
     };
-    Q_ENUMS(Direction)
+    Q_ENUM(Direction)
 
     Transfer(const QUuid& uuid, QObject* parent = nullptr);  // for creating a syncable object client-side
     Transfer(Direction direction,

@@ -142,6 +142,17 @@ public slots:
      */
     void removeNetwork(NetworkId network);
 
+    //! Connect to a network.
+    /** \param networkId The id of the network to connect to.
+     */
+    void connectToNetwork(NetworkId networkId);
+
+    //! Disconnect from a network.
+    /** \param networkId The id of the network to disconnect from.
+     */
+    void disconnectFromNetwork(NetworkId networkId);
+
+
     //! Rename a Buffer for a given network
     /* \param networkId The id of the network the buffer belongs to
      * \param newName   The new name of the buffer

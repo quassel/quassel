@@ -21,9 +21,9 @@
 #include "ircencoder.h"
 
 QByteArray IrcEncoder::writeMessage(const QHash<IrcTagKey, QString>& tags,
-                                   const QByteArray& prefix,
-                                   const QString& cmd,
-                                   const QList<QByteArray>& params)
+                                    const QByteArray& prefix,
+                                    const QString& cmd,
+                                    const QList<QByteArray>& params)
 {
     QByteArray msg;
     writeTags(msg, tags);
@@ -36,11 +36,7 @@ QByteArray IrcEncoder::writeMessage(const QHash<IrcTagKey, QString>& tags,
 void IrcEncoder::writeTagValue(QByteArray& msg, const QString& value)
 {
     QString it = value;
-    msg += it.replace("\\", R"(\\)")
-             .replace(";", R"(\:)")
-             .replace(" ", R"(\s)")
-             .replace("\r", R"(\r)")
-             .replace("\n", R"(\n)");
+    msg += it.replace("\\", R"(\\)").replace(";", R"(\:)").replace(" ", R"(\s)").replace("\r", R"(\r)").replace("\n", R"(\n)").toUtf8();
 }
 
 void IrcEncoder::writeTags(QByteArray& msg, const QHash<IrcTagKey, QString>& tags)
@@ -57,10 +53,10 @@ void IrcEncoder::writeTags(QByteArray& msg, const QHash<IrcTagKey, QString>& tag
                 msg += "+";
             }
             if (!key.vendor.isEmpty()) {
-                msg += key.vendor;
+                msg += key.vendor.toUtf8();
                 msg += "/";
             }
-            msg += key.key;
+            msg += key.key.toUtf8();
             if (!tags[key].isEmpty()) {
                 msg += "=";
                 writeTagValue(msg, tags[key]);

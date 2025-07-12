@@ -22,6 +22,7 @@
 
 #include <memory>
 
+#include <QAudioOutput>
 #include <QMediaPlayer>
 
 #include "abstractnotificationbackend.h"
@@ -50,6 +51,7 @@ private:
 
     bool _enabled;
     std::unique_ptr<QMediaPlayer> _media;
+    std::unique_ptr<QAudioOutput> _audioOutput;
 };
 
 class QtMultimediaNotificationBackend::ConfigWidget : public SettingsPage
@@ -76,4 +78,5 @@ private:
     bool _audioAvailable;
     QString _filename;
     std::unique_ptr<QMediaPlayer> _audioPreview;
+    std::unique_ptr<QAudioOutput> _audioPreviewOutput;
 };

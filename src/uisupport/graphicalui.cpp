@@ -52,9 +52,6 @@ GraphicalUi::GraphicalUi(QObject* parent)
 #ifdef Q_OS_WIN
     _dwTickCount = 0;
 #endif
-#ifdef Q_OS_MAC
-    GetFrontProcess(&_procNum);
-#endif
 }
 
 void GraphicalUi::init()
@@ -193,23 +190,13 @@ void GraphicalUi::activateMainWidget()
 
     // this does not actually work on all platforms... and causes more evil than good
     // mainWidget()->move(mainWidget()->frameGeometry().topLeft()); // avoid placement policies
-#ifdef Q_OS_MAC
-    SetFrontProcess(&instance()->_procNum);
-#else
-    mainWidget()->show();
-    mainWidget()->raise();
-    mainWidget()->activateWindow();
-#endif
 }
 
 void GraphicalUi::hideMainWidget()
 {
-    if (instance()->isHidingMainWidgetAllowed())
-#ifdef Q_OS_MAC
-        ShowHideProcess(&instance()->_procNum, false);
-#else
-        mainWidget()->hide();
-#endif
+    if (_mainWidget && instance()->isHidingMainWidgetAllowed()) {
+        _mainWidget->hide();
+    }
 }
 
 void GraphicalUi::toggleMainWidget()

@@ -50,9 +50,9 @@ target_sources(${TARGET} PRIVATE
 
 target_link_libraries(${TARGET}
     PUBLIC
-        Qt5::Core
-        Qt5::Network
-        Qt5::Sql
+        ${QT_FULL}::Core
+        ${QT_FULL}::Network
+        ${QT_FULL}::Sql
         Quassel::Common
 )
 
@@ -66,9 +66,9 @@ if (Ldap_FOUND)
     set_property(SOURCE core.cpp APPEND PROPERTY COMPILE_DEFINITIONS HAVE_LDAP)
 endif()
 
-if (Qca-qt5_FOUND)
+if (Qca-qt6_FOUND)
     target_sources(${TARGET} PRIVATE cipher.cpp keyevent.cpp)
-    target_link_libraries(${TARGET} PUBLIC qca-qt5)
+    target_link_libraries(${TARGET} PUBLIC qca-qt6)
     target_compile_definitions(${TARGET} PUBLIC -DHAVE_QCA2)
 endif()
 

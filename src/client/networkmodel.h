@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2025 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -13,7 +13,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with this program; not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
@@ -21,6 +21,8 @@
 #pragma once
 
 #include "client-export.h"
+
+#include <QPointer>
 
 #include "bufferinfo.h"
 #include "clientsettings.h"
@@ -56,7 +58,7 @@ public:
      * @param[in] string               QString to escape
      * @param[in] useNonbreakingSpaces
      * @parblock
-     * If true, replace spaces with non-breaking spaces (i.e. '&nbsp;'), otherwise only HTML escape.
+     * If true, replace spaces with non-breaking spaces (i.e. ' '), otherwise only HTML escape.
      * @endparblock
      */
     static QString escapeHTML(const QString& string, bool useNonbreakingSpaces = false);
@@ -66,11 +68,12 @@ public:
     inline const NetworkId& networkId() const { return _networkId; }
     inline QString networkName() const { return (bool)_network ? _network->networkName() : QString(); }
     inline QString currentServer() const { return (bool)_network ? _network->currentServer() : QString(); }
-    inline int nickCount() const { return (bool)_network ? _network->ircUsers().count() : 0; }
+    inline int nickCount() const { return (bool)_network ? _network->ircUsers()->count() : 0; }  // Fixed: _network->ircUsers()
 
     QString toolTip(int column) const override;
 
     BufferItem* findBufferItem(BufferId bufferId);
+    inline Network* network() const { return _network.data(); }
     inline BufferItem* findBufferItem(const BufferInfo& bufferInfo) { return findBufferItem(bufferInfo.bufferId()); }
     BufferItem* bufferItem(const BufferInfo& bufferInfo);
     inline StatusBufferItem* statusBufferItem() const { return _statusBufferItem; }
@@ -212,7 +215,7 @@ public:
     QString toolTip(int column) const override;
 
     inline QString topic() const override { return (bool)_ircChannel ? _ircChannel->topic() : QString(); }
-    inline int nickCount() const override { return (bool)_ircChannel ? _ircChannel->ircUsers().count() : 0; }
+    inline int nickCount() const override { return (bool)_ircChannel ? _ircChannel->userList().count() : 0; }
 
     void attachIrcChannel(IrcChannel* ircChannel);
 
@@ -227,10 +230,11 @@ public:
 public slots:
     void join(const QList<IrcUser*>& ircUsers);
     void part(IrcUser* ircUser);
+    void onUsersJoined(const QStringList& nicks, const QStringList& modes);
 
     UserCategoryItem* findCategoryItem(int categoryId);
     void addUserToCategory(IrcUser* ircUser);
-    void addUsersToCategory(const QList<IrcUser*>& ircUser);
+    void addUsersToCategory(const QList<IrcUser*>& ircUsers);
     void removeUserFromCategory(IrcUser* ircUser);
     void userModeChanged(IrcUser* ircUser);
 
@@ -262,7 +266,7 @@ public:
     QVariant data(int column, int role) const override;
 
     IrcUserItem* findIrcUser(IrcUser* ircUser);
-    void addUsers(const QList<IrcUser*>& ircUser);
+    void addUsers(const QList<IrcUser*>& ircUsers);
     bool removeUser(IrcUser* ircUser);
 
     static int categoryFromModes(const QString& modes);
@@ -287,7 +291,7 @@ public:
     QStringList propertyOrder() const override;
 
     inline QString nickName() const { return _ircUser ? _ircUser->nick() : QString(); }
-    inline bool isActive() const { return _ircUser ? !_ircUser->isAway() : false; }
+    inline bool isActive() const { return _ircUser ? !_ircUser->away() : false; }
 
     inline IrcUser* ircUser() { return _ircUser; }
     QVariant data(int column, int role) const override;

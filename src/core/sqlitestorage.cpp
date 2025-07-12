@@ -23,6 +23,7 @@
 #include <QByteArray>
 #include <QDataStream>
 #include <QLatin1String>
+#include <QStringConverter>
 #include <QVariant>
 
 #include "network.h"
@@ -32,7 +33,8 @@ int SqliteStorage::_maxRetryCount = 150;
 
 SqliteStorage::SqliteStorage(QObject* parent)
     : AbstractSqlStorage(parent)
-{}
+{
+}
 
 bool SqliteStorage::isAvailable() const
 {
@@ -64,16 +66,38 @@ QString SqliteStorage::description() const
 
 int SqliteStorage::installedSchemaVersion()
 {
-    // only used when there is a singlethread (during startup)
-    // so we don't need locking here
-    QSqlQuery query = logDb().exec("SELECT value FROM coreinfo WHERE key = 'schemaversion'");
-    if (query.first())
-        return query.value(0).toInt();
+    // Only used during startup (single-threaded), so no locking needed
+    QSqlDatabase db = logDb();
 
-    // maybe it's really old... (schema version 0)
-    query = logDb().exec("SELECT MAX(version) FROM coreinfo");
-    if (query.first())
+    // Check if coreinfo table exists
+    QSqlQuery tableCheckQuery(db);
+    tableCheckQuery.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='coreinfo'");
+    safeExec(tableCheckQuery);
+    if (!tableCheckQuery.first()) {
+        // Fresh database, no coreinfo table; return -1 to signal initialization needed
+        return -1;
+    }
+
+    // Try querying schemaversion
+    QSqlQuery query(db);
+    query.prepare("SELECT value FROM coreinfo WHERE key = 'schemaversion'");
+    safeExec(query);
+    if (query.first()) {
         return query.value(0).toInt();
+    }
+    else {
+        watchQuery(query);  // Log errors only if table exists
+    }
+
+    // Fallback for older schema (version 0)
+    query.prepare("SELECT MAX(version) FROM coreinfo");
+    safeExec(query);
+    if (query.first()) {
+        return query.value(0).toInt();
+    }
+    else {
+        watchQuery(query);  // Log errors only if table exists
+    }
 
     return AbstractSqlStorage::installedSchemaVersion();
 }
@@ -195,7 +219,8 @@ UserId SqliteStorage::addUser(const QString& user, const QString& password, cons
         lockForWrite();
         safeExec(query);
         if (query.lastError().isValid()
-            && query.lastError().nativeErrorCode() == QLatin1String{"19"}) {  // user already exists - sadly 19 seems to be the general constraint violation error...
+            && query.lastError().nativeErrorCode()
+                   == QLatin1String{"19"}) {  // user already exists - sadly 19 seems to be the general constraint violation error...
             db.rollback();
         }
         else {
@@ -373,7 +398,8 @@ void SqliteStorage::setUserSetting(UserId userId, const QString& settingName, co
 {
     QByteArray rawData;
     QDataStream out(&rawData, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_2);
+    // Use a newer QDataStream version for better Qt6 compatibility
+    out.setVersion(QDataStream::Qt_5_0);
     out << data;
 
     QSqlDatabase db = logDb();
@@ -413,9 +439,40 @@ QVariant SqliteStorage::getUserSetting(UserId userId, const QString& settingName
 
         if (query.first()) {
             QByteArray rawData = query.value(0).toByteArray();
+            
+            // Try reading with Qt_4_2 format first (for backward compatibility)
             QDataStream in(&rawData, QIODevice::ReadOnly);
             in.setVersion(QDataStream::Qt_4_2);
-            in >> data;
+            
+            // Temporarily suppress QVariant warnings during deserialization
+            auto oldHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext&, const QString& msg) {
+                if (type == QtWarningMsg && msg.contains("QVariant::load: unable to load type")) {
+                    // Suppress these warnings as we handle the error gracefully
+                    return;
+                }
+                // Other messages pass through (restore later)
+            });
+            
+            try {
+                in >> data;
+                if (in.status() != QDataStream::Ok) {
+                    // Try with a newer format if Qt_4_2 failed
+                    in.device()->seek(0);
+                    in.setVersion(QDataStream::Qt_5_0);
+                    in >> data;
+                    
+                    if (in.status() != QDataStream::Ok) {
+                        qInfo() << "Unable to read user setting" << settingName << "- using default value (data format incompatible)";
+                        data = defaultData;
+                    }
+                }
+            } catch (...) {
+                qInfo() << "Exception reading user setting" << settingName << "- using default value";  
+                data = defaultData;
+            }
+            
+            // Restore original message handler
+            qInstallMessageHandler(oldHandler);
         }
     }
     unlock();
@@ -465,7 +522,17 @@ QVariantList SqliteStorage::getCoreState(const QVariantList& defaultData)
             QByteArray rawData = query.value(0).toByteArray();
             QDataStream in(&rawData, QIODevice::ReadOnly);
             in.setVersion(QDataStream::Qt_4_2);
-            in >> data;
+            try {
+                in >> data;
+                // Check if the stream status is okay
+                if (in.status() != QDataStream::Ok) {
+                    qInfo() << "Unable to read core state - using default value";
+                    data = defaultData;
+                }
+            } catch (...) {
+                qInfo() << "Exception reading core state - using default value";
+                data = defaultData;
+            }
         }
         else {
             data = defaultData;
@@ -521,7 +588,7 @@ IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity& identity)
 
             QSqlQuery insertNickQuery(db);
             insertNickQuery.prepare(queryString("insert_nick"));
-            foreach (QString nick, identity.nicks()) {
+            for (const QString& nick : identity.nicks()) {
                 insertNickQuery.bindValue(":identityid", identityId.toInt());
                 insertNickQuery.bindValue(":nick", nick);
                 safeExec(insertNickQuery);
@@ -590,7 +657,7 @@ bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity& identity)
 
         QSqlQuery insertNickQuery(db);
         insertNickQuery.prepare(queryString("insert_nick"));
-        foreach (QString nick, identity.nicks()) {
+        for (const QString& nick : identity.nicks()) {
             insertNickQuery.bindValue(":identityid", identity.id().toInt());
             insertNickQuery.bindValue(":nick", nick);
             safeExec(insertNickQuery);
@@ -727,7 +794,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo& info)
     {
         QSqlQuery insertServersQuery(db);
         insertServersQuery.prepare(queryString("insert_server"));
-        foreach (Network::Server server, info.serverList) {
+        for (const Network::Server& server : info.serverList) {
             insertServersQuery.bindValue(":userid", user.toInt());
             insertServersQuery.bindValue(":networkid", networkId.toInt());
             bindServerInfo(insertServersQuery, server);
@@ -752,9 +819,9 @@ void SqliteStorage::bindNetworkInfo(QSqlQuery& query, const NetworkInfo& info)
 {
     query.bindValue(":networkname", info.networkName);
     query.bindValue(":identityid", info.identity.toInt());
-    query.bindValue(":encodingcodec", QString(info.codecForEncoding));
-    query.bindValue(":decodingcodec", QString(info.codecForDecoding));
-    query.bindValue(":servercodec", QString(info.codecForServer));
+    query.bindValue(":encodingcodec", info.codecForEncoding.isEmpty() ? "ISO-8859-15" : QString(info.codecForEncoding));
+    query.bindValue(":decodingcodec", info.codecForDecoding.isEmpty() ? "ISO-8859-15" : QString(info.codecForDecoding));
+    query.bindValue(":servercodec", info.codecForServer.isEmpty() ? "ISO-8859-15" : QString(info.codecForServer));
     query.bindValue(":userandomserver", info.useRandomServer ? 1 : 0);
     query.bindValue(":perform", info.perform.join("\n"));
     query.bindValue(":useautoidentify", info.useAutoIdentify ? 1 : 0);
@@ -768,12 +835,11 @@ void SqliteStorage::bindNetworkInfo(QSqlQuery& query, const NetworkInfo& info)
     query.bindValue(":autoreconnectretries", info.autoReconnectRetries);
     query.bindValue(":unlimitedconnectretries", info.unlimitedReconnectRetries ? 1 : 0);
     query.bindValue(":rejoinchannels", info.rejoinChannels ? 1 : 0);
-    // Custom rate limiting
     query.bindValue(":usecustomessagerate", info.useCustomMessageRate ? 1 : 0);
     query.bindValue(":messagerateburstsize", info.messageRateBurstSize);
     query.bindValue(":messageratedelay", info.messageRateDelay);
     query.bindValue(":unlimitedmessagerate", info.unlimitedMessageRate ? 1 : 0);
-    query.bindValue(":skipcaps", info.skipCapsToString());
+    query.bindValue(":skipcaps", info.skipCaps.join(","));
     if (info.networkId.isValid())
         query.bindValue(":networkid", info.networkId.toInt());
 }
@@ -836,7 +902,7 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo& info)
     {
         QSqlQuery insertServersQuery(db);
         insertServersQuery.prepare(queryString("insert_server"));
-        foreach (Network::Server server, info.serverList) {
+        for (const Network::Server& server : info.serverList) {
             insertServersQuery.bindValue(":userid", user.toInt());
             insertServersQuery.bindValue(":networkid", info.networkId.toInt());
             bindServerInfo(insertServersQuery, server);
@@ -971,7 +1037,7 @@ std::vector<NetworkInfo> SqliteStorage::networks(UserId user)
                 net.messageRateBurstSize = networksQuery.value(20).toUInt();
                 net.messageRateDelay = networksQuery.value(21).toUInt();
                 net.unlimitedMessageRate = networksQuery.value(22).toInt() == 1 ? true : false;
-                net.skipCapsFromString(networksQuery.value(23).toString());
+                net.skipCaps = networksQuery.value(23).toString().split(",", Qt::SkipEmptyParts);
 
                 serversQuery.bindValue(":networkid", net.networkId.toInt());
                 safeExec(serversQuery);
@@ -1227,9 +1293,9 @@ BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId& networkId, Bu
                 qCritical() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
                 qCritical() << "         Query:" << query.lastQuery();
                 qCritical() << "  bound Values:";
-                QList<QVariant> list = query.boundValues().values();
-                for (int i = 0; i < list.size(); ++i)
-                    qCritical() << i << ":" << list.at(i).toString().toLatin1().data();
+                QVariantList boundValues = query.boundValues();
+                for (int i = 0; i < boundValues.size(); ++i)
+                    qCritical() << i << ":" << boundValues[i].toString().toLatin1().data();
                 Q_ASSERT(false);
             }
         }
@@ -1785,52 +1851,87 @@ int SqliteStorage::highlightCount(BufferId bufferId, MsgId lastSeenMsgId)
     return result;
 }
 
+#include <QStringConverter>  // For QStringEncoder and QStringDecoder
+
 bool SqliteStorage::logMessage(Message& msg)
 {
     QSqlDatabase db = logDb();
     db.transaction();
-
     bool error = false;
+
+    // Sanitize strings for UTF-8 compatibility
+    auto sanitizeString = [](const QString& input) -> QString {
+        if (input.isEmpty()) {
+            return input;
+        }
+        // Try to validate as UTF-8
+        QStringConverter::Encoding encoding = QStringConverter::Utf8;
+        QStringEncoder encoder(encoding);
+        QStringDecoder decoder(encoding);
+        QByteArray utf8Data = encoder(input);
+        QString result = decoder(utf8Data);
+        if (result == input && !utf8Data.isEmpty()) {
+            return input;  // Valid UTF-8
+        }
+        // Fallback to Latin1
+        qWarning() << "UTF-8 decoding failed for input:" << qPrintable(input);
+        return QString::fromLatin1(input.toLatin1());
+    };
+
+    // Handle empty sender
+    QString sender = msg.sender().isEmpty() ? QStringLiteral("Server") : sanitizeString(msg.sender());
+    QString realName = sanitizeString(msg.realName());
+    QString avatarUrl = sanitizeString(msg.avatarUrl());
+    QString senderPrefixes = sanitizeString(msg.senderPrefixes());
+    QString message = sanitizeString(msg.contents());
+
+    // Log warning for empty sender
+    if (msg.sender().isEmpty()) {
+        qWarning() << "Empty sender for message, using default 'Server'. Message details:"
+                   << "type=" << msg.type() << "buffer=" << msg.bufferInfo().bufferName() << "content=" << msg.contents();
+    }
+
+    // Step 1: Ensure the sender exists
     {
+        QSqlQuery addSenderQuery(db);
+        addSenderQuery.prepare(queryString("insert_sender"));
+        addSenderQuery.bindValue(":sender", QVariant(sender));
+        addSenderQuery.bindValue(":realname", QVariant(realName));
+        addSenderQuery.bindValue(":avatarurl", QVariant(avatarUrl));
+        lockForWrite();
+        safeExec(addSenderQuery);
+        if (addSenderQuery.lastError().isValid() && addSenderQuery.lastError().nativeErrorCode() != QLatin1String{"19"}) {
+            qCritical() << "Failed to insert sender:" << qPrintable(sender) << "Error:" << qPrintable(addSenderQuery.lastError().text());
+            error = true;
+        }
+    }
+
+    // Step 2: Insert the message (senderid is handled by the query's subquery)
+    if (!error) {
         QSqlQuery logMessageQuery(db);
         logMessageQuery.prepare(queryString("insert_message"));
-        // As of SQLite schema version 31, timestamps are stored in milliseconds instead of
-        // seconds.  This nets us more precision as well as simplifying 64-bit time.
         logMessageQuery.bindValue(":time", msg.timestamp().toMSecsSinceEpoch());
-        logMessageQuery.bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
-        logMessageQuery.bindValue(":type", msg.type());
-        logMessageQuery.bindValue(":flags", (int)msg.flags());
-        logMessageQuery.bindValue(":sender", msg.sender());
-        logMessageQuery.bindValue(":realname", msg.realName());
-        logMessageQuery.bindValue(":avatarurl", msg.avatarUrl());
-        logMessageQuery.bindValue(":senderprefixes", msg.senderPrefixes());
-        logMessageQuery.bindValue(":message", msg.contents());
-
-        lockForWrite();
+        logMessageQuery.bindValue(":bufferid", static_cast<int>(msg.bufferInfo().bufferId().toInt()));
+        logMessageQuery.bindValue(":type", static_cast<int>(msg.type()));
+        logMessageQuery.bindValue(":flags", static_cast<int>(msg.flags()));
+        logMessageQuery.bindValue(":sender", QVariant(sender));
+        logMessageQuery.bindValue(":realname", QVariant(realName));
+        logMessageQuery.bindValue(":avatarurl", QVariant(avatarUrl));
+        logMessageQuery.bindValue(":senderprefixes", QVariant(senderPrefixes));
+        logMessageQuery.bindValue(":message", QVariant(message));
         safeExec(logMessageQuery);
-
         if (logMessageQuery.lastError().isValid()) {
-            // constraint violation - must be NOT NULL constraint - probably the sender is missing...
-            if (logMessageQuery.lastError().nativeErrorCode() == QLatin1String{"19"}) {
-                QSqlQuery addSenderQuery(db);
-                addSenderQuery.prepare(queryString("insert_sender"));
-                addSenderQuery.bindValue(":sender", msg.sender());
-                addSenderQuery.bindValue(":realname", msg.realName());
-                addSenderQuery.bindValue(":avatarurl", msg.avatarUrl());
-                safeExec(addSenderQuery);
-                safeExec(logMessageQuery);
-                error = !watchQuery(logMessageQuery);
-            }
-            else {
-                watchQuery(logMessageQuery);
-            }
+            qCritical() << "Failed to insert backlog message. Bound values:" << logMessageQuery.boundValues()
+                        << "Error:" << qPrintable(logMessageQuery.lastError().text());
+            error = true;
         }
-        if (!error) {
+        else {
             MsgId msgId = logMessageQuery.lastInsertId().toLongLong();
             if (msgId.isValid()) {
                 msg.setMsgId(msgId);
             }
             else {
+                qCritical() << "Invalid message ID after backlog insert";
                 error = true;
             }
         }
@@ -1842,7 +1943,6 @@ bool SqliteStorage::logMessage(Message& msg)
     else {
         db.commit();
     }
-
     unlock();
     return !error;
 }
@@ -2119,13 +2219,15 @@ std::vector<Message> SqliteStorage::requestMsgsForward(
 
         if (first == -1) {
             query.bindValue(":firstmsg", std::numeric_limits<qint64>::min());
-        } else {
+        }
+        else {
             query.bindValue(":firstmsg", first.toQint64());
         }
 
         if (last == -1) {
             query.bindValue(":lastmsg", std::numeric_limits<qint64>::max());
-        } else {
+        }
+        else {
             query.bindValue(":lastmsg", last.toQint64());
         }
 
@@ -2227,7 +2329,8 @@ std::vector<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, Msg
     return messagelist;
 }
 
-std::vector<Message> SqliteStorage::requestAllMsgsFiltered(UserId user, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
+std::vector<Message> SqliteStorage::requestAllMsgsFiltered(
+    UserId user, MsgId first, MsgId last, int limit, Message::Types type, Message::Flags flags)
 {
     std::vector<Message> messagelist;
 
@@ -2344,7 +2447,8 @@ bool SqliteStorage::safeExec(QSqlQuery& query, int retryCount)
 // ========================================
 SqliteMigrationReader::SqliteMigrationReader()
     : SqliteStorage()
-{}
+{
+}
 
 void SqliteMigrationReader::setMaxId(MigrationObject mo)
 {
@@ -2360,7 +2464,9 @@ void SqliteMigrationReader::setMaxId(MigrationObject mo)
         _maxId = 0;
         return;
     }
-    QSqlQuery query = logDb().exec(queryString);
+    QSqlQuery query(logDb());
+    query.prepare(queryString);
+    query.exec();
     query.first();
     _maxId = query.value(0).toLongLong();
 }

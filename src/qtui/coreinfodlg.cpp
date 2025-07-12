@@ -25,6 +25,7 @@
 #include "bufferwidget.h"
 #include "client.h"
 #include "icon.h"
+#include "qlocale.h"
 #include "util.h"
 
 CoreInfoDlg::CoreInfoDlg(QWidget* parent)
@@ -102,7 +103,7 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap& coreInfo)
         }
         else {
             ui.labelCoreVersionDate->setText(
-                tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString(), Qt::DateFormat::DefaultLocaleShortDate));
+                QLocale().toString(QDateTime::fromString(coreInfo["quasselBuildDate"].toString(), Qt::ISODate), QLocale::ShortFormat));
         }
         ui.labelClientCount->setNum(coreInfo["sessionConnectedClients"].toInt());
     }
@@ -176,7 +177,7 @@ void CoreInfoDlg::updateUptime()
                                    .arg(uphours, 2, 10, QChar('0'))
                                    .arg(upmins, 2, 10, QChar('0'))
                                    .arg(uptime, 2, 10, QChar('0'))
-                                   .arg(startTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
+                                   .arg(QLocale().toString(startTime.toLocalTime(), QLocale::ShortFormat));
         ui.labelUptime->setText(uptimeText);
     }
 }

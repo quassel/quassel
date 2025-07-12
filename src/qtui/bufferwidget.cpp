@@ -76,10 +76,10 @@ BufferWidget::BufferWidget(QWidget* parent)
          {"ZoomOutChatView", new Action{icon::get("zoom-out"), tr("Zoom Out"), coll, this, &BufferWidget::zoomOut, QKeySequence::ZoomOut}},
          {"ZoomOriginalChatView", new Action{icon::get("zoom-original"), tr("Actual Size"), coll, this, &BufferWidget::zoomOriginal}},
          {"SetMarkerLineToBottom",
-          new Action{tr("Set Marker Line"), coll, this, [this]() { setMarkerLine(); }, QKeySequence(Qt::CTRL + Qt::Key_R)}}});
+          new Action{tr("Set Marker Line"), coll, this, [this]() { setMarkerLine(); }, QKeySequence(Qt::CTRL | Qt::Key_R)}}});
     coll = QtUi::actionCollection("Navigation");
     coll->addAction("JumpToMarkerLine",
-                    new Action{tr("Go to Marker Line"), coll, this, [this]() { jumpToMarkerLine(); }, QKeySequence(Qt::CTRL + Qt::Key_K)});
+                    new Action{tr("Go to Marker Line"), coll, this, [this]() { jumpToMarkerLine(); }, QKeySequence(Qt::CTRL | Qt::Key_K)});
 
     ChatViewSettings s;
     s.initAndNotify("AutoMarkerLine", this, &BufferWidget::setAutoMarkerLine, true);

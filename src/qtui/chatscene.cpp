@@ -31,10 +31,13 @@
 #include <QMenuBar>
 #include <QMimeData>
 #include <QPersistentModelIndex>
+#include <QRegularExpressionMatch>
 #include <QUrl>
 
 #ifdef HAVE_WEBENGINE
 #    include <QWebEngineView>
+#elif defined HAVE_WEBKIT
+#    include <QWebView>
 #endif
 
 #include "chatitem.h"
@@ -117,7 +120,7 @@ ChatScene::ChatScene(QAbstractItemModel* model, QString idString, qreal width, C
     connect(model, &QAbstractItemModel::rowsRemoved, this, &ChatScene::rowsRemoved);
     connect(model, &QAbstractItemModel::dataChanged, this, &ChatScene::dataChanged);
 
-#if defined HAVE_WEBENGINE
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
     webPreview.timer.setSingleShot(true);
     connect(&webPreview.timer, &QTimer::timeout, this, &ChatScene::webPreviewNextStep);
 #endif
@@ -790,12 +793,8 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     // If we have text selected, insert the Copy Selection as first item
     if (isPosOverSelection(pos)) {
         QAction* sep = menu.insertSeparator(menu.actions().first());
-        QAction* act = new Action(icon::get("edit-copy"),
-                                  tr("Copy Selection"),
-                                  &menu,
-                                  this,
-                                  [this]() { selectionToClipboard(); },
-                                  QKeySequence::Copy);
+        QAction* act
+            = new Action(icon::get("edit-copy"), tr("Copy Selection"), &menu, this, [this]() { selectionToClipboard(); }, QKeySequence::Copy);
         menu.insertAction(sep, act);
 
         QString searchSelectionText = selection();
@@ -1149,9 +1148,9 @@ void ChatScene::updateSceneRect(const QRectF& rect)
 }
 
 // ========================================
-//  WebEngine Only stuff
+//  Webkit/WebEngine Only stuff
 // ========================================
-#if defined HAVE_WEBENGINE
+#if defined HAVE_WEBKIT || defined HAVE_WEBENGINE
 void ChatScene::loadWebPreview(ChatItem* parentItem, const QUrl& url, const QRectF& urlRect)
 {
     if (!_showWebPreview)
@@ -1279,7 +1278,7 @@ void ChatScene::clearWebPreview(ChatItem* parentItem)
 #endif
 
 // ========================================
-//  end of WebEngine only
+//  end of webkit only
 // ========================================
 
 // Local configuration caching
@@ -1336,7 +1335,8 @@ void ChatScene::updateTimestampHasBrackets()
         //   (^\s*\(.+\)\s*$)|(^\s*\{.+\}\s*$)|(^\s*\[.+\]\s*$)|(^\s*<.+>\s*$)
         // Note that '\' must be escaped as '\\'
         // Helpful interactive website for debugging and explaining:  https://regex101.com/
-        const QRegExp regExpMatchBrackets(R"(^\s*[({[<].+[)}\]>]\s*$)");
-        _timestampHasBrackets = regExpMatchBrackets.exactMatch(_timestampFormatString);
+        static const QRegularExpression regExpMatchBrackets(R"(^\s*[({[<].+[)}\]>]\s*$)");
+        QRegularExpressionMatch match = regExpMatchBrackets.match(_timestampFormatString);
+        _timestampHasBrackets = match.hasMatch();
     }
 }

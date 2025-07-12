@@ -18,16 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#include <utility>
+#include "remotepeer.h"
 
-#include <QtEndian>
+#include <utility>
 
 #include <QHostAddress>
 #include <QSslSocket>
 #include <QTimer>
+#include <QtEndian>
 
 #include "proxyline.h"
-#include "remotepeer.h"
 #include "util.h"
 
 using namespace Protocol;
@@ -49,7 +49,7 @@ RemotePeer::RemotePeer(::AuthHandler* authHandler, QTcpSocket* socket, Compresso
 {
     socket->setParent(this);
     connect(socket, &QAbstractSocket::stateChanged, this, &RemotePeer::onSocketStateChanged);
-    connect(socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::error), this, &RemotePeer::onSocketError);
+    connect(socket, &QAbstractSocket::errorOccurred, this, &RemotePeer::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &Peer::disconnected);
 
     auto* sslSocket = qobject_cast<QSslSocket*>(socket);
@@ -183,8 +183,7 @@ bool RemotePeer::isSecure() const
 
 bool RemotePeer::isLocal() const
 {
-    return hostAddress() == QHostAddress::LocalHost ||
-           hostAddress() == QHostAddress::LocalHostIPv6;
+    return hostAddress() == QHostAddress::LocalHost || hostAddress() == QHostAddress::LocalHostIPv6;
 }
 
 bool RemotePeer::isOpen() const
@@ -222,7 +221,7 @@ bool RemotePeer::readMessage(QByteArray& msg)
     if (_msgSize == 0) {
         if (_compressor->bytesAvailable() < 4)
             return false;
-        _compressor->read((char*) &_msgSize, 4);
+        _compressor->read((char*)&_msgSize, 4);
         _msgSize = qFromBigEndian<quint32>(_msgSize);
 
         if (_msgSize > maxMessageSize) {

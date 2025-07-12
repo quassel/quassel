@@ -20,6 +20,8 @@
 
 #include "chatlinemodel.h"
 
+#include <QMetaType>
+
 #include "qtui.h"
 #include "qtuistyle.h"
 
@@ -27,7 +29,7 @@ ChatLineModel::ChatLineModel(QObject* parent)
     : MessageModel(parent)
 {
     qRegisterMetaType<WrapList>("ChatLineModel::WrapList");
-    qRegisterMetaTypeStreamOperators<WrapList>("ChatLineModel::WrapList");
+    qRegisterMetaType<ChatLineModelItem::Word>("ChatLineModelItem::Word");
 
     connect(QtUi::style(), &UiStyle::changed, this, &ChatLineModel::styleChanged);
 }

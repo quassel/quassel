@@ -27,7 +27,7 @@ CoreConnectionSettingsPage::CoreConnectionSettingsPage(QWidget* parent)
 
     initAutoWidgets();
 
-    connect(ui.useQNetworkConfigurationManager, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
+    connect(ui.useQNetworkInformation, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
     connect(ui.usePingTimeout, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
     connect(ui.useNoTimeout, &QAbstractButton::toggled, this, &CoreConnectionSettingsPage::widgetHasChanged);
 }
@@ -44,7 +44,7 @@ void CoreConnectionSettingsPage::widgetHasChanged()
 
 void CoreConnectionSettingsPage::defaults()
 {
-    setRadioButtons(CoreConnectionSettings::UseQNetworkConfigurationManager);
+    setRadioButtons(CoreConnectionSettings::UseQNetworkInformation);
 
     SettingsPage::defaults();
 }
@@ -68,8 +68,8 @@ void CoreConnectionSettingsPage::save()
 void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::NetworkDetectionMode mode)
 {
     switch (mode) {
-    case CoreConnectionSettings::UseQNetworkConfigurationManager:
-        ui.useQNetworkConfigurationManager->setChecked(true);
+    case CoreConnectionSettings::UseQNetworkInformation:
+        ui.useQNetworkInformation->setChecked(true);
         break;
     case CoreConnectionSettings::UsePingTimeout:
         ui.usePingTimeout->setChecked(true);
@@ -81,8 +81,8 @@ void CoreConnectionSettingsPage::setRadioButtons(CoreConnectionSettings::Network
 
 CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettingsPage::modeFromRadioButtons() const
 {
-    if (ui.useQNetworkConfigurationManager->isChecked())
-        return CoreConnectionSettings::UseQNetworkConfigurationManager;
+    if (ui.useQNetworkInformation->isChecked())
+        return CoreConnectionSettings::UseQNetworkInformation;
     if (ui.usePingTimeout->isChecked())
         return CoreConnectionSettings::UsePingTimeout;
 

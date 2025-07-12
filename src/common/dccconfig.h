@@ -22,7 +22,9 @@
 
 #include "common-export.h"
 
+#include <QDataStream>
 #include <QHostAddress>
+#include <QMetaType>
 
 #include "syncableobject.h"
 
@@ -67,7 +69,7 @@ public:
         Automatic,  ///< Automatic detection (network socket or USERHOST)
         Manual,     ///< Manually specified IP
     };
-    Q_ENUMS(IpDetectionMode)
+    Q_ENUM(IpDetectionMode)
 
     /**
      * Mode for selecting the port range for DCC
@@ -77,7 +79,7 @@ public:
         Automatic,  ///< Automatic port selection
         Manual,     ///< Manually specified port range
     };
-    Q_ENUMS(PortSelectionMode)
+    Q_ENUM(PortSelectionMode)
 
     /**
      * Constructor.
@@ -140,3 +142,36 @@ private:
     bool _usePassiveDcc{false};
     bool _useFastSend{false};
 };
+
+// Streaming operators for QDataStream
+inline QDataStream& operator<<(QDataStream& out, DccConfig::IpDetectionMode mode)
+{
+    out << static_cast<quint8>(mode);
+    return out;
+}
+
+inline QDataStream& operator>>(QDataStream& in, DccConfig::IpDetectionMode& mode)
+{
+    quint8 value;
+    in >> value;
+    mode = static_cast<DccConfig::IpDetectionMode>(value);
+    return in;
+}
+
+inline QDataStream& operator<<(QDataStream& out, DccConfig::PortSelectionMode mode)
+{
+    out << static_cast<quint8>(mode);
+    return out;
+}
+
+inline QDataStream& operator>>(QDataStream& in, DccConfig::PortSelectionMode& mode)
+{
+    quint8 value;
+    in >> value;
+    mode = static_cast<DccConfig::PortSelectionMode>(value);
+    return in;
+}
+
+// Declare meta-types for QVariant and signal/slot usage
+Q_DECLARE_METATYPE(DccConfig::IpDetectionMode)
+Q_DECLARE_METATYPE(DccConfig::PortSelectionMode)

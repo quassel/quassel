@@ -21,8 +21,8 @@
 #include "execwrapper.h"
 
 #include <QFile>
-#include <QTextCodec>
 #include <QRegularExpression>
+#include <QStringConverter>
 
 #include "client.h"
 #include "messagemodel.h"
@@ -60,7 +60,7 @@ void ExecWrapper::start(const BufferInfo& info, const QString& command)
     else {
         _scriptName = match.captured(1);
         static const QRegularExpression splitRx{"\\s+"};
-        params = match.captured(3).split(splitRx, QString::SkipEmptyParts);
+        params = match.captured(3).split(splitRx, Qt::SkipEmptyParts);
     }
 
     // Make sure we don't execute something outside a script dir
@@ -101,12 +101,16 @@ void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status)
     }
 
     // empty buffers
-    if (!_stdoutBuffer.isEmpty())
-        foreach (QString msg, _stdoutBuffer.split('\n'))
+    if (!_stdoutBuffer.isEmpty()) {
+        for (const QString& msg : _stdoutBuffer.split('\n')) {
             emit output(msg);
-    if (!_stderrBuffer.isEmpty())
-        foreach (QString msg, _stderrBuffer.split('\n'))
+        }
+    }
+    if (!_stderrBuffer.isEmpty()) {
+        for (const QString& msg : _stderrBuffer.split('\n')) {
             emit error(msg);
+        }
+    }
 
     deleteLater();
 }
@@ -124,8 +128,9 @@ void ExecWrapper::processError(QProcess::ProcessError err)
 
 void ExecWrapper::processReadStdout()
 {
-    QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput());
-    str.replace(QRegExp("\r\n?"), "\n");
+    QStringDecoder decoder(QStringConverter::System);
+    QString str = decoder.decode(_process.readAllStandardOutput());
+    str.replace(QRegularExpression("\r\n?"), "\n");
     _stdoutBuffer.append(str);
     int idx;
     while ((idx = _stdoutBuffer.indexOf('\n')) >= 0) {
@@ -136,8 +141,9 @@ void ExecWrapper::processReadStdout()
 
 void ExecWrapper::processReadStderr()
 {
-    QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError());
-    str.replace(QRegExp("\r\n?"), "\n");
+    QStringDecoder decoder(QStringConverter::System);
+    QString str = decoder.decode(_process.readAllStandardError());
+    str.replace(QRegularExpression("\r\n?"), "\n");
     _stderrBuffer.append(str);
     int idx;
     while ((idx = _stderrBuffer.indexOf('\n')) >= 0) {

@@ -121,9 +121,9 @@ class CLIENT_EXPORT CoreConnectionSettings : public ClientSettings
 public:
     enum NetworkDetectionMode
     {
-        UseQNetworkConfigurationManager = 1,  // UseSolid is gone
-        UsePingTimeout,
-        NoActiveDetection
+        UseQNetworkInformation = 0,  // Qt 6 network detection
+        UsePingTimeout = 1,
+        NoActiveDetection = 2
     };
 
     CoreConnectionSettings();

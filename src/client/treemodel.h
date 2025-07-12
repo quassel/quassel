@@ -23,7 +23,6 @@
 #include "client-export.h"
 
 #include <QAbstractItemModel>
-#include <QLinkedList>  // needed for debug
 #include <QList>
 #include <QStringList>
 #include <QVariant>

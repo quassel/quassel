@@ -203,6 +203,7 @@ private:
     };
 
     QMap<BufferId, HistoryState> historyMap;
+    class TabCompleter* _tabCompleter;
 };
 
 class MouseWheelFilter : public QObject

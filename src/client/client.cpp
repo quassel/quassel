@@ -49,11 +49,18 @@
 #include "messagemodel.h"
 #include "network.h"
 #include "networkconfig.h"
-#include "networkmodel.h"
 #include "quassel.h"
 #include "signalproxy.h"
 #include "transfermodel.h"
 #include "util.h"
+
+// Define operator<< for NetworkInfo to resolve QDebug streaming error
+QDebug operator<<(QDebug dbg, const NetworkInfo& info)
+{
+    dbg.nospace() << "NetworkInfo(networkId:" << info.networkId << ", networkName:" << info.networkName << ", identity:" << info.identity
+                  << ")";
+    return dbg.space();
+}
 
 Client::Client(std::unique_ptr<AbstractUi> ui, QObject* parent)
     : QObject(parent)
@@ -90,24 +97,24 @@ Client::Client(std::unique_ptr<AbstractUi> ui, QObject* parent)
     SignalProxy* p = signalProxy();
 
     p->attachSlot(SIGNAL(displayMsg(Message)), this, &Client::recvMessage);
-    p->attachSlot(SIGNAL(displayStatusMsg(QString,QString)), this, &Client::recvStatusMsg);
+    p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, &Client::recvStatusMsg);
 
     p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), _networkModel, &NetworkModel::bufferUpdated);
     p->attachSignal(inputHandler(), &ClientUserInputHandler::sendInput);
     p->attachSignal(this, &Client::requestNetworkStates);
 
-    p->attachSignal(this, &Client::requestCreateIdentity, SIGNAL(createIdentity(Identity,QVariantMap)));
+    p->attachSignal(this, &Client::requestCreateIdentity, SIGNAL(createIdentity(Identity, QVariantMap)));
     p->attachSignal(this, &Client::requestRemoveIdentity, SIGNAL(removeIdentity(IdentityId)));
     p->attachSlot(SIGNAL(identityCreated(Identity)), this, &Client::coreIdentityCreated);
     p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, &Client::coreIdentityRemoved);
 
-    p->attachSignal(this, &Client::requestCreateNetwork, SIGNAL(createNetwork(NetworkInfo,QStringList)));
+    p->attachSignal(this, &Client::requestCreateNetwork, SIGNAL(createNetwork(NetworkInfo, QStringList)));
     p->attachSignal(this, &Client::requestRemoveNetwork, SIGNAL(removeNetwork(NetworkId)));
     p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, &Client::coreNetworkCreated);
     p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, &Client::coreNetworkRemoved);
 
-    p->attachSignal(this, &Client::requestPasswordChange, SIGNAL(changePassword(PeerPtr,QString,QString,QString)));
-    p->attachSlot(SIGNAL(passwordChanged(PeerPtr,bool)), this, &Client::corePasswordChanged);
+    p->attachSignal(this, &Client::requestPasswordChange, SIGNAL(changePassword(PeerPtr, QString, QString, QString)));
+    p->attachSlot(SIGNAL(passwordChanged(PeerPtr, bool)), this, &Client::corePasswordChanged);
 
     p->attachSignal(this, &Client::requestKickClient, SIGNAL(kickClient(int)));
     p->attachSlot(SIGNAL(disconnectFromCore()), this, &Client::disconnectFromCore);
@@ -176,12 +183,12 @@ const Network* Client::network(NetworkId networkid)
 
 void Client::createNetwork(const NetworkInfo& info, const QStringList& persistentChannels)
 {
-    emit instance()->requestCreateNetwork(info, persistentChannels);
+    emit instance() -> requestCreateNetwork(info, persistentChannels);
 }
 
 void Client::removeNetwork(NetworkId id)
 {
-    emit instance()->requestRemoveNetwork(id);
+    emit instance() -> requestRemoveNetwork(id);
 }
 
 void Client::updateNetwork(const NetworkInfo& info)
@@ -191,7 +198,31 @@ void Client::updateNetwork(const NetworkInfo& info)
         qWarning() << "Update for unknown network requested:" << info;
         return;
     }
-    netptr->requestSetNetworkInfo(info);
+    // Replace requestSetNetworkInfo with individual setter calls
+    netptr->setNetworkName(info.networkName);
+    netptr->setIdentity(info.identity);
+    netptr->setServerList(info.serverList);
+    netptr->setUseRandomServer(info.useRandomServer);
+    netptr->setPerform(info.perform);
+    netptr->setSkipCaps(info.skipCaps);
+    netptr->setUseAutoIdentify(info.useAutoIdentify);
+    netptr->setAutoIdentifyService(info.autoIdentifyService);
+    netptr->setAutoIdentifyPassword(info.autoIdentifyPassword);
+    netptr->setUseSasl(info.useSasl);
+    netptr->setSaslAccount(info.saslAccount);
+    netptr->setSaslPassword(info.saslPassword);
+    netptr->setUseAutoReconnect(info.useAutoReconnect);
+    netptr->setAutoReconnectInterval(info.autoReconnectInterval);
+    netptr->setAutoReconnectRetries(info.autoReconnectRetries);
+    netptr->setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
+    netptr->setRejoinChannels(info.rejoinChannels);
+    netptr->setUseCustomMessageRate(info.useCustomMessageRate);
+    netptr->setMessageRateBurstSize(info.messageRateBurstSize);
+    netptr->setMessageRateDelay(info.messageRateDelay);
+    netptr->setUnlimitedMessageRate(info.unlimitedMessageRate);
+    netptr->setCodecForServer(info.codecForServer);
+    netptr->setCodecForEncoding(info.codecForEncoding);
+    netptr->setCodecForDecoding(info.codecForDecoding);
 }
 
 void Client::addNetwork(Network* net)
@@ -201,7 +232,7 @@ void Client::addNetwork(Network* net)
     networkModel()->attachNetwork(net);
     connect(net, &QObject::destroyed, instance(), &Client::networkDestroyed);
     instance()->_networks[net->networkId()] = net;
-    emit instance()->networkCreated(net->networkId());
+    emit instance() -> networkCreated(net->networkId());
 }
 
 void Client::coreNetworkCreated(NetworkId id)
@@ -243,7 +274,7 @@ void Client::createIdentity(const CertIdentity& id)
     QVariantMap additional;
     additional["KeyPem"] = id.sslKey().toPem();
     additional["CertPem"] = id.sslCert().toPem();
-    emit instance()->requestCreateIdentity(id, additional);
+    emit instance() -> requestCreateIdentity(id, additional);
 }
 
 void Client::updateIdentity(IdentityId id, const QVariantMap& ser)
@@ -258,7 +289,7 @@ void Client::updateIdentity(IdentityId id, const QVariantMap& ser)
 
 void Client::removeIdentity(IdentityId id)
 {
-    emit instance()->requestRemoveIdentity(id);
+    emit instance() -> requestRemoveIdentity(id);
 }
 
 void Client::coreIdentityCreated(const Identity& other)
@@ -649,12 +680,12 @@ void Client::changePassword(const QString& oldPassword, const QString& newPasswo
     CoreAccount account = currentCoreAccount();
     account.setPassword(newPassword);
     coreAccountModel()->createOrUpdateAccount(account);
-    emit instance()->requestPasswordChange(nullptr, account.user(), oldPassword, newPassword);
+    emit instance() -> requestPasswordChange(nullptr, account.user(), oldPassword, newPassword);
 }
 
 void Client::kickClient(int peerId)
 {
-    emit instance()->requestKickClient(peerId);
+    emit instance() -> requestKickClient(peerId);
 }
 
 void Client::corePasswordChanged(PeerPtr, bool success)

@@ -40,9 +40,12 @@ public:
     void enableEditSsl(bool enable = true);
     inline const QSslKey& sslKey() const { return _sslKey; }
     inline const QSslCertificate& sslCert() const { return _sslCert; }
+    inline ClientCertManager* certManager() const { return _certManager; }
 
     void setSslKey(const QSslKey& key);
     void setSslCert(const QSslCertificate& cert);
+
+    void synchronize(SignalProxy* proxy);
 
 public slots:
     void requestUpdateSslSettings();

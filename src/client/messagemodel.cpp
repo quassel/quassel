@@ -23,6 +23,7 @@
 #include <algorithm>
 
 #include <QEvent>
+#include <QTimeZone>  // Added for QTimeZone
 
 #include "backlogsettings.h"
 #include "client.h"
@@ -35,17 +36,18 @@ class ProcessBufferEvent : public QEvent
 public:
     inline ProcessBufferEvent()
         : QEvent(QEvent::User)
-    {}
+    {
+    }
 };
 
 MessageModel::MessageModel(QObject* parent)
     : QAbstractItemModel(parent)
 {
     QDateTime now = QDateTime::currentDateTime();
-    now.setTimeSpec(Qt::UTC);
-    _nextDayChange.setTimeSpec(Qt::UTC);
+    now.setTimeZone(QTimeZone::UTC);             // Replaced setTimeSpec(Qt::UTC)
+    _nextDayChange.setTimeZone(QTimeZone::UTC);  // Replaced setTimeSpec(Qt::UTC)
     _nextDayChange.setMSecsSinceEpoch(((now.toMSecsSinceEpoch() / DAY_IN_MSECS) + 1) * DAY_IN_MSECS);
-    _nextDayChange.setTimeSpec(Qt::LocalTime);
+    _nextDayChange.setTimeZone(QTimeZone::systemTimeZone());  // Replaced setTimeSpec(Qt::LocalTime)
     _dayChangeTimer.setInterval(QDateTime::currentDateTime().secsTo(_nextDayChange) * 1000);
     _dayChangeTimer.start();
     connect(&_dayChangeTimer, &QTimer::timeout, this, &MessageModel::changeOfDay);
@@ -62,7 +64,6 @@ QVariant MessageModel::data(const QModelIndex& index, int role) const
         return column;
 
     return messageItemAt(row)->data(index.column(), role);
-    // return _messageList[row]->data(index.column(), role);
 }
 
 bool MessageModel::setData(const QModelIndex& index, const QVariant& value, int role)
@@ -119,9 +120,7 @@ void MessageModel::insertMessages(const QList<Message>& msglist)
 
 void MessageModel::insertMessageGroup(const QList<Message>& msglist)
 {
-    Q_ASSERT(!msglist.isEmpty());  // the msglist can be assumed to be non empty
-                                   //   int last = msglist.count() - 1;
-    //   Q_ASSERT(0 == last || msglist.at(0).msgId() != msglist.at(last).msgId() || msglist.at(last).type() == Message::DayChange);
+    Q_ASSERT(!msglist.isEmpty());
     int start = indexForId(msglist.first().msgId());
     int end = start + msglist.count() - 1;
     Message dayChangeMsg;
@@ -146,21 +145,16 @@ void MessageModel::insertMessageGroup(const QList<Message>& msglist)
     }
 
     if (!dayChangeMsg.isValid() && start < messageCount()) {
-        // if(!dayChangeItem && start < _messageList.count()) {
-        // check if we need to insert a daychange message at the end of the this group
-
-        // if this assert triggers then indexForId() would have found a spot right before a DayChangeMsg
-        // this should never happen as daychange messages share the msgId with the preceding message
         Q_ASSERT(messageItemAt(start)->msgType() != Message::DayChange);
         QDateTime nextTs = messageItemAt(start)->timestamp();
         QDateTime prevTs = msglist.last().timestamp();
-        nextTs.setTimeSpec(Qt::UTC);
-        prevTs.setTimeSpec(Qt::UTC);
+        nextTs.setTimeZone(QTimeZone::UTC);  // Replaced setTimeSpec(Qt::UTC)
+        prevTs.setTimeZone(QTimeZone::UTC);  // Replaced setTimeSpec(Qt::UTC)
         qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
         qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
         if (nextDay != prevDay) {
             nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
-            nextTs.setTimeSpec(Qt::LocalTime);
+            nextTs.setTimeZone(QTimeZone::systemTimeZone());  // Replaced setTimeSpec(Qt::LocalTime)
             dayChangeMsg = Message::ChangeOfDay(nextTs);
             dayChangeMsg.setMsgId(msglist.last().msgId());
         }
@@ -185,26 +179,17 @@ void MessageModel::insertMessageGroup(const QList<Message>& msglist)
 
 int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
 {
-    /* short description:
-     * 1) first we check where the message with the highest msgId from msglist would be inserted
-     * 2) check that position for dupe
-     * 3) determine the messageId of the preceding msg
-     * 4) insert as many msgs from msglist with with msgId larger then the just determined id
-     *    those messages are automatically less then the msg of the position we just determined in 1)
-     */
     bool inOrder = (msglist.first().msgId() < msglist.last().msgId());
-    // depending on the order we have to traverse from the front to the back or vice versa
-
     QList<Message> grouplist;
     MsgId minId;
     MsgId dupeId;
-    int processedMsgs = 1;  // we know the list isn't empty, so we at least process one message
+    int processedMsgs = 1;
     int idx;
     bool fastForward = false;
     QList<Message>::const_iterator iter;
     if (inOrder) {
         iter = msglist.constEnd();
-        --iter;  // this op is safe as we've already passed an empty check
+        --iter;
     }
     else {
         iter = msglist.constBegin();
@@ -214,8 +199,6 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
     if (idx < messageCount())
         dupeId = messageItemAt(idx)->msgId();
 
-    // we always compare to the previous entry...
-    // if there isn't, we can fastforward to the top
     if (idx - 1 >= 0)
         minId = messageItemAt(idx - 1)->msgId();
     else
@@ -237,7 +220,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
                 break;
             processedMsgs++;
 
-            if (grouplist.isEmpty()) {  // as long as we don't have a starting point, we have to update the dupeId
+            if (grouplist.isEmpty()) {
                 idx = indexForId((*iter).msgId());
                 if (idx >= 0 && !messagesIsEmpty())
                     dupeId = messageItemAt(idx)->msgId();
@@ -246,13 +229,13 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
                 if (!grouplist.isEmpty()) {
                     QDateTime nextTs = grouplist.value(0).timestamp();
                     QDateTime prevTs = (*iter).timestamp();
-                    nextTs.setTimeSpec(Qt::UTC);
-                    prevTs.setTimeSpec(Qt::UTC);
+                    nextTs.setTimeZone(QTimeZone::UTC);  // Replaced setTimeSpec(Qt::UTC)
+                    prevTs.setTimeZone(QTimeZone::UTC);  // Replaced setTimeSpec(Qt::UTC)
                     qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     if (nextDay != prevDay) {
                         nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
-                        nextTs.setTimeSpec(Qt::LocalTime);
+                        nextTs.setTimeZone(QTimeZone::systemTimeZone());  // Replaced setTimeSpec(Qt::LocalTime)
                         Message dayChangeMsg = Message::ChangeOfDay(nextTs);
                         dayChangeMsg.setMsgId((*iter).msgId());
                         grouplist.prepend(dayChangeMsg);
@@ -269,7 +252,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
                 break;
             processedMsgs++;
 
-            if (grouplist.isEmpty()) {  // as long as we don't have a starting point, we have to update the dupeId
+            if (grouplist.isEmpty()) {
                 idx = indexForId((*iter).msgId());
                 if (idx >= 0 && !messagesIsEmpty())
                     dupeId = messageItemAt(idx)->msgId();
@@ -278,13 +261,13 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
                 if (!grouplist.isEmpty()) {
                     QDateTime nextTs = grouplist.value(0).timestamp();
                     QDateTime prevTs = (*iter).timestamp();
-                    nextTs.setTimeSpec(Qt::UTC);
-                    prevTs.setTimeSpec(Qt::UTC);
+                    nextTs.setTimeZone(QTimeZone::UTC);  // Replaced setTimeSpec(Qt::UTC)
+                    prevTs.setTimeZone(QTimeZone::UTC);  // Replaced setTimeSpec(Qt::UTC)
                     qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     if (nextDay != prevDay) {
                         nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
-                        nextTs.setTimeSpec(Qt::LocalTime);
+                        nextTs.setTimeZone(QTimeZone::systemTimeZone());  // Replaced setTimeSpec(Qt::LocalTime)
                         Message dayChangeMsg = Message::ChangeOfDay(nextTs);
                         dayChangeMsg.setMsgId((*iter).msgId());
                         grouplist.prepend(dayChangeMsg);
@@ -332,7 +315,6 @@ void MessageModel::clear()
     }
 }
 
-// returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
 int MessageModel::indexForId(MsgId id)
 {
     if (messagesIsEmpty() || id <= messageItemAt(0)->msgId())
@@ -359,57 +341,23 @@ void MessageModel::changeOfDay()
 {
     _dayChangeTimer.setInterval(DAY_IN_MSECS);
     if (!messagesIsEmpty()) {
-        // Starting from the newest* message in the model
         int idx = messageCount();
-
-        // Search in reverse-chronological* order while both...
-        //   A. More messages remain (idx > 0)
-        //   B. The next oldest* message (idx - 1) is still more recent than the active day change
         while (idx > 0 && messageItemAt(idx - 1)->timestamp() > _nextDayChange) {
-            // Move the current index to point to the next older* message (idx - 1)
             idx--;
         }
-        // *NOTE 1: With IRCv3 server-time, messages sorted by index may not be in chronological
-        //          order!  This assumption cannot always be relied upon.
-
         if (idx == 0) {
-            // All loaded messages are newer than this day change event.  Greetings time traveler!
-            // Example (changing from Day1 to Day2):
-            // idx -> [0] Day2-A
-            //        [1] Day2-B
-            //
-            // This may happen by receiving messages from an IRCv3 "server-time"-enabled server that
-            // specifies timestamps in the future (e.g. if clocks are not precisely synced), or if
-            // Quassel's internal day change timer gets off track.
-            //
-            // This should be relatively rare.  Log a message so we can track this in the wild.
-            // (Use "idx" rather than "idx - 1" due to the decrement in the while loop)
-            qDebug() << Q_FUNC_INFO << "Oldest message with MsgId" << messageItemAt(idx)->msgId()
-                     << "has a timestamp of" << messageItemAt(idx)->timestamp()
-                     << "which is newer than day change" << _nextDayChange
+            qDebug() << Q_FUNC_INFO << "Oldest message with MsgId" << messageItemAt(idx)->msgId() << "has a timestamp of"
+                     << messageItemAt(idx)->timestamp() << "which is newer than day change" << _nextDayChange
                      << ".  Skipping inserting a DayChange message.";
-
-            // With no older messages to reference, there's no need for a Day Change message.
-        } else {
-            // "idx" points to the oldest* message that's still newer than the current day change.
-            // Example (changing from Day1 to Day2):
-            //        [0] Day1-A
-            //        [1] Day1-B
-            // idx -> [2] Day2-A
-            //        [3] Day2-B
-            //
-            // *NOTE: See earlier NOTE 1 - chronological order isn't guaranteed.
-            //
-            // Insert the Day Change message before idx.
+        }
+        else {
             beginInsertRows(QModelIndex(), idx, idx);
             Message dayChangeMsg = Message::ChangeOfDay(_nextDayChange);
-            // Duplicate the MsgId of the message right before this day change
             dayChangeMsg.setMsgId(messageItemAt(idx - 1)->msgId());
             insertMessage__(idx, dayChangeMsg);
             endInsertRows();
         }
     }
-    // Advance the day change tracker to the next day change
     _nextDayChange = _nextDayChange.addMSecs(DAY_IN_MSECS);
 }
 
@@ -434,19 +382,14 @@ void MessageModel::requestBacklog(BufferId bufferId)
     BacklogSettings backlogSettings;
     int requestCount = backlogSettings.dynamicBacklogAmount();
 
-    // Assume there's no available messages
     MsgId oldestAvailableMsgId{-1};
-
-    // Try to find the oldest (lowest ID) message belonging to this buffer
     for (int i = 0; i < messageCount(); i++) {
         if (messageItemAt(i)->bufferId() == bufferId) {
-            // Match found, use this message ID for requesting more backlog
             oldestAvailableMsgId = messageItemAt(i)->msgId();
             break;
         }
     }
 
-    // Prepare to fetch messages
     _messagesWaiting[bufferId] = requestCount;
     Client::backlogManager()->emitMessagesRequested(tr("Requesting %1 messages from backlog for buffer %2:%3")
                                                         .arg(requestCount)
@@ -454,13 +397,9 @@ void MessageModel::requestBacklog(BufferId bufferId)
                                                         .arg(Client::networkModel()->bufferName(bufferId)));
 
     if (oldestAvailableMsgId.isValid()) {
-        // Request messages from backlog starting from this message ID, going into the past
         Client::backlogManager()->requestBacklog(bufferId, -1, oldestAvailableMsgId, requestCount);
     }
     else {
-        // No existing messages could be found.  Try to fetch the newest available messages instead.
-        // This may happen when initial backlog fetching is set to zero, or if no messages exist in
-        // a buffer.
         Client::backlogManager()->requestBacklog(bufferId, -1, -1, requestCount);
     }
 }
@@ -529,7 +468,6 @@ bool MessageModelItem::setData(int column, const QVariant& value, int role)
     }
 }
 
-// Stuff for later
 bool MessageModelItem::lessThan(const MessageModelItem* m1, const MessageModelItem* m2)
 {
     return (*m1) < (*m2);

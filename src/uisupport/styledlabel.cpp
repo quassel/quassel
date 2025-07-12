@@ -111,7 +111,9 @@ void StyledLabel::updateSizeHint()
 void StyledLabel::setText(const QString& text)
 {
     UiStyle::StyledString sstr = UiStyle::styleString(UiStyle::mircToInternal(text), UiStyle::FormatType::PlainMsg);
-    UiStyle::FormatContainer layoutList = GraphicalUi::uiStyle()->toTextLayoutList(sstr.formatList, sstr.plainText.length(), UiStyle::MessageLabel::None);
+    UiStyle::FormatContainer layoutList = GraphicalUi::uiStyle()->toTextLayoutList(sstr.formatList,
+                                                                                   sstr.plainText.length(),
+                                                                                   UiStyle::MessageLabel::None);
 
     // Use default font rather than the style's
     QTextLayout::FormatRange fmtRange;
@@ -122,7 +124,7 @@ void StyledLabel::setText(const QString& text)
 
     // Mark URLs
     _clickables = ClickableList::fromString(sstr.plainText);
-    foreach (Clickable click, _clickables) {
+    for (const Clickable& click : _clickables) {
         if (click.type() == Clickable::Url) {
             QTextLayout::FormatRange range;
             range.start = click.start();
@@ -196,7 +198,7 @@ int StyledLabel::posToCursor(const QPointF& pos)
 void StyledLabel::mouseMoveEvent(QMouseEvent* event)
 {
     if (event->buttons() == Qt::NoButton) {
-        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+        Clickable click = _clickables.atCursorPos(posToCursor(event->position()));
         if (click.isValid())
             setHoverMode(click.start(), click.length());
         else
@@ -204,8 +206,9 @@ void StyledLabel::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-void StyledLabel::enterEvent(QEvent*)
+void StyledLabel::enterEvent(QEnterEvent* event)
 {
+    Q_UNUSED(event);  // Suppress unused parameter warning
     if (resizeMode() == ResizeOnHover)
         setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 }
@@ -220,7 +223,7 @@ void StyledLabel::leaveEvent(QEvent*)
 void StyledLabel::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton) {
-        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+        Clickable click = _clickables.atCursorPos(posToCursor(event->position()));
         if (click.isValid())
             emit clickableActivated(click);
     }

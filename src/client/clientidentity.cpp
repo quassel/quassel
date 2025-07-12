@@ -81,6 +81,12 @@ void CertIdentity::markClean()
     emit sslSettingsUpdated();
 }
 
+void CertIdentity::synchronize(SignalProxy* proxy)
+{
+    proxy->synchronize(this);
+    // CertManager will be synchronized separately when enableEditSsl() is called
+}
+
 // ========================================
 //  ClientCertManager
 // ========================================

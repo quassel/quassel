@@ -26,7 +26,7 @@
 	<string>@QUASSEL_MAJOR@.@QUASSEL_MINOR@.@QUASSEL_PATCH@</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>@QMAKE_MACOSX_DEPLOYMENT_TARGET@</string>
-	<key>LSRequiresCarbon</key>
+	<key>LSRequiresFoundation</key>
 	<true/>
 	<key>NSHighResolutionCapable</key>
 	<true/>

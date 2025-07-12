@@ -20,7 +20,9 @@
 
 #include "tabcompleter.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QTextCursor>
 
 #include "action.h"
 #include "actioncollection.h"
@@ -44,9 +46,9 @@ TabCompleter::TabCompleter(MultiLineEdit* _lineEdit)
     , _lineEdit(_lineEdit)
     , _enabled(false)
     , _nickSuffix(": ")
+    , _lastCompletionLength(0)
+    , _completionStartPos(0)
 {
-    // This Action just serves as a container for the custom shortcut and isn't actually handled;
-    // apparently, using tab as an Action shortcut in an input widget is unreliable on some platforms (e.g. OS/2)
     _lineEdit->installEventFilter(this);
     ActionCollection* coll = GraphicalUi::actionCollection("General");
     QAction* a = coll->addAction("TabCompletionKey",
@@ -61,11 +63,9 @@ void TabCompleter::onTabCompletionKey()
 
 void TabCompleter::buildCompletionList()
 {
-    // ensure a safe state in case we return early.
     _completionMap.clear();
     _nextCompletion = _completionMap.begin();
 
-    // this is the first time tab is pressed -> build up the completion list and it's iterator
     QModelIndex currentIndex = Client::bufferModel()->currentIndex();
     _currentBufferId = currentIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
     if (!_currentBufferId.isValid())
@@ -78,36 +78,44 @@ void TabCompleter::buildCompletionList()
     if (!_currentNetwork)
         return;
 
-    QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegExp(R"([^#\w\d-_\[\]{}|`^.\\])"), -1, -1);
-    QRegExp regex(QString(R"(^[-_\[\]{}|`^.\\]*)").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
+    QString textBeforeCursor = _lineEdit->text().left(_lineEdit->cursorPosition());
+    QRegularExpression wordBoundary(R"(\s)");  // whitespace only
+    int lastSpace = textBeforeCursor.lastIndexOf(wordBoundary);
+    QString tabAbbrev = textBeforeCursor.mid(lastSpace + 1);
+    
+    // For matching nicks, create a simple prefix match regex
+    QString regexPattern = "^" + QRegularExpression::escape(tabAbbrev);
+    QRegularExpression regex(regexPattern, QRegularExpression::CaseInsensitiveOption);
+    
+    if (!regex.isValid()) {
+        return;
+    }
 
-    // channel completion - add all channels of the current network to the map
     if (tabAbbrev.startsWith('#')) {
         _completionType = ChannelTab;
-        foreach (IrcChannel* ircChannel, _currentNetwork->ircChannels()) {
-            if (regex.indexIn(ircChannel->name()) > -1)
+        for (IrcChannel* ircChannel : *(_currentNetwork->ircChannels())) {
+            if (regex.match(ircChannel->name()).hasMatch())
                 _completionMap[ircChannel->name()] = ircChannel->name();
         }
     }
     else {
-        // user completion
         _completionType = UserTab;
         switch (static_cast<BufferInfo::Type>(currentIndex.data(NetworkModel::BufferTypeRole).toInt())) {
-        case BufferInfo::ChannelBuffer: {  // scope is needed for local var declaration
+        case BufferInfo::ChannelBuffer: {
             IrcChannel* channel = _currentNetwork->ircChannel(_currentBufferName);
             if (!channel)
                 return;
-            foreach (IrcUser* ircUser, channel->ircUsers()) {
-                if (regex.indexIn(ircUser->nick()) > -1)
+            for (IrcUser* ircUser : channel->ircUsers()) {
+                if (regex.match(ircUser->nick()).hasMatch())
                     _completionMap[ircUser->nick().toLower()] = ircUser->nick();
             }
         } break;
         case BufferInfo::QueryBuffer:
-            if (regex.indexIn(_currentBufferName) > -1)
+            if (regex.match(_currentBufferName).hasMatch())
                 _completionMap[_currentBufferName.toLower()] = _currentBufferName;
             // fallthrough
         case BufferInfo::StatusBuffer:
-            if (!_currentNetwork->myNick().isEmpty() && regex.indexIn(_currentNetwork->myNick()) > -1)
+            if (!_currentNetwork->myNick().isEmpty() && regex.match(_currentNetwork->myNick()).hasMatch())
                 _completionMap[_currentNetwork->myNick().toLower()] = _currentNetwork->myNick();
             break;
         default:
@@ -117,6 +125,7 @@ void TabCompleter::buildCompletionList()
 
     _nextCompletion = _completionMap.begin();
     _lastCompletionLength = tabAbbrev.length();
+    _completionStartPos = lastSpace + 1;
 }
 
 void TabCompleter::complete()
@@ -130,20 +139,25 @@ void TabCompleter::complete()
     }
 
     if (_nextCompletion != _completionMap.end()) {
-        // clear previous completion
-        for (int i = 0; i < _lastCompletionLength; i++) {
-            _lineEdit->backspace();
-        }
+        QTextCursor cursor = _lineEdit->textCursor();
+        
+        cursor.beginEditBlock();
+        cursor.clearSelection();
+        cursor.setPosition(_completionStartPos);
+        cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, _lastCompletionLength);
+        cursor.removeSelectedText();
+        cursor.insertText(*_nextCompletion);
+        cursor.endEditBlock();
+        
+        _lineEdit->setTextCursor(cursor);
 
-        // insert completion
-        _lineEdit->insert(*_nextCompletion);
-
-        // remember charcount to delete next time and advance to next completion
+        // Check if we need to add suffix
+        bool atEndOfLine = (_lineEdit->cursorPosition() == _lineEdit->text().length());
+        
         _lastCompletionLength = _nextCompletion->length();
         _nextCompletion++;
 
-        // we're completing the first word of the line
-        if (_completionType == UserTab && _lineEdit->cursorPosition() == _lastCompletionLength) {
+        if (_completionType == UserTab && atEndOfLine) {
             _lineEdit->insert(_nickSuffix);
             _lastCompletionLength += _nickSuffix.length();
         }
@@ -151,8 +165,6 @@ void TabCompleter::complete()
             _lineEdit->addCompletionSpace();
             _lastCompletionLength++;
         }
-
-        // we're at the end of the list -> start over again
     }
     else {
         if (!_completionMap.isEmpty()) {
@@ -174,15 +186,18 @@ bool TabCompleter::eventFilter(QObject* obj, QEvent* event)
 
     auto* keyEvent = static_cast<QKeyEvent*>(event);
 
-    if (keyEvent->key() == GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut()[0])
+    QAction* tabCompletionAction = GraphicalUi::actionCollection("General")->action("TabCompletionKey");
+    if (keyEvent->key() == Qt::Key_Tab) {
         complete();
-    else
+    } else if (tabCompletionAction && keyEvent->keyCombination() == tabCompletionAction->shortcut()[0]) {
+        complete();
+    } else {
         reset();
+    }
 
     return false;
 }
 
-// this determines the sort order
 bool TabCompleter::CompletionKey::operator<(const CompletionKey& other) const
 {
     switch (_completionType) {

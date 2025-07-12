@@ -1,2 +1,2 @@
-INSERT INTO sender (sender, realname, avatarurl)
+INSERT OR IGNORE INTO sender (sender, realname, avatarurl)
 VALUES (:sender, :realname, :avatarurl)

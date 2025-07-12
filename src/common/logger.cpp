@@ -138,7 +138,35 @@ void Logger::setup(bool keepMessages)
 
 void Logger::messageHandler(QtMsgType type, const QMessageLogContext&, const QString& message)
 {
-    Quassel::instance()->logger()->handleMessage(type, message);
+    // During application shutdown, the Quassel singleton may have been destroyed
+    // while Qt's static destructors are still running and generating debug messages.
+    // In that case, just output to stderr directly.
+    auto* quassel = Quassel::instance();
+    if (!quassel) {
+        // Fallback to stderr during shutdown
+        QString levelString;
+        switch (type) {
+        case QtDebugMsg:
+            levelString = "[Debug] ";
+            break;
+        case QtInfoMsg:
+            levelString = "[Info ] ";
+            break;
+        case QtWarningMsg:
+            levelString = "[Warn ] ";
+            break;
+        case QtCriticalMsg:
+            levelString = "[Error] ";
+            break;
+        case QtFatalMsg:
+            levelString = "[FATAL] ";
+            break;
+        }
+        std::cerr << qPrintable(QDateTime::currentDateTime().toString(Qt::ISODate) + " " + levelString + message) << std::endl;
+        return;
+    }
+    
+    quassel->logger()->handleMessage(type, message);
 }
 
 void Logger::handleMessage(QtMsgType type, const QString& msg)
@@ -216,10 +244,13 @@ void Logger::outputMessage(const LogEntry& message)
 #ifndef Q_OS_MAC
     // For fatal messages, write log to dump file
     if (message.logLevel == LogLevel::Fatal) {
-        QFile dumpFile{Quassel::instance()->coreDumpFileName()};
-        if (dumpFile.open(QIODevice::Append)) {
-            dumpFile.write(msgWithTime(message));
-            dumpFile.close();
+        auto* quassel = Quassel::instance();
+        if (quassel) {  // Only write to dump file if Quassel singleton is still available
+            QFile dumpFile{quassel->coreDumpFileName()};
+            if (dumpFile.open(QIODevice::Append)) {
+                dumpFile.write(msgWithTime(message));
+                dumpFile.close();
+            }
         }
     }
 #endif
