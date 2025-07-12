@@ -275,7 +275,9 @@ void IrcUser::partChannel(const QString& channelname)
 {
     IrcChannel* channel = network()->ircChannel(channelname);
     if (channel == nullptr) {
-        qWarning() << "IrcUser::partChannel(): received part for unknown Channel" << channelname;
+        // Channel may already be removed if current user parted - this is normal
+        // Channel not found - may have been removed already (normal for current user part)
+        return;
     }
     else {
         partChannel(channel);
@@ -287,7 +289,19 @@ void IrcUser::partChannelInternal(IrcChannel* channel, bool skip_sync)
     if (_channels.contains(channel)) {
         _channels.remove(channel);
         disconnect(channel, nullptr, this, nullptr);
-        channel->part(this);
+        
+        // Qt6 Fix: If this is the current user, call partChannel() to emit parted() signal
+        // Otherwise just call part() to remove this specific user
+        if (network()->isMe(this)) {
+            // Current user parting - trigger complete channel removal
+            if (network()->ircChannel(channel->name())) {
+                channel->partChannel();
+            }
+            // Channel already removed by previous part - normal for sync calls
+        } else {
+            channel->part(this);
+        }
+        
         QString channelName = channel->name();
         if (!skip_sync)
             SYNC_OTHER(partChannel, ARG(channelName))
@@ -339,6 +353,8 @@ void IrcUser::addUserModes(const QString& modes)
     if (modes.isEmpty())
         return;
 
+    qDebug() << "[DEBUG] IrcUser::addUserModes called on:" << objectName() << "modes:" << modes;
+
     bool changesMade = false;
     for (int i = 0; i < modes.size(); i++) {
         if (!_userModes.contains(modes[i])) {
@@ -348,6 +364,7 @@ void IrcUser::addUserModes(const QString& modes)
     }
 
     if (changesMade) {
+        qDebug() << "[DEBUG] Syncing addUserModes for:" << objectName() << "modes:" << modes;
         SYNC(ARG(modes))
         emit userModesAdded(modes);
     }

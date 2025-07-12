@@ -228,6 +228,7 @@ private:
     void registerMetaTypes();
     void setupSignalHandling();
     void setupEnvironment();
+    void setupQtDebugOutput();
     void setupCliParser();
 
     /**

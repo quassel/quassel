@@ -18,6 +18,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include "event.h"
+
+#include <QDebug>
+#include <QVariantMap>
+
 #include "ctcpevent.h"
 #include "ircevent.h"
 #include "messageevent.h"
@@ -25,13 +30,21 @@
 #include "peer.h"
 #include "signalproxy.h"
 
-Event::Event(EventManager::EventType type)
-    : _type(type)
+Event::Event(EventManager::EventType type, QObject* parent)
+    : QObject(parent)
+    , _type(type)
+    , _flags(0)
+    , _timestamp(QDateTime::currentDateTimeUtc())
+    , _valid(true)
 {
 }
 
-Event::Event(EventManager::EventType type, QVariantMap& map)
-    : _type(type)
+Event::Event(EventManager::EventType type, QVariantMap& map, QObject* parent)
+    : QObject(parent)
+    , _type(type)
+    , _flags(static_cast<EventManager::EventFlags>(map.value("flags").toInt()))
+    , _timestamp(QDateTime::fromMSecsSinceEpoch(map.value("timestamp").toLongLong()))
+    , _valid(true)
 {
     if (!map.contains("flags") || !map.contains("timestamp")) {
         qWarning() << "Received invalid serialized event:" << map;
@@ -42,14 +55,8 @@ Event::Event(EventManager::EventType type, QVariantMap& map)
     Q_ASSERT(SignalProxy::current());
     Q_ASSERT(SignalProxy::current()->sourcePeer());
 
-    setFlags(static_cast<EventManager::EventFlags>(map.take("flags").toInt()));  // TODO sanity check?
-
-    if (SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
-        // timestamp is a qint64, signed rather than unsigned
-        setTimestamp(QDateTime::fromMSecsSinceEpoch(map.take("timestamp").toLongLong()));
-    }
-    else {
-        setTimestamp(QDateTime::fromSecsSinceEpoch(map.take("timestamp").toUInt()));
+    if (!SignalProxy::current()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
+        _timestamp = QDateTime::fromSecsSinceEpoch(map.value("timestamp").toUInt());
     }
 }
 
@@ -61,7 +68,6 @@ void Event::toVariantMap(QVariantMap& map) const
     map["type"] = static_cast<int>(type());
     map["flags"] = static_cast<int>(flags());
     if (SignalProxy::current()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
-        // toMSecs returns a qint64, signed rather than unsigned
         map["timestamp"] = timestamp().toMSecsSinceEpoch();
     }
     else {
@@ -79,7 +85,6 @@ QVariantMap Event::toVariantMap() const
 Event* Event::fromVariantMap(QVariantMap& map, Network* network)
 {
     int inttype = map.take("type").toInt();
-    // sanity check if we have a valid enum value
     if (EventManager::enumName(inttype).isEmpty()) {
         qWarning() << "Received a serialized event with unknown type" << inttype;
         return nullptr;
@@ -93,14 +98,11 @@ Event* Event::fromVariantMap(QVariantMap& map, Network* network)
 
     Event* e = nullptr;
 
-    // we use static create() functions to keep group-specific special cases in the files they belong
-    // e.g. IrcEventRawMessage
     switch (group) {
     case EventManager::NetworkEvent:
         e = NetworkEvent::create(type, map, network);
         break;
     case EventManager::IrcServerEvent:
-        // not in use!
         break;
     case EventManager::IrcEvent:
         e = IrcEvent::create(type, map, network);
@@ -129,10 +131,10 @@ Event* Event::fromVariantMap(QVariantMap& map, Network* network)
 
 QDebug operator<<(QDebug dbg, Event* e)
 {
-    dbg.nospace() << qPrintable(e->className()) << "("
-                  << "type = 0x" << qPrintable(QString::number(e->type(), 16));
+    if (!e)
+        return dbg << "Event(nullptr)";
+    dbg.nospace() << qPrintable(e->className()) << "(type = 0x" << qPrintable(QString::number(e->type(), 16));
     e->debugInfo(dbg);
-    //<< ", data = " << e->data(); // we don't use data anywhere yet
     dbg.nospace() << ", flags = 0x" << qPrintable(QString::number(e->flags(), 16)) << ")";
     return dbg.space();
 }

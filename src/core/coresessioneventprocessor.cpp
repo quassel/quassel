@@ -22,6 +22,8 @@
 
 #include <algorithm>
 
+#include <QObject>
+
 #include "coreirclisthelper.h"
 #include "corenetwork.h"
 #include "coresession.h"
@@ -472,10 +474,23 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
             if (e->network()->prefixModes().contains(mode)) {
                 // User channel modes (op, voice, etc...)
                 if (paramOffset < e->params().count()) {
-                    QString nick = nickFromMask(e->params()[paramOffset]);
+                    QString userParam = e->params()[paramOffset];
+                    
+                    // Validate that this parameter looks like a valid user hostmask or nickname
+                    // Don't create IrcUser objects for channel names or malformed data
+                    if (userParam.contains('#') || userParam.contains('&') || userParam.contains('!') || userParam.contains('+')) {
+                        if (userParam.contains('#') || userParam.contains('&') || userParam.contains('+')) {
+                            qWarning() << "Received MODE parameter that looks like a channel name instead of user:" << userParam;
+                            ++paramOffset;
+                            continue;
+                        }
+                        // userParam contains '!' so it might be a valid hostmask, proceed
+                    }
+                    
+                    QString nick = nickFromMask(userParam);
                     IrcUser* ircUser = e->network()->ircUser(nick);
                     if (!ircUser) {
-                        ircUser = e->network()->newIrcUser(e->params()[paramOffset]);
+                        ircUser = e->network()->newIrcUser(userParam);
                     }
                     if (!ircUser) {
                         qWarning() << Q_FUNC_INFO << "Unknown IrcUser:" << e->params()[paramOffset];
@@ -526,10 +541,20 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
     }
     else {
         // Pure User Modes
-        QString nick = nickFromMask(e->params().first());
+        QString target = e->params().first();
+        
+        // Validate that the target looks like a valid user hostmask or nickname
+        // Channel names that weren't recognized by isChannelName() should not create IrcUser objects
+        if (target.contains('#') || target.contains('&') || target.contains('!') || target.contains('+')) {
+            // This looks like a channel name that wasn't recognized, or malformed data
+            qWarning() << "Received MODE for unrecognized target that looks like a channel:" << target;
+            return;
+        }
+        
+        QString nick = nickFromMask(target);
         IrcUser* ircUser = e->network()->ircUser(nick);
         if (!ircUser) {
-            ircUser = e->network()->newIrcUser(e->params().first());
+            ircUser = e->network()->newIrcUser(target);
         }
         QString modeString(e->params()[1]);
         QString addModes;
@@ -621,8 +646,10 @@ void CoreSessionEventProcessor::lateProcessIrcEventPart(IrcEvent* e)
             return;
         }
         QString channel = e->params().at(0);
+        // Processing channel part event
         ircuser->partChannel(channel);
         if (e->network()->isMe(ircuser)) {
+            // Current user parted - cleaning up channel state
             qobject_cast<CoreNetwork*>(e->network())->setChannelParted(channel);
         }
     }
@@ -898,6 +925,7 @@ void CoreSessionEventProcessor::processKeyEvent(KeyEvent* e)
 /* RPL_WELCOME */
 void CoreSessionEventProcessor::processIrcEvent001(IrcEventNumeric* e)
 {
+    qDebug() << "[DEBUG] processIrcEvent001 (RPL_WELCOME) called for network" << e->network()->networkId() << "target:" << e->target();
     e->network()->setCurrentServer(e->prefix());
     e->network()->setMyNick(e->target());
 }
@@ -1087,15 +1115,7 @@ void CoreSessionEventProcessor::processIrcEvent317(IrcEvent* e)
         // Allow for 64-bit time
         qint64 logintime = e->params()[2].toLongLong();
         // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
-        // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
         loginTime = QDateTime::fromSecsSinceEpoch(logintime);
-#else
-        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for
-        // now.
-        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-        loginTime = QDateTime::fromMSecsSinceEpoch((qint64)(logintime * 1000));
-#endif
     }
 
     IrcUser* ircuser = e->network()->ircUser(e->params()[0]);
@@ -1223,6 +1243,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
         return;
 
     QString channelname = e->params()[1];
+    // Processing RPL_NAMREPLY for channel user list
 
     IrcChannel* channel = e->network()->ircChannel(channelname);
     if (!channel) {
@@ -1249,10 +1270,17 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
             nick = nick.mid(1);
         }
 
+        // Ensure IrcUser exists before adding to lists (Qt6 synchronization fix)
+        IrcUser* ircuser = e->network()->ircUser(nick);
+        if (!ircuser) {
+            ircuser = e->network()->newIrcUser(nick);
+        }
+        
         nicks << nick;
         modes << mode;
     }
 
+    // Qt6 Fix: Direct call to joinIrcUsers now that we have proper IrcUser synchronization via newIrcUserCreated
     channel->joinIrcUsers(nicks, modes);
 }
 

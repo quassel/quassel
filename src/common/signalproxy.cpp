@@ -99,14 +99,21 @@ SignalProxy* SignalProxy::current()
     return _current;
 }
 
-void SignalProxy::requestConnect(NetworkId id)
+
+void SignalProxy::requestNetworkConnect(NetworkId id)
 {
-    emit connectNetwork(id);
+    qDebug() << "[DEBUG] SignalProxy::requestNetworkConnect called for network" << id;
+    qDebug() << "[DEBUG] SignalProxy::requestNetworkConnect dispatching RpcCall for connectNetwork";
+    dispatchSignal("2connectNetwork(NetworkId)", {QVariant::fromValue(id)});
+    qDebug() << "[DEBUG] SignalProxy::requestNetworkConnect dispatched connectNetwork RpcCall";
 }
 
-void SignalProxy::requestDisconnect(NetworkId id)
+void SignalProxy::requestNetworkDisconnect(NetworkId id)
 {
-    emit disconnectNetwork(id);
+    qDebug() << "[DEBUG] SignalProxy::requestNetworkDisconnect called for network" << id;
+    qDebug() << "[DEBUG] SignalProxy::requestNetworkDisconnect dispatching RpcCall for disconnectNetwork";
+    dispatchSignal("2disconnectNetwork(NetworkId)", {QVariant::fromValue(id)});
+    qDebug() << "[DEBUG] SignalProxy::requestNetworkDisconnect dispatched disconnectNetwork RpcCall";
 }
 
 void SignalProxy::setProxyMode(ProxyMode mode)
@@ -262,10 +269,16 @@ void SignalProxy::renameObject(const SyncableObject* obj, const QString& newname
 void SignalProxy::objectRenamed(const QByteArray& classname, const QString& newname, const QString& oldname)
 {
     if (newname != oldname) {
+        qDebug() << "[DEBUG] Object renamed:" << classname << "from:" << oldname << "to:" << newname;
         if (_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname)) {
             SyncableObject* obj = _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
             obj->setObjectName(newname);
             requestInit(obj);
+            qDebug() << "[DEBUG] Successfully renamed object in _syncSlave";
+        }
+        else {
+            qWarning() << "SignalProxy::objectRenamed(): object" << classname << oldname << "is unknown";
+            qDebug() << "[DEBUG] Available objects for class" << classname << ":" << (_syncSlave.contains(classname) ? _syncSlave[classname].keys() : QStringList());
         }
     }
 }
@@ -320,6 +333,7 @@ void SignalProxy::synchronize(SyncableObject* obj)
 
     // attaching as slave to receive sync Calls
     QByteArray className(obj->syncMetaObject()->className());
+    qDebug() << "[DEBUG] Synchronizing object:" << className << "objectName:" << obj->objectName() << "proxyMode:" << (proxyMode() == Server ? "Server" : "Client");
     _syncSlave[className][obj->objectName()] = obj;
 
     if (proxyMode() == Server) {
@@ -391,6 +405,14 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
         qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:")
                           .arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName)
                    << syncMessage.params;
+        
+        // DEBUG: Show what's actually in the _syncSlave hash
+        qDebug() << "[DEBUG] Available classes in _syncSlave:" << _syncSlave.keys();
+        if (_syncSlave.contains(syncMessage.className)) {
+            qDebug() << "[DEBUG] Available objects for class" << syncMessage.className << ":" << _syncSlave[syncMessage.className].keys();
+        }
+        qDebug() << "[DEBUG] Looking for objectName:" << syncMessage.objectName;
+        qDebug() << "[DEBUG] ProxyMode:" << (proxyMode() == Server ? "Server" : "Client");
         return;
     }
 
@@ -476,6 +498,10 @@ void SignalProxy::handle(Peer* peer, const InitData& initData)
     }
 
     if (!_syncSlave[initData.className].contains(initData.objectName)) {
+        // CertManager objects may not be registered on client side if SSL is not enabled
+        if (initData.className == "CertManager") {
+            return; // Silently ignore unregistered CertManager objects
+        }
         qWarning() << "SignalProxy::handleInitData() received initData for unregistered Object:" << initData.className << initData.objectName;
         return;
     }

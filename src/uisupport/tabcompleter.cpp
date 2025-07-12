@@ -22,6 +22,7 @@
 
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QTextCursor>
 
 #include "action.h"
 #include "actioncollection.h"
@@ -45,6 +46,8 @@ TabCompleter::TabCompleter(MultiLineEdit* _lineEdit)
     , _lineEdit(_lineEdit)
     , _enabled(false)
     , _nickSuffix(": ")
+    , _lastCompletionLength(0)
+    , _completionStartPos(0)
 {
     _lineEdit->installEventFilter(this);
     ActionCollection* coll = GraphicalUi::actionCollection("General");
@@ -75,9 +78,18 @@ void TabCompleter::buildCompletionList()
     if (!_currentNetwork)
         return;
 
-    QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegularExpression(R"([^#\w\d-_\[\]{}|`^.\\])"), -1, -1);
-    QRegularExpression regex(QString(R"(^[-_\[\]{}|`^.\\]*)").append(QRegularExpression::escape(tabAbbrev)),
-                             QRegularExpression::CaseInsensitiveOption);
+    QString textBeforeCursor = _lineEdit->text().left(_lineEdit->cursorPosition());
+    QRegularExpression wordBoundary(R"(\s)");  // whitespace only
+    int lastSpace = textBeforeCursor.lastIndexOf(wordBoundary);
+    QString tabAbbrev = textBeforeCursor.mid(lastSpace + 1);
+    
+    // For matching nicks, create a simple prefix match regex
+    QString regexPattern = "^" + QRegularExpression::escape(tabAbbrev);
+    QRegularExpression regex(regexPattern, QRegularExpression::CaseInsensitiveOption);
+    
+    if (!regex.isValid()) {
+        return;
+    }
 
     if (tabAbbrev.startsWith('#')) {
         _completionType = ChannelTab;
@@ -113,6 +125,7 @@ void TabCompleter::buildCompletionList()
 
     _nextCompletion = _completionMap.begin();
     _lastCompletionLength = tabAbbrev.length();
+    _completionStartPos = lastSpace + 1;
 }
 
 void TabCompleter::complete()
@@ -126,16 +139,25 @@ void TabCompleter::complete()
     }
 
     if (_nextCompletion != _completionMap.end()) {
-        for (int i = 0; i < _lastCompletionLength; i++) {
-            _lineEdit->backspace();
-        }
+        QTextCursor cursor = _lineEdit->textCursor();
+        
+        cursor.beginEditBlock();
+        cursor.clearSelection();
+        cursor.setPosition(_completionStartPos);
+        cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, _lastCompletionLength);
+        cursor.removeSelectedText();
+        cursor.insertText(*_nextCompletion);
+        cursor.endEditBlock();
+        
+        _lineEdit->setTextCursor(cursor);
 
-        _lineEdit->insert(*_nextCompletion);
-
+        // Check if we need to add suffix
+        bool atEndOfLine = (_lineEdit->cursorPosition() == _lineEdit->text().length());
+        
         _lastCompletionLength = _nextCompletion->length();
         _nextCompletion++;
 
-        if (_completionType == UserTab && _lineEdit->cursorPosition() == _lastCompletionLength) {
+        if (_completionType == UserTab && atEndOfLine) {
             _lineEdit->insert(_nickSuffix);
             _lastCompletionLength += _nickSuffix.length();
         }
@@ -165,10 +187,13 @@ bool TabCompleter::eventFilter(QObject* obj, QEvent* event)
     auto* keyEvent = static_cast<QKeyEvent*>(event);
 
     QAction* tabCompletionAction = GraphicalUi::actionCollection("General")->action("TabCompletionKey");
-    if (keyEvent->keyCombination() == tabCompletionAction->shortcut()[0])
+    if (keyEvent->key() == Qt::Key_Tab) {
         complete();
-    else
+    } else if (tabCompletionAction && keyEvent->keyCombination() == tabCompletionAction->shortcut()[0]) {
+        complete();
+    } else {
         reset();
+    }
 
     return false;
 }

@@ -192,9 +192,9 @@ public:
     const QStringList capsRequiringConfiguration = QStringList{IrcCap::SASL};
 
 public slots:
-    void setMyNick(const QString& mynick);
-    void requestConnect() const;
-    void requestDisconnect() const;
+    void setMyNick(const QString& mynick) override;
+    void requestConnect() override;
+    void requestDisconnect() override;
     void requestSetNetworkInfo(const NetworkInfo& info);
 
     void setUseAutoReconnect(bool);

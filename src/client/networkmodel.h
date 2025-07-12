@@ -230,6 +230,7 @@ public:
 public slots:
     void join(const QList<IrcUser*>& ircUsers);
     void part(IrcUser* ircUser);
+    void onUsersJoined(const QStringList& nicks, const QStringList& modes);
 
     UserCategoryItem* findCategoryItem(int categoryId);
     void addUserToCategory(IrcUser* ircUser);

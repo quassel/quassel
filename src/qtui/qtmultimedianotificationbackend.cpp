@@ -22,6 +22,7 @@
 
 #include <memory>
 
+#include <QFile>
 #include <QFileDialog>
 #include <QUrl>
 #include <QtMultimedia/QAudioOutput>
@@ -39,9 +40,12 @@ QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject* parent
     notificationSettings.notify("QtMultimedia/Enabled", this, &QtMultimediaNotificationBackend::enabledChanged);
     notificationSettings.notify("QtMultimedia/AudioFile", this, &QtMultimediaNotificationBackend::audioFileChanged);
 
-    createMediaObject(notificationSettings.value("QtMultimedia/AudioFile", QString()).toString());
+    QString audioFile = notificationSettings.value("QtMultimedia/AudioFile", QString()).toString();
+    qDebug() << "QtMultimediaNotificationBackend: Initializing with audio file:" << audioFile;
+    createMediaObject(audioFile);
 
     _enabled = notificationSettings.value("QtMultimedia/Enabled", true).toBool();
+    qDebug() << "QtMultimediaNotificationBackend: Enabled:" << _enabled;
 }
 
 void QtMultimediaNotificationBackend::notify(const Notification& notification)
@@ -82,12 +86,21 @@ void QtMultimediaNotificationBackend::createMediaObject(const QString& file)
     if (file.isEmpty()) {
         _media.reset();
         _audioOutput.reset();
+        return;
     }
 
     _media = std::make_unique<QMediaPlayer>();
     _audioOutput = std::make_unique<QAudioOutput>();
     _media->setAudioOutput(_audioOutput.get());
-    _media->setSource(QUrl::fromLocalFile(file));
+    
+    QUrl fileUrl = QUrl::fromLocalFile(file);
+    if (fileUrl.isValid() && QFile::exists(file)) {
+        _media->setSource(fileUrl);
+    } else {
+        qWarning() << "QtMultimediaNotificationBackend: Invalid or missing audio file:" << file;
+        _media.reset();
+        _audioOutput.reset();
+    }
 }
 
 /***************************************************************************/
@@ -139,7 +152,7 @@ void QtMultimediaNotificationBackend::ConfigWidget::defaults()
 void QtMultimediaNotificationBackend::ConfigWidget::load()
 {
     NotificationSettings s;
-    _enabled = s.value("QtMultimedia/Enabled", false).toBool();
+    _enabled = s.value("QtMultimedia/Enabled", true).toBool();
     _filename = s.value("QtMultimedia/AudioFile", QString()).toString();
 
     ui.enabled->setChecked(_enabled);

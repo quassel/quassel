@@ -472,11 +472,7 @@ void EventStringifier::processIrcEvent317(IrcEvent* e)
     int idleSecs = e->params()[1].toInt();
 
     if (e->params().count() > 3) {
-#if QT_VERSION >= 0x050800
         QDateTime loginTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
-#else
-        QDateTime loginTime = QDateTime::fromMSecsSinceEpoch((qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
-#endif
         displayMsg(e,
                    Message::Server,
                    tr("[Whois] %1 is logged in since %2").arg(e->params()[0], loginTime.toString("yyyy-MM-dd hh:mm:ss UTC")));
@@ -568,11 +564,7 @@ void EventStringifier::processIrcEvent329(IrcEvent* e)
         qWarning() << Q_FUNC_INFO << "received invalid timestamp:" << e->params()[1];
         return;
     }
-#if QT_VERSION >= 0x050800
     QDateTime time = QDateTime::fromSecsSinceEpoch(unixtime).toUTC();
-#else
-    QDateTime time = QDateTime::fromMSecsSinceEpoch((qint64)(unixtime * 1000)).toUTC();
-#endif
     displayMsg(e, Message::Topic, tr("Channel %1 created on %2").arg(channel, time.toString("yyyy-MM-dd hh:mm:ss UTC")), QString(), channel);
 }
 
@@ -607,11 +599,7 @@ void EventStringifier::processIrcEvent333(IrcEvent* e)
         return;
 
     QString channel = e->params().first();
-#if QT_VERSION >= 0x050800
     QDateTime topicSetTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
-#else
-    QDateTime topicSetTime = QDateTime::fromMSecsSinceEpoch((qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
-#endif
     displayMsg(e,
                Message::Topic,
                tr("Topic set by %1 on %2").arg(e->params()[1], topicSetTime.toString("yyyy-MM-dd hh:mm:ss UTC")),

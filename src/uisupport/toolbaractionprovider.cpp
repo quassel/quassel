@@ -205,10 +205,10 @@ void ToolBarActionProvider::connectOrDisconnectNet()
         return;
 
     if (net->connectionState() == Network::Disconnected) {
-        Client::signalProxy()->requestConnect(net->networkId());
+        const_cast<Network*>(net)->requestConnect();
     }
     else {
-        Client::signalProxy()->requestDisconnect(net->networkId());
+        const_cast<Network*>(net)->requestDisconnect();
     }
 }
 

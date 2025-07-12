@@ -25,6 +25,7 @@
 
 #include <QAbstractItemView>
 #include <QMimeData>
+#include <QTimer>
 
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -154,6 +155,8 @@ void NetworkItem::attachNetwork(Network* network)
     connect(network, &Network::configChanged, this, [this]() { setNetworkName(_network->networkName()); });
     connect(network, &Network::configChanged, this, [this]() { setCurrentServer(_network->currentServer()); });
     connect(network, &Network::newIrcUserSynced, this, &NetworkItem::attachIrcUser);
+    // Connected to IrcUser sync signals
+    connect(network, &Network::newIrcChannelSynced, this, &NetworkItem::attachIrcChannel);
     connect(network, &Network::connectionStateSet, this, [this]() { emit networkDataChanged(); });
     connect(network, &QObject::destroyed, this, &NetworkItem::onNetworkDestroyed);
 
@@ -177,6 +180,24 @@ void NetworkItem::attachIrcChannel(IrcChannel* ircChannel)
 
 void NetworkItem::attachIrcUser(IrcUser* ircUser)
 {
+    // Qt6 Fix: Don't create query buffers for the current user (self)
+    if (_network && _network->isMe(ircUser)) {
+        // Still register for sync calls but don't create query buffer
+        if (_network->proxy()) {
+            _network->proxy()->synchronize(ircUser);
+        } else {
+            qWarning() << "NetworkItem::attachIrcUser: No proxy available for IrcUser:" << ircUser->objectName();
+        }
+        return;
+    }
+    
+    // Qt6 Fix: Ensure IrcUser is registered with SignalProxy for sync calls
+    if (_network && _network->proxy()) {
+        _network->proxy()->synchronize(ircUser);
+    } else {
+        qWarning() << "NetworkItem::attachIrcUser: No proxy available for IrcUser:" << ircUser->objectName();
+    }
+    
     QueryBufferItem* queryItem = nullptr;
     for (int i = 0; i < childCount(); i++) {
         queryItem = qobject_cast<QueryBufferItem*>(child(i));
@@ -707,15 +728,12 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel* ircChannel)
     _ircChannel = ircChannel;
 
     connect(ircChannel, &QObject::destroyed, this, &ChannelBufferItem::ircChannelDestroyed);
-    // TODO: Add signals to IrcChannel and uncomment these connections
-    // connect(ircChannel, &IrcChannel::topicChanged, this, &ChannelBufferItem::setTopic);
-    // connect(ircChannel, &IrcChannel::encryptedChanged, this, &ChannelBufferItem::setEncrypted);
-    // connect(ircChannel, &IrcChannel::usersJoined, this, &ChannelBufferItem::join);
-    // connect(ircChannel, &IrcChannel::userParted, this, &ChannelBufferItem::part);
-    // connect(ircChannel, &IrcChannel::parted, this, &ChannelBufferItem::ircChannelParted);
-    // connect(ircChannel, &IrcChannel::userModesChanged, this, &ChannelBufferItem::userModeChanged);
-    // connect(ircChannel, &IrcChannel::userModeAdded, this, &ChannelBufferItem::userModeChanged);
-    // connect(ircChannel, &IrcChannel::userModeRemoved, this, &ChannelBufferItem::userModeChanged);
+    connect(ircChannel, &IrcChannel::topicChanged, this, &ChannelBufferItem::setTopic);
+    connect(ircChannel, &IrcChannel::encryptedChanged, this, &ChannelBufferItem::setEncrypted);
+    connect(ircChannel, &IrcChannel::usersJoined, this, &ChannelBufferItem::onUsersJoined);
+    connect(ircChannel, &IrcChannel::userParted, this, &ChannelBufferItem::part);
+    connect(ircChannel, &IrcChannel::parted, this, &ChannelBufferItem::ircChannelParted);
+    connect(ircChannel, &IrcChannel::userModesChanged, this, &ChannelBufferItem::userModeChanged);
 
     QStringList users = ircChannel->userList();
     QList<IrcUser*> ircUsers;
@@ -750,11 +768,13 @@ QString ChannelBufferItem::nickChannelModes(const QString& nick) const
 
 void ChannelBufferItem::ircChannelParted()
 {
+    // Channel part - updating UI state
     Q_CHECK_PTR(_ircChannel);
     disconnect(_ircChannel, nullptr, this, nullptr);
     _ircChannel = nullptr;
     emit dataChanged();
     removeAllChilds();
+    // UI state updated - channel now inactive
 }
 
 void ChannelBufferItem::ircChannelDestroyed()
@@ -770,6 +790,27 @@ void ChannelBufferItem::join(const QList<IrcUser*>& ircUsers)
 {
     addUsersToCategory(ircUsers);
     emit dataChanged(2);
+}
+
+void ChannelBufferItem::onUsersJoined(const QStringList& nicks, const QStringList& modes)
+{
+    Q_UNUSED(modes); // We don't use modes parameter in this implementation
+    
+    // Optimized: Processing UI user join for channel
+    
+    // Qt6 Fix: Direct user joining now that IrcUser synchronization works properly
+    QList<IrcUser*> ircUsers;
+    auto* networkItem = qobject_cast<NetworkItem*>(parent());
+    if (networkItem && networkItem->network()) {
+        for (const QString& nick : nicks) {
+            if (IrcUser* user = networkItem->network()->ircUser(nick)) {
+                ircUsers << user;
+            }
+        }
+    }
+    if (!ircUsers.isEmpty()) {
+        join(ircUsers);
+    }
 }
 
 UserCategoryItem* ChannelBufferItem::findCategoryItem(int categoryId)
@@ -801,7 +842,9 @@ void ChannelBufferItem::addUsersToCategory(const QList<IrcUser*>& ircUsers)
     UserCategoryItem* categoryItem = nullptr;
 
     for (IrcUser* ircUser : ircUsers) {
-        categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
+        QString modes = _ircChannel->userModes(ircUser);
+        categoryId = UserCategoryItem::categoryFromModes(modes);
+        
         categoryItem = findCategoryItem(categoryId);
         if (!categoryItem) {
             categoryItem = new UserCategoryItem(categoryId, this);

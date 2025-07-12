@@ -1489,10 +1489,13 @@ void MainWin::showNetworkConfig(NetworkId netId)
 
 void MainWin::showIgnoreList(QString newRule)
 {
+    qDebug() << "MainWin::showIgnoreList called with rule:" << newRule;
     SettingsPageDlg dlg{new IgnoreListSettingsPage{}, this};
     // prepare config dialog for new rule
-    if (!newRule.isEmpty())
+    if (!newRule.isEmpty()) {
+        qDebug() << "Calling editIgnoreRule with:" << newRule;
         qobject_cast<IgnoreListSettingsPage*>(dlg.currentPage())->editIgnoreRule(newRule);
+    }
     dlg.exec();
 }
 
@@ -1795,15 +1798,18 @@ void MainWin::clientNetworkRemoved(NetworkId id)
 void MainWin::connectOrDisconnectFromNet()
 {
     auto* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
+    }
     const Network* net = Client::network(act->data().value<NetworkId>());
-    if (!net)
+    if (!net) {
         return;
-    if (net->connectionState() == Network::Disconnected)
-        Client::signalProxy()->requestConnect(net->networkId());
-    else
-        Client::signalProxy()->requestDisconnect(net->networkId());
+    }
+    if (net->connectionState() == Network::Disconnected) {
+        const_cast<Network*>(net)->requestConnect();
+    } else {
+        const_cast<Network*>(net)->requestDisconnect();
+    }
 }
 
 void MainWin::onFormatApplyColorTriggered()

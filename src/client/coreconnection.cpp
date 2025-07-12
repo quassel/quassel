@@ -49,7 +49,6 @@ void CoreConnection::init()
     _reconnectTimer.setSingleShot(true);
     connect(&_reconnectTimer, &QTimer::timeout, this, &CoreConnection::reconnectTimeout);
 
-    _qNetworkInformation = QNetworkInformation::instance();
     QString backend;
 #ifdef Q_OS_MACOS
     backend = QStringLiteral("scnetworkreachability");
@@ -60,11 +59,21 @@ void CoreConnection::init()
 #else
     backend = QStringLiteral("generic");
 #endif
+    
+    // Load backend first, then get instance
     if (!QNetworkInformation::loadBackendByName(backend)) {
         qWarning() << "Failed to load QNetworkInformation backend" << backend;
         qDebug() << "Available backends:" << QNetworkInformation::availableBackends();
     }
-    connect(_qNetworkInformation, &QNetworkInformation::reachabilityChanged, this, &CoreConnection::onlineStateChanged);
+    
+    _qNetworkInformation = QNetworkInformation::instance();
+    
+    // Only connect if QNetworkInformation instance is available
+    if (_qNetworkInformation) {
+        connect(_qNetworkInformation, &QNetworkInformation::reachabilityChanged, this, &CoreConnection::onlineStateChanged);
+    } else {
+        qDebug() << "QNetworkInformation instance not available after loading backend" << backend;
+    }
 
     CoreConnectionSettings s;
     s.initAndNotify("PingTimeoutInterval", this, &CoreConnection::pingTimeoutIntervalChanged, 60);

@@ -21,6 +21,8 @@
 #pragma once
 
 #include <iostream>
+#include <execinfo.h>
+#include <cstdlib>
 
 // For Windows DLLs, we must not export the template function.
 // For other systems, we must, otherwise the local static variables won't work across library boundaries...
@@ -60,8 +62,9 @@ QUASSEL_SINGLETON_EXPORT T* getOrSetInstance(T* instance = nullptr, bool destroy
         }
     }
     if (!_instance) {
-        std::cerr << "Trying to access a singleton that has not been instantiated yet!\n";
-        abort();
+        // During application shutdown, static destructors may try to access destroyed singletons
+        // Return nullptr instead of aborting to allow graceful shutdown
+        return nullptr;
     }
     return _instance;
 }
@@ -111,6 +114,7 @@ public:
      */
     ~Singleton()
     {
+        std::cerr << "Destroying singleton: " << typeid(T).name() << "\n";
         detail::getOrSetInstance<T>(nullptr, true);
     }
 

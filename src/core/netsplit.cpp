@@ -50,7 +50,7 @@ void Netsplit::userQuit(const QString& sender, const QStringList& channels, cons
 {
     if (_quitMsg.isEmpty())
         _quitMsg = msg;
-    foreach (QString channel, channels) {
+    for (const QString& channel : channels) {
         _quits[channel].append(sender);
     }
     _quitCounter++;
@@ -171,7 +171,7 @@ void Netsplit::quitTimeout()
     for (channelIter = _quits.begin(); channelIter != _quits.end(); ++channelIter) {
         QStringList usersToSend;
 
-        foreach (QString user, channelIter.value()) {
+        for (const QString& user : channelIter.value()) {
             if (!_quitsWithMessageSent.value(channelIter.key()).contains(user)) {
                 usersToSend << user;
                 _quitsWithMessageSent[channelIter.key()].append(user);
