@@ -280,7 +280,7 @@ TEST_F(SignalProxyTest, syncableObject)
                                                           {"stringProperty", "Hello"},
                                                           {"intProperty", 42},
                                                           {"doubleProperty", 4.2},
-                                                          {"FooData", "FOO"}
+                                                          {"FooData", QByteArray("FOO")}
                                                       })));
 
         // Set int property
@@ -315,7 +315,7 @@ TEST_F(SignalProxyTest, syncableObject)
                                                          }))));
 
         // Rename object
-        EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("__objectRenamed__"), ElementsAre("SyncObj", "Bar", "Foo"))));
+        EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("__objectRenamed__"), ElementsAre(QByteArray("SyncObj"), "Bar", "Foo"))));
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Bar"), Eq("setStringProperty"), ElementsAre("Hi Universe"))));
     }
 
