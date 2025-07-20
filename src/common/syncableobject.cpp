@@ -98,11 +98,13 @@ QVariantMap SyncableObject::toVariantMap()
             continue;
         }
 
-        QVariant value = QVariant::fromValue(metaType.create());
+        void* data = metaType.create();
+        QVariant value(metaType, data);
         QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
         QMetaObject::invokeMethod(this, methodname.toLatin1(), genericvalue);
 
         properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
+        metaType.destroy(data);
     }
     return properties;
 }
