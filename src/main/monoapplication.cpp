@@ -31,9 +31,7 @@ class InternalPeer;
 MonolithicApplication::MonolithicApplication(int& argc, char** argv)
     : QtUiApplication(argc, argv)
 {
-#if QT_VERSION >= 0x050700
     QGuiApplication::setDesktopFileName(Quassel::buildInfo().applicationName);
-#endif
 }
 
 void MonolithicApplication::init()

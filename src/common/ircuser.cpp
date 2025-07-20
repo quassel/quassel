@@ -177,11 +177,7 @@ void IrcUser::setIrcOperator(const QString& ircOperator)
 
 void IrcUser::setLastAwayMessage(int lastAwayMessage)
 {
-#if QT_VERSION >= 0x050800
     QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage);
-#else
-    QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000);
-#endif
     lastAwayMessageTime.setTimeZone(QTimeZone("UTC"));
     setLastAwayMessageTime(lastAwayMessageTime);
 }

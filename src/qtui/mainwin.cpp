@@ -1386,11 +1386,7 @@ void MainWin::handleSslErrors(const QSslSocket* socket, bool* accepted, bool* pe
 {
     QString errorString = "<ul>";
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    for (const auto& error : socket->sslErrors()) {
-#else
     for (const auto& error : socket->sslHandshakeErrors()) {
-#endif
         errorString += QString("<li>%1</li>").arg(error.errorString());
     }
     errorString += "</ul>";

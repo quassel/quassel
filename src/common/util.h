@@ -55,11 +55,7 @@ COMMON_EXPORT uint editingDistance(const QString& s1, const QString& s2);
 template<typename T>
 QSet<T> toQSet(const QList<T>& list)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    return list.toSet();
-#else
     return {list.begin(), list.end()};
-#endif
 }
 
 template<typename T>

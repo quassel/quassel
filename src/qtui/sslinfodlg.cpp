@@ -67,11 +67,7 @@ void SslInfoDlg::setCurrentCert(int index)
     ui.issuerState->setText(issuerInfo(cert, QSslCertificate::StateOrProvinceName));
     ui.issuerCity->setText(issuerInfo(cert, QSslCertificate::LocalityName));
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    const auto& sslErrors = socket()->sslErrors();
-#else
     const auto& sslErrors = socket()->sslHandshakeErrors();
-#endif
     if (sslErrors.isEmpty()) {
         ui.trusted->setText(tr("Yes"));
     }
