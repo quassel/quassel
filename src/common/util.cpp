@@ -271,12 +271,7 @@ QString tryFormatUnixEpoch(const QString& possibleEpochDate, Qt::DateFormat date
 
     // Time checks out, parse it
     QDateTime date;
-#if QT_VERSION >= 0x050800
     date.setSecsSinceEpoch(secsSinceEpoch);
-#else
-    // toSecsSinceEpoch() was added in Qt 5.8. Manually downconvert to seconds for now.
-    date.setMSecsSinceEpoch(secsSinceEpoch * 1000);
-#endif
 
     // Return the localized date/time
     if (useUTC) {

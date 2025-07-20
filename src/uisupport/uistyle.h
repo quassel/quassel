@@ -50,15 +50,9 @@ public:
     UiStyle(QObject* parent = nullptr);
     ~UiStyle() override;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
     using FormatContainer = QVector<QTextLayout::FormatRange>;
     static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) { layout.setFormats(formats); }
     static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) { return container; }
-#else
-    using FormatContainer = QList<QTextLayout::FormatRange>;
-    static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) { layout.setAdditionalFormats(formats); }
-    static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) { return container.toVector(); }
-#endif
 
     enum class FormatType : quint32
     {

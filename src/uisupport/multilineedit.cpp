@@ -195,9 +195,6 @@ void MultiLineEdit::updateSizeHint()
     opt.midLineWidth = midLineWidth();
     opt.state |= QStyle::State_Sunken;
     QWidget* widget = this;
-#if defined(Q_OS_MAC) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    widget = 0;
-#endif
     QSize s = style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(100, h), widget);
     if (s != _sizeHint) {
         _sizeHint = s;
