@@ -312,7 +312,7 @@ void CoreSessionEventProcessor::processIrcEventAccount(IrcEvent* e)
     QString nick = nickFromMask(e->prefix());
     IrcUser* ircuser = coreNetwork(e)->ircUser(nick);
     if (!ircuser) {
-        ircuser = coreNetwork(e)->newIrcUser(e->prefix());
+        ircuser = coreNetwork(e)->addIrcUser(e->prefix());
     }
     if (ircuser) {
         ircuser->setAccount(e->params().at(0));
@@ -357,7 +357,7 @@ void CoreSessionEventProcessor::processIrcEventChghost(IrcEvent* e)
     QString nick = nickFromMask(e->prefix());
     IrcUser* ircuser = coreNetwork(e)->ircUser(nick);
     if (!ircuser) {
-        ircuser = coreNetwork(e)->newIrcUser(e->prefix());
+        ircuser = coreNetwork(e)->addIrcUser(e->prefix());
     }
     if (ircuser) {
         ircuser->setUser(e->params().at(0));
@@ -378,7 +378,7 @@ void CoreSessionEventProcessor::processIrcEventInvite(IrcEvent* e)
         QString nick = nickFromMask(e->prefix());
         IrcUser* ircuser = coreNetwork(e)->ircUser(nick);
         if (!ircuser) {
-            ircuser = coreNetwork(e)->newIrcUser(e->prefix());
+            ircuser = coreNetwork(e)->addIrcUser(e->prefix());
         }
     }
 }
@@ -397,7 +397,7 @@ void CoreSessionEventProcessor::processIrcEventJoin(IrcEvent* e)
     QString nick = nickFromMask(e->prefix());
     IrcUser* ircuser = coreNetwork(e)->ircUser(nick);
     if (!ircuser) {
-        ircuser = coreNetwork(e)->newIrcUser(e->prefix());
+        ircuser = coreNetwork(e)->addIrcUser(e->prefix());
     }
 
     if (net->enabledCaps().contains(IrcCap::EXTENDED_JOIN)) {
@@ -435,7 +435,7 @@ void CoreSessionEventProcessor::lateProcessIrcEventKick(IrcEvent* e)
         QString nick = nickFromMask(e->prefix());
         IrcUser* ircuser = e->network()->ircUser(nick);
         if (!ircuser) {
-            ircuser = e->network()->newIrcUser(e->prefix());
+            ircuser = e->network()->addIrcUser(e->prefix());
         }
         IrcUser* victim = e->network()->ircUser(e->params().at(1));
         if (victim) {
@@ -490,7 +490,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
                     QString nick = nickFromMask(userParam);
                     IrcUser* ircUser = e->network()->ircUser(nick);
                     if (!ircUser) {
-                        ircUser = e->network()->newIrcUser(userParam);
+                        ircUser = e->network()->addIrcUser(userParam);
                     }
                     if (!ircUser) {
                         qWarning() << Q_FUNC_INFO << "Unknown IrcUser:" << e->params()[paramOffset];
@@ -554,7 +554,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
         QString nick = nickFromMask(target);
         IrcUser* ircUser = e->network()->ircUser(nick);
         if (!ircUser) {
-            ircUser = e->network()->newIrcUser(target);
+            ircUser = e->network()->addIrcUser(target);
         }
         QString modeString(e->params()[1]);
         QString addModes;
@@ -786,7 +786,7 @@ void CoreSessionEventProcessor::processIrcEventTopic(IrcEvent* e)
         QString nick = nickFromMask(e->prefix());
         IrcUser* ircuser = coreNetwork(e)->ircUser(nick);
         if (!ircuser) {
-            ircuser = coreNetwork(e)->newIrcUser(e->prefix());
+            ircuser = coreNetwork(e)->addIrcUser(e->prefix());
         }
 
         if (e->network()->isMe(ircuser)) {
@@ -1273,14 +1273,14 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
         // Ensure IrcUser exists before adding to lists (Qt6 synchronization fix)
         IrcUser* ircuser = e->network()->ircUser(nick);
         if (!ircuser) {
-            ircuser = e->network()->newIrcUser(nick);
+            ircuser = e->network()->addIrcUser(nick);
         }
         
         nicks << nick;
         modes << mode;
     }
 
-    // Qt6 Fix: Direct call to joinIrcUsers now that we have proper IrcUser synchronization via newIrcUserCreated
+    // Qt6 Fix: Direct call to joinIrcUsers now that we have proper IrcUser synchronization via receiveIrcUser
     channel->joinIrcUsers(nicks, modes);
 }
 
@@ -1534,7 +1534,7 @@ void CoreSessionEventProcessor::handleEarlyNetsplitJoin(Network* net, const QStr
         QString nick = nickFromMask(user);
         IrcUser* ircUser = net->ircUser(nick);
         if (!ircUser) {
-            ircUser = net->newIrcUser(user);
+            ircUser = net->addIrcUser(user);
         }
         if (ircUser) {
             ircUsers.append(ircUser);

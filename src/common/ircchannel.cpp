@@ -32,18 +32,42 @@ IrcChannel::IrcChannel(const QString& channelname, Network* network)
     , _encrypted(false)
     , _network(network)
 {
-    // ObjectName will be set by Network::newIrcChannel()
+    // ObjectName will be set by Network::addIrcChannel()
 }
 
 QString IrcChannel::modes() const
 {
     QString modeString;
-    for (auto it = _channelModes.constBegin(); it != _channelModes.constEnd(); ++it) {
+    
+    // Add D modes (no parameters)
+    for (QChar mode : _D_channelModes) {
+        modeString += mode;
+    }
+    
+    // Add A modes (list parameters)
+    for (auto it = _A_channelModes.constBegin(); it != _A_channelModes.constEnd(); ++it) {
+        modeString += it.key();
+        if (!it.value().isEmpty()) {
+            modeString += " " + it.value().join(" ");
+        }
+    }
+    
+    // Add B modes (parameter always)
+    for (auto it = _B_channelModes.constBegin(); it != _B_channelModes.constEnd(); ++it) {
         modeString += it.key();
         if (!it.value().isEmpty()) {
             modeString += " " + it.value();
         }
     }
+    
+    // Add C modes (parameter only when set)
+    for (auto it = _C_channelModes.constBegin(); it != _C_channelModes.constEnd(); ++it) {
+        modeString += it.key();
+        if (!it.value().isEmpty()) {
+            modeString += " " + it.value();
+        }
+    }
+    
     return modeString;
 }
 
@@ -140,7 +164,11 @@ void IrcChannel::joinIrcUsers(const QStringList& nicks, const QStringList& modes
     for (int i = 0; i < nicks.size(); ++i) {
         IrcUser* user = network()->ircUser(nicks[i]);
         if (!user) {
-            qWarning() << Q_FUNC_INFO << "Unknown user:" << nicks[i];
+            // Auto-create missing user - this handles sync timing issues between Qt5 core and Qt6 client
+            user = network()->addIrcUser(nicks[i]);
+        }
+        if (!user) {
+            qWarning() << Q_FUNC_INFO << "Failed to create user:" << nicks[i];
             continue;
         }
         if (!_userModes.contains(user)) {
@@ -234,6 +262,20 @@ void IrcChannel::addUserMode(IrcUser* user, const QString& mode)
     }
 }
 
+// Sync-compatible overload that takes nick string instead of IrcUser pointer
+void IrcChannel::addUserMode(const QString& nick, const QString& mode)
+{
+    IrcUser* user = network()->ircUser(nick);
+    if (!user) {
+        user = network()->addIrcUser(nick);
+    }
+    if (user) {
+        addUserMode(user, mode);
+    } else {
+        qWarning() << Q_FUNC_INFO << "Failed to find or create user:" << nick;
+    }
+}
+
 void IrcChannel::removeUserMode(IrcUser* user, const QString& mode)
 {
     if (_userModes.contains(user) && !mode.isEmpty()) {
@@ -248,20 +290,60 @@ void IrcChannel::removeUserMode(IrcUser* user, const QString& mode)
     }
 }
 
-void IrcChannel::addChannelMode(const QString& mode, const QString& param)
+void IrcChannel::addChannelMode(const QChar& mode, const QString& value)
 {
-    if (!mode.isEmpty()) {
-        _channelModes[mode] = param;
-        SYNC_OTHER(addChannelMode, ARG(mode), ARG(param))
+    Network::ChannelModeType modeType = network()->channelModeType(mode);
+
+    switch (modeType) {
+    case Network::NOT_A_CHANMODE:
+        return;
+    case Network::A_CHANMODE:
+        if (!_A_channelModes.contains(mode))
+            _A_channelModes[mode] = QStringList(value);
+        else if (!_A_channelModes[mode].contains(value))
+            _A_channelModes[mode] << value;
+        break;
+
+    case Network::B_CHANMODE:
+        _B_channelModes[mode] = value;
+        break;
+
+    case Network::C_CHANMODE:
+        _C_channelModes[mode] = value;
+        break;
+
+    case Network::D_CHANMODE:
+        _D_channelModes << mode;
+        break;
     }
+    SYNC_OTHER(addChannelMode, ARG(mode), ARG(value))
 }
 
-void IrcChannel::removeChannelMode(const QString& mode, const QString& param)
+void IrcChannel::removeChannelMode(const QChar& mode, const QString& value)
 {
-    if (_channelModes.contains(mode)) {
-        _channelModes.remove(mode);
-        SYNC_OTHER(removeChannelMode, ARG(mode), ARG(param))
+    Network::ChannelModeType modeType = network()->channelModeType(mode);
+
+    switch (modeType) {
+    case Network::NOT_A_CHANMODE:
+        return;
+    case Network::A_CHANMODE:
+        if (_A_channelModes.contains(mode))
+            _A_channelModes[mode].removeAll(value);
+        break;
+
+    case Network::B_CHANMODE:
+        _B_channelModes.remove(mode);
+        break;
+
+    case Network::C_CHANMODE:
+        _C_channelModes.remove(mode);
+        break;
+
+    case Network::D_CHANMODE:
+        _D_channelModes.remove(mode);
+        break;
     }
+    SYNC_OTHER(removeChannelMode, ARG(mode), ARG(value))
 }
 
 void IrcChannel::ircUserNickSet(const QString& newnick)

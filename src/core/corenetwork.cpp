@@ -424,7 +424,7 @@ Cipher* CoreNetwork::cipher(const QString& target)
         return user->cipher();
     }
     else if (!isChannelName(target)) {
-        return qobject_cast<CoreIrcUser*>(newIrcUser(target))->cipher();
+        return qobject_cast<CoreIrcUser*>(addIrcUser(target))->cipher();
     }
     return nullptr;
 }
@@ -453,7 +453,7 @@ void CoreNetwork::setCipherKey(const QString& target, const QByteArray& key)
 
     auto* u = qobject_cast<CoreIrcUser*>(ircUser(target));
     if (!u && !isChannelName(target))
-        u = qobject_cast<CoreIrcUser*>(newIrcUser(target));
+        u = qobject_cast<CoreIrcUser*>(addIrcUser(target));
 
     if (u) {
         u->setEncrypted(u->cipher()->setKey(key));
@@ -654,7 +654,23 @@ void CoreNetwork::networkInitialized()
 {
     qDebug() << "[DEBUG] CoreNetwork::networkInitialized() called for network" << networkId();
     setConnectionState(Network::Initialized);
-    setConnected(true);
+    
+    // Pre-populate channels from persistent storage before sync to match Qt5 behavior
+    if (rejoinChannels()) {
+        qDebug() << "[DEBUG] Pre-populating channels from persistent storage before network sync";
+        QHash<QString, QString> persistentChans = coreSession()->persistentChannels(networkId());
+        for (auto it = persistentChans.constBegin(); it != persistentChans.constEnd(); ++it) {
+            const QString& channelName = it.key();
+            qDebug() << "[DEBUG] Pre-creating channel:" << channelName << "for network sync";
+            // Create channel object but don't trigger JOIN yet - that happens in sendPerform()
+            IrcChannel* channel = ircChannel(channelName);
+            if (!channel) {
+                channel = addIrcChannel(channelName);
+            }
+        }
+    }
+    
+    setConnected(true);  // This triggers the sync - now with channels populated
     _disconnectExpected = false;
     _quitRequested = false;
 

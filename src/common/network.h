@@ -296,8 +296,8 @@ public:
     IrcChannel* ircChannel(const QString& channelname) const;
     inline const QHash<QString, IrcChannel*>* ircChannels() const { return &_ircChannels; }
 
-    IrcUser* newIrcUser(const QString& hostmask, const QVariantMap& initData = QVariantMap());
-    IrcChannel* newIrcChannel(const QString& channelname, const QVariantMap& initData = QVariantMap());
+    Q_INVOKABLE IrcUser* addIrcUser(const QString& hostmask);
+    Q_INVOKABLE IrcChannel* addIrcChannel(const QString& channelname);
 
     void removeIrcUser(IrcUser* ircuser);
     void removeIrcChannel(IrcChannel* ircChannel);
@@ -375,8 +375,6 @@ public slots:
     void updateAutoAway(bool active, const QDateTime& lastAwayMessageTime = QDateTime());
 
     Q_INVOKABLE void initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels);
-    Q_INVOKABLE void newIrcUserCreated(const QString& hostmask, const QVariantMap& initData);
-    Q_INVOKABLE void newIrcChannelCreated(const QString& channelname, const QVariantMap& initData);
     Q_INVOKABLE virtual void requestConnect();
     Q_INVOKABLE virtual void requestDisconnect();
 
@@ -388,10 +386,14 @@ signals:
     void connectionStateSet(Network::ConnectionState);
     void myNickSet(const QString& nick);
 
-    void newIrcUserSynced(IrcUser* ircuser);
+    void ircUserAdded(IrcUser* ircuser);
     void ircUserRemoved(IrcUser* ircuser);
-    void newIrcChannelSynced(IrcChannel* ircChannel);
+    void ircChannelAdded(IrcChannel* ircChannel);
     void ircChannelRemoved(IrcChannel* ircChannel);
+
+protected:
+    virtual IrcUser* ircUserFactory(const QString& hostmask);
+    virtual IrcChannel* ircChannelFactory(const QString& channelname);
 
 private slots:
     void ircUserNickSet(const QString& newnick);

@@ -259,7 +259,7 @@ void IrcUser::joinChannel(IrcChannel* channel, bool skip_channel_join)
 
 void IrcUser::joinChannel(const QString& channelname)
 {
-    joinChannel(network()->newIrcChannel(channelname));
+    joinChannel(network()->addIrcChannel(channelname));
 }
 
 void IrcUser::partChannel(IrcChannel* channel)
