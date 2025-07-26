@@ -447,8 +447,8 @@ signals:
                             qint64 socketId);
 
 protected:
-    inline IrcChannel* ircChannelFactory(const QString& channelname) { return new CoreIrcChannel(channelname, this); }
-    inline IrcUser* ircUserFactory(const QString& hostmask) { return new CoreIrcUser(hostmask, this); }
+    inline IrcChannel* ircChannelFactory(const QString& channelname) override { return new CoreIrcChannel(channelname, this); }
+    inline IrcUser* ircUserFactory(const QString& hostmask) override { return new CoreIrcUser(hostmask, this); }
 
 protected slots:
     // TODO: remove cached cipher keys, when appropriate

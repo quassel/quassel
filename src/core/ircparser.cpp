@@ -173,7 +173,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             QString senderNick = nickFromMask(prefix);
             IrcUser* ircuser = net->ircUser(senderNick);
             if (!ircuser) {
-                ircuser = net->newIrcUser(prefix);
+                ircuser = net->addIrcUser(prefix);
             }
 
             if (ircuser && net->enabledCaps().contains(IrcCap::ACCOUNT_TAG)) {
@@ -252,7 +252,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
                             IrcUser* ircuser = net->ircUser(nickFromMask(prefix));
                             if (!ircuser) {
-                                ircuser = net->newIrcUser(prefix);
+                                ircuser = net->addIrcUser(prefix);
                             }
 
                             if (ircuser && net->enabledCaps().contains(IrcCap::ACCOUNT_TAG)) {
@@ -296,7 +296,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             decParams << net->channelDecode(channel, params.at(2));
             IrcUser* ircuser = net->ircUser(nickFromMask(prefix));
             if (!ircuser) {
-                ircuser = net->newIrcUser(prefix);
+                ircuser = net->addIrcUser(prefix);
             }
         }
         break;
@@ -308,7 +308,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             decParams << net->userDecode(nickFromMask(prefix), params.at(1));
             IrcUser* ircuser = net->ircUser(nickFromMask(prefix));
             if (!ircuser) {
-                ircuser = net->newIrcUser(prefix);
+                ircuser = net->addIrcUser(prefix);
             }
         }
         break;
@@ -318,7 +318,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             decParams << net->userDecode(nickFromMask(prefix), params.at(0));
             IrcUser* ircuser = net->ircUser(nickFromMask(prefix));
             if (!ircuser) {
-                ircuser = net->newIrcUser(prefix);
+                ircuser = net->addIrcUser(prefix);
             }
         }
         break;
@@ -330,7 +330,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             QString senderNick = nickFromMask(prefix);
             IrcUser* ircuser = net->ircUser(senderNick);
             if (!ircuser) {
-                ircuser = net->newIrcUser(prefix);
+                ircuser = net->addIrcUser(prefix);
             }
 
             bool isSelfMessage = net->isMyNick(senderNick);
@@ -357,7 +357,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             decParams << (params.count() >= 2 ? net->channelDecode(channel, decrypt(net, channel, params.at(1), true)) : QString());
             IrcUser* ircuser = net->ircUser(nickFromMask(prefix));
             if (!ircuser) {
-                ircuser = net->newIrcUser(prefix);
+                ircuser = net->addIrcUser(prefix);
             }
         }
         break;
@@ -365,7 +365,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     case EventManager::IrcEventAway: {
         IrcUser* ircuser = net->ircUser(nickFromMask(prefix));
         if (!ircuser) {
-            ircuser = net->newIrcUser(prefix);
+            ircuser = net->addIrcUser(prefix);
         }
         QString nick = nickFromMask(prefix);
         decParams << nick;

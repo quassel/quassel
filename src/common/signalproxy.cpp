@@ -31,6 +31,7 @@
 #include <QSslSocket>
 #include <QThread>
 
+#include "network.h"
 #include "peer.h"
 #include "protocol.h"
 #include "syncableobject.h"
@@ -102,18 +103,12 @@ SignalProxy* SignalProxy::current()
 
 void SignalProxy::requestNetworkConnect(NetworkId id)
 {
-    qDebug() << "[DEBUG] SignalProxy::requestNetworkConnect called for network" << id;
-    qDebug() << "[DEBUG] SignalProxy::requestNetworkConnect dispatching RpcCall for connectNetwork";
     dispatchSignal("2connectNetwork(NetworkId)", {QVariant::fromValue(id)});
-    qDebug() << "[DEBUG] SignalProxy::requestNetworkConnect dispatched connectNetwork RpcCall";
 }
 
 void SignalProxy::requestNetworkDisconnect(NetworkId id)
 {
-    qDebug() << "[DEBUG] SignalProxy::requestNetworkDisconnect called for network" << id;
-    qDebug() << "[DEBUG] SignalProxy::requestNetworkDisconnect dispatching RpcCall for disconnectNetwork";
     dispatchSignal("2disconnectNetwork(NetworkId)", {QVariant::fromValue(id)});
-    qDebug() << "[DEBUG] SignalProxy::requestNetworkDisconnect dispatched disconnectNetwork RpcCall";
 }
 
 void SignalProxy::setProxyMode(ProxyMode mode)
@@ -269,16 +264,13 @@ void SignalProxy::renameObject(const SyncableObject* obj, const QString& newname
 void SignalProxy::objectRenamed(const QByteArray& classname, const QString& newname, const QString& oldname)
 {
     if (newname != oldname) {
-        qDebug() << "[DEBUG] Object renamed:" << classname << "from:" << oldname << "to:" << newname;
         if (_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname)) {
             SyncableObject* obj = _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
             obj->setObjectName(newname);
             requestInit(obj);
-            qDebug() << "[DEBUG] Successfully renamed object in _syncSlave";
         }
         else {
             qWarning() << "SignalProxy::objectRenamed(): object" << classname << oldname << "is unknown";
-            qDebug() << "[DEBUG] Available objects for class" << classname << ":" << (_syncSlave.contains(classname) ? _syncSlave[classname].keys() : QStringList());
         }
     }
 }
@@ -333,7 +325,8 @@ void SignalProxy::synchronize(SyncableObject* obj)
 
     // attaching as slave to receive sync Calls
     QByteArray className(obj->syncMetaObject()->className());
-    qDebug() << "[DEBUG] Synchronizing object:" << className << "objectName:" << obj->objectName() << "proxyMode:" << (proxyMode() == Server ? "Server" : "Client");
+    if (_syncSlave.contains(className)) {
+    }
     _syncSlave[className][obj->objectName()] = obj;
 
     if (proxyMode() == Server) {
@@ -401,18 +394,18 @@ void SignalProxy::dispatch(Peer* peer, const T& protoMessage)
 
 void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
 {
+    // Add special debugging for Network class sync calls
+    if (syncMessage.className == "Network") {
+    }
+
     if (!_syncSlave.contains(syncMessage.className) || !_syncSlave[syncMessage.className].contains(syncMessage.objectName)) {
         qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:")
                           .arg(syncMessage.className, syncMessage.slotName, syncMessage.objectName)
                    << syncMessage.params;
         
         // DEBUG: Show what's actually in the _syncSlave hash
-        qDebug() << "[DEBUG] Available classes in _syncSlave:" << _syncSlave.keys();
         if (_syncSlave.contains(syncMessage.className)) {
-            qDebug() << "[DEBUG] Available objects for class" << syncMessage.className << ":" << _syncSlave[syncMessage.className].keys();
         }
-        qDebug() << "[DEBUG] Looking for objectName:" << syncMessage.objectName;
-        qDebug() << "[DEBUG] ProxyMode:" << (proxyMode() == Server ? "Server" : "Client");
         return;
     }
 
@@ -771,7 +764,7 @@ SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject* meta, boo
     , _updatedRemotelyId(_meta->indexOfSignal("updatedRemotely()"))
 {
     for (int i = 0; i < _meta->methodCount(); i++) {
-        if (_meta->method(i).methodType() != QMetaMethod::Slot)
+        if (_meta->method(i).methodType() != QMetaMethod::Slot && _meta->method(i).methodType() != QMetaMethod::Method)
             continue;
 
         if (_meta->method(i).methodSignature().contains('*'))

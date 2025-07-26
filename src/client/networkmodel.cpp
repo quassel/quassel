@@ -154,9 +154,9 @@ void NetworkItem::attachNetwork(Network* network)
 
     connect(network, &Network::configChanged, this, [this]() { setNetworkName(_network->networkName()); });
     connect(network, &Network::configChanged, this, [this]() { setCurrentServer(_network->currentServer()); });
-    connect(network, &Network::newIrcUserSynced, this, &NetworkItem::attachIrcUser);
+    connect(network, &Network::ircUserAdded, this, &NetworkItem::attachIrcUser);
     // Connected to IrcUser sync signals
-    connect(network, &Network::newIrcChannelSynced, this, &NetworkItem::attachIrcChannel);
+    connect(network, &Network::ircChannelAdded, this, &NetworkItem::attachIrcChannel);
     connect(network, &Network::connectionStateSet, this, [this]() { emit networkDataChanged(); });
     connect(network, &QObject::destroyed, this, &NetworkItem::onNetworkDestroyed);
 

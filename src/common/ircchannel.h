@@ -75,9 +75,10 @@ public slots:
     void partChannel();
     void setUserModes(IrcUser* user, const QString& modes);
     void addUserMode(IrcUser* user, const QString& mode);
+    Q_INVOKABLE void addUserMode(const QString& nick, const QString& mode);
     void removeUserMode(IrcUser* user, const QString& mode);
-    void addChannelMode(const QString& mode, const QString& param = QString());
-    void removeChannelMode(const QString& mode, const QString& param = QString());
+    void addChannelMode(const QChar& mode, const QString& value);
+    void removeChannelMode(const QChar& mode, const QString& value);
 
 signals:
     void topicChanged(const QString& topic);
@@ -102,7 +103,10 @@ private:
     std::optional<QStringConverter::Encoding> _codecForEncoding;
     std::optional<QStringConverter::Encoding> _codecForDecoding;
     QHash<IrcUser*, QString> _userModes;
-    QHash<QString, QString> _channelModes;
+    QHash<QChar, QStringList> _A_channelModes;
+    QHash<QChar, QString> _B_channelModes;
+    QHash<QChar, QString> _C_channelModes;
+    QSet<QChar> _D_channelModes;
 
     friend class Network;
 };

@@ -293,7 +293,7 @@ void EventStringifier::processIrcEventNick(IrcEvent* e)
 
     IrcUser* ircuser = e->network()->ircUser(nickFromMask(e->prefix()));
     if (!ircuser) {
-        ircuser = e->network()->newIrcUser(e->prefix());
+        ircuser = e->network()->addIrcUser(e->prefix());
     }
     if (!ircuser) {
         qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
