@@ -51,7 +51,8 @@ ChatItem::ChatItem(const QRectF& boundingRect, ChatLine* parent)
     , _selectionMode(NoSelection)
     , _selectionStart(-1)
     , _cachedLayout(nullptr)
-{}
+{
+}
 
 ChatItem::~ChatItem()
 {
@@ -142,11 +143,9 @@ void ChatItem::initLayoutHelper(QTextLayout* layout, QTextOption::WrapMode wrapM
     option.setAlignment(alignment);
     layout->setTextOption(option);
 
-    UiStyle::FormatContainer formatRanges = QtUi::style()->toTextLayoutList(
-        formatList(),
-        layout->text().length(),
-        data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>()
-    );
+    UiStyle::FormatContainer formatRanges = QtUi::style()->toTextLayoutList(formatList(),
+                                                                            layout->text().length(),
+                                                                            data(ChatLineModel::MsgLabelRole).value<UiStyle::MessageLabel>());
     UiStyle::setTextLayoutFormats(*layout, formatRanges);
 }
 
@@ -352,8 +351,8 @@ QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const
     for (size_t i = 0; i < labelFmtList.size() - 1; ++i) {
         if (labelFmtList[i].label != itemLabel) {
             additionalFormats << QtUi::style()->toTextLayoutList({std::make_pair(labelFmtList[i].offset, labelFmtList[i].format)},
-                                                                   labelFmtList[i + 1].offset,
-                                                                   labelFmtList[i].label);
+                                                                 labelFmtList[i + 1].offset,
+                                                                 labelFmtList[i].label);
         }
     }
 
@@ -449,7 +448,7 @@ QList<QRectF> ChatItem::findWords(const QString& searchWord, Qt::CaseSensitivity
     foreach (int idx, indexList) {
         QTextLine line = layout()->lineForTextPosition(idx);
         qreal x = line.cursorToX(idx);
-        qreal width = line.cursorToX(idx + searchWord.count()) - x;
+        qreal width = line.cursorToX(idx + searchWord.length()) - x;  // Replaced count() with length()
         qreal height = line.height();
         qreal y = height * line.lineNumber();
         resultList << QRectF(x, y, width, height);
@@ -760,8 +759,8 @@ void ContentsChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clic
             // find word boundary
             QString str = data(ChatLineModel::DisplayRole).toString();
             qint16 cursor = posToCursor(pos);
-            qint16 start = str.lastIndexOf(QRegExp("\\W"), cursor) + 1;
-            qint16 end = qMin(str.indexOf(QRegExp("\\W"), cursor), str.length());
+            qint16 start = str.lastIndexOf(QRegularExpression("\\W"), cursor) + 1;
+            qint16 end = qMin(str.indexOf(QRegularExpression("\\W"), cursor), str.length());
             if (end < 0)
                 end = str.length();
             setSelectionStart(start);
@@ -898,7 +897,8 @@ ContentsChatItem::WrapColumnFinder::WrapColumnFinder(const ChatItem* _item)
     , wordidx(0)
     , lineCount(0)
     , choppedTrailing(0)
-{}
+{
+}
 
 qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn(qreal width)
 {

@@ -21,12 +21,12 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QRadioButton" name="useQNetworkConfigurationManager">
+       <widget class="QRadioButton" name="useQNetworkInformation">
         <property name="toolTip">
-         <string>Rely on Qt's network configuration manager to detect if we're online</string>
+         <string>Use Qt's network information API to detect online/offline status</string>
         </property>
         <property name="text">
-         <string>Automatic</string>
+         <string>Use Network Information</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -207,7 +207,7 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>useQNetworkConfigurationManager</tabstop>
+  <tabstop>useQNetworkInformation</tabstop>
   <tabstop>usePingTimeout</tabstop>
   <tabstop>pingTimeout</tabstop>
   <tabstop>useNoTimeout</tabstop>

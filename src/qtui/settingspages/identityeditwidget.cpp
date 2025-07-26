@@ -176,7 +176,7 @@ void IdentityEditWidget::displayIdentity(CertIdentity* id, CertIdentity* saveId)
 
 void IdentityEditWidget::saveToIdentity(CertIdentity* id)
 {
-    QRegExp linebreaks = QRegExp("[\\r\\n]");
+    QRegularExpression linebreaks = QRegularExpression("[\\r\\n]");
     id->setRealName(ui.realName->text());
     QStringList nicks;
     for (int i = 0; i < ui.nicknameList->count(); i++) {

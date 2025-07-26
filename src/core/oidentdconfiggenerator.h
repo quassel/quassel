@@ -28,12 +28,13 @@
 #include <QHostAddress>
 #include <QMutex>
 #include <QObject>
+#include <QRegularExpression>
 #include <QString>
 
 #include "coreidentity.h"
 #include "quassel.h"
 
-//!  Produces oidentd configuration files
+//! Produces oidentd configuration files
 /*!
   Upon IRC connect this class puts the clients' ident data into an oidentd configuration file.
 
@@ -52,6 +53,7 @@
 
 class OidentdConfigGenerator : public QObject
 {
+    Q_DISABLE_COPY(OidentdConfigGenerator)
     Q_OBJECT
 public:
     explicit OidentdConfigGenerator(QObject* parent = nullptr);
@@ -91,7 +93,7 @@ private:
     QString _configFileName;
     QString _configPath;
     QString _configTag;
-    QRegExp _quasselStanzaRx;
+    QRegularExpression _quasselStanzaRx;
     QString _quasselStanzaTemplate;
 };
 

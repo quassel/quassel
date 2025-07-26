@@ -21,6 +21,7 @@
 #include "aliasmanager.h"
 
 #include <QDebug>
+#include <QRegularExpression>
 #include <QStringList>
 
 #include "network.h"
@@ -138,8 +139,8 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
         return;
     }
 
-    QRegExp paramRangeR(R"(\$(\d+)\.\.(\d*))");
-    QStringList commands = alias.split(QRegExp("; ?"));
+    QRegularExpression paramRangeR(R"(\$(\d+)\.\.(\d*))");
+    QStringList commands = alias.split(QRegularExpression("; ?"));
     QStringList params = msg.split(' ');
     QStringList expandedCommands;
     for (int i = 0; i < commands.count(); i++) {
@@ -147,18 +148,20 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
 
         // replace ranges like $1..3
         if (!params.isEmpty()) {
-            int pos;
-            while ((pos = paramRangeR.indexIn(command)) != -1) {
-                int start = paramRangeR.cap(1).toInt();
+            QRegularExpressionMatchIterator it = paramRangeR.globalMatch(command);
+            while (it.hasNext()) {
+                QRegularExpressionMatch match = it.next();
+                int pos = match.capturedStart();
+                int start = match.captured(1).toInt();
                 bool ok;
-                int end = paramRangeR.cap(2).toInt(&ok);
+                int end = match.captured(2).toInt(&ok);
                 if (!ok) {
                     end = params.count();
                 }
                 if (end < start)
-                    command = command.replace(pos, paramRangeR.matchedLength(), QString());
+                    command = command.replace(pos, match.capturedLength(), QString());
                 else {
-                    command = command.replace(pos, paramRangeR.matchedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
+                    command = command.replace(pos, match.capturedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
                 }
             }
         }

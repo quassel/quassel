@@ -61,15 +61,15 @@ QGroupBox* createFieldBox(const QString& title, const std::vector<FieldInfo>& fi
 
     for (auto&& fieldInfo : fieldInfos) {
         QWidget* widget{nullptr};
-        switch (std::get<2>(fieldInfo).type()) {
-        case QVariant::Int:
+        switch (std::get<2>(fieldInfo).metaType().id()) {
+        case QMetaType::Int:
             widget = new QSpinBox(fieldBox);
             // Here we assume that int fields are always in 16 bit range, like ports
             static_cast<QSpinBox*>(widget)->setMinimum(0);
             static_cast<QSpinBox*>(widget)->setMaximum(65535);
             static_cast<QSpinBox*>(widget)->setValue(std::get<2>(fieldInfo).toInt());
             break;
-        case QVariant::String:
+        case QMetaType::QString:
             widget = new QLineEdit(std::get<2>(fieldInfo).toString(), fieldBox);
             // Here we assume that fields named something with "password" are actual password inputs
             if (std::get<0>(fieldInfo).toLower().contains("password"))
@@ -96,8 +96,8 @@ QVariantMap propertiesFromFieldWidgets(QGroupBox* fieldBox, const std::vector<Fi
     for (auto&& fieldInfo : fieldInfos) {
         QString key = std::get<0>(fieldInfo);
         QVariant value;
-        switch (std::get<2>(fieldInfo).type()) {
-        case QVariant::Int: {
+        switch (std::get<2>(fieldInfo).metaType().id()) {
+        case QMetaType::Int: {
             auto* spinBox = fieldBox->findChild<QSpinBox*>(key);
             if (spinBox)
                 value = spinBox->value();
@@ -105,7 +105,7 @@ QVariantMap propertiesFromFieldWidgets(QGroupBox* fieldBox, const std::vector<Fi
                 qWarning() << "Could not find child widget for field" << key;
             break;
         }
-        case QVariant::String: {
+        case QMetaType::QString: {
             auto* lineEdit = fieldBox->findChild<QLineEdit*>(key);
             if (lineEdit)
                 value = lineEdit->text();
@@ -182,7 +182,7 @@ void CoreConfigWizard::prepareCoreSetup(const QString& backend,
                                         const QVariantMap& authProperties)
 {
     // Prevent the user from changing any settings he already specified...
-    for (auto&& idx : visitedPages())
+    for (auto&& idx : visitedIds())
         page(idx)->setEnabled(false);
 
     // FIXME? We need to be able to set up older cores that don't have auth backend support.
@@ -223,7 +223,7 @@ void CoreConfigWizard::coreSetupFailed(const QString& error)
 
 void CoreConfigWizard::startOver()
 {
-    foreach (int idx, visitedPages())
+    foreach (int idx, visitedIds())
         page(idx)->setEnabled(true);
     setStartId(CoreConfigWizard::AdminUserPage);
     restart();

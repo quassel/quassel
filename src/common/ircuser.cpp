@@ -21,7 +21,7 @@
 #include "ircuser.h"
 
 #include <QDebug>
-#include <QTextCodec>
+#include <QTimeZone>
 
 #include "ircchannel.h"
 #include "network.h"
@@ -29,7 +29,7 @@
 #include "util.h"
 
 IrcUser::IrcUser(const QString& hostmask, Network* network)
-    : SyncableObject(network)
+    : SyncableObject(static_cast<QObject*>(network))
     , _initialized(false)
     , _nick(nickFromMask(hostmask))
     , _user(userFromMask(hostmask))
@@ -38,24 +38,16 @@ IrcUser::IrcUser(const QString& hostmask, Network* network)
     , _awayMessage()
     , _away(false)
     , _server()
-    ,
-    // _idleTime(QDateTime::currentDateTime()),
-    _ircOperator()
+    , _ircOperator()
     , _lastAwayMessageTime()
     , _whoisServiceReply()
     , _encrypted(false)
     , _network(network)
-    , _codecForEncoding(nullptr)
-    , _codecForDecoding(nullptr)
 {
     updateObjectName();
-    _lastAwayMessageTime.setTimeSpec(Qt::UTC);
+    _lastAwayMessageTime.setTimeZone(QTimeZone("UTC"));
     _lastAwayMessageTime.setMSecsSinceEpoch(0);
 }
-
-// ====================
-//  PUBLIC:
-// ====================
 
 QString IrcUser::hostmask() const
 {
@@ -65,8 +57,6 @@ QString IrcUser::hostmask() const
 QDateTime IrcUser::idleTime()
 {
     if ((QDateTime::currentDateTime().toMSecsSinceEpoch() - _idleTimeSet.toMSecsSinceEpoch()) > 1200000) {
-        // 20 * 60 * 1000 = 1200000
-        // 20 minutes have elapsed, clear the known idle time as it's likely inaccurate by now
         _idleTime = QDateTime();
     }
     return _idleTime;
@@ -75,8 +65,7 @@ QDateTime IrcUser::idleTime()
 QStringList IrcUser::channels() const
 {
     QStringList chanList;
-    IrcChannel* channel;
-    foreach (channel, _channels) {
+    for (IrcChannel* channel : _channels) {
         chanList << channel->name();
     }
     return chanList;
@@ -84,42 +73,32 @@ QStringList IrcUser::channels() const
 
 void IrcUser::setCodecForEncoding(const QString& name)
 {
-    setCodecForEncoding(QTextCodec::codecForName(name.toLatin1()));
-}
-
-void IrcUser::setCodecForEncoding(QTextCodec* codec)
-{
-    _codecForEncoding = codec;
+    _codecForEncoding = QStringConverter::encodingForName(name.toLatin1());
 }
 
 void IrcUser::setCodecForDecoding(const QString& name)
 {
-    setCodecForDecoding(QTextCodec::codecForName(name.toLatin1()));
-}
-
-void IrcUser::setCodecForDecoding(QTextCodec* codec)
-{
-    _codecForDecoding = codec;
+    _codecForDecoding = QStringConverter::encodingForName(name.toLatin1());
 }
 
 QString IrcUser::decodeString(const QByteArray& text) const
 {
-    if (!codecForDecoding())
-        return network()->decodeString(text);
-    return ::decodeString(text, codecForDecoding());
+    if (_codecForDecoding) {
+        QStringDecoder decoder(*_codecForDecoding, QStringConverter::Flag::Default);
+        return decoder.decode(text);
+    }
+    return network()->decodeString(text);
 }
 
 QByteArray IrcUser::encodeString(const QString& string) const
 {
-    if (codecForEncoding()) {
-        return codecForEncoding()->fromUnicode(string);
+    if (_codecForEncoding) {
+        QStringEncoder encoder(*_codecForEncoding, QStringConverter::Flag::Default);
+        return encoder.encode(string);
     }
     return network()->encodeString(string);
 }
 
-// ====================
-//  PUBLIC SLOTS:
-// ====================
 void IrcUser::setUser(const QString& user)
 {
     if (!user.isEmpty() && _user != user) {
@@ -196,18 +175,10 @@ void IrcUser::setIrcOperator(const QString& ircOperator)
     }
 }
 
-// This function is only ever called by SYNC calls from legacy cores (pre-0.13).
-// Therefore, no SYNC call is needed here.
 void IrcUser::setLastAwayMessage(int lastAwayMessage)
 {
-#if QT_VERSION >= 0x050800
     QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage);
-#else
-    // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-    QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000);
-#endif
-    lastAwayMessageTime.setTimeSpec(Qt::UTC);
+    lastAwayMessageTime.setTimeZone(QTimeZone("UTC"));
     setLastAwayMessageTime(lastAwayMessageTime);
 }
 
@@ -288,7 +259,7 @@ void IrcUser::joinChannel(IrcChannel* channel, bool skip_channel_join)
 
 void IrcUser::joinChannel(const QString& channelname)
 {
-    joinChannel(network()->newIrcChannel(channelname));
+    joinChannel(network()->addIrcChannel(channelname));
 }
 
 void IrcUser::partChannel(IrcChannel* channel)
@@ -300,7 +271,9 @@ void IrcUser::partChannel(const QString& channelname)
 {
     IrcChannel* channel = network()->ircChannel(channelname);
     if (channel == nullptr) {
-        qWarning() << "IrcUser::partChannel(): received part for unknown Channel" << channelname;
+        // Channel may already be removed if current user parted - this is normal
+        // Channel not found - may have been removed already (normal for current user part)
+        return;
     }
     else {
         partChannel(channel);
@@ -312,9 +285,22 @@ void IrcUser::partChannelInternal(IrcChannel* channel, bool skip_sync)
     if (_channels.contains(channel)) {
         _channels.remove(channel);
         disconnect(channel, nullptr, this, nullptr);
-        channel->part(this);
+        
+        // Qt6 Fix: If this is the current user, call partChannel() to emit parted() signal
+        // Otherwise just call part() to remove this specific user
+        if (network()->isMe(this)) {
+            // Current user parting - trigger complete channel removal
+            if (network()->ircChannel(channel->name())) {
+                channel->partChannel();
+            }
+            // Channel already removed by previous part - normal for sync calls
+        } else {
+            channel->part(this);
+        }
+        
         QString channelName = channel->name();
-        if (!skip_sync) SYNC_OTHER(partChannel, ARG(channelName))
+        if (!skip_sync)
+            SYNC_OTHER(partChannel, ARG(channelName))
         if (_channels.isEmpty() && !network()->isMe(this))
             quitInternal(skip_sync);
     }
@@ -329,18 +315,18 @@ void IrcUser::quitInternal(bool skip_sync)
 {
     QList<IrcChannel*> channels = _channels.values();
     _channels.clear();
-    foreach (IrcChannel* channel, channels) {
+    for (IrcChannel* channel : channels) {
         disconnect(channel, nullptr, this, nullptr);
         channel->part(this);
     }
     network()->removeIrcUser(this);
-    if (!skip_sync) SYNC_OTHER(quit, NO_ARG)
+    if (!skip_sync)
+        SYNC_OTHER(quit, NO_ARG)
     emit quited();
 }
 
 void IrcUser::channelDestroyed()
 {
-    // private slot!
     auto* channel = static_cast<IrcChannel*>(sender());
     if (_channels.contains(channel)) {
         _channels.remove(channel);
@@ -363,9 +349,10 @@ void IrcUser::addUserModes(const QString& modes)
     if (modes.isEmpty())
         return;
 
-    // Don't needlessly sync when no changes are made
+    qDebug() << "[DEBUG] IrcUser::addUserModes called on:" << objectName() << "modes:" << modes;
+
     bool changesMade = false;
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         if (!_userModes.contains(modes[i])) {
             _userModes += modes[i];
             changesMade = true;
@@ -373,6 +360,7 @@ void IrcUser::addUserModes(const QString& modes)
     }
 
     if (changesMade) {
+        qDebug() << "[DEBUG] Syncing addUserModes for:" << objectName() << "modes:" << modes;
         SYNC(ARG(modes))
         emit userModesAdded(modes);
     }
@@ -383,7 +371,7 @@ void IrcUser::removeUserModes(const QString& modes)
     if (modes.isEmpty())
         return;
 
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         _userModes.remove(modes[i]);
     }
     SYNC(ARG(modes))
@@ -400,4 +388,19 @@ void IrcUser::setLastSpokenTo(BufferId buffer, const QDateTime& time)
 {
     _lastSpokenTo[buffer] = time;
     emit lastSpokenToUpdated(buffer, time);
+}
+
+QDateTime IrcUser::lastSpokenTo(BufferId buffer) const
+{
+    return _lastSpokenTo.value(buffer);
+}
+
+QDateTime IrcUser::lastChannelActivity(BufferId buffer) const
+{
+    return _lastActivity.value(buffer);
+}
+
+void IrcUser::markAwayChanged()
+{
+    emit awaySet(_away);
 }

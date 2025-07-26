@@ -46,7 +46,7 @@ QString CoreBasicHandler::serverDecode(const QByteArray& string)
 QStringList CoreBasicHandler::serverDecode(const QList<QByteArray>& stringlist)
 {
     QStringList list;
-    foreach (QByteArray s, stringlist)
+    for (const QByteArray& s : stringlist)
         list << network()->serverDecode(s);
     return list;
 }
@@ -59,7 +59,7 @@ QString CoreBasicHandler::channelDecode(const QString& bufferName, const QByteAr
 QStringList CoreBasicHandler::channelDecode(const QString& bufferName, const QList<QByteArray>& stringlist)
 {
     QStringList list;
-    foreach (QByteArray s, stringlist)
+    for (const QByteArray& s : stringlist)
         list << network()->channelDecode(bufferName, s);
     return list;
 }
@@ -72,7 +72,7 @@ QString CoreBasicHandler::userDecode(const QString& userNick, const QByteArray& 
 QStringList CoreBasicHandler::userDecode(const QString& userNick, const QList<QByteArray>& stringlist)
 {
     QStringList list;
-    foreach (QByteArray s, stringlist)
+    for (const QByteArray& s : stringlist)
         list << network()->userDecode(userNick, s);
     return list;
 }
@@ -87,7 +87,7 @@ QByteArray CoreBasicHandler::serverEncode(const QString& string)
 QList<QByteArray> CoreBasicHandler::serverEncode(const QStringList& stringlist)
 {
     QList<QByteArray> list;
-    foreach (QString s, stringlist)
+    for (const QString& s : stringlist)
         list << network()->serverEncode(s);
     return list;
 }
@@ -100,7 +100,7 @@ QByteArray CoreBasicHandler::channelEncode(const QString& bufferName, const QStr
 QList<QByteArray> CoreBasicHandler::channelEncode(const QString& bufferName, const QStringList& stringlist)
 {
     QList<QByteArray> list;
-    foreach (QString s, stringlist)
+    for (const QString& s : stringlist)
         list << network()->channelEncode(bufferName, s);
     return list;
 }
@@ -113,7 +113,7 @@ QByteArray CoreBasicHandler::userEncode(const QString& userNick, const QString& 
 QList<QByteArray> CoreBasicHandler::userEncode(const QString& userNick, const QStringList& stringlist)
 {
     QList<QByteArray> list;
-    foreach (QString s, stringlist)
+    for (const QString& s : stringlist)
         list << network()->userEncode(userNick, s);
     return list;
 }

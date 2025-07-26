@@ -45,7 +45,7 @@ bool MetricsServer::startListening()
     uint16_t port = Quassel::optionValue("metrics-port").toUShort();
 
     const QString listen = Quassel::optionValue("metrics-listen");
-    const QStringList listen_list = listen.split(",", QString::SkipEmptyParts);
+    const QStringList listen_list = listen.split(",", Qt::SkipEmptyParts);
     for (const QString& listen_term : listen_list) { // TODO: handle multiple interfaces for same TCP version gracefully
         QHostAddress addr;
         if (!addr.setAddress(listen_term)) {

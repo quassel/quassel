@@ -84,7 +84,7 @@ public:
      *
      * After calling this method, whenever the sender emits the given signal, an RpcCall message is sent to connected peers.
      * On the other end, a slot can be attached to handle this message by calling attachSlot().
-
+     *
      * By default, the signal name being sent is as if the SIGNAL() macro had been used, i.e. the normalized signature prefixed with a '2'.
      * This can be overridden by explicitly providing the signalName argument.
      *
@@ -197,6 +197,10 @@ public:
     Peer* targetPeer();
     void setTargetPeer(Peer* targetPeer);
 
+    // Add methods for network connect/disconnect
+    void requestNetworkConnect(NetworkId id);
+    void requestNetworkDisconnect(NetworkId id);
+
 protected:
     void customEvent(QEvent* event) override;
     void sync_call__(const SyncableObject* obj, ProxyMode modeType, const char* funcname, va_list ap);
@@ -216,6 +220,8 @@ signals:
     void maxHeartBeatCountChanged(int max);
     void lagUpdated(int lag);
     void secureStateChanged(bool);
+    void connectNetwork(NetworkId id);
+    void disconnectNetwork(NetworkId id);
 
 private:
     template<class T>
@@ -344,8 +350,8 @@ bool SignalProxy::attachSlot(const QByteArray& signalName, typename FunctionTrai
 {
     // Create a wrapper function that invokes the member function pointer for the receiver instance
     attachSlotObject(signalName, std::make_unique<SlotObject<Slot>>(receiver, [receiver, slot = std::move(slot)](auto&&... args) {
-        (receiver->*slot)(std::forward<decltype(args)>(args)...);
-    }));
+                         (receiver->*slot)(std::forward<decltype(args)>(args)...);
+                     }));
     return true;
 }
 
@@ -413,7 +419,8 @@ public:
     SlotObject(const QObject* context, Callable callable)
         : SlotObjectBase(context)
         , _callable(std::move(callable))
-    {}
+    {
+    }
 
     // See base class
     bool invoke(const QVariantList& params) const override

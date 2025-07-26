@@ -28,7 +28,7 @@
 #include <QTableView>
 #include <QToolBar>
 
-#ifdef HAVE_KF5
+#ifdef HAVE_KF6
 #    include <kconfigwidgets_version.h>
 
 #    include <KConfigWidgets/KStandardAction>
@@ -91,6 +91,7 @@
 #include "resourcetreedlg.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
+#include "signalproxy.h"
 #include "sslinfodlg.h"
 #include "statusnotifieritem.h"
 #include "toolbaractionprovider.h"
@@ -114,7 +115,7 @@
 #endif
 
 #ifdef HAVE_NOTIFICATION_CENTER
-#    include "osxnotificationbackend.h"
+#    include "macosnotificationbackend.h"
 #endif
 
 #ifdef HAVE_DBUS
@@ -365,7 +366,7 @@ void MainWin::setupActions()
          {"CoreInfo", new Action(icon::get("help-about"), tr("Core &Info..."), coll, this, &MainWin::showCoreInfoDlg)},
          {"ConfigureNetworks",
           new Action(icon::get("configure"), tr("Configure &Networks..."), coll, this, &MainWin::onConfigureNetworksTriggered)},
-         {"Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL + Qt::Key_Q)}});
+         {"Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL | Qt::Key_Q)}});
 
     // View
     coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll, this, &MainWin::onConfigureViewsTriggered));
@@ -426,7 +427,7 @@ void MainWin::setupActions()
                      coll,
                      QtUi::style(),
                      &UiStyle::reload,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R))}});
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_R))}});
 
     // Other
     coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll, this, &MainWin::hideCurrentBuffer, QKeySequence::Close));
@@ -441,21 +442,21 @@ void MainWin::setupActions()
                      coll,
                      this,
                      &MainWin::onFormatApplyColorTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G))},
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_G))},
          {"FormatApplyColorFill",
           new Action(icon::get("format-fill-color"),
                      tr("Apply background color"),
                      coll,
                      this,
                      &MainWin::onFormatApplyColorFillTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B))},
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B))},
          {"FormatClear",
           new Action(icon::get("edit-clear"),
                      tr("Clear formatting"),
                      coll,
                      this,
                      &MainWin::onFormatClearTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C))},
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C))},
          {"FormatBold",
           new Action(icon::get("format-text-bold"), tr("Toggle bold"), coll, this, &MainWin::onFormatBoldTriggered, QKeySequence::Bold)},
          {"FormatItalic",
@@ -473,16 +474,16 @@ void MainWin::setupActions()
                      coll,
                      this,
                      &MainWin::onFormatStrikethroughTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S))}});
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S))}});
 
     // Navigation
     coll = QtUi::actionCollection("Navigation", tr("Navigation"));
 
     coll->addActions(
         {{"JumpHotBuffer",
-          new Action(tr("Jump to hot chat"), coll, this, &MainWin::onJumpHotBufferTriggered, QKeySequence(Qt::META + Qt::Key_A))},
+          new Action(tr("Jump to hot chat"), coll, this, &MainWin::onJumpHotBufferTriggered, QKeySequence(Qt::META | Qt::Key_A))},
          {"ActivateBufferFilter",
-          new Action(tr("Activate the buffer search"), coll, this, &MainWin::onBufferSearchTriggered, QKeySequence(Qt::CTRL + Qt::Key_S))}});
+          new Action(tr("Activate the buffer search"), coll, this, &MainWin::onBufferSearchTriggered, QKeySequence(Qt::CTRL | Qt::Key_S))}});
 
     // Jump keys
 #ifdef Q_OS_MAC
@@ -566,14 +567,14 @@ void MainWin::setupActions()
                                coll,
                                this,
                                &MainWin::nextBuffer,
-                               QKeySequence(Qt::ALT + Qt::Key_Down)));
+                               QKeySequence(Qt::ALT | Qt::Key_Down)));
     coll->addAction("PreviousBuffer",
                     new Action(icon::get("go-up"),
                                tr("Go to Previous Chat"),
                                coll,
                                this,
                                &MainWin::previousBuffer,
-                               QKeySequence(Qt::ALT + Qt::Key_Up)));
+                               QKeySequence(Qt::ALT | Qt::Key_Up)));
 }
 
 void MainWin::setupMenus()
@@ -1385,11 +1386,7 @@ void MainWin::handleSslErrors(const QSslSocket* socket, bool* accepted, bool* pe
 {
     QString errorString = "<ul>";
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    for (const auto& error : socket->sslErrors()) {
-#else
     for (const auto& error : socket->sslHandshakeErrors()) {
-#endif
         errorString += QString("<li>%1</li>").arg(error.errorString());
     }
     errorString += "</ul>";
@@ -1488,10 +1485,13 @@ void MainWin::showNetworkConfig(NetworkId netId)
 
 void MainWin::showIgnoreList(QString newRule)
 {
+    qDebug() << "MainWin::showIgnoreList called with rule:" << newRule;
     SettingsPageDlg dlg{new IgnoreListSettingsPage{}, this};
     // prepare config dialog for new rule
-    if (!newRule.isEmpty())
+    if (!newRule.isEmpty()) {
+        qDebug() << "Calling editIgnoreRule with:" << newRule;
         qobject_cast<IgnoreListSettingsPage*>(dlg.currentPage())->editIgnoreRule(newRule);
+    }
     dlg.exec();
 }
 
@@ -1537,8 +1537,7 @@ void MainWin::showSettingsDlg()
     auto localHighlightsPage = new HighlightSettingsPage(dlg);
     // Let CoreHighlightSettingsPage reload HighlightSettingsPage after doing an import with
     // cleaning up.  Otherwise, HighlightSettingsPage won't show that the local rules were deleted.
-    connect(coreHighlightsPage, &CoreHighlightSettingsPage::localHighlightsChanged,
-            localHighlightsPage, &HighlightSettingsPage::load);
+    connect(coreHighlightsPage, &CoreHighlightSettingsPage::localHighlightsChanged, localHighlightsPage, &HighlightSettingsPage::load);
     // Put core-side highlights before local/legacy highlights
     dlg->registerSettingsPage(coreHighlightsPage);
     dlg->registerSettingsPage(localHighlightsPage);
@@ -1795,15 +1794,18 @@ void MainWin::clientNetworkRemoved(NetworkId id)
 void MainWin::connectOrDisconnectFromNet()
 {
     auto* act = qobject_cast<QAction*>(sender());
-    if (!act)
+    if (!act) {
         return;
+    }
     const Network* net = Client::network(act->data().value<NetworkId>());
-    if (!net)
+    if (!net) {
         return;
-    if (net->connectionState() == Network::Disconnected)
-        net->requestConnect();
-    else
-        net->requestDisconnect();
+    }
+    if (net->connectionState() == Network::Disconnected) {
+        const_cast<Network*>(net)->requestConnect();
+    } else {
+        const_cast<Network*>(net)->requestDisconnect();
+    }
 }
 
 void MainWin::onFormatApplyColorTriggered()
@@ -1861,7 +1863,6 @@ void MainWin::onFormatStrikethroughTriggered()
 
     _inputWidget->toggleFormatStrikethrough();
 }
-
 
 void MainWin::onJumpHotBufferTriggered()
 {

@@ -23,6 +23,7 @@
 #    include <sys/types.h>
 #endif /* HAVE_UMASK */
 
+#include <QRegularExpression>
 #include <QString>
 
 #include "corenetwork.h"
@@ -61,7 +62,7 @@ bool OidentdConfigGenerator::init()
     // the ability to bind to an IP on client sockets.
 
     _quasselStanzaTemplate = QString("lport %1 { reply \"%2\" } #%3\n");
-    _quasselStanzaRx = QRegExp(QString(R"(^lport .* \{ .* \} #%1\r?\n)").arg(_configTag));
+    _quasselStanzaRx = QRegularExpression(QString(R"(^lport .* \{ .* \} #%1\r?\n)").arg(_configTag));
 
     // initially remove all Quassel stanzas that might be present
     if (parseConfig(false) && writeConfig())
@@ -168,5 +169,5 @@ bool OidentdConfigGenerator::writeConfig()
 
 bool OidentdConfigGenerator::lineByUs(const QByteArray& line)
 {
-    return _quasselStanzaRx.exactMatch(line);
+    return _quasselStanzaRx.match(QString::fromLatin1(line)).hasMatch();
 }

@@ -26,7 +26,8 @@
 
 AuthHandler::AuthHandler(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 QSslSocket* AuthHandler::socket() const
 {
@@ -36,7 +37,7 @@ QSslSocket* AuthHandler::socket() const
 void AuthHandler::setSocket(QSslSocket* socket)
 {
     _socket = socket;
-    connect(socket, selectOverload<QAbstractSocket::SocketError>(&QTcpSocket::error), this, &AuthHandler::onSocketError);
+    connect(socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::errorOccurred), this, &AuthHandler::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &AuthHandler::onSocketDisconnected);
 }
 

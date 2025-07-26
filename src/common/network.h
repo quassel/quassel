@@ -22,6 +22,7 @@
 
 #include "common-export.h"
 
+#include <optional>
 #include <utility>
 
 #include <QByteArray>
@@ -31,6 +32,7 @@
 #include <QNetworkProxy>
 #include <QPointer>
 #include <QString>
+#include <QStringConverter>
 #include <QStringList>
 #include <QVariantMap>
 
@@ -44,10 +46,8 @@
 // IRCv3 capabilities
 #include "irccap.h"
 
-// defined below!
+// Forward declaration of NetworkInfo
 struct NetworkInfo;
-
-// TODO: ConnectionInfo to propagate and sync the current state of NetworkConnection, encodings etcpp
 
 class COMMON_EXPORT Network : public SyncableObject
 {
@@ -65,7 +65,6 @@ class COMMON_EXPORT Network : public SyncableObject
     Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding)
     Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity)
     Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected)
-    // Q_PROPERTY(Network::ConnectionState connectionState READ connectionState WRITE setConnectionState)
     Q_PROPERTY(int connectionState READ connectionState WRITE setConnectionState)
     Q_PROPERTY(bool useRandomServer READ useRandomServer WRITE setUseRandomServer)
     Q_PROPERTY(QStringList perform READ perform WRITE setPerform)
@@ -98,9 +97,6 @@ public:
         Disconnecting
     };
 
-    // see:
-    //  http://www.irc.org/tech_docs/005.html
-    //  http://www.irc.org/tech_docs/draft-brocklesby-irc-isupport-03.txt
     enum ChannelModeType
     {
         NOT_A_CHANMODE = 0x00,
@@ -139,7 +135,8 @@ public:
         // so enabling useSsl offers a more secure default.
         Server()
             : proxyHost("localhost")
-        {}
+        {
+        }
 
         Server(QString host, uint port, QString password, bool useSsl, bool sslVerify)
             : host(std::move(host))
@@ -150,7 +147,8 @@ public:
             , proxyType(QNetworkProxy::Socks5Proxy)
             , proxyHost("localhost")
             , proxyPort(8080)
-        {}
+        {
+        }
 
         bool operator==(const Server& other) const;
         bool operator!=(const Server& other) const;
@@ -183,7 +181,6 @@ public:
     bool isStatusMsg(const QString& target) const;
 
     inline bool isConnected() const { return _connected; }
-    // Network::ConnectionState connectionState() const;
     inline int connectionState() const { return _connectionState; }
 
     /**@{*/
@@ -192,7 +189,7 @@ public:
      * @param prefix Prefix to be translated.
      */
     QString prefixToMode(const QString& prefix) const;
-    inline QString prefixToMode(const QCharRef& prefix) const { return prefixToMode(QString(prefix)); }
+    inline QString prefixToMode(const QChar& prefix) const { return prefixToMode(QString(prefix)); }
     inline QString prefixesToModes(const QString& prefix) const
     {
         QString modes;
@@ -205,11 +202,11 @@ public:
 
     /**@{*/
     /**
-     * Translates a user’s prefix to the channelmode associated with it.
-     * @param prefix Prefix to be translated.
+     * Translates a user’s mode to the prefix associated with it.
+     * @param mode Mode to be translated.
      */
     QString modeToPrefix(const QString& mode) const;
-    inline QString modeToPrefix(const QCharRef& mode) const { return modeToPrefix(QString(mode)); }
+    inline QString modeToPrefix(const QChar& mode) const { return modeToPrefix(QString(mode)); }
     inline QString modesToPrefixes(const QString& mode) const
     {
         QString prefixes;
@@ -256,599 +253,267 @@ public:
     }
     /**@}*/
 
-    ChannelModeType channelModeType(const QString& mode);
-    inline ChannelModeType channelModeType(const QCharRef& mode) { return channelModeType(QString(mode)); }
+    ChannelModeType channelModeType(const QString& mode) const;
+    inline ChannelModeType channelModeType(const QChar& mode) const { return channelModeType(QString(mode)); }
 
-    inline const QString& networkName() const { return _networkName; }
-    inline const QString& currentServer() const { return _currentServer; }
-    inline const QString& myNick() const { return _myNick; }
+    inline QStringList channelPrefixes() const { return _channelPrefixes; }
+    inline QStringList prefixModes() const { return _prefixModes; }
+    inline QStringList prefixes() const { return _prefixes; }
+    inline QString statusMsg() const { return _statusMsg; }
+
+    inline QString networkName() const { return _networkName; }
+    inline QString currentServer() const { return _currentServer; }
+    inline QString myNick() const { return _myNick; }
     inline int latency() const { return _latency; }
-    inline IrcUser* me() const { return ircUser(myNick()); }
     inline IdentityId identity() const { return _identity; }
-    QStringList nicks() const;
-    inline QStringList channels() const { return _ircChannels.keys(); }
-    /**
-     * Gets the list of available capabilities.
-     *
-     * @returns QStringList of available capabilities
-     */
-    inline const QStringList caps() const { return QStringList(_caps.keys()); }
-    /**
-     * Gets the list of enabled (acknowledged) capabilities.
-     *
-     * @returns QStringList of enabled (acknowledged) capabilities
-     */
-    inline const QStringList capsEnabled() const { return _capsEnabled; }
-    inline const ServerList& serverList() const { return _serverList; }
+    NetworkInfo toNetworkInfo() const;
+    inline ServerList serverList() const { return _serverList; }
     inline bool useRandomServer() const { return _useRandomServer; }
-    inline const QStringList& perform() const { return _perform; }
-    /**
-     * Gets the list of skipped (not auto-negotiated) capabilities.
-     *
-     * @returns QStringList of skippped capabilities
-     */
-    inline const QStringList skipCaps() const { return _skipCaps; }
+    inline QStringList perform() const { return _perform; }
+    inline QStringList skipCaps() const { return _skipCaps; }
     inline bool useAutoIdentify() const { return _useAutoIdentify; }
-    inline const QString& autoIdentifyService() const { return _autoIdentifyService; }
-    inline const QString& autoIdentifyPassword() const { return _autoIdentifyPassword; }
+    inline QString autoIdentifyService() const { return _autoIdentifyService; }
+    inline QString autoIdentifyPassword() const { return _autoIdentifyPassword; }
     inline bool useSasl() const { return _useSasl; }
-    inline const QString& saslAccount() const { return _saslAccount; }
-    inline const QString& saslPassword() const { return _saslPassword; }
+    inline QString saslAccount() const { return _saslAccount; }
+    inline QString saslPassword() const { return _saslPassword; }
     inline bool useAutoReconnect() const { return _useAutoReconnect; }
     inline quint32 autoReconnectInterval() const { return _autoReconnectInterval; }
     inline quint16 autoReconnectRetries() const { return _autoReconnectRetries; }
     inline bool unlimitedReconnectRetries() const { return _unlimitedReconnectRetries; }
     inline bool rejoinChannels() const { return _rejoinChannels; }
-
-    // Custom rate limiting
-
-    /**
-     * Gets whether or not custom rate limiting is used
-     *
-     * @return True if custom rate limiting is enabled, otherwise false.
-     */
     inline bool useCustomMessageRate() const { return _useCustomMessageRate; }
-
-    /**
-     * Gets maximum number of messages to send without any delays
-     *
-     * @return
-     * @parblock
-     * Maximum number of messages to send without any delays.  A value of 1 disables message
-     * bursting.
-     * @endparblock
-     */
     inline quint32 messageRateBurstSize() const { return _messageRateBurstSize; }
-
-    /**
-     * Gets the delay between messages after the maximum number of undelayed messages have been sent
-     *
-     * @return
-     * @parblock
-     * Delay in milliseconds between messages after the maximum number of undelayed messages have
-     * been sent.
-     * @endparblock
-     */
     inline quint32 messageRateDelay() const { return _messageRateDelay; }
-
-    /**
-     * Gets whether or not all rate limiting is disabled, e.g. for IRC bridges
-     *
-     * @return If true, disable rate limiting, otherwise apply configured limits.
-     */
     inline bool unlimitedMessageRate() const { return _unlimitedMessageRate; }
+    inline const QHash<QString, QString>& supports() const { return _supports; }
+    inline const QString& capNegotiationStatus() const { return _capNegotiationStatus; }
+    inline const QStringList& availableCaps() const { return _availableCaps; }
+    inline const QStringList& enabledCaps() const { return _enabledCaps; }
 
-    NetworkInfo networkInfo() const;
-    void setNetworkInfo(const NetworkInfo&);
+    IrcUser* ircUser(const QString& nickname) const;
+    inline const QHash<QString, IrcUser*>* ircUsers() const { return &_ircUsers; }
+    IrcChannel* ircChannel(const QString& channelname) const;
+    inline const QHash<QString, IrcChannel*>* ircChannels() const { return &_ircChannels; }
 
-    QString prefixes() const;
-    QString prefixModes() const;
-    void determinePrefixes() const;
+    Q_INVOKABLE IrcUser* addIrcUser(const QString& hostmask);
+    Q_INVOKABLE IrcChannel* addIrcChannel(const QString& channelname);
 
-    bool supports(const QString& param) const { return _supports.contains(param); }
-    QString support(const QString& param) const;
+    void removeIrcUser(IrcUser* ircuser);
+    void removeIrcChannel(IrcChannel* ircChannel);
+    void removeChansAndUsers();
 
-    /**
-     * Checks if a given capability is advertised by the server.
-     *
-     * These results aren't valid if the network is disconnected or capability negotiation hasn't
-     * happened, and some servers might not correctly advertise capabilities.  Don't treat this as
-     * a guarantee.
-     *
-     * @param[in] capability Name of capability
-     * @returns True if connected and advertised by the server, otherwise false
-     */
-    inline bool capAvailable(const QString& capability) const { return _caps.contains(capability.toLower()); }
-    // IRCv3 specs all use lowercase capability names
+    QVariantMap initIrcUsersAndChannels() const;
 
-    /**
-     * Checks if a given capability is acknowledged and active.
-     *
-     * @param[in] capability Name of capability
-     * @returns True if acknowledged (active), otherwise false
-     */
-    inline bool capEnabled(const QString& capability) const { return _capsEnabled.contains(capability.toLower()); }
-    // IRCv3 specs all use lowercase capability names
+    QVariantMap toVariantMap() override;
+    void fromVariantMap(const QVariantMap& map) override;
 
-    /**
-     * Gets the value of an available capability, e.g. for SASL, "EXTERNAL,PLAIN".
-     *
-     * @param[in] capability Name of capability
-     * @returns Value of capability if one was specified, otherwise empty string
-     */
-    QString capValue(const QString& capability) const { return _caps.value(capability.toLower()); }
-    // IRCv3 specs all use lowercase capability names
-    // QHash returns the default constructed value if not found, in this case, empty string
-    // See:  https://doc.qt.io/qt-4.8/qhash.html#value
+    inline bool autoAwayActive() const { return _autoAwayActive; }
+    inline QDateTime lastAwayMessageTime() const { return _lastAwayMessageTime; }
 
-    /**
-     * Check if the given authentication mechanism is likely to be supported.
-     *
-     * This depends on the server advertising SASL support and either declaring available mechanisms
-     * (SASL 3.2), or just indicating something is supported (SASL 3.1).
-     *
-     * @param[in] saslMechanism  Desired SASL mechanism
-     * @return True if mechanism supported or unknown, otherwise false
-     */
-    bool saslMaybeSupports(const QString& saslMechanism) const;
-
-    IrcUser* newIrcUser(const QString& hostmask, const QVariantMap& initData = QVariantMap());
-    inline IrcUser* newIrcUser(const QByteArray& hostmask) { return newIrcUser(decodeServerString(hostmask)); }
-    IrcUser* ircUser(QString nickname) const;
-    inline IrcUser* ircUser(const QByteArray& nickname) const { return ircUser(decodeServerString(nickname)); }
-    inline QList<IrcUser*> ircUsers() const { return _ircUsers.values(); }
-    inline quint32 ircUserCount() const { return _ircUsers.count(); }
-
-    IrcChannel* newIrcChannel(const QString& channelname, const QVariantMap& initData = QVariantMap());
-    inline IrcChannel* newIrcChannel(const QByteArray& channelname) { return newIrcChannel(decodeServerString(channelname)); }
-    IrcChannel* ircChannel(QString channelname) const;
-    inline IrcChannel* ircChannel(const QByteArray& channelname) const { return ircChannel(decodeServerString(channelname)); }
-    inline QList<IrcChannel*> ircChannels() const { return _ircChannels.values(); }
-    inline quint32 ircChannelCount() const { return _ircChannels.count(); }
-
+    // codec stuff
     QByteArray codecForServer() const;
     QByteArray codecForEncoding() const;
     QByteArray codecForDecoding() const;
-    void setCodecForServer(QTextCodec* codec);
-    void setCodecForEncoding(QTextCodec* codec);
-    void setCodecForDecoding(QTextCodec* codec);
-
-    QString decodeString(const QByteArray& text) const;
-    QByteArray encodeString(const QString& string) const;
-    QString decodeServerString(const QByteArray& text) const;
-    QByteArray encodeServerString(const QString& string) const;
 
     static QByteArray defaultCodecForServer();
     static QByteArray defaultCodecForEncoding();
     static QByteArray defaultCodecForDecoding();
-    static void setDefaultCodecForServer(const QByteArray& name);
-    static void setDefaultCodecForEncoding(const QByteArray& name);
-    static void setDefaultCodecForDecoding(const QByteArray& name);
-
-    inline bool autoAwayActive() const { return _autoAwayActive; }
-    inline void setAutoAwayActive(bool active) { _autoAwayActive = active; }
 
 public slots:
     void setNetworkName(const QString& networkName);
     void setCurrentServer(const QString& currentServer);
-    void setConnected(bool isConnected);
-    void setConnectionState(int state);
     virtual void setMyNick(const QString& mynick);
     void setLatency(int latency);
-    void setIdentity(IdentityId);
-
-    void setServerList(const QVariantList& serverList);
-    void setUseRandomServer(bool);
-    void setPerform(const QStringList&);
-    /**
-     * Sets the list of skipped (not auto-negotiated) capabilities
-     *
-     * @param skipCaps QStringList of skipped (not auto-negotiated) capabilities
-     */
-    void setSkipCaps(const QStringList& skipCaps);
-    void setUseAutoIdentify(bool);
-    void setAutoIdentifyService(const QString&);
-    void setAutoIdentifyPassword(const QString&);
-    void setUseSasl(bool);
-    void setSaslAccount(const QString&);
-    void setSaslPassword(const QString&);
-    virtual void setUseAutoReconnect(bool);
-    virtual void setAutoReconnectInterval(quint32);
-    virtual void setAutoReconnectRetries(quint16);
-    void setUnlimitedReconnectRetries(bool);
-    void setRejoinChannels(bool);
-
-    // Custom rate limiting
-
-    /**
-     * Sets whether or not custom rate limiting is used.
-     *
-     * Setting limits too low may get you disconnected from the server!
-     *
-     * @param[in] useCustomRate If true, use custom rate limits, otherwise use Quassel defaults.
-     */
-    void setUseCustomMessageRate(bool useCustomRate);
-
-    /**
-     * Sets maximum number of messages to send without any delays
-     *
-     * @param[in] burstSize
-     * @parblock
-     * Maximum number of messages to send without any delays.  A value of 1 disables message
-     * bursting.  Cannot be less than 1 as sending 0 messages at a time accomplishes nothing.
-     * @endparblock
-     */
-    void setMessageRateBurstSize(quint32 burstSize);
-
-    /**
-     * Sets the delay between messages after the maximum number of undelayed messages have been sent
-     *
-     * @param[in] messageDelay
-     * @parblock
-     * Delay in milliseconds between messages after the maximum number of undelayed messages have
-     * been sent.
-     * @endparblock
-     */
-    void setMessageRateDelay(quint32 messageDelay);
-
-    /**
-     * Sets whether or not all rate limiting is disabled, e.g. for IRC bridges
-     *
-     * Don't use with most normal networks.
-     *
-     * @param[in] unlimitedRate If true, disable rate limiting, otherwise apply configured limits.
-     */
-    void setUnlimitedMessageRate(bool unlimitedRate);
-
     void setCodecForServer(const QByteArray& codecName);
     void setCodecForEncoding(const QByteArray& codecName);
     void setCodecForDecoding(const QByteArray& codecName);
+    void setIdentity(IdentityId identity);
+    void setConnected(bool connected);
+    void setConnectionState(int state);
+    void setServerList(const Network::ServerList& serverList);
+    void setUseRandomServer(bool useRandomServer);
+    void setPerform(const QStringList& perform);
+    void setSkipCaps(const QStringList& skipCaps);
+    void setUseAutoIdentify(bool useAutoIdentify);
+    void setAutoIdentifyService(const QString& autoIdentifyService);
+    void setAutoIdentifyPassword(const QString& autoIdentifyPassword);
+    void setUseSasl(bool useSasl);
+    void setSaslAccount(const QString& saslAccount);
+    void setSaslPassword(const QString& saslPassword);
+    void setUseAutoReconnect(bool useAutoReconnect);
+    void setAutoReconnectInterval(quint32 autoReconnectInterval);
+    void setAutoReconnectRetries(quint16 autoReconnectRetries);
+    void setUnlimitedReconnectRetries(bool unlimitedReconnectRetries);
+    void setRejoinChannels(bool rejoinChannels);
+    void setUseCustomMessageRate(bool useCustomMessageRate);
+    void setMessageRateBurstSize(quint32 messageRateBurstSize);
+    void setMessageRateDelay(quint32 messageRateDelay);
+    void setUnlimitedMessageRate(bool unlimitedMessageRate);
 
+    static void setDefaultCodecForServer(const QByteArray& name);
+    static void setDefaultCodecForEncoding(const QByteArray& name);
+    static void setDefaultCodecForDecoding(const QByteArray& name);
+
+    QByteArray encodeString(const QString& string) const;
+    QString decodeString(const QByteArray& string) const;
+    QByteArray encodeServerString(const QString& string) const;
+    QString decodeServerString(const QByteArray& string) const;
+
+    void setChannelPrefixes(const QString& prefixes);
+    void setPrefixModes(const QString& modes);
+    void setPrefixes(const QString& modes, const QString& prefixes);
+    void setStatusMsg(const QString& statusMsg);
     void addSupport(const QString& param, const QString& value = QString());
     void removeSupport(const QString& param);
-
-    // IRCv3 capability negotiation (can be connected to signals)
-
-    /**
-     * Add an available capability, optionally providing a value.
-     *
-     * This may happen during first connect, or at any time later if a new capability becomes
-     * available (e.g. SASL service starting).
-     *
-     * @param[in] capability Name of the capability
-     * @param[in] value
-     * @parblock
-     * Optional value of the capability, e.g. sasl=plain.
-     * @endparblock
-     */
+    void setCapNegotiationStatus(const QString& status);
     void addCap(const QString& capability, const QString& value = QString());
-
-    /**
-     * Marks a capability as acknowledged (enabled by the IRC server).
-     *
-     * @param[in] capability Name of the capability
-     */
     void acknowledgeCap(const QString& capability);
-
-    /**
-     * Removes a capability from the list of available capabilities.
-     *
-     * This may happen during first connect, or at any time later if an existing capability becomes
-     * unavailable (e.g. SASL service stopping).  This also removes the capability from the list
-     * of acknowledged capabilities.
-     *
-     * @param[in] capability Name of the capability
-     */
     void removeCap(const QString& capability);
-
-    /**
-     * Clears all capabilities from the list of available capabilities.
-     *
-     * This also removes all capabilities from the list of acknowledged capabilities.
-     */
     void clearCaps();
 
-    inline void addIrcUser(const QString& hostmask) { newIrcUser(hostmask); }
-    inline void addIrcChannel(const QString& channel) { newIrcChannel(channel); }
+    void updateAutoAway(bool active, const QDateTime& lastAwayMessageTime = QDateTime());
 
-    // init geters
-    QVariantMap initSupports() const;
-    /**
-     * Get the initial list of available capabilities.
-     *
-     * @return QVariantMap of <QString, QString> indicating available capabilities and values
-     */
-    QVariantMap initCaps() const;
-    /**
-     * Get the initial list of enabled (acknowledged) capabilities.
-     *
-     * @return QVariantList of QString indicating enabled (acknowledged) capabilities and values
-     */
-    QVariantList initCapsEnabled() const { return toVariantList(capsEnabled()); }
-    inline QVariantList initServerList() const { return toVariantList(serverList()); }
-    virtual QVariantMap initIrcUsersAndChannels() const;
-
-    // init seters
-    void initSetSupports(const QVariantMap& supports);
-    /**
-     * Initialize the list of available capabilities.
-     *
-     * @param[in] caps QVariantMap of <QString, QString> indicating available capabilities and values
-     */
-    void initSetCaps(const QVariantMap& caps);
-    /**
-     * Initialize the list of enabled (acknowledged) capabilities.
-     *
-     * @param[in] capsEnabled QVariantList of QString indicating enabled (acknowledged) capabilities
-     */
-    inline void initSetCapsEnabled(const QVariantList& capsEnabled) { _capsEnabled = fromVariantList<QString>(capsEnabled); }
-    inline void initSetServerList(const QVariantList& serverList) { _serverList = fromVariantList<Server>(serverList); }
-    virtual void initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels);
-
-    /**
-     * Update IrcUser hostmask and username from mask, creating an IrcUser if one does not exist.
-     *
-     * @param[in] mask   Full nick!user@hostmask string
-     * @return IrcUser of the matching nick if exists, otherwise a new IrcUser
-     */
-    IrcUser* updateNickFromMask(const QString& mask);
-
-    // these slots are to keep the hashlists of all users and the
-    // channel lists up to date
-    void ircUserNickChanged(QString newnick);
-
-    virtual inline void requestConnect() const { REQUEST(NO_ARG) }
-    virtual inline void requestDisconnect() const { REQUEST(NO_ARG) }
-    virtual inline void requestSetNetworkInfo(const NetworkInfo& info) { REQUEST(ARG(info)) }
-
-    void emitConnectionError(const QString&);
-
-protected slots:
-    virtual void removeIrcUser(IrcUser* ircuser);
-    virtual void removeIrcChannel(IrcChannel* ircChannel);
-    virtual void removeChansAndUsers();
+    Q_INVOKABLE void initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels);
+    Q_INVOKABLE virtual void requestConnect();
+    Q_INVOKABLE virtual void requestDisconnect();
 
 signals:
-    void aboutToBeDestroyed();
-    void networkNameSet(const QString& networkName);
-    void currentServerSet(const QString& currentServer);
-    void connectedSet(bool isConnected);
-    void connectionStateSet(Network::ConnectionState);
-    //   void connectionStateSet(int);
-    void connectionError(const QString& errorMsg);
-    void myNickSet(const QString& mynick);
-    //   void latencySet(int latency);
-    void identitySet(IdentityId);
-
     void configChanged();
+    void connected();
+    void disconnected();
 
-    //   void serverListSet(QVariantList serverList);
-    //   void useRandomServerSet(bool);
-    //   void performSet(const QStringList &);
-    //   void useAutoIdentifySet(bool);
-    //   void autoIdentifyServiceSet(const QString &);
-    //   void autoIdentifyPasswordSet(const QString &);
-    //   void useAutoReconnectSet(bool);
-    //   void autoReconnectIntervalSet(quint32);
-    //   void autoReconnectRetriesSet(quint16);
-    //   void unlimitedReconnectRetriesSet(bool);
-    //   void rejoinChannelsSet(bool);
+    void connectionStateSet(Network::ConnectionState);
+    void myNickSet(const QString& nick);
 
-    // Custom rate limiting (can drive other slots)
-
-    /**
-     * Signals enabling or disabling custom rate limiting
-     *
-     * @see Network::useCustomMessageRate()
-     *
-     * @param[out] useCustomRate
-     */
-    void useCustomMessageRateSet(const bool useCustomRate);
-
-    /**
-     * Signals a change in maximum number of messages to send without any delays
-     *
-     * @see Network::messageRateBurstSize()
-     *
-     * @param[out] burstSize
-     */
-    void messageRateBurstSizeSet(const quint32 burstSize);
-
-    /**
-     * Signals a change in delay between messages after the max. undelayed messages have been sent
-     *
-     * @see Network::messageRateDelay()
-     *
-     * @param[out] messageDelay
-     */
-    void messageRateDelaySet(const quint32 messageDelay);
-
-    /**
-     * Signals enabling or disabling all rate limiting
-     *
-     * @see Network::unlimitedMessageRate()
-     *
-     * @param[out] unlimitedRate
-     */
-    void unlimitedMessageRateSet(const bool unlimitedRate);
-
-    //   void codecForServerSet(const QByteArray &codecName);
-    //   void codecForEncodingSet(const QByteArray &codecName);
-    //   void codecForDecodingSet(const QByteArray &codecName);
-
-    //   void supportAdded(const QString &param, const QString &value);
-    //   void supportRemoved(const QString &param);
-
-    // IRCv3 capability negotiation (can drive other slots)
-    /**
-     * Indicates a capability is now available, with optional value in Network::capValue().
-     *
-     * @see Network::addCap()
-     *
-     * @param[in] capability Name of the capability
-     */
-    void capAdded(const QString& capability);
-
-    /**
-     * Indicates a capability was acknowledged (enabled by the IRC server).
-     *
-     * @see Network::acknowledgeCap()
-     *
-     * @param[in] capability Name of the capability
-     */
-    void capAcknowledged(const QString& capability);
-
-    /**
-     * Indicates a capability was removed from the list of available capabilities.
-     *
-     * @see Network::removeCap()
-     *
-     * @param[in] capability Name of the capability
-     */
-    void capRemoved(const QString& capability);
-
-    //   void ircUserAdded(const QString &hostmask);
-    void ircUserAdded(IrcUser*);
-    //   void ircChannelAdded(const QString &channelname);
-    void ircChannelAdded(IrcChannel*);
-
-    //   void connectRequested() const;
-    //   void disconnectRequested() const;
-    //   void setNetworkInfoRequested(const NetworkInfo &) const;
+    void ircUserAdded(IrcUser* ircuser);
+    void ircUserRemoved(IrcUser* ircuser);
+    void ircChannelAdded(IrcChannel* ircChannel);
+    void ircChannelRemoved(IrcChannel* ircChannel);
 
 protected:
-    inline virtual IrcChannel* ircChannelFactory(const QString& channelname) { return new IrcChannel(channelname, this); }
-    inline virtual IrcUser* ircUserFactory(const QString& hostmask) { return new IrcUser(hostmask, this); }
+    virtual IrcUser* ircUserFactory(const QString& hostmask);
+    virtual IrcChannel* ircChannelFactory(const QString& channelname);
+
+private slots:
+    void ircUserNickSet(const QString& newnick);
+    void ircUserDestroyed();
 
 private:
-    QPointer<SignalProxy> _proxy;
-
     NetworkId _networkId;
-    IdentityId _identity;
+    SignalProxy* _proxy{nullptr};
 
-    QString _myNick;
-    int _latency;
     QString _networkName;
     QString _currentServer;
-    bool _connected;
-    ConnectionState _connectionState;
-
-    mutable QString _prefixes;
-    mutable QString _prefixModes;
-
-    QHash<QString, IrcUser*> _ircUsers;        // stores all known nicks for the server
-    QHash<QString, IrcChannel*> _ircChannels;  // stores all known channels
-    QHash<QString, QString> _supports;         // stores results from RPL_ISUPPORT
-
-    QHash<QString, QString> _caps;  /// Capabilities supported by the IRC server
-    // By synchronizing the supported capabilities, the client could suggest certain behaviors, e.g.
-    // in the Network settings dialog, recommending SASL instead of using NickServ, or warning if
-    // SASL EXTERNAL isn't available.
-    QStringList _capsEnabled;  /// Enabled capabilities that received 'CAP ACK'
-    // _capsEnabled uses the same values from the <name>=<value> pairs stored in _caps
-
-
+    QString _myNick;
+    int _latency{0};
+    IdentityId _identity;
+    bool _connected{false};
+    int _connectionState{Disconnected};
     ServerList _serverList;
-    bool _useRandomServer;
+    bool _useRandomServer{false};
     QStringList _perform;
-    QStringList _skipCaps;  ///< Capabilities to skip during negotiation (keep list sorted!)
-
-    bool _useAutoIdentify;
+    QStringList _skipCaps;
+    bool _useAutoIdentify{false};
     QString _autoIdentifyService;
     QString _autoIdentifyPassword;
-
-    bool _useSasl;
+    bool _useSasl{false};
     QString _saslAccount;
     QString _saslPassword;
+    bool _useAutoReconnect{true};
+    quint32 _autoReconnectInterval{60};
+    quint16 _autoReconnectRetries{20};
+    bool _unlimitedReconnectRetries{false};
+    bool _rejoinChannels{true};
+    bool _useCustomMessageRate{false};
+    quint32 _messageRateBurstSize{5};
+    quint32 _messageRateDelay{2200};
+    bool _unlimitedMessageRate{false};
+    bool _autoAwayActive{false};
+    QDateTime _lastAwayMessageTime;
 
-    bool _useAutoReconnect;
-    quint32 _autoReconnectInterval;
-    quint16 _autoReconnectRetries;
-    bool _unlimitedReconnectRetries;
-    bool _rejoinChannels;
+    QHash<QString, IrcUser*> _ircUsers;
+    QHash<QString, IrcChannel*> _ircChannels;
 
-    // Custom rate limiting
-    bool _useCustomMessageRate;     /// If true, use custom rate limits, otherwise use defaults
-    quint32 _messageRateBurstSize;  /// Maximum number of messages to send without any delays
-    quint32 _messageRateDelay;      /// Delay in ms. for messages when max. burst messages sent
-    bool _unlimitedMessageRate;     /// If true, disable rate limiting, otherwise apply limits
+    QStringList _channelPrefixes;
+    QStringList _prefixModes;
+    QStringList _prefixes;
+    QString _statusMsg;
 
-    QTextCodec* _codecForServer;
-    QTextCodec* _codecForEncoding;
-    QTextCodec* _codecForDecoding;
+    QHash<QString, QString> _supports;
+    QString _capNegotiationStatus;
+    QStringList _availableCaps;
+    QStringList _enabledCaps;
 
-    static QTextCodec* _defaultCodecForServer;
-    static QTextCodec* _defaultCodecForEncoding;
-    static QTextCodec* _defaultCodecForDecoding;
+    // encoding stuff
+    std::optional<QStringConverter::Encoding> _codecForServer;
+    std::optional<QStringConverter::Encoding> _codecForEncoding;
+    std::optional<QStringConverter::Encoding> _codecForDecoding;
 
-    bool _autoAwayActive;  // when this is active handle305 and handle306 don't trigger any output
+    static std::optional<QStringConverter::Encoding> _defaultCodecForServer;
+    static std::optional<QStringConverter::Encoding> _defaultCodecForEncoding;
+    static std::optional<QStringConverter::Encoding> _defaultCodecForDecoding;
 
-    friend class IrcUser;
-    friend class IrcChannel;
+    mutable QMutex _capsMutex;
 };
 
-//! Stores all editable information about a network (as opposed to runtime state).
-struct COMMON_EXPORT NetworkInfo
+QDataStream& operator<<(QDataStream& out, const NetworkInfo& info);
+QDataStream& operator>>(QDataStream& in, NetworkInfo& info);
+QDataStream& operator<<(QDataStream& out, const Network::Server& server);
+QDataStream& operator>>(QDataStream& in, Network::Server& server);
+
+struct NetworkInfo
 {
+    NetworkId networkId;
     QString networkName;
-
-    Network::ServerList serverList;
-    QStringList perform;
-    QStringList skipCaps;           ///< Capabilities to skip during negotiation
-
-    QString autoIdentifyService{"NickServ"};
-    QString autoIdentifyPassword;
-
-    QString saslAccount;
-    QString saslPassword;
-
+    IdentityId identity;
     QByteArray codecForServer;
     QByteArray codecForEncoding;
     QByteArray codecForDecoding;
-
-    NetworkId networkId{0};
-    IdentityId identity{1};
-
-    quint32 messageRateBurstSize{5};  ///< Maximum number of messages to send without any delays
-    quint32 messageRateDelay{2200};   ///< Delay in ms. for messages when max. burst messages sent
-
+    Network::ServerList serverList;
+    bool useRandomServer{false};
+    QStringList perform;
+    QStringList skipCaps;
+    bool useAutoIdentify{false};
+    QString autoIdentifyService;
+    QString autoIdentifyPassword;
+    bool useSasl{false};
+    QString saslAccount;
+    QString saslPassword;
+    bool useAutoReconnect{true};
     quint32 autoReconnectInterval{60};
     quint16 autoReconnectRetries{20};
-
-    bool rejoinChannels{true};
-    bool useRandomServer{false};
-    bool useAutoIdentify{false};
-    bool useSasl{false};
-    bool useAutoReconnect{true};
     bool unlimitedReconnectRetries{false};
-    bool useCustomMessageRate{false};  ///< If true, use custom rate limits, otherwise use defaults
-    bool unlimitedMessageRate{false};  ///< If true, disable rate limiting, otherwise apply limits
+    bool rejoinChannels{true};
+    bool useCustomMessageRate{false};
+    quint32 messageRateBurstSize{5};
+    quint32 messageRateDelay{2200};
+    bool unlimitedMessageRate{false};
 
-public:
-    bool operator==(const NetworkInfo& other) const;
-    bool operator!=(const NetworkInfo& other) const;
-
-    /**
-     * Gets the list of skipped capabilities in a space-separated string
-     *
-     * @see skipCaps
-     * @return QString representing skipCaps with each cap separated by a space
-     */
-    QString skipCapsToString() const;
-    /**
-     * Sets the list of skipped capabilities from a space-separated string
-     *
-     * @param flattenedSkipCaps QString representing skipCaps with each cap separated by a space
-     */
-    void skipCapsFromString(const QString& flattenedSkipCaps);
+    QVariantMap toVariantMap() const;
+    void fromVariantMap(const QVariantMap& map);
 };
 
-COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const NetworkInfo& info);
-COMMON_EXPORT QDataStream& operator>>(QDataStream& in, NetworkInfo& info);
-COMMON_EXPORT QDebug operator<<(QDebug dbg, const NetworkInfo& i);
-Q_DECLARE_METATYPE(NetworkInfo)
+// Comparison operators for NetworkInfo
+inline bool operator==(const NetworkInfo& lhs, const NetworkInfo& rhs)
+{
+    return lhs.networkId == rhs.networkId && lhs.networkName == rhs.networkName && lhs.identity == rhs.identity
+           && lhs.codecForServer == rhs.codecForServer && lhs.codecForEncoding == rhs.codecForEncoding
+           && lhs.codecForDecoding == rhs.codecForDecoding && lhs.serverList == rhs.serverList && lhs.useRandomServer == rhs.useRandomServer
+           && lhs.perform == rhs.perform && lhs.skipCaps == rhs.skipCaps && lhs.useAutoIdentify == rhs.useAutoIdentify
+           && lhs.autoIdentifyService == rhs.autoIdentifyService && lhs.autoIdentifyPassword == rhs.autoIdentifyPassword
+           && lhs.useSasl == rhs.useSasl && lhs.saslAccount == rhs.saslAccount && lhs.saslPassword == rhs.saslPassword
+           && lhs.useAutoReconnect == rhs.useAutoReconnect && lhs.autoReconnectInterval == rhs.autoReconnectInterval
+           && lhs.autoReconnectRetries == rhs.autoReconnectRetries && lhs.unlimitedReconnectRetries == rhs.unlimitedReconnectRetries
+           && lhs.rejoinChannels == rhs.rejoinChannels && lhs.useCustomMessageRate == rhs.useCustomMessageRate
+           && lhs.messageRateBurstSize == rhs.messageRateBurstSize && lhs.messageRateDelay == rhs.messageRateDelay
+           && lhs.unlimitedMessageRate == rhs.unlimitedMessageRate;
+}
 
-COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const Network::Server& server);
-COMMON_EXPORT QDataStream& operator>>(QDataStream& in, Network::Server& server);
-COMMON_EXPORT QDebug operator<<(QDebug dbg, const Network::Server& server);
+inline bool operator!=(const NetworkInfo& lhs, const NetworkInfo& rhs)
+{
+    return !(lhs == rhs);
+}
+
+Q_DECLARE_METATYPE(NetworkInfo)
 Q_DECLARE_METATYPE(Network::Server)

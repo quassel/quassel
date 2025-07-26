@@ -20,10 +20,13 @@
 
 #include "eventstringifier.h"
 
+#include <QTimeZone>
+
 #include "coresession.h"
 #include "ctcpevent.h"
 #include "irctags.h"
 #include "messageevent.h"
+#include "util.h"  // Added for nickFromMask
 
 EventStringifier::EventStringifier(CoreSession* parent)
     : BasicHandler("handleCtcp", parent)
@@ -33,29 +36,20 @@ EventStringifier::EventStringifier(CoreSession* parent)
     connect(this, &EventStringifier::newMessageEvent, coreSession()->eventManager(), &EventManager::postEvent);
 }
 
-void EventStringifier::displayMsg(NetworkEvent* event,
-                                  Message::Type msgType,
-                                  QString msg,
-                                  QString sender,
-                                  QString target,
-                                  Message::Flags msgFlags)
+void EventStringifier::displayMsg(NetworkEvent* event, Message::Type msgType, QString msg, QString sender, QString target, Message::Flags msgFlags)
 {
     if (event->flags().testFlag(EventManager::Silent))
         return;
 
     MessageEvent* msgEvent = createMessageEvent(event, msgType, std::move(msg), std::move(sender), std::move(target), msgFlags);
-    // sendMessageEvent(msgEvent);
     emit newMessageEvent(msgEvent);
 }
 
-MessageEvent* EventStringifier::createMessageEvent(NetworkEvent* event,
-                                                   Message::Type msgType,
-                                                   QString msg,
-                                                   QString sender,
-                                                   QString target,
-                                                   Message::Flags msgFlags)
+MessageEvent* EventStringifier::createMessageEvent(
+    NetworkEvent* event, Message::Type msgType, QString msg, QString sender, QString target, Message::Flags msgFlags)
 {
-    MessageEvent* msgEvent = new MessageEvent(msgType, event->network(), std::move(msg), std::move(sender), std::move(target), msgFlags, event->timestamp());
+    MessageEvent* msgEvent
+        = new MessageEvent(msgType, event->network(), std::move(msg), std::move(sender), std::move(target), msgFlags, event->timestamp());
     return msgEvent;
 }
 
@@ -93,9 +87,7 @@ void EventStringifier::processNetworkSplitQuit(NetworkSplitEvent* e)
 
 void EventStringifier::processIrcEventNumeric(IrcEventNumeric* e)
 {
-    // qDebug() << e->number();
     switch (e->number()) {
-    // Welcome, status, info messages. Just display these.
     case 1:
     case 2:
     case 3:
@@ -119,7 +111,6 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric* e)
         displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
         break;
 
-    // Server error messages without param, just display them
     case 263:
     case 409:
     case 411:
@@ -141,11 +132,10 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric* e)
     case 491:
     case 501:
     case 502:
-    case 431:  // ERR_NONICKNAMEGIVEN
+    case 431:
         displayMsg(e, Message::Error, e->params().join(" "), e->prefix());
         break;
 
-    // Server error messages, display them in red. Colon between first param and rest.
     case 401: {
         if (!checkParamCount(e, 1))
             return;
@@ -173,13 +163,12 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric* e)
         break;
     }
 
-    // Server error messages which will be displayed with a colon between the first param and the rest
     case 413:
     case 414:
     case 423:
     case 441:
     case 444:
-    case 461:  // FIXME see below for the 47x codes
+    case 461:
     case 467:
     case 471:
     case 473:
@@ -189,8 +178,7 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric* e)
     case 477:
     case 478:
     case 482:
-    case 436:  // ERR_NICKCOLLISION
-    {
+    case 436: {
         if (!checkParamCount(e, 1))
             return;
 
@@ -200,50 +188,36 @@ void EventStringifier::processIrcEventNumeric(IrcEventNumeric* e)
         break;
     }
 
-    // Ignore these commands.
     case 321:
     case 353:
     case 366:
     case 376:
         break;
 
-    // SASL authentication stuff
-    // See: http://ircv3.net/specs/extensions/sasl-3.1.html
-    case 900:  // RPL_LOGGEDIN
-    case 901:  // RPL_LOGGEDOUT
-    {
-        // :server 900 <nick> <nick>!<ident>@<host> <account> :You are now logged in as <user>
-        // :server 901 <nick> <nick>!<ident>@<host> :You are now logged out
+    case 900:
+    case 901: {
         if (!checkParamCount(e, 3))
             return;
         displayMsg(e, Message::Server, "SASL: " + e->params().at(2));
         break;
     }
-    // Ignore SASL success, partially redundant with RPL_LOGGEDIN and RPL_LOGGEDOUT
-    case 903:  // RPL_SASLSUCCESS  :server 903 <nick> :SASL authentication successful
+    case 903:
         break;
-    case 902:  // ERR_NICKLOCKED   :server 902 <nick> :You must use a nick assigned to you
-    case 904:  // ERR_SASLFAIL     :server 904 <nick> :SASL authentication failed
-    case 905:  // ERR_SASLTOOLONG  :server 905 <nick> :SASL message too long
-    case 906:  // ERR_SASLABORTED  :server 906 <nick> :SASL authentication aborted
-    case 907:  // ERR_SASLALREADY  :server 907 <nick> :You have already authenticated using SASL
-    case 908:  // RPL_SASLMECHS    :server 908 <nick> <mechanisms> :are available SASL mechanisms
-    {
+    case 902:
+    case 904:
+    case 905:
+    case 906:
+    case 907:
+    case 908: {
         displayMsg(e, Message::Server, "SASL: " + e->params().join(""));
         break;
     }
 
-    // Everything else will be marked in red, so we can add them somewhere.
     default:
         if (_whois) {
-            // many nets define their own WHOIS fields. we fetch those not in need of special attention here:
             displayMsg(e, Message::Server, tr("[Whois] ") + e->params().join(" "), e->prefix());
         }
         else {
-            // FIXME figure out how/where to do this in the future
-            // if(coreSession()->ircListHelper()->requestInProgress(network()->networkId()))
-            //  coreSession()->ircListHelper()->reportError(params.join(" "));
-            // else
             displayMsg(e, Message::Error, QString("%1 %2").arg(e->number(), 3, 10, QLatin1Char('0')).arg(e->params().join(" ")), e->prefix());
         }
     }
@@ -254,7 +228,6 @@ void EventStringifier::processIrcEventInvite(IrcEvent* e)
     if (!checkParamCount(e, 2))
         return;
 
-    // TODO: provide a nicer UI for invite notifications
     QString target = e->params().at(0);
     QString channel = e->params().at(1);
     if (e->network()->isMyNick(target)) {
@@ -272,7 +245,6 @@ void EventStringifier::processIrcEventJoin(IrcEvent* e)
 
     Message::Flag msgFlags = Message::Flag::None;
     if (e->testFlag(EventManager::Self)) {
-        // Mark the message as Self
         msgFlags = Message::Self;
     }
 
@@ -293,7 +265,6 @@ void EventStringifier::processIrcEventKick(IrcEvent* e)
 
         Message::Flag msgFlags = Message::Flag::None;
         if (e->testFlag(EventManager::Self)) {
-            // Mark the message as Self
             msgFlags = Message::Self;
         }
 
@@ -304,29 +275,26 @@ void EventStringifier::processIrcEventKick(IrcEvent* e)
 void EventStringifier::processIrcEventMode(IrcEvent* e)
 {
     if (e->network()->isChannelName(e->params().first())) {
-        // Channel Modes
         displayMsg(e, Message::Mode, e->params().join(" "), e->prefix(), e->params().first());
     }
     else {
-        // User Modes
-        // FIXME: redirect
-
         Message::Flag msgFlags = Message::Flag::None;
         if (e->testFlag(EventManager::Self)) {
-            // Mark the message as Self
             msgFlags = Message::Self;
         }
         displayMsg(e, Message::Mode, e->params().join(" "), e->prefix(), QString(), msgFlags);
     }
 }
 
-// this needs to be called before the ircuser is renamed!
 void EventStringifier::processIrcEventNick(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
         return;
 
-    IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
+    IrcUser* ircuser = e->network()->ircUser(nickFromMask(e->prefix()));
+    if (!ircuser) {
+        ircuser = e->network()->addIrcUser(e->prefix());
+    }
     if (!ircuser) {
         qWarning() << Q_FUNC_INFO << "Unknown IrcUser!";
         return;
@@ -337,16 +305,13 @@ void EventStringifier::processIrcEventNick(IrcEvent* e)
     QString sender;
     Message::Flag msgFlags = Message::Flag::None;
     if (e->testFlag(EventManager::Self)) {
-        // Treat the sender as the new nickname, mark the message as Self
         sender = newnick;
         msgFlags = Message::Self;
     }
     else {
-        // Take the sender from the event prefix, don't mark the message
         sender = e->prefix();
     }
 
-    // Announce to all channels the IrcUser is in
     for (const QString& channel : ircuser->channels()) {
         displayMsg(e, Message::Nick, newnick, sender, channel, msgFlags);
     }
@@ -362,7 +327,6 @@ void EventStringifier::processIrcEventPart(IrcEvent* e)
 
     Message::Flag msgFlags = Message::Flag::None;
     if (e->testFlag(EventManager::Self)) {
-        // Mark the message as Self
         msgFlags = Message::Self;
     }
 
@@ -371,10 +335,6 @@ void EventStringifier::processIrcEventPart(IrcEvent* e)
 
 void EventStringifier::processIrcEventPong(IrcEvent* e)
 {
-    // CoreSessionEventProcessor will flag automated PONG replies as EventManager::Silent.  There's
-    // no need to handle that specially here.
-
-    // Format the PONG reply for display
     displayMsg(e, Message::Server, "PONG " + e->params().join(" "), e->prefix());
 }
 
@@ -383,17 +343,15 @@ void EventStringifier::processIrcEventQuit(IrcEvent* e)
     if (e->testFlag(EventManager::Netsplit))
         return;
 
-    IrcUser* ircuser = e->network()->updateNickFromMask(e->prefix());
+    IrcUser* ircuser = e->network()->ircUser(nickFromMask(e->prefix()));
     if (!ircuser)
         return;
 
     Message::Flag msgFlags = Message::Flag::None;
     if (e->testFlag(EventManager::Self)) {
-        // Mark the message as Self
         msgFlags = Message::Self;
     }
 
-    // Announce to all channels the IrcUser is in
     for (const QString& channel : ircuser->channels()) {
         displayMsg(e, Message::Quit, e->params().count() ? e->params().first() : QString(), e->prefix(), channel, msgFlags);
     }
@@ -403,7 +361,6 @@ void EventStringifier::processIrcEventTopic(IrcEvent* e)
 {
     Message::Flag msgFlags = Message::Flag::None;
     if (e->testFlag(EventManager::Self)) {
-        // Mark the message as Self
         msgFlags = Message::Self;
     }
 
@@ -417,7 +374,6 @@ void EventStringifier::processIrcEventTopic(IrcEvent* e)
 
 void EventStringifier::processIrcEventError(IrcEvent* e)
 {
-    // Need an error reason
     if (!checkParamCount(e, 1))
         return;
 
@@ -429,77 +385,50 @@ void EventStringifier::processIrcEventWallops(IrcEvent* e)
     displayMsg(e, Message::Server, tr("[Operwall] %1: %2").arg(e->nick(), e->params().join(" ")));
 }
 
-/* RPL_ISUPPORT */
 void EventStringifier::processIrcEvent005(IrcEvent* e)
 {
-    if (!e->params().last().contains(QRegExp("are supported (by|on) this server")))
+    if (!e->params().last().contains(QRegularExpression("are supported (by|on) this server")))
         displayMsg(e, Message::Error, tr("Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected behavior!"), e->prefix());
     displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
 }
 
-/* RPL_AWAY - "<nick> :<away message>" */
 void EventStringifier::processIrcEvent301(IrcEvent* e)
 {
+    if (!checkParamCount(e, 2))
+        return;
+
     QString nick = e->params().at(0);
     QString awayMsg = e->params().at(1);
     QString msg, target;
-    bool send = true;
 
-    // FIXME: proper redirection needed
     if (_whois) {
         msg = tr("[Whois] ");
     }
     else {
         target = nick;
-        IrcUser* ircuser = e->network()->ircUser(nick);
-        if (ircuser) {
-            QDateTime now = QDateTime::currentDateTime();
-            now.setTimeSpec(Qt::UTC);
-            // Don't print "user is away" messages more often than this
-            // 1 hour = 60 min * 60 sec
-            const int silenceTime = 60 * 60;
-            // Check if away state has NOT changed and silence time hasn't yet elapsed
-            if (!ircuser->hasAwayChanged() && ircuser->lastAwayMessageTime().addSecs(silenceTime) >= now) {
-                // Away message hasn't changed and we're still within the period of silence; don't
-                // repeat the message
-                send = false;
-            }
-            ircuser->setLastAwayMessageTime(now);
-            // Mark any changes in away as acknowledged
-            ircuser->acknowledgeAwayChanged();
-        }
     }
-    if (send)
-        displayMsg(e, Message::Server, msg + tr("%1 is away: \"%2\"").arg(nick, awayMsg), QString(), target);
+
+    IrcUser* ircuser = e->network()->ircUser(nick);
+    if (ircuser) {
+        QDateTime now = QDateTime::currentDateTime();
+        now.setTimeZone(QTimeZone("UTC"));
+        ircuser->setLastAwayMessageTime(now);
+    }
+
+    displayMsg(e, Message::Server, msg + tr("%1 is away: \"%2\"").arg(nick, awayMsg), QString(), target);
 }
 
-/* RPL_UNAWAY - ":You are no longer marked as being away" */
 void EventStringifier::processIrcEvent305(IrcEvent* e)
 {
     displayMsg(e, Message::Server, tr("You are no longer marked as being away"));
 }
 
-/* RPL_NOWAWAY - ":You have been marked as being away" */
 void EventStringifier::processIrcEvent306(IrcEvent* e)
 {
     if (!e->network()->autoAwayActive())
         displayMsg(e, Message::Server, tr("You have been marked as being away"));
 }
 
-/*
-WHOIS-Message:
-   Replies 311 - 313, 317 - 319 are all replies generated in response to a WHOIS message.
-  and 301 (RPL_AWAY)
-              "<nick> :<away message>"
-WHO-Message:
-   Replies 352 and 315 paired are used to answer a WHO message.
-
-WHOWAS-Message:
-   Replies 314 and 369 are responses to a WHOWAS message.
-
-*/
-
-/*  RPL_WHOISUSER - "<nick> <user> <host> * :<real name>" */
 void EventStringifier::processIrcEvent311(IrcEvent* e)
 {
     _whois = true;
@@ -515,7 +444,6 @@ void EventStringifier::processIrcEvent311(IrcEvent* e)
     }
 }
 
-/*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
 void EventStringifier::processIrcEvent312(IrcEvent* e)
 {
     if (_whois)
@@ -524,7 +452,6 @@ void EventStringifier::processIrcEvent312(IrcEvent* e)
         displayMsg(e, Message::Server, tr("[Whowas] %1 was online via %2 (%3)").arg(e->params().at(0), e->params().at(1), e->params().last()));
 }
 
-/*  RPL_WHOWASUSER - "<nick> <user> <host> * :<real name>" */
 void EventStringifier::processIrcEvent314(IrcEvent* e)
 {
     if (!checkParamCount(e, 3))
@@ -533,31 +460,19 @@ void EventStringifier::processIrcEvent314(IrcEvent* e)
     displayMsg(e, Message::Server, tr("[Whowas] %1 was %2@%3 (%4)").arg(e->params()[0], e->params()[1], e->params()[2], e->params().last()));
 }
 
-/*  RPL_ENDOFWHO: "<name> :End of WHO list" */
 void EventStringifier::processIrcEvent315(IrcEvent* e)
 {
     QStringList p = e->params();
-    p.takeLast();  // should be "End of WHO list"
+    p.takeLast();
     displayMsg(e, Message::Server, tr("[Who] End of /WHO list for %1").arg(p.join(" ")));
 }
 
-/*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle"
-   (real life: "<nick> <integer> <integer> :seconds idle, signon time) */
 void EventStringifier::processIrcEvent317(IrcEvent* e)
 {
     int idleSecs = e->params()[1].toInt();
 
     if (e->params().count() > 3) {
-        // if we have more then 3 params we have the above mentioned "real life" situation
-        // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
-        // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
         QDateTime loginTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
-#else
-        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-        QDateTime loginTime = QDateTime::fromMSecsSinceEpoch((qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
-#endif
         displayMsg(e,
                    Message::Server,
                    tr("[Whois] %1 is logged in since %2").arg(e->params()[0], loginTime.toString("yyyy-MM-dd hh:mm:ss UTC")));
@@ -569,14 +484,12 @@ void EventStringifier::processIrcEvent317(IrcEvent* e)
                    .arg(e->params()[0], secondsToString(idleSecs), idlingSince.toString("yyyy-MM-dd hh:mm:ss UTC")));
 }
 
-/*  RPL_ENDOFWHOIS - "<nick> :End of WHOIS list" */
 void EventStringifier::processIrcEvent318(IrcEvent* e)
 {
     _whois = false;
     displayMsg(e, Message::Server, tr("[Whois] End of /WHOIS list"));
 }
 
-/*  RPL_WHOISCHANNELS - "<nick> :*( ( "@" / "+" ) <channel> " " )" */
 void EventStringifier::processIrcEvent319(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
@@ -602,7 +515,6 @@ void EventStringifier::processIrcEvent319(IrcEvent* e)
         displayMsg(e, Message::Server, tr("[Whois] %1 is an operator on channels: %2").arg(nick, op.join(" ")));
 }
 
-/* RPL_LIST -  "<channel> <# visible> :<topic>" */
 void EventStringifier::processIrcEvent322(IrcEvent* e)
 {
     QString channelName;
@@ -612,32 +524,26 @@ void EventStringifier::processIrcEvent322(IrcEvent* e)
     switch (e->params().count()) {
     case 3:
         topic = e->params()[2];
-        // fallthrough
     case 2:
         userCount = e->params()[1].toUInt();
-        /* fallthrough */
     case 1:
         channelName = e->params()[0];
-        // blubb
     default:
         break;
     }
     displayMsg(e, Message::Server, tr("Channel %1 has %2 users. Topic is: \"%3\"").arg(channelName).arg(userCount).arg(topic));
 }
 
-/* RPL_LISTEND ":End of LIST" */
 void EventStringifier::processIrcEvent323(IrcEvent* e)
 {
     displayMsg(e, Message::Server, tr("End of channel list"));
 }
 
-/* RPL_CHANNELMODEIS - "<channel> <mode> <mode params>" */
 void EventStringifier::processIrcEvent324(IrcEvent* e)
 {
     processIrcEventMode(e);
 }
 
-/* RPL_??? - "<channel> <homepage> */
 void EventStringifier::processIrcEvent328(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
@@ -647,38 +553,26 @@ void EventStringifier::processIrcEvent328(IrcEvent* e)
     displayMsg(e, Message::Topic, tr("Homepage for %1 is %2").arg(channel, e->params()[1]), QString(), channel);
 }
 
-/* RPL_??? - "<channel> <creation time (unix)>" */
 void EventStringifier::processIrcEvent329(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
         return;
 
     QString channel = e->params()[0];
-    // Allow for 64-bit time
     qint64 unixtime = e->params()[1].toLongLong();
     if (!unixtime) {
         qWarning() << Q_FUNC_INFO << "received invalid timestamp:" << e->params()[1];
         return;
     }
-    // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
-    // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
     QDateTime time = QDateTime::fromSecsSinceEpoch(unixtime).toUTC();
-#else
-    // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-    QDateTime time = QDateTime::fromMSecsSinceEpoch((qint64)(unixtime * 1000)).toUTC();
-#endif
     displayMsg(e, Message::Topic, tr("Channel %1 created on %2").arg(channel, time.toString("yyyy-MM-dd hh:mm:ss UTC")), QString(), channel);
 }
 
-/*  RPL_WHOISACCOUNT: "<nick> <account> :is authed as */
 void EventStringifier::processIrcEvent330(IrcEvent* e)
 {
     if (e->params().count() < 3)
         return;
 
-    // check for whois or whowas
     if (_whois) {
         displayMsg(e, Message::Server, tr("[Whois] %1 is authed as %2").arg(e->params()[0], e->params()[1]));
     }
@@ -687,36 +581,25 @@ void EventStringifier::processIrcEvent330(IrcEvent* e)
     }
 }
 
-/* RPL_NOTOPIC */
 void EventStringifier::processIrcEvent331(IrcEvent* e)
 {
     QString channel = e->params().first();
     displayMsg(e, Message::Topic, tr("No topic is set for %1.").arg(channel), QString(), channel);
 }
 
-/* RPL_TOPIC */
 void EventStringifier::processIrcEvent332(IrcEvent* e)
 {
     QString channel = e->params().first();
     displayMsg(e, Message::Topic, tr("Topic for %1 is \"%2\"").arg(channel, e->params()[1]), QString(), channel);
 }
 
-/* Topic set by... */
 void EventStringifier::processIrcEvent333(IrcEvent* e)
 {
     if (!checkParamCount(e, 3))
         return;
 
     QString channel = e->params().first();
-    // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
-    // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
     QDateTime topicSetTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
-#else
-    // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-    QDateTime topicSetTime = QDateTime::fromMSecsSinceEpoch((qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
-#endif
     displayMsg(e,
                Message::Topic,
                tr("Topic set by %1 on %2").arg(e->params()[1], topicSetTime.toString("yyyy-MM-dd hh:mm:ss UTC")),
@@ -724,7 +607,6 @@ void EventStringifier::processIrcEvent333(IrcEvent* e)
                channel);
 }
 
-/* RPL_INVITING - "<nick> <channel>*/
 void EventStringifier::processIrcEvent341(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
@@ -734,29 +616,21 @@ void EventStringifier::processIrcEvent341(IrcEvent* e)
     displayMsg(e, Message::Server, tr("%1 has been invited to %2").arg(e->params().first(), channel), QString(), channel);
 }
 
-/*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick>
-              ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
 void EventStringifier::processIrcEvent352(IrcEvent* e)
 {
     displayMsg(e, Message::Server, tr("[Who] %1").arg(e->params().join(" ")));
 }
 
-/*  RPL_WHOSPCRPL: "<yournick> <num> #<channel> ~<ident> <host> <servname> <nick>
-                    ("H"/ "G") <account> :<realname>"
-Could be anything else, though.  User-specified fields.
-See http://faerion.sourceforge.net/doc/irc/whox.var */
 void EventStringifier::processIrcEvent354(IrcEvent* e)
 {
     displayMsg(e, Message::Server, tr("[WhoX] %1").arg(e->params().join(" ")));
 }
 
-/*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */
 void EventStringifier::processIrcEvent369(IrcEvent* e)
 {
     displayMsg(e, Message::Server, tr("End of /WHOWAS"));
 }
 
-/* ERR_ERRONEUSNICKNAME */
 void EventStringifier::processIrcEvent432(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
@@ -765,7 +639,6 @@ void EventStringifier::processIrcEvent432(IrcEvent* e)
     displayMsg(e, Message::Error, tr("Nick %1 contains illegal characters").arg(e->params()[0]));
 }
 
-/* ERR_NICKNAMEINUSE */
 void EventStringifier::processIrcEvent433(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
@@ -774,7 +647,6 @@ void EventStringifier::processIrcEvent433(IrcEvent* e)
     displayMsg(e, Message::Error, tr("Nick already in use: %1").arg(e->params()[0]));
 }
 
-/* ERR_UNAVAILRESOURCE */
 void EventStringifier::processIrcEvent437(IrcEvent* e)
 {
     if (!checkParamCount(e, 1))
@@ -783,7 +655,6 @@ void EventStringifier::processIrcEvent437(IrcEvent* e)
     displayMsg(e, Message::Error, tr("Nick/channel is temporarily unavailable: %1").arg(e->params()[0]));
 }
 
-/* ERR_HELPNOTFOUND */
 void EventStringifier::processIrcEvent524(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
@@ -792,7 +663,6 @@ void EventStringifier::processIrcEvent524(IrcEvent* e)
     displayMsg(e, Message::Error, tr("[Help] %1").arg(e->params()[1]));
 }
 
-/* RPL_HELPSTART */
 void EventStringifier::processIrcEvent704(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
@@ -801,7 +671,6 @@ void EventStringifier::processIrcEvent704(IrcEvent* e)
     displayMsg(e, Message::Server, tr("[Help] %1").arg(e->params()[1]));
 }
 
-/* RPL_HELPTXT */
 void EventStringifier::processIrcEvent705(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
@@ -810,7 +679,6 @@ void EventStringifier::processIrcEvent705(IrcEvent* e)
     displayMsg(e, Message::Server, tr("[Help] %1").arg(e->params()[1]));
 }
 
-/* RPL_ENDOFHELP */
 void EventStringifier::processIrcEvent706(IrcEvent* e)
 {
     if (!checkParamCount(e, 2))
@@ -819,30 +687,12 @@ void EventStringifier::processIrcEvent706(IrcEvent* e)
     displayMsg(e, Message::Server, tr("[Help] %1").arg(e->params()[1]));
 }
 
-// template
-/*
-
-void EventStringifier::processIrcEvent(IrcEvent *e) {
-
-}
-
-*/
-
-/*******************************/
-/******** CTCP HANDLING ********/
-/*******************************/
-
 void EventStringifier::processCtcpEvent(CtcpEvent* e)
 {
     if (e->type() != EventManager::CtcpEvent)
         return;
 
-    // Only stringify outgoing CTCP messages this way
-    if (e->testFlag(EventManager::Self) &&
-        // Only stringify CTCP queries this way
-        e->ctcpType() == CtcpEvent::CtcpType::Query &&
-        // Always handle ACTIONs as if they were sent from network, to properly handle echo-message
-        e->ctcpCmd() != "ACTION") {
+    if (e->testFlag(EventManager::Self) && e->ctcpType() == CtcpEvent::CtcpType::Query && e->ctcpCmd() != "ACTION") {
         displayMsg(e,
                    Message::Action,
                    tr("sending CTCP-%1 request to %2").arg(e->ctcpCmd(), e->target()),
@@ -852,7 +702,16 @@ void EventStringifier::processCtcpEvent(CtcpEvent* e)
         return;
     }
 
-    handle(e->ctcpCmd(), Q_ARG(CtcpEvent*, e));
+    QString ctcpCmd = e->ctcpCmd().toUpper();
+    if (ctcpCmd == "ACTION") {
+        handleCtcpAction(e);
+    }
+    else if (ctcpCmd == "PING") {
+        handleCtcpPing(e);
+    }
+    else {
+        defaultHandler(ctcpCmd, e);
+    }
 }
 
 void EventStringifier::defaultHandler(const QString& ctcpCmd, CtcpEvent* e)
@@ -860,15 +719,13 @@ void EventStringifier::defaultHandler(const QString& ctcpCmd, CtcpEvent* e)
     Q_UNUSED(ctcpCmd);
     if (e->ctcpType() == CtcpEvent::Query) {
         QString unknown;
-        if (e->reply().isNull())  // all known core-side handlers (except for ACTION) set a reply!
-            //: Optional "unknown" in "Received unknown CTCP-FOO request by bar"
+        if (e->reply().isNull())
             unknown = tr("unknown") + ' ';
         displayMsg(e, Message::Server, tr("Received %1CTCP-%2 request by %3").arg(unknown, e->ctcpCmd(), e->prefix()));
-    } else {
-        // Ignore echo messages for our own answers
+    }
+    else {
         if (!e->testFlag(EventManager::Self)) {
-            displayMsg(e, Message::Server,
-                       tr("Received CTCP-%1 answer from %2: %3").arg(e->ctcpCmd(), nickFromMask(e->prefix()),e->param()));
+            displayMsg(e, Message::Server, tr("Received CTCP-%1 answer from %2: %3").arg(e->ctcpCmd(), nickFromMask(e->prefix()), e->param()));
         }
     }
 }
@@ -877,7 +734,6 @@ void EventStringifier::handleCtcpAction(CtcpEvent* e)
 {
     Message::Flag msgFlags = Message::Flag::None;
     if (e->testFlag(EventManager::Self)) {
-        // Mark the message as Self
         msgFlags = Message::Self;
     }
 

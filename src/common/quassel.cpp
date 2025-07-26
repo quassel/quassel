@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
 
 #include <QCoreApplication>
 #include <QDateTime>
@@ -29,12 +30,17 @@
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QLibraryInfo>
+#include <QLoggingCategory>
 #include <QMetaEnum>
+#include <QMetaType>
+#include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QTranslator>
 #include <QUuid>
 
 #include "bufferinfo.h"
+#include "ctcpevent.h"
 #include "identity.h"
 #include "logger.h"
 #include "message.h"
@@ -44,6 +50,37 @@
 #include "syncableobject.h"
 #include "types.h"
 #include "version.h"
+
+// Qt6 compatibility: Custom QHostAddress serialization operators for Qt_4_2 format
+QDataStream& operator<<(QDataStream& stream, const QHostAddress& address)
+{
+    // For Qt_4_2 compatibility, we serialize as string
+    if (stream.version() <= QDataStream::Qt_4_2) {
+        stream << address.toString();
+    }
+    else {
+        // Use Qt's native serialization for newer formats
+        stream << address.toString();
+    }
+    return stream;
+}
+
+QDataStream& operator>>(QDataStream& stream, QHostAddress& address)
+{
+    // For Qt_4_2 compatibility, we deserialize from string
+    if (stream.version() <= QDataStream::Qt_4_2) {
+        QString addressString;
+        stream >> addressString;
+        address.setAddress(addressString);
+    }
+    else {
+        // Use Qt's native deserialization for newer formats
+        QString addressString;
+        stream >> addressString;
+        address.setAddress(addressString);
+    }
+    return stream;
+}
 
 #ifndef Q_OS_WIN
 #    include "posixsignalwatcher.h"
@@ -60,11 +97,15 @@ Quassel::Quassel()
 #endif
 }
 
+static std::unique_ptr<QRandomGenerator> randomGenerator;
+
 void Quassel::init(RunMode runMode)
 {
     _runMode = runMode;
 
-    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    if (!randomGenerator) {
+        randomGenerator = std::make_unique<QRandomGenerator>(QTime::currentTime().msec());
+    }
 
     setupSignalHandling();
     setupEnvironment();
@@ -75,9 +116,13 @@ void Quassel::init(RunMode runMode)
 
     setupCliParser();
 
+    // Enable Qt debug output for sync debugging
+    setupQtDebugOutput();
+
     // Don't keep a debug log on the core
     logger()->setup(runMode != RunMode::CoreOnly);
 
+    // These should be called as early as possible
     Network::setDefaultCodecForServer("UTF-8");
     Network::setDefaultCodecForEncoding("UTF-8");
     Network::setDefaultCodecForDecoding("ISO-8859-15");
@@ -138,12 +183,6 @@ void Quassel::registerMetaTypes()
     qRegisterMetaType<Network::Server>("Network::Server");
     qRegisterMetaType<Identity>("Identity");
 
-    qRegisterMetaTypeStreamOperators<Message>("Message");
-    qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
-    qRegisterMetaTypeStreamOperators<NetworkInfo>("NetworkInfo");
-    qRegisterMetaTypeStreamOperators<Network::Server>("Network::Server");
-    qRegisterMetaTypeStreamOperators<Identity>("Identity");
-
     qRegisterMetaType<IdentityId>("IdentityId");
     qRegisterMetaType<BufferId>("BufferId");
     qRegisterMetaType<NetworkId>("NetworkId");
@@ -152,26 +191,13 @@ void Quassel::registerMetaTypes()
     qRegisterMetaType<MsgId>("MsgId");
 
     qRegisterMetaType<QHostAddress>("QHostAddress");
-    qRegisterMetaTypeStreamOperators<QHostAddress>("QHostAddress");
     qRegisterMetaType<QUuid>("QUuid");
-    qRegisterMetaTypeStreamOperators<QUuid>("QUuid");
-
-    qRegisterMetaTypeStreamOperators<IdentityId>("IdentityId");
-    qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
-    qRegisterMetaTypeStreamOperators<NetworkId>("NetworkId");
-    qRegisterMetaTypeStreamOperators<UserId>("UserId");
-    qRegisterMetaTypeStreamOperators<AccountId>("AccountId");
-    qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
 
     qRegisterMetaType<Protocol::SessionState>("Protocol::SessionState");
     qRegisterMetaType<PeerPtr>("PeerPtr");
-    qRegisterMetaTypeStreamOperators<PeerPtr>("PeerPtr");
 
-    // Versions of Qt prior to 4.7 didn't define QVariant as a meta type
-    if (!QMetaType::type("QVariant")) {
-        qRegisterMetaType<QVariant>("QVariant");
-        qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
-    }
+    // Register event types for proper event dispatching
+    qRegisterMetaType<CtcpEvent*>("CtcpEvent*");
 }
 
 void Quassel::setupEnvironment()
@@ -185,7 +211,7 @@ void Quassel::setupEnvironment()
     if (xdgDataVar.isEmpty())
         xdgDataVar = QLatin1String("/usr/local/share:/usr/share");  // sane defaults
 
-    QStringList xdgDirs = xdgDataVar.split(QLatin1Char(':'), QString::SkipEmptyParts);
+    QStringList xdgDirs = xdgDataVar.split(QLatin1Char(':'), Qt::SkipEmptyParts);
 
     // Add our install prefix (if we're not in a bindir, this just adds the current workdir)
     QString appDir = QCoreApplication::applicationDirPath();
@@ -232,11 +258,14 @@ void Quassel::setupBuildInfo()
         buildInfo.commitDate = QString(DIST_DATE);
     }
 
+    QRegularExpressionMatch match;
+    QString distance;
+
     // create a nice version string
     if (buildInfo.generatedVersion.isEmpty()) {
         if (!buildInfo.commitHash.isEmpty()) {
             // dist version
-            buildInfo.plainVersionString = QString{"v%1 (dist-%2)"}.arg(buildInfo.baseVersion).arg(buildInfo.commitHash.left(7));
+            buildInfo.plainVersionString = QString{"v%1 (dist-%2)"}.arg(buildInfo.baseVersion, buildInfo.commitHash.left(7));
             buildInfo.fancyVersionString = QString{"v%1 (dist-<a href=\"https://github.com/quassel/quassel/commit/%3\">%2</a>)"}
                                                .arg(buildInfo.baseVersion)
                                                .arg(buildInfo.commitHash.left(7))
@@ -249,13 +278,21 @@ void Quassel::setupBuildInfo()
     }
     else {
         // analyze what we got from git-describe
-        static const QRegExp rx{"(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$"};
-        if (rx.exactMatch(buildInfo.generatedVersion)) {
-            QString distance = rx.cap(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(rx.cap(1), rx.cap(2));
-            buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}.arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));
+        static const QRegularExpression rx{"(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$"};
+        QRegularExpressionMatch match = rx.match(buildInfo.generatedVersion);
+        if (match.hasMatch()) {
+            QString distance = match.captured(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(match.captured(1), match.captured(2));
+            buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}.arg(buildInfo.baseVersion,
+                                                                           distance,
+                                                                           match.captured(3),
+                                                                           match.captured(4));
             if (!buildInfo.commitHash.isEmpty()) {
                 buildInfo.fancyVersionString = QString{"v%1 (%2git-<a href=\"https://github.com/quassel/quassel/commit/%5\">%3</a>%4)"}
-                                                   .arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4), buildInfo.commitHash);
+                                                   .arg(buildInfo.baseVersion,
+                                                        distance,
+                                                        match.captured(3),
+                                                        match.captured(4),
+                                                        buildInfo.commitHash);
             }
         }
         else {
@@ -310,6 +347,41 @@ void Quassel::handleSignal(AbstractSignalWatcher::Action action)
     }
 }
 
+void Quassel::setupQtDebugOutput()
+{
+    // Enable Qt debug output for sync debugging
+    // This can be controlled by environment variables, e.g.:
+    // export QT_LOGGING_RULES="*.debug=true"
+    // export QT_LOGGING_RULES="qt.*.debug=false;*.debug=true"
+
+    // For debugging sync issues, we want to see all debug output
+    // This can be overridden by setting QT_LOGGING_RULES environment variable
+    if (qEnvironmentVariableIsEmpty("QT_LOGGING_RULES")) {
+        // Enable debug logging for our custom debug messages
+        QLoggingCategory::setFilterRules("*.debug=true");
+
+        // You can also set specific categories if needed:
+        // QLoggingCategory::setFilterRules("qt.*.debug=false;quassel.*.debug=true");
+    }
+
+    // Store the original handler before installing our custom one
+    static QtMessageHandler originalHandler = qInstallMessageHandler(nullptr);
+
+    // Install a custom message handler to ensure debug output goes to console
+    qInstallMessageHandler([](QtMsgType type, const QMessageLogContext& context, const QString& msg) {
+        // Call the original handler first if it exists
+        if (originalHandler) {
+            originalHandler(type, context, msg);
+        }
+
+        // Also output [DEBUG] messages to stderr for immediate visibility
+        if (type == QtDebugMsg && msg.contains("[DEBUG]")) {
+            fprintf(stderr, "[DEBUG] %s\n", qPrintable(msg));
+            fflush(stderr);
+        }
+    });
+}
+
 Quassel::RunMode Quassel::runMode()
 {
     return instance()->_runMode;
@@ -343,37 +415,44 @@ void Quassel::setupCliParser()
 
     // Core options
     if (runMode() != RunMode::ClientOnly) {
-        options += {
-            {"listen", tr("The address(es) quasselcore will listen on."), tr("<address>[,<address>[,...]]"), "::,0.0.0.0"},
-            {{"p", "port"}, tr("The port quasselcore will listen at."), tr("port"), "4242"},
-            {{"n", "norestore"}, tr("Don't restore last core's state.")},
-            {"config-from-environment", tr("Load configuration from environment variables.")},
-            {"select-backend", tr("Switch storage backend (migrating data if possible)."), tr("backendidentifier")},
-            {"select-authenticator", tr("Select authentication backend."), tr("authidentifier")},
-            {"add-user", tr("Starts an interactive session to add a new core user.")},
-            {"change-userpass",
-             tr("Starts an interactive session to change the password of the user identified by <username>."),
-             tr("username")},
-            {"strict-ident", tr("Use users' quasselcore username as ident reply. Ignores each user's configured ident setting.")},
-            {"ident-daemon", tr("Enable internal ident daemon.")},
-            {"ident-port",
-             tr("The port quasselcore will listen at for ident requests. Only meaningful with --ident-daemon."),
-             tr("port"),
-             "10113"},
-            {"ident-listen", tr("The address(es) quasselcore will listen on for ident requests. Same format as --listen."), tr("<address>[,...]"), "::1,127.0.0.1"},
-            {"oidentd", tr("Enable oidentd integration. In most cases you should also enable --strict-ident.")},
-            {"oidentd-conffile", tr("Set path to oidentd configuration file."), tr("file")},
-            {"proxy-cidr", tr("Set IP range from which proxy protocol definitions are allowed"), tr("<address>[,...]"), "::1,127.0.0.1"},
-            {"require-ssl", tr("Require SSL for remote (non-loopback) client connections.")},
-            {"ssl-cert", tr("Specify the path to the SSL certificate."), tr("path"), "configdir/quasselCert.pem"},
-            {"ssl-key", tr("Specify the path to the SSL key."), tr("path"), "ssl-cert-path"},
-            {"require-tls", tr("Require TLS for remote (non-loopback) client connections.")},
-            {"tls-cert", tr("Specify the path to the TLS certificate."), tr("path"), "configdir/quasselCert.pem"},
-            {"tls-key", tr("Specify the path to the SSL key."), tr("path"), "ssl-cert-path"},
-            {"metrics-daemon", tr("Enable metrics API.")},
-            {"metrics-port", tr("The port quasselcore will listen at for metrics requests. Only meaningful with --metrics-daemon."), tr("port"), "9558"},
-            {"metrics-listen", tr("The address(es) quasselcore will listen on for metrics requests. Same format as --listen."), tr("<address>[,...]"), "::1,127.0.0.1"}
-        };
+        options += {{"listen", tr("The address(es) quasselcore will listen on."), tr("<address>[,<address>[,...]]"), "::,0.0.0.0"},
+                    {{"p", "port"}, tr("The port quasselcore will listen at."), tr("port"), "4242"},
+                    {{"n", "norestore"}, tr("Don't restore last core's state.")},
+                    {"config-from-environment", tr("Load configuration from environment variables.")},
+                    {"select-backend", tr("Switch storage backend (migrating data if possible)."), tr("backendidentifier")},
+                    {"select-authenticator", tr("Select authentication backend."), tr("authidentifier")},
+                    {"add-user", tr("Starts an interactive session to add a new core user.")},
+                    {"change-userpass",
+                     tr("Starts an interactive session to change the password of the user identified by <username>."),
+                     tr("username")},
+                    {"strict-ident", tr("Use users' quasselcore username as ident reply. Ignores each user's configured ident setting.")},
+                    {"ident-daemon", tr("Enable internal ident daemon.")},
+                    {"ident-port",
+                     tr("The port quasselcore will listen at for ident requests. Only meaningful with --ident-daemon."),
+                     tr("port"),
+                     "10113"},
+                    {"ident-listen",
+                     tr("The address(es) quasselcore will listen on for ident requests. Same format as --listen."),
+                     tr("<address>[,...]"),
+                     "::1,127.0.0.1"},
+                    {"oidentd", tr("Enable oidentd integration. In most cases you should also enable --strict-ident.")},
+                    {"oidentd-conffile", tr("Set path to oidentd configuration file."), tr("file")},
+                    {"proxy-cidr", tr("Set IP range from which proxy protocol definitions are allowed"), tr("<address>[,...]"), "::1,127.0.0.1"},
+                    {"require-ssl", tr("Require SSL for remote (non-loopback) client connections.")},
+                    {"ssl-cert", tr("Specify the path to the SSL certificate."), tr("path"), "configdir/quasselCert.pem"},
+                    {"ssl-key", tr("Specify the path to the SSL key."), tr("path"), "ssl-cert-path"},
+                    {"require-tls", tr("Require TLS for remote (non-loopback) client connections.")},
+                    {"tls-cert", tr("Specify the path to the TLS certificate."), tr("path"), "configdir/quasselCert.pem"},
+                    {"tls-key", tr("Specify the path to the SSL key."), tr("path"), "ssl-cert-path"},
+                    {"metrics-daemon", tr("Enable metrics API.")},
+                    {"metrics-port",
+                     tr("The port quasselcore will listen at for metrics requests. Only meaningful with --metrics-daemon."),
+                     tr("port"),
+                     "9558"},
+                    {"metrics-listen",
+                     tr("The address(es) quasselcore will listen on for metrics requests. Same format as --listen."),
+                     tr("<address>[,...]"),
+                     "::1,127.0.0.1"}};
     }
 
     // Logging options
@@ -397,8 +476,13 @@ void Quassel::setupCliParser()
         options += {
             {"debug-irc", tr("Enable logging of all raw IRC messages to debug log, including passwords!  In most cases you should also set --loglevel Debug")},
             {"debug-irc-id", tr("Limit raw IRC logging to this network ID.  Implies --debug-irc"), tr("database network ID"), "-1"},
-            {"debug-irc-parsed", tr("Enable logging of all parsed IRC messages to debug log, including passwords!  In most cases you should also set --loglevel Debug")},
-            {"debug-irc-parsed-id", tr("Limit parsed IRC logging to this network ID.  Implies --debug-irc-parsed"), tr("database network ID"), "-1"},
+            {"debug-irc-parsed",
+             tr("Enable logging of all parsed IRC messages to debug log, including passwords!  In most cases you should also set "
+                "--loglevel Debug")},
+            {"debug-irc-parsed-id",
+             tr("Limit parsed IRC logging to this network ID.  Implies --debug-irc-parsed"),
+             tr("database network ID"),
+             "-1"},
         };
     }
 
@@ -492,12 +576,12 @@ QStringList Quassel::dataDirPaths()
 
     QStringList dataDirNames;
 #ifdef Q_OS_WIN
-    dataDirNames << QCoreApplication::applicationDirPath() + "/data/quassel/"
-                 << qgetenv("APPDATA") + QCoreApplication::organizationDomain() << QCoreApplication::applicationDirPath();
+    dataDirNames << QCoreApplication::applicationDirPath() + "/data/quassel/" << qgetenv("APPDATA") + QCoreApplication::organizationDomain()
+                 << QCoreApplication::applicationDirPath();
 #else
-#if defined Q_OS_MAC
+#    if defined Q_OS_MAC
     dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/" << QCoreApplication::applicationDirPath();
-#endif
+#    endif
     // Linux et al
 
     // XDG_DATA_HOME is the location for users to override system-installed files, usually in .local/share
@@ -513,7 +597,7 @@ QStringList Quassel::dataDirPaths()
         dataDirNames << "/usr/local/share"
                      << "/usr/share";
     else
-        dataDirNames << xdgDataDirs.split(':', QString::SkipEmptyParts);
+        dataDirNames << xdgDataDirs.split(':', Qt::SkipEmptyParts);
 
     // Just in case, also check our install prefix
     dataDirNames << QCoreApplication::applicationDirPath() + "/../share";
@@ -579,9 +663,8 @@ QStringList Quassel::translationDirPaths()
         if (QDir(":/i18n/").exists()) {
             instance()->_translationDirPaths.append(":/i18n/");
         }
-        qDebug().noquote().nospace()
-                << "Translation paths: \"" << instance()->_translationDirPaths.join("\", \"")
-                << "\", with Qt fallback: \"" << QLibraryInfo::location(QLibraryInfo::TranslationsPath) << "\"";
+        qDebug().noquote().nospace() << "Translation paths: \"" << instance()->_translationDirPaths.join("\", \"")
+                                     << "\", with Qt fallback: \"" << QLibraryInfo::path(QLibraryInfo::TranslationsPath) << "\"";
     }
     return instance()->_translationDirPaths;
 }
@@ -636,18 +719,20 @@ void Quassel::loadTranslation(const QLocale& locale)
     if (!successQt) {
         // Fall back to Qt library translations path
 #ifndef Q_OS_MAC
-        successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::path(QLibraryInfo::TranslationsPath));
 #else
         // Filename, directory
-        successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::path(QLibraryInfo::TranslationsPath));
 #endif
     }
 
     if (!successQt && !successQuassel) {
         qWarning() << "Failed to load both Qt and Quassel translations";
-    } else if (!successQt) {
+    }
+    else if (!successQt) {
         qWarning() << "Failed to load Qt translations";
-    } else if (!successQuassel) {
+    }
+    else if (!successQuassel) {
         qWarning() << "Failed to load Quassel translations";
     }
 

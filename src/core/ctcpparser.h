@@ -103,7 +103,8 @@ private:
         CtcpReply(CoreNetwork* net, QString buf)
             : network(net)
             , bufferName(std::move(buf))
-        {}
+        {
+        }
     };
 
     QHash<QUuid, CtcpReply> _replies;

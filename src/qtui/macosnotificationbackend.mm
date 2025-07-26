@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2012 by the Quassel Project                        *
+ *   Copyright (C) 2005-2025 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,27 +19,50 @@
  ***************************************************************************/
 
 #include "clientsettings.h"
-#include "osxnotificationbackend.h"
+#include "macosnotificationbackend.h"
 
 #include <QCheckBox>
 #include <QHBoxLayout>
 
-#import <Foundation/NSUserNotification.h>
+// Import UserNotifications framework
+#import <UserNotifications/UserNotifications.h>
 
 namespace {
 
 void SendNotificationCenterMessage(NSString* title, NSString* subtitle) {
-    NSUserNotificationCenter* center =
-            [NSUserNotificationCenter defaultUserNotificationCenter];
-    NSUserNotification* notification =
-            [[NSUserNotification alloc] init];
+    // Get the shared notification center
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
 
-    [notification setTitle: title];
-    [notification setSubtitle: subtitle];
+    // Request authorization for notifications (if not already granted)
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound)
+                          completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if (!granted) {
+            NSLog(@"Notification authorization denied: %@", error.localizedDescription);
+            return;
+        }
 
-    [center deliverNotification: notification];
+        // Create notification content
+        UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+        content.title = title;
+        content.subtitle = subtitle;
+        content.sound = [UNNotificationSound defaultSound];
 
-    [notification release];
+        // Create a request with a unique identifier
+        NSString* identifier = [NSString stringWithFormat:@"QuasselNotification-%ld", (long)[[NSDate date] timeIntervalSince1970]];
+        UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:identifier
+                                                                            content:content
+                                                                            trigger:nil];
+
+        // Schedule the notification
+        [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"Failed to deliver notification: %@", error.localizedDescription);
+            }
+        }];
+
+        // Release the content (ARC handles this, but explicit for clarity)
+        [content release];
+    }];
 }
 
 }
@@ -64,17 +87,17 @@ void OSXNotificationBackend::notify(const Notification &notification)
         return;
     }
 
-    NSString* message = [[NSString alloc] initWithUTF8String:notification.sender.toUtf8().constData()];
-    NSString* summary = [[NSString alloc] initWithUTF8String:notification.message.toUtf8().constData()];
+    // Convert Qt QString to NSString
+    NSString* message = @(notification.sender.toUtf8().constData());
+    NSString* summary = @(notification.message.toUtf8().constData());
 
     SendNotificationCenterMessage(message, summary);
-
-    [message release];
-    [summary release];
 }
 
-void OSXNotificationBackend::close(uint notificationId)
+void OSXNotificationBackend::close(uint /*notificationId*/)
 {
+    // Optionally implement notification removal if needed
+    // Example: [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:@[@"identifier"]];
 }
 
 SettingsPage *OSXNotificationBackend::createConfigWidget() const
@@ -116,7 +139,6 @@ void OSXNotificationBackend::ConfigWidget::load()
     _enabledBox->setChecked(_enabled);
     setChangedState(false);
 }
-
 
 void OSXNotificationBackend::ConfigWidget::save()
 {

@@ -38,7 +38,9 @@ using namespace Protocol;
 LegacyPeer::LegacyPeer(::AuthHandler* authHandler, QTcpSocket* socket, Compressor::CompressionLevel level, QObject* parent)
     : RemotePeer(authHandler, socket, level, parent)
     , _useCompression(false)
-{}
+{
+    qDebug() << "[DEBUG] LegacyPeer constructor called - Qt5/Qt6 legacy protocol active";
+}
 
 void LegacyPeer::setSignalProxy(::SignalProxy* proxy)
 {
@@ -417,9 +419,16 @@ void LegacyPeer::handlePackedFunc(const QVariant& packedFunc)
         QString objectName = params[1].toString();
         QVariantMap initData = params[2].toMap();
 
+        qDebug() << "[DEBUG] LegacyPeer::handlePackedFunc - Received InitData for class:" << className << "objectName:" << objectName;
+        qDebug() << "[DEBUG] LegacyPeer::handlePackedFunc - initData keys:" << initData.keys();
+
         // we need to special-case IrcUsersAndChannels here, since the format changed
-        if (className == "Network")
+        if (className == "Network") {
+            qDebug() << "[DEBUG] LegacyPeer::handlePackedFunc - Processing Network InitData, calling fromLegacyIrcUsersAndChannels";
             fromLegacyIrcUsersAndChannels(initData);
+        } else {
+            qDebug() << "[DEBUG] LegacyPeer::handlePackedFunc - No conversion needed for class:" << className;
+        }
         handle(Protocol::InitData(className, objectName, initData));
         break;
     }
@@ -496,65 +505,169 @@ void LegacyPeer::dispatchPackedFunc(const QVariantList& packedFunc)
 // cf. Network::initIrcUsersAndChannels()
 void LegacyPeer::fromLegacyIrcUsersAndChannels(QVariantMap& initData)
 {
+    qDebug() << "=== fromLegacyIrcUsersAndChannels START ===";
+    qDebug() << "[DEBUG] initData keys:" << initData.keys();
+    
+    if (!initData.contains("IrcUsersAndChannels")) {
+        qDebug() << "[DEBUG] ERROR: initData missing 'IrcUsersAndChannels' key!";
+        qDebug() << "=== fromLegacyIrcUsersAndChannels END (ERROR) ===";
+        return;
+    }
+    
     const QVariantMap& legacyMap = initData["IrcUsersAndChannels"].toMap();
+    qDebug() << "[DEBUG] legacyMap keys:" << legacyMap.keys();
+    qDebug() << "[DEBUG] legacyMap['users'] exists:" << legacyMap.contains("users");
+    qDebug() << "[DEBUG] legacyMap['channels'] exists:" << legacyMap.contains("channels");
+    qDebug() << "[DEBUG] legacyMap['Users'] exists:" << legacyMap.contains("Users");
+    qDebug() << "[DEBUG] legacyMap['Channels'] exists:" << legacyMap.contains("Channels");
+    
+    if (legacyMap.contains("users")) {
+        qDebug() << "[DEBUG] legacyMap['users'] size:" << legacyMap["users"].toMap().size();
+        if (legacyMap["users"].toMap().size() > 0) {
+            qDebug() << "[DEBUG] Sample user keys:" << legacyMap["users"].toMap().keys().mid(0, 3);
+            QVariantMap users = legacyMap["users"].toMap();
+            if (!users.isEmpty()) {
+                auto firstUser = users.constBegin();
+                qDebug() << "[DEBUG] First user key:" << firstUser.key();
+                qDebug() << "[DEBUG] First user value type:" << firstUser.value().typeName();
+                qDebug() << "[DEBUG] First user value as map keys:" << firstUser.value().toMap().keys();
+            }
+        }
+    }
+    if (legacyMap.contains("channels")) {
+        qDebug() << "[DEBUG] legacyMap['channels'] size:" << legacyMap["channels"].toMap().size();
+        if (legacyMap["channels"].toMap().size() > 0) {
+            qDebug() << "[DEBUG] Sample channel keys:" << legacyMap["channels"].toMap().keys().mid(0, 3);
+        }
+    }
     QVariantMap newMap;
 
-    QHash<QString, QVariantList> users;
-    foreach (const QVariant& v, legacyMap["users"].toMap().values()) {
-        const QVariantMap& map = v.toMap();
-        foreach (const QString& key, map.keys())
-            users[key] << map[key];
-    }
+    // Qt5 format stores user data transposed: each property maps to a list of values for all users
+    // Property "nick" contains [nick1, nick2, nick3...], "host" contains [host1, host2, host3...], etc.
+    // We need to transpose this back to: each user hostmask maps to a complete user object
+    
     QVariantMap userMap;
-    foreach (const QString& key, users.keys())
-        userMap[key] = users[key];
-    newMap["Users"] = userMap;
-
-    QHash<QString, QVariantList> channels;
-    foreach (const QVariant& v, legacyMap["channels"].toMap().values()) {
-        const QVariantMap& map = v.toMap();
-        foreach (const QString& key, map.keys())
-            channels[key] << map[key];
+    QString usersKey = legacyMap.contains("Users") ? "Users" : "users";
+    if (legacyMap.contains(usersKey)) {
+        const QVariantMap& usersData = legacyMap[usersKey].toMap();
+        qDebug() << "[DEBUG] LegacyPeer: Qt5 users data contains properties:" << usersData.keys();
+        
+        // Get the nick property to determine how many users we have
+        if (usersData.contains("nick")) {
+            const QVariantList nickList = usersData["nick"].toList();
+            qDebug() << "[DEBUG] Found" << nickList.size() << "users in Qt5 format";
+            
+            // For each user index, build a complete user object
+            for (int i = 0; i < nickList.size(); ++i) {
+                QVariantMap userObject;
+                
+                // Extract each property for this user index
+                for (auto it = usersData.constBegin(); it != usersData.constEnd(); ++it) {
+                    const QVariantList propertyList = it.value().toList();
+                    if (i < propertyList.size()) {
+                        userObject[it.key()] = propertyList[i];
+                    }
+                }
+                
+                // Use nick!user@host as the key for Qt6 format
+                QString nick = userObject["nick"].toString();
+                QString user = userObject["user"].toString();
+                QString host = userObject["host"].toString();
+                QString hostmask = QString("%1!%2@%3").arg(nick, user, host);
+                
+                userMap[hostmask.toLower()] = userObject;
+                qDebug() << "[DEBUG] LegacyPeer: Converted Qt5 user" << i << "nick:" << nick << "to hostmask:" << hostmask.toLower();
+            }
+        }
     }
-    QVariantMap channelMap;
-    foreach (const QString& key, channels.keys())
-        channelMap[key] = channels[key];
-    newMap["Channels"] = channelMap;
+    newMap["IrcUsers"] = userMap;
 
+    // Same transposed format for channels
+    QVariantMap channelMap;
+    QString channelsKey = legacyMap.contains("Channels") ? "Channels" : "channels";
+    if (legacyMap.contains(channelsKey)) {
+        const QVariantMap& channelsData = legacyMap[channelsKey].toMap();
+        qDebug() << "[DEBUG] LegacyPeer: Qt5 channels data contains properties:" << channelsData.keys();
+        
+        // Get the name property to determine how many channels we have
+        if (channelsData.contains("name")) {
+            const QVariantList nameList = channelsData["name"].toList();
+            qDebug() << "[DEBUG] Found" << nameList.size() << "channels in Qt5 format";
+            
+            // For each channel index, build a complete channel object
+            for (int i = 0; i < nameList.size(); ++i) {
+                QVariantMap channelObject;
+                
+                // Extract each property for this channel index
+                for (auto it = channelsData.constBegin(); it != channelsData.constEnd(); ++it) {
+                    const QVariantList propertyList = it.value().toList();
+                    if (i < propertyList.size()) {
+                        channelObject[it.key()] = propertyList[i];
+                    }
+                }
+                
+                // Use channel name as the key for Qt6 format
+                QString channelName = channelObject["name"].toString();
+                channelMap[channelName.toLower()] = channelObject;
+                qDebug() << "[DEBUG] LegacyPeer: Converted Qt5 channel" << i << "name:" << channelName;
+            }
+        }
+    }
+    newMap["IrcChannels"] = channelMap;
+
+    qDebug() << "[DEBUG] Generated newMap['IrcUsers'] size:" << newMap["IrcUsers"].toMap().size();
+    qDebug() << "[DEBUG] Generated newMap['IrcChannels'] size:" << newMap["IrcChannels"].toMap().size();
+    
     initData["IrcUsersAndChannels"] = newMap;
+    qDebug() << "=== fromLegacyIrcUsersAndChannels END (SUCCESS) ===";
 }
 
 void LegacyPeer::toLegacyIrcUsersAndChannels(QVariantMap& initData)
 {
+    qDebug() << "=== toLegacyIrcUsersAndChannels START ===";
+    qDebug() << "[DEBUG] initData keys:" << initData.keys();
+    
     const QVariantMap& usersAndChannels = initData["IrcUsersAndChannels"].toMap();
+    qDebug() << "[DEBUG] usersAndChannels keys:" << usersAndChannels.keys();
+    
     QVariantMap legacyMap;
 
-    // toMap() and toList() are cheap, so no need to copy to a hash
-
+    // Convert Qt6 format to legacy format
+    // Qt6: IrcUsers -> map[nick] = complete user data
+    // Legacy: users -> map[hostmask] = complete user data
+    
     QVariantMap userMap;
-    const QVariantMap& users = usersAndChannels["Users"].toMap();
-
-    int size = users["nick"].toList().size();  // we know this key exists
-    for (int i = 0; i < size; i++) {
-        QVariantMap map;
-        foreach (const QString& key, users.keys())
-            map[key] = users[key].toList().at(i);
-        QString hostmask = QString("%1!%2@%3").arg(map["nick"].toString(), map["user"].toString(), map["host"].toString());
-        userMap[hostmask.toLower()] = map;
+    const QVariantMap& users = usersAndChannels["IrcUsers"].toMap();
+    qDebug() << "[DEBUG] Converting" << users.size() << "IrcUsers to legacy format";
+    
+    for (auto it = users.constBegin(); it != users.constEnd(); ++it) {
+        QVariantMap userData = it.value().toMap();
+        QString nick = userData["nick"].toString();
+        QString user = userData["user"].toString();
+        QString host = userData["host"].toString();
+        QString hostmask = QString("%1!%2@%3").arg(nick, user, host);
+        userMap[hostmask.toLower()] = userData;
+        qDebug() << "[DEBUG] Converted user:" << it.key() << "to hostmask:" << hostmask.toLower();
     }
     legacyMap["users"] = userMap;
 
+    // Convert Qt6 format to legacy format  
+    // Qt6: IrcChannels -> map[channelname] = complete channel data
+    // Legacy: channels -> map[channelname] = complete channel data (same format)
+    
     QVariantMap channelMap;
-    const QVariantMap& channels = usersAndChannels["Channels"].toMap();
-
-    size = channels["name"].toList().size();
-    for (int i = 0; i < size; i++) {
-        QVariantMap map;
-        foreach (const QString& key, channels.keys())
-            map[key] = channels[key].toList().at(i);
-        channelMap[map["name"].toString().toLower()] = map;
+    const QVariantMap& channels = usersAndChannels["IrcChannels"].toMap();
+    qDebug() << "[DEBUG] Converting" << channels.size() << "IrcChannels to legacy format";
+    
+    for (auto it = channels.constBegin(); it != channels.constEnd(); ++it) {
+        QVariantMap channelData = it.value().toMap();
+        QString channelName = channelData["name"].toString();
+        channelMap[channelName.toLower()] = channelData;
+        qDebug() << "[DEBUG] Converted channel:" << it.key() << "to name:" << channelName.toLower();
     }
     legacyMap["channels"] = channelMap;
 
+    qDebug() << "[DEBUG] Generated legacy map with" << userMap.size() << "users and" << channelMap.size() << "channels";
     initData["IrcUsersAndChannels"] = legacyMap;
+    qDebug() << "=== toLegacyIrcUsersAndChannels END ===";
 }

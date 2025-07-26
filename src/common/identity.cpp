@@ -21,6 +21,9 @@
 #include "identity.h"
 
 #include <QMetaProperty>
+#include <QProcessEnvironment>
+#include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QString>
 #include <QVariantMap>
 
@@ -37,8 +40,8 @@
 #endif
 
 #ifdef Q_OS_WIN
-#    include <windows.h>
 #    include <Winbase.h>
+#    include <windows.h>
 #    define SECURITY_WIN32
 #    include <Security.h>
 #endif
@@ -100,10 +103,10 @@ void Identity::init()
 
 QString Identity::defaultNick()
 {
-    QString nick = QString("quassel%1").arg(qrand() & 0xff);  // FIXME provide more sensible default nicks
+    QString nick = QString("quassel%1").arg(QRandomGenerator::global()->bounded(256));  // FIXME provide more sensible default nicks
 
 #ifdef Q_OS_MAC
-    QString shortUserName = CFStringToQString(CSCopyUserName(true));
+    QString shortUserName = QProcessEnvironment::systemEnvironment().value("USER");
     if (!shortUserName.isEmpty())
         nick = shortUserName;
 
@@ -131,7 +134,7 @@ QString Identity::defaultNick()
 #endif
 
     // cleaning forbidden characters from nick
-    QRegExp rx(QString("(^[\\d-]+|[^A-Za-z0-9\x5b-\x60\x7b-\x7d])"));  // NOLINT(modernize-raw-string-literal)
+    QRegularExpression rx(QString("(^[\\d-]+|[^A-Za-z0-9\x5b-\x60\x7b-\x7d])"));  // NOLINT(modernize-raw-string-literal)
     nick.remove(rx);
     return nick;
 }
@@ -141,7 +144,7 @@ QString Identity::defaultRealName()
     QString generalDefault = tr("Quassel IRC User");
 
 #ifdef Q_OS_MAC
-    return CFStringToQString(CSCopyUserName(false));
+    return QProcessEnvironment::systemEnvironment().value("USER", tr("Quassel IRC User"));
 
 #elif defined(Q_OS_UNIX)
     QString realName;

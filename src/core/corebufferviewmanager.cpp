@@ -90,7 +90,7 @@ void CoreBufferViewManager::requestDeleteBufferView(int bufferViewId)
 
 void CoreBufferViewManager::requestDeleteBufferViews(const QVariantList& bufferViews)
 {
-    foreach (QVariant bufferView, bufferViews) {
+    for (const QVariant& bufferView : bufferViews) {
         deleteBufferViewConfig(bufferView.toInt());
     }
 }

@@ -27,7 +27,6 @@
 #endif /* HAVE_UMASK */
 
 #include <QCoreApplication>
-#include <QTextCodec>
 
 #ifdef BUILD_CORE
 #    include "coreapplication.h"
@@ -79,11 +78,7 @@ int main(int argc, char** argv)
     migrator.migrate();
 #endif
 
-    // Setup the High-DPI settings
-#if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Added in Qt 5.6
-#endif
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    // Qt6 has automatic high DPI support
 
     // Instantiate application
 #if defined BUILD_CORE
