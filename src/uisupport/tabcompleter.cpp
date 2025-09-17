@@ -20,7 +20,7 @@
 
 #include "tabcompleter.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "action.h"
 #include "actioncollection.h"
@@ -78,14 +78,17 @@ void TabCompleter::buildCompletionList()
     if (!_currentNetwork)
         return;
 
-    QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(QRegExp(R"([^#\w\d-_\[\]{}|`^.\\])"), -1, -1);
-    QRegExp regex(QString(R"(^[-_\[\]{}|`^.\\]*)").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
+    QRegularExpression sectionRx(R"([^-_\[\]{}|`^.\\#\w\d])");
+    Q_ASSERT(sectionRx.isValid());
+    QString tabAbbrev = _lineEdit->text().left(_lineEdit->cursorPosition()).section(sectionRx, -1, -1);
+    QRegularExpression regex(QString(R"(^[-_\[\]{}|`^.\\]*)").append(QRegularExpression::escape(tabAbbrev)), QRegularExpression::CaseInsensitiveOption);
+    Q_ASSERT(regex.isValid());
 
     // channel completion - add all channels of the current network to the map
     if (tabAbbrev.startsWith('#')) {
         _completionType = ChannelTab;
         foreach (IrcChannel* ircChannel, _currentNetwork->ircChannels()) {
-            if (regex.indexIn(ircChannel->name()) > -1)
+            if (regex.match(ircChannel->name()).hasMatch())
                 _completionMap[ircChannel->name()] = ircChannel->name();
         }
     }
@@ -98,16 +101,16 @@ void TabCompleter::buildCompletionList()
             if (!channel)
                 return;
             foreach (IrcUser* ircUser, channel->ircUsers()) {
-                if (regex.indexIn(ircUser->nick()) > -1)
+                if (regex.match(ircUser->nick()).hasMatch())
                     _completionMap[ircUser->nick().toLower()] = ircUser->nick();
             }
         } break;
         case BufferInfo::QueryBuffer:
-            if (regex.indexIn(_currentBufferName) > -1)
+            if (regex.match(_currentBufferName).hasMatch())
                 _completionMap[_currentBufferName.toLower()] = _currentBufferName;
             // fallthrough
         case BufferInfo::StatusBuffer:
-            if (!_currentNetwork->myNick().isEmpty() && regex.indexIn(_currentNetwork->myNick()) > -1)
+            if (!_currentNetwork->myNick().isEmpty() && regex.match(_currentNetwork->myNick()).hasMatch())
                 _completionMap[_currentNetwork->myNick().toLower()] = _currentNetwork->myNick();
             break;
         default:
@@ -174,10 +177,16 @@ bool TabCompleter::eventFilter(QObject* obj, QEvent* event)
 
     auto* keyEvent = static_cast<QKeyEvent*>(event);
 
-    if (keyEvent->key() == GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut()[0])
-        complete();
-    else
+    const QKeySequence shortcut = GraphicalUi::actionCollection("General")->action("TabCompletionKey")->shortcut();
+    if (shortcut.count() > 0) {
+        QKeyCombination keyComb = shortcut[0];
+        if (QKeyCombination(keyEvent->modifiers(), Qt::Key(keyEvent->key())) == keyComb)
+            complete();
+        else
+            reset();
+    } else {
         reset();
+    }
 
     return false;
 }

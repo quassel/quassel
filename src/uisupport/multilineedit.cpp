@@ -199,7 +199,7 @@ void MultiLineEdit::updateSizeHint()
 #ifdef Q_OS_MAC
     widget = 0;
 #endif
-    QSize s = style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(100, h).expandedTo(QApplication::globalStrut()), widget);
+    QSize s = style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(100, h).expandedTo(QSize()), widget);
     if (s != _sizeHint) {
         _sizeHint = s;
         updateGeometry();
@@ -606,13 +606,15 @@ bool MultiLineEdit::mircCodesChanged(QTextCursor& cursor, QTextCursor& peekcurso
 QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
 {
     QStringList words;
-    QRegExp mircCode = QRegExp("(\x02|\x1d|\x1f|\x03|\x1E)", Qt::CaseSensitive);
+    QRegularExpression mircCode(QStringLiteral("(\x02|\x1d|\x1f|\x03|\x1E)"));
+    Q_ASSERT(mircCode.isValid());
 
     int posLeft = 0;
     int posRight = 0;
 
     for (;;) {
-        posRight = mircCode.indexIn(text, posLeft);
+        QRegularExpressionMatch match = mircCode.match(text, posLeft);
+        posRight = match.hasMatch() ? match.capturedStart() : -1;
 
         if (posRight < 0) {
             words << text.mid(posLeft);
@@ -624,7 +626,8 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
             posLeft = posRight;
         }
 
-        posRight = text.indexOf(mircCode.cap(), posRight + 1);
+        QString matchedCode = match.hasMatch() ? match.captured(1) : QString();
+        posRight = matchedCode.isEmpty() ? -1 : text.indexOf(matchedCode, posRight + 1);
         if (posRight == -1) {
             words << text.mid(posLeft);
             break;  // unclosed color code; can't process
@@ -698,7 +701,7 @@ void MultiLineEdit::on_returnPressed(QString text)
     }
 
     if (!text.isEmpty()) {
-        foreach (const QString& line, text.split('\n', QString::SkipEmptyParts)) {
+        foreach (const QString& line, text.split('\n', Qt::SkipEmptyParts)) {
             if (line.isEmpty())
                 continue;
             addToHistory(line);
@@ -723,7 +726,7 @@ void MultiLineEdit::on_textChanged()
         if (!pasteProtectionEnabled())
             newText.replace('\n', ' ');
         else if (newText.contains('\n')) {
-            QStringList lines = newText.split('\n', QString::SkipEmptyParts);
+            QStringList lines = newText.split('\n', Qt::SkipEmptyParts);
             clear();
 
             if (lines.count() >= 4) {
@@ -731,7 +734,7 @@ void MultiLineEdit::on_textChanged()
                 msg += "<p>";
                 for (int i = 0; i < 4; i++) {
                     msg += lines[i].left(40).toHtmlEscaped();
-                    if (lines[i].count() > 40)
+                    if (lines[i].size() > 40)
                         msg += "...";
                     msg += "<br />";
                 }

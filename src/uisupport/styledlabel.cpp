@@ -196,7 +196,7 @@ int StyledLabel::posToCursor(const QPointF& pos)
 void StyledLabel::mouseMoveEvent(QMouseEvent* event)
 {
     if (event->buttons() == Qt::NoButton) {
-        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+        Clickable click = _clickables.atCursorPos(posToCursor(event->position()));
         if (click.isValid())
             setHoverMode(click.start(), click.length());
         else
@@ -204,7 +204,7 @@ void StyledLabel::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-void StyledLabel::enterEvent(QEvent*)
+void StyledLabel::enterEvent(QEnterEvent*)
 {
     if (resizeMode() == ResizeOnHover)
         setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
@@ -220,7 +220,7 @@ void StyledLabel::leaveEvent(QEvent*)
 void StyledLabel::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton) {
-        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+        Clickable click = _clickables.atCursorPos(posToCursor(event->position()));
         if (click.isValid())
             emit clickableActivated(click);
     }

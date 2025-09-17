@@ -447,8 +447,8 @@ UISUPPORT_EXPORT UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType& lh
 
 // ---- Allow for FormatList in QVariant ----------------------------------------------------------
 
-QDataStream& operator<<(QDataStream& out, const UiStyle::FormatList& formatList);
-QDataStream& operator>>(QDataStream& in, UiStyle::FormatList& formatList);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const UiStyle::FormatList& formatList);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, UiStyle::FormatList& formatList);
 
 Q_DECLARE_METATYPE(UiStyle::FormatList)
 Q_DECLARE_METATYPE(UiStyle::MessageLabel)
