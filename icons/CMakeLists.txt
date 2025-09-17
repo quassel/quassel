@@ -57,6 +57,10 @@ if (WANT_MONO OR WANT_QTCLIENT)
     # Application icon
     if (HAVE_KDE OR (UNIX AND NOT APPLE))
         # hicolor contains the application icon in all relevant sizes
-        install(DIRECTORY hicolor DESTINATION ${KDE_INSTALL_ICONDIR})
+        if(WITH_KDE)
+            install(DIRECTORY hicolor DESTINATION ${KDE_INSTALL_ICONDIR})
+        else()
+            install(DIRECTORY hicolor DESTINATION ${CMAKE_INSTALL_ICONDIR})
+        endif()
     endif()
 endif()

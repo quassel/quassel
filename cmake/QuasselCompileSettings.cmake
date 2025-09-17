@@ -20,7 +20,7 @@ function(check_and_set_linker_flag flag name outvar)
 endfunction()
 
 # General compile settings
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED OFF)    # Rely on compile features if standard is not supported
 set(CMAKE_CXX_EXTENSIONS OFF)           # We like to be standard conform
 
@@ -45,6 +45,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -Wvla
         -Werror=return-type
         "$<$<BOOL:${FATAL_WARNINGS}>:-Werror>"
+        -Wno-error=array-bounds # Only g++ on Plucky shows this error, classes inheriting QSortFilterProxyModel
         -Wno-error=deprecated-declarations  # Don't break on Qt upgrades
         -Wno-unknown-pragmas
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
@@ -116,7 +117,7 @@ if (APPLE)
     message(STATUS "Building for Intel Mac")
   endif()
     add_compile_options(
-        -mmacosx-version-min=10.9
+        -mmacosx-version-min=10.15
         -stdlib=libc++
     )
     add_definitions(-DQT_MAC_USE_COCOA -D_DARWIN_C_SOURCE)
