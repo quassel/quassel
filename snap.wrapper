@@ -12,7 +12,7 @@ export LD_LIBRARY_PATH="$SNAP/usr/lib/$ARCH:$LD_LIBRARY_PATH"
 
 LD_LIBRARY_PATH=$SNAP_LIBRARY_PATH:$LD_LIBRARY_PATH
 
-export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
+export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt6/plugins
 
 export XDG_CONFIG_HOME=$HOME/.config
 CERT=$XDG_CONFIG_HOME/quassel-irc.org/quasselCert.pem
