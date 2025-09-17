@@ -21,7 +21,7 @@
 #include "ircuser.h"
 
 #include <QDebug>
-#include <QTextCodec>
+#include <QTimeZone>
 
 #include "ircchannel.h"
 #include "network.h"
@@ -49,7 +49,7 @@ IrcUser::IrcUser(const QString& hostmask, Network* network)
     , _codecForDecoding(nullptr)
 {
     updateObjectName();
-    _lastAwayMessageTime.setTimeSpec(Qt::UTC);
+    _lastAwayMessageTime.setTimeZone(QTimeZone(QTimeZone::UTC));
     _lastAwayMessageTime.setMSecsSinceEpoch(0);
 }
 
@@ -207,7 +207,7 @@ void IrcUser::setLastAwayMessage(int lastAwayMessage)
     // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
     QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000);
 #endif
-    lastAwayMessageTime.setTimeSpec(Qt::UTC);
+    lastAwayMessageTime.setTimeZone(QTimeZone(QTimeZone::UTC));
     setLastAwayMessageTime(lastAwayMessageTime);
 }
 
@@ -365,7 +365,7 @@ void IrcUser::addUserModes(const QString& modes)
 
     // Don't needlessly sync when no changes are made
     bool changesMade = false;
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         if (!_userModes.contains(modes[i])) {
             _userModes += modes[i];
             changesMade = true;
@@ -383,7 +383,7 @@ void IrcUser::removeUserModes(const QString& modes)
     if (modes.isEmpty())
         return;
 
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         _userModes.remove(modes[i]);
     }
     SYNC(ARG(modes))

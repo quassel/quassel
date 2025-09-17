@@ -157,8 +157,8 @@ private:
     friend QDataStream& operator>>(QDataStream& in, Identity& identity);
 };
 
-QDataStream& operator<<(QDataStream& out, Identity identity);
-QDataStream& operator>>(QDataStream& in, Identity& identity);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, Identity identity);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, Identity& identity);
 
 Q_DECLARE_METATYPE(Identity)
 

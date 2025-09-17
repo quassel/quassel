@@ -26,7 +26,6 @@ TransferManager::TransferManager(QObject* parent)
     : SyncableObject("TransferManager", parent)
 {
     static auto regTypes = []() -> bool {
-        qRegisterMetaTypeStreamOperators<TransferIdList>("TransferManager::TransferIdList");
         return true;
     }();
     Q_UNUSED(regTypes);

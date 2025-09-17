@@ -28,7 +28,7 @@
 #include <QDateTime>
 #include <QTimeZone>
 #include <QDebug>
-#include <QTextCodec>
+#include <QRegularExpression>
 #include <QVector>
 
 #include "quassel.h"
@@ -64,12 +64,13 @@ bool isChannelName(const QString& str)
     if (str.isEmpty())
         return false;
     static constexpr std::array<quint8, 4> prefixes{{'#', '&', '!', '+'}};
-    return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return c == str[0]; });
+    return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return c == str[0].toLatin1(); });
 }
 
 QString stripFormatCodes(QString message)
 {
-    static QRegExp regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
+    static QRegularExpression regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
+    Q_ASSERT(regEx.isValid());
     return message.remove(regEx);
 }
 
@@ -204,9 +205,9 @@ QByteArray prettyDigest(const QByteArray& digest)
 {
     QByteArray hexDigest = digest.toHex().toUpper();
     QByteArray prettyDigest;
-    prettyDigest.fill(':', hexDigest.count() + (hexDigest.count() / 2) - 1);
+    prettyDigest.fill(':', hexDigest.size() + (hexDigest.size() / 2) - 1);
 
-    for (int i = 0; i * 2 < hexDigest.count(); i++) {
+    for (int i = 0; i * 2 < hexDigest.size(); i++) {
         prettyDigest.replace(i * 3, 2, hexDigest.mid(i * 2, 2));
     }
     return prettyDigest;
@@ -235,10 +236,11 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
     //   .*       matches zero or more characters, not including newlines
     // Note that '\' must be escaped as '\\'
     // Helpful interactive website for debugging and explaining:  https://regex101.com/
-    QRegExp regExpMatchTime("%%(.*)%%");
+    QRegularExpression regExpMatchTime("%%(.*?)%%");
+    Q_ASSERT(regExpMatchTime.isValid());
 
     // Preserve the smallest groups possible to allow for multiple %%blocks%%
-    regExpMatchTime.setMinimal(true);
+    // regExpMatchTime.setMinimal(true); // Not needed, handled by non-greedy quantifier
 
     // NOTE: Move regExpMatchTime to a static regular expression if used anywhere that performance
     // matters.
@@ -248,20 +250,20 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
     int numIterations = 0;
 
     // Find each group of %%text here%% starting from the beginning
-    int index = regExpMatchTime.indexIn(formattedStr);
+    QRegularExpressionMatch match = regExpMatchTime.match(formattedStr);
     int matchLength;
     QString matchedFormat;
-    while (index >= 0 && numIterations < 512) {
+    while (match.hasMatch() && numIterations < 512) {
         // Get the total length of the matched expression
-        matchLength = regExpMatchTime.cap(0).length();
+        matchLength = match.captured(0).length();
         // Get the format string, e.g. "this text here" from "%%this text here%%"
-        matchedFormat = regExpMatchTime.cap(1);
+        matchedFormat = match.captured(1);
         // Check that there's actual characters inside.  A quadruple % (%%%%) represents two %%
         // signs.
         if (matchedFormat.length() > 0) {
             // Format the string according to the current date and time.  Invalid time format
             // strings are ignored.
-            formattedStr.replace(index, matchLength, QDateTime::currentDateTime().toString(matchedFormat));
+            formattedStr.replace(match.capturedStart(0), matchLength, QDateTime::currentDateTime().toString(matchedFormat));
             // Subtract the length of the removed % signs
             // E.g. "%%h:mm ap%%" turns into "h:mm ap", removing four % signs, thus -4.  This is
             // used below to determine how far to advance when looking for the next formatting code.
@@ -269,7 +271,7 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
         }
         else if (matchLength == 4) {
             // Remove two of the four percent signs, so '%%%%' escapes to '%%'
-            formattedStr.remove(index, 2);
+            formattedStr.remove(match.capturedStart(0), 2);
             // Subtract the length of the removed % signs, this time removing two % signs, thus -2.
             matchLength -= 2;
         }
@@ -281,7 +283,7 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
         }
 
         // Find the next group of %%text here%% starting from where the last group ended
-        index = regExpMatchTime.indexIn(formattedStr, index + matchLength);
+        match = regExpMatchTime.match(formattedStr, (match.capturedStart(0) + matchLength));
         numIterations++;
     }
 

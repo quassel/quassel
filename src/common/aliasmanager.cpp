@@ -21,6 +21,7 @@
 #include "aliasmanager.h"
 
 #include <QDebug>
+#include <QRegularExpression>
 #include <QStringList>
 
 #include "network.h"
@@ -138,8 +139,9 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
         return;
     }
 
-    QRegExp paramRangeR(R"(\$(\d+)\.\.(\d*))");
-    QStringList commands = alias.split(QRegExp("; ?"));
+    QRegularExpression paramRangeR(R"(\$(\d+)\.\.(\d*))");
+    Q_ASSERT(paramRangeR.isValid());
+    QStringList commands = alias.split(QRegularExpression("; ?"));
     QStringList params = msg.split(' ');
     QStringList expandedCommands;
     for (int i = 0; i < commands.count(); i++) {
@@ -147,19 +149,24 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
 
         // replace ranges like $1..3
         if (!params.isEmpty()) {
-            int pos;
-            while ((pos = paramRangeR.indexIn(command)) != -1) {
-                int start = paramRangeR.cap(1).toInt();
+            int pos = 0;
+            QRegularExpressionMatch match;
+            while (true) {
+                match = paramRangeR.match(command, pos);
+                if (!match.hasMatch())
+                    break;
+                int start = match.captured(1).toInt();
                 bool ok;
-                int end = paramRangeR.cap(2).toInt(&ok);
+                int end = match.captured(2).toInt(&ok);
                 if (!ok) {
                     end = params.count();
                 }
                 if (end < start)
-                    command = command.replace(pos, paramRangeR.matchedLength(), QString());
+                    command = command.replace(match.capturedStart(), match.capturedLength(), QString());
                 else {
-                    command = command.replace(pos, paramRangeR.matchedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
+                    command = command.replace(match.capturedStart(), match.capturedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
                 }
+                pos = match.capturedStart(); // Continue searching from the start of the replaced text
             }
         }
 

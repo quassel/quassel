@@ -29,6 +29,8 @@
 #include <QTextStream>
 #include <QVariant>
 
+#include "common-export.h"
+
 class SignedId
 {
 protected:
@@ -118,8 +120,8 @@ public:
     friend QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
 };
 
-QDataStream& operator<<(QDataStream& out, const SignedId64& signedId);
-QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const SignedId64& signedId);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
 inline QTextStream& operator<<(QTextStream& out, const SignedId64& signedId)
 {
     out << QString::number(signedId.toQint64());
@@ -204,7 +206,7 @@ using BufferIdList = QList<BufferId>;
  * @returns A reference to the stream
  */
 template<typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
-QDataStream& operator<<(QDataStream& out, T value)
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, T value)
 {
     out << static_cast<typename std::underlying_type<T>::type>(value);
     return out;
@@ -218,7 +220,7 @@ QDataStream& operator<<(QDataStream& out, T value)
  * @returns A reference to the stream
  */
 template<typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
-QDataStream& operator>>(QDataStream& in, T& value)
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, T& value)
 {
     typename std::underlying_type<T>::type v;
     in >> v;

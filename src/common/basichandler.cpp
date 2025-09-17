@@ -86,7 +86,7 @@ void BasicHandler::handle(const QString& member,
         }
         else {
             void* param[] = {nullptr,
-                             Q_ARG(QString, member).data(),
+                             const_cast<void*>(reinterpret_cast<const void*>(&member)),
                              val0.data(),
                              val1.data(),
                              val2.data(),
@@ -96,7 +96,7 @@ void BasicHandler::handle(const QString& member,
                              val6.data(),
                              val7.data(),
                              val8.data(),
-                             val8.data()};
+                             nullptr};
             qt_metacall(QMetaObject::InvokeMetaMethod, _defaultHandler, param);
             return;
         }
