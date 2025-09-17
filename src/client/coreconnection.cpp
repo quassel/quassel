@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QNetworkInformation>
+
 #include "coreconnection.h"
 
 #include "client.h"
@@ -48,9 +50,6 @@ void CoreConnection::init()
 
     _reconnectTimer.setSingleShot(true);
     connect(&_reconnectTimer, &QTimer::timeout, this, &CoreConnection::reconnectTimeout);
-
-    _qNetworkConfigurationManager = new QNetworkConfigurationManager(this);
-    connect(_qNetworkConfigurationManager.data(), &QNetworkConfigurationManager::onlineStateChanged, this, &CoreConnection::onlineStateChanged);
 
     CoreConnectionSettings s;
     s.initAndNotify("PingTimeoutInterval", this, &CoreConnection::pingTimeoutIntervalChanged, 60);
@@ -111,8 +110,8 @@ void CoreConnection::reconnectTimeout()
         CoreConnectionSettings s;
         if (_wantReconnect && s.autoReconnect()) {
             // If using QNetworkConfigurationManager, we don't want to reconnect if we're offline
-            if (s.networkDetectionMode() == CoreConnectionSettings::UseQNetworkConfigurationManager) {
-                if (!_qNetworkConfigurationManager->isOnline()) {
+            if (s.networkDetectionMode() == CoreConnectionSettings::UseQNetworkInformation) {
+                if (QNetworkInformation::instance()->reachability() == QNetworkInformation::Reachability::Online) {
                     return;
                 }
             }
@@ -147,11 +146,11 @@ void CoreConnection::reconnectIntervalChanged(const QVariant& interval)
 void CoreConnection::onlineStateChanged(bool isOnline)
 {
     CoreConnectionSettings s;
-    if (s.networkDetectionMode() != CoreConnectionSettings::UseQNetworkConfigurationManager)
+    if (s.networkDetectionMode() != CoreConnectionSettings::UseQNetworkInformation)
         return;
 
     if (isOnline) {
-        // qDebug() << "QNetworkConfigurationManager reports Online";
+        // qDebug() << "QNetworkInformation reports Online";
         if (state() == Disconnected) {
             if (_wantReconnect && s.autoReconnect()) {
                 reconnectToCore();
@@ -159,7 +158,7 @@ void CoreConnection::onlineStateChanged(bool isOnline)
         }
     }
     else {
-        // qDebug() << "QNetworkConfigurationManager reports Offline";
+        // qDebug() << "QNetworkInformation reports Offline";
         if (state() != Disconnected && !isLocalConnection())
             disconnectFromCore(tr("Network is down"), true);
     }

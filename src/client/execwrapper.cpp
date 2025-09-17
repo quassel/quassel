@@ -53,6 +53,7 @@ void ExecWrapper::start(const BufferInfo& info, const QString& command)
     QStringList params;
 
     static const QRegularExpression rx{R"(^\s*(\S+)(\s+(.*))?$)"};
+    Q_ASSERT(rx.isValid());
     auto match = rx.match(command);
     if (!match.hasMatch()) {
         emit error(tr("Invalid command string for /exec: %1").arg(command));
@@ -60,7 +61,8 @@ void ExecWrapper::start(const BufferInfo& info, const QString& command)
     else {
         _scriptName = match.captured(1);
         static const QRegularExpression splitRx{"\\s+"};
-        params = match.captured(3).split(splitRx, QString::SkipEmptyParts);
+        Q_ASSERT(splitRx.isValid());
+        params = match.captured(3).split(splitRx, Qt::SkipEmptyParts);
     }
 
     // Make sure we don't execute something outside a script dir
@@ -101,12 +103,14 @@ void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status)
     }
 
     // empty buffers
-    if (!_stdoutBuffer.isEmpty())
+    if (!_stdoutBuffer.isEmpty()) {
         foreach (QString msg, _stdoutBuffer.split('\n'))
             emit output(msg);
-    if (!_stderrBuffer.isEmpty())
+    }
+    if (!_stderrBuffer.isEmpty()) {
         foreach (QString msg, _stderrBuffer.split('\n'))
             emit error(msg);
+    }
 
     deleteLater();
 }
@@ -125,7 +129,9 @@ void ExecWrapper::processError(QProcess::ProcessError err)
 void ExecWrapper::processReadStdout()
 {
     QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput());
-    str.replace(QRegExp("\r\n?"), "\n");
+    static const auto rx = QRegularExpression("\r\n?");
+    Q_ASSERT(rx.isValid());
+    str.replace(rx, "\n");
     _stdoutBuffer.append(str);
     int idx;
     while ((idx = _stdoutBuffer.indexOf('\n')) >= 0) {
@@ -137,7 +143,9 @@ void ExecWrapper::processReadStdout()
 void ExecWrapper::processReadStderr()
 {
     QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError());
-    str.replace(QRegExp("\r\n?"), "\n");
+    static const auto rx = QRegularExpression("\r\n?");
+    Q_ASSERT(rx.isValid());
+    str.replace(rx, "\n");
     _stderrBuffer.append(str);
     int idx;
     while ((idx = _stderrBuffer.indexOf('\n')) >= 0) {

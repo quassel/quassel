@@ -50,7 +50,8 @@ void ClientUserInputHandler::completionSuffixChanged(const QVariant& v)
     QString suffix = v.toString();
     QString letter = "A-Za-z";
     QString special = "\x5b-\x60\x7b-\x7d";  // NOLINT(modernize-raw-string-literal)
-    _nickRx = QRegExp(QString("^([%1%2][%1%2\\d-]*)%3").arg(letter, special, suffix).trimmed());
+    _nickRx = QRegularExpression(QString(R"(^([%1%2][%1%2\d-]*)%3)").arg(letter, special, suffix).trimmed());
+    Q_ASSERT(_nickRx.isValid());
 }
 
 // this would be the place for a client-side hook
@@ -60,9 +61,10 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo& bufferInfo, const
         return;
 
     if (!msg.startsWith('/')) {
-        if (_nickRx.indexIn(msg) == 0) {
+        QRegularExpressionMatch match = _nickRx.match(msg);
+        if (match.hasMatch() && match.capturedStart(0) == 0) {
             const Network* net = Client::network(bufferInfo.networkId());
-            IrcUser* user = net ? net->ircUser(_nickRx.cap(1)) : nullptr;
+            IrcUser* user = net ? net->ircUser(match.captured(1)) : nullptr;
             if (user)
                 user->setLastSpokenTo(bufferInfo.bufferId(), QDateTime::currentDateTime().toUTC());
         }
@@ -73,7 +75,7 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo& bufferInfo, const
     for (int i = 0; i < clist.count(); i++) {
         QString cmd = clist.at(i).second.section(' ', 0, 0).remove(0, 1).toUpper();
         QString payload = clist.at(i).second.section(' ', 1);
-        handle(cmd, Q_ARG(BufferInfo, clist.at(i).first), Q_ARG(QString, payload));
+        handle(cmd, QGenericArgument("BufferInfo", &clist.at(i).first), QGenericArgument("QString", &payload));
     }
 }
 
