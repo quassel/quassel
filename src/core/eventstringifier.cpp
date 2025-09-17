@@ -18,6 +18,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+#include <QTimeZone>
+
 #include "eventstringifier.h"
 
 #include "coresession.h"
@@ -432,7 +434,7 @@ void EventStringifier::processIrcEventWallops(IrcEvent* e)
 /* RPL_ISUPPORT */
 void EventStringifier::processIrcEvent005(IrcEvent* e)
 {
-    if (!e->params().last().contains(QRegExp("are supported (by|on) this server")))
+    if (!e->params().last().contains(QRegularExpression("are supported (by|on) this server")))
         displayMsg(e, Message::Error, tr("Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected behavior!"), e->prefix());
     displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
 }
@@ -454,7 +456,7 @@ void EventStringifier::processIrcEvent301(IrcEvent* e)
         IrcUser* ircuser = e->network()->ircUser(nick);
         if (ircuser) {
             QDateTime now = QDateTime::currentDateTime();
-            now.setTimeSpec(Qt::UTC);
+            now.setTimeZone(QTimeZone(QTimeZone::UTC));
             // Don't print "user is away" messages more often than this
             // 1 hour = 60 min * 60 sec
             const int silenceTime = 60 * 60;
@@ -852,7 +854,7 @@ void EventStringifier::processCtcpEvent(CtcpEvent* e)
         return;
     }
 
-    handle(e->ctcpCmd(), Q_ARG(CtcpEvent*, e));
+    handle(e->ctcpCmd(), QGenericArgument("CtcpEvent*", e));
 }
 
 void EventStringifier::defaultHandler(const QString& ctcpCmd, CtcpEvent* e)

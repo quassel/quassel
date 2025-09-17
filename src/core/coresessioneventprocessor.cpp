@@ -537,7 +537,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
         QString addModes;
         QString removeModes;
         bool add = false;
-        for (int c = 0; c < modeString.count(); c++) {
+        for (int c = 0; c < modeString.size(); c++) {
             if (modeString[c] == '+') {
                 add = true;
                 continue;
@@ -1231,7 +1231,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
     // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
     bool _useCapMultiPrefix = coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX);
 
-    for (QString nick : e->params()[2].split(' ', QString::SkipEmptyParts)) {
+    for (QString nick : e->params()[2].split(' ', Qt::SkipEmptyParts)) {
         QString mode;
 
         if (_useCapMultiPrefix) {
@@ -1361,7 +1361,7 @@ void CoreSessionEventProcessor::processWhoInformation(Network* net,
                 if (ircChan) {
                     // Do one mode at a time
                     // TODO Better way of syncing this without breaking protocol?
-                    for (int i = 0; i < validModes.count(); ++i) {
+                    for (int i = 0; i < validModes.size(); ++i) {
                         ircChan->addUserMode(ircUser, validModes.at(i));
                     }
                 }
@@ -1555,7 +1555,7 @@ void CoreSessionEventProcessor::processCtcpEvent(CtcpEvent* e)
     if (e->type() != EventManager::CtcpEvent || e->ctcpType() != CtcpEvent::Query)
         return;
 
-    handle(e->ctcpCmd(), Q_ARG(CtcpEvent*, e));
+    handle(e->ctcpCmd(), QGenericArgument("CtcpEvent*", e));
 }
 
 void CoreSessionEventProcessor::defaultHandler(const QString& ctcpCmd, CtcpEvent* e)

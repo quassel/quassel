@@ -204,14 +204,14 @@ void CtcpParser::parseSimple(IrcEventRawMessage* e,
                              CtcpEvent::CtcpType ctcptype,
                              Message::Flags flags)
 {
-    if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.count() - 1] != '\001') {
+    if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.size() - 1] != '\001') {
         displayMsg(e, messagetype, targetDecode(e, dequotedMessage), e->prefix(), e->target(), flags);
     }
     else {
         int spacePos;
         QString ctcpcmd, ctcpparam;
 
-        QByteArray ctcp = xdelimDequote(dequotedMessage.mid(1, dequotedMessage.count() - 2));
+        QByteArray ctcp = xdelimDequote(dequotedMessage.mid(1, dequotedMessage.size() - 2));
         spacePos = ctcp.indexOf(' ');
         if (spacePos != -1) {
             ctcpcmd = targetDecode(e, ctcp.left(spacePos));
@@ -281,7 +281,7 @@ void CtcpParser::parseStandard(IrcEventRawMessage* e,
         xdelimEndPos = dequotedMessage.indexOf(XDELIM, xdelimPos + 1);
         if (xdelimEndPos == -1) {
             // no matching end delimiter found... treat rest of the message as ctcp
-            xdelimEndPos = dequotedMessage.count();
+            xdelimEndPos = dequotedMessage.size();
         }
         ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
         dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);
@@ -363,7 +363,7 @@ void CtcpParser::sendCtcpEvent(CtcpEvent* e)
     }
     else if (e->type() == EventManager::CtcpEventFlush && _replies.contains(e->uuid())) {
         CtcpReply reply = _replies.take(e->uuid());
-        if (reply.replies.count())
+        if (reply.replies.size())
             packedReply(net, reply.bufferName, reply.replies);
     }
 }
@@ -400,13 +400,13 @@ void CtcpParser::packedReply(CoreNetwork* net, const QString& bufname, const QLi
     QList<QByteArray> params;
 
     int answerSize = 0;
-    for (int i = 0; i < replies.count(); i++) {
+    for (int i = 0; i < replies.size(); i++) {
         answerSize += replies.at(i).size();
     }
 
     QByteArray quotedReply;
     quotedReply.reserve(answerSize);
-    for (int i = 0; i < replies.count(); i++) {
+    for (int i = 0; i < replies.size(); i++) {
         quotedReply.append(replies.at(i));
     }
 
