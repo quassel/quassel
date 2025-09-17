@@ -44,7 +44,7 @@ InputWidget::InputWidget(QWidget* parent)
     , _networkId(0)
 {
     ui.setupUi(this);
-    connect(ui.ownNick, selectOverload<const QString&>(&QComboBox::activated), this, &InputWidget::changeNick);
+    connect(ui.ownNick, &QComboBox::textActivated, this, &InputWidget::changeNick);
 
     layout()->setAlignment(ui.ownNick, Qt::AlignBottom);
     layout()->setAlignment(ui.inputEdit, Qt::AlignBottom);
@@ -131,7 +131,7 @@ InputWidget::InputWidget(QWidget* parent)
 
     ActionCollection* coll = QtUi::actionCollection();
     coll->addAction("FocusInputLine",
-                    new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL + Qt::Key_L)});
+                    new Action{tr("Focus Input Line"), coll, this, selectOverload<>(&QWidget::setFocus), QKeySequence(Qt::CTRL | Qt::Key_L)});
 
     connect(inputLine(),
             &MultiLineEdit::textEntered,

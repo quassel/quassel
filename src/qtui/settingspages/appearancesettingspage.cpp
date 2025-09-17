@@ -98,13 +98,15 @@ void AppearanceSettingsPage::initLanguageComboBox()
         return;
     }
 
-    QRegExp rx("(qt_)?([a-zA-Z_]+)\\.qm");
+    QRegularExpression rx("(qt_)?([a-zA-Z_]+)\\.qm");
+    Q_ASSERT(rx.isValid());
     foreach (QString translationFile, translationFiles) {
-        if (!rx.exactMatch(translationFile))
+        auto match = rx.match(translationFile);
+        if (!match.hasMatch())
             continue;
-        if (!rx.cap(1).isEmpty())
+        if (!match.captured(1).isEmpty())
             continue;
-        QLocale locale(rx.cap(2));
+        QLocale locale(match.captured(2));
         _locales[QLocale::languageToString(locale.language())] = locale;
     }
     foreach (QString language, _locales.keys()) {

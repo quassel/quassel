@@ -449,7 +449,7 @@ QList<QRectF> ChatItem::findWords(const QString& searchWord, Qt::CaseSensitivity
     foreach (int idx, indexList) {
         QTextLine line = layout()->lineForTextPosition(idx);
         qreal x = line.cursorToX(idx);
-        qreal width = line.cursorToX(idx + searchWord.count()) - x;
+        qreal width = line.cursorToX(idx + searchWord.size()) - x;
         qreal height = line.height();
         qreal y = height * line.lineNumber();
         resultList << QRectF(x, y, width, height);
@@ -760,8 +760,8 @@ void ContentsChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clic
             // find word boundary
             QString str = data(ChatLineModel::DisplayRole).toString();
             qint16 cursor = posToCursor(pos);
-            qint16 start = str.lastIndexOf(QRegExp("\\W"), cursor) + 1;
-            qint16 end = qMin(str.indexOf(QRegExp("\\W"), cursor), str.length());
+            qint16 start = str.lastIndexOf(QRegularExpression("\\W"), cursor) + 1;
+            qint16 end = qMin(str.indexOf(QRegularExpression("\\W"), cursor), str.length());
             if (end < 0)
                 end = str.length();
             setSelectionStart(start);

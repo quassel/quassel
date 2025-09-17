@@ -1336,7 +1336,8 @@ void ChatScene::updateTimestampHasBrackets()
         //   (^\s*\(.+\)\s*$)|(^\s*\{.+\}\s*$)|(^\s*\[.+\]\s*$)|(^\s*<.+>\s*$)
         // Note that '\' must be escaped as '\\'
         // Helpful interactive website for debugging and explaining:  https://regex101.com/
-        const QRegExp regExpMatchBrackets(R"(^\s*[({[<].+[)}\]>]\s*$)");
-        _timestampHasBrackets = regExpMatchBrackets.exactMatch(_timestampFormatString);
+        const QRegularExpression regExpMatchBrackets(R"(^\s*[({[<].+[)}\]>]\s*$)");
+        Q_ASSERT(regExpMatchBrackets.isValid());
+        _timestampHasBrackets = regExpMatchBrackets.match(_timestampFormatString).hasMatch();
     }
 }

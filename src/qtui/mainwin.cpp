@@ -28,14 +28,14 @@
 #include <QTableView>
 #include <QToolBar>
 
-#ifdef HAVE_KF5
+#ifdef HAVE_KF6
 #    include <kconfigwidgets_version.h>
 
-#    include <KConfigWidgets/KStandardAction>
-#    include <KWidgetsAddons/KToggleFullScreenAction>
-#    include <KXmlGui/KHelpMenu>
-#    include <KXmlGui/KShortcutsDialog>
-#    include <KXmlGui/KToolBar>
+#    include <KStandardAction>
+#    include <KToggleFullScreenAction>
+#    include <KHelpMenu>
+#    include <KShortcutsDialog>
+#    include <KToolBar>
 #endif
 
 #ifdef Q_WS_X11
@@ -357,15 +357,14 @@ void MainWin::setupActions()
     ActionCollection* coll = QtUi::actionCollection("General", tr("General"));
 
     // File
-    coll->addActions(
-        {{"ConnectCore", new Action(icon::get("connect-quassel"), tr("&Connect to Core..."), coll, this, &MainWin::showCoreConnectionDlg)},
-         {"DisconnectCore",
-          new Action(icon::get("disconnect-quassel"), tr("&Disconnect from Core"), coll, Client::instance(), &Client::disconnectFromCore)},
-         {"ChangePassword", new Action(icon::get("dialog-password"), tr("Change &Password..."), coll, this, &MainWin::showPasswordChangeDlg)},
-         {"CoreInfo", new Action(icon::get("help-about"), tr("Core &Info..."), coll, this, &MainWin::showCoreInfoDlg)},
-         {"ConfigureNetworks",
-          new Action(icon::get("configure"), tr("Configure &Networks..."), coll, this, &MainWin::onConfigureNetworksTriggered)},
-         {"Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL + Qt::Key_Q)}});
+    coll->addActions(std::vector<std::pair<QString, Action*>>{
+        std::make_pair(QStringLiteral("ConnectCore"), new Action(icon::get("connect-quassel"), tr("&Connect to Core..."), coll, this, &MainWin::showCoreConnectionDlg)),
+        std::make_pair(QStringLiteral("DisconnectCore"), new Action(icon::get("disconnect-quassel"), tr("&Disconnect from Core"), coll, Client::instance(), &Client::disconnectFromCore)),
+        std::make_pair(QStringLiteral("ChangePassword"), new Action(icon::get("dialog-password"), tr("Change &Password..."), coll, this, &MainWin::showPasswordChangeDlg)),
+        std::make_pair(QStringLiteral("CoreInfo"), new Action(icon::get("help-about"), tr("Core &Info..."), coll, this, &MainWin::showCoreInfoDlg)),
+        std::make_pair(QStringLiteral("ConfigureNetworks"), new Action(icon::get("configure"), tr("Configure &Networks..."), coll, this, &MainWin::onConfigureNetworksTriggered)),
+        std::make_pair(QStringLiteral("Quit"), new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL | Qt::Key_Q))
+    });
 
     // View
     coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll, this, &MainWin::onConfigureViewsTriggered));
@@ -426,7 +425,7 @@ void MainWin::setupActions()
                      coll,
                      QtUi::style(),
                      &UiStyle::reload,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R))}});
+                     QKeySequence(Qt::Key_R, Qt::ControlModifier | Qt::ShiftModifier))}});
 
     // Other
     coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll, this, &MainWin::hideCurrentBuffer, QKeySequence::Close));
@@ -434,55 +433,56 @@ void MainWin::setupActions()
     // Text formatting
     coll = QtUi::actionCollection("TextFormat", tr("Text formatting"));
 
-    coll->addActions(
-        {{"FormatApplyColor",
+    coll->addActions(std::vector<std::pair<QString, Action*>>{
+        std::make_pair(QStringLiteral("FormatApplyColor"),
           new Action(icon::get("format-text-color"),
                      tr("Apply foreground color"),
                      coll,
                      this,
                      &MainWin::onFormatApplyColorTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G))},
-         {"FormatApplyColorFill",
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_G))),
+        std::make_pair(QStringLiteral("FormatApplyColorFill"),
           new Action(icon::get("format-fill-color"),
                      tr("Apply background color"),
                      coll,
                      this,
                      &MainWin::onFormatApplyColorFillTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B))},
-         {"FormatClear",
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B))),
+        std::make_pair(QStringLiteral("FormatClear"),
           new Action(icon::get("edit-clear"),
                      tr("Clear formatting"),
                      coll,
                      this,
                      &MainWin::onFormatClearTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C))},
-         {"FormatBold",
-          new Action(icon::get("format-text-bold"), tr("Toggle bold"), coll, this, &MainWin::onFormatBoldTriggered, QKeySequence::Bold)},
-         {"FormatItalic",
-          new Action(icon::get("format-text-italic"), tr("Toggle italics"), coll, this, &MainWin::onFormatItalicTriggered, QKeySequence::Italic)},
-         {"FormatUnderline",
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C))),
+        std::make_pair(QStringLiteral("FormatBold"),
+          new Action(icon::get("format-text-bold"), tr("Toggle bold"), coll, this, &MainWin::onFormatBoldTriggered, QKeySequence::Bold)),
+        std::make_pair(QStringLiteral("FormatItalic"),
+          new Action(icon::get("format-text-italic"), tr("Toggle italics"), coll, this, &MainWin::onFormatItalicTriggered, QKeySequence::Italic)),
+        std::make_pair(QStringLiteral("FormatUnderline"),
           new Action(icon::get("format-text-underline"),
                      tr("Toggle underline"),
                      coll,
                      this,
                      &MainWin::onFormatUnderlineTriggered,
-                     QKeySequence::Underline)},
-         {"FormatStrikethrough",
+                     QKeySequence::Underline)),
+        std::make_pair(QStringLiteral("FormatStrikethrough"),
           new Action(icon::get("format-text-strikethrough"),
                      tr("Toggle strikethrough"),
                      coll,
                      this,
                      &MainWin::onFormatStrikethroughTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S))}});
+                     QKeySequence(Qt::Key_S, Qt::ControlModifier | Qt::ShiftModifier)))
+    });
 
     // Navigation
     coll = QtUi::actionCollection("Navigation", tr("Navigation"));
 
     coll->addActions(
         {{"JumpHotBuffer",
-          new Action(tr("Jump to hot chat"), coll, this, &MainWin::onJumpHotBufferTriggered, QKeySequence(Qt::META + Qt::Key_A))},
+          new Action(tr("Jump to hot chat"), coll, this, &MainWin::onJumpHotBufferTriggered, QKeySequence(Qt::META | Qt::Key_A))},
          {"ActivateBufferFilter",
-          new Action(tr("Activate the buffer search"), coll, this, &MainWin::onBufferSearchTriggered, QKeySequence(Qt::CTRL + Qt::Key_S))}});
+          new Action(tr("Activate the buffer search"), coll, this, &MainWin::onBufferSearchTriggered, QKeySequence(Qt::CTRL | Qt::Key_S))}});
 
     // Jump keys
 #ifdef Q_OS_MAC
@@ -566,14 +566,14 @@ void MainWin::setupActions()
                                coll,
                                this,
                                &MainWin::nextBuffer,
-                               QKeySequence(Qt::ALT + Qt::Key_Down)));
+                               QKeySequence(Qt::ALT | Qt::Key_Down)));
     coll->addAction("PreviousBuffer",
                     new Action(icon::get("go-up"),
                                tr("Go to Previous Chat"),
                                coll,
                                this,
                                &MainWin::previousBuffer,
-                               QKeySequence(Qt::ALT + Qt::Key_Up)));
+                               QKeySequence(Qt::ALT | Qt::Key_Up)));
 }
 
 void MainWin::setupMenus()

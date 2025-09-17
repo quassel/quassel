@@ -67,8 +67,8 @@ private:
     QList<ChatLineModelItem> _messageList;
 };
 
-QDataStream& operator<<(QDataStream& out, const ChatLineModel::WrapList);
-QDataStream& operator>>(QDataStream& in, ChatLineModel::WrapList&);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const ChatLineModel::WrapList);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, ChatLineModel::WrapList&);
 
 Q_DECLARE_METATYPE(ChatLineModel::WrapList)
 

@@ -41,9 +41,9 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.labelVersionDate->setText(QString("<i>%1</i>").arg(tr("Unknown date")));
     }
     else {
-        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString(), Qt::DateFormat::DefaultLocaleShortDate));
+        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString(), Qt::DateFormat::ISODate));
     }
-    ui.labelUptime->setText(map["connectedSince"].toDateTime().toLocalTime().toString(Qt::DateFormat::DefaultLocaleShortDate));
+    ui.labelUptime->setText(map["connectedSince"].toDateTime().toLocalTime().toString(Qt::DateFormat::ISODate));
     if (map["location"].toString().isEmpty()) {
         ui.labelLocation->hide();
         ui.labelLocationTitle->hide();
