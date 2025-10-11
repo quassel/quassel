@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "chatitem.h"
+#include "inputwidget.h"
 
 #include <algorithm>
 #include <iterator>
@@ -602,7 +603,18 @@ bool SenderChatItem::isCursorOverNick(const QPointF& eventPos) {
 void SenderChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickMode)
 {
     if (clickMode == ChatScene::SingleClick) {
-        // check if the nick is a valid ircUser
+        if (_validNickHover) {
+            if (MainWin *mainWin = QtUi::mainWindow()) {
+                if (auto* inputWidget = mainWin->inputWidget()) {
+                    QString nick = data(MessageModel::EditRole).toString();
+                    inputWidget->inputLine()->insertPlainText(nick + ": ");
+                    inputWidget->inputLine()->moveCursor(QTextCursor::End);
+                    inputWidget->setFocus();
+                }
+            }
+        }
+    }
+    else if (clickMode == ChatScene::DoubleClick) {
         if (_validNickHover) {
             BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
             QString nick = data(MessageModel::EditRole).toString();
