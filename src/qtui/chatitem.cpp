@@ -574,17 +574,87 @@ void SenderChatItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
     painter->restore();
 }
 
+bool SenderChatItem::isCursorOverNick(const QPointF& eventPos) {
+    qreal layoutWidth = layout()->minimumWidth();
+    if (layoutWidth > width())
+        return true; // nick is clipped so cursor must be over it
+
+    // compute offset similarly as paint()
+    qreal offset = 0;
+    if (chatScene()->senderCutoffMode() == ChatScene::CutoffLeft)
+        offset = qMin(width() - layoutWidth, (qreal)0);
+    else
+        offset = qMax(layoutWidth - width(), (qreal)0);
+
+    QPointF layoutPos = mapFromLine(eventPos) - QPointF(offset, 0);
+    QTextLine line = layout()->lineAt(0);
+    // check vertical bounds first
+    if (layoutPos.y() >= line.y() && layoutPos.y() < line.y() + line.height()) {
+        // then horizontal bounds
+        if (layoutPos.x() >= line.cursorToX(line.textStart()) && 
+            layoutPos.x() <= line.cursorToX(line.textStart() + line.textLength())
+        )
+            return true;
+    }
+    return false;
+}
+
 void SenderChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickMode)
 {
-    if (clickMode == ChatScene::DoubleClick) {
-        BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
-        QString nick = data(MessageModel::EditRole).toString();
+    if (clickMode == ChatScene::SingleClick) {
         // check if the nick is a valid ircUser
-        if (!nick.isEmpty() && Client::network(curBufInfo.networkId())->ircUser(nick))
+        if (_validNickHover) {
+            BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
+            QString nick = data(MessageModel::EditRole).toString();
             Client::bufferModel()->switchToOrStartQuery(curBufInfo.networkId(), nick);
+        }
     }
     else
         ChatItem::handleClick(pos, clickMode);
+}
+
+void SenderChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
+{
+    QString nick = data(MessageModel::EditRole).toString();
+    bool shouldHover = false;
+    if (!nick.isEmpty()) {
+        BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
+        if (isCursorOverNick(event->pos()) && Client::network(curBufInfo.networkId())->ircUser(nick))
+            shouldHover = true;
+    }
+    if (shouldHover != _validNickHover) {
+        _validNickHover = shouldHover;
+        if (_validNickHover)
+            chatLine()->setCursor(Qt::PointingHandCursor);
+        else
+            chatLine()->unsetCursor();
+        chatLine()->update();
+    }
+    event->accept();
+}
+
+void SenderChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+    if (_validNickHover) {
+        _validNickHover = false;
+        chatLine()->unsetCursor();
+        chatLine()->update();
+    }
+    event->accept();
+}
+
+bool SenderChatItem::hasActiveClickable() const
+{
+    return _validNickHover;
+}
+
+std::pair<quint16, quint16> SenderChatItem::activeClickableRange() const
+{
+    if (_validNickHover) {
+        return {0, static_cast<quint16>(data(MessageModel::DisplayRole).toString().length())};
+
+    }
+    return {};
 }
 
 // ************************************************************

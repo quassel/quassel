@@ -193,7 +193,13 @@ public:
 protected:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
     inline int type() const override { return ChatScene::SenderChatItemType; }
+    bool isCursorOverNick(const QPointF& eventPos);
     void initLayout(QTextLayout* layout) const override;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    bool hasActiveClickable() const override;
+    std::pair<quint16, quint16> activeClickableRange() const override;
+    bool _validNickHover = false; // true if cursor is over a valid nick
 };
 
 // ************************************************************
