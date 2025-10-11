@@ -605,7 +605,7 @@ void SenderChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickM
     if (clickMode == ChatScene::SingleClick) {
         if (_validNickHover) {
             if (MainWin *mainWin = QtUi::mainWindow()) {
-                if (auto* inputWidget = mainWin->inputWidget()) {
+                if (InputWidget *inputWidget = mainWin->inputWidget()) {
                     QString nick = data(MessageModel::EditRole).toString();
                     inputWidget->inputLine()->insertPlainText(nick + ": ");
                     inputWidget->inputLine()->moveCursor(QTextCursor::End);
@@ -631,6 +631,7 @@ void SenderChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
     bool shouldHover = false;
     if (!nick.isEmpty()) {
         BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
+        // now check if irc user is valid
         if (isCursorOverNick(event->pos()) && Client::network(curBufInfo.networkId())->ircUser(nick))
             shouldHover = true;
     }
