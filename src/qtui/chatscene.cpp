@@ -50,6 +50,8 @@
 #include "mainwin.h"
 #include "markerlineitem.h"
 #include "messagefilter.h"
+#include "nicklistwidget.h"
+#include "nickview.h"
 #include "qtui.h"
 #include "qtuistyle.h"
 #include "webpreviewitem.h"
@@ -781,8 +783,31 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 
     // item-specific options (select link etc)
     ChatItem* item = chatItemAt(pos);
-    if (item)
-        item->addActionsToMenu(&menu, item->mapFromScene(pos));
+    if (item) {
+        bool showItemActions = true;
+        if (auto* senderItem = dynamic_cast<SenderChatItem*>(item)) {
+            // senderItem is a valid pointer
+            MainWin* mainWin = QtUi::mainWindow();
+            if  (mainWin && !isPosOverSelection(pos)) {
+                // get the nick list for the current buffer
+                NickListWidget* nickListWidget = mainWin->findChild<NickListWidget*>();
+                NickView* nickView = nickListWidget->getNickView(singleBufferId());
+                if (nickView && senderItem->isValidNickHover()) {
+                    // if the cursor is over the nickname, search for the nick in the nick list tree
+                    QString nick = senderItem->getSenderNick();
+                    QModelIndex nickIndex = nickView->getIndexFromNick(nick);
+                    if (nickIndex.isValid()) {
+                        // Clear previous actions and add nick-related actions only
+                        showItemActions = false;
+                        menu.clear();
+                        GraphicalUi::contextMenuActionProvider()->addActions(&menu, nickIndex);
+                    }
+                }
+            }
+        }
+        if (showItemActions)
+            item->addActionsToMenu(&menu, item->mapFromScene(pos));
+    }
     else
         // no item -> default scene actions
         GraphicalUi::contextMenuActionProvider()->addActions(&menu, filter(), BufferId());

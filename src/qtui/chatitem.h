@@ -189,6 +189,8 @@ public:
     {}
     inline ChatLineModel::ColumnType column() const override { return ChatLineModel::SenderColumn; }
     void handleClick(const QPointF& pos, ChatScene::ClickMode clickMode) override;
+    bool isValidNickHover() { return _validNickHover; }
+    QString getSenderNick() { return data(MessageModel::EditRole).toString(); }
 
 protected:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;

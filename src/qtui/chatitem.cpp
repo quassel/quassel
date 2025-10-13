@@ -603,10 +603,10 @@ bool SenderChatItem::isCursorOverNick(const QPointF& eventPos) {
 void SenderChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickMode)
 {
     if (clickMode == ChatScene::SingleClick) {
-        if (_validNickHover) {
+        if (isValidNickHover()) {
             if (MainWin *mainWin = QtUi::mainWindow()) {
                 if (InputWidget *inputWidget = mainWin->inputWidget()) {
-                    QString nick = data(MessageModel::EditRole).toString();
+                    QString nick = getSenderNick();
                     inputWidget->inputLine()->insertPlainText(nick + ": ");
                     inputWidget->inputLine()->moveCursor(QTextCursor::End);
                     inputWidget->setFocus();
@@ -615,9 +615,9 @@ void SenderChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickM
         }
     }
     else if (clickMode == ChatScene::DoubleClick) {
-        if (_validNickHover) {
+        if (isValidNickHover()) {
             BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());
-            QString nick = data(MessageModel::EditRole).toString();
+            QString nick = getSenderNick();
             Client::bufferModel()->switchToOrStartQuery(curBufInfo.networkId(), nick);
         }
     }
@@ -627,7 +627,7 @@ void SenderChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clickM
 
 void SenderChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 {
-    QString nick = data(MessageModel::EditRole).toString();
+    QString nick = getSenderNick();
     bool shouldHover = false;
     if (!nick.isEmpty()) {
         BufferInfo curBufInfo = Client::networkModel()->bufferInfo(data(MessageModel::BufferIdRole).value<BufferId>());

@@ -40,6 +40,7 @@ class NickListWidget : public AbstractItemView
 
 public:
     NickListWidget(QWidget* parent = nullptr);
+    NickView* getNickView(BufferId bufferId) const { return nickViews.value(bufferId, nullptr); }
 
 public slots:
     void showWidget(bool visible);

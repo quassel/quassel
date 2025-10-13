@@ -48,6 +48,7 @@ public slots:
     void init();
     void showContextMenu(const QPoint& pos);
     void startQuery(const QModelIndex& modelIndex);
+    QModelIndex getIndexFromNick(QString nick);
 
 signals:
     void selectionUpdated();
