@@ -128,6 +128,84 @@ jobs:
     - name: Install
       run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
 
+  build-linux-postgres:
+    name: Linux (ubuntu-24.04, PostgreSQL integration)
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}
+
+    - name: Prepare runner environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          build-essential \
+          ccache \
+          cmake \
+          gettext \
+          git \
+          libboost-dev \
+          libgtest-dev \
+          libqt6sql6-psql \
+          libqt6sql6-sqlite \
+          libssl-dev \
+          ninja-build \
+          pkg-config \
+          qt6-5compat-dev \
+          qt6-base-dev \
+          qt6-base-dev-tools \
+          qt6-tools-dev-tools \
+          zlib1g-dev
+
+    - name: Configure
+      run: |
+        mkdir build
+        cd build && cmake $GITHUB_WORKSPACE \
+                          -GNinja \
+                          -DCMAKE_BUILD_TYPE=Release \
+                          -DBUILD_TESTING=ON \
+                          -DFATAL_WARNINGS=ON \
+                          -DWITH_KDE=OFF \
+                          -DWITH_WEBENGINE=OFF
+
+    - name: Build
+      run: cd build && ninja
+
+    - name: Run tests
+      env:
+        QUASSEL_TEST_PGSQL_USERNAME: postgres
+        QUASSEL_TEST_PGSQL_PASSWORD: postgres
+        QUASSEL_TEST_PGSQL_HOSTNAME: 127.0.0.1
+        QUASSEL_TEST_PGSQL_PORT: ${{ job.services.postgres.ports[5432] }}
+        QUASSEL_TEST_PGSQL_MAINTENANCE_DATABASE: postgres
+        QUASSEL_TEST_PGSQL_DATABASE_PREFIX: quassel_ci_
+      run: cd build && ctest --output-on-failure
+
+    - name: Install
+      run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
+
   build-linux-arch:
     name: Arch Linux
     runs-on: ubuntu-latest
