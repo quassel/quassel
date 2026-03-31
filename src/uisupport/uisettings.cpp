@@ -78,7 +78,7 @@ QList<UiStyle::FormatType> UiStyleSettings::availableFormats() const
 {
     QList<UiStyle::FormatType> formats;
     QStringList list = localChildKeys("Format");
-    foreach (QString type, list) {
+    for (const QString& type : list) {
         formats << (UiStyle::FormatType)type.toInt();
     }
     return formats;
@@ -113,7 +113,7 @@ void SessionSettings::cleanup()
     QStringList sessions = localChildGroups();
     QString str;
     SessionSettings s(sessionId());
-    foreach (str, sessions) {
+    for (const QString& str : sessions) {
         // load session and check age
         s.setSessionId(str);
         if (s.sessionAge() > 3) {
@@ -151,7 +151,7 @@ int SessionSettings::sessionAge()
 void SessionSettings::removeSession()
 {
     QStringList keys = localChildKeys(sessionId());
-    foreach (QString k, keys) {
+    for (const QString& k : keys) {
         removeKey(k);
     }
 }
@@ -166,7 +166,7 @@ void SessionSettings::sessionAging()
     QStringList sessions = localChildGroups();
     QString str;
     SessionSettings s(sessionId());
-    foreach (str, sessions) {
+    for (const QString& str : sessions) {
         // load session and check age
         s.setSessionId(str);
         s.setSessionAge(s.sessionAge() + 1);

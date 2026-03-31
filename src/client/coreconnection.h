@@ -22,7 +22,7 @@
 
 #include "client-export.h"
 
-#include <QNetworkConfigurationManager>
+#include <QNetworkInformation>
 #include <QPointer>
 #include <QSslSocket>
 #include <QTimer>
@@ -162,7 +162,7 @@ private:
     CoreAccount _account;
     CoreAccountModel* accountModel() const;
 
-    QPointer<QNetworkConfigurationManager> _qNetworkConfigurationManager;
+    QPointer<QNetworkInformation> _networkInformation;
 
     friend class CoreConfigWizard;
 };

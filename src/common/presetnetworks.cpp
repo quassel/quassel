@@ -45,7 +45,7 @@ QStringList PresetNetworks::names(bool onlyDefault)
         if (!networks.isEmpty()) {
             // we sort the list case-insensitive
             QMap<QString, QString> sorted;
-            foreach (QString net, networks) {
+            for (const QString& net : networks) {
                 if (onlyDefault && !s.value(QString("%1/Default").arg(net)).toBool())
                     continue;
                 sorted[net.toLower()] = net;
@@ -71,9 +71,9 @@ NetworkInfo PresetNetworks::networkInfo(const QString& networkName)
         info.networkName = networkName;
         QSettings s(_networksIniPath, QSettings::IniFormat);
         s.beginGroup(info.networkName);
-        foreach (QString server, s.value("Servers").toStringList()) {
+        for (const QString& server : s.value("Servers").toStringList()) {
             bool ssl = false;
-            QStringList splitserver = server.split(':', QString::SkipEmptyParts);
+            QStringList splitserver = server.split(':', Qt::SkipEmptyParts);
             if (splitserver.count() != 2) {
                 qWarning() << "Invalid server entry in networks.conf:" << server;
                 continue;

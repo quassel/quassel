@@ -34,9 +34,11 @@
 #    include <QTextDocument>
 
 #    include "icon.h"
+#    include "notificationsclient.h"
 #    include "qtui.h"
 #    include "quassel.h"
 #    include "statusnotifieritemdbus.h"
+#    include "statusnotifierwatcher.h"
 
 constexpr int kProtocolVersion{0};
 

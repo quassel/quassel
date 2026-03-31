@@ -43,8 +43,6 @@
 class UISUPPORT_EXPORT UiStyle : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(SenderPrefixModes)
-
 public:
     UiStyle(QObject* parent = nullptr);
     ~UiStyle() override;
@@ -201,6 +199,7 @@ public:
         HighestMode = 1, ///< Show the highest active sender mode
         AllModes    = 2  ///< Show all active sender modes
     };
+    Q_ENUM(SenderPrefixMode)
     // Do not change SenderPrefixMode numbering without also adjusting
     // ChatViewSettingsPage::initSenderPrefixComboBox() and chatviewsettingspage.ui "defaultValue"
 
@@ -447,8 +446,8 @@ UISUPPORT_EXPORT UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType& lh
 
 // ---- Allow for FormatList in QVariant ----------------------------------------------------------
 
-QDataStream& operator<<(QDataStream& out, const UiStyle::FormatList& formatList);
-QDataStream& operator>>(QDataStream& in, UiStyle::FormatList& formatList);
+UISUPPORT_EXPORT QDataStream& operator<<(QDataStream& out, const UiStyle::FormatList& formatList);
+UISUPPORT_EXPORT QDataStream& operator>>(QDataStream& in, UiStyle::FormatList& formatList);
 
 Q_DECLARE_METATYPE(UiStyle::FormatList)
 Q_DECLARE_METATYPE(UiStyle::MessageLabel)

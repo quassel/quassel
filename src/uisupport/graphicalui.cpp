@@ -88,7 +88,7 @@ QHash<QString, ActionCollection*> GraphicalUi::actionCollections()
 
 void GraphicalUi::loadShortcuts()
 {
-    foreach (ActionCollection* coll, actionCollections())
+    for (ActionCollection* coll : actionCollections())
         coll->readSettings();
 }
 
@@ -96,7 +96,7 @@ void GraphicalUi::saveShortcuts()
 {
     ShortcutSettings s;
     s.clear();
-    foreach (ActionCollection* coll, actionCollections())
+    for (ActionCollection* coll : actionCollections())
         coll->writeSettings();
 }
 

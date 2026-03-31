@@ -36,7 +36,7 @@ QMap<QString, bool> ClientIgnoreListManager::matchingRulesForHostmask(const QStr
                                                                       const QString& channel) const
 {
     QMap<QString, bool> result;
-    foreach (IgnoreListItem item, ignoreList()) {
+    for (const IgnoreListItem& item : ignoreList()) {
         if (item.type() == SenderIgnore && pureMatch(item, hostmask)
             && ((network.isEmpty() && channel.isEmpty()) || item.scope() == GlobalScope
                 || (item.scope() == NetworkScope && item.scopeRuleMatcher().match(network))

@@ -25,6 +25,8 @@
 #include "irctags.h"
 #include "messageevent.h"
 
+#include <QRegularExpression>
+
 EventStringifier::EventStringifier(CoreSession* parent)
     : BasicHandler("handleCtcp", parent)
     , _coreSession(parent)
@@ -432,7 +434,8 @@ void EventStringifier::processIrcEventWallops(IrcEvent* e)
 /* RPL_ISUPPORT */
 void EventStringifier::processIrcEvent005(IrcEvent* e)
 {
-    if (!e->params().last().contains(QRegExp("are supported (by|on) this server")))
+    static const QRegularExpression isupportPattern(QStringLiteral("are supported (by|on) this server"));
+    if (!e->params().last().contains(isupportPattern))
         displayMsg(e, Message::Error, tr("Received non-RFC-compliant RPL_ISUPPORT: this can lead to unexpected behavior!"), e->prefix());
     displayMsg(e, Message::Server, e->params().join(" "), e->prefix());
 }
@@ -453,8 +456,7 @@ void EventStringifier::processIrcEvent301(IrcEvent* e)
         target = nick;
         IrcUser* ircuser = e->network()->ircUser(nick);
         if (ircuser) {
-            QDateTime now = QDateTime::currentDateTime();
-            now.setTimeSpec(Qt::UTC);
+            const QDateTime now = QDateTime::currentDateTimeUtc();
             // Don't print "user is away" messages more often than this
             // 1 hour = 60 min * 60 sec
             const int silenceTime = 60 * 60;

@@ -113,7 +113,8 @@ QString NetworkModelController::nickName(const QModelIndex& index) const
     if (ircUser)
         return ircUser->nick();
 
-    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    const QVariant bufferInfoData = index.data(NetworkModel::BufferInfoRole);
+    BufferInfo bufferInfo = bufferInfoData.value<BufferInfo>();
     if (!bufferInfo.isValid())
         return QString();
     if (bufferInfo.type() != BufferInfo::QueryBuffer)
@@ -143,8 +144,9 @@ BufferId NetworkModelController::findQueryBuffer(NetworkId networkId, const QStr
 void NetworkModelController::removeBuffers(const QModelIndexList& indexList)
 {
     QList<BufferInfo> inactive;
-    foreach (QModelIndex index, indexList) {
-        BufferInfo info = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    for (const QModelIndex& index : indexList) {
+        const QVariant infoData = index.data(NetworkModel::BufferInfoRole);
+        BufferInfo info = infoData.value<BufferInfo>();
         if (info.isValid()) {
             if (info.type() == BufferInfo::QueryBuffer
                 || (info.type() == BufferInfo::ChannelBuffer && !index.data(NetworkModel::ItemActiveRole).toBool()))
@@ -156,7 +158,7 @@ void NetworkModelController::removeBuffers(const QModelIndexList& indexList)
         msg = tr("Do you want to delete the following buffer(s) permanently?", "", inactive.count());
         msg += "<ul>";
         int count = 0;
-        foreach (BufferInfo info, inactive) {
+        for (const BufferInfo& info : inactive) {
             if (count < 10) {
                 msg += QString("<li>%1</li>").arg(info.bufferName());
                 count++;
@@ -174,7 +176,7 @@ void NetworkModelController::removeBuffers(const QModelIndexList& indexList)
 
         if (QMessageBox::question(nullptr, tr("Remove buffers permanently?"), msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No)
             == QMessageBox::Yes) {
-            foreach (BufferInfo info, inactive)
+            for (const BufferInfo& info : inactive)
                 Client::removeBuffer(info.bufferId());
         }
     }
@@ -231,7 +233,7 @@ void NetworkModelController::handleNetworkAction(ActionType type, QAction*)
                                      QMessageBox::No)
                    == QMessageBox::No)
             return;
-        foreach (NetworkId id, Client::networkIds()) {
+        for (NetworkId id : Client::networkIds()) {
             const Network* net = Client::network(id);
             if ((type == NetworkConnectAllWithDropdown || type == NetworkConnectAll) && net->connectionState() == Network::Disconnected)
                 net->requestConnect();
@@ -268,13 +270,14 @@ void NetworkModelController::handleBufferAction(ActionType type, QAction*)
     }
     else {
         QList<BufferInfo> bufferList;  // create temp list because model indexes might change
-        foreach (QModelIndex index, indexList()) {
-            BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+        for (const QModelIndex& index : indexList()) {
+            const QVariant bufferInfoData = index.data(NetworkModel::BufferInfoRole);
+            BufferInfo bufferInfo = bufferInfoData.value<BufferInfo>();
             if (bufferInfo.isValid())
                 bufferList << bufferInfo;
         }
 
-        foreach (BufferInfo bufferInfo, bufferList) {
+        for (const BufferInfo& bufferInfo : bufferList) {
             switch (type) {
             case BufferJoin:
                 Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
@@ -339,10 +342,10 @@ void NetworkModelController::handleHideAction(ActionType type, QAction* action)
         if (_messageFilter)
             BufferSettings(_messageFilter->idString()).setMessageFilter(filter);
         else {
-            foreach (QModelIndex index, _indexList) {
-                BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
-                if (!bufferId.isValid())
-                    continue;
+                for (const QModelIndex& index : _indexList) {
+                    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+                    if (!bufferId.isValid())
+                        continue;
                 BufferSettings(bufferId).setMessageFilter(filter);
             }
         }
@@ -354,10 +357,10 @@ void NetworkModelController::handleHideAction(ActionType type, QAction* action)
         if (_messageFilter)
             BufferSettings(_messageFilter->idString()).removeFilter();
         else {
-            foreach (QModelIndex index, _indexList) {
-                BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
-                if (!bufferId.isValid())
-                    continue;
+                for (const QModelIndex& index : _indexList) {
+                    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+                    if (!bufferId.isValid())
+                        continue;
                 BufferSettings(bufferId).removeFilter();
             }
         }
@@ -417,14 +420,15 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction* actio
 
 void NetworkModelController::handleNickAction(ActionType type, QAction* action)
 {
-    foreach (QModelIndex index, indexList()) {
+    for (const QModelIndex& index : indexList()) {
         NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
         if (!networkId.isValid())
             continue;
         QString nick = nickName(index);
         if (nick.isEmpty())
             continue;
-        BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+        const QVariant bufferInfoData = index.data(NetworkModel::BufferInfoRole);
+        BufferInfo bufferInfo = bufferInfoData.value<BufferInfo>();
         if (!bufferInfo.isValid())
             continue;
 
@@ -561,7 +565,7 @@ NetworkModelController::JoinDlg::JoinDlg(const QModelIndex& index, QWidget* pare
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(channel, &QLineEdit::textChanged, this, &JoinDlg::on_channel_textChanged);
 
-    foreach (NetworkId id, Client::networkIds()) {
+    for (NetworkId id : Client::networkIds()) {
         const Network* net = Client::network(id);
         if (net->isConnected()) {
             networks->addItem(net->networkName(), QVariant::fromValue(id));

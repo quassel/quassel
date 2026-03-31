@@ -24,6 +24,7 @@
 
 #include <QDebug>
 #include <QHostInfo>
+#include <QRandomGenerator>
 #include <QTextBoundaryFinder>
 
 #include "core.h"
@@ -35,6 +36,32 @@
 #include "irccap.h"
 #include "irctag.h"
 #include "networkevent.h"
+
+namespace {
+
+QString keepModes(const QString& input, const QString& allowedModes)
+{
+    QString filtered;
+    filtered.reserve(input.size());
+    for (const QChar mode : input) {
+        if (allowedModes.contains(mode))
+            filtered.append(mode);
+    }
+    return filtered;
+}
+
+QString dropModes(const QString& input, const QString& removedModes)
+{
+    QString filtered;
+    filtered.reserve(input.size());
+    for (const QChar mode : input) {
+        if (!removedModes.contains(mode))
+            filtered.append(mode);
+    }
+    return filtered;
+}
+
+}  // namespace
 
 CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     : Network(networkid, session)
@@ -83,7 +110,7 @@ CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     connect(&_tokenBucketTimer, &QTimer::timeout, this, &CoreNetwork::checkTokenBucket);
 
     connect(&socket, &QAbstractSocket::connected, this, &CoreNetwork::onSocketInitialized);
-    connect(&socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::error), this, &CoreNetwork::onSocketError);
+    connect(&socket, &QAbstractSocket::errorOccurred, this, &CoreNetwork::onSocketError);
     connect(&socket, &QAbstractSocket::stateChanged, this, &CoreNetwork::onSocketStateChanged);
     connect(&socket, &QIODevice::readyRead, this, &CoreNetwork::onSocketHasData);
     connect(&socket, &QSslSocket::encrypted, this, &CoreNetwork::onSocketInitialized);
@@ -219,7 +246,7 @@ void CoreNetwork::connectToIrc(bool reconnecting)
 
     // use a random server?
     if (useRandomServer()) {
-        _lastUsedServerIndex = qrand() % serverList().size();
+        _lastUsedServerIndex = QRandomGenerator::global()->bounded(serverList().size());
     }
     else if (_previousConnectionAttemptFailed) {
         // cycle to next server if previous connection attempt failed
@@ -788,11 +815,11 @@ void CoreNetwork::restoreUserModes()
         addModes = modesDelta;
     }
 
-    addModes.remove(QRegExp(QString("[%1]").arg(currentModes)));
+    addModes = dropModes(addModes, currentModes);
     if (currentModes.isEmpty())
         removeModes = QString();
     else
-        removeModes.remove(QRegExp(QString("[^%1]").arg(currentModes)));
+        removeModes = keepModes(removeModes, currentModes);
 
     if (addModes.isEmpty() && removeModes.isEmpty())
         return;
@@ -832,12 +859,12 @@ void CoreNetwork::updateIssuedModes(const QString& requestedModes)
     QString addModesOld = _requestedUserModes.section('-', 0, 0);
     QString removeModesOld = _requestedUserModes.section('-', 1);
 
-    addModes.remove(QRegExp(QString("[%1]").arg(addModesOld)));     // deduplicate
-    addModesOld.remove(QRegExp(QString("[%1]").arg(removeModes)));  // update
+    addModes = dropModes(addModes, addModesOld);        // deduplicate
+    addModesOld = dropModes(addModesOld, removeModes);  // update
     addModes += addModesOld;
 
-    removeModes.remove(QRegExp(QString("[%1]").arg(removeModesOld)));  // deduplicate
-    removeModesOld.remove(QRegExp(QString("[%1]").arg(addModes)));     // update
+    removeModes = dropModes(removeModes, removeModesOld);  // deduplicate
+    removeModesOld = dropModes(removeModesOld, addModes);  // update
     removeModes += removeModesOld;
 
     _requestedUserModes = QString("%1-%2").arg(addModes).arg(removeModes);
@@ -863,24 +890,24 @@ void CoreNetwork::updatePersistentModes(QString addModes, QString removeModes)
     if (requestedAdd.isEmpty())
         addModes = QString();
     else
-        addModes.remove(QRegExp(QString("[^%1]").arg(requestedAdd)));
+        addModes = keepModes(addModes, requestedAdd);
 
     if (requestedRemove.isEmpty())
         removeModes = QString();
     else
-        removeModes.remove(QRegExp(QString("[^%1]").arg(requestedRemove)));
+        removeModes = keepModes(removeModes, requestedRemove);
 
     // deduplicate
-    persistentAdd.remove(QRegExp(QString("[%1]").arg(addModes)));
-    persistentRemove.remove(QRegExp(QString("[%1]").arg(removeModes)));
+    persistentAdd = dropModes(persistentAdd, addModes);
+    persistentRemove = dropModes(persistentRemove, removeModes);
 
     // update
-    persistentAdd.remove(QRegExp(QString("[%1]").arg(removeModes)));
-    persistentRemove.remove(QRegExp(QString("[%1]").arg(addModes)));
+    persistentAdd = dropModes(persistentAdd, removeModes);
+    persistentRemove = dropModes(persistentRemove, addModes);
 
     // update issued mode list
-    requestedAdd.remove(QRegExp(QString("[%1]").arg(addModes)));
-    requestedRemove.remove(QRegExp(QString("[%1]").arg(removeModes)));
+    requestedAdd = dropModes(requestedAdd, addModes);
+    requestedRemove = dropModes(requestedRemove, removeModes);
     _requestedUserModes = QString("%1-%2").arg(requestedAdd).arg(requestedRemove);
 
     persistentAdd += addModes;

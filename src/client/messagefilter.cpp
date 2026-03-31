@@ -119,7 +119,7 @@ QString MessageFilter::idString() const
     std::sort(bufferIds.begin(), bufferIds.end());
 
     QStringList bufferIdStrings;
-    foreach (BufferId id, bufferIds)
+    for (BufferId id : bufferIds)
         bufferIdStrings << QString::number(id.toInt());
 
     return bufferIdStrings.join("|");

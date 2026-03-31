@@ -40,7 +40,7 @@ RemotePeer* PeerFactory::createPeer(
 RemotePeer* PeerFactory::createPeer(
     const ProtoList& protocols, AuthHandler* authHandler, QTcpSocket* socket, Compressor::CompressionLevel level, QObject* parent)
 {
-    foreach (const ProtoDescriptor& protodesc, protocols) {
+    for (const ProtoDescriptor& protodesc : protocols) {
         Protocol::Type proto = protodesc.first;
         quint16 features = protodesc.second;
         switch (proto) {

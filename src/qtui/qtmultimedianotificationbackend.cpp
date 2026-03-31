@@ -22,7 +22,10 @@
 
 #include <memory>
 
+#include <QAudioOutput>
+#include <QAudioDevice>
 #include <QFileDialog>
+#include <QMediaDevices>
 #include <QUrl>
 
 #include "clientsettings.h"
@@ -45,7 +48,7 @@ QtMultimediaNotificationBackend::QtMultimediaNotificationBackend(QObject* parent
 void QtMultimediaNotificationBackend::notify(const Notification& notification)
 {
     if (_enabled && (notification.type == Highlight || notification.type == PrivMsg)) {
-        if (_media && _media->availability() == QMultimedia::Available) {
+        if (_media) {
             _media->stop();
             _media->play();
         }
@@ -81,8 +84,10 @@ void QtMultimediaNotificationBackend::createMediaObject(const QString& file)
         return;
     }
 
+    _audioOutput = std::make_unique<QAudioOutput>();
     _media = std::make_unique<QMediaPlayer>();
-    _media->setMedia(QUrl::fromLocalFile(file));
+    _media->setAudioOutput(_audioOutput.get());
+    _media->setSource(QUrl::fromLocalFile(file));
 }
 
 /***************************************************************************/
@@ -95,7 +100,7 @@ QtMultimediaNotificationBackend::ConfigWidget::ConfigWidget(QWidget* parent)
     ui.play->setIcon(icon::get("media-playback-start"));
     ui.open->setIcon(icon::get("document-open"));
 
-    _audioAvailable = (QMediaPlayer().availability() == QMultimedia::Available);
+    _audioAvailable = !QMediaDevices::audioOutputs().isEmpty();
 
     connect(ui.enabled, &QAbstractButton::toggled, this, &ConfigWidget::widgetChanged);
     connect(ui.filename, &QLineEdit::textChanged, this, &ConfigWidget::widgetChanged);
@@ -165,8 +170,10 @@ void QtMultimediaNotificationBackend::ConfigWidget::on_play_clicked()
 {
     if (_audioAvailable) {
         if (!ui.filename->text().isEmpty()) {
+            _audioPreviewOutput = std::make_unique<QAudioOutput>();
             _audioPreview = std::make_unique<QMediaPlayer>();
-            _audioPreview->setMedia(QUrl::fromLocalFile(ui.filename->text()));
+            _audioPreview->setAudioOutput(_audioPreviewOutput.get());
+            _audioPreview->setSource(QUrl::fromLocalFile(ui.filename->text()));
             _audioPreview->play();
         }
     }

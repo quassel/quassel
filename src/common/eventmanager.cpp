@@ -27,6 +27,33 @@
 #include "event.h"
 #include "ircevent.h"
 
+namespace {
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+void* metaCallData(QMetaMethodArgument argument)
+{
+    return const_cast<void*>(argument.data);
+}
+
+template<typename T>
+void* metaCallData(QTemplatedMetaMethodReturnArgument<T> argument)
+{
+    return argument.data;
+}
+#else
+void* metaCallData(QGenericArgument argument)
+{
+    return argument.data();
+}
+
+void* metaCallData(QGenericReturnArgument argument)
+{
+    return argument.data();
+}
+#endif
+
+}  // namespace
+
 // ============================================================
 //  QueuedEvent
 // ============================================================
@@ -179,7 +206,7 @@ void EventManager::registerEventHandler(QList<EventType> events, QObject* object
         return;
     }
     Handler handler(object, methodIndex, priority);
-    foreach (EventType event, events) {
+    for (EventType event : events) {
         if (isFilter) {
             registeredFilters()[event].append(handler);
             qDebug() << "Registered event filter for" << event << "in" << object;
@@ -276,7 +303,9 @@ void EventManager::dispatchEvent(Event* event)
         if (filters.contains(obj)) {  // we have a filter, so let's check if we want to deliver the event
             Handler filter = filters.value(obj);
             bool result = false;
-            void* param[] = {Q_RETURN_ARG(bool, result).data(), Q_ARG(Event*, event).data()};
+            const auto resultArg = Q_RETURN_ARG(bool, result);
+            const auto eventArg = Q_ARG(Event*, event);
+            void* param[] = {metaCallData(resultArg), metaCallData(eventArg)};
             obj->qt_metacall(QMetaObject::InvokeMetaMethod, filter.methodIndex, param);
             if (!result) {
                 ignored.insert(obj);
@@ -285,7 +314,8 @@ void EventManager::dispatchEvent(Event* event)
         }
 
         // finally, deliverance!
-        void* param[] = {nullptr, Q_ARG(Event*, event).data()};
+        const auto eventArg = Q_ARG(Event*, event);
+        void* param[] = {nullptr, metaCallData(eventArg)};
         obj->qt_metacall(QMetaObject::InvokeMetaMethod, it->methodIndex, param);
     }
 
@@ -295,7 +325,7 @@ void EventManager::dispatchEvent(Event* event)
 
 void EventManager::insertHandlers(const QList<Handler>& newHandlers, QList<Handler>& existing, bool checkDupes)
 {
-    foreach (const Handler& handler, newHandlers) {
+    for (const Handler& handler : newHandlers) {
         if (existing.isEmpty())
             existing.append(handler);
         else {
@@ -323,7 +353,7 @@ void EventManager::insertHandlers(const QList<Handler>& newHandlers, QList<Handl
 // fun things could happen if you used the registerEventFilter() methods in the wrong order though
 void EventManager::insertFilters(const QList<Handler>& newFilters, QHash<QObject*, Handler>& existing)
 {
-    foreach (const Handler& filter, newFilters) {
+    for (const Handler& filter : newFilters) {
         if (!existing.contains(filter.object))
             existing[filter.object] = filter;
     }

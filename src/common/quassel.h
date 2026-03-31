@@ -104,8 +104,8 @@ public:
         RemoteDisconnect       = 0x4000,
         ExtendedFeatures       = 0x8000,
     };
-    Q_FLAGS(LegacyFeature)
     Q_DECLARE_FLAGS(LegacyFeatures, LegacyFeature)
+    Q_FLAG(LegacyFeatures)
 
     /**
      * A list of features that are optional in core and/or client, but need runtime checking.
@@ -145,7 +145,7 @@ public:
         LoadBacklogForwards,  ///< Allow loading backlog in ascending order, old to new
         SkipIrcCaps,          ///< Control what IRCv3 capabilities are skipped during negotiation
     };
-    Q_ENUMS(Feature)
+    Q_ENUM(Feature)
 
     class Features;
 

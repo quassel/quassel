@@ -39,7 +39,8 @@ void AbstractBufferContainer::rowsAboutToBeRemoved(const QModelIndex& parent, in
         if (model()->rowCount(parent) != end - start + 1)
             return;
 
-        foreach (BufferId id, _chatViews.keys()) {
+        const auto chatViewIds = _chatViews.keys();
+        for (BufferId id : chatViewIds) {
             removeChatView(id);
         }
         _chatViews.clear();

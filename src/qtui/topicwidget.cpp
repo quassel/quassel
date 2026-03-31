@@ -199,7 +199,8 @@ void TopicWidget::on_topicLineEdit_textEntered()
 {
     QModelIndex currentIdx = currentIndex();
     if (currentIdx.isValid() && currentIdx.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer) {
-        BufferInfo bufferInfo = currentIdx.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+        const QVariant bufferInfoData = currentIdx.data(NetworkModel::BufferInfoRole);
+        BufferInfo bufferInfo = bufferInfoData.value<BufferInfo>();
         if (ui.topicLineEdit->text().isEmpty())
             Client::userInput(bufferInfo, QString("/quote TOPIC %1 :").arg(bufferInfo.bufferName()));
         else

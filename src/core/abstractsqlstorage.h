@@ -36,6 +36,21 @@ class QThread;
 class AbstractSqlMigrationReader;
 class AbstractSqlMigrationWriter;
 
+namespace detail {
+
+template<typename Query>
+inline auto sqlBoundValueNamesCompat(const Query& query, int) -> decltype(query.boundValueNames())
+{
+    return query.boundValueNames();
+}
+
+inline QStringList sqlBoundValueNamesCompat(const QSqlQuery&, long)
+{
+    return {};
+}
+
+}  // namespace detail
+
 class AbstractSqlStorage : public Storage
 {
     Q_OBJECT

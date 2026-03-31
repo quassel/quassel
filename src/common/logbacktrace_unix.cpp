@@ -41,7 +41,8 @@ void Quassel::logBacktrace(const QString& filename)
     int i, frames = backtrace(callstack, 128);
 
     QFile dumpFile(filename);
-    dumpFile.open(QIODevice::Append);
+    if (!dumpFile.open(QIODevice::Append))
+        return;
     QTextStream dumpStream(&dumpFile);
 
     for (i = 0; i < frames; ++i) {

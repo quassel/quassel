@@ -67,7 +67,7 @@ public:
         Automatic,  ///< Automatic detection (network socket or USERHOST)
         Manual,     ///< Manually specified IP
     };
-    Q_ENUMS(IpDetectionMode)
+    Q_ENUM(IpDetectionMode)
 
     /**
      * Mode for selecting the port range for DCC
@@ -77,7 +77,7 @@ public:
         Automatic,  ///< Automatic port selection
         Manual,     ///< Manually specified port range
     };
-    Q_ENUMS(PortSelectionMode)
+    Q_ENUM(PortSelectionMode)
 
     /**
      * Constructor.

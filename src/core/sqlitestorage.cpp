@@ -66,12 +66,13 @@ int SqliteStorage::installedSchemaVersion()
 {
     // only used when there is a singlethread (during startup)
     // so we don't need locking here
-    QSqlQuery query = logDb().exec("SELECT value FROM coreinfo WHERE key = 'schemaversion'");
+    QSqlQuery query(logDb());
+    query.exec("SELECT value FROM coreinfo WHERE key = 'schemaversion'");
     if (query.first())
         return query.value(0).toInt();
 
     // maybe it's really old... (schema version 0)
-    query = logDb().exec("SELECT MAX(version) FROM coreinfo");
+    query.exec("SELECT MAX(version) FROM coreinfo");
     if (query.first())
         return query.value(0).toInt();
 
@@ -521,7 +522,7 @@ IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity& identity)
 
             QSqlQuery insertNickQuery(db);
             insertNickQuery.prepare(queryString("insert_nick"));
-            foreach (QString nick, identity.nicks()) {
+            for (const QString& nick : identity.nicks()) {
                 insertNickQuery.bindValue(":identityid", identityId.toInt());
                 insertNickQuery.bindValue(":nick", nick);
                 safeExec(insertNickQuery);
@@ -590,7 +591,7 @@ bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity& identity)
 
         QSqlQuery insertNickQuery(db);
         insertNickQuery.prepare(queryString("insert_nick"));
-        foreach (QString nick, identity.nicks()) {
+        for (const QString& nick : identity.nicks()) {
             insertNickQuery.bindValue(":identityid", identity.id().toInt());
             insertNickQuery.bindValue(":nick", nick);
             safeExec(insertNickQuery);
@@ -727,7 +728,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo& info)
     {
         QSqlQuery insertServersQuery(db);
         insertServersQuery.prepare(queryString("insert_server"));
-        foreach (Network::Server server, info.serverList) {
+        for (const Network::Server& server : info.serverList) {
             insertServersQuery.bindValue(":userid", user.toInt());
             insertServersQuery.bindValue(":networkid", networkId.toInt());
             bindServerInfo(insertServersQuery, server);
@@ -836,7 +837,7 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo& info)
     {
         QSqlQuery insertServersQuery(db);
         insertServersQuery.prepare(queryString("insert_server"));
-        foreach (Network::Server server, info.serverList) {
+        for (const Network::Server& server : info.serverList) {
             insertServersQuery.bindValue(":userid", user.toInt());
             insertServersQuery.bindValue(":networkid", info.networkId.toInt());
             bindServerInfo(insertServersQuery, server);
@@ -1227,7 +1228,7 @@ BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId& networkId, Bu
                 qCritical() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
                 qCritical() << "         Query:" << query.lastQuery();
                 qCritical() << "  bound Values:";
-                QList<QVariant> list = query.boundValues().values();
+                const QVariantList list = query.boundValues();
                 for (int i = 0; i < list.size(); ++i)
                     qCritical() << i << ":" << list.at(i).toString().toLatin1().data();
                 Q_ASSERT(false);
@@ -2360,7 +2361,8 @@ void SqliteMigrationReader::setMaxId(MigrationObject mo)
         _maxId = 0;
         return;
     }
-    QSqlQuery query = logDb().exec(queryString);
+    QSqlQuery query(logDb());
+    query.exec(queryString);
     query.first();
     _maxId = query.value(0).toLongLong();
 }

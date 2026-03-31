@@ -30,8 +30,6 @@ class QMenu;
 class SystemTray : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(State Mode MessageIcon ActivationReason)
-
 public:
     enum State
     {
@@ -39,6 +37,7 @@ public:
         Active,
         NeedsAttention
     };
+    Q_ENUM(State)
 
     enum Mode
     {
@@ -46,6 +45,7 @@ public:
         Legacy,
         StatusNotifier
     };
+    Q_ENUM(Mode)
 
     // same as in QSystemTrayIcon
     enum MessageIcon
@@ -55,6 +55,7 @@ public:
         Warning,
         Critical
     };
+    Q_ENUM(MessageIcon)
 
     // same as in QSystemTrayIcon
     enum ActivationReason
@@ -65,6 +66,7 @@ public:
         Trigger,
         MiddleClick
     };
+    Q_ENUM(ActivationReason)
 
     enum class AttentionBehavior
     {

@@ -36,7 +36,7 @@ BufferViewConfig* ClientBufferViewManager::bufferViewConfigFactory(int bufferVie
 QList<ClientBufferViewConfig*> ClientBufferViewManager::clientBufferViewConfigs() const
 {
     QList<ClientBufferViewConfig*> clientConfigs;
-    foreach (BufferViewConfig* config, bufferViewConfigs()) {
+    for (BufferViewConfig* config : bufferViewConfigs()) {
         clientConfigs << static_cast<ClientBufferViewConfig*>(config);
     }
     return clientConfigs;

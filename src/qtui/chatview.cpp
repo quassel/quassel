@@ -23,9 +23,11 @@
 #include <algorithm>
 
 #include <QGraphicsTextItem>
+#include <QInputDevice>
 #include <QKeyEvent>
 #include <QMenu>
 #include <QScrollBar>
+#include <QTouchEvent>
 
 #include "bufferwidget.h"
 #include "chatline.h"
@@ -111,7 +113,8 @@ bool ChatView::event(QEvent* event)
         }
     }
 
-    if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen) {
+    if (event->type() == QEvent::TouchBegin
+        && static_cast<QTouchEvent*>(event)->device()->type() == QInputDevice::DeviceType::TouchScreen) {
         // Enable scrolling by dragging, disable selecting/clicking content
         setDragMode(QGraphicsView::ScrollHandDrag);
         setInteractive(false);
@@ -133,9 +136,9 @@ bool ChatView::event(QEvent* event)
         if (!_firstTouchUpdateHappened) {
             // After the first movement of a Touch-Point, calculate the distance in both axis
             // and if the point moved more horizontally abort scroll.
-            QTouchEvent::TouchPoint p = ((QTouchEvent*)event)->touchPoints().at(0);
-            double dx = qAbs(p.lastPos().x() - p.pos().x());
-            double dy = qAbs(p.lastPos().y() - p.pos().y());
+            const auto p = static_cast<QTouchEvent*>(event)->points().at(0);
+            double dx = qAbs(p.lastPosition().x() - p.position().x());
+            double dy = qAbs(p.lastPosition().y() - p.position().y());
             if (dx > dy) {
                 setDragMode(QGraphicsView::NoDrag);
                 setInteractive(true);
@@ -145,7 +148,8 @@ bool ChatView::event(QEvent* event)
         // Applying the movement happens automatically by the drag-mode
     }
     if (event->type() == QEvent::Wheel
-        || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen)
+        || (event->type() == QEvent::TouchBegin
+            && static_cast<QTouchEvent*>(event)->device()->type() == QInputDevice::DeviceType::TouchScreen)
         || event->type() == QEvent::TouchUpdate) {
         if (requestBacklogForScroll()) {
             return true;
@@ -307,7 +311,7 @@ bool chatLinePtrLessThan(ChatLine* one, ChatLine* other)
 QSet<ChatLine*> ChatView::visibleChatLines(Qt::ItemSelectionMode mode) const
 {
     QSet<ChatLine*> result;
-    foreach (QGraphicsItem* item, items(viewport()->rect().adjusted(-1, -1, 1, 1), mode)) {
+    for (QGraphicsItem* item : items(viewport()->rect().adjusted(-1, -1, 1, 1), mode)) {
         auto* line = qgraphicsitem_cast<ChatLine*>(item);
         if (line)
             result.insert(line);
@@ -334,7 +338,7 @@ ChatLine* ChatView::lastVisibleChatLine(bool ignoreDayChange) const
     int row = -1;
 
     QSet<ChatLine*> visibleLines = visibleChatLines(Qt::ContainsItemBoundingRect);
-    foreach (ChatLine* line, visibleLines) {
+    for (ChatLine* line : visibleLines) {
         if (line->row() > row && (ignoreDayChange ? line->msgType() != Message::DayChange : true))
             row = line->row();
     }

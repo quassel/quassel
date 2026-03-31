@@ -23,11 +23,13 @@ parts:
             - cmake
             - g++
             - zlib1g-dev
-            - qttools5-dev
-            - qtscript5-dev
-            - libqt5sql5-sqlite
+            - qt6-base-dev
+            - qt6-base-dev-tools
+            - qt6-5compat-dev
+            - libqt6sql6-sqlite
         stage-packages:
-            - libqt5sql5-sqlite
+            - libqt6core5compat6
+            - libqt6sql6-sqlite
     environment:
         plugin: copy
         files:

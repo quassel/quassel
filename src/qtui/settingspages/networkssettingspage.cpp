@@ -72,7 +72,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)
     unavailableIcon = icon::get({"emblem-unavailable", "dialog-warning"});
     questionIcon = icon::get({"emblem-question", "dialog-question", "dialog-information"});
 
-    foreach (int mib, QTextCodec::availableMibs()) {
+    for (int mib : QTextCodec::availableMibs()) {
         QByteArray codec = QTextCodec::codecForMib(mib)->name();
         ui.sendEncoding->addItem(codec);
         ui.recvEncoding->addItem(codec);
@@ -102,7 +102,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)
     connect(Client::instance(), &Client::identityCreated, this, &NetworksSettingsPage::clientIdentityAdded);
     connect(Client::instance(), &Client::identityRemoved, this, &NetworksSettingsPage::clientIdentityRemoved);
 
-    foreach (IdentityId id, Client::identityIds()) {
+    for (const IdentityId& id : Client::identityIds()) {
         clientIdentityAdded(id);
     }
 }
@@ -136,7 +136,7 @@ void NetworksSettingsPage::save()
             ++i;
         }
     }
-    foreach (NetworkId id, Client::networkIds()) {
+    for (const NetworkId& id : Client::networkIds()) {
         if (!networkInfos.contains(id))
             toRemove.append(id);
     }
@@ -201,7 +201,7 @@ void NetworksSettingsPage::load()
     // Reset network capability status in case no valid networks get selected (a rare situation)
     resetNetworkCapStates();
 
-    foreach (NetworkId netid, Client::networkIds()) {
+    for (const NetworkId& netid : Client::networkIds()) {
         clientNetworkAdded(netid);
     }
     ui.networkList->setCurrentRow(0);
@@ -221,7 +221,8 @@ bool NetworksSettingsPage::aboutToSave()
     if (currentId != 0)
         saveToNetworkInfo(networkInfos[currentId]);
     QList<int> errors;
-    foreach (NetworkInfo info, networkInfos.values()) {
+    const auto infos = networkInfos.values();
+    for (const NetworkInfo& info : infos) {
         if (!info.serverList.count())
             errors.append(1);
     }
@@ -251,7 +252,8 @@ bool NetworksSettingsPage::testHasChanged()
     }
     if (Client::networkIds().count() != networkInfos.count())
         return true;
-    foreach (NetworkId id, networkInfos.keys()) {
+    const auto ids = networkInfos.keys();
+    for (const NetworkId& id : ids) {
         if (id < 0)
             return true;
         if (Client::network(id)->networkInfo() != networkInfos[id])
@@ -331,7 +333,7 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem* item)
         // check if we already have another net of this name in the list, and replace it
         QList<QListWidgetItem*> items = ui.networkList->findItems(net->networkName(), Qt::MatchExactly);
         if (items.count()) {
-            foreach (QListWidgetItem* i, items) {
+            for (QListWidgetItem* i : items) {
                 NetworkId oldid = i->data(Qt::UserRole).value<NetworkId>();
                 if (oldid > 0)
                     continue;  // only locally created nets should be replaced
@@ -455,7 +457,8 @@ void NetworksSettingsPage::clientIdentityRemoved(IdentityId id)
     IdentityId defaultId = defaultIdentity();
     if (currentId != 0)
         saveToNetworkInfo(networkInfos[currentId]);
-    foreach (NetworkInfo info, networkInfos.values()) {
+    const auto infos = networkInfos.values();
+    for (NetworkInfo info : infos) {
         if (info.identity == id) {
             if (info.networkId == currentId)
                 ui.identityList->setCurrentIndex(0);
@@ -516,7 +519,7 @@ void NetworksSettingsPage::clientNetworkRemoved(NetworkId id)
         displayNetwork(0);
     NetworkInfo info = networkInfos.take(id);
     QList<QListWidgetItem*> items = ui.networkList->findItems(info.networkName, Qt::MatchExactly);
-    foreach (QListWidgetItem* item, items) {
+    for (QListWidgetItem* item : items) {
         if (item->data(Qt::UserRole).value<NetworkId>() == id)
             delete ui.networkList->takeItem(ui.networkList->row(item));
     }
@@ -562,7 +565,7 @@ QListWidgetItem* NetworksSettingsPage::insertNetwork(const NetworkInfo& info)
     else {
         // we overwrite an existing net if it a) has the same name and b) has a negative ID meaning we created it locally before
         // -> then we can be sure that this is the core-side replacement for the net we created
-        foreach (QListWidgetItem* i, items) {
+        for (QListWidgetItem* i : items) {
             NetworkId id = i->data(Qt::UserRole).value<NetworkId>();
             if (id < 0) {
                 item = i;
@@ -613,7 +616,7 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
 
         ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
         ui.serverList->clear();
-        foreach (Network::Server server, info.serverList) {
+        for (const Network::Server& server : info.serverList) {
             QListWidgetItem* item = new QListWidgetItem(QString("%1:%2").arg(server.host).arg(server.port));
             if (server.useSsl)
                 item->setIcon(icon::get("document-encrypt"));
@@ -1130,7 +1133,7 @@ IdentityId NetworksSettingsPage::defaultIdentity() const
 {
     IdentityId defaultId = 0;
     QList<IdentityId> ids = Client::identityIds();
-    foreach (IdentityId id, ids) {
+    for (const IdentityId& id : ids) {
         if (defaultId == 0 || id < defaultId)
             defaultId = id;
     }
@@ -1181,7 +1184,7 @@ NetworkAddDlg::NetworkAddDlg(QStringList exist, QWidget* parent)
 
     // read preset networks
     QStringList networks = PresetNetworks::names();
-    foreach (QString s, existing)
+    for (const QString& s : existing)
         networks.removeAll(s);
     if (networks.count())
         ui.presetList->addItems(networks);
@@ -1425,13 +1428,13 @@ SaveNetworksDlg::SaveNetworksDlg(const QList<NetworkInfo>& toCreate,
         connect(Client::instance(), &Client::networkCreated, this, &SaveNetworksDlg::clientEvent);
         connect(Client::instance(), &Client::networkRemoved, this, &SaveNetworksDlg::clientEvent);
 
-        foreach (NetworkId id, toRemove) {
+        for (const NetworkId& id : toRemove) {
             Client::removeNetwork(id);
         }
-        foreach (NetworkInfo info, toCreate) {
+        for (const NetworkInfo& info : toCreate) {
             Client::createNetwork(info);
         }
-        foreach (NetworkInfo info, toUpdate) {
+        for (const NetworkInfo& info : toUpdate) {
             const Network* net = Client::network(info.networkId);
             if (!net) {
                 qWarning() << "Invalid client network!";

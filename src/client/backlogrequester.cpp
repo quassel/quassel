@@ -81,7 +81,7 @@ void FixedBacklogRequester::requestBacklog(const BufferIdList& bufferIds)
     backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 backlog messages for %2 buffers")
                                               .arg(_backlogCount * bufferIds.count())
                                               .arg(bufferIds.count()));
-    foreach (BufferId bufferId, bufferIds) {
+    for (BufferId bufferId : bufferIds) {
         backlogManager->requestBacklog(bufferId, -1, -1, _backlogCount);
     }
 }
@@ -100,7 +100,7 @@ GlobalUnreadBacklogRequester::GlobalUnreadBacklogRequester(ClientBacklogManager*
 void GlobalUnreadBacklogRequester::requestInitialBacklog()
 {
     MsgId oldestUnreadMessage;
-    foreach (BufferId bufferId, allBufferIds()) {
+    for (BufferId bufferId : allBufferIds()) {
         MsgId msgId = Client::networkModel()->lastSeenMsgId(bufferId);
         if (!oldestUnreadMessage.isValid() || oldestUnreadMessage > msgId)
             oldestUnreadMessage = msgId;
@@ -127,7 +127,7 @@ void PerBufferUnreadBacklogRequester::requestBacklog(const BufferIdList& bufferI
     backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 unread backlog messages for %2 buffers")
                                               .arg((_limit + _additional) * bufferIds.count())
                                               .arg(bufferIds.count()));
-    foreach (BufferId bufferId, bufferIds) {
+    for (BufferId bufferId : bufferIds) {
         backlogManager->requestBacklog(bufferId, Client::networkModel()->lastSeenMsgId(bufferId), -1, _limit, _additional);
     }
 }
@@ -154,7 +154,7 @@ void AsNeededBacklogRequester::requestBacklog(const BufferIdList& bufferIds)
     backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 backlog messages for %2 buffers")
                                               .arg(_legacyBacklogCount * bufferIds.count())
                                               .arg(bufferIds.count()));
-    foreach (BufferId bufferId, bufferIds) {
+    for (BufferId bufferId : bufferIds) {
         backlogManager->requestBacklog(bufferId, -1, -1, _legacyBacklogCount);
     }
 }

@@ -104,10 +104,10 @@ endforeach()
 
 target_link_libraries(${TARGET}
     PUBLIC
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Network
-        Qt5::Widgets
+        ${QUASSEL_QT_CORE_TARGET}
+        ${QUASSEL_QT_GUI_TARGET}
+        ${QUASSEL_QT_NETWORK_TARGET}
+        ${QUASSEL_QT_WIDGETS_TARGET}
         Quassel::UiSupport
         Quassel::Client
         Quassel::Common
@@ -116,40 +116,40 @@ target_link_libraries(${TARGET}
 if (WITH_KDE)
     target_sources(${TARGET} PRIVATE knotificationbackend.cpp)
     target_link_libraries(${TARGET} PUBLIC
-        KF5::ConfigWidgets
-        KF5::Notifications
-        KF5::NotifyConfig
-        KF5::WidgetsAddons
-        KF5::XmlGui
+        ${QUASSEL_KF_CONFIGWIDGETS_TARGET}
+        ${QUASSEL_KF_NOTIFICATIONS_TARGET}
+        ${QUASSEL_KF_NOTIFYCONFIG_TARGET}
+        ${QUASSEL_KF_WIDGETSADDONS_TARGET}
+        ${QUASSEL_KF_XMLGUI_TARGET}
     )
 endif()
 
-if (KF5Sonnet_FOUND)
+if (QUASSEL_HAVE_KF_SONNET)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_SONNET)
     target_sources(${TARGET} PRIVATE settingspages/sonnetsettingspage.cpp)
-    target_link_libraries(${TARGET} PRIVATE KF5::SonnetUi)
+    target_link_libraries(${TARGET} PRIVATE ${QUASSEL_KF_SONNETUI_TARGET})
 endif()
 
-if (Qt5Multimedia_FOUND)
+if (QUASSEL_HAVE_QT_MULTIMEDIA)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_QTMULTIMEDIA)
     target_sources(${TARGET} PRIVATE
         qtmultimedianotificationbackend.cpp
         qtmultimedianotificationconfigwidget.ui
     )
-    target_link_libraries(${TARGET} PRIVATE Qt5::Multimedia)
+    target_link_libraries(${TARGET} PRIVATE ${QUASSEL_QT_MULTIMEDIA_TARGET})
 endif()
 
-if (Qt5DBus_FOUND)
+if (QUASSEL_HAVE_QT_DBUS)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_DBUS)
-    target_link_libraries(${TARGET} PRIVATE Qt5::DBus)
-    if (dbusmenu-qt5_FOUND)
+    target_link_libraries(${TARGET} PRIVATE ${QUASSEL_QT_DBUS_TARGET})
+    if (QUASSEL_HAVE_DBUSMENU)
         target_compile_definitions(${TARGET} PRIVATE -DHAVE_DBUSMENU)
-        target_link_libraries(${TARGET} PRIVATE dbusmenu-qt5)
+        target_link_libraries(${TARGET} PRIVATE ${QUASSEL_DBUSMENU_TARGET})
     endif()
 
-    qt5_add_dbus_interface(DBUS_SOURCES ../../interfaces/org.kde.StatusNotifierWatcher.xml statusnotifierwatcher)
-    qt5_add_dbus_interface(DBUS_SOURCES ../../interfaces/org.freedesktop.Notifications.xml notificationsclient)
-    qt5_add_dbus_adaptor  (DBUS_SOURCES ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
+    quassel_qt_add_dbus_interface(DBUS_SOURCES ../../interfaces/org.kde.StatusNotifierWatcher.xml statusnotifierwatcher)
+    quassel_qt_add_dbus_interface(DBUS_SOURCES ../../interfaces/org.freedesktop.Notifications.xml notificationsclient)
+    quassel_qt_add_dbus_adaptor  (DBUS_SOURCES ../../interfaces/org.kde.StatusNotifierItem.xml statusnotifieritemdbus.h StatusNotifierItemDBus)
 
     target_sources(${TARGET} PRIVATE
         dockmanagernotificationbackend.cpp
@@ -159,20 +159,20 @@ if (Qt5DBus_FOUND)
     )
 endif()
 
-if (HAVE_WEBENGINE)
+if (QUASSEL_HAVE_WEBENGINE)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_WEBENGINE)
     target_link_libraries(${TARGET} PRIVATE
-        Qt5::WebEngine
-        Qt5::WebEngineWidgets)
+        ${QUASSEL_QT_WEBENGINE_TARGET}
+        ${QUASSEL_QT_WEBENGINEWIDGETS_TARGET})
 endif()
 
-if (LibsnoreQt5_FOUND)
+if (QUASSEL_HAVE_LIBSNORE)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_LIBSNORE)
     target_sources(${TARGET} PRIVATE
         snorenotificationbackend.cpp
         snorentificationconfigwidget.ui
     )
-    target_link_libraries(${TARGET} PRIVATE Snore::Libsnore Snore::LibsnoreSettings)
+    target_link_libraries(${TARGET} PRIVATE ${QUASSEL_LIBSNORE_TARGET} ${QUASSEL_LIBSNORE_SETTINGS_TARGET})
 endif()
 
 if (WITH_NOTIFICATION_CENTER)

@@ -500,24 +500,30 @@ void LegacyPeer::fromLegacyIrcUsersAndChannels(QVariantMap& initData)
     QVariantMap newMap;
 
     QHash<QString, QVariantList> users;
-    foreach (const QVariant& v, legacyMap["users"].toMap().values()) {
+    const auto legacyUsers = legacyMap["users"].toMap().values();
+    for (const QVariant& v : legacyUsers) {
         const QVariantMap& map = v.toMap();
-        foreach (const QString& key, map.keys())
+        const auto mapKeys = map.keys();
+        for (const QString& key : mapKeys)
             users[key] << map[key];
     }
     QVariantMap userMap;
-    foreach (const QString& key, users.keys())
+    const auto userKeys = users.keys();
+    for (const QString& key : userKeys)
         userMap[key] = users[key];
     newMap["Users"] = userMap;
 
     QHash<QString, QVariantList> channels;
-    foreach (const QVariant& v, legacyMap["channels"].toMap().values()) {
+    const auto legacyChannels = legacyMap["channels"].toMap().values();
+    for (const QVariant& v : legacyChannels) {
         const QVariantMap& map = v.toMap();
-        foreach (const QString& key, map.keys())
+        const auto mapKeys = map.keys();
+        for (const QString& key : mapKeys)
             channels[key] << map[key];
     }
     QVariantMap channelMap;
-    foreach (const QString& key, channels.keys())
+    const auto channelKeys = channels.keys();
+    for (const QString& key : channelKeys)
         channelMap[key] = channels[key];
     newMap["Channels"] = channelMap;
 
@@ -537,7 +543,8 @@ void LegacyPeer::toLegacyIrcUsersAndChannels(QVariantMap& initData)
     int size = users["nick"].toList().size();  // we know this key exists
     for (int i = 0; i < size; i++) {
         QVariantMap map;
-        foreach (const QString& key, users.keys())
+        const auto userKeys = users.keys();
+        for (const QString& key : userKeys)
             map[key] = users[key].toList().at(i);
         QString hostmask = QString("%1!%2@%3").arg(map["nick"].toString(), map["user"].toString(), map["host"].toString());
         userMap[hostmask.toLower()] = map;
@@ -550,7 +557,8 @@ void LegacyPeer::toLegacyIrcUsersAndChannels(QVariantMap& initData)
     size = channels["name"].toList().size();
     for (int i = 0; i < size; i++) {
         QVariantMap map;
-        foreach (const QString& key, channels.keys())
+        const auto channelKeys = channels.keys();
+        for (const QString& key : channelKeys)
             map[key] = channels[key].toList().at(i);
         channelMap[map["name"].toString().toLower()] = map;
     }

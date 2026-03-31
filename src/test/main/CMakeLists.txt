@@ -6,6 +6,6 @@ target_sources(${TARGET} PRIVATE
 
 target_link_libraries(${TARGET}
     PUBLIC
-        Qt5::Core
+        ${QUASSEL_QT_CORE_TARGET}
         Quassel::Test::Global
 )

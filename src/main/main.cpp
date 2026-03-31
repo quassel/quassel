@@ -43,13 +43,16 @@
 #endif
 
 // We don't want quasselcore to depend on KDE
-#if defined HAVE_KF5 && defined BUILD_CORE
-#    undef HAVE_KF5
+#if defined HAVE_KF6 && defined BUILD_CORE
+#    undef HAVE_KF6
 #endif
 
-#if defined HAVE_KF5
-#    include <KCoreAddons/KAboutData>
-#    include <KCoreAddons/Kdelibs4ConfigMigrator>
+#if defined HAVE_KF6
+#    include <KAboutData>
+#    if __has_include(<Kdelibs4ConfigMigrator>)
+#        include <Kdelibs4ConfigMigrator>
+#        define HAVE_KDELIBS4CONFIGMIGRATOR
+#    endif
 #endif
 
 #include "quassel.h"
@@ -71,8 +74,8 @@ int main(int argc, char** argv)
     QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
     QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
 
-    // Migrate settings from KDE4 to KF5 if appropriate
-#ifdef HAVE_KF5
+    // Migrate settings from KDE4 if the compatibility helper is available.
+#ifdef HAVE_KDELIBS4CONFIGMIGRATOR
     Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
     migrator.setConfigFiles(QStringList() << "quasselrc"
                                           << "quassel.notifyrc");
@@ -83,8 +86,6 @@ int main(int argc, char** argv)
 #if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Added in Qt 5.6
 #endif
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-
     // Instantiate application
 #if defined BUILD_CORE
     CoreApplication app(argc, argv);
@@ -100,7 +101,7 @@ int main(int argc, char** argv)
     try {
         Quassel::instance()->init(runMode);
 
-#ifdef HAVE_KF5
+#ifdef HAVE_KF6
         AboutData aboutData;
         AboutData::setQuasselPersons(&aboutData);
         KAboutData::setApplicationData(aboutData.kAboutData());

@@ -196,8 +196,8 @@ bool ShortcutsModel::setData(const QModelIndex& index, const QVariant& value, in
 
 void ShortcutsModel::load()
 {
-    foreach (Item* catItem, _categoryItems) {
-        foreach (Item* actItem, catItem->actionItems) {
+    for (Item* catItem : _categoryItems) {
+        for (Item* actItem : catItem->actionItems) {
             actItem->shortcut = actItem->action->shortcut(Action::ActiveShortcut);
         }
     }
@@ -210,8 +210,8 @@ void ShortcutsModel::load()
 
 void ShortcutsModel::commit()
 {
-    foreach (Item* catItem, _categoryItems) {
-        foreach (Item* actItem, catItem->actionItems) {
+    for (Item* catItem : _categoryItems) {
+        for (Item* actItem : catItem->actionItems) {
             actItem->action->setShortcut(actItem->shortcut, Action::ActiveShortcut);
         }
     }

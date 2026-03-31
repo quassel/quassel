@@ -31,6 +31,7 @@
 #include <QMenuBar>
 #include <QMimeData>
 #include <QPersistentModelIndex>
+#include <QRegularExpression>
 #include <QUrl>
 
 #ifdef HAVE_WEBENGINE
@@ -225,7 +226,7 @@ ChatLine* ChatScene::chatLine(MsgId msgId, bool matchExact, bool ignoreDayChange
 
 ChatItem* ChatScene::chatItemAt(const QPointF& scenePos) const
 {
-    foreach (QGraphicsItem* item, items(scenePos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder)) {
+    for (QGraphicsItem* item : items(scenePos, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder)) {
         auto* line = qgraphicsitem_cast<ChatLine*>(item);
         if (line)
             return line->itemAt(line->mapFromScene(scenePos));
@@ -1336,7 +1337,7 @@ void ChatScene::updateTimestampHasBrackets()
         //   (^\s*\(.+\)\s*$)|(^\s*\{.+\}\s*$)|(^\s*\[.+\]\s*$)|(^\s*<.+>\s*$)
         // Note that '\' must be escaped as '\\'
         // Helpful interactive website for debugging and explaining:  https://regex101.com/
-        const QRegExp regExpMatchBrackets(R"(^\s*[({[<].+[)}\]>]\s*$)");
-        _timestampHasBrackets = regExpMatchBrackets.exactMatch(_timestampFormatString);
+        static const QRegularExpression regExpMatchBrackets(QStringLiteral(R"(^\s*[({[<].+[)}\]>]\s*$)"));
+        _timestampHasBrackets = regExpMatchBrackets.match(_timestampFormatString).hasMatch();
     }
 }

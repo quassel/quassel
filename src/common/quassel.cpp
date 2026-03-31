@@ -30,6 +30,7 @@
 #include <QHostAddress>
 #include <QLibraryInfo>
 #include <QMetaEnum>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QTranslator>
 #include <QUuid>
@@ -63,8 +64,6 @@ Quassel::Quassel()
 void Quassel::init(RunMode runMode)
 {
     _runMode = runMode;
-
-    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
 
     setupSignalHandling();
     setupEnvironment();
@@ -138,12 +137,6 @@ void Quassel::registerMetaTypes()
     qRegisterMetaType<Network::Server>("Network::Server");
     qRegisterMetaType<Identity>("Identity");
 
-    qRegisterMetaTypeStreamOperators<Message>("Message");
-    qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
-    qRegisterMetaTypeStreamOperators<NetworkInfo>("NetworkInfo");
-    qRegisterMetaTypeStreamOperators<Network::Server>("Network::Server");
-    qRegisterMetaTypeStreamOperators<Identity>("Identity");
-
     qRegisterMetaType<IdentityId>("IdentityId");
     qRegisterMetaType<BufferId>("BufferId");
     qRegisterMetaType<NetworkId>("NetworkId");
@@ -152,25 +145,14 @@ void Quassel::registerMetaTypes()
     qRegisterMetaType<MsgId>("MsgId");
 
     qRegisterMetaType<QHostAddress>("QHostAddress");
-    qRegisterMetaTypeStreamOperators<QHostAddress>("QHostAddress");
     qRegisterMetaType<QUuid>("QUuid");
-    qRegisterMetaTypeStreamOperators<QUuid>("QUuid");
-
-    qRegisterMetaTypeStreamOperators<IdentityId>("IdentityId");
-    qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
-    qRegisterMetaTypeStreamOperators<NetworkId>("NetworkId");
-    qRegisterMetaTypeStreamOperators<UserId>("UserId");
-    qRegisterMetaTypeStreamOperators<AccountId>("AccountId");
-    qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
 
     qRegisterMetaType<Protocol::SessionState>("Protocol::SessionState");
     qRegisterMetaType<PeerPtr>("PeerPtr");
-    qRegisterMetaTypeStreamOperators<PeerPtr>("PeerPtr");
 
     // Versions of Qt prior to 4.7 didn't define QVariant as a meta type
-    if (!QMetaType::type("QVariant")) {
+    if (!QMetaType::fromName("QVariant").isValid()) {
         qRegisterMetaType<QVariant>("QVariant");
-        qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
     }
 }
 
@@ -185,7 +167,7 @@ void Quassel::setupEnvironment()
     if (xdgDataVar.isEmpty())
         xdgDataVar = QLatin1String("/usr/local/share:/usr/share");  // sane defaults
 
-    QStringList xdgDirs = xdgDataVar.split(QLatin1Char(':'), QString::SkipEmptyParts);
+    QStringList xdgDirs = xdgDataVar.split(QLatin1Char(':'), Qt::SkipEmptyParts);
 
     // Add our install prefix (if we're not in a bindir, this just adds the current workdir)
     QString appDir = QCoreApplication::applicationDirPath();
@@ -249,13 +231,15 @@ void Quassel::setupBuildInfo()
     }
     else {
         // analyze what we got from git-describe
-        static const QRegExp rx{"(.*)-(\\d+)-g([0-9a-f]+)(-dirty)?$"};
-        if (rx.exactMatch(buildInfo.generatedVersion)) {
-            QString distance = rx.cap(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(rx.cap(1), rx.cap(2));
-            buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}.arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4));
+        static const QRegularExpression rx(QStringLiteral(R"((.*)-(\d+)-g([0-9a-f]+)(-dirty)?$)"));
+        const QRegularExpressionMatch match = rx.match(buildInfo.generatedVersion);
+        if (match.hasMatch()) {
+            QString distance = match.captured(2) == "0" ? QString{} : QString{"%1+%2 "}.arg(match.captured(1), match.captured(2));
+            buildInfo.plainVersionString = QString{"v%1 (%2git-%3%4)"}
+                                               .arg(buildInfo.baseVersion, distance, match.captured(3), match.captured(4));
             if (!buildInfo.commitHash.isEmpty()) {
                 buildInfo.fancyVersionString = QString{"v%1 (%2git-<a href=\"https://github.com/quassel/quassel/commit/%5\">%3</a>%4)"}
-                                                   .arg(buildInfo.baseVersion, distance, rx.cap(3), rx.cap(4), buildInfo.commitHash);
+                                                   .arg(buildInfo.baseVersion, distance, match.captured(3), match.captured(4), buildInfo.commitHash);
             }
         }
         else {
@@ -428,7 +412,8 @@ const QString& Quassel::coreDumpFileName()
         _coreDumpFileName = configDir.absoluteFilePath(
             QString("Quassel-Crash-%1.log").arg(QDateTime::currentDateTime().toString("yyyyMMdd-hhmm")));
         QFile dumpFile(_coreDumpFileName);
-        dumpFile.open(QIODevice::Append);
+        if (!dumpFile.open(QIODevice::Append))
+            qWarning() << "Failed to open core dump log:" << dumpFile.fileName();
         QTextStream dumpStream(&dumpFile);
         dumpStream << "Quassel IRC: " << _buildInfo.baseVersion << ' ' << _buildInfo.commitHash << '\n';
         qDebug() << "Quassel IRC: " << _buildInfo.baseVersion << ' ' << _buildInfo.commitHash;
@@ -513,7 +498,7 @@ QStringList Quassel::dataDirPaths()
         dataDirNames << "/usr/local/share"
                      << "/usr/share";
     else
-        dataDirNames << xdgDataDirs.split(':', QString::SkipEmptyParts);
+        dataDirNames << xdgDataDirs.split(':', Qt::SkipEmptyParts);
 
     // Just in case, also check our install prefix
     dataDirNames << QCoreApplication::applicationDirPath() + "/../share";
@@ -549,7 +534,7 @@ QStringList Quassel::dataDirPaths()
 QString Quassel::findDataFilePath(const QString& fileName)
 {
     QStringList dataDirs = dataDirPaths();
-    foreach (QString dataDir, dataDirs) {
+    for (const QString& dataDir : dataDirs) {
         QString path = dataDir + fileName;
         if (QFile::exists(path))
             return path;
@@ -560,7 +545,7 @@ QString Quassel::findDataFilePath(const QString& fileName)
 QStringList Quassel::scriptDirPaths()
 {
     QStringList res(configDirPath() + "scripts/");
-    foreach (QString path, dataDirPaths())
+    for (const QString& path : dataDirPaths())
         res << path + "scripts/";
     return res;
 }
@@ -581,7 +566,7 @@ QStringList Quassel::translationDirPaths()
         }
         qDebug().noquote().nospace()
                 << "Translation paths: \"" << instance()->_translationDirPaths.join("\", \"")
-                << "\", with Qt fallback: \"" << QLibraryInfo::location(QLibraryInfo::TranslationsPath) << "\"";
+                << "\", with Qt fallback: \"" << QLibraryInfo::path(QLibraryInfo::TranslationsPath) << "\"";
     }
     return instance()->_translationDirPaths;
 }
@@ -636,10 +621,10 @@ void Quassel::loadTranslation(const QLocale& locale)
     if (!successQt) {
         // Fall back to Qt library translations path
 #ifndef Q_OS_MAC
-        successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        successQt = qtTranslator->load(locale, QString("qt_"), QString(""), QLibraryInfo::path(QLibraryInfo::TranslationsPath));
 #else
         // Filename, directory
-        successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        successQt = qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::path(QLibraryInfo::TranslationsPath));
 #endif
     }
 

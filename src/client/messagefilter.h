@@ -56,7 +56,15 @@ public slots:
     void messageRedirectionChanged();
     void requestBacklog();
     // redefined as public slot
-    void invalidateFilter() { QSortFilterProxyModel::invalidateFilter(); }
+    void invalidateFilter()
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+        beginFilterChange();
+        endFilterChange();
+#else
+        QSortFilterProxyModel::invalidateFilter();
+#endif
+    }
 
 protected:
     QString bufferName() const { return Client::networkModel()->bufferName(singleBufferId()); }

@@ -78,7 +78,7 @@ QDataStream& operator<<(QDataStream& out, const Message& msg)
         out << (qint64) msg.timestamp().toMSecsSinceEpoch();
     }
     else {
-        out << (quint32) msg.timestamp().toTime_t();
+        out << (quint32) msg.timestamp().toSecsSinceEpoch();
     }
 
     out << (quint32) msg.type()
@@ -114,7 +114,7 @@ QDataStream& operator>>(QDataStream& in, Message& msg)
     else {
         quint32 timeStamp;
         in >> timeStamp;
-        msg._timestamp = QDateTime::fromTime_t(timeStamp);
+        msg._timestamp = QDateTime::fromSecsSinceEpoch(timeStamp);
     }
 
     quint32 type;

@@ -34,6 +34,7 @@
 class SignalProxy;
 class Network;
 class IrcChannel;
+class QTextCodec;
 
 class COMMON_EXPORT IrcUser : public SyncableObject
 {

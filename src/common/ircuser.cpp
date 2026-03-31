@@ -49,8 +49,7 @@ IrcUser::IrcUser(const QString& hostmask, Network* network)
     , _codecForDecoding(nullptr)
 {
     updateObjectName();
-    _lastAwayMessageTime.setTimeSpec(Qt::UTC);
-    _lastAwayMessageTime.setMSecsSinceEpoch(0);
+    _lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(0, utcTimeZone());
 }
 
 // ====================
@@ -75,8 +74,7 @@ QDateTime IrcUser::idleTime()
 QStringList IrcUser::channels() const
 {
     QStringList chanList;
-    IrcChannel* channel;
-    foreach (channel, _channels) {
+    for (IrcChannel* channel : _channels) {
         chanList << channel->name();
     }
     return chanList;
@@ -201,13 +199,12 @@ void IrcUser::setIrcOperator(const QString& ircOperator)
 void IrcUser::setLastAwayMessage(int lastAwayMessage)
 {
 #if QT_VERSION >= 0x050800
-    QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage);
+    QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage, utcTimeZone());
 #else
     // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
     // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-    QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000);
+    QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000, utcTimeZone());
 #endif
-    lastAwayMessageTime.setTimeSpec(Qt::UTC);
     setLastAwayMessageTime(lastAwayMessageTime);
 }
 
@@ -329,7 +326,7 @@ void IrcUser::quitInternal(bool skip_sync)
 {
     QList<IrcChannel*> channels = _channels.values();
     _channels.clear();
-    foreach (IrcChannel* channel, channels) {
+    for (IrcChannel* channel : channels) {
         disconnect(channel, nullptr, this, nullptr);
         channel->part(this);
     }
@@ -365,7 +362,7 @@ void IrcUser::addUserModes(const QString& modes)
 
     // Don't needlessly sync when no changes are made
     bool changesMade = false;
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         if (!_userModes.contains(modes[i])) {
             _userModes += modes[i];
             changesMade = true;
@@ -383,7 +380,7 @@ void IrcUser::removeUserModes(const QString& modes)
     if (modes.isEmpty())
         return;
 
-    for (int i = 0; i < modes.count(); i++) {
+    for (int i = 0; i < modes.size(); i++) {
         _userModes.remove(modes[i]);
     }
     SYNC(ARG(modes))

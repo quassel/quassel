@@ -20,7 +20,7 @@
 
 #include "coreuserinputhandler.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "ctcpparser.h"
 #include "util.h"
@@ -145,8 +145,8 @@ void CoreUserInputHandler::banOrUnban(const BufferInfo& bufferInfo, const QStrin
             return;
         }
 
-        static QRegExp ipAddress(R"(\d+\.\d+\.\d+\.\d+)");
-        if (ipAddress.exactMatch(generalizedHost)) {
+        static const QRegularExpression ipAddress(QStringLiteral(R"(^\d+\.\d+\.\d+\.\d+$)"));
+        if (ipAddress.match(generalizedHost).hasMatch()) {
             int lastDotPos = generalizedHost.lastIndexOf('.') + 1;
             generalizedHost.replace(lastDotPos, generalizedHost.length() - lastDotPos, '*');
         }
@@ -212,7 +212,7 @@ void CoreUserInputHandler::handleDelkey(const BufferInfo& bufferInfo, const QStr
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
@@ -279,7 +279,7 @@ void CoreUserInputHandler::doMode(const BufferInfo& bufferInfo, const QChar& add
         }
     }
     else {
-        nickList = nicks.split(' ', QString::SkipEmptyParts);
+        nickList = nicks.split(' ', Qt::SkipEmptyParts);
     }
 
     if (nickList.count() == 0)
@@ -336,10 +336,10 @@ void CoreUserInputHandler::handleJoin(const BufferInfo& bufferInfo, const QStrin
 
     // trim spaces before chans or keys
     QString sane_msg = msg;
-    sane_msg.replace(QRegExp(", +"), ",");
+    sane_msg.replace(QRegularExpression(QStringLiteral(", +")), ",");
     QStringList params = sane_msg.trimmed().split(" ");
 
-    QStringList chans = params[0].split(",", QString::SkipEmptyParts);
+    QStringList chans = params[0].split(",", Qt::SkipEmptyParts);
     QStringList keys;
     if (params.count() > 1)
         keys = params[1].split(",");
@@ -408,7 +408,7 @@ void CoreUserInputHandler::handleKeyx(const BufferInfo& bufferInfo, const QStrin
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     QString target;
     if (!bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages() ) {
@@ -520,7 +520,7 @@ void CoreUserInputHandler::handleKill(const BufferInfo& bufferInfo, const QStrin
 void CoreUserInputHandler::handleList(const BufferInfo& bufferInfo, const QString& msg)
 {
     Q_UNUSED(bufferInfo)
-    emit putCmd("LIST", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
+    emit putCmd("LIST", serverEncode(msg.split(' ', Qt::SkipEmptyParts)));
 }
 
 void CoreUserInputHandler::handleMe(const BufferInfo& bufferInfo, const QString& msg)
@@ -553,7 +553,7 @@ void CoreUserInputHandler::handleMode(const BufferInfo& bufferInfo, const QStrin
 {
     Q_UNUSED(bufferInfo)
 
-    QStringList params = msg.split(' ', QString::SkipEmptyParts);
+    QStringList params = msg.split(' ', Qt::SkipEmptyParts);
     if (!params.isEmpty()) {
         if (params[0] == "-reset" && params.count() == 1) {
             network()->resetPersistentModes();
@@ -754,7 +754,7 @@ void CoreUserInputHandler::handleSay(const BufferInfo& bufferInfo, const QString
 
     // Split apart messages at line feeds.  The IRC protocol uses those to separate commands, so
     // they need to be split into multiple messages.
-    QStringList messages = msg.split(QChar::LineFeed, QString::SkipEmptyParts);
+    QStringList messages = msg.split(QChar::LineFeed, Qt::SkipEmptyParts);
 
     for (const auto& message : messages) {
         // Handle each separated message independently
@@ -793,7 +793,7 @@ void CoreUserInputHandler::handleSetkey(const BufferInfo& bufferInfo, const QStr
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     if (parms.count() == 1 && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
@@ -856,7 +856,7 @@ void CoreUserInputHandler::handleShowkey(const BufferInfo& bufferInfo, const QSt
         return;
     }
 
-    QStringList parms = msg.split(' ', QString::SkipEmptyParts);
+    QStringList parms = msg.split(' ', Qt::SkipEmptyParts);
 
     if (parms.isEmpty() && !bufferInfo.bufferName().isEmpty() && bufferInfo.acceptsRegularMessages())
         parms.prepend(bufferInfo.bufferName());
@@ -927,7 +927,7 @@ void CoreUserInputHandler::handleTopic(const BufferInfo& bufferInfo, const QStri
 
 void CoreUserInputHandler::handleVoice(const BufferInfo& bufferInfo, const QString& msg)
 {
-    QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+    QStringList nicks = msg.split(' ', Qt::SkipEmptyParts);
     QString m = "+";
     for (int i = 0; i < nicks.count(); i++)
         m += 'v';
@@ -1013,20 +1013,21 @@ int CoreUserInputHandler::lastParamOverrun(const QString& cmd, const QList<QByte
     // 512 - nicklen - userlen - hostlen - commandlen - sum(param[0]..param[n-1])) - 2 (for CRLF) - 4 (":!@" + 1space between prefix and
     // command) - max(paramcount - 1, 0) (space for simple params) - 2 (space and colon for last param)
     IrcUser* me = network()->me();
-    int maxLen = 480 - cmd.toLatin1().count();  // educated guess in case we don't know us (yet?)
+    const QByteArray cmdBytes = cmd.toLatin1();
+    int maxLen = 480 - cmdBytes.size();  // educated guess in case we don't know us (yet?)
 
     if (me)
-        maxLen = 512 - serverEncode(me->nick()).count() - serverEncode(me->user()).count() - serverEncode(me->host()).count()
-                 - cmd.toLatin1().count() - 6;
+        maxLen = 512 - serverEncode(me->nick()).size() - serverEncode(me->user()).size() - serverEncode(me->host()).size()
+                 - cmdBytes.size() - 6;
 
     if (!params.isEmpty()) {
         for (int i = 0; i < params.count() - 1; i++) {
-            maxLen -= (params[i].count() + 1);
+            maxLen -= (params[i].size() + 1);
         }
         maxLen -= 2;  // " :" last param separator;
 
-        if (params.last().count() > maxLen) {
-            return params.last().count() - maxLen;
+        if (params.last().size() > maxLen) {
+            return params.last().size() - maxLen;
         }
         else {
             return 0;
@@ -1075,7 +1076,8 @@ void CoreUserInputHandler::timerEvent(QTimerEvent* event)
     event->accept();
 
     // the stored command might be the result of an alias expansion, so we need to split it up again
-    QStringList commands = rawCommand.split(QRegExp("; ?"));
+    static const QRegularExpression commandSeparator(QStringLiteral(R"(; ?)"));
+    QStringList commands = rawCommand.split(commandSeparator);
     for (const QString& command : commands) {
         handleUserInput(bufferInfo, command);
     }

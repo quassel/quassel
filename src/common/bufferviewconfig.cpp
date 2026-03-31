@@ -109,7 +109,7 @@ QVariantList BufferViewConfig::initBufferList() const
 {
     QVariantList buffers;
 
-    foreach (BufferId bufferId, _buffers) {
+    for (BufferId bufferId : _buffers) {
         buffers << QVariant::fromValue(bufferId);
     }
 
@@ -120,7 +120,7 @@ void BufferViewConfig::initSetBufferList(const QVariantList& buffers)
 {
     _buffers.clear();
 
-    foreach (QVariant buffer, buffers) {
+    for (const QVariant& buffer : buffers) {
         _buffers << buffer.value<BufferId>();
     }
 
@@ -131,7 +131,7 @@ QVariantList BufferViewConfig::initRemovedBuffers() const
 {
     QVariantList removedBuffers;
 
-    foreach (BufferId bufferId, _removedBuffers) {
+    for (BufferId bufferId : _removedBuffers) {
         removedBuffers << QVariant::fromValue(bufferId);
     }
 
@@ -142,7 +142,7 @@ void BufferViewConfig::initSetRemovedBuffers(const QVariantList& buffers)
 {
     _removedBuffers.clear();
 
-    foreach (QVariant buffer, buffers) {
+    for (const QVariant& buffer : buffers) {
         _removedBuffers << buffer.value<BufferId>();
     }
 }
@@ -151,7 +151,7 @@ QVariantList BufferViewConfig::initTemporarilyRemovedBuffers() const
 {
     QVariantList temporarilyRemovedBuffers;
 
-    foreach (BufferId bufferId, _temporarilyRemovedBuffers) {
+    for (BufferId bufferId : _temporarilyRemovedBuffers) {
         temporarilyRemovedBuffers << QVariant::fromValue(bufferId);
     }
 
@@ -162,7 +162,7 @@ void BufferViewConfig::initSetTemporarilyRemovedBuffers(const QVariantList& buff
 {
     _temporarilyRemovedBuffers.clear();
 
-    foreach (QVariant buffer, buffers) {
+    for (const QVariant& buffer : buffers) {
         _temporarilyRemovedBuffers << buffer.value<BufferId>();
     }
 }

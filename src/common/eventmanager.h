@@ -32,9 +32,6 @@ class Network;
 class COMMON_EXPORT EventManager : public QObject
 {
     Q_OBJECT
-    Q_FLAGS(EventFlag EventFlags)
-    Q_ENUMS(EventType)
-
 public:
     enum RegistrationMode
     {
@@ -61,6 +58,7 @@ public:
         Stopped = 0x80
     };
     Q_DECLARE_FLAGS(EventFlags, EventFlag)
+    Q_FLAG(EventFlags)
 
     /*
 
@@ -126,6 +124,7 @@ public:
 
         KeyEvent = 0x00060000
     };
+    Q_ENUM(EventType)
 
     EventManager(QObject* parent = nullptr);
 

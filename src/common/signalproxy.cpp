@@ -25,6 +25,7 @@
 #include <QHostAddress>
 #include <QMetaMethod>
 #include <QMetaProperty>
+#include <QRegularExpression>
 #include <QSslSocket>
 #include <QThread>
 
@@ -400,14 +401,14 @@ void SignalProxy::handle(Peer* peer, const SyncMessage& syncMessage)
     QVariant returnValue;
     int returnType = eMeta->returnType(slotId);
     if (returnType != QMetaType::Void)
-        returnValue = QVariant(static_cast<QVariant::Type>(returnType));
+        returnValue = QVariant(QMetaType(returnType), nullptr);
 
     if (!invokeSlot(receiver, slotId, syncMessage.params, returnValue, peer)) {
         qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", eMeta->methodName(slotId).constData());
         return;
     }
 
-    if (returnValue.type() != QVariant::Invalid && eMeta->receiveMap().contains(slotId)) {
+    if (returnValue.isValid() && eMeta->receiveMap().contains(slotId)) {
         int receiverId = eMeta->receiveMap()[slotId];
         QVariantList returnParams;
         if (eMeta->argTypes(receiverId).count() > 1)
@@ -504,7 +505,7 @@ bool SignalProxy::invokeSlot(QObject* receiver, int methodId, const QVariantList
             qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
             return false;
         }
-        if (args[i] != QMetaType::type(params[i].typeName())) {
+        if (args[i] != QMetaType::fromName(params[i].typeName()).id()) {
             qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << eMeta->methodName(methodId);
             return false;
         }
@@ -512,7 +513,7 @@ bool SignalProxy::invokeSlot(QObject* receiver, int methodId, const QVariantList
         _a[i + 1] = const_cast<void*>(params[i].constData());
     }
 
-    if (returnValue.type() != QVariant::Invalid)
+    if (returnValue.isValid())
         _a[0] = const_cast<void*>(returnValue.constData());
 
     Qt::ConnectionType type = QThread::currentThread() == receiver->thread() ? Qt::DirectConnection : Qt::QueuedConnection;
@@ -594,7 +595,7 @@ void SignalProxy::sync_call__(const SyncableObject* obj, SignalProxy::ProxyMode 
             qWarning() << "        - make sure all your data types are known by the Qt MetaSystem";
             return;
         }
-        params << QVariant(argTypes[i], va_arg(ap, void*));
+        params << QVariant(QMetaType(argTypes[i]), va_arg(ap, void*));
     }
 
     if (_restrictMessageTarget) {
@@ -626,7 +627,7 @@ void SignalProxy::dumpProxyStats()
         mode = "Client";
 
     int slaveCount = 0;
-    foreach (ObjectId oid, _syncSlave.values())
+    for (ObjectId oid : _syncSlave.values())
         slaveCount += oid.count();
 
     qDebug() << this;
@@ -811,7 +812,7 @@ const QHash<int, int>& SignalProxy::ExtendedMetaObject::receiveMap()
             params = signature.mid(paramsPos);
 
             methodName = methodName.replace("request", "receive");
-            params = params.left(params.count() - 1) + ", " + returnTypeName + ")";
+            params = params.left(params.size() - 1) + ", " + returnTypeName + ")";
 
             signature = QMetaObject::normalizedSignature(methodName + params);
             receiverId = _meta->indexOfSlot(signature);
@@ -844,14 +845,16 @@ QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod& metho
     int upperCharPos;
     if (method.methodType() == QMetaMethod::Slot) {
         // we take evertyhing from the first uppercase char if it's slot
-        upperCharPos = methodname.indexOf(QRegExp("[A-Z]"));
+        static const QRegularExpression upperCaseRx(QStringLiteral("[A-Z]"));
+        upperCharPos = methodname.indexOf(upperCaseRx);
         if (upperCharPos == -1)
             return QString();
         methodname = methodname.mid(upperCharPos);
     }
     else {
         // and if it's a signal we discard everything from the last uppercase char
-        upperCharPos = methodname.lastIndexOf(QRegExp("[A-Z]"));
+        static const QRegularExpression upperCaseRx(QStringLiteral("[A-Z]"));
+        upperCharPos = methodname.lastIndexOf(upperCaseRx);
         if (upperCharPos == -1)
             return QString();
         methodname = methodname.left(upperCharPos);
@@ -864,13 +867,13 @@ QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod& metho
 
 SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaMethod& method)
     : _methodName(SignalProxy::ExtendedMetaObject::methodName(method))
-    , _returnType(QMetaType::type(method.typeName()))
+    , _returnType(QMetaType::fromName(method.typeName()).id())
 {
     // determine argTypes
     QList<QByteArray> paramTypes = method.parameterTypes();
     QList<int> argTypes;
     for (int i = 0; i < paramTypes.count(); i++) {
-        argTypes.append(QMetaType::type(paramTypes[i]));
+        argTypes.append(QMetaType::fromName(paramTypes[i]).id());
     }
     _argTypes = argTypes;
 

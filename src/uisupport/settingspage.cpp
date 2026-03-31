@@ -110,7 +110,7 @@ void SettingsPage::initAutoWidgets()
 
 void SettingsPage::findAutoWidgets(QObject* parent, QObjectList* autoList) const
 {
-    foreach (QObject* child, parent->children()) {
+    for (QObject* child : parent->children()) {
         if (child->property("settingsKey").isValid())
             autoList->append(child);
         findAutoWidgets(child, autoList);
@@ -153,7 +153,7 @@ QString SettingsPage::autoWidgetSettingsKey(QObject* widget) const
 void SettingsPage::autoWidgetHasChanged()
 {
     bool changed_ = false;
-    foreach (QObject* widget, _autoWidgets) {
+    for (QObject* widget : _autoWidgets) {
         QVariant curValue = widget->property(autoWidgetPropertyName(widget));
         if (!curValue.isValid())
             qWarning() << "SettingsPage::autoWidgetHasChanged(): Unknown property";
@@ -175,7 +175,7 @@ void SettingsPage::autoWidgetHasChanged()
 void SettingsPage::load()
 {
     UiSettings s("");
-    foreach (QObject* widget, _autoWidgets) {
+    for (QObject* widget : _autoWidgets) {
         QString key = autoWidgetSettingsKey(widget);
         QVariant val;
         if (key.isEmpty())
@@ -196,7 +196,7 @@ void SettingsPage::load()
 void SettingsPage::save()
 {
     UiSettings s("");
-    foreach (QObject* widget, _autoWidgets) {
+    for (QObject* widget : _autoWidgets) {
         QString key = autoWidgetSettingsKey(widget);
         QVariant val = widget->property(autoWidgetPropertyName(widget));
         widget->setProperty("storedValue", val);
@@ -213,7 +213,7 @@ void SettingsPage::save()
 
 void SettingsPage::defaults()
 {
-    foreach (QObject* widget, _autoWidgets) {
+    for (QObject* widget : _autoWidgets) {
         QVariant val = widget->property("defaultValue");
         widget->setProperty(autoWidgetPropertyName(widget), val);
     }

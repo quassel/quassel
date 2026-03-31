@@ -32,10 +32,12 @@
 
 class IrcUser;
 class Network;
+class QTextCodec;
 
 class COMMON_EXPORT IrcChannel : public SyncableObject
 {
     Q_OBJECT
+    Q_MOC_INCLUDE("ircuser.h")
     SYNCABLE_OBJECT
 
     Q_PROPERTY(QString name READ name)

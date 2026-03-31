@@ -50,7 +50,16 @@ endif()
 
 # Now fixup the whole thing using CMake's own tooling, which (unlike macdeployqt) will take care of any additional internal executables
 message(STATUS "Fixing up bundle...")
-fixup_bundle("${BUNDLE_PATH}" "" "")
+get_filename_component(_qt_bin_dir "@MACDEPLOYQT_EXECUTABLE@" DIRECTORY)
+get_filename_component(_qt_prefix_dir "${_qt_bin_dir}" DIRECTORY)
+set(_bundle_search_dirs
+    "${BUNDLE_PATH}/Contents/Frameworks"
+    "${_qt_prefix_dir}/lib"
+    "/opt/homebrew/lib"
+    "/usr/local/lib"
+)
+list(FILTER _bundle_search_dirs INCLUDE REGEX ".+")
+fixup_bundle("${BUNDLE_PATH}" "" "${_bundle_search_dirs}")
 
 # Create the DMG image
 message(STATUS "Creating DMG image...")

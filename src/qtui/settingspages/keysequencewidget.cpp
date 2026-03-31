@@ -158,7 +158,7 @@ KeySequenceWidget::KeySequenceWidget(QWidget* parent)
     : QWidget(parent)
 {
     auto* layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     _keyButton = new KeySequenceButton(this, this);
     _keyButton->setFocusPolicy(Qt::StrongFocus);
@@ -254,13 +254,13 @@ void KeySequenceWidget::updateShortcutDisplay()
         if (_modifierKeys) {
 #ifdef Q_OS_MAC
             if (_modifierKeys & Qt::META)
-                s += QChar(kControlUnicode);
+                s += QChar(static_cast<char16_t>(kControlUnicode));
             if (_modifierKeys & Qt::ALT)
-                s += QChar(kOptionUnicode);
+                s += QChar(static_cast<char16_t>(kOptionUnicode));
             if (_modifierKeys & Qt::SHIFT)
-                s += QChar(kShiftUnicode);
+                s += QChar(static_cast<char16_t>(kShiftUnicode));
             if (_modifierKeys & Qt::CTRL)
-                s += QChar(kCommandUnicode);
+                s += QChar(static_cast<char16_t>(kCommandUnicode));
 #else
             if (_modifierKeys & Qt::META)
                 s += tr("Meta", "Meta key") + '+';

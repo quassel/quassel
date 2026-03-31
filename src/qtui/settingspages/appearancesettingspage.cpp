@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
+#include <QRegularExpression>
 #include <QStyleFactory>
 
 #include "buffersettings.h"
@@ -52,10 +53,10 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget* parent)
     initLanguageComboBox();
     initIconThemeComboBox();
 
-    foreach (QComboBox* comboBox, findChildren<QComboBox*>()) {
+    for (QComboBox* comboBox : findChildren<QComboBox*>()) {
         connect(comboBox, &QComboBox::currentTextChanged, this, &AppearanceSettingsPage::widgetHasChanged);
     }
-    foreach (QCheckBox* checkBox, findChildren<QCheckBox*>()) {
+    for (QCheckBox* checkBox : findChildren<QCheckBox*>()) {
         connect(checkBox, &QAbstractButton::clicked, this, &AppearanceSettingsPage::widgetHasChanged);
     }
 
@@ -78,7 +79,7 @@ void AppearanceSettingsPage::initStyleComboBox()
 {
     QStringList styleList = QStyleFactory::keys();
     ui.styleComboBox->addItem(tr("<System Default>"));
-    foreach (QString style, styleList) {
+    for (const QString& style : styleList) {
         ui.styleComboBox->addItem(style);
     }
 }
@@ -98,16 +99,18 @@ void AppearanceSettingsPage::initLanguageComboBox()
         return;
     }
 
-    QRegExp rx("(qt_)?([a-zA-Z_]+)\\.qm");
-    foreach (QString translationFile, translationFiles) {
-        if (!rx.exactMatch(translationFile))
+    static const QRegularExpression rx(QStringLiteral(R"((qt_)?([a-zA-Z_]+)\.qm)"));
+    for (const QString& translationFile : translationFiles) {
+        const QRegularExpressionMatch match = rx.match(translationFile);
+        if (!match.hasMatch())
             continue;
-        if (!rx.cap(1).isEmpty())
+        if (!match.captured(1).isEmpty())
             continue;
-        QLocale locale(rx.cap(2));
+        QLocale locale(match.captured(2));
         _locales[QLocale::languageToString(locale.language())] = locale;
     }
-    foreach (QString language, _locales.keys()) {
+    const auto languages = _locales.keys();
+    for (const QString& language : languages) {
         ui.languageComboBox->addItem(language);
     }
 }

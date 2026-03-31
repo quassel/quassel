@@ -22,8 +22,8 @@
 
 #include <QUuid>
 
-#ifdef HAVE_KF5
-#    include <KXmlGui/KMainWindow>
+#ifdef HAVE_KF6
+#    include <KMainWindow>
 #else
 #    include <QMainWindow>
 #endif

@@ -28,7 +28,7 @@ NotificationsSettingsPage::NotificationsSettingsPage(QWidget* parent)
     : SettingsPage(tr("Interface"), tr("Notifications"), parent)
 {
     auto* layout = new QVBoxLayout(this);
-    foreach (AbstractNotificationBackend* backend, QtUi::notificationBackends()) {
+    for (AbstractNotificationBackend* backend : QtUi::notificationBackends()) {
         SettingsPage* cw = backend->createConfigWidget();
         if (cw) {
             cw->setParent(this);
@@ -49,21 +49,21 @@ bool NotificationsSettingsPage::hasDefaults() const
 
 void NotificationsSettingsPage::defaults()
 {
-    foreach (SettingsPage* cw, _configWidgets)
+    for (SettingsPage* cw : _configWidgets)
         cw->defaults();
     widgetHasChanged();
 }
 
 void NotificationsSettingsPage::load()
 {
-    foreach (SettingsPage* cw, _configWidgets)
+    for (SettingsPage* cw : _configWidgets)
         cw->load();
     setChangedState(false);
 }
 
 void NotificationsSettingsPage::save()
 {
-    foreach (SettingsPage* cw, _configWidgets)
+    for (SettingsPage* cw : _configWidgets)
         cw->save();
     setChangedState(false);
 }
@@ -71,7 +71,7 @@ void NotificationsSettingsPage::save()
 void NotificationsSettingsPage::widgetHasChanged()
 {
     bool changed = false;
-    foreach (SettingsPage* cw, _configWidgets) {
+    for (SettingsPage* cw : _configWidgets) {
         if (cw->hasChanged()) {
             changed = true;
             break;

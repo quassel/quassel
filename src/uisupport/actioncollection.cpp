@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QDebug>
 #include <QMetaMethod>
+#include <QWidget>
 
 #include "action.h"
 #include "uisettings.h"
@@ -98,7 +99,7 @@ QAction* ActionCollection::addAction(const QString& name, QAction* action)
     _actionByName.insert(indexName, action);
     _actions.append(action);
 
-    foreach (QWidget* widget, _associatedWidgets) {
+    for (QWidget* widget : _associatedWidgets) {
         widget->addAction(action);
     }
 
@@ -122,7 +123,7 @@ QAction* ActionCollection::takeAction(QAction* action)
     if (!unlistAction(action))
         return nullptr;
 
-    foreach (QWidget* widget, _associatedWidgets) {
+    for (QWidget* widget : _associatedWidgets) {
         widget->removeAction(action);
     }
 
@@ -135,7 +136,8 @@ void ActionCollection::readSettings()
     ShortcutSettings s;
     QStringList savedShortcuts = s.savedShortcuts();
 
-    foreach (const QString& name, _actionByName.keys()) {
+    const auto actionNames = _actionByName.keys();
+    for (const QString& name : actionNames) {
         if (!savedShortcuts.contains(name))
             continue;
         auto* action = qobject_cast<Action*>(_actionByName.value(name));
@@ -147,7 +149,8 @@ void ActionCollection::readSettings()
 void ActionCollection::writeSettings() const
 {
     ShortcutSettings s;
-    foreach (const QString& name, _actionByName.keys()) {
+    const auto actionNames = _actionByName.keys();
+    for (const QString& name : actionNames) {
         auto* action = qobject_cast<Action*>(_actionByName.value(name));
         if (!action)
             continue;
@@ -189,14 +192,14 @@ void ActionCollection::connectNotify(const QMetaMethod& signal)
     if (QMetaMethod::fromSignal(&ActionCollection::actionHovered) == signal) {
         if (!_connectHovered) {
             _connectHovered = true;
-            foreach (QAction* action, actions())
+            for (QAction* action : actions())
                 connect(action, &QAction::hovered, this, &ActionCollection::slotActionHovered);
         }
     }
     else if (QMetaMethod::fromSignal(&ActionCollection::actionTriggered) == signal) {
         if (!_connectTriggered) {
             _connectTriggered = true;
-            foreach (QAction* action, actions())
+            for (QAction* action : actions())
                 connect(action, &QAction::triggered, this, &ActionCollection::slotActionTriggered);
         }
     }
@@ -206,7 +209,7 @@ void ActionCollection::connectNotify(const QMetaMethod& signal)
 
 void ActionCollection::associateWidget(QWidget* widget) const
 {
-    foreach (QAction* action, actions()) {
+    for (QAction* action : actions()) {
         if (!widget->actions().contains(action))
             widget->addAction(action);
     }
@@ -223,7 +226,7 @@ void ActionCollection::addAssociatedWidget(QWidget* widget)
 
 void ActionCollection::removeAssociatedWidget(QWidget* widget)
 {
-    foreach (QAction* action, actions())
+    for (QAction* action : actions())
         widget->removeAction(action);
     _associatedWidgets.removeAll(widget);
     disconnect(widget, &QObject::destroyed, this, &ActionCollection::associatedWidgetDestroyed);
@@ -236,8 +239,8 @@ QList<QWidget*> ActionCollection::associatedWidgets() const
 
 void ActionCollection::clearAssociatedWidgets()
 {
-    foreach (QWidget* widget, _associatedWidgets)
-        foreach (QAction* action, actions())
+    for (QWidget* widget : _associatedWidgets)
+        for (QAction* action : actions())
             widget->removeAction(action);
 
     _associatedWidgets.clear();

@@ -11,6 +11,11 @@ quassel_add_test(SignalProxyTest
         Quassel::Test::Util
 )
 
+quassel_add_test(UiSupportRegexTest
+    LIBRARIES
+        Quassel::UiSupport
+)
+
 quassel_add_test(TypesTest)
 
 quassel_add_test(UtilTest)

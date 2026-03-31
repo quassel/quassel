@@ -81,7 +81,7 @@ const QDBusArgument& operator>>(const QDBusArgument& argument, DBusImageStruct& 
 // Marshall the ImageVector data into a D-BUS argument
 const QDBusArgument& operator<<(QDBusArgument& argument, const DBusImageVector& iconVector)
 {
-    argument.beginArray(qMetaTypeId<DBusImageStruct>());
+    argument.beginArray(QMetaType::fromType<DBusImageStruct>().id());
     for (const auto& i : iconVector) {
         argument << i;
     }

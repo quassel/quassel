@@ -22,8 +22,8 @@
 
 #include "common-export.h"
 
-#include <QGenericArgument>
 #include <QHash>
+#include <QMetaMethod>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -39,16 +39,22 @@ public:
     QStringList providesHandlers();
 
 protected:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    using MetaCallArgument = QMetaMethodArgument;
+#else
+    using MetaCallArgument = QGenericArgument;
+#endif
+
     virtual void handle(const QString& member,
-                        QGenericArgument val0 = QGenericArgument(nullptr),
-                        QGenericArgument val1 = QGenericArgument(),
-                        QGenericArgument val2 = QGenericArgument(),
-                        QGenericArgument val3 = QGenericArgument(),
-                        QGenericArgument val4 = QGenericArgument(),
-                        QGenericArgument val5 = QGenericArgument(),
-                        QGenericArgument val6 = QGenericArgument(),
-                        QGenericArgument val7 = QGenericArgument(),
-                        QGenericArgument val8 = QGenericArgument());
+                        MetaCallArgument val0 = {},
+                        MetaCallArgument val1 = {},
+                        MetaCallArgument val2 = {},
+                        MetaCallArgument val3 = {},
+                        MetaCallArgument val4 = {},
+                        MetaCallArgument val5 = {},
+                        MetaCallArgument val6 = {},
+                        MetaCallArgument val7 = {},
+                        MetaCallArgument val8 = {});
 
 private:
     const QHash<QString, int>& handlerHash();

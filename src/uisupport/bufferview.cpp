@@ -103,7 +103,7 @@ void BufferView::setModel(QAbstractItemModel* model)
     init();
     // remove old Actions
     QList<QAction*> oldactions = header()->actions();
-    foreach (QAction* action, oldactions) {
+    for (QAction* action : oldactions) {
         header()->removeAction(action);
         action->deleteLater();
     }
@@ -201,17 +201,18 @@ void BufferView::joinChannel(const QModelIndex& index)
     if (bufferType != BufferInfo::ChannelBuffer)
         return;
 
-    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    const QVariant bufferInfoData = index.data(NetworkModel::BufferInfoRole);
+    BufferInfo bufferInfo = bufferInfoData.value<BufferInfo>();
 
     Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
 }
 
 void BufferView::dropEvent(QDropEvent* event)
 {
-    QModelIndex index = indexAt(event->pos());
+    const QPoint cursorPos = event->position().toPoint();
+    QModelIndex index = indexAt(cursorPos);
 
     QRect indexRect = visualRect(index);
-    QPoint cursorPos = event->pos();
 
     // check if we're really _on_ the item and not indicating a move to just above or below the item
     // Magic margin number for this is from QAbstractItemViewPrivate::position()
@@ -272,7 +273,7 @@ void BufferView::removeSelectedBuffers(bool permanently)
 
     BufferId bufferId;
     QSet<BufferId> removedRows;
-    foreach (QModelIndex index, selectionModel()->selectedIndexes()) {
+    for (const QModelIndex& index : selectionModel()->selectedIndexes()) {
         if (index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
             continue;
 
@@ -283,7 +284,7 @@ void BufferView::removeSelectedBuffers(bool permanently)
         removedRows << bufferId;
     }
 
-    foreach (BufferId bufferId, removedRows) {
+    for (BufferId bufferId : removedRows) {
         if (permanently)
             config()->requestRemoveBufferPermanently(bufferId);
         else
@@ -436,7 +437,7 @@ void BufferView::addFilterActions(QMenu* contextMenu, const QModelIndex& index)
         QList<QAction*> filterActions = filter->actions(index);
         if (!filterActions.isEmpty()) {
             contextMenu->addSeparator();
-            foreach (QAction* action, filterActions) {
+            for (QAction* action : filterActions) {
                 contextMenu->addAction(action);
             }
         }
@@ -553,7 +554,7 @@ void BufferView::wheelEvent(QWheelEvent* event)
     if (ItemViewSettings().mouseWheelChangesBuffer() == (bool)(event->modifiers() & Qt::AltModifier))
         return TreeViewTouch::wheelEvent(event);
 
-    int rowDelta = (event->delta() > 0) ? -1 : 1;
+    int rowDelta = (event->angleDelta().y() > 0) ? -1 : 1;
     changeBuffer((Direction)rowDelta);
 }
 
@@ -584,7 +585,7 @@ void BufferView::filterTextChanged(const QString& filterString)
 void BufferView::changeHighlight(BufferView::Direction direction)
 {
     // If for some weird reason we get a new delegate
-    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegateForIndex(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }
@@ -607,7 +608,7 @@ void BufferView::changeHighlight(BufferView::Direction direction)
 
     _currentHighlight = newIndex;
 
-    delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    delegate = qobject_cast<BufferViewDelegate*>(itemDelegateForIndex(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = _currentHighlight;
     }
@@ -630,7 +631,7 @@ void BufferView::selectHighlighted()
 void BufferView::clearHighlight()
 {
     // If for some weird reason we get a new delegate
-    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegateForIndex(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }

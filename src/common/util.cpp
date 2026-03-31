@@ -26,9 +26,10 @@
 
 #include <QCoreApplication>
 #include <QDateTime>
-#include <QTimeZone>
 #include <QDebug>
+#include <QRegularExpression>
 #include <QTextCodec>
+#include <QTimeZone>
 #include <QVector>
 
 #include "quassel.h"
@@ -64,12 +65,12 @@ bool isChannelName(const QString& str)
     if (str.isEmpty())
         return false;
     static constexpr std::array<quint8, 4> prefixes{{'#', '&', '!', '+'}};
-    return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return c == str[0]; });
+    return std::any_of(prefixes.cbegin(), prefixes.cend(), [&str](quint8 c) { return str[0] == QLatin1Char(c); });
 }
 
 QString stripFormatCodes(QString message)
 {
-    static QRegExp regEx{"\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"};
+    static const QRegularExpression regEx(QStringLiteral("\x03(\\d\\d?(,\\d\\d?)?)?|\x04([\\da-fA-F]{6}(,[\\da-fA-F]{6})?)?|[\x02\x0f\x11\x12\x16\x1d\x1e\x1f]"));
     return message.remove(regEx);
 }
 
@@ -77,7 +78,7 @@ QString stripAcceleratorMarkers(const QString& label_)
 {
     QString label = label_;
     int p = 0;
-    forever
+    while (true)
     {
         p = label.indexOf('&', p);
         if (p < 0 || p + 1 >= label.length())
@@ -204,9 +205,9 @@ QByteArray prettyDigest(const QByteArray& digest)
 {
     QByteArray hexDigest = digest.toHex().toUpper();
     QByteArray prettyDigest;
-    prettyDigest.fill(':', hexDigest.count() + (hexDigest.count() / 2) - 1);
+    prettyDigest.fill(':', hexDigest.size() + (hexDigest.size() / 2) - 1);
 
-    for (int i = 0; i * 2 < hexDigest.count(); i++) {
+    for (int i = 0; i * 2 < hexDigest.size(); i++) {
         prettyDigest.replace(i * 3, 2, hexDigest.mid(i * 2, 2));
     }
     return prettyDigest;
@@ -235,10 +236,7 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
     //   .*       matches zero or more characters, not including newlines
     // Note that '\' must be escaped as '\\'
     // Helpful interactive website for debugging and explaining:  https://regex101.com/
-    QRegExp regExpMatchTime("%%(.*)%%");
-
-    // Preserve the smallest groups possible to allow for multiple %%blocks%%
-    regExpMatchTime.setMinimal(true);
+    static const QRegularExpression regExpMatchTime(QStringLiteral("%%(.*?)%%"));
 
     // NOTE: Move regExpMatchTime to a static regular expression if used anywhere that performance
     // matters.
@@ -248,14 +246,15 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
     int numIterations = 0;
 
     // Find each group of %%text here%% starting from the beginning
-    int index = regExpMatchTime.indexIn(formattedStr);
+    QRegularExpressionMatch match = regExpMatchTime.match(formattedStr);
+    int index = match.capturedStart(0);
     int matchLength;
     QString matchedFormat;
     while (index >= 0 && numIterations < 512) {
         // Get the total length of the matched expression
-        matchLength = regExpMatchTime.cap(0).length();
+        matchLength = match.capturedLength(0);
         // Get the format string, e.g. "this text here" from "%%this text here%%"
-        matchedFormat = regExpMatchTime.cap(1);
+        matchedFormat = match.captured(1);
         // Check that there's actual characters inside.  A quadruple % (%%%%) represents two %%
         // signs.
         if (matchedFormat.length() > 0) {
@@ -281,7 +280,8 @@ QString formatCurrentDateTimeInString(const QString& formatStr)
         }
 
         // Find the next group of %%text here%% starting from where the last group ended
-        index = regExpMatchTime.indexIn(formattedStr, index + matchLength);
+        match = regExpMatchTime.match(formattedStr, index + matchLength);
+        index = match.capturedStart(0);
         numIterations++;
     }
 
@@ -340,6 +340,23 @@ QString tryFormatUnixEpoch(const QString& possibleEpochDate, Qt::DateFormat date
     }
 }
 
+QString tryFormatUnixEpoch(const QString& possibleEpochDate, QLocale::FormatType formatType, bool useUTC)
+{
+    qint64 secsSinceEpoch = possibleEpochDate.toLongLong();
+    if (secsSinceEpoch == 0) {
+        return possibleEpochDate;
+    }
+
+    QDateTime date;
+    date.setSecsSinceEpoch(secsSinceEpoch);
+
+    if (useUTC) {
+        return QLocale().toString(date.toUTC(), formatType);
+    }
+
+    return QLocale().toString(date, formatType);
+}
+
 QString formatDateTimeToOffsetISO(const QDateTime& dateTime)
 {
     if (!dateTime.isValid()) {
@@ -361,4 +378,13 @@ QString formatDateTimeToOffsetISO(const QDateTime& dateTime)
     // The expected way to get a UTC offset on ISO 8601 dates
     // Remove the "T" date/time separator
     return dateTime.toOffsetFromUtc(dateTime.offsetFromUtc()).toString(Qt::ISODate).replace(10, 1, " ");
+}
+
+QTimeZone utcTimeZone()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+    return QTimeZone::UTC;
+#else
+    return QTimeZone("UTC");
+#endif
 }

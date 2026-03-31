@@ -28,18 +28,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dist: [ debian-stable, debian-testing, ubuntu-noble, ubuntu-oracular, ubuntu-plucky ]
+        dist: [ debian-stable, debian-testing, ubuntu-plucky ]
         cxx: [ 'g++', 'clang++' ]
         with-kde: [ -DWITH_KDE=ON ]
         extra-options: [ -DWITH_WEBENGINE=ON ]
-        include:
-          # Baseline, test more combinations
-          - dist: ubuntu-noble
-            with-kde: -DWITH_KDE=ON
-            extra-options: -DWITH_WEBENGINE=OFF
-          - dist: ubuntu-noble
-            with-kde: -DWITH_KDE=OFF
-            extra-options: -DWITH_WEBENGINE=OFF
     env:
         CXX: ${{ matrix.cxx }}
 
@@ -53,6 +45,12 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ github.job }}-${{ matrix.dist }}-${{ matrix.cxx }}
+
+    - name: Prepare container environment
+      run: |
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        apt-get update
+        apt-get install -y --no-install-recommends qt6-5compat-dev
 
     - name: Configure
       run: |
@@ -69,26 +67,133 @@ jobs:
       run: cd build && ninja
 
     - name: Run tests
-      run: cd build && ctest
+      run: cd build && ctest --output-on-failure
 
     - name: Install
       run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
 
-# ------------------------------------------------------------------------------------------------------------------------------------------
+  build-linux-noble:
+    name: Linux (ubuntu-noble, -DWITH_KDE=OFF, -DWITH_WEBENGINE=OFF)
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ github.job }}
+
+    - name: Prepare runner environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          build-essential \
+          ccache \
+          cmake \
+          gettext \
+          git \
+          libboost-dev \
+          libgtest-dev \
+          libssl-dev \
+          libqt6sql6-sqlite \
+          ninja-build \
+          pkg-config \
+          qt6-5compat-dev \
+          qt6-base-dev \
+          qt6-base-dev-tools \
+          qt6-tools-dev-tools \
+          zlib1g-dev
+
+    - name: Configure
+      run: |
+        mkdir build
+        cd build && cmake $GITHUB_WORKSPACE \
+                          -GNinja \
+                          -DCMAKE_BUILD_TYPE=Release \
+                          -DBUILD_TESTING=ON \
+                          -DFATAL_WARNINGS=ON \
+                          -DWITH_KDE=OFF \
+                          -DWITH_WEBENGINE=OFF
+
+    - name: Build
+      run: cd build && ninja
+
+    - name: Run tests
+      run: cd build && ctest --output-on-failure
+
+    - name: Install
+      run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
+
+  build-linux-arch:
+    name: Arch Linux
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+
+    steps:
+    - name: Check out source code
+      uses: actions/checkout@v4
+      # The stock Arch container doesn't ship git, so checkout falls back to the
+      # archive download path. That's fine here because the only submodule is
+      # optional for CI and the build no longer requires it.
+
+    - name: Prepare container environment
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm --needed \
+          boost \
+          ccache \
+          cmake \
+          git \
+          gtest \
+          ninja \
+          qca-qt6 \
+          qt6-5compat \
+          qt6-base \
+          qt6-multimedia \
+          qt6-tools \
+          zlib
+
+    - name: Configure
+      run: |
+        mkdir build
+        cd build && cmake $GITHUB_WORKSPACE \
+                          -GNinja \
+                          -DCMAKE_BUILD_TYPE=Release \
+                          -DBUILD_TESTING=ON \
+                          -DFATAL_WARNINGS=ON \
+                          -DWITH_KDE=OFF \
+                          -DWITH_WEBENGINE=OFF
+
+    - name: Build
+      run: cd build && ninja
+
+    - name: Run tests
+      run: cd build && ctest --output-on-failure
+
+    - name: Install
+      run: cd build && DESTDIR=$GITHUB_WORKSPACE/image ninja install
+
+ # ------------------------------------------------------------------------------------------------------------------------------------------
   build-macos:
     name: macOS
     runs-on: macos-${{ matrix.osversion }}
     strategy:
       fail-fast: false
       matrix:
-        osversion: [14, latest]
+        # Keep macOS CI pinned to the currently validated runner image instead of
+        # following `latest`, which can change the Xcode/SDK combination underneath us.
+        osversion: [14]
 
     steps:
     - name: Select Xcode version
       uses: maxim-lobanov/setup-xcode@v1
       with:
         # Newer Xcode versions may not officially be supported by Qt
-        # Check https://doc.qt.io/qt-5/macos.html
+        # Check https://doc.qt.io/qt-6/macos.html
         xcode-version: '15.x'
 
     - name: Check out source code
@@ -113,7 +218,7 @@ jobs:
       # If Homebrew begins failing in the future due to out-of-date versions,
       # it can be re-enabled here as follows...
       # run: brew update && [below command]
-      run: brew install boost ccache qt@5
+      run: brew install boost ccache qt
 
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -121,7 +226,6 @@ jobs:
         key: ${{ github.job }}-${{ matrix.osversion }}
 
     - name: Configure
-      continue-on-error: true # Windows builds are broken atm
       run: |
         mkdir build
         cd build && cmake $GITHUB_WORKSPACE \
@@ -129,7 +233,7 @@ jobs:
                           -DWANT_CORE=ON \
                           -DWANT_QTCLIENT=ON \
                           -DWANT_MONO=ON \
-                          -DCMAKE_PREFIX_PATH=$(brew --prefix)/opt/qt@5 \
+                          -DCMAKE_PREFIX_PATH=$(brew --prefix qt) \
                           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/bundles \
                           -DCMAKE_BUILD_TYPE=Release \
                           -DBUILD_TESTING=ON \
@@ -142,7 +246,7 @@ jobs:
       run: cd build && ninja
 
     - name: Run tests
-      run: cd build && ctest
+      run: cd build && ctest --output-on-failure
 
     - name: Install
       run: cd build && ninja install
@@ -158,7 +262,7 @@ jobs:
     name: Windows
     runs-on: windows-latest
     continue-on-error: true
-    if: false # Windows builds are broken atm
+    if: false # Disabled pending Qt6 Craft validation
     env:
       WORKSPACE: ${{ github.workspace }}
       CRAFT: /C/CraftMaster/windows-msvc2019_64-cl/craft/bin/craft.py
@@ -208,7 +312,7 @@ jobs:
   post-build:
     name: Post-Build
     runs-on: ubuntu-latest
-    needs: [ build-linux, build-macos ] # Windows builds are broken atm
+    needs: [ build-linux, build-macos ] # Windows artifacts are optional while the Craft path stays disabled
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -231,10 +335,11 @@ jobs:
       run: ls -lhR artifacts
 
     - name: Check artifacts
-      continue-on-error: true # Windows builds are broken atm
       run: |
-        # Sanity check: We should have exactly 8 files matching the given patterns
-        [[ 8 -eq $(find artifacts/ \( -type f -name 'Quassel*.dmg' -o -name 'quassel*.exe' -o -name 'quassel*.7z' \) -printf '.' | wc -c) ]]
+        mac_count=$(find artifacts/ -type f -name 'Quassel*.dmg' -printf '.' | wc -c)
+        windows_count=$(find artifacts/ \( -type f -name 'quassel*.exe' -o -type f -name 'quassel*.7z' \) -printf '.' | wc -c)
+        [[ "$mac_count" -eq 3 ]]
+        [[ "$windows_count" -eq 0 || "$windows_count" -eq 2 ]]
 
     - name: Create release notes
       if: startsWith(github.ref, 'refs/tags/')
@@ -261,12 +366,21 @@ jobs:
     - name: Prepare packages for release
       if: startsWith(github.ref, 'refs/tags/')
       run: |
+        shopt -s nullglob
         TAGNAME=$(git rev-parse --abbrev-ref $GITHUB_REF)
         for type in Client Core Mono; do
-          mv artifacts/macOS/Quassel$type*.dmg assets/
+          files=(artifacts/macOS/Quassel$type*.dmg)
+          [[ ${#files[@]} -eq 1 ]]
+          mv "${files[0]}" assets/
         done
-        mv artifacts/Windows/quassel-*.exe assets/quassel-windows-setup-$TAGNAME.exe
-        mv artifacts/Windows/quassel-*.7z assets/quassel-windows-$TAGNAME.7z
+        windows_setups=(artifacts/Windows/quassel-*.exe)
+        windows_archives=(artifacts/Windows/quassel-*.7z)
+        if [[ ${#windows_setups[@]} -gt 0 || ${#windows_archives[@]} -gt 0 ]]; then
+          [[ ${#windows_setups[@]} -eq 1 ]]
+          [[ ${#windows_archives[@]} -eq 1 ]]
+          mv "${windows_setups[0]}" assets/quassel-windows-setup-$TAGNAME.exe
+          mv "${windows_archives[0]}" assets/quassel-windows-$TAGNAME.7z
+        fi
 
     - name: Create checksums for release assets
       if: startsWith(github.ref, 'refs/tags/')

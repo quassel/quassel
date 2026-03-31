@@ -118,7 +118,7 @@ void BufferViewSettingsPage::load()
         return;
 
     const QList<BufferViewConfig*> bufferViewConfigs = Client::bufferViewManager()->bufferViewConfigs();
-    foreach (BufferViewConfig* bufferViewConfig, bufferViewConfigs) {
+    for (BufferViewConfig* bufferViewConfig : bufferViewConfigs) {
         addBufferView(bufferViewConfig);
     }
 
@@ -128,7 +128,7 @@ void BufferViewSettingsPage::load()
     ui.networkSelector->addItem(tr("All"));
     ui.networkSelector->setItemData(0, QVariant::fromValue(NetworkId()));
     const Network* net;
-    foreach (NetworkId netId, Client::networkIds()) {
+    for (const NetworkId& netId : Client::networkIds()) {
         net = Client::network(netId);
         ui.networkSelector->addItem(net->networkName());
         ui.networkSelector->setItemData(ui.networkSelector->count() - 1, QVariant::fromValue(net->networkId()));
@@ -153,7 +153,7 @@ void BufferViewSettingsPage::save()
     QVariantList deleteConfigs;
     QVariantList changedConfigs;
 
-    foreach (int bufferId, _deleteBufferViews) {
+    for (int bufferId : _deleteBufferViews) {
         deleteConfigs << bufferId;
     }
     _deleteBufferViews.clear();
@@ -324,7 +324,7 @@ void BufferViewSettingsPage::on_addBufferView_clicked()
         return;
 
     QStringList existing;
-    foreach (BufferViewConfig* bufferConfig, Client::bufferViewManager()->bufferViewConfigs()) {
+    for (BufferViewConfig* bufferConfig : Client::bufferViewManager()->bufferViewConfigs()) {
         existing << bufferConfig->bufferViewName();
     }
 
@@ -348,7 +348,7 @@ void BufferViewSettingsPage::on_renameBufferView_clicked()
         return;
 
     QStringList existing;
-    foreach (BufferViewConfig* bufferConfig, Client::bufferViewManager()->bufferViewConfigs()) {
+    for (BufferViewConfig* bufferConfig : Client::bufferViewManager()->bufferViewConfigs()) {
         existing << bufferConfig->bufferViewName();
     }
 

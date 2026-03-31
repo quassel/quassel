@@ -89,7 +89,7 @@ void BufferViewOverlay::addView(int viewId)
         if (wasInitialized) {
             BufferIdList buffers;
             if (config->networkId().isValid()) {
-                foreach (BufferId bufferId, config->bufferList()) {
+                for (BufferId bufferId : config->bufferList()) {
                     if (Client::networkModel()->networkId(bufferId) == config->networkId())
                         buffers << bufferId;
                 }
@@ -251,7 +251,7 @@ QSet<BufferId> BufferViewOverlay::filterBuffersByConfig(const QList<BufferId>& b
 
     QSet<BufferId> bufferIds;
     BufferInfo bufferInfo;
-    foreach (BufferId bufferId, buffers) {
+    for (BufferId bufferId : buffers) {
         bufferInfo = Client::networkModel()->bufferInfo(bufferId);
         if (!(bufferInfo.type() & config->allowedBufferTypes()))
             continue;

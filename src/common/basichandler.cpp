@@ -62,16 +62,32 @@ const QHash<QString, int>& BasicHandler::handlerHash()
     return _handlerHash;
 }
 
+namespace {
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+void* metaCallData(QMetaMethodArgument argument)
+{
+    return const_cast<void*>(argument.data);
+}
+#else
+void* metaCallData(QGenericArgument argument)
+{
+    return argument.data();
+}
+#endif
+
+}  // namespace
+
 void BasicHandler::handle(const QString& member,
-                          QGenericArgument val0,
-                          QGenericArgument val1,
-                          QGenericArgument val2,
-                          QGenericArgument val3,
-                          QGenericArgument val4,
-                          QGenericArgument val5,
-                          QGenericArgument val6,
-                          QGenericArgument val7,
-                          QGenericArgument val8)
+                          MetaCallArgument val0,
+                          MetaCallArgument val1,
+                          MetaCallArgument val2,
+                          MetaCallArgument val3,
+                          MetaCallArgument val4,
+                          MetaCallArgument val5,
+                          MetaCallArgument val6,
+                          MetaCallArgument val7,
+                          MetaCallArgument val8)
 {
     // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
     // and now we even have a fast lookup! Thanks thiago!
@@ -85,34 +101,35 @@ void BasicHandler::handle(const QString& member,
             return;
         }
         else {
+            const auto memberArg = Q_ARG(QString, member);
             void* param[] = {nullptr,
-                             Q_ARG(QString, member).data(),
-                             val0.data(),
-                             val1.data(),
-                             val2.data(),
-                             val3.data(),
-                             val4.data(),
-                             val5.data(),
-                             val6.data(),
-                             val7.data(),
-                             val8.data(),
-                             val8.data()};
+                             metaCallData(memberArg),
+                             metaCallData(val0),
+                             metaCallData(val1),
+                             metaCallData(val2),
+                             metaCallData(val3),
+                             metaCallData(val4),
+                             metaCallData(val5),
+                             metaCallData(val6),
+                             metaCallData(val7),
+                             metaCallData(val8),
+                             metaCallData(val8)};
             qt_metacall(QMetaObject::InvokeMetaMethod, _defaultHandler, param);
             return;
         }
     }
 
     void* param[] = {nullptr,
-                     val0.data(),
-                     val1.data(),
-                     val2.data(),
-                     val3.data(),
-                     val4.data(),
-                     val5.data(),
-                     val6.data(),
-                     val7.data(),
-                     val8.data(),
-                     val8.data(),
+                     metaCallData(val0),
+                     metaCallData(val1),
+                     metaCallData(val2),
+                     metaCallData(val3),
+                     metaCallData(val4),
+                     metaCallData(val5),
+                     metaCallData(val6),
+                     metaCallData(val7),
+                     metaCallData(val8),
+                     metaCallData(val8),
                      nullptr};
     qt_metacall(QMetaObject::InvokeMetaMethod, handlerHash()[handler], param);
 }

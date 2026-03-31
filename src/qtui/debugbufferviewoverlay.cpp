@@ -70,31 +70,31 @@ void DebugBufferViewOverlay::update()
     _allNetworks->setText(overlay->allNetworks() ? "yes" : "no");
 
     QStringList ids;
-    foreach (int bufferViewId, overlay->bufferViewIds()) {
+    for (int bufferViewId : overlay->bufferViewIds()) {
         ids << QString::number(bufferViewId);
     }
     _bufferViews->setText(ids.join(", "));
 
     ids.clear();
-    foreach (NetworkId networkId, overlay->networkIds()) {
+    for (NetworkId networkId : overlay->networkIds()) {
         ids << QString::number(networkId.toInt());
     }
     _networks->setText(ids.join(", "));
 
     ids.clear();
-    foreach (BufferId bufferId, overlay->bufferIds()) {
+    for (BufferId bufferId : overlay->bufferIds()) {
         ids << QString::number(bufferId.toInt());
     }
     _bufferIds->setText(ids.join(", "));
 
     ids.clear();
-    foreach (BufferId bufferId, overlay->removedBufferIds()) {
+    for (BufferId bufferId : overlay->removedBufferIds()) {
         ids << QString::number(bufferId.toInt());
     }
     _removedBufferIds->setText(ids.join(", "));
 
     ids.clear();
-    foreach (BufferId bufferId, overlay->tempRemovedBufferIds()) {
+    for (BufferId bufferId : overlay->tempRemovedBufferIds()) {
         ids << QString::number(bufferId.toInt());
     }
     _tempRemovedBufferIds->setText(ids.join(", "));

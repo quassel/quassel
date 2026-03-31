@@ -30,6 +30,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QPainter>
+#include <QRegularExpression>
 #include <QPalette>
 #include <QTextLayout>
 
@@ -446,10 +447,10 @@ QList<QRectF> ChatItem::findWords(const QString& searchWord, Qt::CaseSensitivity
         searchIdx = plainText.indexOf(searchWord, searchIdx + 1, caseSensitive);
     }
 
-    foreach (int idx, indexList) {
+    for (int idx : indexList) {
         QTextLine line = layout()->lineForTextPosition(idx);
         qreal x = line.cursorToX(idx);
-        qreal width = line.cursorToX(idx + searchWord.count()) - x;
+        qreal width = line.cursorToX(idx + searchWord.size()) - x;
         qreal height = line.height();
         qreal y = height * line.lineNumber();
         resultList << QRectF(x, y, width, height);
@@ -667,7 +668,7 @@ void ContentsChatItem::doLayout(QTextLayout* layout) const
     qreal spacing = qMax(fontMetrics()->lineSpacing(), fontMetrics()->height());  // cope with negative leading()
     WrapColumnFinder finder(this);
     layout->beginLayout();
-    forever
+    while (true)
     {
         QTextLine line = layout->createLine();
         if (!line.isValid())
@@ -763,8 +764,10 @@ void ContentsChatItem::handleClick(const QPointF& pos, ChatScene::ClickMode clic
             // find word boundary
             QString str = data(ChatLineModel::DisplayRole).toString();
             qint16 cursor = posToCursor(pos);
-            qint16 start = str.lastIndexOf(QRegExp("\\W"), cursor) + 1;
-            qint16 end = qMin(str.indexOf(QRegExp("\\W"), cursor), str.length());
+            static const QRegularExpression nonWordRx(QStringLiteral("\\W"),
+                                                     QRegularExpression::UseUnicodePropertiesOption);
+            qint16 start = str.lastIndexOf(nonWordRx, cursor) + 1;
+            qint16 end = qMin(str.indexOf(nonWordRx, cursor), str.length());
             if (end < 0)
                 end = str.length();
             setSelectionStart(start);

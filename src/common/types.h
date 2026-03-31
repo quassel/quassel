@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "common-export.h"
+
 #include <type_traits>
 
 #include <QDataStream>
@@ -118,8 +120,8 @@ public:
     friend QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
 };
 
-QDataStream& operator<<(QDataStream& out, const SignedId64& signedId);
-QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const SignedId64& signedId);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
 inline QTextStream& operator<<(QTextStream& out, const SignedId64& signedId)
 {
     out << QString::number(signedId.toQint64());

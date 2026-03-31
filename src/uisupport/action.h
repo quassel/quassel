@@ -41,8 +41,6 @@ class UISUPPORT_EXPORT Action : public QWidgetAction
 
     Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
     Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
-    Q_FLAGS(ShortcutType)
-
 public:
     enum ShortcutType
     {
@@ -50,6 +48,7 @@ public:
         DefaultShortcut = 0x02
     };
     Q_DECLARE_FLAGS(ShortcutTypes, ShortcutType)
+    Q_FLAG(ShortcutTypes)
 
     explicit Action(QObject* parent);
     Action(const QString& text, QObject* parent, const QKeySequence& shortcut = 0);

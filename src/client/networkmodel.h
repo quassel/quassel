@@ -37,6 +37,7 @@ class StatusBufferItem;
 class NetworkItem : public PropertyMapItem
 {
     Q_OBJECT
+    Q_MOC_INCLUDE("ircuser.h")
     Q_PROPERTY(QString networkName READ networkName)
     Q_PROPERTY(QString currentServer READ currentServer)
     Q_PROPERTY(int nickCount READ nickCount)

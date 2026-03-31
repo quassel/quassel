@@ -23,9 +23,13 @@
 #include "common-export.h"
 
 #include <QList>
+#include <QLocale>
 #include <QSet>
 #include <QString>
+#include <QTimeZone>
 #include <QVariant>
+
+class QTextCodec;
 
 COMMON_EXPORT QString nickFromMask(const QString& mask);
 COMMON_EXPORT QString userFromMask(const QString& mask);
@@ -105,6 +109,9 @@ COMMON_EXPORT QString formatCurrentDateTimeInString(const QString& formatStr);
 COMMON_EXPORT QString tryFormatUnixEpoch(const QString& possibleEpochDate,
                                          Qt::DateFormat dateFormat = Qt::DateFormat::TextDate,
                                          bool useUTC = false);
+COMMON_EXPORT QString tryFormatUnixEpoch(const QString& possibleEpochDate,
+                                         QLocale::FormatType formatType,
+                                         bool useUTC = false);
 
 /**
  * Format the given date/time in ISO 8601 format with timezone offset
@@ -113,6 +120,7 @@ COMMON_EXPORT QString tryFormatUnixEpoch(const QString& possibleEpochDate,
  * @return Date/time in ISO 8601 format with timezone offset
  */
 COMMON_EXPORT QString formatDateTimeToOffsetISO(const QDateTime& dateTime);
+COMMON_EXPORT QTimeZone utcTimeZone();
 
 namespace detail {
 
@@ -121,6 +129,12 @@ struct SelectOverloadHelper
 {
     template<typename R, typename C>
     constexpr auto operator()(R (C::*func)(Args...)) const noexcept -> decltype(func)
+    {
+        return func;
+    }
+
+    template<typename R, typename C>
+    constexpr auto operator()(R (C::*func)(Args...) const) const noexcept -> decltype(func)
     {
         return func;
     }
@@ -139,4 +153,4 @@ struct SelectOverloadHelper
  * @tparam Args Argument types of the desired signature
  */
 template<typename... Args>
-constexpr Q_DECL_UNUSED detail::SelectOverloadHelper<Args...> selectOverload = {};
+[[maybe_unused]] constexpr detail::SelectOverloadHelper<Args...> selectOverload = {};
