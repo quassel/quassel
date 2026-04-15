@@ -22,6 +22,7 @@
 
 #include <utility>
 
+#include <QGuiApplication>
 #include <QImage>
 
 #include "quassel.h"
@@ -121,7 +122,7 @@ KAboutData AboutData::kAboutData() const
     aboutData.setProgramLogo(QVariant::fromValue(QImage(":/pics/quassel-logo.png")));
     aboutData.setBugAddress("https://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
     aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
-    aboutData.setDesktopFileName(Quassel::buildInfo().clientApplicationName);
+    aboutData.setDesktopFileName(QGuiApplication::desktopFileName());
 
     for (const auto& person : authors()) {
         aboutData.addAuthor(person.prettyName(), person.task(), person.emailAddress());
