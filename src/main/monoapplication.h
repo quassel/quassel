@@ -34,6 +34,7 @@ class MonolithicApplication : public QtUiApplication
 
 public:
     MonolithicApplication(int&, char**);
+    ~MonolithicApplication() override;
 
     void init() override;
 
