@@ -117,7 +117,7 @@ bool Netsplit::isNetsplit(const QString& quitMessage)
 
     // now test if message consists only of two dns names as the RFC requests
     // but also allow the commonly used "*.net *.split"
-    static const QRegularExpression hostRx(QStringLiteral(R"(^(?:[\w\d-.]+|\*)\.[\w\d-]+\s(?:[\w\d-.]+|\*)\.[\w\d-]+$)"));
+    static const QRegularExpression hostRx(QStringLiteral(R"(^(?:[\w\d.-]+|\*)\.[\w\d-]+\s(?:[\w\d.-]+|\*)\.[\w\d-]+$)"));
     if (hostRx.match(quitMessage).hasMatch())
         return true;
 
