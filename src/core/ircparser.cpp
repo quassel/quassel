@@ -121,7 +121,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
     }
 
     if (net->capEnabled(IrcCap::SERVER_TIME) && tags.contains(IrcTags::SERVER_TIME)) {
-        QDateTime serverTime = QDateTime::fromString(tags[IrcTags::SERVER_TIME], "yyyy-MM-ddThh:mm:ss.zzzZ").toUTC();
+        QDateTime serverTime = QDateTime::fromString(tags[IrcTags::SERVER_TIME], Qt::ISODateWithMs).toUTC();
         if (serverTime.isValid()) {
             e->setTimestamp(serverTime);
         } else {
