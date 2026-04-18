@@ -196,7 +196,7 @@ UserId SqliteStorage::addUser(const QString& user, const QString& password, cons
         lockForWrite();
         safeExec(query);
         if (query.lastError().isValid()
-            && query.lastError().nativeErrorCode() == QLatin1String{"19"}) {  // user already exists - sadly 19 seems to be the general constraint violation error...
+            && (query.lastError().nativeErrorCode().toInt() & 0xFF) == 19) {  // user already exists - sadly 19 seems to be the general constraint violation error...
             db.rollback();
         }
         else {
@@ -1403,7 +1403,7 @@ bool SqliteStorage::renameBuffer(const UserId& user, const BufferId& bufferId, c
 
         error = query.lastError().isValid();
         // unexpected error occurred (19 == constraint violation)
-        if (error && query.lastError().nativeErrorCode() != QLatin1String{"19"}) {
+        if (error && (query.lastError().nativeErrorCode().toInt() & 0xFF) != 19) {
             watchQuery(query);
         }
         else {
@@ -1812,7 +1812,7 @@ bool SqliteStorage::logMessage(Message& msg)
 
         if (logMessageQuery.lastError().isValid()) {
             // constraint violation - must be NOT NULL constraint - probably the sender is missing...
-            if (logMessageQuery.lastError().nativeErrorCode() == QLatin1String{"19"}) {
+            if ((logMessageQuery.lastError().nativeErrorCode().toInt() & 0xFF) == 19) {
                 QSqlQuery addSenderQuery(db);
                 addSenderQuery.prepare(queryString("insert_sender"));
                 addSenderQuery.bindValue(":sender", msg.sender());
