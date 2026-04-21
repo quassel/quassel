@@ -27,7 +27,6 @@ set(QUASSEL_KF_TEXTWIDGETS_TARGET KF6::TextWidgets)
 set(QUASSEL_KF_WIDGETSADDONS_TARGET KF6::WidgetsAddons)
 set(QUASSEL_KF_XMLGUI_TARGET KF6::XmlGui)
 
-set(QUASSEL_DBUSMENU_TARGET dbusmenu-qt6)
 set(QUASSEL_LIBSNORE_TARGET Snore::Libsnore)
 set(QUASSEL_LIBSNORE_SETTINGS_TARGET Snore::LibsnoreSettings)
 set(QUASSEL_QCA_TARGET qca-qt6)
@@ -36,7 +35,6 @@ set(QUASSEL_HAVE_QT_DBUS FALSE)
 set(QUASSEL_HAVE_QT_MULTIMEDIA FALSE)
 set(QUASSEL_HAVE_WEBENGINE FALSE)
 set(QUASSEL_HAVE_KF_SONNET FALSE)
-set(QUASSEL_HAVE_DBUSMENU FALSE)
 set(QUASSEL_HAVE_LIBSNORE FALSE)
 set(QUASSEL_HAVE_QCA FALSE)
 set(WITH_KF FALSE)
@@ -98,15 +96,6 @@ if (BUILD_GUI)
         )
         if (Qt6DBus_FOUND)
             set(QUASSEL_HAVE_QT_DBUS TRUE)
-            find_package(dbusmenu-qt6 QUIET CONFIG)
-            set_package_properties(dbusmenu-qt6 PROPERTIES TYPE RECOMMENDED
-                URL "https://launchpad.net/libdbusmenu-qt"
-                DESCRIPTION "a library implementing the DBusMenu specification"
-                PURPOSE     "Required for having a context menu for the D-Bus-based tray icon"
-            )
-            if (dbusmenu-qt6_FOUND)
-                set(QUASSEL_HAVE_DBUSMENU TRUE)
-            endif()
         endif()
     endif()
 
