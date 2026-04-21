@@ -166,7 +166,7 @@ include(QuasselQtSetup)
 # Non-Qt-based packages
 #####################################################################
 
-find_package(Boost 1.54 REQUIRED)
+find_package(Boost 1.70 CONFIG REQUIRED)
 set_package_properties(Boost PROPERTIES TYPE REQUIRED
     URL "https://www.boost.org/"
     DESCRIPTION "Boost libraries for C++"
