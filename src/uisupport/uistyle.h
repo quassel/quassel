@@ -47,11 +47,6 @@ public:
     UiStyle(QObject* parent = nullptr);
     ~UiStyle() override;
 
-// For backwards compatibility with Qt 5.5, the setFormats method was introduced
-// in Qt 5.6, but the old setAdditionalFormats was deprecated in 5.6 as well.
-//
-// So we use the old one on Qt 5.5, and the new one everywhere else.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
     using FormatContainer = QVector<QTextLayout::FormatRange>;
     static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) {
         layout.setFormats(formats);
@@ -59,15 +54,6 @@ public:
     static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) {
         return container;
     }
-#else
-    using FormatContainer = QList<QTextLayout::FormatRange>;
-    static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) {
-        layout.setAdditionalFormats(formats);
-    }
-    static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) {
-        return container.toVector();
-    }
-#endif
 
     //! This enumerates the possible formats a text element may have. */
     /** These formats are ordered on increasing importance, in cases where a given property is specified

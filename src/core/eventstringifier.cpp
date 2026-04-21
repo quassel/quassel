@@ -553,13 +553,7 @@ void EventStringifier::processIrcEvent317(IrcEvent* e)
         // if we have more then 3 params we have the above mentioned "real life" situation
         // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
         // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
         QDateTime loginTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
-#else
-        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-        QDateTime loginTime = QDateTime::fromMSecsSinceEpoch((qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
-#endif
         displayMsg(e,
                    Message::Server,
                    tr("[Whois] %1 is logged in since %2").arg(e->params()[0], loginTime.toString("yyyy-MM-dd hh:mm:ss UTC")));
@@ -664,13 +658,7 @@ void EventStringifier::processIrcEvent329(IrcEvent* e)
     }
     // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
     // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
     QDateTime time = QDateTime::fromSecsSinceEpoch(unixtime).toUTC();
-#else
-    // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-    QDateTime time = QDateTime::fromMSecsSinceEpoch((qint64)(unixtime * 1000)).toUTC();
-#endif
     displayMsg(e, Message::Topic, tr("Channel %1 created on %2").arg(channel, time.toString("yyyy-MM-dd hh:mm:ss UTC")), QString(), channel);
 }
 
@@ -712,13 +700,7 @@ void EventStringifier::processIrcEvent333(IrcEvent* e)
     QString channel = e->params().first();
     // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
     // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
     QDateTime topicSetTime = QDateTime::fromSecsSinceEpoch(e->params()[2].toLongLong()).toUTC();
-#else
-    // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-    QDateTime topicSetTime = QDateTime::fromMSecsSinceEpoch((qint64)(e->params()[2].toLongLong() * 1000)).toUTC();
-#endif
     displayMsg(e,
                Message::Topic,
                tr("Topic set by %1 on %2").arg(e->params()[1], topicSetTime.toString("yyyy-MM-dd hh:mm:ss UTC")),

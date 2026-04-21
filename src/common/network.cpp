@@ -906,13 +906,7 @@ QVariantMap Network::initIrcUsersAndChannels() const
             // If the peer doesn't support LongTime, replace the lastAwayMessageTime field
             // with the 32-bit numerical seconds value (lastAwayMessage) used in older versions
             if (!proxy()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
-#if QT_VERSION >= 0x050800
                 int lastAwayMessage = it.value()->lastAwayMessageTime().toSecsSinceEpoch();
-#else
-                // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-                // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-                int lastAwayMessage = it.value()->lastAwayMessageTime().toMSecsSinceEpoch() / 1000;
-#endif
                 map.remove("lastAwayMessageTime");
                 map["lastAwayMessage"] = lastAwayMessage;
             }
@@ -990,13 +984,7 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
         // If the peer doesn't support LongTime, upconvert the lastAwayMessageTime field
         // from the 32-bit numerical seconds value used in older versions to QDateTime
         if (!proxy()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
-#if QT_VERSION >= 0x050800
             QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(map.take("lastAwayMessage").toInt(), utcTimeZone());
-#else
-            // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-            // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-            QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(map.take("lastAwayMessage").toInt() * 1000, utcTimeZone());
-#endif
             map["lastAwayMessageTime"] = lastAwayMessageTime;
         }
 

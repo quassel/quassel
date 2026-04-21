@@ -83,8 +83,8 @@ int main(int argc, char** argv)
 #endif
 
     // Setup the High-DPI settings
-#if QT_VERSION >= 0x050600 && defined(Q_OS_WIN)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Added in Qt 5.6
+#if defined(Q_OS_WIN)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     // Instantiate application
 #if defined BUILD_CORE

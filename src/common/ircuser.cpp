@@ -198,13 +198,7 @@ void IrcUser::setIrcOperator(const QString& ircOperator)
 // Therefore, no SYNC call is needed here.
 void IrcUser::setLastAwayMessage(int lastAwayMessage)
 {
-#if QT_VERSION >= 0x050800
     QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(lastAwayMessage, utcTimeZone());
-#else
-    // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-    // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-    QDateTime lastAwayMessageTime = QDateTime::fromMSecsSinceEpoch(lastAwayMessage * 1000, utcTimeZone());
-#endif
     setLastAwayMessageTime(lastAwayMessageTime);
 }
 

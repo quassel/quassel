@@ -85,9 +85,6 @@ script. See the script header for usage instructions.
 
 ## Known issues
 
- - Qt versions older than Qt 5.5 don't support split icon theme installations.
-Thus, the fallback mechanism does not work correctly, and icons will most likely
-be missing. Third-party theme support does not work correctly, either.
  - Qt currently has a [bug][QTBUG-68603] where it prefers the standard `hicolor`
 theme over inherited themes. Due to the way Quassel's icon loading mechanism
 deals with unsupported themes, this means that an icon available in hicolor will
