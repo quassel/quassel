@@ -40,6 +40,26 @@ set(WITH_KF FALSE)
 set(quassel_qt_components Core Core5Compat Network CoreTools)
 if (BUILD_GUI)
     list(APPEND quassel_qt_components Gui Widgets)
+
+    # find extra-cmake-modules first, to avoid CMake warnings spam
+    if (WITH_KDE)
+        set(ecm_find_type "REQUIRED")
+        find_package(ECM NO_MODULE REQUIRED)
+    else()
+        # Even with KDE integration disabled, we optionally use tier1 frameworks if we find them
+        set(ecm_find_type "RECOMMENDED")
+        find_package(ECM NO_MODULE QUIET)
+    endif()
+
+    set_package_properties(ECM PROPERTIES TYPE ${ecm_find_type}
+        URL "https://invent.kde.org/frameworks/extra-cmake-modules"
+        DESCRIPTION "extra modules for CMake, maintained by the KDE project"
+        PURPOSE     "Required to find KDE Frameworks components"
+    )
+
+    if (ECM_FOUND)
+        list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+    endif()
 endif()
 if (BUILD_CORE)
     list(APPEND quassel_qt_components Sql)
@@ -125,39 +145,22 @@ if (BUILD_GUI)
     # KDE Frameworks
     ################
 
-    # extra-cmake-modules
     if (WITH_KDE)
-        set(ecm_find_type "REQUIRED")
-        find_package(ECM NO_MODULE REQUIRED)
-    else()
-        # Even with KDE integration disabled, we optionally use tier1 frameworks if we find them
-        set(ecm_find_type "RECOMMENDED")
-        find_package(ECM NO_MODULE QUIET)
+        find_package(KF6 REQUIRED COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui)
+        set_package_properties(KF6 PROPERTIES TYPE REQUIRED
+            URL "https://kde.org/"
+            DESCRIPTION "KDE Frameworks 6"
+            PURPOSE     "Required for integration into the Plasma desktop"
+        )
+        message(STATUS "Found KDE Frameworks ${KF6_VERSION}")
+        set(WITH_KF TRUE)
     endif()
 
-    set_package_properties(ECM PROPERTIES TYPE ${ecm_find_type}
-        URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules"
-        DESCRIPTION "extra modules for CMake, maintained by the KDE project"
-        PURPOSE     "Required to find KDE Frameworks components"
-    )
-
     if (ECM_FOUND)
-        list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-        if (WITH_KDE)
-            find_package(KF6 REQUIRED COMPONENTS ConfigWidgets CoreAddons Notifications NotifyConfig Sonnet TextWidgets WidgetsAddons XmlGui)
-            set_package_properties(KF6 PROPERTIES TYPE REQUIRED
-                URL "http://www.kde.org"
-                DESCRIPTION "KDE Frameworks 6"
-                PURPOSE     "Required for integration into the Plasma desktop"
-            )
-            message(STATUS "Found KDE Frameworks ${KF6_VERSION}")
-            set(WITH_KF TRUE)
-        endif()
-
         # Optional KF6 tier1 components
         find_package(KF6Sonnet QUIET)
         set_package_properties(KF6Sonnet PROPERTIES TYPE RECOMMENDED
-            URL "http://api.kde.org/frameworks-api/frameworks6-apidocs/sonnet/html"
+            URL "https://api.kde.org/sonnet-index.html"
             DESCRIPTION "framework for providing spell-checking capabilities"
             PURPOSE "Enables spell-checking support in input widgets"
         )
