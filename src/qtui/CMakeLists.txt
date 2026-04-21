@@ -161,15 +161,6 @@ if (QUASSEL_HAVE_WEBENGINE)
         ${QUASSEL_QT_WEBENGINEWIDGETS_TARGET})
 endif()
 
-if (QUASSEL_HAVE_LIBSNORE)
-    target_compile_definitions(${TARGET} PRIVATE -DHAVE_LIBSNORE)
-    target_sources(${TARGET} PRIVATE
-        snorenotificationbackend.cpp
-        snorentificationconfigwidget.ui
-    )
-    target_link_libraries(${TARGET} PRIVATE ${QUASSEL_LIBSNORE_TARGET} ${QUASSEL_LIBSNORE_SETTINGS_TARGET})
-endif()
-
 if (WITH_NOTIFICATION_CENTER)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_NOTIFICATION_CENTER)
     target_sources(${TARGET} PRIVATE osxnotificationbackend.mm)

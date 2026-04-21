@@ -27,15 +27,12 @@ set(QUASSEL_KF_TEXTWIDGETS_TARGET KF6::TextWidgets)
 set(QUASSEL_KF_WIDGETSADDONS_TARGET KF6::WidgetsAddons)
 set(QUASSEL_KF_XMLGUI_TARGET KF6::XmlGui)
 
-set(QUASSEL_LIBSNORE_TARGET Snore::Libsnore)
-set(QUASSEL_LIBSNORE_SETTINGS_TARGET Snore::LibsnoreSettings)
 set(QUASSEL_QCA_TARGET qca-qt6)
 
 set(QUASSEL_HAVE_QT_DBUS FALSE)
 set(QUASSEL_HAVE_QT_MULTIMEDIA FALSE)
 set(QUASSEL_HAVE_WEBENGINE FALSE)
 set(QUASSEL_HAVE_KF_SONNET FALSE)
-set(QUASSEL_HAVE_LIBSNORE FALSE)
 set(QUASSEL_HAVE_QCA FALSE)
 set(WITH_KF FALSE)
 
@@ -107,26 +104,6 @@ if (BUILD_GUI)
     )
     if (Qt6Multimedia_FOUND)
         set(QUASSEL_HAVE_QT_MULTIMEDIA TRUE)
-    endif()
-
-    # snorenotify segfaults on startup on msys2
-    # we don't check for just MSYS to support the Ninja generator
-    if(NOT (WIN32 AND (NOT $ENV{MSYSTEM} STREQUAL "")))
-        find_package(LibsnoreQt6 0.7.0 QUIET)
-        set_package_properties(LibsnoreQt6 PROPERTIES TYPE OPTIONAL
-            URL "https://projects.kde.org/projects/playground/libs/snorenotify"
-            DESCRIPTION "a cross-platform notification framework"
-            PURPOSE     "Enable support for the snorenotify framework"
-        )
-        if (LibsnoreQt6_FOUND)
-            set(QUASSEL_HAVE_LIBSNORE TRUE)
-            find_package(LibsnoreSettingsQt6 QUIET)
-            set_package_properties(LibsnoreSettingsQt6 PROPERTIES TYPE OPTIONAL
-                URL "https://projects.kde.org/projects/playground/libs/snorenotify"
-                DESCRIPTION "a cross-platform notification framework"
-                PURPOSE     "Enable support for the snorenotify framework"
-            )
-        endif()
     endif()
 
     if (WITH_WEBENGINE)
