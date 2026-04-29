@@ -13,7 +13,7 @@ set(QUASSEL_QT_SQL_TARGET Qt6::Sql)
 set(QUASSEL_QT_TEST_TARGET Qt6::Test)
 set(QUASSEL_QT_DBUS_TARGET Qt6::DBus)
 set(QUASSEL_QT_MULTIMEDIA_TARGET Qt6::Multimedia)
-set(QUASSEL_QT_WEBENGINE_TARGET Qt6::WebEngine)
+set(QUASSEL_QT_WEBENGINE_TARGET Qt6::WebEngineCore)
 set(QUASSEL_QT_WEBENGINEWIDGETS_TARGET Qt6::WebEngineWidgets)
 set(QUASSEL_QT_RCC_TARGET Qt6::rcc)
 set(QUASSEL_QT_QMAKE_TARGET Qt6::qmake)
@@ -107,23 +107,17 @@ if (BUILD_GUI)
     endif()
 
     if (WITH_WEBENGINE)
-        find_package(Qt6 ${QUASSEL_QT_MIN_VERSION} QUIET COMPONENTS WebEngine)
-        set_package_properties(Qt6WebEngine PROPERTIES TYPE RECOMMENDED
+        find_package(Qt6 ${QUASSEL_QT_MIN_VERSION} REQUIRED COMPONENTS WebEngineCore WebEngineWidgets)
+        set_package_properties(Qt6WebEngineCore PROPERTIES TYPE REQUIRED
             URL "https://www.qt.io/"
-            DESCRIPTION "a WebEngine implementation for Qt"
+            DESCRIPTION "the core WebEngine implementation for Qt"
             PURPOSE     "Needed for displaying previews for URLs in chat"
         )
-        if (Qt6WebEngine_FOUND)
-            find_package(Qt6 ${QUASSEL_QT_MIN_VERSION} QUIET COMPONENTS WebEngineWidgets)
-            set_package_properties(Qt6WebEngineWidgets PROPERTIES TYPE RECOMMENDED
-                URL "https://www.qt.io/"
-                DESCRIPTION "widgets for Qt's WebEngine implementation"
-                PURPOSE     "Needed for displaying previews for URLs in chat"
-            )
-        endif()
-    endif()
-
-    if (WITH_WEBENGINE AND Qt6WebEngineWidgets_FOUND)
+        set_package_properties(Qt6WebEngineWidgets PROPERTIES TYPE REQUIRED
+            URL "https://www.qt.io/"
+            DESCRIPTION "widgets for Qt's WebEngine implementation"
+            PURPOSE     "Needed for displaying previews for URLs in chat"
+        )
         set(QUASSEL_HAVE_WEBENGINE TRUE)
     endif()
     add_feature_info("WITH_WEBENGINE, QtWebEngine and QtWebEngineWidgets modules" QUASSEL_HAVE_WEBENGINE "Support showing previews for URLs in chat")

@@ -50,7 +50,12 @@ jobs:
       run: |
         git config --global --add safe.directory "$GITHUB_WORKSPACE"
         apt-get update
-        apt-get install -y --no-install-recommends qt6-5compat-dev
+        if [ "${{ matrix.dist }}" = "debian-testing" ]; then
+          apt-get dist-upgrade -y
+        fi
+        apt-get install -y --no-install-recommends \
+          qt6-5compat-dev \
+          qt6-webengine-dev
 
     - name: Configure
       run: |
@@ -296,7 +301,7 @@ jobs:
       # If Homebrew begins failing in the future due to out-of-date versions,
       # it can be re-enabled here as follows...
       # run: brew update && [below command]
-      run: brew install boost ccache qt
+      run: brew install boost ccache qt qtwebengine
 
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -311,7 +316,7 @@ jobs:
                           -DWANT_CORE=ON \
                           -DWANT_QTCLIENT=ON \
                           -DWANT_MONO=ON \
-                          -DCMAKE_PREFIX_PATH=$(brew --prefix qt) \
+                          -DCMAKE_PREFIX_PATH="$(brew --prefix qt);$(brew --prefix qtwebengine)" \
                           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/bundles \
                           -DCMAKE_BUILD_TYPE=Release \
                           -DBUILD_TESTING=ON \
