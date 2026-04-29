@@ -29,7 +29,6 @@
 #include "clientbacklogmanager.h"
 #include "message.h"
 #include "networkmodel.h"
-#include "util.h"
 
 class ProcessBufferEvent : public QEvent
 {
@@ -42,8 +41,7 @@ public:
 MessageModel::MessageModel(QObject* parent)
     : QAbstractItemModel(parent)
 {
-    const QDateTime now = QDateTime::currentDateTimeUtc();
-    _nextDayChange = QDateTime::fromMSecsSinceEpoch(((now.toMSecsSinceEpoch() / DAY_IN_MSECS) + 1) * DAY_IN_MSECS, utcTimeZone()).toLocalTime();
+    _nextDayChange = QDateTime(QDate::currentDate().addDays(1), QTime(0, 0, 0));
     _dayChangeTimer.setInterval(QDateTime::currentDateTime().secsTo(_nextDayChange) * 1000);
     _dayChangeTimer.start();
     connect(&_dayChangeTimer, &QTimer::timeout, this, &MessageModel::changeOfDay);
@@ -150,13 +148,10 @@ void MessageModel::insertMessageGroup(const QList<Message>& msglist)
         // if this assert triggers then indexForId() would have found a spot right before a DayChangeMsg
         // this should never happen as daychange messages share the msgId with the preceding message
         Q_ASSERT(messageItemAt(start)->msgType() != Message::DayChange);
-        QDateTime nextTs = messageItemAt(start)->timestamp().toUTC();
-        QDateTime prevTs = msglist.last().timestamp().toUTC();
-        qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
-        qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
-        if (nextDay != prevDay) {
-            nextTs = QDateTime::fromMSecsSinceEpoch(nextDay * DAY_IN_MSECS, utcTimeZone()).toLocalTime();
-            dayChangeMsg = Message::ChangeOfDay(nextTs);
+        QDate nextDate = messageItemAt(start)->timestamp().toLocalTime().date();
+        QDate prevDate = msglist.last().timestamp().toLocalTime().date();
+        if (nextDate != prevDate) {
+            dayChangeMsg = Message::ChangeOfDay(QDateTime(nextDate, QTime(0, 0, 0)));
             dayChangeMsg.setMsgId(msglist.last().msgId());
         }
     }
@@ -239,13 +234,10 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
             }
             if ((*iter).msgId() != dupeId) {
                 if (!grouplist.isEmpty()) {
-                    QDateTime nextTs = grouplist.value(0).timestamp().toUTC();
-                    QDateTime prevTs = (*iter).timestamp().toUTC();
-                    qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
-                    qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
-                    if (nextDay != prevDay) {
-                        nextTs = QDateTime::fromMSecsSinceEpoch(nextDay * DAY_IN_MSECS, utcTimeZone()).toLocalTime();
-                        Message dayChangeMsg = Message::ChangeOfDay(nextTs);
+                    QDate nextDate = grouplist.value(0).timestamp().toLocalTime().date();
+                    QDate prevDate = (*iter).timestamp().toLocalTime().date();
+                    if (nextDate != prevDate) {
+                        Message dayChangeMsg = Message::ChangeOfDay(QDateTime(nextDate, QTime(0, 0, 0)));
                         dayChangeMsg.setMsgId((*iter).msgId());
                         grouplist.prepend(dayChangeMsg);
                     }
@@ -268,13 +260,10 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
             }
             if ((*iter).msgId() != dupeId) {
                 if (!grouplist.isEmpty()) {
-                    QDateTime nextTs = grouplist.value(0).timestamp().toUTC();
-                    QDateTime prevTs = (*iter).timestamp().toUTC();
-                    qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
-                    qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
-                    if (nextDay != prevDay) {
-                        nextTs = QDateTime::fromMSecsSinceEpoch(nextDay * DAY_IN_MSECS, utcTimeZone()).toLocalTime();
-                        Message dayChangeMsg = Message::ChangeOfDay(nextTs);
+                    QDate nextDate = grouplist.value(0).timestamp().toLocalTime().date();
+                    QDate prevDate = (*iter).timestamp().toLocalTime().date();
+                    if (nextDate != prevDate) {
+                        Message dayChangeMsg = Message::ChangeOfDay(QDateTime(nextDate, QTime(0, 0, 0)));
                         dayChangeMsg.setMsgId((*iter).msgId());
                         grouplist.prepend(dayChangeMsg);
                     }
@@ -398,8 +387,8 @@ void MessageModel::changeOfDay()
             endInsertRows();
         }
     }
-    // Advance the day change tracker to the next day change
-    _nextDayChange = _nextDayChange.addMSecs(DAY_IN_MSECS);
+    // Advance the day change tracker to the next local midnight
+    _nextDayChange = QDateTime(_nextDayChange.date().addDays(1), QTime(0, 0, 0));
 }
 
 void MessageModel::insertErrorMessage(BufferInfo bufferInfo, const QString& errorString)
