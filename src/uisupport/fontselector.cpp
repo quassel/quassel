@@ -54,7 +54,7 @@ void FontSelector::setSelectedFont(const QFont& font)
 void FontSelector::chooseFont()
 {
     bool ok;
-    QFont font = QFontDialog::getFont(&ok, _demo->font(), nullptr, QString(), QFontDialog::DontUseNativeDialog);
+    QFont font = QFontDialog::getFont(&ok, _font, nullptr, QString(), QFontDialog::DontUseNativeDialog);
     if (ok) {
         setSelectedFont(font);
     }

@@ -765,7 +765,7 @@ void QssParser::parseFont(const QString& value, QTextCharFormat* format)
             format->setFontWeight(QFont::Bold);
         else {  // number
             int w = prop.toInt();
-            format->setFontWeight(qMin(w / 8, 99));  // taken from Qt's qss parser
+            format->setFontWeight(w);
         }
     }
 
@@ -808,7 +808,7 @@ void QssParser::parseFontWeight(const QString& value, QTextCharFormat* format)
             qWarning() << Q_FUNC_INFO << tr("Invalid font weight specification: %1").arg(value);
             return;
         }
-        format->setFontWeight(qMin(w / 8, 99));  // taken from Qt's qss parser
+        format->setFontWeight(w);
     }
 }
 
