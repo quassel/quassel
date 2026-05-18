@@ -2184,7 +2184,7 @@ QSqlQuery PostgreSqlStorage::prepareAndExecuteQuery(const QString& queryname, co
         query = execQuery(db, QString("EXECUTE quassel_%1 (%2)").arg(queryname).arg(paramstring));
     }
 
-    if (!db.isOpen() || db.lastError().isValid()) {
+    if (!db.isOpen() || db.lastError().isValid() || query.lastError().isValid()) {
         // If the query failed because the DB connection was down, reopen the connection and start a new transaction.
         if (!db.isOpen()) {
             db = logDb();
@@ -2206,10 +2206,11 @@ QSqlQuery PostgreSqlStorage::prepareAndExecuteQuery(const QString& queryname, co
             db, QString("SELECT count(name) FROM pg_prepared_statements WHERE name = 'quassel_%1' AND from_sql = TRUE").arg(queryname.toLower()));
         checkQuery.first();
         if (checkQuery.value(0).toInt() == 0) {
-            execQuery(db, QString("PREPARE quassel_%1 AS %2").arg(queryname).arg(queryString(queryname)));
-            if (db.lastError().isValid()) {
+            QSqlQuery prepareQuery = execQuery(db, QString("PREPARE quassel_%1 AS %2").arg(queryname).arg(queryString(queryname)));
+            if (prepareQuery.lastError().isValid() || db.lastError().isValid()) {
+                const QSqlError error = prepareQuery.lastError().isValid() ? prepareQuery.lastError() : db.lastError();
                 qWarning() << "PostgreSqlStorage::prepareQuery(): unable to prepare query:" << queryname << "AS" << queryString(queryname);
-                qWarning() << "  Error:" << db.lastError().text();
+                qWarning() << "  Error:" << error.text();
                 return QSqlQuery(db);
             }
         }
