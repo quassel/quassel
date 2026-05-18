@@ -49,10 +49,6 @@
 
 #if defined HAVE_KF6
 #    include <KAboutData>
-#    if __has_include(<Kdelibs4ConfigMigrator>)
-#        include <Kdelibs4ConfigMigrator>
-#        define HAVE_KDELIBS4CONFIGMIGRATOR
-#    endif
 #endif
 
 #include "quassel.h"
@@ -73,14 +69,6 @@ int main(int argc, char** argv)
     QCoreApplication::setApplicationVersion(Quassel::buildInfo().plainVersionString);
     QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
     QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
-
-    // Migrate settings from KDE4 if the compatibility helper is available.
-#ifdef HAVE_KDELIBS4CONFIGMIGRATOR
-    Kdelibs4ConfigMigrator migrator(QCoreApplication::applicationName());
-    migrator.setConfigFiles(QStringList() << "quasselrc"
-                                          << "quassel.notifyrc");
-    migrator.migrate();
-#endif
 
     // Setup the High-DPI settings
 #if defined(Q_OS_WIN)
