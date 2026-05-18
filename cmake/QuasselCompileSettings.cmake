@@ -19,6 +19,13 @@ function(check_and_set_linker_flag flag name outvar)
     cmake_pop_check_state()
 endfunction()
 
+# breaks build w/ >=gcc16
+check_cxx_compiler_flag("-Wno-error=sfinae-incomplete"
+                        HAS_SFINAE_INCOMPLETE)
+if (HAS_SFINAE_INCOMPLETE)
+    add_compile_options(-Wno-error=sfinae-incomplete)
+endif()
+
 # General compile settings
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
