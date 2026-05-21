@@ -347,8 +347,14 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool 
     }
     else {
         if (socket.state() == QAbstractSocket::ConnectedState) {
-            // If shutting down, prioritize the QUIT command
-            userInputHandler()->issueQuit(_quitReason, _shuttingDown);
+            if (_shuttingDown) {
+                // Avoid the graceful IRC QUIT path during core shutdown: Qt 6 TLS backends can still
+                // have pending socket work in flight, and timing out into abort() has proven crash-prone.
+                socket.disconnectFromHost();
+            }
+            else {
+                userInputHandler()->issueQuit(_quitReason, false);
+            }
         }
         else {
             socket.close();
