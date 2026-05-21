@@ -70,10 +70,6 @@ int main(int argc, char** argv)
     QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
     QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
 
-    // Setup the High-DPI settings
-#if defined(Q_OS_WIN)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
     // Instantiate application
 #if defined BUILD_CORE
     CoreApplication app(argc, argv);
