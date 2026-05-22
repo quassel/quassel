@@ -145,7 +145,7 @@ CoreNetwork::~CoreNetwork()
 {
     // Ensure we don't get any more signals from the socket while shutting down
     disconnect(&socket, nullptr, this, nullptr);
-    if (!forceDisconnect()) {
+    if (!_skipForceDisconnect && !forceDisconnect()) {
         qWarning() << QString{"Could not disconnect from network %1 (network ID: %2, user ID: %3)"}
             .arg(networkName())
             .arg(networkId().toInt())
@@ -372,6 +372,16 @@ void CoreNetwork::onSocketCloseTimeout()
         .arg(networkName())
         .arg(networkId().toInt())
         .arg(userId().toInt());
+
+    if (_shuttingDown) {
+        // During core shutdown, avoid the hard abort() fallback. Qt 6's TLS backend can still have
+        // pending connection work queued, and aborting a stuck SSL socket has proven crash-prone.
+        _skipForceDisconnect = true;
+        disconnect(&socket, nullptr, this, nullptr);
+        onSocketDisconnected();
+        return;
+    }
+
     socket.abort();
 }
 
@@ -675,7 +685,7 @@ void CoreNetwork::onSocketDisconnected()
     emit socketDisconnected(identityPtr(), localAddress(), localPort(), peerAddress(), peerPort(), _socketId);
     // Reset disconnect expectations
     _disconnectExpected = false;
-    if (_quitRequested) {
+    if (_quitRequested || _shuttingDown) {
         _quitRequested = false;
         setConnectionState(Network::Disconnected);
         Core::setNetworkConnected(userId(), networkId(), false);

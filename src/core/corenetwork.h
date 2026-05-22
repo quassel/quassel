@@ -530,6 +530,7 @@ private:
     // specifying a permanent (saved to core session) disconnect.
 
     bool _shuttingDown{false};  ///< If true, we're shutting down and ignore requests to (dis)connect networks
+    bool _skipForceDisconnect{false};  ///< If true, shutdown already gave up on a stuck socket
 
     bool _previousConnectionAttemptFailed;
     int _lastUsedServerIndex;
