@@ -505,6 +505,7 @@ private:
     }
 
 private:
+    void ensureSocket();
     void cacheSocketEndpoint();
     void abandonSocket();
 

@@ -66,7 +66,6 @@ QString dropModes(const QString& input, const QString& removedModes)
 CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     : Network(networkid, session)
     , _coreSession(session)
-    , _socket(std::make_unique<QSslSocket>())
     , _userInputHandler(new CoreUserInputHandler(this))
     , _metricsServer(Core::instance()->metricsServer())
     , _autoReconnectCount(0)
@@ -110,12 +109,7 @@ CoreNetwork::CoreNetwork(const NetworkId& networkid, CoreSession* session)
     connect(&_autoWhoCycleTimer, &QTimer::timeout, this, &CoreNetwork::startAutoWhoCycle);
     connect(&_tokenBucketTimer, &QTimer::timeout, this, &CoreNetwork::checkTokenBucket);
 
-    connect(_socket.get(), &QAbstractSocket::connected, this, &CoreNetwork::onSocketInitialized);
-    connect(_socket.get(), &QAbstractSocket::errorOccurred, this, &CoreNetwork::onSocketError);
-    connect(_socket.get(), &QAbstractSocket::stateChanged, this, &CoreNetwork::onSocketStateChanged);
-    connect(_socket.get(), &QIODevice::readyRead, this, &CoreNetwork::onSocketHasData);
-    connect(_socket.get(), &QSslSocket::encrypted, this, &CoreNetwork::onSocketInitialized);
-    connect(_socket.get(), selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &CoreNetwork::onSslErrors);
+    ensureSocket();
     connect(this, &CoreNetwork::newEvent, coreSession()->eventManager(), &EventManager::postEvent);
 
     // Custom rate limiting
@@ -154,6 +148,22 @@ CoreNetwork::~CoreNetwork()
             .arg(networkId().toInt())
             .arg(userId().toInt());
     }
+}
+
+void CoreNetwork::ensureSocket()
+{
+    if (_socket) {
+        return;
+    }
+
+    _socket = std::make_unique<QSslSocket>();
+    connect(_socket.get(), &QAbstractSocket::connected, this, &CoreNetwork::onSocketInitialized);
+    connect(_socket.get(), &QAbstractSocket::errorOccurred, this, &CoreNetwork::onSocketError);
+    connect(_socket.get(), &QAbstractSocket::stateChanged, this, &CoreNetwork::onSocketStateChanged);
+    connect(_socket.get(), &QIODevice::readyRead, this, &CoreNetwork::onSocketHasData);
+    connect(_socket.get(), &QSslSocket::encrypted, this, &CoreNetwork::onSocketInitialized);
+    connect(_socket.get(), selectOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &CoreNetwork::onSslErrors);
+    _skipForceDisconnect = false;
 }
 
 void CoreNetwork::cacheSocketEndpoint()
@@ -237,6 +247,8 @@ void CoreNetwork::connectToIrc(bool reconnecting)
     if (_shuttingDown) {
         return;
     }
+
+    ensureSocket();
 
     if (Core::instance()->identServer()) {
         _socketId = Core::instance()->identServer()->addWaitingSocket();
@@ -371,19 +383,23 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString& reason, bool 
         "",
         tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason)
     ));
+
+    if (_shuttingDown) {
+        // During full core shutdown, don't touch the live TLS transport at all. Qt 6's OpenSSL
+        // backend can still have queued connection work on a socket that is otherwise fully in use,
+        // and even disconnectFromHost() can leave it in the crashy timeout path we've been hitting.
+        _skipForceDisconnect = true;
+        abandonSocket();
+        onSocketDisconnected();
+        return;
+    }
+
     if (socketState() == QAbstractSocket::UnconnectedState) {
         onSocketDisconnected();
     }
     else {
         if (socketState() == QAbstractSocket::ConnectedState) {
-            if (_shuttingDown) {
-                // Avoid the graceful IRC QUIT path during core shutdown: Qt 6 TLS backends can still
-                // have pending socket work in flight, and timing out into abort() has proven crash-prone.
-                _socket->disconnectFromHost();
-            }
-            else {
-                userInputHandler()->issueQuit(_quitReason, false);
-            }
+            userInputHandler()->issueQuit(_quitReason, false);
         }
         else {
             _socket->close();
@@ -402,10 +418,10 @@ void CoreNetwork::onSocketCloseTimeout()
         .arg(networkId().toInt())
         .arg(userId().toInt());
 
-    if (_shuttingDown) {
-        // During core shutdown, avoid destroying the socket after a stuck timeout. Qt 6's TLS backend
-        // can still have pending connection work queued, and tearing down the QSslSocket in that
-        // state has been crashing in the OpenSSL backend.
+    if (_shuttingDown || (_socket && _socket->mode() != QSslSocket::UnencryptedMode)) {
+        // Qt 6's TLS backend can still have pending connection work queued when a disconnect stalls.
+        // Avoid aborting or destroying the SSL socket in that state; mark the network down locally
+        // and recreate the socket if a reconnect is later needed.
         _skipForceDisconnect = true;
         abandonSocket();
         onSocketDisconnected();
