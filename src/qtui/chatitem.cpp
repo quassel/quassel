@@ -544,7 +544,10 @@ void SenderChatItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
     if (layoutWidth > width()) {
         // Draw a nice gradient for longer items
         // Qt's text drawing with a gradient brush sucks, so we use compositing instead
-        QPixmap pixmap(layout()->boundingRect().toRect().size());
+        qreal dpr = widget->devicePixelRatioF();
+        auto rect = layout()->boundingRect().toRect().size();
+        QPixmap pixmap(rect.width() * dpr, rect.height() * dpr);
+        pixmap.setDevicePixelRatio(dpr);
         pixmap.fill(Qt::transparent);
 
         QPainter pixPainter(&pixmap);
