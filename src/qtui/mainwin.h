@@ -75,6 +75,7 @@ public:
     BufferView* allBuffersView() const;
     BufferView* activeBufferView() const;
 
+    inline InputWidget* inputWidget() const { return _inputWidget; }
     inline BufferWidget* bufferWidget() const { return _bufferWidget; }
     inline SystemTray* systemTray() const { return _systemTray; }
 

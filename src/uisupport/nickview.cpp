@@ -95,6 +95,38 @@ void NickView::setRootIndex(const QModelIndex& index)
         unanimatedExpandAll();
 }
 
+QModelIndex NickView::getIndexFromNick(QString nick)
+{
+    QModelIndexList list;
+    QAbstractItemModel *itemModel = model();
+    if (!itemModel)
+        return QModelIndex();
+    QModelIndex parent = rootIndex();
+    if (!parent.isValid())
+        return QModelIndex();
+    // NickList tree structure is:
+    // Categories (Operators, Voiced, etc)
+    // Each category has multiple nicks
+    for (int row = 0; row < itemModel->rowCount(parent); row++) {
+        QModelIndex categoryIndex = itemModel->index(row, 0, parent);
+        if (!categoryIndex.isValid())
+            continue;
+        for (int nickRow = 0; nickRow < itemModel->rowCount(categoryIndex); nickRow++) {
+            QModelIndex nickIndex = itemModel->index(nickRow, 0, categoryIndex);
+            if (!nickIndex.isValid())
+                continue;
+            QVariant userVariant = nickIndex.data(NetworkModel::IrcUserRole);
+            if (!userVariant.isValid())
+                continue;
+            auto* ircUser = qobject_cast<IrcUser*>(userVariant.value<QObject*>());
+            // if the nick matches, return the index
+            if (ircUser && ircUser->nick() == nick)
+                return nickIndex;
+        }
+    }
+    return QModelIndex();
+}
+
 QModelIndexList NickView::selectedIndexes() const
 {
     QModelIndexList indexList = TreeViewTouch::selectedIndexes();
