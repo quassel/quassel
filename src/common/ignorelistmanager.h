@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +24,7 @@
 
 #include <utility>
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QString>
 #include <QStringList>
 
@@ -131,9 +131,9 @@ public:
         {
             // Handle CTCP ignores
             if (type == CtcpIgnore) {
-                // This is not performance-intensive; sticking with QRegExp for Qt 4 is fine
-                // Split based on whitespace characters
-                QStringList split(contents().split(QRegExp("\\s+"), QString::SkipEmptyParts));
+                // Split based on whitespace characters.
+                static const QRegularExpression whitespace(QStringLiteral("\\s+"));
+                QStringList split(contents().split(whitespace, Qt::SkipEmptyParts));
                 // Match on the first item, handling empty rules/matches
                 if (!split.isEmpty()) {
                     // Take the first item as the sender

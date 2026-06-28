@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,7 +48,7 @@ QString CoreAccountSettings::keyForNotify(const QString& key) const
 QList<AccountId> CoreAccountSettings::knownAccounts() const
 {
     QList<AccountId> ids;
-    foreach (const QString& key, localChildGroups()) {
+    for (const QString& key : localChildGroups()) {
         AccountId acc = key.toInt();
         if (acc.isValid())
             ids << acc;
@@ -99,7 +99,8 @@ void CoreAccountSettings::setAutoConnectToFixedAccount(bool b)
 void CoreAccountSettings::storeAccountData(AccountId id, const QVariantMap& data)
 {
     QString base = QString::number(id.toInt());
-    foreach (const QString& key, data.keys()) {
+    const auto dataKeys = data.keys();
+    for (const QString& key : dataKeys) {
         setLocalValue(base + "/" + key, data.value(key));
     }
 
@@ -111,7 +112,7 @@ QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id) const
 {
     QVariantMap map;
     QString base = QString::number(id.toInt());
-    foreach (const QString& key, localChildKeys(base)) {
+    for (const QString& key : localChildKeys(base)) {
         map[key] = localValue(base + "/" + key);
     }
 
@@ -180,7 +181,7 @@ QHash<int, BufferId> CoreAccountSettings::jumpKeyMap() const
 void CoreAccountSettings::setBufferViewOverlay(const QSet<int>& viewIds)
 {
     QVariantList variants;
-    foreach (int viewId, viewIds) {
+    for (int viewId : viewIds) {
         variants << QVariant::fromValue(viewId);
     }
     setAccountValue("BufferViewOverlay", variants);
@@ -203,7 +204,7 @@ void CoreAccountSettings::removeAccount(AccountId id)
 
 void CoreAccountSettings::clearAccounts()
 {
-    foreach (const QString& key, localChildGroups())
+    for (const QString& key : localChildGroups())
         removeLocalKey(key);
 }
 

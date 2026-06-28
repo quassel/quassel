@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -51,7 +51,7 @@ void ClientBacklogManager::receiveBacklog(BufferId bufferId, MsgId first, MsgId 
     emit messagesReceived(bufferId, msgs.count());
 
     MessageList msglist;
-    foreach (QVariant v, msgs) {
+    for (const QVariant& v : msgs) {
         Message msg = v.value<Message>();
         msg.setFlags(msg.flags() | Message::Backlog);
         msglist << msg;
@@ -78,7 +78,7 @@ void ClientBacklogManager::receiveBacklogAll(MsgId first, MsgId last, int limit,
     Q_UNUSED(additional)
 
     MessageList msglist;
-    foreach (QVariant v, msgs) {
+    for (const QVariant& v : msgs) {
         Message msg = v.value<Message>();
         msg.setFlags(msg.flags() | Message::Backlog);
         msglist << msg;
@@ -122,7 +122,7 @@ BufferIdList ClientBacklogManager::filterNewBufferIds(const BufferIdList& buffer
 {
     BufferIdList newBuffers;
     QSet<BufferId> availableBuffers = toQSet(Client::networkModel()->allBufferIds());
-    foreach (BufferId bufferId, bufferIds) {
+    for (BufferId bufferId : bufferIds) {
         if (_buffersRequested.contains(bufferId) || !availableBuffers.contains(bufferId))
             continue;
         newBuffers << bufferId;

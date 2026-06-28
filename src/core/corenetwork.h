@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include <QSslError>
 #include <QSslSocket>
@@ -90,12 +91,15 @@ public:
 
     inline UserId userId() const { return _coreSession->user(); }
 
-    inline QAbstractSocket::SocketState socketState() const { return socket.state(); }
-    inline bool socketConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
-    inline QHostAddress localAddress() const { return socket.localAddress(); }
-    inline QHostAddress peerAddress() const { return socket.peerAddress(); }
-    inline quint16 localPort() const { return socket.localPort(); }
-    inline quint16 peerPort() const { return socket.peerPort(); }
+    inline QAbstractSocket::SocketState socketState() const
+    {
+        return _socket ? _socket->state() : QAbstractSocket::UnconnectedState;
+    }
+    inline bool socketConnected() const { return socketState() == QAbstractSocket::ConnectedState; }
+    inline QHostAddress localAddress() const { return _socket ? _socket->localAddress() : _cachedLocalAddress; }
+    inline QHostAddress peerAddress() const { return _socket ? _socket->peerAddress() : _cachedPeerAddress; }
+    inline quint16 localPort() const { return _socket ? _socket->localPort() : _cachedLocalPort; }
+    inline quint16 peerPort() const { return _socket ? _socket->peerPort() : _cachedPeerPort; }
 
     /**
      * Gets whether or not a disconnect was expected.
@@ -501,13 +505,22 @@ private:
     }
 
 private:
+    void ensureSocket();
+    void cacheSocketEndpoint();
+    void abandonSocket();
+
+private:
     CoreSession* _coreSession;
 
     bool _debugLogRawIrc;      ///< If true, include raw IRC socket messages in the debug log
     qint32 _debugLogRawNetId;  ///< Network ID for logging raw IRC socket messages, or -1 for all
 
-    QSslSocket socket;
+    std::unique_ptr<QSslSocket> _socket;
     qint64 _socketId{0};
+    QHostAddress _cachedLocalAddress;
+    quint16 _cachedLocalPort{0};
+    QHostAddress _cachedPeerAddress;
+    quint16 _cachedPeerPort{0};
 
     CoreUserInputHandler* _userInputHandler;
     MetricsServer* _metricsServer;
@@ -530,6 +543,7 @@ private:
     // specifying a permanent (saved to core session) disconnect.
 
     bool _shuttingDown{false};  ///< If true, we're shutting down and ignore requests to (dis)connect networks
+    bool _skipForceDisconnect{false};  ///< If true, shutdown already gave up on a stuck socket
 
     bool _previousConnectionAttemptFailed;
     int _lastUsedServerIndex;

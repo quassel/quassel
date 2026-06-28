@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -48,7 +48,7 @@ Event::Event(EventManager::EventType type, QVariantMap& map)
         setTimestamp(QDateTime::fromMSecsSinceEpoch(map.take("timestamp").toLongLong()));
     }
     else {
-        setTimestamp(QDateTime::fromTime_t(map.take("timestamp").toUInt()));
+        setTimestamp(QDateTime::fromSecsSinceEpoch(map.take("timestamp").toUInt()));
     }
 }
 
@@ -64,7 +64,7 @@ void Event::toVariantMap(QVariantMap& map) const
         map["timestamp"] = timestamp().toMSecsSinceEpoch();
     }
     else {
-        map["timestamp"] = timestamp().toTime_t();
+        map["timestamp"] = timestamp().toSecsSinceEpoch();
     }
 }
 

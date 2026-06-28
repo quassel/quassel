@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@
 
 #include <QApplication>
 #include <QColor>
+#include <QRegularExpression>
 
 #include "buffersettings.h"
 #include "icon.h"
@@ -78,7 +79,6 @@ UiStyle::UiStyle(QObject* parent)
 {
     static bool registered = []() {
         qRegisterMetaType<FormatList>();
-        qRegisterMetaTypeStreamOperators<FormatList>();
         return true;
     }();
     Q_UNUSED(registered)
@@ -142,7 +142,7 @@ void UiStyle::loadStyleSheet()
         if (customSheet.isEmpty()) {
             // MIGRATION: changed default install path for data from /usr/share/apps to /usr/share
             if (customSheetPath.startsWith("/usr/share/apps/quassel")) {
-                customSheetPath.replace(QRegExp("^/usr/share/apps"), "/usr/share");
+                customSheetPath.replace(QRegularExpression(QStringLiteral("^/usr/share/apps")), "/usr/share");
                 customSheet = loadStyleSheet("file:///" + customSheetPath, true);
                 if (!customSheet.isEmpty()) {
                     s.setValue("CustomStyleSheetPath", customSheetPath);
@@ -215,9 +215,10 @@ void UiStyle::updateSystemTimestampFormat()
     // Note that '\' must be escaped as '\\'
     // QRegExp does not support (?> ...), so it's replaced with standard matching, (...)
     // Helpful interactive website for debugging and explaining:  https://regex101.com/
-    const QRegExp regExpMatchAMPM(".*(\\b|_)(A|AP)(\\b|_).*", Qt::CaseInsensitive);
+    static const QRegularExpression regExpMatchAMPM(QStringLiteral(".*(\\b|_)(A|AP)(\\b|_).*"),
+                                                    QRegularExpression::CaseInsensitiveOption);
 
-    if (regExpMatchAMPM.exactMatch(QLocale().timeFormat(QLocale::ShortFormat))) {
+    if (regExpMatchAMPM.match(QLocale().timeFormat(QLocale::ShortFormat)).hasMatch()) {
         // AM/PM style used
         _systemTimestampFormatString = " h:mm:ss ap";
     }
@@ -723,7 +724,7 @@ QString UiStyle::mircToInternal(const QString& mirc_)
 {
     QString mirc;
     mirc.reserve(mirc_.size());
-    foreach (const QChar& c, mirc_) {
+    for (const QChar& c : mirc_) {
         if ((c < '\x20' || c == '\x7f') && c != '\x03' && c != '\x04') {
             switch (c.unicode()) {
             case '\x02':
@@ -808,7 +809,7 @@ QString UiStyle::mircToInternal(const QString& mirc_)
     // Hex colors, as specified in https://modern.ircdocs.horse/formatting.html#hex-color
     // %Dhf#rrggbb is foreground, %Dhb#rrggbb is background
     {
-        static const QRegExp rx{"[\\da-fA-F]{6}"};
+        static const QRegularExpression rx(QStringLiteral("[\\da-fA-F]{6}"));
         int pos = 0;
         while (true) {
             if (pos >= mirc.length())
@@ -819,10 +820,10 @@ QString UiStyle::mircToInternal(const QString& mirc_)
             int i = pos + 1;
             QString ins;
             auto num = mirc.mid(i, 6);
-            if (!num.isEmpty() && rx.exactMatch(num)) {
+            if (!num.isEmpty() && rx.match(num).hasMatch()) {
                 ins = "%Dhf#" + num.toLower();
                 i += 6;
-                if (i < mirc.length() && mirc[i] == ',' && !(num = mirc.mid(i + 1, 6)).isEmpty() && rx.exactMatch(num)) {
+                if (i < mirc.length() && mirc[i] == ',' && !(num = mirc.mid(i + 1, 6)).isEmpty() && rx.match(num).hasMatch()) {
                     ins += "%Dhb#" + num.toLower();
                     i += 7;
                 }
@@ -960,7 +961,7 @@ void UiStyle::StyledMessage::style() const
         break;
     case Message::DayChange: {
         //: Day Change Message
-        t = tr("{Day changed to %1}").arg(timestamp().date().toString(Qt::DefaultLocaleLongDate));
+        t = tr("{Day changed to %1}").arg(QLocale().toString(timestamp().toLocalTime().date(), QLocale::LongFormat));
     } break;
     case Message::Topic:
         t = QString("%1").arg(txt);
@@ -1121,12 +1122,13 @@ quint8 UiStyle::StyledMessage::senderHash() const
 
     if (!nick.isEmpty()) {
         int chopCount = 0;
-        while (chopCount < nick.size() && nick.at(nick.count() - 1 - chopCount) == '_')
+        while (chopCount < nick.size() && nick.at(nick.size() - 1 - chopCount) == '_')
             chopCount++;
         if (chopCount < nick.size())
             nick.chop(chopCount);
     }
-    quint16 hash = qChecksum(nick.toLatin1().data(), nick.toLatin1().size());
+    const QByteArray nickLatin1 = nick.toLatin1();
+    quint16 hash = qChecksum(QByteArrayView{nickLatin1});
     return (_senderHash = (hash & 0xf) + 1);
 }
 

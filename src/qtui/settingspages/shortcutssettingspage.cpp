@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,7 +37,12 @@ ShortcutsFilter::ShortcutsFilter(QObject* parent)
 void ShortcutsFilter::setFilterString(const QString& filterString)
 {
     _filterString = filterString;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    beginFilterChange();
+    endFilterChange();
+#else
     invalidateFilter();
+#endif
 }
 
 bool ShortcutsFilter::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,7 @@
 
 #include <utility>
 
+#include <QGuiApplication>
 #include <QImage>
 
 #include "quassel.h"
@@ -110,7 +111,7 @@ AboutData& AboutData::addCredits(std::initializer_list<AboutPerson> credits)
     return *this;
 }
 
-#ifdef HAVE_KF5
+#ifdef HAVE_KF6
 
 KAboutData AboutData::kAboutData() const
 {
@@ -121,7 +122,7 @@ KAboutData AboutData::kAboutData() const
     aboutData.setProgramLogo(QVariant::fromValue(QImage(":/pics/quassel-logo.png")));
     aboutData.setBugAddress("https://bugs.quassel-irc.org/projects/quassel-irc/issues/new");
     aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
-    aboutData.setDesktopFileName(Quassel::buildInfo().clientApplicationName);
+    aboutData.setDesktopFileName(QGuiApplication::desktopFileName());
 
     for (const auto& person : authors()) {
         aboutData.addAuthor(person.prettyName(), person.task(), person.emailAddress());
@@ -219,7 +220,7 @@ void AboutData::setQuasselPersons(AboutData* aboutData)
          {"Felix Geyer", "debfx", tr("Certificate handling improvements")},
          {"Felix Kaechele", "", tr("German translation"), "", QLocale::German},
          {"Florent Castelli", "", tr("Sanitize topic handling, twitch.tv support")},
-         {"Frederik M.J. Vestre", "freqmod", tr("Norwegian translation"), "", QLocale::Norwegian},
+         {"Frederik M.J. Vestre", "freqmod", tr("Norwegian translation"), "", QLocale::NorwegianBokmal},
          {"Gábor Németh", "ELITE_x", tr("Hungarian translation"), "", QLocale::Hungarian},
          {"Gryllida A", "gry", tr("IRC parser improvements")},
          {"György Balló", "", tr("Fixes")},

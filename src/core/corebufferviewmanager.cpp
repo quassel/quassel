@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -90,7 +90,7 @@ void CoreBufferViewManager::requestDeleteBufferView(int bufferViewId)
 
 void CoreBufferViewManager::requestDeleteBufferViews(const QVariantList& bufferViews)
 {
-    foreach (QVariant bufferView, bufferViews) {
+    for (const QVariant& bufferView : bufferViews) {
         deleteBufferViewConfig(bufferView.toInt());
     }
 }

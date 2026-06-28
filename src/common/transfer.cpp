@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -53,8 +53,6 @@ void Transfer::init()
     static auto regTypes = []() -> bool {
         qRegisterMetaType<Status>("Transfer::Status");
         qRegisterMetaType<Direction>("Transfer::Direction");
-        qRegisterMetaTypeStreamOperators<Status>("Transfer::Status");
-        qRegisterMetaTypeStreamOperators<Direction>("Transfer::Direction");
         return true;
     }();
     Q_UNUSED(regTypes);

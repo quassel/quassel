@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -119,7 +119,7 @@ void ChatMonitorSettingsPage::load()
     if (!settings["Buffers"].toList().isEmpty()) {
         QList<BufferId> bufferIdsFromConfig;
         // remove all active buffers from the available config
-        foreach (QVariant v, settings["Buffers"].toList()) {
+        for (const QVariant& v : settings["Buffers"].toList()) {
             bufferIdsFromConfig << v.value<BufferId>();
             allBufferIds.removeAll(v.value<BufferId>());
         }
@@ -163,7 +163,7 @@ void ChatMonitorSettingsPage::save()
 
     // save list of active buffers
     QVariantList saveableBufferIdList;
-    foreach (BufferId id, _configActive->bufferList()) {
+    for (const BufferId& id : _configActive->bufferList()) {
         saveableBufferIdList << QVariant::fromValue(id);
     }
 
@@ -199,7 +199,7 @@ bool ChatMonitorSettingsPage::testHasChanged()
 
     QSet<BufferId> uiBufs = toQSet(_configActive->bufferList());
     QSet<BufferId> settingsBufs;
-    foreach (QVariant v, settings["Buffers"].toList())
+    for (const QVariant& v : settings["Buffers"].toList())
         settingsBufs << v.value<BufferId>();
     if (uiBufs != settingsBufs)
         return true;
@@ -218,7 +218,7 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView* inView, BufferViewConfig
 {
     // Fill QMap with selected items ordered by selection row
     QMap<int, QList<BufferId>> selectedBuffers;
-    foreach (QModelIndex index, inView->selectionModel()->selectedIndexes()) {
+    for (const QModelIndex& index : inView->selectionModel()->selectedIndexes()) {
         BufferId inBufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
         if (index.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
             // TODO:
@@ -242,8 +242,8 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView* inView, BufferViewConfig
     qobject_cast<BufferViewFilter*>(inView->model())->setConfig(nullptr);
 
     // actually move the ids
-    foreach (QList<BufferId> list, selectedBuffers) {
-        foreach (BufferId buffer, list) {
+    for (const QList<BufferId>& list : selectedBuffers) {
+        for (const BufferId& buffer : list) {
             outCfg->addBuffer(buffer, 0);
             inCfg->removeBuffer(buffer);
         }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,6 +37,7 @@ class StatusBufferItem;
 class NetworkItem : public PropertyMapItem
 {
     Q_OBJECT
+    Q_MOC_INCLUDE("ircuser.h")
     Q_PROPERTY(QString networkName READ networkName)
     Q_PROPERTY(QString currentServer READ currentServer)
     Q_PROPERTY(int nickCount READ nickCount)

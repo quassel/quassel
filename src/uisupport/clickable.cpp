@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,6 +20,7 @@
 
 #include "clickable.h"
 
+#include <QRegularExpression>
 #include <QDesktopServices>
 #include <QModelIndex>
 #include <QUrl>
@@ -58,14 +59,19 @@ ClickableList ClickableList::fromString(const QString& str)
     static QString urlChars("(?:[,.;:]*[\\w~@/?&=+$()!%#*-])");
     static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");  // NOLINT(modernize-raw-string-literal)
 
-    static QRegExp regExp[] = {
+    static const QRegularExpression::PatternOptions caseInsensitiveUnicodeOptions =
+            QRegularExpression::CaseInsensitiveOption | QRegularExpression::UseUnicodePropertiesOption;
+
+    static const QRegularExpression regExp[] = {
         // URL
         // QRegExp(QString("((?:https?://|s?ftp://|irc://|mailto:|www\\.)%1+|%1+\\.[a-z]{2,4}(?:?=/%1+|\\b))%2").arg(urlChars, urlEnd)),
-        QRegExp(QString("\\b(%1%2(?:/%3*)?)%4").arg(scheme, authority, urlChars, urlEnd), Qt::CaseInsensitive),
+        QRegularExpression(QString("\\b(%1%2(?:/%3*)?)%4").arg(scheme, authority, urlChars, urlEnd),
+                           caseInsensitiveUnicodeOptions),
 
         // Channel name
         // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
-        QRegExp(R"(((?:#|![A-Z0-9]{5})[^,:\s]+(?::[^,:\s]+)?)\b)", Qt::CaseInsensitive)
+        QRegularExpression(QStringLiteral(R"(((?:#|![A-Z0-9]{5})[^,:\s]+(?::[^,:\s]+)?)\b)"),
+                           caseInsensitiveUnicodeOptions)
 
         // TODO: Nicks, we'll need a filtering for only matching known nicknames further down if we do this
     };
@@ -89,9 +95,10 @@ ClickableList ClickableList::fromString(const QString& str)
             if (matches[i] < 0 || matchEnd[i] > str.length())
                 continue;
             if (idx >= matchEnd[i]) {
-                matches[i] = regExp[i].indexIn(str, qMax(matchEnd[i], idx));
+                const QRegularExpressionMatch match = regExp[i].match(str, qMax(matchEnd[i], idx));
+                matches[i] = match.hasMatch() ? match.capturedStart(1) : -1;
                 if (matches[i] >= 0)
-                    matchEnd[i] = matches[i] + regExp[i].cap(1).length();
+                    matchEnd[i] = matches[i] + match.capturedLength(1);
             }
             if (matches[i] >= 0 && matches[i] < minidx) {
                 minidx = matches[i];
@@ -109,7 +116,9 @@ ClickableList ClickableList::fromString(const QString& str)
             }
             if (type == Clickable::Channel) {
                 // don't make clickable if it could be a #number
-                if (QRegExp("^#\\d+$").exactMatch(match))
+                static const QRegularExpression numericChannelRx(QStringLiteral(R"(^#\d+$)"),
+                                                                QRegularExpression::UseUnicodePropertiesOption);
+                if (numericChannelRx.match(match).hasMatch())
                     continue;
             }
             result.emplace_back((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]);
@@ -120,7 +129,7 @@ ClickableList ClickableList::fromString(const QString& str)
 
 Clickable ClickableList::atCursorPos(int idx)
 {
-    foreach (const Clickable& click, *this) {
+    for (const Clickable& click : *this) {
         if (idx >= click.start() && idx < click.start() + click.length())
             return click;
     }

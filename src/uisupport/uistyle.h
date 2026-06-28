@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -43,17 +43,10 @@
 class UISUPPORT_EXPORT UiStyle : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(SenderPrefixModes)
-
 public:
     UiStyle(QObject* parent = nullptr);
     ~UiStyle() override;
 
-// For backwards compatibility with Qt 5.5, the setFormats method was introduced
-// in Qt 5.6, but the old setAdditionalFormats was deprecated in 5.6 as well.
-//
-// So we use the old one on Qt 5.5, and the new one everywhere else.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
     using FormatContainer = QVector<QTextLayout::FormatRange>;
     static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) {
         layout.setFormats(formats);
@@ -61,15 +54,6 @@ public:
     static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) {
         return container;
     }
-#else
-    using FormatContainer = QList<QTextLayout::FormatRange>;
-    static inline void setTextLayoutFormats(QTextLayout& layout, const FormatContainer& formats) {
-        layout.setAdditionalFormats(formats);
-    }
-    static inline QVector<QTextLayout::FormatRange> containerToVector(const FormatContainer& container) {
-        return container.toVector();
-    }
-#endif
 
     //! This enumerates the possible formats a text element may have. */
     /** These formats are ordered on increasing importance, in cases where a given property is specified
@@ -201,6 +185,7 @@ public:
         HighestMode = 1, ///< Show the highest active sender mode
         AllModes    = 2  ///< Show all active sender modes
     };
+    Q_ENUM(SenderPrefixMode)
     // Do not change SenderPrefixMode numbering without also adjusting
     // ChatViewSettingsPage::initSenderPrefixComboBox() and chatviewsettingspage.ui "defaultValue"
 
@@ -447,8 +432,8 @@ UISUPPORT_EXPORT UiStyle::ItemFormatType& operator|=(UiStyle::ItemFormatType& lh
 
 // ---- Allow for FormatList in QVariant ----------------------------------------------------------
 
-QDataStream& operator<<(QDataStream& out, const UiStyle::FormatList& formatList);
-QDataStream& operator>>(QDataStream& in, UiStyle::FormatList& formatList);
+UISUPPORT_EXPORT QDataStream& operator<<(QDataStream& out, const UiStyle::FormatList& formatList);
+UISUPPORT_EXPORT QDataStream& operator>>(QDataStream& in, UiStyle::FormatList& formatList);
 
 Q_DECLARE_METATYPE(UiStyle::FormatList)
 Q_DECLARE_METATYPE(UiStyle::MessageLabel)

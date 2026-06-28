@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,14 +28,14 @@
 #include <QTableView>
 #include <QToolBar>
 
-#ifdef HAVE_KF5
+#ifdef HAVE_KF6
 #    include <kconfigwidgets_version.h>
 
-#    include <KConfigWidgets/KStandardAction>
-#    include <KWidgetsAddons/KToggleFullScreenAction>
-#    include <KXmlGui/KHelpMenu>
-#    include <KXmlGui/KShortcutsDialog>
-#    include <KXmlGui/KToolBar>
+#    include <KHelpMenu>
+#    include <KShortcutsDialog>
+#    include <KStandardAction>
+#    include <KToggleFullScreenAction>
+#    include <KToolBar>
 #endif
 
 #ifdef Q_WS_X11
@@ -108,10 +108,6 @@
 #    include "knotificationbackend.h"
 #endif /* HAVE_KDE */
 #include "systrayanimationnotificationbackend.h"
-
-#ifdef HAVE_LIBSNORE
-#    include "snorenotificationbackend.h"
-#endif
 
 #ifdef HAVE_NOTIFICATION_CENTER
 #    include "osxnotificationbackend.h"
@@ -238,9 +234,7 @@ void MainWin::init()
 #ifndef QT_NO_SYSTEMTRAYICON
     QtUi::registerNotificationBackend(new SystrayAnimationNotificationBackend(this));
 #endif
-#ifdef HAVE_LIBSNORE
-    QtUi::registerNotificationBackend(new SnoreNotificationBackend(this));
-#elif !defined(QT_NO_SYSTEMTRAYICON) && !defined(HAVE_KDE)
+#if !defined(QT_NO_SYSTEMTRAYICON) && !defined(HAVE_KDE)
     QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
 #endif
 
@@ -365,7 +359,7 @@ void MainWin::setupActions()
          {"CoreInfo", new Action(icon::get("help-about"), tr("Core &Info..."), coll, this, &MainWin::showCoreInfoDlg)},
          {"ConfigureNetworks",
           new Action(icon::get("configure"), tr("Configure &Networks..."), coll, this, &MainWin::onConfigureNetworksTriggered)},
-         {"Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL + Qt::Key_Q)}});
+         {"Quit", new Action(icon::get("application-exit"), tr("&Quit"), coll, Quassel::instance(), &Quassel::quit, Qt::CTRL | Qt::Key_Q)}});
 
     // View
     coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Chat Lists..."), coll, this, &MainWin::onConfigureViewsTriggered));
@@ -426,7 +420,7 @@ void MainWin::setupActions()
                      coll,
                      QtUi::style(),
                      &UiStyle::reload,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R))}});
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_R))}});
 
     // Other
     coll->addAction("HideCurrentBuffer", new Action(tr("Hide Current Buffer"), coll, this, &MainWin::hideCurrentBuffer, QKeySequence::Close));
@@ -441,21 +435,21 @@ void MainWin::setupActions()
                      coll,
                      this,
                      &MainWin::onFormatApplyColorTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G))},
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_G))},
          {"FormatApplyColorFill",
           new Action(icon::get("format-fill-color"),
                      tr("Apply background color"),
                      coll,
                      this,
                      &MainWin::onFormatApplyColorFillTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_B))},
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_B))},
          {"FormatClear",
           new Action(icon::get("edit-clear"),
                      tr("Clear formatting"),
                      coll,
                      this,
                      &MainWin::onFormatClearTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C))},
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C))},
          {"FormatBold",
           new Action(icon::get("format-text-bold"), tr("Toggle bold"), coll, this, &MainWin::onFormatBoldTriggered, QKeySequence::Bold)},
          {"FormatItalic",
@@ -473,16 +467,16 @@ void MainWin::setupActions()
                      coll,
                      this,
                      &MainWin::onFormatStrikethroughTriggered,
-                     QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S))}});
+                     QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_S))}});
 
     // Navigation
     coll = QtUi::actionCollection("Navigation", tr("Navigation"));
 
     coll->addActions(
         {{"JumpHotBuffer",
-          new Action(tr("Jump to hot chat"), coll, this, &MainWin::onJumpHotBufferTriggered, QKeySequence(Qt::META + Qt::Key_A))},
+           new Action(tr("Jump to hot chat"), coll, this, &MainWin::onJumpHotBufferTriggered, QKeySequence(Qt::META | Qt::Key_A))},
          {"ActivateBufferFilter",
-          new Action(tr("Activate the buffer search"), coll, this, &MainWin::onBufferSearchTriggered, QKeySequence(Qt::CTRL + Qt::Key_S))}});
+           new Action(tr("Activate the buffer search"), coll, this, &MainWin::onBufferSearchTriggered, QKeySequence(Qt::CTRL | Qt::Key_S))}});
 
     // Jump keys
 #ifdef Q_OS_MAC
@@ -566,14 +560,14 @@ void MainWin::setupActions()
                                coll,
                                this,
                                &MainWin::nextBuffer,
-                               QKeySequence(Qt::ALT + Qt::Key_Down)));
+                               QKeySequence(Qt::ALT | Qt::Key_Down)));
     coll->addAction("PreviousBuffer",
                     new Action(icon::get("go-up"),
                                tr("Go to Previous Chat"),
                                coll,
                                this,
                                &MainWin::previousBuffer,
-                               QKeySequence(Qt::ALT + Qt::Key_Up)));
+                               QKeySequence(Qt::ALT | Qt::Key_Up)));
 }
 
 void MainWin::setupMenus()
@@ -588,7 +582,7 @@ void MainWin::setupMenus()
                                                          << "CoreInfo";
 
     QAction* coreAction;
-    foreach (QString actionName, coreActions) {
+    for (const QString& actionName : coreActions) {
         coreAction = coll->action(actionName);
         _fileMenu->addAction(coreAction);
         flagRemoteCoreOnly(coreAction);
@@ -715,7 +709,7 @@ void MainWin::removeBufferView(int bufferViewConfigId)
 {
     QVariant actionData;
     BufferViewDock* dock;
-    foreach (QAction* action, _bufferViewsMenu->actions()) {
+    for (QAction* action : _bufferViewsMenu->actions()) {
         actionData = action->data();
         if (!actionData.isValid())
             continue;
@@ -934,22 +928,22 @@ void MainWin::onConfigureViewsTriggered()
 void MainWin::onLockLayoutToggled(bool lock)
 {
     QList<VerticalDock*> docks = findChildren<VerticalDock*>();
-    foreach (VerticalDock* dock, docks) {
+    for (VerticalDock* dock : docks) {
         dock->showTitle(!lock);
     }
 
     QList<NickListDock*> nickdocks = findChildren<NickListDock*>();
-    foreach (NickListDock* nickdock, nickdocks) {
+    for (NickListDock* nickdock : nickdocks) {
         nickdock->setLocked(lock);
     }
 
     QList<BufferViewDock*> bufferdocks = findChildren<BufferViewDock*>();
-    foreach (BufferViewDock* bufferdock, bufferdocks) {
+    for (BufferViewDock* bufferdock : bufferdocks) {
         bufferdock->setLocked(lock);
     }
 
     if (Client::bufferViewManager()) {
-        foreach (ClientBufferViewConfig* config, Client::bufferViewManager()->clientBufferViewConfigs()) {
+        for (ClientBufferViewConfig* config : Client::bufferViewManager()->clientBufferViewConfigs()) {
             config->setLocked(lock);
         }
     }
@@ -1226,7 +1220,7 @@ void MainWin::setConnectedState()
     coll->action("ChangePassword")->setEnabled(true);
     coll->action("CoreInfo")->setEnabled(true);
 
-    foreach (QAction* action, _fileMenu->actions()) {
+    for (QAction* action : _fileMenu->actions()) {
         if (isRemoteCoreOnly(action))
             action->setVisible(!Client::internalCore());
     }
@@ -1278,7 +1272,7 @@ void MainWin::loadLayout()
     QByteArray state = s.value(QString("MainWinState-%1").arg(accountId)).toByteArray();
     _nickListWidget->setVisible(true);
     if (state.isEmpty()) {
-        foreach (BufferViewDock* view, _bufferViews)
+        for (BufferViewDock* view : _bufferViews)
             view->show();
         _layoutLoaded = true;
         return;
@@ -1310,7 +1304,7 @@ void MainWin::disconnectedFromCore()
 
     QVariant actionData;
     BufferViewDock* dock;
-    foreach (QAction* action, _bufferViewsMenu->actions()) {
+    for (QAction* action : _bufferViewsMenu->actions()) {
         actionData = action->data();
         if (!actionData.isValid())
             continue;
@@ -1385,11 +1379,7 @@ void MainWin::handleSslErrors(const QSslSocket* socket, bool* accepted, bool* pe
 {
     QString errorString = "<ul>";
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    for (const auto& error : socket->sslErrors()) {
-#else
     for (const auto& error : socket->sslHandshakeErrors()) {
-#endif
         errorString += QString("<li>%1</li>").arg(error.errorString());
     }
     errorString += "</ul>";
@@ -1571,7 +1561,7 @@ void MainWin::showShortcutsDlg()
 {
 #ifdef HAVE_KDE
     KShortcutsDialog dlg(KShortcutsEditor::AllActions, KShortcutsEditor::LetterShortcutsDisallowed);
-    foreach (KActionCollection* coll, QtUi::actionCollections()) {
+    for (KActionCollection* coll : QtUi::actionCollections()) {
         dlg.addCollection(coll, coll->property("Category").toString());
     }
     dlg.configure(true);
@@ -1740,7 +1730,7 @@ void MainWin::clientNetworkCreated(NetworkId id)
     connect(act, &QAction::triggered, this, &MainWin::connectOrDisconnectFromNet);
 
     QAction* beforeAction = nullptr;
-    foreach (QAction* action, _networksMenu->actions()) {
+    for (QAction* action : _networksMenu->actions()) {
         if (!action->data().isValid())  // ignore stock actions
             continue;
         if (net->networkName().localeAwareCompare(action->text()) < 0) {

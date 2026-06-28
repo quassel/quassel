@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -44,7 +44,7 @@ AboutDlg::AboutDlg(QWidget* parent)
         versionDate = QString("<i>%1</i>").arg(tr("Unknown date"));
     }
     else {
-        versionDate = tryFormatUnixEpoch(Quassel::buildInfo().commitDate, Qt::DateFormat::DefaultLocaleShortDate);
+        versionDate = tryFormatUnixEpoch(Quassel::buildInfo().commitDate, QLocale::ShortFormat);
     }
     ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br>"
                                         "<b>Version date:</b> %2<br>"
@@ -75,7 +75,7 @@ QString AboutDlg::about() const
                    "licensed under the "
                    "<a href=\"https://github.com/KDE/oxygen-icons/blob/master/COPYING\">LGPLv3</a>.<br><br>"
                    "Please use <a href=\"https://bugs.quassel-irc.org\">https://bugs.quassel-irc.org</a> to report bugs.")
-                    .arg("2005-2022")};
+                    .arg("2005-2026")};
 
     return res;
 }

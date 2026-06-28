@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,7 @@
 
 #include "netsplit.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "network.h"
 #include "util.h"
@@ -50,7 +50,7 @@ void Netsplit::userQuit(const QString& sender, const QStringList& channels, cons
 {
     if (_quitMsg.isEmpty())
         _quitMsg = msg;
-    foreach (QString channel, channels) {
+    for (const QString& channel : channels) {
         _quits[channel].append(sender);
     }
     _quitCounter++;
@@ -117,8 +117,8 @@ bool Netsplit::isNetsplit(const QString& quitMessage)
 
     // now test if message consists only of two dns names as the RFC requests
     // but also allow the commonly used "*.net *.split"
-    QRegExp hostRx(R"(^(?:[\w\d-.]+|\*)\.[\w\d-]+\s(?:[\w\d-.]+|\*)\.[\w\d-]+$)");
-    if (hostRx.exactMatch(quitMessage))
+    static const QRegularExpression hostRx(QStringLiteral(R"(^(?:[\w\d.-]+|\*)\.[\w\d-]+\s(?:[\w\d.-]+|\*)\.[\w\d-]+$)"));
+    if (hostRx.match(quitMessage).hasMatch())
         return true;
 
     return false;
@@ -170,7 +170,7 @@ void Netsplit::quitTimeout()
     for (channelIter = _quits.begin(); channelIter != _quits.end(); ++channelIter) {
         QStringList usersToSend;
 
-        foreach (QString user, channelIter.value()) {
+        for (const QString& user : channelIter.value()) {
             if (!_quitsWithMessageSent.value(channelIter.key()).contains(user)) {
                 usersToSend << user;
                 _quitsWithMessageSent[channelIter.key()].append(user);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -164,10 +164,10 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& m
         if (!ircuser)
             continue;
         if (_userModes.contains(ircuser)) {
-            if (sortedModes[i].count() > 1) {
+            if (sortedModes[i].size() > 1) {
                 // Multiple modes received, do it one at a time
                 // TODO Better way of syncing this without breaking protocol?
-                for (int i_m = 0; i_m < sortedModes[i].count(); ++i_m) {
+                for (int i_m = 0; i_m < sortedModes[i].size(); ++i_m) {
                     addUserMode(ircuser, sortedModes[i][i_m]);
                 }
             }
@@ -200,7 +200,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser*>& users, const QStringList& m
 void IrcChannel::joinIrcUsers(const QStringList& nicks, const QStringList& modes)
 {
     QList<IrcUser*> users;
-    foreach (QString nick, nicks)
+    for (const QString& nick : nicks)
         users << network()->newIrcUser(nick);
     joinIrcUsers(users, modes);
 }
@@ -229,7 +229,7 @@ void IrcChannel::part(IrcUser* ircuser)
             //  -> clean up the channel and destroy it
             QList<IrcUser*> users = _userModes.keys();
             _userModes.clear();
-            foreach (IrcUser* user, users) {
+            for (IrcUser* user : users) {
                 disconnect(user, nullptr, this, nullptr);
                 user->partChannelInternal(this, true);
             }
@@ -390,7 +390,7 @@ void IrcChannel::initSetChanModes(const QVariantMap& channelModes)
     }
 
     QString D_modes = channelModes["D"].toString();
-    for (int i = 0; i < D_modes.count(); i++) {
+    for (int i = 0; i < D_modes.size(); i++) {
         _D_channelModes << D_modes[i];
     }
 }

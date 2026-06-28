@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -40,7 +40,7 @@ RemotePeer* PeerFactory::createPeer(
 RemotePeer* PeerFactory::createPeer(
     const ProtoList& protocols, AuthHandler* authHandler, QTcpSocket* socket, Compressor::CompressionLevel level, QObject* parent)
 {
-    foreach (const ProtoDescriptor& protodesc, protocols) {
+    for (const ProtoDescriptor& protodesc : protocols) {
         Protocol::Type proto = protodesc.first;
         quint16 features = protodesc.second;
         switch (proto) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -171,9 +171,9 @@ protected:
     QSqlQuery executePreparedQuery(const QString& queryname, const QVariant& param, QSqlDatabase& db);
     void deallocateQuery(const QString& queryname, const QSqlDatabase& db);
 
-    void savePoint(const QString& handle, const QSqlDatabase& db) { db.exec(QString("SAVEPOINT %1").arg(handle)); }
-    void rollbackSavePoint(const QString& handle, const QSqlDatabase& db) { db.exec(QString("ROLLBACK TO SAVEPOINT %1").arg(handle)); }
-    void releaseSavePoint(const QString& handle, const QSqlDatabase& db) { db.exec(QString("RELEASE SAVEPOINT %1").arg(handle)); }
+    void savePoint(const QString& handle, const QSqlDatabase& db) { QSqlQuery{db}.exec(QString("SAVEPOINT %1").arg(handle)); }
+    void rollbackSavePoint(const QString& handle, const QSqlDatabase& db) { QSqlQuery{db}.exec(QString("ROLLBACK TO SAVEPOINT %1").arg(handle)); }
+    void releaseSavePoint(const QString& handle, const QSqlDatabase& db) { QSqlQuery{db}.exec(QString("RELEASE SAVEPOINT %1").arg(handle)); }
 
 private:
     void bindNetworkInfo(QSqlQuery& query, const NetworkInfo& info);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -117,8 +117,8 @@ private:
 using PeerPtr = Peer*;
 Q_DECLARE_METATYPE(PeerPtr)
 
-QDataStream& operator<<(QDataStream& out, PeerPtr ptr);
-QDataStream& operator>>(QDataStream& in, PeerPtr& ptr);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, PeerPtr ptr);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, PeerPtr& ptr);
 
 // Template method needed in the header
 template<typename T>

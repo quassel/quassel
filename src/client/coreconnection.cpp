@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -49,8 +49,16 @@ void CoreConnection::init()
     _reconnectTimer.setSingleShot(true);
     connect(&_reconnectTimer, &QTimer::timeout, this, &CoreConnection::reconnectTimeout);
 
-    _qNetworkConfigurationManager = new QNetworkConfigurationManager(this);
-    connect(_qNetworkConfigurationManager.data(), &QNetworkConfigurationManager::onlineStateChanged, this, &CoreConnection::onlineStateChanged);
+    QNetworkInformation::loadBackendByFeatures(QNetworkInformation::Feature::Reachability);
+    _networkInformation = QNetworkInformation::instance();
+    if (_networkInformation) {
+        connect(_networkInformation.data(),
+                &QNetworkInformation::reachabilityChanged,
+                this,
+                [this](QNetworkInformation::Reachability reachability) {
+                    onlineStateChanged(reachability != QNetworkInformation::Reachability::Disconnected);
+                });
+    }
 
     CoreConnectionSettings s;
     s.initAndNotify("PingTimeoutInterval", this, &CoreConnection::pingTimeoutIntervalChanged, 60);
@@ -112,7 +120,8 @@ void CoreConnection::reconnectTimeout()
         if (_wantReconnect && s.autoReconnect()) {
             // If using QNetworkConfigurationManager, we don't want to reconnect if we're offline
             if (s.networkDetectionMode() == CoreConnectionSettings::UseQNetworkConfigurationManager) {
-                if (!_qNetworkConfigurationManager->isOnline()) {
+                if (_networkInformation
+                    && _networkInformation->reachability() == QNetworkInformation::Reachability::Disconnected) {
                     return;
                 }
             }
@@ -445,7 +454,7 @@ void CoreConnection::syncToCore(const Protocol::SessionState& sessionState)
     updateProgress(0, 100);
 
     // create identities
-    foreach (const QVariant& vid, sessionState.identities) {
+    for (const QVariant& vid : sessionState.identities) {
         Client::instance()->coreIdentityCreated(vid.value<Identity>());
     }
 
@@ -453,8 +462,10 @@ void CoreConnection::syncToCore(const Protocol::SessionState& sessionState)
     // FIXME: get rid of this crap -- why?
     NetworkModel* networkModel = Client::networkModel();
     Q_ASSERT(networkModel);
-    foreach (const QVariant& vinfo, sessionState.bufferInfos)
-        networkModel->bufferUpdated(vinfo.value<BufferInfo>());  // create BufferItems
+    for (const QVariant& vinfo : sessionState.bufferInfos) {
+        const BufferInfo bufferInfo = vinfo.value<BufferInfo>();
+        networkModel->bufferUpdated(bufferInfo);  // create BufferItems
+    }
 
     // prepare sync progress thingys...
     // FIXME: Care about removal of networks
@@ -462,7 +473,7 @@ void CoreConnection::syncToCore(const Protocol::SessionState& sessionState)
     updateProgress(0, _numNetsToSync);
 
     // create network objects
-    foreach (const QVariant& networkid, sessionState.networkIds) {
+    for (const QVariant& networkid : sessionState.networkIds) {
         NetworkId netid = networkid.value<NetworkId>();
         if (Client::network(netid))
             continue;

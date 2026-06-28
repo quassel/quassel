@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@ TransferManager::TransferManager(QObject* parent)
     : SyncableObject("TransferManager", parent)
 {
     static auto regTypes = []() -> bool {
-        qRegisterMetaTypeStreamOperators<TransferIdList>("TransferManager::TransferIdList");
+        qRegisterMetaType<TransferIdList>("TransferManager::TransferIdList");
         return true;
     }();
     Q_UNUSED(regTypes);

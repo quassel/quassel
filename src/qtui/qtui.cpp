@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -180,7 +180,7 @@ uint QtUi::invokeNotification(BufferId bufId, AbstractNotificationBackend::Notif
 
     AbstractNotificationBackend::Notification notification(++notificationId, bufId, type, sender, text);
     _notifications.append(notification);
-    foreach (AbstractNotificationBackend* backend, _notificationBackends)
+    for (AbstractNotificationBackend* backend : _notificationBackends)
         backend->notify(notification);
     return notificationId;
 }
@@ -190,7 +190,7 @@ void QtUi::closeNotification(uint notificationId)
     QList<AbstractNotificationBackend::Notification>::iterator i = _notifications.begin();
     while (i != _notifications.end()) {
         if (i->notificationId == notificationId) {
-            foreach (AbstractNotificationBackend* backend, _notificationBackends)
+            for (AbstractNotificationBackend* backend : _notificationBackends)
                 backend->close(notificationId);
             i = _notifications.erase(i);
         }
@@ -204,7 +204,7 @@ void QtUi::closeNotifications(BufferId bufferId)
     QList<AbstractNotificationBackend::Notification>::iterator i = _notifications.begin();
     while (i != _notifications.end()) {
         if (!bufferId.isValid() || i->bufferId == bufferId) {
-            foreach (AbstractNotificationBackend* backend, _notificationBackends)
+            for (AbstractNotificationBackend* backend : _notificationBackends)
                 backend->close(i->notificationId);
             i = _notifications.erase(i);
         }
@@ -344,7 +344,7 @@ void QtUi::refreshIconTheme()
         auto xdgDataDirs = qgetenv("XDG_DATA_DIRS");
         if (!xdgDataDirs.isEmpty())
             xdgDataDirs += ":";
-        xdgDataDirs += _dummyThemeDir->path();
+        xdgDataDirs += _dummyThemeDir->path().toUtf8();
         qputenv("XDG_DATA_DIRS", xdgDataDirs);
 
         QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << _dummyThemeDir->path() + "/icons");

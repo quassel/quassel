@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,8 +25,8 @@
 #include <QHash>
 #include <QKeyEvent>
 
-#if defined HAVE_KF5
-#    include <KTextWidgets/KTextEdit>
+#if defined HAVE_KF6
+#    include <KTextEdit>
 #    define MultiLineEditParent KTextEdit
 #else
 #    include <QTextEdit>

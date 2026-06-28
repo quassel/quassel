@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -89,14 +89,14 @@ QVariantMap SyncableObject::toVariantMap()
         if (!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
             continue;
 
-        QVariant::Type variantType = QVariant::nameToType(method.typeName());
-        if (variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
+        const QMetaType variantType = QMetaType::fromName(method.typeName());
+        if (!variantType.isValid() && !QByteArray(method.typeName()).isEmpty()) {
             qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.methodSignature()
                        << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
             continue;
         }
 
-        QVariant value(variantType, (const void*)nullptr);
+        QVariant value(variantType, nullptr);
         QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), value.data());
         QMetaObject::invokeMethod(this, methodname.toLatin1(), genericvalue);
 
@@ -166,7 +166,7 @@ void SyncableObject::requestUpdate(const QVariantMap& properties)
 void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char* funcname, ...) const
 {
     // qDebug() << Q_FUNC_INFO << modeType << funcname;
-    foreach (SignalProxy* proxy, _signalProxies) {
+    for (SignalProxy* proxy : _signalProxies) {
         va_list ap;
         va_start(ap, funcname);
         proxy->sync_call__(this, modeType, funcname, ap);

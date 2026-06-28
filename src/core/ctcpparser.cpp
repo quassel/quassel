@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -204,14 +204,14 @@ void CtcpParser::parseSimple(IrcEventRawMessage* e,
                              CtcpEvent::CtcpType ctcptype,
                              Message::Flags flags)
 {
-    if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.count() - 1] != '\001') {
+    if (dequotedMessage.count(XDELIM) != 2 || dequotedMessage[0] != '\001' || dequotedMessage[dequotedMessage.size() - 1] != '\001') {
         displayMsg(e, messagetype, targetDecode(e, dequotedMessage), e->prefix(), e->target(), flags);
     }
     else {
         int spacePos;
         QString ctcpcmd, ctcpparam;
 
-        QByteArray ctcp = xdelimDequote(dequotedMessage.mid(1, dequotedMessage.count() - 2));
+        QByteArray ctcp = xdelimDequote(dequotedMessage.mid(1, dequotedMessage.size() - 2));
         spacePos = ctcp.indexOf(' ');
         if (spacePos != -1) {
             ctcpcmd = targetDecode(e, ctcp.left(spacePos));
@@ -281,7 +281,7 @@ void CtcpParser::parseStandard(IrcEventRawMessage* e,
         xdelimEndPos = dequotedMessage.indexOf(XDELIM, xdelimPos + 1);
         if (xdelimEndPos == -1) {
             // no matching end delimiter found... treat rest of the message as ctcp
-            xdelimEndPos = dequotedMessage.count();
+            xdelimEndPos = dequotedMessage.size();
         }
         ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
         dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -188,7 +188,7 @@ std::vector<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::setupQueri
     std::vector<SqlQueryResource> queries;
     // The current schema is stored in the root folder, including setup scripts.
     QDir dir = QDir(QString(":/SQL/%1/").arg(displayName()));
-    foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
+    for (const QFileInfo& fileInfo : dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
         queries.emplace_back(queryString(fileInfo.baseName()), fileInfo.baseName());
     }
     return queries;
@@ -204,8 +204,9 @@ bool AbstractSqlStorage::setup(const QVariantMap& settings, const QProcessEnviro
     }
 
     db.transaction();
-    foreach (auto queryResource, setupQueries()) {
-        QSqlQuery query = db.exec(queryResource.queryString);
+    for (const auto& queryResource : setupQueries()) {
+        QSqlQuery query(db);
+        query.exec(queryResource.queryString);
         if (!watchQuery(query)) {
             qCritical() << qPrintable(QString("Unable to setup Logging Backend!  Setup query failed (step: %1).")
                                       .arg(queryResource.queryFilename));
@@ -226,7 +227,7 @@ std::vector<AbstractSqlStorage::SqlQueryResource> AbstractSqlStorage::upgradeQue
     std::vector<SqlQueryResource> queries;
     // Upgrade queries are stored in the 'version/##' subfolders.
     QDir dir = QDir(QString(":/SQL/%1/version/%2/").arg(displayName()).arg(version));
-    foreach (QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
+    for (const QFileInfo& fileInfo : dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
         queries.emplace_back(queryString(fileInfo.baseName(), version), fileInfo.baseName());
     }
     return queries;
@@ -248,7 +249,7 @@ bool AbstractSqlStorage::upgradeDb()
     bool resumingUpgrade = !previousLaunchUpgradeStep.isEmpty();
 
     for (int ver = installedSchemaVersion() + 1; ver <= schemaVersion(); ver++) {
-        foreach (auto queryResource, upgradeQueries(ver)) {
+        for (const auto& queryResource : upgradeQueries(ver)) {
             if (resumingUpgrade) {
                 // An upgrade was interrupted.  Check if this matches the the last successful query.
                 if (previousLaunchUpgradeStep == queryResource.queryFilename) {
@@ -268,7 +269,8 @@ bool AbstractSqlStorage::upgradeDb()
             }
 
             // Run the upgrade query
-            QSqlQuery query = db.exec(queryResource.queryString);
+            QSqlQuery query(db);
+            query.exec(queryResource.queryString);
             if (!watchQuery(query)) {
                 // Individual upgrade query failed, bail out
                 qCritical() << qPrintable(QString("Unable to upgrade Logging Backend!  Upgrade query in schema version %1 failed (step: %2).")
@@ -327,7 +329,7 @@ int AbstractSqlStorage::schemaVersion()
     bool ok;
     // Schema versions are stored in the 'version/##' subfolders.
     QDir dir = QDir(QString(":/SQL/%1/version/").arg(displayName()));
-    foreach (QFileInfo fileInfo, dir.entryInfoList()) {
+    for (const QFileInfo& fileInfo : dir.entryInfoList()) {
         if (!fileInfo.isDir())
             continue;
 
@@ -357,34 +359,36 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery& query)
             qCritical() << "unhandled Error in QSqlQuery!";
         qCritical() << "                  last Query:\n" << qPrintable(query.lastQuery());
         qCritical() << "              executed Query:\n" << qPrintable(query.executedQuery());
-        QVariantMap boundValues = query.boundValues();
+        const QVariantList boundValues = query.boundValues();
+        const QStringList boundValueNames = detail::sqlBoundValueNamesCompat(query, 0);
         QStringList valueStrings;
-        QVariantMap::const_iterator iter;
-        for (iter = boundValues.constBegin(); iter != boundValues.constEnd(); ++iter) {
+        for (qsizetype i = 0; i < boundValues.size(); ++i) {
+            const QVariant& boundValue = boundValues.at(i);
+            const QString boundValueName = i < boundValueNames.size() ? boundValueNames.at(i) : QString::number(i);
             QString value;
             QSqlField field;
             if (query.driver()) {
                 // let the driver do the formatting
-                field.setType(iter.value().type());
-                if (iter.value().isNull())
+                field.setMetaType(boundValue.metaType());
+                if (boundValue.isNull())
                     field.clear();
                 else
-                    field.setValue(iter.value());
+                    field.setValue(boundValue);
                 value = query.driver()->formatValue(field);
             }
             else {
-                switch (iter.value().type()) {
-                case QVariant::Invalid:
+                switch (boundValue.typeId()) {
+                case QMetaType::UnknownType:
                     value = "NULL";
                     break;
-                case QVariant::Int:
-                    value = iter.value().toString();
+                case QMetaType::Int:
+                    value = boundValue.toString();
                     break;
                 default:
-                    value = QString("'%1'").arg(iter.value().toString());
+                    value = QString("'%1'").arg(boundValue.toString());
                 }
             }
-            valueStrings << QString("%1=%2").arg(iter.key(), value);
+            valueStrings << QString("%1=%2").arg(boundValueName, value);
         }
         qCritical() << "                bound Values:" << qPrintable(valueStrings.join(", "));
         qCritical() << "                  Error Code:" << qPrintable(query.lastError().nativeErrorCode());
@@ -621,7 +625,8 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T& mo)
     qDebug() << qPrintable(QString("Transferring %1...").arg(AbstractSqlMigrator::migrationObject(moType)));
     int i = 0;
     QFile file;
-    file.open(stdout, QIODevice::WriteOnly);
+    if (!file.open(stdout, QIODevice::WriteOnly))
+        return false;
 
     while (readMo(mo)) {
         if (!_writer->writeMo(mo)) {

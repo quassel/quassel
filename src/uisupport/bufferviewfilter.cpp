@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -182,7 +182,7 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex& index) const
 
         // If we're in Edit Mode, everything except Status Buffers should be hideable.
         if (_editMode && bufferType != BufferInfo::StatusBuffer) {
-            flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
+            flags |= Qt::ItemIsUserCheckable | Qt::ItemIsAutoTristate;
         }
     }
     return flags;
@@ -274,7 +274,7 @@ void BufferViewFilter::addBuffers(const QList<BufferId>& bufferIds) const
         return;
 
     QList<BufferId> bufferList = config()->bufferList();
-    foreach (BufferId bufferId, bufferIds) {
+    for (BufferId bufferId : bufferIds) {
         if (bufferList.contains(bufferId))
             continue;
 
@@ -337,7 +337,8 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex& source_bufferIndex)
     }
 
     if (!_filterString.isEmpty()) {
-        const BufferInfo info = qvariant_cast<BufferInfo>(Client::bufferModel()->data(source_bufferIndex, NetworkModel::BufferInfoRole));
+        const QVariant infoData = Client::bufferModel()->data(source_bufferIndex, NetworkModel::BufferInfoRole);
+        const BufferInfo info = infoData.value<BufferInfo>();
         QString name = info.bufferName();
         if (name.contains(_filterString, Qt::CaseInsensitive)) {
             return true;
@@ -421,8 +422,12 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex& source_left, const QMod
     // If filtering, prioritize relevant items first
     if (!_filterString.isEmpty()) {
         // Get names of the buffers
-        QString leftBufferName = sourceModel()->data(source_left, NetworkModel::BufferInfoRole).value<BufferInfo>().bufferName();
-        QString rightBufferName = sourceModel()->data(source_right, NetworkModel::BufferInfoRole).value<BufferInfo>().bufferName();
+        const QVariant leftInfoData = sourceModel()->data(source_left, NetworkModel::BufferInfoRole);
+        const QVariant rightInfoData = sourceModel()->data(source_right, NetworkModel::BufferInfoRole);
+        const BufferInfo leftInfo = leftInfoData.value<BufferInfo>();
+        const BufferInfo rightInfo = rightInfoData.value<BufferInfo>();
+        QString leftBufferName = leftInfo.bufferName();
+        QString rightBufferName = rightInfo.bufferName();
         // Check if there's any differences across types, most important first
         if ((QString::compare(leftBufferName, _filterString, Qt::CaseInsensitive) == 0)
             != (QString::compare(rightBufferName, _filterString, Qt::CaseInsensitive) == 0)) {

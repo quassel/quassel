@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -38,7 +38,7 @@ bool IdentServer::startListening()
     uint16_t port = Quassel::optionValue("ident-port").toUShort();
 
     const QString listen = Quassel::optionValue("ident-listen");
-    const QStringList listen_list = listen.split(",", QString::SkipEmptyParts);
+    const QStringList listen_list = listen.split(",", Qt::SkipEmptyParts);
     for (const QString &listen_term : listen_list) { // TODO: handle multiple interfaces for same TCP version gracefully
         QHostAddress addr;
         if (!addr.setAddress(listen_term)) {

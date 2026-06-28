@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,8 @@
 #define CLIENTUSERINPUTHANDLER_H_
 
 #include "basichandler.h"
+
+#include <QRegularExpression>
 
 class BufferInfo;
 struct NetworkId;
@@ -50,7 +52,7 @@ private slots:
     void defaultHandler(const QString& cmd, const BufferInfo& bufferInfo, const QString& text);
 
 private:
-    QRegExp _nickRx;
+    QRegularExpression _nickRx;
 
     //! Helper method for switching to new/existing buffers
     /** Immediately switches to the given buffer or schedules a switch for whenever

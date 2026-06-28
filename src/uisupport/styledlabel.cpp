@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -122,7 +122,7 @@ void StyledLabel::setText(const QString& text)
 
     // Mark URLs
     _clickables = ClickableList::fromString(sstr.plainText);
-    foreach (Clickable click, _clickables) {
+    for (const Clickable& click : _clickables) {
         if (click.type() == Clickable::Url) {
             QTextLayout::FormatRange range;
             range.start = click.start();
@@ -154,7 +154,7 @@ void StyledLabel::layout()
     qreal w = contentsRect().width();
 
     _layout.beginLayout();
-    forever
+    while (true)
     {
         QTextLine line = _layout.createLine();
         if (!line.isValid())
@@ -196,7 +196,7 @@ int StyledLabel::posToCursor(const QPointF& pos)
 void StyledLabel::mouseMoveEvent(QMouseEvent* event)
 {
     if (event->buttons() == Qt::NoButton) {
-        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+        Clickable click = _clickables.atCursorPos(posToCursor(event->position()));
         if (click.isValid())
             setHoverMode(click.start(), click.length());
         else
@@ -204,7 +204,7 @@ void StyledLabel::mouseMoveEvent(QMouseEvent* event)
     }
 }
 
-void StyledLabel::enterEvent(QEvent*)
+void StyledLabel::enterEvent(QEnterEvent*)
 {
     if (resizeMode() == ResizeOnHover)
         setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
@@ -220,7 +220,7 @@ void StyledLabel::leaveEvent(QEvent*)
 void StyledLabel::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton) {
-        Clickable click = _clickables.atCursorPos(posToCursor(event->localPos()));
+        Clickable click = _clickables.atCursorPos(posToCursor(event->position()));
         if (click.isValid())
             emit clickableActivated(click);
     }

@@ -1,6 +1,6 @@
 # This file contains compile flags and general build configuration for Quassel
 #
-# (C) 2014-2022 by the Quassel Project <devel@quassel-irc.org>
+# (C) 2014-2026 by the Quassel Project <devel@quassel-irc.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
@@ -19,9 +19,16 @@ function(check_and_set_linker_flag flag name outvar)
     cmake_pop_check_state()
 endfunction()
 
+# breaks build w/ >=gcc16
+check_cxx_compiler_flag("-Wno-error=sfinae-incomplete"
+                        HAS_SFINAE_INCOMPLETE)
+if (HAS_SFINAE_INCOMPLETE)
+    add_compile_options(-Wno-error=sfinae-incomplete)
+endif()
+
 # General compile settings
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED OFF)    # Rely on compile features if standard is not supported
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)           # We like to be standard conform
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
@@ -45,6 +52,9 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         -Wvla
         -Werror=return-type
         "$<$<BOOL:${FATAL_WARNINGS}>:-Werror>"
+        # GCC 14+/15 can report false-positive array-bounds warnings in Qt-heavy
+        # metatype/model code, especially around QVariant extraction.
+        -Wno-error=array-bounds
         -Wno-error=deprecated-declarations  # Don't break on Qt upgrades
         -Wno-unknown-pragmas
         "$<$<NOT:$<CONFIG:Debug>>:-U_FORTIFY_SOURCE;-D_FORTIFY_SOURCE=2>"
@@ -67,8 +77,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     set(CMAKE_SHARED_LINKER_FLAGS "${LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
 
 elseif(MSVC)
-    # Target Windows Vista
-    add_definitions(-D_WIN32_WINNT=0x0600 -DWINVER=0x0600 -D_WIN32_IE=0x0600)
+    # Target Windows 10
+    add_definitions(-D_WIN32_WINNT=0x0A00 -DWINVER=0x0A00 -D_WIN32_IE=0x0A00)
 
     # Various settings for the Windows API
     add_definitions(-DWIN32_LEAN_AND_MEAN -DUNICODE -D_UNICODE -D_USE_MATH_DEFINES -DNOMINMAX)
@@ -116,7 +126,7 @@ if (APPLE)
     message(STATUS "Building for Intel Mac")
   endif()
     add_compile_options(
-        -mmacosx-version-min=10.9
+        -mmacosx-version-min=12.0
         -stdlib=libc++
     )
     add_definitions(-DQT_MAC_USE_COCOA -D_DARWIN_C_SOURCE)

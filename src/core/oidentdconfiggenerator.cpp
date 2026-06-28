@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -61,7 +61,7 @@ bool OidentdConfigGenerator::init()
     // the ability to bind to an IP on client sockets.
 
     _quasselStanzaTemplate = QString("lport %1 { reply \"%2\" } #%3\n");
-    _quasselStanzaRx = QRegExp(QString(R"(^lport .* \{ .* \} #%1\r?\n)").arg(_configTag));
+    _quasselStanzaRx = QRegularExpression(QString(R"(^lport .* \{ .* \} #%1\r?\n)").arg(_configTag));
 
     // initially remove all Quassel stanzas that might be present
     if (parseConfig(false) && writeConfig())
@@ -168,5 +168,5 @@ bool OidentdConfigGenerator::writeConfig()
 
 bool OidentdConfigGenerator::lineByUs(const QByteArray& line)
 {
-    return _quasselStanzaRx.exactMatch(line);
+    return _quasselStanzaRx.match(QString::fromUtf8(line)).hasMatch();
 }

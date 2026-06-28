@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -119,7 +119,7 @@ QString MessageFilter::idString() const
     std::sort(bufferIds.begin(), bufferIds.end());
 
     QStringList bufferIdStrings;
-    foreach (BufferId id, bufferIds)
+    for (BufferId id : bufferIds)
         bufferIdStrings << QString::number(id.toInt());
 
     return bufferIdStrings.join("|");

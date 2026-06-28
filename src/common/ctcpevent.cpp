@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@ CtcpEvent::CtcpEvent(EventManager::EventType type, QVariantMap& map, Network* ne
     _target = map.take("target").toString();
     _param = map.take("param").toString();
     _reply = map.take("repy").toString();
-    _uuid = map.take("uuid").toString();
+    _uuid = QUuid::fromString(map.take("uuid").toString());
 }
 
 void CtcpEvent::toVariantMap(QVariantMap& map) const

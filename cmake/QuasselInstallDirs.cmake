@@ -13,7 +13,17 @@
 # which can be overridden on the command line. If KDE integration is enabled,
 # we make use of its settings.
 
-if (NOT WITH_KDE)
+if (WITH_KDE)
+    if (NOT CMAKE_INSTALL_APPDIR)
+        set(CMAKE_INSTALL_APPDIR "${KDE_INSTALL_APPDIR}")
+    endif()
+    if (NOT CMAKE_INSTALL_ICONDIR)
+        set(CMAKE_INSTALL_ICONDIR "${KDE_INSTALL_ICONDIR}")
+    endif()
+    if (NOT CMAKE_INSTALL_KNOTIFYRCDIR)
+        set(CMAKE_INSTALL_KNOTIFYRCDIR "${KDE_INSTALL_KNOTIFYRCDIR}")
+    endif()
+elseif (NOT WITH_KDE)
     if (WIN32)
         # On Windows, we have to guess good paths
         # We must check if the variables are already defined on the command line

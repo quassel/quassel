@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -59,7 +59,7 @@ void SimpleNetworkEditor::displayNetworkInfo(const NetworkInfo& networkInfo)
     _networkInfo = networkInfo;
 
     ui.serverList->clear();
-    foreach (Network::Server server, _networkInfo.serverList) {
+    for (const Network::Server& server : _networkInfo.serverList) {
         QListWidgetItem* item = new QListWidgetItem(QString("%1:%2").arg(server.host).arg(server.port));
         if (server.useSsl)
             item->setIcon(icon::get("document-encrypt"));
@@ -78,7 +78,7 @@ void SimpleNetworkEditor::saveToNetworkInfo(NetworkInfo& networkInfo)
 
 QStringList SimpleNetworkEditor::defaultChannels() const
 {
-    return ui.channelList->toPlainText().split("\n", QString::SkipEmptyParts);
+    return ui.channelList->toPlainText().split("\n", Qt::SkipEmptyParts);
 }
 
 void SimpleNetworkEditor::setDefaultChannels(const QStringList& channels)

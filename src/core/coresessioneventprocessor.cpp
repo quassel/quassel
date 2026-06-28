@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -537,7 +537,7 @@ void CoreSessionEventProcessor::processIrcEventMode(IrcEvent* e)
         QString addModes;
         QString removeModes;
         bool add = false;
-        for (int c = 0; c < modeString.count(); c++) {
+        for (int c = 0; c < modeString.size(); c++) {
             if (modeString[c] == '+') {
                 add = true;
                 continue;
@@ -1081,14 +1081,7 @@ void CoreSessionEventProcessor::processIrcEvent317(IrcEvent* e)
         qint64 logintime = e->params()[2].toLongLong();
         // Time in IRC protocol is defined as seconds.  Convert from seconds instead.
         // See https://doc.qt.io/qt-5/qdatetime.html#fromSecsSinceEpoch
-#if QT_VERSION >= 0x050800
         loginTime = QDateTime::fromSecsSinceEpoch(logintime);
-#else
-        // fromSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for
-        // now.
-        // See https://doc.qt.io/qt-5/qdatetime.html#fromMSecsSinceEpoch
-        loginTime = QDateTime::fromMSecsSinceEpoch((qint64)(logintime * 1000));
-#endif
     }
 
     IrcUser* ircuser = e->network()->ircUser(e->params()[0]);
@@ -1231,7 +1224,7 @@ void CoreSessionEventProcessor::processIrcEvent353(IrcEvent* e)
     // Cache result of multi-prefix to avoid unneeded casts and lookups with each iteration.
     bool _useCapMultiPrefix = coreNetwork(e)->capEnabled(IrcCap::MULTI_PREFIX);
 
-    for (QString nick : e->params()[2].split(' ', QString::SkipEmptyParts)) {
+    for (QString nick : e->params()[2].split(' ', Qt::SkipEmptyParts)) {
         QString mode;
 
         if (_useCapMultiPrefix) {
@@ -1361,7 +1354,7 @@ void CoreSessionEventProcessor::processWhoInformation(Network* net,
                 if (ircChan) {
                     // Do one mode at a time
                     // TODO Better way of syncing this without breaking protocol?
-                    for (int i = 0; i < validModes.count(); ++i) {
+                    for (int i = 0; i < validModes.size(); ++i) {
                         ircChan->addUserMode(ircUser, validModes.at(i));
                     }
                 }
