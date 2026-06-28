@@ -268,6 +268,18 @@ void CoreNetwork::connectToIrc(bool reconnecting)
         // hostname of the server. Qt's DNS cache also isn't used by the proxy so we don't need to refresh the entry.
         QHostInfo::fromName(server.host);
     }
+    QHostAddress outgoingIp = coreSession()->outgoingIp();
+    if (!outgoingIp.isNull()) {
+        qDebug() << "Setting outgoing ip for user " << coreSession()->user()
+                 << "to ip" << outgoingIp;
+        if (!socket.bind(outgoingIp)) {
+            qWarning() << "Binding socket for user "<< coreSession()->user()
+                       << "to ip" << outgoingIp
+                       << "failed";
+            disconnectFromIrc(false, {}, false);
+            return;
+        }
+    }
     if (server.useSsl) {
         CoreIdentity* identity = identityPtr();
         if (identity) {

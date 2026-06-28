@@ -678,6 +678,7 @@ public:
     inline OidentdConfigGenerator* oidentdConfigGenerator() const { return _oidentdConfigGenerator; }
     inline IdentServer* identServer() const { return _identServer; }
     inline MetricsServer* metricsServer() const { return _metricsServer; }
+    inline QHostAddress getUserOutgoingIp(UserId userId) const { return _storage->getUserOutgoingIp(userId); }
 
     static const int AddClientEventId;
 

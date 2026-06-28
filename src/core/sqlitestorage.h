@@ -55,6 +55,7 @@ public:
     UserId validateUser(const QString& user, const QString& password) override;
     UserId getUserId(const QString& username) override;
     QString getUserAuthenticator(const UserId userid) override;
+    QHostAddress getUserOutgoingIp(UserId userId) override;
     UserId internalUser() override;
     void delUser(UserId user) override;
     void setUserSetting(UserId userId, const QString& settingName, const QVariant& data) override;

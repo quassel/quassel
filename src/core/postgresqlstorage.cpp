@@ -355,6 +355,24 @@ QString PostgreSqlStorage::getUserAuthenticator(const UserId userid)
     }
 }
 
+QHostAddress PostgreSqlStorage::getUserOutgoingIp(const UserId userId)
+{
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_outgoing_ip"));
+    query.bindValue(":userid", userId.toInt());
+    safeExec(query);
+    watchQuery(query);
+
+    if (query.first()) {
+        QString hostAddressString = query.value(0).toString();
+        if (!hostAddressString.isEmpty()) {
+            return QHostAddress(hostAddressString);
+        }
+    }
+
+    return QHostAddress();
+}
+
 UserId PostgreSqlStorage::internalUser()
 {
     QSqlQuery query(logDb());

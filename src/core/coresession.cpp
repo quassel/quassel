@@ -81,6 +81,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, bool strictIdentEnabled,
     , _ignoreListManager(this)
     , _highlightRuleManager(this)
     , _metricsServer(Core::instance()->metricsServer())
+    , _outgoingIp(Core::instance()->getUserOutgoingIp(uid))
 {
     SignalProxy* p = signalProxy();
     p->setHeartBeatInterval(30);
