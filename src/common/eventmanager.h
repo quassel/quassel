@@ -23,11 +23,68 @@
 #include "common-export.h"
 
 #include <QMetaEnum>
+#include <functional>
+#include <QHash>
 
 #include "types.h"
 
 class Event;
 class Network;
+
+// Forward declarations for event types
+class NetworkDataEvent;
+class IrcEventRawMessage;
+class MessageEvent;
+class IrcEvent;
+class IrcEventNumeric;
+class CtcpEvent;
+
+/**
+ * @brief Registry for dynamic event type casting and dispatch
+ * 
+ * This class eliminates the need for hardcoded if/else chains in event dispatch
+ * by providing a hash-based lookup system for event type casting.
+ */
+class COMMON_EXPORT EventTypeRegistry
+{
+public:
+    using CastFunction = std::function<void*(Event*)>;
+    using InvokeFunction = std::function<bool(const QMetaMethod&, QObject*, void*)>;
+    
+    struct TypeHandler {
+        CastFunction castFunction;
+        InvokeFunction invokeFunction;
+    };
+    
+    EventTypeRegistry();
+    
+    //! Cast event to the specified type and invoke method
+    bool dispatchEvent(const QString& expectedEventType, Event* event, const QMetaMethod& method, QObject* obj) const;
+    
+    //! Register a new event type (for extensibility)
+    template<typename T>
+    void registerEventType(const QString& typeName);
+    
+private:
+    QHash<QString, TypeHandler> _typeHandlers;
+    
+    //! Initialize all known event types
+    void initializeKnownTypes();
+};
+
+// Template implementation
+template<typename T>
+void EventTypeRegistry::registerEventType(const QString& typeName)
+{
+    TypeHandler handler;
+    handler.castFunction = [](Event* event) -> void* {
+        return dynamic_cast<T*>(event);
+    };
+    handler.invokeFunction = [](const QMetaMethod& method, QObject* obj, void* castedEvent) -> bool {
+        return method.invoke(obj, Qt::DirectConnection, Q_ARG(T*, static_cast<T*>(castedEvent)));
+    };
+    _typeHandlers[typeName] = handler;
+}
 
 class COMMON_EXPORT EventManager : public QObject
 {
@@ -109,8 +166,8 @@ public:
         IrcEventQuit,
         IrcEventTagmsg,
         IrcEventTopic,
-        IrcEventError,  /// ERROR message from server
-        IrcEventSetname,     ///< Updated realname information
+        IrcEventError,    /// ERROR message from server
+        IrcEventSetname,  ///< Updated realname information
         IrcEventWallops,
         IrcEventRawPrivmsg,  ///< Undecoded privmsg (still needs CTCP parsing)
         IrcEventRawNotice,   ///< Undecoded notice (still needs CTCP parsing)
@@ -165,12 +222,13 @@ private:
         QObject* object;
         int methodIndex;
         Priority priority;
-
-        explicit Handler(QObject* obj = nullptr, int method = 0, Priority prio = NormalPriority)
+        QString expectedEventType;  // e.g., "IrcEventNumeric*", "MessageEvent*"
+        explicit Handler(QObject* obj = nullptr, int method = 0, Priority prio = NormalPriority, const QString& eventType = QString())
+            : object(obj)
+            , methodIndex(method)
+            , priority(prio)
+            , expectedEventType(eventType)
         {
-            object = obj;
-            methodIndex = method;
-            priority = prio;
         }
     };
 
@@ -199,6 +257,7 @@ private:
     HandlerHash _registeredFilters;
     QList<Event*> _eventQueue;
     static QMetaEnum _enum;
+    static EventTypeRegistry _eventTypeRegistry;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(EventManager::EventFlags)

@@ -21,6 +21,8 @@
 #ifndef CLIENTUSERINPUTHANDLER_H_
 #define CLIENTUSERINPUTHANDLER_H_
 
+#include <QRegularExpression>  // Added for QRegularExpression
+
 #include "basichandler.h"
 
 class BufferInfo;
@@ -50,7 +52,7 @@ private slots:
     void defaultHandler(const QString& cmd, const BufferInfo& bufferInfo, const QString& text);
 
 private:
-    QRegExp _nickRx;
+    QRegularExpression _nickRx;
 
     //! Helper method for switching to new/existing buffers
     /** Immediately switches to the given buffer or schedules a switch for whenever

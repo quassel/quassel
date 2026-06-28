@@ -20,20 +20,20 @@
 
 #pragma once
 
-#include "common-export.h"
-
 #include <QDateTime>
 #include <QDebug>
+#include <QObject>
 
 #include "eventmanager.h"
 
 class Network;
 
-class COMMON_EXPORT Event
+class COMMON_EXPORT Event : public QObject
 {
+    Q_OBJECT
 public:
-    explicit Event(EventManager::EventType type = EventManager::Invalid);
-    virtual ~Event() = default;
+    explicit Event(EventManager::EventType type = EventManager::Invalid, QObject* parent = nullptr);
+    virtual ~Event() override = default;
 
     inline EventManager::EventType type() const { return _type; }
 
@@ -49,10 +49,6 @@ public:
     inline void setTimestamp(const QDateTime& time) { _timestamp = time; }
     inline QDateTime timestamp() const { return _timestamp; }
 
-    // inline void setData(const QVariant &data) { _data = data; }
-    // inline QVariant data() const { return _data; }
-
-    // call EventManager::createEvent(map) instead!
     static Event* fromVariantMap(QVariantMap& map, Network* network);
     QVariantMap toVariantMap() const;
 
@@ -60,10 +56,8 @@ protected:
     virtual inline QString className() const { return "Event"; }
     virtual inline void debugInfo(QDebug& dbg) const { Q_UNUSED(dbg); }
 
-    explicit Event(EventManager::EventType type, QVariantMap& map);
+    explicit Event(EventManager::EventType type, QVariantMap& map, QObject* parent = nullptr);
 
-    // must only use primitive types: string, int, double, list, hash
-    // we want to convert this to JSON in the future!
     virtual void toVariantMap(QVariantMap& map) const;
 
     inline void setValid(bool valid) { _valid = valid; }

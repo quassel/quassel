@@ -75,6 +75,7 @@ private:
 
     QMap<CompletionKey, QString>::Iterator _nextCompletion;
     int _lastCompletionLength;
+    int _completionStartPos;
 
     void buildCompletionList();
 };

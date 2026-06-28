@@ -32,7 +32,8 @@ AboutPerson::AboutPerson(QString name, QString nick, QString task, QString email
     , _task(std::move(task))
     , _emailAddress(std::move(emailAddress))
     , _language(translatedLanguage)
-{}
+{
+}
 
 QString AboutPerson::name() const
 {
@@ -74,7 +75,8 @@ QString AboutPerson::prettyName() const
 
 AboutData::AboutData(QObject* parent)
     : QObject(parent)
-{}
+{
+}
 
 QList<AboutPerson> AboutData::authors() const
 {
@@ -219,7 +221,7 @@ void AboutData::setQuasselPersons(AboutData* aboutData)
          {"Felix Geyer", "debfx", tr("Certificate handling improvements")},
          {"Felix Kaechele", "", tr("German translation"), "", QLocale::German},
          {"Florent Castelli", "", tr("Sanitize topic handling, twitch.tv support")},
-         {"Frederik M.J. Vestre", "freqmod", tr("Norwegian translation"), "", QLocale::Norwegian},
+         {"Frederik M.J. Vestre", "freqmod", tr("Norwegian translation"), "", QLocale::NorwegianBokmal},
          {"Gábor Németh", "ELITE_x", tr("Hungarian translation"), "", QLocale::Hungarian},
          {"Gryllida A", "gry", tr("IRC parser improvements")},
          {"György Balló", "", tr("Fixes")},

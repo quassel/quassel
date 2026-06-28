@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2025 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,17 +18,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#pragma once
+#ifndef IRCCHANNEL_H
+#define IRCCHANNEL_H
 
-#include "common-export.h"
+#include <optional>
 
-#include <QHash>
-#include <QSet>
-#include <QString>
+#include <QObject>
 #include <QStringList>
-#include <QVariantMap>
 
 #include "syncableobject.h"
+#include "types.h"
 
 class IrcUser;
 class Network;
@@ -38,115 +37,78 @@ class COMMON_EXPORT IrcChannel : public SyncableObject
     Q_OBJECT
     SYNCABLE_OBJECT
 
-    Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(QString topic READ topic WRITE setTopic)
-    Q_PROPERTY(QString password READ password WRITE setPassword)
-    Q_PROPERTY(bool encrypted READ encrypted WRITE setEncrypted)
-
 public:
     IrcChannel(const QString& channelname, Network* network);
 
-    bool isKnownUser(IrcUser* ircuser) const;
-    bool isValidChannelUserMode(const QString& mode) const;
+    QString name() const { return _name; }
+    QString topic() const { return _topic; }
+    QString password() const { return _password; }
+    bool encrypted() const { return _encrypted; }
+    QString modes() const;
 
-    inline QString name() const { return _name; }
-    inline QString topic() const { return _topic; }
-    inline QString password() const { return _password; }
-    inline bool encrypted() const { return _encrypted; }
-    inline Network* network() const { return _network; }
-
-    inline QList<IrcUser*> ircUsers() const { return _userModes.keys(); }
-
-    QString userModes(IrcUser* ircuser) const;
-    QString userModes(const QString& nick) const;
-
-    bool hasMode(const QChar& mode) const;
-    QString modeValue(const QChar& mode) const;
-    QStringList modeValueList(const QChar& mode) const;
-    QString channelModeString() const;
-
-    inline QTextCodec* codecForEncoding() const { return _codecForEncoding; }
-    inline QTextCodec* codecForDecoding() const { return _codecForDecoding; }
-    void setCodecForEncoding(const QString& codecName);
-    void setCodecForEncoding(QTextCodec* codec);
-    void setCodecForDecoding(const QString& codecName);
-    void setCodecForDecoding(QTextCodec* codec);
+    inline std::optional<QStringConverter::Encoding> codecForEncoding() const { return _codecForEncoding; }
+    inline std::optional<QStringConverter::Encoding> codecForDecoding() const { return _codecForDecoding; }
+    void setCodecForEncoding(const QString& name);
+    void setCodecForDecoding(const QString& name);
 
     QString decodeString(const QByteArray& text) const;
     QByteArray encodeString(const QString& string) const;
+
+    Network* network() const { return _network; }
+
+    bool hasUser(IrcUser* user) const;
+    QString userModes(IrcUser* user) const;
+    QStringList userList() const;
+    QList<IrcUser*> ircUsers() const;  // Added for tabcompleter.cpp
+
+    QVariantMap toVariantMap() override;
+    void fromVariantMap(const QVariantMap& map) override;
 
 public slots:
     void setTopic(const QString& topic);
     void setPassword(const QString& password);
     void setEncrypted(bool encrypted);
-
-    void joinIrcUsers(const QList<IrcUser*>& users, const QStringList& modes);
     void joinIrcUsers(const QStringList& nicks, const QStringList& modes);
-    void joinIrcUser(IrcUser* ircuser);
-
-    void part(IrcUser* ircuser);
+    void joinIrcUser(IrcUser* user);
+    void part(IrcUser* user);
     void part(const QString& nick);
-
-    void setUserModes(IrcUser* ircuser, const QString& modes);
-    void setUserModes(const QString& nick, const QString& modes);
-
-    void addUserMode(IrcUser* ircuser, const QString& mode);
-    void addUserMode(const QString& nick, const QString& mode);
-
-    void removeUserMode(IrcUser* ircuser, const QString& mode);
-    void removeUserMode(const QString& nick, const QString& mode);
-
+    void partChannel();
+    void setUserModes(IrcUser* user, const QString& modes);
+    void addUserMode(IrcUser* user, const QString& mode);
+    Q_INVOKABLE void addUserMode(const QString& nick, const QString& mode);
+    void removeUserMode(IrcUser* user, const QString& mode);
     void addChannelMode(const QChar& mode, const QString& value);
     void removeChannelMode(const QChar& mode, const QString& value);
 
-    // init geters
-    QVariantMap initUserModes() const;
-    QVariantMap initChanModes() const;
-
-    // init seters
-    void initSetUserModes(const QVariantMap& usermodes);
-    void initSetChanModes(const QVariantMap& chanModes);
-
 signals:
-    void topicSet(const QString& topic);  // needed by NetworkModel
-    void encryptedSet(bool encrypted);
-    //   void passwordSet(const QString &password);
-    //   void userModesSet(QString nick, QString modes);
-    //   void userModeAdded(QString nick, QString mode);
-    //   void userModeRemoved(QString nick, QString mode);
-    //   void channelModeAdded(const QChar &mode, const QString &value);
-    //   void channelModeRemoved(const QChar &mode, const QString &value);
-
-    void ircUsersJoined(const QList<IrcUser*>& ircusers);
-    //   void ircUsersJoined(QStringList nicks, QStringList modes);
-    void ircUserParted(IrcUser* ircuser);
-    void ircUserNickSet(IrcUser* ircuser, QString nick);
-    void ircUserModeAdded(IrcUser* ircuser, QString mode);
-    void ircUserModeRemoved(IrcUser* ircuser, QString mode);
-    void ircUserModesSet(IrcUser* ircuser, QString modes);
-
-    void parted();  // convenience signal emitted before channels destruction
+    void topicChanged(const QString& topic);
+    void encryptedChanged(bool encrypted);
+    void usersJoined(const QStringList& nicks, const QStringList& modes);
+    void userParted(IrcUser* user);
+    void parted();
+    void userModesChanged(IrcUser* user, const QString& modes);
+    void userModeAdded(IrcUser* user, const QString& mode);
+    void userModeRemoved(IrcUser* user, const QString& mode);
 
 private slots:
-    void ircUserDestroyed();
-    void ircUserNickSet(QString nick);
+    void ircUserNickSet(const QString& newnick);
+    void userDestroyed();
 
 private:
-    bool _initialized;
     QString _name;
     QString _topic;
     QString _password;
     bool _encrypted;
-
-    QHash<IrcUser*, QString> _userModes;
-
     Network* _network;
-
-    QTextCodec* _codecForEncoding;
-    QTextCodec* _codecForDecoding;
-
+    std::optional<QStringConverter::Encoding> _codecForEncoding;
+    std::optional<QStringConverter::Encoding> _codecForDecoding;
+    QHash<IrcUser*, QString> _userModes;
     QHash<QChar, QStringList> _A_channelModes;
     QHash<QChar, QString> _B_channelModes;
     QHash<QChar, QString> _C_channelModes;
     QSet<QChar> _D_channelModes;
+
+    friend class Network;
 };
+
+#endif  // IRCCHANNEL_H

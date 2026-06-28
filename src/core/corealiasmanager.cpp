@@ -60,7 +60,7 @@ const Network* CoreAliasManager::network(NetworkId id) const
 
 void CoreAliasManager::loadDefaults()
 {
-    foreach (Alias alias, AliasManager::defaults()) {
+    for (const Alias& alias : AliasManager::defaults()) {
         addAlias(alias.name, alias.expansion);
     }
 }

@@ -116,7 +116,7 @@ if (APPLE)
     message(STATUS "Building for Intel Mac")
   endif()
     add_compile_options(
-        -mmacosx-version-min=10.9
+        -mmacosx-version-min=${MACOS_VERSION}
         -stdlib=libc++
     )
     add_definitions(-DQT_MAC_USE_COCOA -D_DARWIN_C_SOURCE)

@@ -22,9 +22,8 @@
 
 #include <utility>
 
-#include <QHeaderView>
 #include <QMessageBox>
-#include <QTextCodec>
+#include <QStringConverter>
 
 #include "client.h"
 #include "icon.h"
@@ -72,11 +71,15 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget* parent)
     unavailableIcon = icon::get({"emblem-unavailable", "dialog-warning"});
     questionIcon = icon::get({"emblem-question", "dialog-question", "dialog-information"});
 
-    foreach (int mib, QTextCodec::availableMibs()) {
-        QByteArray codec = QTextCodec::codecForMib(mib)->name();
-        ui.sendEncoding->addItem(codec);
-        ui.recvEncoding->addItem(codec);
-        ui.serverEncoding->addItem(codec);
+    // Populate encoding comboboxes with available QStringConverter encodings
+    for (int i = 0; i < static_cast<int>(QStringConverter::Encoding::LastEncoding); ++i) {
+        auto encoding = static_cast<QStringConverter::Encoding>(i);
+        if (QStringConverter::encodingForName(QStringConverter::nameForEncoding(encoding))) {
+            QByteArray codecName = QStringConverter::nameForEncoding(encoding);
+            ui.sendEncoding->addItem(QString::fromLatin1(codecName));
+            ui.recvEncoding->addItem(QString::fromLatin1(codecName));
+            ui.serverEncoding->addItem(QString::fromLatin1(codecName));
+        }
     }
     ui.sendEncoding->model()->sort(0);
     ui.recvEncoding->model()->sort(0);
@@ -120,17 +123,10 @@ void NetworksSettingsPage::save()
         NetworkId id = (*i).networkId;
         if (id < 0) {
             toCreate.append(*i);
-            // if(id == currentId) currentId = 0;
-            // QList<QListWidgetItem *> items = ui.networkList->findItems((*i).networkName, Qt::MatchExactly);
-            // if(items.count()) {
-            //  Q_ASSERT(items[0]->data(Qt::UserRole).value<NetworkId>() == id);
-            //  delete items[0];
-            //}
-            // i = networkInfos.erase(i);
             ++i;
         }
         else {
-            if ((*i) != Client::network((*i).networkId)->networkInfo()) {
+            if ((*i) != Client::network((*i).networkId)->toNetworkInfo()) {
                 toUpdate.append(*i);
             }
             ++i;
@@ -201,7 +197,7 @@ void NetworksSettingsPage::load()
     // Reset network capability status in case no valid networks get selected (a rare situation)
     resetNetworkCapStates();
 
-    foreach (NetworkId netid, Client::networkIds()) {
+    for (NetworkId netid : Client::networkIds()) {
         clientNetworkAdded(netid);
     }
     ui.networkList->setCurrentRow(0);
@@ -254,7 +250,7 @@ bool NetworksSettingsPage::testHasChanged()
     foreach (NetworkId id, networkInfos.keys()) {
         if (id < 0)
             return true;
-        if (Client::network(id)->networkInfo() != networkInfos[id])
+        if (Client::network(id)->toNetworkInfo() != networkInfos[id])
             return true;
     }
     return false;
@@ -267,30 +263,10 @@ void NetworksSettingsPage::setWidgetStates()
         ui.detailsBox->setEnabled(true);
         ui.renameNetwork->setEnabled(true);
         ui.deleteNetwork->setEnabled(true);
-
-        /* button disabled for now
-        NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
-        const Network *net = id > 0 ? Client::network(id) : 0;
-        ui.connectNow->setEnabled(net);
-        //    && (Client::network(id)->connectionState() == Network::Initialized
-        //    || Client::network(id)->connectionState() == Network::Disconnected));
-        if(net) {
-          if(net->connectionState() == Network::Disconnected) {
-            ui.connectNow->setIcon(connectedIcon);
-            ui.connectNow->setText(tr("Connect"));
-          } else {
-            ui.connectNow->setIcon(disconnectedIcon);
-            ui.connectNow->setText(tr("Disconnect"));
-          }
-        } else {
-          ui.connectNow->setIcon(QIcon());
-          ui.connectNow->setText(tr("Apply first!"));
-        } */
     }
     else {
         ui.renameNetwork->setEnabled(false);
         ui.deleteNetwork->setEnabled(false);
-        // ui.connectNow->setEnabled(false);
         ui.detailsBox->setEnabled(false);
     }
     // network details
@@ -366,41 +342,30 @@ void NetworksSettingsPage::setNetworkCapStates(NetworkId id)
 {
     const Network* net = Client::network(id);
     if (net && Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation)) {
-        // Capability negotiation is supported, network exists.
-        // Check if the network is connected.  Don't use net->isConnected() as that won't be true
-        // during capability negotiation when capabilities are added and removed.
         if (net->connectionState() != Network::Disconnected) {
-            // Network exists and is connected, check available capabilities...
-            // [SASL]
-            // Quassel switches between SASL PLAIN and SASL EXTERNAL based on the existence of an
-            // SSL certificate on the identity - check EXTERNAL if CertID exists, PLAIN if not
             bool usingSASLExternal = displayedNetworkHasCertId();
-            if ((usingSASLExternal && net->saslMaybeSupports(IrcCap::SaslMech::EXTERNAL))
-                    || (!usingSASLExternal && net->saslMaybeSupports(IrcCap::SaslMech::PLAIN))) {
+            if ((usingSASLExternal && net->enabledCaps().contains("sasl") && net->enabledCaps().contains("sasl-external"))
+                || (!usingSASLExternal && net->enabledCaps().contains("sasl"))) {
                 setCapSASLStatus(CapSupportStatus::MaybeSupported, usingSASLExternal);
             }
             else {
                 setCapSASLStatus(CapSupportStatus::MaybeUnsupported, usingSASLExternal);
             }
-
-            // Add additional capability-dependent interface updates here
         }
         else {
-            // Network is disconnected
-            // [SASL]
             setCapSASLStatus(CapSupportStatus::Disconnected);
-
-            // Add additional capability-dependent interface updates here
         }
     }
     else {
-        // Capability negotiation is not supported and/or network doesn't exist.
-        // Don't assume anything and reset all capability-dependent interface elements to neutral.
-        // [SASL]
         setCapSASLStatus(CapSupportStatus::Unknown);
-
-        // Add additional capability-dependent interface updates here
     }
+
+    // Capability negotiation is not supported and/or network doesn't exist.
+    // Don't assume anything and reset all capability-dependent interface elements to neutral.
+    // [SASL]
+    setCapSASLStatus(CapSupportStatus::Unknown);
+
+    // Add additional capability-dependent interface updates here
 }
 
 void NetworksSettingsPage::coreConnectionStateChanged(bool state)
@@ -481,16 +446,15 @@ QListWidgetItem* NetworksSettingsPage::networkItem(NetworkId id) const
 
 void NetworksSettingsPage::clientNetworkAdded(NetworkId id)
 {
+    const Network* net = Client::network(id);
+    networkInfos[id] = net->toNetworkInfo();
     insertNetwork(id);
     // connect(Client::network(id), &Network::updatedRemotely, this, &NetworksSettingsPage::clientNetworkUpdated);
     connect(Client::network(id), &Network::configChanged, this, &NetworksSettingsPage::clientNetworkUpdated);
 
-    connect(Client::network(id), &Network::connectionStateSet, this, &NetworksSettingsPage::networkConnectionStateChanged);
-    connect(Client::network(id), &Network::connectionError, this, &NetworksSettingsPage::networkConnectionError);
-
     // Handle capability changes in case a server dis/connects with the settings window open.
-    connect(Client::network(id), &Network::capAdded, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
-    connect(Client::network(id), &Network::capRemoved, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
+    connect(Client::network(id), &Network::connected, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
+    connect(Client::network(id), &Network::disconnected, this, &NetworksSettingsPage::clientNetworkCapsUpdated);
 }
 
 void NetworksSettingsPage::clientNetworkUpdated()
@@ -500,7 +464,7 @@ void NetworksSettingsPage::clientNetworkUpdated()
         qWarning() << "Update request for unknown network received!";
         return;
     }
-    networkInfos[net->networkId()] = net->networkInfo();
+    networkInfos[net->networkId()] = net->toNetworkInfo();
     setItemState(net->networkId());
     if (net->networkId() == currentId)
         displayNetwork(net->networkId());
@@ -530,11 +494,6 @@ void NetworksSettingsPage::networkConnectionStateChanged(Network::ConnectionStat
     const auto* net = qobject_cast<const Network*>(sender());
     if (!net)
         return;
-    /*
-    if(net->networkId() == currentId) {
-      ui.connectNow->setEnabled(state == Network::Initialized || state == Network::Disconnected);
-    }
-    */
     setItemState(net->networkId());
     if (net->networkId() == currentId) {
         // Network is currently shown.  Update the capability-dependent UI in case capabilities have
@@ -548,7 +507,7 @@ void NetworksSettingsPage::networkConnectionError(const QString&) {}
 
 QListWidgetItem* NetworksSettingsPage::insertNetwork(NetworkId id)
 {
-    NetworkInfo info = Client::network(id)->networkInfo();
+    NetworkInfo info = Client::network(id)->toNetworkInfo();
     networkInfos[id] = info;
     return insertNetwork(info);
 }
@@ -599,7 +558,7 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
                 delete _cid;
                 _cid = nullptr;
             }
-            auto *identity = Client::identity(info.identity);
+            auto* identity = Client::identity(info.identity);
             if (identity) {
                 // Connect new CertIdentity
                 _cid = new CertIdentity(*identity, this);
@@ -631,15 +590,15 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         ui.saslAccount->setText(info.saslAccount);
         ui.saslPassword->setText(info.saslPassword);
         if (info.codecForEncoding.isEmpty()) {
-            ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(Network::defaultCodecForEncoding()));
-            ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(Network::defaultCodecForDecoding()));
-            ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(Network::defaultCodecForServer()));
+            ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(QString::fromLatin1(Network::defaultCodecForEncoding())));
+            ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(QString::fromLatin1(Network::defaultCodecForDecoding())));
+            ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(QString::fromLatin1(Network::defaultCodecForServer())));
             ui.useCustomEncodings->setChecked(false);
         }
         else {
-            ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(info.codecForEncoding));
-            ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(info.codecForDecoding));
-            ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(info.codecForServer));
+            ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(QString::fromLatin1(info.codecForEncoding)));
+            ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(QString::fromLatin1(info.codecForDecoding)));
+            ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(QString::fromLatin1(info.codecForServer)));
             ui.useCustomEncodings->setChecked(true);
         }
         ui.autoReconnect->setChecked(info.useAutoReconnect);
@@ -663,6 +622,7 @@ void NetworksSettingsPage::displayNetwork(NetworkId id)
         if (_cid) {
             disconnect(_cid, &CertIdentity::sslSettingsUpdated, this, &NetworksSettingsPage::sslUpdated);
             delete _cid;
+            _cid = nullptr;
         }
         ui.identityList->setCurrentIndex(-1);
         ui.serverList->clear();
@@ -707,13 +667,14 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo& info)
     info.useCustomMessageRate = ui.useCustomMessageRate->isChecked();
     info.messageRateBurstSize = ui.messageRateBurstSize->value();
     // Convert seconds (double) into milliseconds (integer)
-    info.messageRateDelay = static_cast<quint32>((ui.messageRateDelay->value() * 1000));
+    info.messageRateDelay = static_cast<quint32>(ui.messageRateDelay->value() * 1000);
     info.unlimitedMessageRate = ui.unlimitedMessageRate->isChecked();
     // Skipped IRCv3 capabilities
     if (ui.enableCapServerTime->isChecked()) {
         // Capability enabled, remove it from the skip list
         info.skipCaps.removeAll(IrcCap::SERVER_TIME);
-    } else if (!info.skipCaps.contains(IrcCap::SERVER_TIME)) {
+    }
+    else if (!info.skipCaps.contains(IrcCap::SERVER_TIME)) {
         // Capability disabled and not in the skip list, add it
         info.skipCaps.append(IrcCap::SERVER_TIME);
     }
@@ -890,17 +851,6 @@ void NetworksSettingsPage::on_renameNetwork_clicked()
     }
 }
 
-/*
-void NetworksSettingsPage::on_connectNow_clicked() {
-  if(!ui.networkList->selectedItems().count()) return;
-  NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
-  const Network *net = Client::network(id);
-  if(!net) return;
-  if(net->connectionState() == Network::Disconnected) net->requestConnect();
-  else net->requestDisconnect();
-}
-*/
-
 /*** Server list ***/
 
 void NetworksSettingsPage::on_serverList_itemSelectionChanged()
@@ -1008,14 +958,14 @@ void NetworksSettingsPage::on_saslStatusDetails_clicked()
                 saslStatusExplanation = tr("The network \"%1\" does not currently support SASL "
                                            "EXTERNAL for SSL certificate authentication.  However, "
                                            "support might be added later on.")
-                                           .arg(netName);
+                                            .arg(netName);
             }
             else {
                 // SASL PLAIN is used
                 saslStatusHeader = tr("SASL not currently supported by network");
                 saslStatusExplanation = tr("The network \"%1\" does not currently support SASL.  "
                                            "However, support might be added later on.")
-                                           .arg(netName);
+                                            .arg(netName);
             }
             useWarningIcon = true;
             break;
@@ -1068,15 +1018,10 @@ void NetworksSettingsPage::on_enableCapsStatusDetails_clicked()
         QStringList sortedCapsEnabled;
         // Check if a network is selected
         if (ui.networkList->selectedItems().count()) {
-            // Get the underlying Network from the selected network
             NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
             const Network* net = Client::network(netid);
             if (net && Client::isCoreFeatureEnabled(Quassel::Feature::CapNegotiation)) {
-                // Capability negotiation is supported, network exists.
-                // If the network is disconnected, the list of enabled capabilities will be empty,
-                // no need to check for that specifically.
-                // Sorting isn't required, but it looks nicer.
-                sortedCapsEnabled = net->capsEnabled();
+                sortedCapsEnabled = net->enabledCaps();
                 sortedCapsEnabled.sort();
             }
         }
@@ -1084,32 +1029,33 @@ void NetworksSettingsPage::on_enableCapsStatusDetails_clicked()
         // Try to explain IRCv3 network features in a friendly way, including showing the currently
         // enabled features if available
         auto messageText = QString("<p>%1</p></br><p>%2</p>")
-                .arg(tr("Quassel makes use of newer IRC features when supported by the IRC network."
-                        "  If desired, you can disable unwanted or problematic features here."),
-                     tr("The <a href=\"https://ircv3.net/irc/\">IRCv3 website</a> provides more "
-                        "technical details on the IRCv3 capabilities powering these features."));
+                               .arg(tr("Quassel makes use of newer IRC features when supported by the IRC network."
+                                       "  If desired, you can disable unwanted or problematic features here."),
+                                    tr("The <a href=\"https://ircv3.net/irc/\">IRCv3 website</a> provides more "
+                                       "technical details on the IRCv3 capabilities powering these features."));
 
         if (!sortedCapsEnabled.isEmpty()) {
             // Format the capabilities within <code></code> blocks
-            auto formattedCaps = QString("<code>%1</code>")
-                    .arg(sortedCapsEnabled.join("</code>, <code>"));
+            auto formattedCaps = QString("<code>%1</code>").arg(sortedCapsEnabled.join("</code>, <code>"));
 
             // Add the currently enabled capabilities to the list
             // This creates a new QString, but this code is not performance-critical.
-            messageText = messageText.append(QString("<p><i>%1</i></p>").arg(
-                                                 tr("Currently enabled IRCv3 capabilities for this "
-                                                    "network: %1").arg(formattedCaps)));
+            messageText = messageText.append(QString("<p><i>%1</i></p>")
+                                                 .arg(tr("Currently enabled IRCv3 capabilities for this "
+                                                         "network: %1")
+                                                          .arg(formattedCaps)));
         }
 
         QMessageBox::information(this, tr("Configuring network features"), messageText);
     }
     else {
         // Core does not IRCv3 capability skipping, show warning
-        QMessageBox::warning(this, tr("Configuring network features unsupported"),
+        QMessageBox::warning(this,
+                             tr("Configuring network features unsupported"),
                              QString("<p><b>%1</b></p></br><p>%2</p>")
-                             .arg(tr("Your Quassel core is too old to configure IRCv3 network features"),
-                                  tr("You need a Quassel core v0.14.0 or newer to control what network "
-                                     "features Quassel will use.")));
+                                 .arg(tr("Your Quassel core is too old to configure IRCv3 network features"),
+                                      tr("You need a Quassel core v0.14.0 or newer to control what network "
+                                         "features Quassel will use.")));
     }
 }
 
@@ -1118,9 +1064,9 @@ void NetworksSettingsPage::on_enableCapsAdvanced_clicked()
     if (currentId == 0)
         return;
 
-    CapsEditDlg dlg(networkInfos[currentId].skipCapsToString(), this);
+    CapsEditDlg dlg(networkInfos[currentId].skipCaps.join(','), this);
     if (dlg.exec() == QDialog::Accepted) {
-        networkInfos[currentId].skipCapsFromString(dlg.skipCapsString());
+        networkInfos[currentId].skipCaps = dlg.skipCapsString().split(',', Qt::SkipEmptyParts);
         displayNetwork(currentId);
         widgetHasChanged();
     }
@@ -1269,6 +1215,7 @@ void NetworkEditDlg::on_networkEdit_textChanged(const QString& text)
 /**************************************************************************
  * ServerEditDlg
  *************************************************************************/
+
 ServerEditDlg::ServerEditDlg(const Network::Server& server, QWidget* parent)
     : QDialog(parent)
 {
@@ -1387,7 +1334,6 @@ CapsEditDlg::CapsEditDlg(const QString& oldSkipCapsString, QWidget* parent)
         ui.skipCapsEdit->setText(oldSkipCapsString);
     }
 }
-
 
 QString CapsEditDlg::skipCapsString() const
 {

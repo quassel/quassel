@@ -1,5 +1,5 @@
 if (BUILD_GUI)
-    if (WITH_KF5)
+    if (WITH_${KF_FULL})
         set(DESKTOP_FILE "quasselclient")
 
         if (WANT_MONO)

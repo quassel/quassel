@@ -20,8 +20,8 @@
 
 #include "clientauthhandler.h"
 
-#include <QtEndian>
 #include <QSslSocket>
+#include <QtEndian>
 
 #include "client.h"
 #include "clientsettings.h"
@@ -36,7 +36,8 @@ ClientAuthHandler::ClientAuthHandler(CoreAccount account, QObject* parent)
     , _legacy(false)
     , _tls(false)
     , _connectionFeatures(0)
-{}
+{
+}
 
 Peer* ClientAuthHandler::peer() const
 {
@@ -74,7 +75,8 @@ void ClientAuthHandler::connectToCore()
     connect(socket, &QAbstractSocket::stateChanged, this, &ClientAuthHandler::onSocketStateChanged);
     if (Quassel::isOptionSet("implicit-tls")) {
         connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onImplicitTlsSocketConnected);
-    } else {
+    }
+    else {
         connect(socket, &QIODevice::readyRead, this, &ClientAuthHandler::onReadyRead);
         connect(socket, &QAbstractSocket::connected, this, &ClientAuthHandler::onSocketConnected);
     }
@@ -162,7 +164,8 @@ void ClientAuthHandler::onImplicitTlsSocketConnected()
         qDebug() << Q_FUNC_INFO << "Starting implicit encryption...";
         socket()->flush();
         socket()->startClientEncryption();
-    } else {
+    }
+    else {
         qWarning() << Q_FUNC_INFO << "TLS connection already established!";
     }
 }
@@ -173,16 +176,12 @@ void ClientAuthHandler::onImplicitTlsSocketEncrypted()
 
     auto* tls_socket = qobject_cast<QSslSocket*>(sender());
     Q_ASSERT(tls_socket);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    if (!tls_socket->sslErrors().count()) {
-#else
     if (!tls_socket->sslHandshakeErrors().count()) {
-#endif
         // Cert is valid, so we don't want to store it as known
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;
         s.setAccountValue("SslCert", QString());
-        s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+        s.setAccountValue("SslCertDigestVersion", QVariant());  // Fixed: Remove deprecated QVariant(QVariant::Int)
     }
 
     _probing = true;
@@ -471,7 +470,7 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
             }
             s.setAccountValue("ShowNoCoreSslWarning", false);
             s.setAccountValue("SslCert", QString());
-            s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+            s.setAccountValue("SslCertDigestVersion", QVariant());  // Fixed: Remove deprecated QVariant(QVariant::Int)
         }
         if (_legacy)
             onConnectionReady();
@@ -480,22 +479,17 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
     }
 }
 
-
 void ClientAuthHandler::onSslSocketEncrypted()
 {
     auto* socket = qobject_cast<QSslSocket*>(sender());
     Q_ASSERT(socket);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    if (!socket->sslErrors().count()) {
-#else
     if (!socket->sslHandshakeErrors().count()) {
-#endif
         // Cert is valid, so we don't want to store it as known
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;
         s.setAccountValue("SslCert", QString());
-        s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+        s.setAccountValue("SslCertDigestVersion", QVariant());  // Fixed: Remove deprecated QVariant(QVariant::Int)
     }
 
     emit encrypted(true);
@@ -524,7 +518,7 @@ void ClientAuthHandler::onSslErrors()
         break;
 
     default:
-        qWarning() << "Certificate digest version" << QString(knownDigestVersion) << "is not supported";
+        qWarning() << "Certificate digest version" << QString::number(static_cast<int>(knownDigestVersion)) << "is not supported";
     }
 
     if (knownDigest != calculatedDigest) {
@@ -543,7 +537,7 @@ void ClientAuthHandler::onSslErrors()
         }
         else {
             s.setAccountValue("SslCert", QString());
-            s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+            s.setAccountValue("SslCertDigestVersion", QVariant());  // Fixed: Remove deprecated QVariant(QVariant::Int)
         }
     }
     else if (knownDigestVersion != ClientAuthHandler::DigestVersion::Latest) {

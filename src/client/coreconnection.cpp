@@ -49,8 +49,31 @@ void CoreConnection::init()
     _reconnectTimer.setSingleShot(true);
     connect(&_reconnectTimer, &QTimer::timeout, this, &CoreConnection::reconnectTimeout);
 
-    _qNetworkConfigurationManager = new QNetworkConfigurationManager(this);
-    connect(_qNetworkConfigurationManager.data(), &QNetworkConfigurationManager::onlineStateChanged, this, &CoreConnection::onlineStateChanged);
+    QString backend;
+#ifdef Q_OS_MACOS
+    backend = QStringLiteral("scnetworkreachability");
+#elif defined(Q_OS_LINUX)
+    backend = QStringLiteral("networkmanager");
+#elif defined(Q_OS_WIN)
+    backend = QStringLiteral("winrt");
+#else
+    backend = QStringLiteral("generic");
+#endif
+    
+    // Load backend first, then get instance
+    if (!QNetworkInformation::loadBackendByName(backend)) {
+        qWarning() << "Failed to load QNetworkInformation backend" << backend;
+        qDebug() << "Available backends:" << QNetworkInformation::availableBackends();
+    }
+    
+    _qNetworkInformation = QNetworkInformation::instance();
+    
+    // Only connect if QNetworkInformation instance is available
+    if (_qNetworkInformation) {
+        connect(_qNetworkInformation, &QNetworkInformation::reachabilityChanged, this, &CoreConnection::onlineStateChanged);
+    } else {
+        qDebug() << "QNetworkInformation instance not available after loading backend" << backend;
+    }
 
     CoreConnectionSettings s;
     s.initAndNotify("PingTimeoutInterval", this, &CoreConnection::pingTimeoutIntervalChanged, 60);
@@ -110,9 +133,9 @@ void CoreConnection::reconnectTimeout()
     if (!_peer) {
         CoreConnectionSettings s;
         if (_wantReconnect && s.autoReconnect()) {
-            // If using QNetworkConfigurationManager, we don't want to reconnect if we're offline
-            if (s.networkDetectionMode() == CoreConnectionSettings::UseQNetworkConfigurationManager) {
-                if (!_qNetworkConfigurationManager->isOnline()) {
+            // If using QNetworkInformation, don't reconnect if offline
+            if (s.networkDetectionMode() == CoreConnectionSettings::UseQNetworkInformation) {
+                if (_qNetworkInformation && _qNetworkInformation->reachability() != QNetworkInformation::Reachability::Online) {
                     return;
                 }
             }
@@ -144,14 +167,14 @@ void CoreConnection::reconnectIntervalChanged(const QVariant& interval)
     _reconnectTimer.setInterval(interval.toInt() * 1000);
 }
 
-void CoreConnection::onlineStateChanged(bool isOnline)
+void CoreConnection::onlineStateChanged(QNetworkInformation::Reachability reachability)
 {
     CoreConnectionSettings s;
-    if (s.networkDetectionMode() != CoreConnectionSettings::UseQNetworkConfigurationManager)
+    if (s.networkDetectionMode() != CoreConnectionSettings::UseQNetworkInformation)
         return;
 
-    if (isOnline) {
-        // qDebug() << "QNetworkConfigurationManager reports Online";
+    if (reachability == QNetworkInformation::Reachability::Online) {
+        // qDebug() << "QNetworkInformation reports Online";
         if (state() == Disconnected) {
             if (_wantReconnect && s.autoReconnect()) {
                 reconnectToCore();
@@ -159,7 +182,7 @@ void CoreConnection::onlineStateChanged(bool isOnline)
         }
     }
     else {
-        // qDebug() << "QNetworkConfigurationManager reports Offline";
+        // qDebug() << "QNetworkInformation reports Offline";
         if (state() != Disconnected && !isLocalConnection())
             disconnectFromCore(tr("Network is down"), true);
     }

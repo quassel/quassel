@@ -21,6 +21,7 @@
 #include "dccconfig.h"
 
 #include <QMetaProperty>
+#include <QMetaType>
 
 #include "types.h"
 
@@ -28,8 +29,8 @@ DccConfig::DccConfig(QObject* parent)
     : SyncableObject("DccConfig", parent)
 {
     static auto regTypes = []() -> bool {
-        qRegisterMetaTypeStreamOperators<IpDetectionMode>("DccConfig::IpDetectionMode");
-        qRegisterMetaTypeStreamOperators<PortSelectionMode>("DccConfig::PortSelectionMode");
+        qRegisterMetaType<DccConfig::IpDetectionMode>("DccConfig::IpDetectionMode");
+        qRegisterMetaType<DccConfig::PortSelectionMode>("DccConfig::PortSelectionMode");
         return true;
     }();
     Q_UNUSED(regTypes);
