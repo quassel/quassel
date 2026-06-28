@@ -175,6 +175,12 @@ if (LibsnoreQt5_FOUND)
     target_link_libraries(${TARGET} PRIVATE Snore::Libsnore Snore::LibsnoreSettings)
 endif()
 
+if (APPLE)
+    list(APPEND SOURCES cocoahelper.mm)
+    list(APPEND LIBS "/System/Library/Frameworks/Cocoa.framework"
+                     "/System/Library/Frameworks/Foundation.framework")
+endif()
+
 if (WITH_NOTIFICATION_CENTER)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_NOTIFICATION_CENTER)
     target_sources(${TARGET} PRIVATE osxnotificationbackend.mm)
