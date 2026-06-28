@@ -468,8 +468,17 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
         // We want to trim the last param just in case, except for PRIVMSG and NOTICE
         // ... but those happen to be the only ones not using defaultHandling anyway
-        if (!decParams.isEmpty() && decParams.last().endsWith(' '))
-            decParams.append(decParams.takeLast().trimmed());
+        if (!decParams.isEmpty()) {
+            QString& lastParam = decParams.last();
+            if (!lastParam.isEmpty() && lastParam.at(lastParam.size() - 1).isSpace()) {
+                for (int i = lastParam.size() - 1; i != 0; --i) {
+                    if (!lastParam.at(i).isSpace()) {
+                        lastParam.truncate(i + 1);
+                        break;
+                    }
+                }
+            }
+        }
 
         IrcEvent* event;
         if (type == EventManager::IrcEventNumeric)
