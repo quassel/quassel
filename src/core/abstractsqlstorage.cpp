@@ -357,34 +357,34 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery& query)
             qCritical() << "unhandled Error in QSqlQuery!";
         qCritical() << "                  last Query:\n" << qPrintable(query.lastQuery());
         qCritical() << "              executed Query:\n" << qPrintable(query.executedQuery());
-        QVariantMap boundValues = query.boundValues();
+        auto boundValues = query.boundValues();
         QStringList valueStrings;
-        QVariantMap::const_iterator iter;
-        for (iter = boundValues.constBegin(); iter != boundValues.constEnd(); ++iter) {
+        int idx = 0;
+        for (QVariantList::const_iterator iter = boundValues.constBegin(); iter != boundValues.constEnd(); ++iter, ++idx) {
             QString value;
             QSqlField field;
             if (query.driver()) {
                 // let the driver do the formatting
-                field.setType(iter.value().type());
-                if (iter.value().isNull())
+                field.setType((*iter).type());
+                if ((*iter).isNull())
                     field.clear();
                 else
-                    field.setValue(iter.value());
+                    field.setValue(*iter);
                 value = query.driver()->formatValue(field);
             }
             else {
-                switch (iter.value().type()) {
+                switch ((*iter).type()) {
                 case QVariant::Invalid:
                     value = "NULL";
                     break;
                 case QVariant::Int:
-                    value = iter.value().toString();
+                    value = (*iter).toString();
                     break;
                 default:
-                    value = QString("'%1'").arg(iter.value().toString());
+                    value = QString("'%1'").arg((*iter).toString());
                 }
             }
-            valueStrings << QString("%1=%2").arg(iter.key(), value);
+            valueStrings << QString("%1=%2").arg(idx).arg(value);
         }
         qCritical() << "                bound Values:" << qPrintable(valueStrings.join(", "));
         qCritical() << "                  Error Code:" << qPrintable(query.lastError().nativeErrorCode());

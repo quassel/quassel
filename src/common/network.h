@@ -192,7 +192,7 @@ public:
      * @param prefix Prefix to be translated.
      */
     QString prefixToMode(const QString& prefix) const;
-    inline QString prefixToMode(const QCharRef& prefix) const { return prefixToMode(QString(prefix)); }
+    inline QString prefixToMode(const QChar& prefix) const { return prefixToMode(QString(prefix)); }
     inline QString prefixesToModes(const QString& prefix) const
     {
         QString modes;
@@ -209,7 +209,7 @@ public:
      * @param prefix Prefix to be translated.
      */
     QString modeToPrefix(const QString& mode) const;
-    inline QString modeToPrefix(const QCharRef& mode) const { return modeToPrefix(QString(mode)); }
+    inline QString modeToPrefix(const QChar& mode) const { return modeToPrefix(QString(mode)); }
     inline QString modesToPrefixes(const QString& mode) const
     {
         QString prefixes;
@@ -257,7 +257,7 @@ public:
     /**@}*/
 
     ChannelModeType channelModeType(const QString& mode);
-    inline ChannelModeType channelModeType(const QCharRef& mode) { return channelModeType(QString(mode)); }
+    inline ChannelModeType channelModeType(const QChar& mode) { return channelModeType(QString(mode)); }
 
     inline const QString& networkName() const { return _networkName; }
     inline const QString& currentServer() const { return _currentServer; }

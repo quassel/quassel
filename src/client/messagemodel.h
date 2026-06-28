@@ -169,4 +169,4 @@ private:
     BufferId _redirectedTo;
 };
 
-QDebug operator<<(QDebug dbg, const MessageModelItem& msgItem);
+CLIENT_EXPORT QDebug operator<<(QDebug dbg, const MessageModelItem& msgItem);

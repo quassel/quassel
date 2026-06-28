@@ -94,4 +94,4 @@ private:
     uint _proxyPort;
 };
 
-QDebug operator<<(QDebug dbg, const CoreAccount& msg);
+CLIENT_EXPORT QDebug operator<<(QDebug dbg, const CoreAccount& msg);

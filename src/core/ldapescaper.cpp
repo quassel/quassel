@@ -24,7 +24,7 @@ QString LdapEscaper::escapeQuery(const QString& filter)
 {
     QString result;
     for (const auto character : filter) {
-        if (character > 0x7F ||
+        if (character.unicode() > 0x7F ||
             character == '*' ||
             character == '(' ||
             character == ')' ||

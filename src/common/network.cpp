@@ -22,7 +22,7 @@
 
 #include <algorithm>
 
-#include <QTextCodec>
+#include <QTimeZone>
 
 #include "peer.h"
 
@@ -269,7 +269,7 @@ Network::ChannelModeType Network::channelModeType(const QString& mode)
         return NOT_A_CHANMODE;
 
     ChannelModeType modeType = A_CHANMODE;
-    for (int i = 0; i < chanmodes.count(); i++) {
+    for (auto i = 0; i < chanmodes.size(); i++) {
         if (chanmodes[i] == mode[0])
             break;
         else if (chanmodes[i] == ',')
@@ -987,14 +987,8 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
         // from the 32-bit numerical seconds value used in older versions to QDateTime
         if (!proxy()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
             QDateTime lastAwayMessageTime = QDateTime();
-            lastAwayMessageTime.setTimeSpec(Qt::UTC);
-#if QT_VERSION >= 0x050800
+            lastAwayMessageTime.setTimeZone(QTimeZone(QTimeZone::UTC));
             lastAwayMessageTime.fromSecsSinceEpoch(map.take("lastAwayMessage").toInt());
-#else
-            // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-            // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-            lastAwayMessageTime.fromMSecsSinceEpoch(map.take("lastAwayMessage").toInt() * 1000);
-#endif
             map["lastAwayMessageTime"] = lastAwayMessageTime;
         }
 
@@ -1152,7 +1146,7 @@ void NetworkInfo::skipCapsFromString(const QString& flattenedSkipCaps) {
     //
     // See Network::addCap(), Network::acknowledgeCap(), and friends
     // And https://ircv3.net/specs/core/capability-negotiation
-    skipCaps = flattenedSkipCaps.toLower().split(" ", QString::SplitBehavior::SkipEmptyParts);
+    skipCaps = flattenedSkipCaps.toLower().split(" ", Qt::SkipEmptyParts);
 }
 
 bool NetworkInfo::operator==(const NetworkInfo& other) const

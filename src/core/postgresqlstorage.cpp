@@ -1141,9 +1141,10 @@ BufferInfo PostgreSqlStorage::bufferInfo(UserId user, const NetworkId& networkId
             qCritical() << "PostgreSqlStorage::bufferInfo(): received more then one Buffer!";
             qCritical() << "         Query:" << query.lastQuery();
             qCritical() << "  bound Values:";
-            QList<QVariant> list = query.boundValues().values();
-            for (int i = 0; i < list.size(); ++i)
-                qCritical() << i << ":" << list.at(i).toString().toLatin1().data();
+            QVariantList boundList = query.boundValues();
+            for (int i = 0; i < boundList.size(); ++i) {
+                qCritical() << i << ":" << boundList.at(i).toString().toLatin1().data();
+            }
             Q_ASSERT(false);
         }
         db.commit();
@@ -2276,10 +2277,11 @@ void PostgreSqlStorage::safeExec(QSqlQuery& query)
         QSqlDatabase db = logDb();
         QSqlQuery retryQuery(db);
         retryQuery.prepare(query.lastQuery());
-        QMapIterator<QString, QVariant> i(query.boundValues());
-        while (i.hasNext()) {
-            i.next();
-            retryQuery.bindValue(i.key(), i.value());
+        auto boundMap = query.boundValues();
+        int i = 0;
+        for (auto &value : boundMap) {
+          retryQuery.bindValue(i, value);
+          ++i;
         }
         query = retryQuery;
         query.exec();

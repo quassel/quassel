@@ -1,5 +1,5 @@
 if (BUILD_GUI)
-    if (WITH_KF5)
+    if (WITH_KF6)
         set(DESKTOP_FILE "quasselclient")
 
         if (WANT_MONO)
@@ -8,16 +8,24 @@ if (BUILD_GUI)
 
         configure_file(quassel.notifyrc.in quassel.notifyrc @ONLY)
 
-        install(FILES ${CMAKE_BINARY_DIR}/data/quassel.notifyrc DESTINATION ${CMAKE_INSTALL_KNOTIFY5RCDIR})
+        install(FILES ${CMAKE_BINARY_DIR}/data/quassel.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
     endif()
 
     if (UNIX AND NOT APPLE)
         if (WANT_QTCLIENT)
-            install(FILES quasselclient.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
+            if(WITH_KDE)
+                install(FILES quasselclient.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+            else()
+                install(FILES quasselclient.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
+            endif()
         endif()
 
         if (WANT_MONO)
-            install(FILES quassel.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
+            if(WITH_KDE)
+                install(FILES quassel.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+            else()
+                install(FILES quassel.desktop DESTINATION ${CMAKE_INSTALL_APPDIR})
+            endif()
         endif()
     endif()
 

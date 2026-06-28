@@ -68,8 +68,9 @@ target_include_directories(${TARGET} PRIVATE ${CMAKE_BINARY_DIR})
 target_link_libraries(${TARGET} PUBLIC
     ${CMAKE_DL_LIBS}
     Boost::boost
-    Qt5::Core
-    Qt5::Network
+    Qt6::Core
+    Qt6::Core5Compat
+    Qt6::Network
     ZLIB::ZLIB
 )
 

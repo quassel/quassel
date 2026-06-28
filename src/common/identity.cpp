@@ -21,6 +21,8 @@
 #include "identity.h"
 
 #include <QMetaProperty>
+#include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QString>
 #include <QVariantMap>
 
@@ -100,7 +102,7 @@ void Identity::init()
 
 QString Identity::defaultNick()
 {
-    QString nick = QString("quassel%1").arg(qrand() & 0xff);  // FIXME provide more sensible default nicks
+    QString nick = QString("quassel%1").arg(QRandomGenerator::global()->generate() & 0xff);  // FIXME provide more sensible default nicks
 
 #ifdef Q_OS_MAC
     QString shortUserName = CFStringToQString(CSCopyUserName(true));
@@ -131,7 +133,8 @@ QString Identity::defaultNick()
 #endif
 
     // cleaning forbidden characters from nick
-    QRegExp rx(QString("(^[\\d-]+|[^A-Za-z0-9\x5b-\x60\x7b-\x7d])"));  // NOLINT(modernize-raw-string-literal)
+    QRegularExpression rx(QString("(^[\\d-]+|[^A-Za-z0-9\x5b-\x60\x7b-\x7d])"));  // NOLINT(modernize-raw-string-literal)
+    Q_ASSERT(rx.isValid());
     nick.remove(rx);
     return nick;
 }

@@ -221,9 +221,9 @@ void CoreConnectionSettings::setNetworkDetectionMode(NetworkDetectionMode mode)
 
 CoreConnectionSettings::NetworkDetectionMode CoreConnectionSettings::networkDetectionMode() const
 {
-    auto mode = localValue("NetworkDetectionMode", UseQNetworkConfigurationManager).toInt();
+    auto mode = localValue("NetworkDetectionMode", UseQNetworkInformation).toInt();
     if (mode == 0)
-        mode = UseQNetworkConfigurationManager;  // UseSolid is gone, map that to the new default
+        mode = UseQNetworkInformation;  // UseSolid is gone, map that to the new default
     return static_cast<NetworkDetectionMode>(mode);
 }
 

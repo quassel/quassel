@@ -40,10 +40,10 @@ target_sources(${TARGET} PRIVATE
 
 target_link_libraries(${TARGET}
     PUBLIC
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Network
-        Qt5::Widgets
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Network
+        Qt6::Widgets
         Quassel::Client
         Quassel::Common
 )
@@ -52,17 +52,17 @@ if (EMBED_DATA)
     set_property(SOURCE graphicalui.cpp APPEND PROPERTY COMPILE_DEFINITIONS EMBED_DATA)
 endif()
 
-if (WITH_KF5)
+if (WITH_KF6)
     target_link_libraries(${TARGET}
         PUBLIC
-            KF5::CoreAddons
-            KF5::TextWidgets
-            KF5::XmlGui
+            KF6::CoreAddons
+            KF6::TextWidgets
+            KF6::XmlGui
     )
 endif()
 
-if (KF5Sonnet_FOUND)
-    target_link_libraries(${TARGET} PRIVATE KF5::SonnetUi)
+if (KF6Sonnet_FOUND)
+    target_link_libraries(${TARGET} PRIVATE KF6::SonnetUi)
     target_compile_definitions(${TARGET} PRIVATE -DHAVE_SONNET)
 endif()
 

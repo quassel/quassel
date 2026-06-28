@@ -28,26 +28,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dist: [ debian-stable, debian-testing, ubuntu-noble, ubuntu-oracular, ubuntu-plucky ]
+        dist: [ debian-testing, ubuntu-plucky ]
         cxx: [ 'g++', 'clang++' ]
         with-kde: [ -DWITH_KDE=ON ]
         extra-options: [ -DWITH_WEBENGINE=ON ]
         include:
           # Baseline, test more combinations
-          - dist: ubuntu-noble
+          - dist: ubuntu-plucky
             with-kde: -DWITH_KDE=ON
             extra-options: -DWITH_WEBENGINE=OFF
-          - dist: ubuntu-noble
+          - dist: ubuntu-plucky
             with-kde: -DWITH_KDE=OFF
             extra-options: -DWITH_WEBENGINE=OFF
     env:
         CXX: ${{ matrix.cxx }}
 
     steps:
+    - run: apt-get install -y qt6-base-dev qt6-base-dev-tools qt6-multimedia-dev qt6-webengine-dev qt6-5compat-dev
     - name: Check out source code
       uses: actions/checkout@v4
       with:
         submodules: recursive
+    # Temporary
+    - run: sed -e 's/Qt5/Qt6/g' -i po/CMakeLists.txt
 
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -77,11 +80,11 @@ jobs:
 # ------------------------------------------------------------------------------------------------------------------------------------------
   build-macos:
     name: macOS
-    runs-on: macos-${{ matrix.osversion }}
+    runs-on: macos-${{ matrix.osversion.ver }}
     strategy:
       fail-fast: false
       matrix:
-        osversion: [14, latest]
+        osversion: [{ver: 14, xcode: '15.x'}, {ver: latest, xcode: '16.x'}]
 
     steps:
     - name: Select Xcode version
@@ -89,13 +92,15 @@ jobs:
       with:
         # Newer Xcode versions may not officially be supported by Qt
         # Check https://doc.qt.io/qt-5/macos.html
-        xcode-version: '15.x'
+        xcode-version: ${{ matrix.osversion.xcode }}
 
     - name: Check out source code
       uses: actions/checkout@v4
       with:
         fetch-depth: 0  # so git-describe works
         submodules: recursive
+    # Temporary
+    - run: sed -e 's/Qt5/Qt6/g'  po/CMakeLists.txt > new && mv new po/CMakeLists.txt
 
     - name: Fetch tag information
       if: startsWith(github.ref, 'refs/tags/')
@@ -113,7 +118,7 @@ jobs:
       # If Homebrew begins failing in the future due to out-of-date versions,
       # it can be re-enabled here as follows...
       # run: brew update && [below command]
-      run: brew install boost ccache qt@5
+      run: brew install boost ccache qt@6
 
     - name: Setup ccache
       uses: hendrikmuhs/ccache-action@v1.2
@@ -150,7 +155,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: macOS-${{ matrix.osversion }}
+        name: macOS-${{ matrix.osversion.ver }}
         path: ${{ github.workspace }}/bundles/*.dmg
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
@@ -169,6 +174,8 @@ jobs:
       with:
         fetch-depth: 0  # so git-describe works
         submodules: recursive
+    # Temporary
+    - run: sed -e 's/Qt5/Qt6/g' -i po/CMakeLists.txt
 
     - name: Fetch tag information
       if: startsWith(github.ref, 'refs/tags/')
@@ -234,7 +241,7 @@ jobs:
       continue-on-error: true # Windows builds are broken atm
       run: |
         # Sanity check: We should have exactly 8 files matching the given patterns
-        [[ 8 -eq $(find artifacts/ \( -type f -name 'Quassel*.dmg' -o -name 'quassel*.exe' -o -name 'quassel*.7z' \) -printf '.' | wc -c) ]]
+        [[ 6 -eq $(find artifacts/ \( -type f -name 'Quassel*.dmg' -o -name 'quassel*.exe' -o -name 'quassel*.7z' \) -printf '.' | wc -c) ]]
 
     - name: Create release notes
       if: startsWith(github.ref, 'refs/tags/')

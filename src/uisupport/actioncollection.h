@@ -28,7 +28,7 @@
 #include <vector>
 
 #ifdef HAVE_KDE
-#    include <KXmlGui/KActionCollection>
+#    include <KActionCollection>
 #endif
 
 #include <QDebug>

@@ -38,10 +38,10 @@ target_sources(${TARGET} PRIVATE
 
 target_link_libraries(${TARGET}
     PUBLIC
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Network
-        Qt5::Widgets  # QAbstractItemView in BufferModel
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Network
+        Qt6::Widgets  # QAbstractItemView in BufferModel
         Quassel::Common
 )
 

@@ -140,7 +140,7 @@ private:
 Q_DECLARE_METATYPE(Transfer::Status)
 Q_DECLARE_METATYPE(Transfer::Direction)
 
-QDataStream& operator<<(QDataStream& out, Transfer::Status state);
-QDataStream& operator>>(QDataStream& in, Transfer::Status& state);
-QDataStream& operator<<(QDataStream& out, Transfer::Direction direction);
-QDataStream& operator>>(QDataStream& in, Transfer::Direction& direction);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, Transfer::Status state);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, Transfer::Status& state);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, Transfer::Direction direction);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, Transfer::Direction& direction);

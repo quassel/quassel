@@ -21,6 +21,7 @@
 #include "ircparser.h"
 
 #include <QDebug>
+#include <QTimeZone>
 
 #include "corenetwork.h"
 #include "eventmanager.h"
@@ -121,7 +122,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
     if (net->capEnabled(IrcCap::SERVER_TIME) && tags.contains(IrcTags::SERVER_TIME)) {
         QDateTime serverTime = QDateTime::fromString(tags[IrcTags::SERVER_TIME], "yyyy-MM-ddThh:mm:ss.zzzZ");
-        serverTime.setTimeSpec(Qt::UTC);
+        serverTime.setTimeZone(QTimeZone(QTimeZone::UTC));
         if (serverTime.isValid()) {
             e->setTimestamp(serverTime);
         } else {
@@ -214,7 +215,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
 
             QByteArray msg = params.count() < 2 ? QByteArray() : params.at(1);
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(params.at(0)).split(',', Qt::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 // For self-messages, keep the target, don't set it to the senderNick
@@ -252,7 +253,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             // Only update from the prefix once during the loop
             bool updatedFromPrefix = false;
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(params.at(0)).split(',', Qt::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 QString target = *targetIter;
@@ -262,10 +263,12 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
                 // This channel is being logged by IRSeekBot. If you have any question please see http://blog.freenode.net/?p=68
                 if (!net->isChannelName(target)) {
                     QString decMsg = net->serverDecode(params.at(1));
-                    QRegExp welcomeRegExp(R"(^\[([^\]]+)\] )");
-                    if (welcomeRegExp.indexIn(decMsg) != -1) {
-                        QString channelname = welcomeRegExp.cap(1);
-                        decMsg = decMsg.mid(welcomeRegExp.matchedLength());
+                    QRegularExpression welcomeRegExp(R"(^\[([^\]]+)\] )");
+                    Q_ASSERT(welcomeRegExp.isValid());
+                    QRegularExpressionMatch match = welcomeRegExp.match(decMsg);
+                    if (match.hasMatch()) {
+                        QString channelname = match.captured(1);
+                        decMsg = decMsg.mid(match.capturedLength());
                         // we only have CoreIrcChannels in the core, so this cast is safe
                         CoreIrcChannel* chan = static_cast<CoreIrcChannel*>(net->ircChannel(channelname)); // NOLINT(cppcoreguidelines-pro-type-static-cast-downcast)
                         if (chan && !chan->receivedWelcomeMsg()) {
@@ -379,7 +382,7 @@ void IrcParser::processNetworkIncoming(NetworkDataEvent* e)
             // Cache the result to avoid multiple redundant comparisons
             bool isSelfMessage = net->isMyNick(senderNick);
 
-            QStringList targets = net->serverDecode(params.at(0)).split(',', QString::SkipEmptyParts);
+            QStringList targets = net->serverDecode(params.at(0)).split(',', Qt::SkipEmptyParts);
             QStringList::const_iterator targetIter;
             for (targetIter = targets.constBegin(); targetIter != targets.constEnd(); ++targetIter) {
                 // For self-messages, keep the target, don't set it to the senderNick

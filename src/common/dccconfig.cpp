@@ -28,8 +28,6 @@ DccConfig::DccConfig(QObject* parent)
     : SyncableObject("DccConfig", parent)
 {
     static auto regTypes = []() -> bool {
-        qRegisterMetaTypeStreamOperators<IpDetectionMode>("DccConfig::IpDetectionMode");
-        qRegisterMetaTypeStreamOperators<PortSelectionMode>("DccConfig::PortSelectionMode");
         return true;
     }();
     Q_UNUSED(regTypes);

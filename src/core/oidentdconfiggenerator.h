@@ -28,6 +28,7 @@
 #include <QHostAddress>
 #include <QMutex>
 #include <QObject>
+#include <QRegularExpression>
 #include <QString>
 
 #include "coreidentity.h"
@@ -91,7 +92,7 @@ private:
     QString _configFileName;
     QString _configPath;
     QString _configTag;
-    QRegExp _quasselStanzaRx;
+    QRegularExpression _quasselStanzaRx;
     QString _quasselStanzaTemplate;
 };
 

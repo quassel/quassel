@@ -23,8 +23,8 @@
 #include <QTextDocument>
 #include <QVBoxLayout>
 
-#include <KNotifications/KNotification>
-#include <KNotifyConfig/KNotifyConfigWidget>
+#include <KNotification>
+#include <KNotifyConfigWidget>
 #include <knotifications_version.h>
 
 #include "client.h"
@@ -67,17 +67,20 @@ void KNotificationBackend::notify(const Notification& n)
     KNotification* notification = KNotification::event(type,
                                                        message,
                                                        QStringLiteral("dialog-information"),
-                                                       QtUi::mainWindow(),
-                                                       KNotification::RaiseWidgetOnActivation | KNotification::CloseWhenWidgetActivated
+                                                       KNotification::CloseWhenWindowActivated
                                                            | KNotification::CloseOnTimeout);
-    connect(notification,
-            selectOverload<uint>(&KNotification::activated),
-            this,
-            selectOverload<>(&KNotificationBackend::notificationActivated));
 #if KNOTIFICATIONS_VERSION >= QT_VERSION_CHECK(5,31,0)
-    notification->setDefaultAction(tr("View"));
+    auto action = notification->addDefaultAction(tr("View"));
+    connect(action,
+            &KNotificationAction::activated,
+            this,
+            [this]() { notificationActivated(); });
 #else
     notification->setActions(QStringList{tr("View")});
+    connect(notification,
+            &KNotification::activated,
+            this,
+            &KNotificationBackend::notificationActivated);
 #endif
     notification->setProperty("notificationId", n.notificationId);
 

@@ -115,10 +115,10 @@ private:
 
 // We need to special-case Peer* in attached signals/slots, so typedef it for the meta type system
 using PeerPtr = Peer*;
-Q_DECLARE_METATYPE(PeerPtr)
+Q_DECLARE_METATYPE(Peer)
 
-QDataStream& operator<<(QDataStream& out, PeerPtr ptr);
-QDataStream& operator>>(QDataStream& in, PeerPtr& ptr);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, PeerPtr ptr);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, PeerPtr& ptr);
 
 // Template method needed in the header
 template<typename T>

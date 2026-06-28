@@ -23,6 +23,7 @@
 #include <algorithm>
 
 #include <QEvent>
+#include <QTimeZone>
 
 #include "backlogsettings.h"
 #include "client.h"
@@ -42,10 +43,10 @@ MessageModel::MessageModel(QObject* parent)
     : QAbstractItemModel(parent)
 {
     QDateTime now = QDateTime::currentDateTime();
-    now.setTimeSpec(Qt::UTC);
-    _nextDayChange.setTimeSpec(Qt::UTC);
+    now.setTimeZone(QTimeZone(QTimeZone::UTC));
+    _nextDayChange.setTimeZone(QTimeZone(QTimeZone::UTC));
     _nextDayChange.setMSecsSinceEpoch(((now.toMSecsSinceEpoch() / DAY_IN_MSECS) + 1) * DAY_IN_MSECS);
-    _nextDayChange.setTimeSpec(Qt::LocalTime);
+    _nextDayChange.setTimeZone(QTimeZone(QTimeZone::LocalTime));
     _dayChangeTimer.setInterval(QDateTime::currentDateTime().secsTo(_nextDayChange) * 1000);
     _dayChangeTimer.start();
     connect(&_dayChangeTimer, &QTimer::timeout, this, &MessageModel::changeOfDay);
@@ -154,13 +155,13 @@ void MessageModel::insertMessageGroup(const QList<Message>& msglist)
         Q_ASSERT(messageItemAt(start)->msgType() != Message::DayChange);
         QDateTime nextTs = messageItemAt(start)->timestamp();
         QDateTime prevTs = msglist.last().timestamp();
-        nextTs.setTimeSpec(Qt::UTC);
-        prevTs.setTimeSpec(Qt::UTC);
+        nextTs.setTimeZone(QTimeZone(QTimeZone::UTC));
+        prevTs.setTimeZone(QTimeZone(QTimeZone::UTC));
         qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
         qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
         if (nextDay != prevDay) {
             nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
-            nextTs.setTimeSpec(Qt::LocalTime);
+            nextTs.setTimeZone(QTimeZone(QTimeZone::LocalTime));
             dayChangeMsg = Message::ChangeOfDay(nextTs);
             dayChangeMsg.setMsgId(msglist.last().msgId());
         }
@@ -246,13 +247,13 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
                 if (!grouplist.isEmpty()) {
                     QDateTime nextTs = grouplist.value(0).timestamp();
                     QDateTime prevTs = (*iter).timestamp();
-                    nextTs.setTimeSpec(Qt::UTC);
-                    prevTs.setTimeSpec(Qt::UTC);
+                    nextTs.setTimeZone(QTimeZone(QTimeZone::UTC));
+                    prevTs.setTimeZone(QTimeZone(QTimeZone::UTC));
                     qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     if (nextDay != prevDay) {
                         nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
-                        nextTs.setTimeSpec(Qt::LocalTime);
+                        nextTs.setTimeZone(QTimeZone(QTimeZone::LocalTime));
                         Message dayChangeMsg = Message::ChangeOfDay(nextTs);
                         dayChangeMsg.setMsgId((*iter).msgId());
                         grouplist.prepend(dayChangeMsg);
@@ -278,13 +279,13 @@ int MessageModel::insertMessagesGracefully(const QList<Message>& msglist)
                 if (!grouplist.isEmpty()) {
                     QDateTime nextTs = grouplist.value(0).timestamp();
                     QDateTime prevTs = (*iter).timestamp();
-                    nextTs.setTimeSpec(Qt::UTC);
-                    prevTs.setTimeSpec(Qt::UTC);
+                    nextTs.setTimeZone(QTimeZone(QTimeZone::UTC));
+                    prevTs.setTimeZone(QTimeZone(QTimeZone::UTC));
                     qint64 nextDay = nextTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     qint64 prevDay = prevTs.toMSecsSinceEpoch() / DAY_IN_MSECS;
                     if (nextDay != prevDay) {
                         nextTs.setMSecsSinceEpoch(nextDay * DAY_IN_MSECS);
-                        nextTs.setTimeSpec(Qt::LocalTime);
+                        nextTs.setTimeZone(QTimeZone(QTimeZone::LocalTime));
                         Message dayChangeMsg = Message::ChangeOfDay(nextTs);
                         dayChangeMsg.setMsgId((*iter).msgId());
                         grouplist.prepend(dayChangeMsg);

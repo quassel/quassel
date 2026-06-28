@@ -27,7 +27,6 @@ ChatLineModel::ChatLineModel(QObject* parent)
     : MessageModel(parent)
 {
     qRegisterMetaType<WrapList>("ChatLineModel::WrapList");
-    qRegisterMetaTypeStreamOperators<WrapList>("ChatLineModel::WrapList");
 
     connect(QtUi::style(), &UiStyle::changed, this, &ChatLineModel::styleChanged);
 }

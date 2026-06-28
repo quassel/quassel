@@ -208,10 +208,10 @@ void BufferView::joinChannel(const QModelIndex& index)
 
 void BufferView::dropEvent(QDropEvent* event)
 {
-    QModelIndex index = indexAt(event->pos());
+    QModelIndex index = indexAt(event->position().toPoint());
 
     QRect indexRect = visualRect(index);
-    QPoint cursorPos = event->pos();
+    QPoint cursorPos = event->position().toPoint();
 
     // check if we're really _on_ the item and not indicating a move to just above or below the item
     // Magic margin number for this is from QAbstractItemViewPrivate::position()
@@ -553,7 +553,7 @@ void BufferView::wheelEvent(QWheelEvent* event)
     if (ItemViewSettings().mouseWheelChangesBuffer() == (bool)(event->modifiers() & Qt::AltModifier))
         return TreeViewTouch::wheelEvent(event);
 
-    int rowDelta = (event->delta() > 0) ? -1 : 1;
+    int rowDelta = (event->angleDelta().y() > 0) ? -1 : 1;
     changeBuffer((Direction)rowDelta);
 }
 
@@ -584,7 +584,7 @@ void BufferView::filterTextChanged(const QString& filterString)
 void BufferView::changeHighlight(BufferView::Direction direction)
 {
     // If for some weird reason we get a new delegate
-    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegateForIndex(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }
@@ -607,7 +607,7 @@ void BufferView::changeHighlight(BufferView::Direction direction)
 
     _currentHighlight = newIndex;
 
-    delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    delegate = qobject_cast<BufferViewDelegate*>(itemDelegateForIndex(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = _currentHighlight;
     }
@@ -630,7 +630,7 @@ void BufferView::selectHighlighted()
 void BufferView::clearHighlight()
 {
     // If for some weird reason we get a new delegate
-    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegate(_currentHighlight));
+    auto delegate = qobject_cast<BufferViewDelegate*>(itemDelegateForIndex(_currentHighlight));
     if (delegate) {
         delegate->currentHighlight = QModelIndex();
     }

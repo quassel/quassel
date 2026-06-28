@@ -20,7 +20,7 @@
 
 #include "netsplit.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "network.h"
 #include "util.h"
@@ -117,8 +117,9 @@ bool Netsplit::isNetsplit(const QString& quitMessage)
 
     // now test if message consists only of two dns names as the RFC requests
     // but also allow the commonly used "*.net *.split"
-    QRegExp hostRx(R"(^(?:[\w\d-.]+|\*)\.[\w\d-]+\s(?:[\w\d-.]+|\*)\.[\w\d-]+$)");
-    if (hostRx.exactMatch(quitMessage))
+    QRegularExpression hostRx(R"(^(?:[\w\d-.]+|\*)\.[\w\d-]+\s(?:[\w\d-.]+|\*)\.[\w\d-]+$)");
+    Q_ASSERT(hostRx.isValid());
+    if (hostRx.match(quitMessage).hasMatch())
         return true;
 
     return false;

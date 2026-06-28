@@ -111,7 +111,7 @@ bool ChatView::event(QEvent* event)
         }
     }
 
-    if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen) {
+    if (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QInputDevice::DeviceType::TouchScreen) {
         // Enable scrolling by dragging, disable selecting/clicking content
         setDragMode(QGraphicsView::ScrollHandDrag);
         setInteractive(false);
@@ -133,9 +133,9 @@ bool ChatView::event(QEvent* event)
         if (!_firstTouchUpdateHappened) {
             // After the first movement of a Touch-Point, calculate the distance in both axis
             // and if the point moved more horizontally abort scroll.
-            QTouchEvent::TouchPoint p = ((QTouchEvent*)event)->touchPoints().at(0);
-            double dx = qAbs(p.lastPos().x() - p.pos().x());
-            double dy = qAbs(p.lastPos().y() - p.pos().y());
+            QEventPoint p = ((QTouchEvent*)event)->points().at(0);
+            double dx = qAbs(p.lastPosition().x() - p.position().x());
+            double dy = qAbs(p.lastPosition().y() - p.position().y());
             if (dx > dy) {
                 setDragMode(QGraphicsView::NoDrag);
                 setInteractive(true);
@@ -145,7 +145,7 @@ bool ChatView::event(QEvent* event)
         // Applying the movement happens automatically by the drag-mode
     }
     if (event->type() == QEvent::Wheel
-        || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QTouchDevice::TouchScreen)
+        || (event->type() == QEvent::TouchBegin && ((QTouchEvent*)event)->device()->type() == QInputDevice::DeviceType::TouchScreen)
         || event->type() == QEvent::TouchUpdate) {
         if (requestBacklogForScroll()) {
             return true;

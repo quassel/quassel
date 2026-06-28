@@ -110,7 +110,7 @@ AboutData& AboutData::addCredits(std::initializer_list<AboutPerson> credits)
     return *this;
 }
 
-#ifdef HAVE_KF5
+#ifdef HAVE_KF6
 
 KAboutData AboutData::kAboutData() const
 {
@@ -160,8 +160,8 @@ void AboutData::setQuasselPersons(AboutData* aboutData)
         {"Janne Koschinski", "justJanne", tr("Quasseldroid, architecture, (mobile) performance, many other improvements and fixes, testing")},
     });
 
-    aboutData->addCredits(
-        {{"A. V. Lukyanov", "", tr("OSX UI improvements")},
+    aboutData->addCredits({
+         {"A. V. Lukyanov", "", tr("OSX UI improvements")},
          {"A. Wilcox", "", tr("Fixes")},
          {"Adam Harwood", "2kah", tr("Chatview improvements")},
          {"Adam Tulinius", "adamt", tr("Early beta tester and bughunter, Danish translation"), "", QLocale::Danish},
@@ -219,7 +219,8 @@ void AboutData::setQuasselPersons(AboutData* aboutData)
          {"Felix Geyer", "debfx", tr("Certificate handling improvements")},
          {"Felix Kaechele", "", tr("German translation"), "", QLocale::German},
          {"Florent Castelli", "", tr("Sanitize topic handling, twitch.tv support")},
-         {"Frederik M.J. Vestre", "freqmod", tr("Norwegian translation"), "", QLocale::Norwegian},
+         {"Frederik M.J. Vestre", "freqmod", tr("Norwegian translation"), "", QLocale::NorwegianNynorsk}, // Need to know if it's nynorsk or bokmål
+         {"Gabor Kelemen", "gabor", tr("Hungarian translation"), "", QLocale::Hungarian},
          {"Gábor Németh", "ELITE_x", tr("Hungarian translation"), "", QLocale::Hungarian},
          {"Gryllida A", "gry", tr("IRC parser improvements")},
          {"György Balló", "", tr("Fixes")},
@@ -340,5 +341,6 @@ void AboutData::setQuasselPersons(AboutData* aboutData)
          {"Yaohan Chen", "hagabaka", tr("Network detection improvements")},
          {"Yuri Chornoivan", "", tr("Ukrainian translation"), "", QLocale::Ukrainian},
          {"Zé", "", tr("Portuguese translation"), "", QLocale::Portuguese},
-         {"", "zeugma", tr("Turkish translation"), "", QLocale::Turkish}});
+         {"", "zeugma", tr("Turkish translation"), "", QLocale::Turkish}
+    });
 }

@@ -78,9 +78,9 @@ private:
     friend QDataStream& operator>>(QDataStream& in, BufferInfo& bufferInfo);
 };
 
-QDataStream& operator<<(QDataStream& out, const BufferInfo& bufferInfo);
-QDataStream& operator>>(QDataStream& in, BufferInfo& bufferInfo);
-QDebug operator<<(QDebug dbg, const BufferInfo& b);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const BufferInfo& bufferInfo);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, BufferInfo& bufferInfo);
+COMMON_EXPORT QDebug operator<<(QDebug dbg, const BufferInfo& b);
 
 Q_DECLARE_METATYPE(BufferInfo)
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferInfo::ActivityLevel)

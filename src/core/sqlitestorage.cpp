@@ -66,14 +66,19 @@ int SqliteStorage::installedSchemaVersion()
 {
     // only used when there is a singlethread (during startup)
     // so we don't need locking here
-    QSqlQuery query = logDb().exec("SELECT value FROM coreinfo WHERE key = 'schemaversion'");
+    QSqlQuery query(logDb());
+    query.exec("SELECT value FROM coreinfo WHERE key = 'schemaversion'");
     if (query.first())
         return query.value(0).toInt();
 
     // maybe it's really old... (schema version 0)
-    query = logDb().exec("SELECT MAX(version) FROM coreinfo");
-    if (query.first())
-        return query.value(0).toInt();
+    {
+        QSqlQuery maxVersionQuery(logDb());
+        maxVersionQuery.prepare("SELECT MAX(version) FROM coreinfo");
+        maxVersionQuery.exec();
+        if (maxVersionQuery.first())
+            return maxVersionQuery.value(0).toInt();
+    }
 
     return AbstractSqlStorage::installedSchemaVersion();
 }
@@ -1227,7 +1232,7 @@ BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId& networkId, Bu
                 qCritical() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
                 qCritical() << "         Query:" << query.lastQuery();
                 qCritical() << "  bound Values:";
-                QList<QVariant> list = query.boundValues().values();
+                auto list = query.boundValues();
                 for (int i = 0; i < list.size(); ++i)
                     qCritical() << i << ":" << list.at(i).toString().toLatin1().data();
                 Q_ASSERT(false);
@@ -2360,7 +2365,9 @@ void SqliteMigrationReader::setMaxId(MigrationObject mo)
         _maxId = 0;
         return;
     }
-    QSqlQuery query = logDb().exec(queryString);
+    QSqlQuery query(logDb());
+    query.prepare(queryString);
+    query.exec();
     query.first();
     _maxId = query.value(0).toLongLong();
 }

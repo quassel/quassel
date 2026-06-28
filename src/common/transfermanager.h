@@ -61,5 +61,5 @@ private:
     QHash<QUuid, Transfer*> _transfers;
 };
 
-QDataStream& operator<<(QDataStream& out, const TransferManager::TransferIdList& transferIds);
-QDataStream& operator>>(QDataStream& in, TransferManager::TransferIdList& state);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const TransferManager::TransferIdList& transferIds);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, TransferManager::TransferIdList& state);

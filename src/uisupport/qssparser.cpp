@@ -24,6 +24,7 @@
 #include <utility>
 
 #include <QApplication>
+#include <QRegularExpression>
 
 QssParser::QssParser()
 {
@@ -81,25 +82,44 @@ void QssParser::processStyleSheet(QString& ss)
         return;
 
     // Remove C-style comments /* */ or //
-    static QRegExp commentRx(R"((//.*(\n|$)|/\*.*\*/))");
-    commentRx.setMinimal(true);
+    static QRegularExpression commentRx(R"((//.*(\n|$)|/\*.*?\*/))");
+    Q_ASSERT(commentRx.isValid());
     ss.remove(commentRx);
 
     // Palette definitions first, so we can apply roles later on
-    static const QRegExp paletterx("(Palette[^{]*)\\{([^}]+)\\}");
-    int pos = 0;
-    while ((pos = paletterx.indexIn(ss, pos)) >= 0) {
-        parsePaletteBlock(paletterx.cap(1).trimmed(), paletterx.cap(2).trimmed());
-        ss.remove(pos, paletterx.matchedLength());
+    static const QRegularExpression rxBlock("(Palette[^{]*)\\{([^}]+)\\}");
+    Q_ASSERT(rxBlock.isValid());
+    QRegularExpressionMatchIterator i = rxBlock.globalMatch(ss);
+    QList<QPair<QString, QString>> blocks;
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        blocks.append(qMakePair(match.captured(1).trimmed(), match.captured(2).trimmed()));
+    }
+    for (const auto& block : blocks) {
+        parsePaletteBlock(block.first, block.second);
+        // Remove the matched block from ss
+        QRegularExpressionMatch match = rxBlock.match(ss);
+        if (match.hasMatch()) {
+            ss.remove(match.capturedStart(0), match.capturedLength(0));
+        }
     }
 
     // Now we can parse the rest of our custom blocks
-    static const QRegExp blockrx("((?:ChatLine|ChatListItem|NickListItem)[^{]*)\\{([^}]+)\\}");
-    pos = 0;
-    while ((pos = blockrx.indexIn(ss, pos)) >= 0) {
-        // qDebug() << blockrx.cap(1) << blockrx.cap(2);
-        QString declaration = blockrx.cap(1).trimmed();
-        QString contents = blockrx.cap(2).trimmed();
+    static const QRegularExpression blockrx(R"((?:ChatLine|ChatListItem|NickListItem)[^{]*\{[^}]+\})");
+    Q_ASSERT(blockrx.isValid());
+    QRegularExpression rxCustomBlock(R"((ChatLine|ChatListItem|NickListItem)([^{]*)\{([^}]+)\})");
+    Q_ASSERT(rxCustomBlock.isValid());
+    QRegularExpressionMatchIterator blockIt = rxCustomBlock.globalMatch(ss);
+    QList<QPair<QString, QString>> customBlocks;
+    while (blockIt.hasNext()) {
+        QRegularExpressionMatch match = blockIt.next();
+        QString declaration = match.captured(1) + match.captured(2);
+        QString contents = match.captured(3);
+        customBlocks.append(qMakePair(declaration.trimmed(), contents.trimmed()));
+    }
+    for (const auto& block : customBlocks) {
+        const QString& declaration = block.first;
+        const QString& contents = block.second;
 
         if (declaration.startsWith("ChatLine"))
             parseChatLineBlock(declaration, contents);
@@ -108,7 +128,11 @@ void QssParser::processStyleSheet(QString& ss)
         // else
         // TODO: add moar here
 
-        ss.remove(pos, blockrx.matchedLength());
+        // Remove the matched block from ss
+        QRegularExpressionMatch match = rxCustomBlock.match(ss);
+        if (match.hasMatch()) {
+            ss.remove(match.capturedStart(0), match.capturedLength(0));
+        }
     }
 }
 
@@ -142,13 +166,15 @@ void QssParser::parsePaletteBlock(const QString& decl, const QString& contents)
     QList<QPalette::ColorGroup> colorGroups;
 
     // Check if we want to apply this palette definition for particular ColorGroups
-    static const QRegExp rx("Palette((:(normal|active|inactive|disabled))*)");
-    if (!rx.exactMatch(decl)) {
+    static const QRegularExpression rx("Palette((:(normal|active|inactive|disabled))*)");
+    Q_ASSERT(rx.isValid());
+    QRegularExpressionMatch match = rx.match(decl);
+    if (!match.hasMatch()) {
         qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
         return;
     }
-    if (!rx.cap(1).isEmpty()) {
-        QStringList groups = rx.cap(1).split(':', QString::SkipEmptyParts);
+    if (!match.captured(1).isEmpty()) {
+        QStringList groups = match.captured(1).split(':', Qt::SkipEmptyParts);
         foreach (QString g, groups) {
             if ((g == "normal" || g == "active") && !colorGroups.contains(QPalette::Active))
                 colorGroups.append(QPalette::Active);
@@ -160,7 +186,7 @@ void QssParser::parsePaletteBlock(const QString& decl, const QString& contents)
     }
 
     // Now let's go through the roles
-    foreach (QString line, contents.split(';', QString::SkipEmptyParts)) {
+    foreach (QString line, contents.split(';', Qt::SkipEmptyParts)) {
         int idx = line.indexOf(':');
         if (idx <= 0) {
             qWarning() << Q_FUNC_INFO << tr("Invalid palette role assignment: %1").arg(line.trimmed());
@@ -195,15 +221,17 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
 
     const std::pair<UiStyle::FormatType, UiStyle::MessageLabel> invalid{FormatType::Invalid, MessageLabel::None};
 
-    static const QRegExp rx(R"(ChatLine(?:::(\w+))?(?:#([\w\-]+))?(?:\[([=-,\"\w\s]+)\])?)");
+    static const QRegularExpression rx(R"(ChatLine(?:::(\w+))?(?:#([\w-]+))?(?:\[([=,\w\s"-]+)\])?)");
+    Q_ASSERT(rx.isValid());
     // $1: subelement; $2: msgtype; $3: conditionals
-    if (!rx.exactMatch(decl)) {
+    QRegularExpressionMatch match = rx.match(decl);
+    if (!match.hasMatch()) {
         qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
         return invalid;
     }
-    QString subElement = rx.cap(1);
-    QString msgType = rx.cap(2);
-    QString conditions = rx.cap(3);
+    QString subElement = match.captured(1);
+    QString msgType = match.captured(2);
+    QString conditions = match.captured(3);
 
     FormatType fmtType{FormatType::Base};
     MessageLabel label{MessageLabel::None};
@@ -274,15 +302,17 @@ std::pair<UiStyle::FormatType, UiStyle::MessageLabel> QssParser::parseFormatType
     }
 
     // Next up: conditional (formats, labels, nickhash)
-    static const QRegExp condRx(R"lit(\s*([\w\-]+)\s*=\s*"(\w+)"\s*)lit");
+    static const QRegularExpression condRx(R"lit(\s*([\w\-]+)\s*=\s*"(\w+)"\s*)lit");
+    Q_ASSERT(condRx.isValid());
     if (!conditions.isEmpty()) {
-        foreach (const QString& cond, conditions.split(',', QString::SkipEmptyParts)) {
-            if (!condRx.exactMatch(cond)) {
+        foreach (const QString& cond, conditions.split(',', Qt::SkipEmptyParts)) {
+            QRegularExpressionMatch condMatch = condRx.match(cond);
+            if (!condMatch.hasMatch()) {
                 qWarning() << Q_FUNC_INFO << tr("Invalid condition %1").arg(cond);
                 return invalid;
             }
-            QString condName = condRx.cap(1);
-            QString condValue = condRx.cap(2);
+            QString condName = condMatch.captured(1);
+            QString condValue = condMatch.captured(2);
             if (condName == "label") {
                 if (condValue == "highlight")
                     label |= MessageLabel::Highlight;
@@ -353,14 +383,16 @@ UiStyle::ItemFormatType QssParser::parseItemFormatType(const QString& decl)
 {
     using ItemFormatType = UiStyle::ItemFormatType;
 
-    static const QRegExp rx(R"((Chat|Nick)ListItem(?:\[([=-,\"\w\s]+)\])?)");
+    static const QRegularExpression rx(R"((Chat|Nick)ListItem(?:\[([\w\s,\",=]+)\])?)");
+    Q_ASSERT(rx.isValid());
     // $1: item type; $2: properties
-    if (!rx.exactMatch(decl)) {
+    QRegularExpressionMatch match = rx.match(decl);
+    if (!match.hasMatch()) {
         qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
         return ItemFormatType::Invalid;
     }
-    QString mainItemType = rx.cap(1);
-    QString properties = rx.cap(2);
+    QString mainItemType = match.captured(1);
+    QString properties = match.captured(2);
 
     ItemFormatType fmtType{ItemFormatType::None};
 
@@ -368,13 +400,15 @@ UiStyle::ItemFormatType QssParser::parseItemFormatType(const QString& decl)
     QString type, state;
     if (!properties.isEmpty()) {
         QHash<QString, QString> props;
-        static const QRegExp propRx(R"lit(\s*([\w\-]+)\s*=\s*"([\w\-]+)"\s*)lit");
-        foreach (const QString& prop, properties.split(',', QString::SkipEmptyParts)) {
-            if (!propRx.exactMatch(prop)) {
+        static const QRegularExpression propRx(R"lit(\s*([\w\-]+)\s*=\s*"([\w\-]+)"\s*)lit");
+        Q_ASSERT(propRx.isValid());
+        foreach (const QString& prop, properties.split(',', Qt::SkipEmptyParts)) {
+            QRegularExpressionMatch propMatch = propRx.match(prop);
+            if (!propMatch.hasMatch()) {
                 qWarning() << Q_FUNC_INFO << tr("Invalid proplist %1").arg(prop);
                 return ItemFormatType::Invalid;
             }
-            props[propRx.cap(1)] = propRx.cap(2);
+            props[propMatch.captured(1)] = propMatch.captured(2);
         }
         type = props.value("type");
         state = props.value("state");
@@ -432,7 +466,7 @@ QTextCharFormat QssParser::parseFormat(const QString& qss)
 {
     QTextCharFormat format;
 
-    foreach (QString line, qss.split(';', QString::SkipEmptyParts)) {
+    foreach (QString line, qss.split(';', Qt::SkipEmptyParts)) {
         int idx = line.indexOf(':');
         if (idx <= 0) {
             qWarning() << Q_FUNC_INFO << tr("Invalid property declaration: %1").arg(line.trimmed());
@@ -532,30 +566,35 @@ QBrush QssParser::parseBrush(const QString& str, bool* ok)
         //   [0-9]     Match any digit from 0-9
         // Note that '\' must be escaped as '\\'
         // Helpful interactive website for debugging and explaining:  https://regex101.com/
-        static const QRegExp rx(R"(palette\s*\(\s*([a-z-0-9]+)\s*\))");
-        if (!rx.exactMatch(str)) {
+        static const QRegularExpression rx(R"(palette\s*\(\s*([a-z-0-9]+)\s*\))");
+        Q_ASSERT(rx.isValid());
+        QRegularExpressionMatch match = rx.match(str);
+        if (!match.hasMatch()) {
             qWarning() << Q_FUNC_INFO << tr("Invalid palette color role specification: %1").arg(str);
             return QBrush();
         }
-        if (_paletteColorRoles.contains(rx.cap(1)))
-            return QBrush(_palette.brush(_paletteColorRoles.value(rx.cap(1))));
-        if (_uiStyleColorRoles.contains(rx.cap(1)))
-            return QBrush(_uiStylePalette.at(static_cast<int>(_uiStyleColorRoles.value(rx.cap(1)))));
-        qWarning() << Q_FUNC_INFO << tr("Unknown palette color role: %1").arg(rx.cap(1));
+        QString roleName = match.captured(1);
+        if (_paletteColorRoles.contains(roleName))
+            return QBrush(_palette.brush(_paletteColorRoles.value(roleName)));
+        if (_uiStyleColorRoles.contains(roleName))
+            return QBrush(_uiStylePalette.at(static_cast<int>(_uiStyleColorRoles.value(roleName))));
+        qWarning() << Q_FUNC_INFO << tr("Unknown palette color role: %1").arg(roleName);
         return QBrush();
     }
     else if (str.startsWith("qlineargradient")) {
         static const QString rxFloat(R"(\s*(-?\s*[0-9]*\.?[0-9]+)\s*)");
-        static const QRegExp rx(QString(R"(qlineargradient\s*\(\s*x1:%1,\s*y1:%1,\s*x2:%1,\s*y2:%1,(.+)\))").arg(rxFloat));
-        if (!rx.exactMatch(str)) {
+        static const QRegularExpression rx(QString(R"(qlineargradient\s*\(\s*x1:%1,\s*y1:%1,\s*x2:%1,\s*y2:%1,(.+)\))").arg(rxFloat));
+        Q_ASSERT(rx.isValid());
+        QRegularExpressionMatch match = rx.match(str);
+        if (!match.hasMatch()) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient declaration: %1").arg(str);
             return QBrush();
         }
-        qreal x1 = rx.cap(1).toDouble();
-        qreal y1 = rx.cap(2).toDouble();
-        qreal x2 = rx.cap(3).toDouble();
-        qreal y2 = rx.cap(4).toDouble();
-        QGradientStops stops = parseGradientStops(rx.cap(5).trimmed());
+        qreal x1 = match.captured(1).toDouble();
+        qreal y1 = match.captured(2).toDouble();
+        qreal x2 = match.captured(3).toDouble();
+        qreal y2 = match.captured(4).toDouble();
+        QGradientStops stops = parseGradientStops(match.captured(5).trimmed());
         if (!stops.count()) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient stops list: %1").arg(str);
             return QBrush();
@@ -569,15 +608,17 @@ QBrush QssParser::parseBrush(const QString& str, bool* ok)
     }
     else if (str.startsWith("qconicalgradient")) {
         static const QString rxFloat(R"(\s*(-?\s*[0-9]*\.?[0-9]+)\s*)");
-        static const QRegExp rx(QString(R"(qconicalgradient\s*\(\s*cx:%1,\s*cy:%1,\s*angle:%1,(.+)\))").arg(rxFloat));
-        if (!rx.exactMatch(str)) {
+        static const QRegularExpression rx(QString(R"(qconicalgradient\s*\(\s*cx:%1,\s*cy:%1,\s*angle:%1,(.+)\))").arg(rxFloat));
+        Q_ASSERT(rx.isValid());
+        QRegularExpressionMatch match = rx.match(str);
+        if (!match.hasMatch() || match.capturedLength(0) != str.length()) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient declaration: %1").arg(str);
             return QBrush();
         }
-        qreal cx = rx.cap(1).toDouble();
-        qreal cy = rx.cap(2).toDouble();
-        qreal angle = rx.cap(3).toDouble();
-        QGradientStops stops = parseGradientStops(rx.cap(4).trimmed());
+        qreal cx = match.captured(1).toDouble();
+        qreal cy = match.captured(2).toDouble();
+        qreal angle = match.captured(3).toDouble();
+        QGradientStops stops = parseGradientStops(match.captured(4).trimmed());
         if (!stops.count()) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient stops list: %1").arg(str);
             return QBrush();
@@ -591,17 +632,19 @@ QBrush QssParser::parseBrush(const QString& str, bool* ok)
     }
     else if (str.startsWith("qradialgradient")) {
         static const QString rxFloat(R"(\s*(-?\s*[0-9]*\.?[0-9]+)\s*)");
-        static const QRegExp rx(QString(R"(qradialgradient\s*\(\s*cx:%1,\s*cy:%1,\s*radius:%1,\s*fx:%1,\s*fy:%1,(.+)\))").arg(rxFloat));
-        if (!rx.exactMatch(str)) {
+        static const QRegularExpression rx(QString(R"(qradialgradient\s*\(\s*cx:%1,\s*cy:%1,\s*radius:%1,\s*fx:%1,\s*fy:%1,(.+)\))").arg(rxFloat));
+        Q_ASSERT(rx.isValid());
+        QRegularExpressionMatch match = rx.match(str);
+        if (!match.hasMatch() || match.capturedLength(0) != str.length()) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient declaration: %1").arg(str);
             return QBrush();
         }
-        qreal cx = rx.cap(1).toDouble();
-        qreal cy = rx.cap(2).toDouble();
-        qreal radius = rx.cap(3).toDouble();
-        qreal fx = rx.cap(4).toDouble();
-        qreal fy = rx.cap(5).toDouble();
-        QGradientStops stops = parseGradientStops(rx.cap(6).trimmed());
+        qreal cx = match.captured(1).toDouble();
+        qreal cy = match.captured(2).toDouble();
+        qreal radius = match.captured(3).toDouble();
+        qreal fx = match.captured(4).toDouble();
+        qreal fy = match.captured(5).toDouble();
+        QGradientStops stops = parseGradientStops(match.captured(6).trimmed());
         if (!stops.count()) {
             qWarning() << Q_FUNC_INFO << tr("Invalid gradient stops list: %1").arg(str);
             return QBrush();
@@ -646,8 +689,10 @@ QColor QssParser::parseColor(const QString& str)
         }
     }
     else {
-        static const QRegExp rx("#?[0-9A-Fa-z]+");
-        if (rx.exactMatch(str))
+        static const QRegularExpression rx("#?[0-9A-Fa-z]+");
+        Q_ASSERT(rx.isValid());
+        QRegularExpressionMatch match = rx.match(str);
+        if (match.hasMatch() && match.capturedLength(0) == str.length())
             return QColor(str);
     }
     return QColor();
@@ -657,11 +702,13 @@ QColor QssParser::parseColor(const QString& str)
 QssParser::ColorTuple QssParser::parseColorTuple(const QString& str)
 {
     ColorTuple result;
-    static const QRegExp rx(R"(\(((\s*[0-9]{1,3}%?\s*)(,\s*[0-9]{1,3}%?\s*)*)\))");
-    if (!rx.exactMatch(str.trimmed())) {
+    static const QRegularExpression rx(R"(\(((\s*[0-9]{1,3}%?\s*)(,\s*[0-9]{1,3}%?\s*)*)\))");
+    Q_ASSERT(rx.isValid());
+    QRegularExpressionMatch match = rx.match(str.trimmed());
+    if (!match.hasMatch()) {
         return ColorTuple();
     }
-    QStringList values = rx.cap(1).split(',');
+    QStringList values = match.captured(1).split(',');
     foreach (QString v, values) {
         qreal val;
         bool perc = false;
@@ -686,15 +733,19 @@ QGradientStops QssParser::parseGradientStops(const QString& str_)
     QString str = str_;
     QGradientStops result;
     static const QString rxFloat("(0?\\.[0-9]+|[01])");  // values between 0 and 1
-    static const QRegExp rx(QString(R"(\s*,?\s*stop:\s*(%1)\s+([^:]+)(,\s*stop:|$))").arg(rxFloat));
-    int idx;
-    while ((idx = rx.indexIn(str)) == 0) {
-        qreal x = rx.cap(1).toDouble();
-        QColor c = parseColor(rx.cap(3));
+    static const QRegularExpression rx(QString(R"(\s*,?\s*stop:\s*(%1)\s+([^:]+)(,\s*stop:|$))").arg(rxFloat));
+    Q_ASSERT(rx.isValid());
+    while (true) {
+        QRegularExpressionMatch match = rx.match(str);
+        if (!match.hasMatch() || match.capturedStart() != 0)
+            break;
+        qreal x = match.captured(1).toDouble();
+        QColor c = parseColor(match.captured(3));
         if (!c.isValid())
             return QGradientStops();
         result << QGradientStop(x, c);
-        str.remove(0, rx.matchedLength() - rx.cap(4).length());
+        // Remove the matched part from the string, keeping any trailing part (e.g., for next stop)
+        str.remove(0, match.capturedLength() - match.captured(4).length());
     }
     if (!str.trimmed().isEmpty())
         return QGradientStops();
@@ -706,9 +757,11 @@ QGradientStops QssParser::parseGradientStops(const QString& str_)
 
 void QssParser::parseFont(const QString& value, QTextCharFormat* format)
 {
-    static const QRegExp rx(
+    static const QRegularExpression rx(
         "((?:(?:normal|italic|oblique|underline|strikethrough|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
-    if (!rx.exactMatch(value)) {
+    Q_ASSERT(rx.isValid());
+    QRegularExpressionMatch match = rx.match(value);
+    if (!match.hasMatch()) {
         qWarning() << Q_FUNC_INFO << tr("Invalid font specification: %1").arg(value);
         return;
     }
@@ -716,7 +769,7 @@ void QssParser::parseFont(const QString& value, QTextCharFormat* format)
     format->setFontUnderline(false);
     format->setFontStrikeOut(false);
     format->setFontWeight(QFont::Normal);
-    QStringList proplist = rx.cap(1).split(' ', QString::SkipEmptyParts);
+    QStringList proplist = match.captured(1).split(' ', Qt::SkipEmptyParts);
     foreach (QString prop, proplist) {
         if (prop == "normal")
             ;  // pass
@@ -737,12 +790,12 @@ void QssParser::parseFont(const QString& value, QTextCharFormat* format)
         }
     }
 
-    if (rx.cap(3) == "px")
-        format->setProperty(QTextFormat::FontPixelSize, rx.cap(2).toInt());
+    if (match.captured(3) == "px")
+        format->setProperty(QTextFormat::FontPixelSize, match.captured(2).toInt());
     else
-        format->setFontPointSize(rx.cap(2).toInt());
+        format->setFontPointSize(match.captured(2).toInt());
 
-    format->setFontFamily(rx.cap(4));
+    format->setFontFamilies(QStringList{match.captured(4)});
 }
 
 void QssParser::parseFontStyle(const QString& value, QTextCharFormat* format)
@@ -782,15 +835,17 @@ void QssParser::parseFontWeight(const QString& value, QTextCharFormat* format)
 
 void QssParser::parseFontSize(const QString& value, QTextCharFormat* format)
 {
-    static const QRegExp rx("(\\d+)(pt|px)");
-    if (!rx.exactMatch(value)) {
+    static const QRegularExpression rx("(\\d+)(pt|px)");
+    Q_ASSERT(rx.isValid());
+    QRegularExpressionMatch match = rx.match(value);
+    if (!match.hasMatch()) {
         qWarning() << Q_FUNC_INFO << tr("Invalid font size specification: %1").arg(value);
         return;
     }
-    if (rx.cap(2) == "px")
-        format->setProperty(QTextFormat::FontPixelSize, rx.cap(1).toInt());
+    if (match.captured(2) == "px")
+        format->setProperty(QTextFormat::FontPixelSize, match.captured(1).toInt());
     else
-        format->setFontPointSize(rx.cap(1).toInt());
+        format->setFontPointSize(match.captured(1).toInt());
 }
 
 void QssParser::parseFontFamily(const QString& value, QTextCharFormat* format)
@@ -799,5 +854,5 @@ void QssParser::parseFontFamily(const QString& value, QTextCharFormat* format)
     if (family.startsWith('"') && family.endsWith('"')) {
         family = family.mid(1, family.length() - 2);
     }
-    format->setFontFamily(family);
+    format->setFontFamilies(QStringList{family});
 }

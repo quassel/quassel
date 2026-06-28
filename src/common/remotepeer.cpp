@@ -49,7 +49,7 @@ RemotePeer::RemotePeer(::AuthHandler* authHandler, QTcpSocket* socket, Compresso
 {
     socket->setParent(this);
     connect(socket, &QAbstractSocket::stateChanged, this, &RemotePeer::onSocketStateChanged);
-    connect(socket, selectOverload<QAbstractSocket::SocketError>(&QAbstractSocket::error), this, &RemotePeer::onSocketError);
+    connect(socket, &QAbstractSocket::errorOccurred, this, &RemotePeer::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &Peer::disconnected);
 
     auto* sslSocket = qobject_cast<QSslSocket*>(socket);

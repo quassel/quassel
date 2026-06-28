@@ -276,7 +276,7 @@ void EventManager::dispatchEvent(Event* event)
         if (filters.contains(obj)) {  // we have a filter, so let's check if we want to deliver the event
             Handler filter = filters.value(obj);
             bool result = false;
-            void* param[] = {Q_RETURN_ARG(bool, result).data(), Q_ARG(Event*, event).data()};
+            void* param[] = { &result, &event };
             obj->qt_metacall(QMetaObject::InvokeMetaMethod, filter.methodIndex, param);
             if (!result) {
                 ignored.insert(obj);
@@ -285,7 +285,7 @@ void EventManager::dispatchEvent(Event* event)
         }
 
         // finally, deliverance!
-        void* param[] = {nullptr, Q_ARG(Event*, event).data()};
+        void* param[] = {nullptr, &event};
         obj->qt_metacall(QMetaObject::InvokeMetaMethod, it->methodIndex, param);
     }
 
