@@ -747,8 +747,14 @@ void CoreNetwork::sendPerform()
     for (const QString& line : perform()) {
         if (!line.isEmpty()) {
             QString cmd = line;
-            if (me_ && !me_->nick().isEmpty())
-                cmd.replace("$NICK", me_->nick(), Qt::CaseInsensitive);
+            if (me_) {
+                if (!me_->nick().isEmpty())
+                    cmd.replace("$NICK", me_->nick(), Qt::CaseInsensitive);
+                if (!me_->user().isEmpty())
+                    cmd.replace("$USER", me_->user(), Qt::CaseInsensitive);
+                if (!me_->host().isEmpty())
+                    cmd.replace("$HOST", me_->host(), Qt::CaseInsensitive);
+            }
             userInput(statusBuf, cmd);
         }
     }
