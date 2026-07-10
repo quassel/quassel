@@ -745,8 +745,18 @@ void CoreNetwork::sendPerform()
 
     // send perform list
     for (const QString& line : perform()) {
-        if (!line.isEmpty())
-            userInput(statusBuf, line);
+        if (!line.isEmpty()) {
+            QString cmd = line;
+            if (me_) {
+                if (!me_->nick().isEmpty())
+                    cmd.replace("$NICK", me_->nick(), Qt::CaseInsensitive);
+                if (!me_->user().isEmpty())
+                    cmd.replace("$USER", me_->user(), Qt::CaseInsensitive);
+                if (!me_->host().isEmpty())
+                    cmd.replace("$HOST", me_->host(), Qt::CaseInsensitive);
+            }
+            userInput(statusBuf, cmd);
+        }
     }
 
     // rejoin channels we've been in
