@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -277,11 +277,11 @@ TEST_F(SignalProxyTest, syncableObject)
         // Synchronize
         EXPECT_CALL(*_clientPeer, Dispatches(InitRequest(Eq("SyncObj"), Eq("Foo"))));
         EXPECT_CALL(*_serverPeer, Dispatches(InitData(Eq("SyncObj"), Eq("Foo"), QVariantMap{
-                                                          {"stringProperty", "Hello"},
-                                                          {"intProperty", 42},
-                                                          {"doubleProperty", 4.2},
-                                                          {"FooData", "FOO"}
-                                                      })));
+                                                           {"stringProperty", "Hello"},
+                                                           {"intProperty", 42},
+                                                           {"doubleProperty", 4.2},
+                                                           {"FooData", QByteArray{"FOO"}}
+                                                       })));
 
         // Set int property
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Foo"), Eq("setIntProperty"), ElementsAre(23))));
@@ -315,7 +315,7 @@ TEST_F(SignalProxyTest, syncableObject)
                                                          }))));
 
         // Rename object
-        EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("__objectRenamed__"), ElementsAre("SyncObj", "Bar", "Foo"))));
+        EXPECT_CALL(*_serverPeer, Dispatches(RpcCall(Eq("__objectRenamed__"), ElementsAre(QByteArray{"SyncObj"}, "Bar", "Foo"))));
         EXPECT_CALL(*_serverPeer, Dispatches(SyncMessage(Eq("SyncObj"), Eq("Bar"), Eq("setStringProperty"), ElementsAre("Hi Universe"))));
     }
 

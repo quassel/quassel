@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,10 +32,12 @@
 
 class IrcUser;
 class Network;
+class QTextCodec;
 
 class COMMON_EXPORT IrcChannel : public SyncableObject
 {
     Q_OBJECT
+    Q_MOC_INCLUDE("ircuser.h")
     SYNCABLE_OBJECT
 
     Q_PROPERTY(QString name READ name)

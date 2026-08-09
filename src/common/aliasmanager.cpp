@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,7 @@
 #include "aliasmanager.h"
 
 #include <QDebug>
+#include <QRegularExpression>
 #include <QStringList>
 
 #include "network.h"
@@ -138,8 +139,9 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
         return;
     }
 
-    QRegExp paramRangeR(R"(\$(\d+)\.\.(\d*))");
-    QStringList commands = alias.split(QRegExp("; ?"));
+    static const QRegularExpression paramRangeR(QStringLiteral(R"(\$(\d+)\.\.(\d*))"));
+    static const QRegularExpression commandSeparator(QStringLiteral(R"(; ?)"));
+    QStringList commands = alias.split(commandSeparator);
     QStringList params = msg.split(' ');
     QStringList expandedCommands;
     for (int i = 0; i < commands.count(); i++) {
@@ -147,19 +149,22 @@ void AliasManager::expand(const QString& alias, const BufferInfo& bufferInfo, co
 
         // replace ranges like $1..3
         if (!params.isEmpty()) {
-            int pos;
-            while ((pos = paramRangeR.indexIn(command)) != -1) {
-                int start = paramRangeR.cap(1).toInt();
+            QRegularExpressionMatch match = paramRangeR.match(command);
+            while (match.hasMatch()) {
+                int start = match.captured(1).toInt();
                 bool ok;
-                int end = paramRangeR.cap(2).toInt(&ok);
+                int end = match.captured(2).toInt(&ok);
                 if (!ok) {
                     end = params.count();
                 }
                 if (end < start)
-                    command = command.replace(pos, paramRangeR.matchedLength(), QString());
+                    command = command.replace(match.capturedStart(0), match.capturedLength(0), QString());
                 else {
-                    command = command.replace(pos, paramRangeR.matchedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
+                    command = command.replace(match.capturedStart(0),
+                                              match.capturedLength(0),
+                                              QStringList(params.mid(start - 1, end - start + 1)).join(" "));
                 }
+                match = paramRangeR.match(command);
             }
         }
 

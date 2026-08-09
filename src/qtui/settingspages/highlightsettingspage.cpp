@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -183,12 +183,12 @@ void HighlightSettingsPage::removeSelectedRows()
 {
     QList<int> selectedRows;
     QList<QTableWidgetItem*> selectedItemList = ui.highlightTable->selectedItems();
-    foreach (QTableWidgetItem* selectedItem, selectedItemList) {
+    for (QTableWidgetItem* selectedItem : selectedItemList) {
         selectedRows.append(selectedItem->row());
     }
     std::sort(selectedRows.begin(), selectedRows.end(), std::greater<>());
     int lastRow = -1;
-    foreach (int row, selectedRows) {
+    for (int row : selectedRows) {
         if (row != lastRow) {
             ui.highlightTable->removeRow(row);
             highlightList.removeAt(row);
@@ -270,7 +270,7 @@ void HighlightSettingsPage::load()
 
     emptyTable();
 
-    foreach (QVariant highlight, notificationSettings.highlightList()) {
+    for (const QVariant& highlight : notificationSettings.highlightList()) {
         QVariantMap highlightRule = highlight.toMap();
         QString name = highlightRule["Name"].toString();
         bool regex = highlightRule["RegEx"].toBool();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -173,16 +173,12 @@ void ClientAuthHandler::onImplicitTlsSocketEncrypted()
 
     auto* tls_socket = qobject_cast<QSslSocket*>(sender());
     Q_ASSERT(tls_socket);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    if (!tls_socket->sslErrors().count()) {
-#else
     if (!tls_socket->sslHandshakeErrors().count()) {
-#endif
         // Cert is valid, so we don't want to store it as known
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;
         s.setAccountValue("SslCert", QString());
-        s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+        s.setAccountValue("SslCertDigestVersion", QVariant(QMetaType(QMetaType::Int)));
     }
 
     _probing = true;
@@ -471,7 +467,7 @@ void ClientAuthHandler::checkAndEnableSsl(bool coreSupportsSsl)
             }
             s.setAccountValue("ShowNoCoreSslWarning", false);
             s.setAccountValue("SslCert", QString());
-            s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+            s.setAccountValue("SslCertDigestVersion", QVariant(QMetaType(QMetaType::Int)));
         }
         if (_legacy)
             onConnectionReady();
@@ -486,16 +482,12 @@ void ClientAuthHandler::onSslSocketEncrypted()
     auto* socket = qobject_cast<QSslSocket*>(sender());
     Q_ASSERT(socket);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    if (!socket->sslErrors().count()) {
-#else
     if (!socket->sslHandshakeErrors().count()) {
-#endif
         // Cert is valid, so we don't want to store it as known
         // That way, a warning will appear in case it becomes invalid at some point
         CoreAccountSettings s;
         s.setAccountValue("SslCert", QString());
-        s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+        s.setAccountValue("SslCertDigestVersion", QVariant(QMetaType(QMetaType::Int)));
     }
 
     emit encrypted(true);
@@ -524,7 +516,7 @@ void ClientAuthHandler::onSslErrors()
         break;
 
     default:
-        qWarning() << "Certificate digest version" << QString(knownDigestVersion) << "is not supported";
+        qWarning() << "Certificate digest version" << QString::number(static_cast<int>(knownDigestVersion)) << "is not supported";
     }
 
     if (knownDigest != calculatedDigest) {
@@ -543,7 +535,7 @@ void ClientAuthHandler::onSslErrors()
         }
         else {
             s.setAccountValue("SslCert", QString());
-            s.setAccountValue("SslCertDigestVersion", QVariant(QVariant::Int));
+            s.setAccountValue("SslCertDigestVersion", QVariant(QMetaType(QMetaType::Int)));
         }
     }
     else if (knownDigestVersion != ClientAuthHandler::DigestVersion::Latest) {

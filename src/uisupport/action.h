@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -41,8 +41,6 @@ class UISUPPORT_EXPORT Action : public QWidgetAction
 
     Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
     Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
-    Q_FLAGS(ShortcutType)
-
 public:
     enum ShortcutType
     {
@@ -50,6 +48,7 @@ public:
         DefaultShortcut = 0x02
     };
     Q_DECLARE_FLAGS(ShortcutTypes, ShortcutType)
+    Q_FLAG(ShortcutTypes)
 
     explicit Action(QObject* parent);
     Action(const QString& text, QObject* parent, const QKeySequence& shortcut = 0);

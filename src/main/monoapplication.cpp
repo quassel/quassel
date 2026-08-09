@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,9 +31,18 @@ class InternalPeer;
 MonolithicApplication::MonolithicApplication(int& argc, char** argv)
     : QtUiApplication(argc, argv)
 {
-#if QT_VERSION >= 0x050700
     QGuiApplication::setDesktopFileName(Quassel::buildInfo().applicationName);
-#endif
+}
+
+MonolithicApplication::~MonolithicApplication()
+{
+    // Qt6 makes QThread::~QThread() fatal if the thread is still running.
+    // Guard against shutdown paths that bypass onCoreShutdown (e.g. a direct
+    // QCoreApplication::exit() call from Client::onExitRequested).
+    if (_coreThread.isRunning()) {
+        _coreThread.quit();
+        _coreThread.wait();
+    }
 }
 
 void MonolithicApplication::init()
@@ -74,10 +83,11 @@ void MonolithicApplication::onCoreShutdown()
 {
     if (_core) {
         connect(_core, &QObject::destroyed, QCoreApplication::instance(), &QCoreApplication::quit);
-        _coreThread.quit();
-        _coreThread.wait();
     }
-    else {
+    _coreThread.quit();
+    _coreThread.wait();
+    if (!_core) {
+        // Core was already gone; nobody else will call quit().
         QCoreApplication::quit();
     }
 }

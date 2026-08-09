@@ -23,20 +23,20 @@ Prerequisites
 -------------
 
 Of course, for building Quassel you need the usual set of build tools, for
-example a compiler. The codebase uses the C++14 standard, so a reasonably recent
-compiler is needed:
+example a compiler. The codebase now uses the C++17 standard to prepare for the
+ongoing Qt 6 / KDE Frameworks 6 migration, so a current compiler is needed:
 
-- GCC 5.0+ (available for most platforms), or
-- Clang 3.4+ (available for most platforms), or
-- XCode 6.0+ (available for Max OS X and based on Clang), or
-- MSVC 19+ (part of Visual Studio 2017 on Windows™)
+- GCC 8.0+ (available for most platforms), or
+- Clang 11.0+ (available for most platforms), or
+- Xcode 15.0+ (available for macOS and based on Clang), or
+- MSVC 2019 or newer on Windows™
 
 Other compilers may work, but are not officially supported.
 
-As Quassel is a Qt application, you need the Qt SDK, version 5.5 or higher.
-Furthermore, the Boost header-only libraries (at least version 1.54) and
-CMake 3.5 or later are required. CMake will tell you about any missing
-dependencies when configuring the project.
+As Quassel is a Qt application, you need the Qt SDK supported by the branch you
+are building. Furthermore, the Boost header-only libraries (at least version
+1.54) and CMake 3.20 or later are required. CMake will tell you about any
+missing dependencies when configuring the project.
 
 Compiling Quassel - short version
 ---------------------------------
@@ -48,8 +48,8 @@ cd /path/to/source
 mkdir build
 cd build
 cmake ..
-make
-make install
+cmake --build .
+cmake --install .
 
 Compiling Quassel - long version
 --------------------------------
@@ -96,7 +96,7 @@ options here:
 -DWITH_OXYGEN_ICONS=(ON|OFF)
     Support the Oxygen icon theme. Oxygen was the default theme in KDE 4, and
     also the bundled icon theme in Quassel before version 0.13. Since the move
-    to Qt5, the more modern Breeze icon theme is preferred, and thus Oxygen
+    to the Qt 5 era, the more modern Breeze icon theme is preferred, and thus Oxygen
     is disabled by default.
 
 -DWITH_WEBENGINE=ON
@@ -125,5 +125,5 @@ If you want to narrow down the languages to be installed, you can set the
 LINGUAS environment variable with a space-separated list of language codes,
 for example LINGUAS="de en_US".
 
-After running CMake, you can just run "make" in the build directory, and
-"make install" for installing the result into the installation prefix.
+After running CMake, you can just run "cmake --build ." in the build directory,
+and "cmake --install ." for installing the result into the installation prefix.

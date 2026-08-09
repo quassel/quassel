@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,7 @@
 #include <QMap>
 #include <QMenu>
 #include <QMessageBox>
+#include <QRegularExpression>
 
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -140,7 +141,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject* parent)
     // They don't need any of the Action fanciness so we use plain QActions
     _ignoreDescriptions << new QAction(tr("Add Ignore Rule"), this);
     _ignoreDescriptions << new QAction(tr("Existing Rules"), this);
-    foreach (QAction* act, _ignoreDescriptions)
+    for (QAction* act : _ignoreDescriptions)
         act->setEnabled(false);
 }
 
@@ -288,7 +289,8 @@ void ContextMenuActionProvider::addNetworkItemActions(QMenu* menu, const QModelI
 
 void ContextMenuActionProvider::addBufferItemActions(QMenu* menu, const QModelIndex& index, bool isCustomBufferView)
 {
-    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    const QVariant bufferInfoData = index.data(NetworkModel::BufferInfoRole);
+    BufferInfo bufferInfo = bufferInfoData.value<BufferInfo>();
 
     menu->addSeparator();
     switch (bufferInfo.type()) {
@@ -351,7 +353,8 @@ void ContextMenuActionProvider::addIrcUserActions(QMenu* menu, const QModelIndex
             }
             // ignoreliststuff
             QString bufferName;
-            BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+            const QVariant bufferInfoData = index.data(NetworkModel::BufferInfoRole);
+            BufferInfo bufferInfo = bufferInfoData.value<BufferInfo>();
             if (bufferInfo.type() == BufferInfo::ChannelBuffer)
                 bufferName = bufferInfo.bufferName();
             QMap<QString, bool> ignoreMap = Client::ignoreListManager()->matchingRulesForHostmask(ircUser->hostmask(),
@@ -441,9 +444,10 @@ void ContextMenuActionProvider::addIgnoreMenu(QMenu* menu, const QString& hostma
     QString ident = userFromMask(hostmask);
     QString host = hostFromMask(hostmask);
     QString domain = host;
-    QRegExp domainRx = QRegExp(R"((\.[^.]+\.\w+\D)$)");
-    if (domainRx.indexIn(host) != -1)
-        domain = domainRx.cap(1);
+    static const QRegularExpression domainRx(QStringLiteral(R"((\.[^.]+\.\w+\D)$)"));
+    const QRegularExpressionMatch domainMatch = domainRx.match(host);
+    if (domainMatch.hasMatch())
+        domain = domainMatch.captured(1);
     // we can't rely on who-data
     // if we don't have the data, we skip actions where we would need it
     bool haveWhoData = !ident.isEmpty() && !host.isEmpty();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -236,7 +236,8 @@ QStringList Network::nicks() const
     // we don't use _ircUsers.keys() since the keys may be
     // not up to date after a nick change
     QStringList nicks;
-    foreach (IrcUser* ircuser, _ircUsers.values()) {
+    const auto ircUsers = _ircUsers.values();
+    for (IrcUser* ircuser : ircUsers) {
         nicks << ircuser->nick();
     }
     return nicks;
@@ -269,7 +270,7 @@ Network::ChannelModeType Network::channelModeType(const QString& mode)
         return NOT_A_CHANMODE;
 
     ChannelModeType modeType = A_CHANMODE;
-    for (int i = 0; i < chanmodes.count(); i++) {
+    for (int i = 0; i < chanmodes.size(); i++) {
         if (chanmodes[i] == mode[0])
             break;
         else if (chanmodes[i] == ',')
@@ -863,7 +864,7 @@ void Network::clearCaps()
     // If performance issues arise, this can be converted to a more-efficient setup without breaking
     // protocol (in theory).
     QString _capLowercase;
-    foreach (const QString& capability, _caps) {
+    for (const QString& capability : _caps) {
         _capLowercase = capability.toLower();
         emit capRemoved(_capLowercase);
     }
@@ -905,13 +906,7 @@ QVariantMap Network::initIrcUsersAndChannels() const
             // If the peer doesn't support LongTime, replace the lastAwayMessageTime field
             // with the 32-bit numerical seconds value (lastAwayMessage) used in older versions
             if (!proxy()->targetPeer()->hasFeature(Quassel::Feature::LongTime)) {
-#if QT_VERSION >= 0x050800
                 int lastAwayMessage = it.value()->lastAwayMessageTime().toSecsSinceEpoch();
-#else
-                // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-                // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-                int lastAwayMessage = it.value()->lastAwayMessageTime().toMSecsSinceEpoch() / 1000;
-#endif
                 map.remove("lastAwayMessageTime");
                 map["lastAwayMessage"] = lastAwayMessage;
             }
@@ -926,7 +921,8 @@ QVariantMap Network::initIrcUsersAndChannels() const
         // Can't have a container with a value type != QVariant in a QVariant :(
         // However, working directly on a QVariantMap is awkward for appending, thus the detour via the hash above.
         QVariantMap userMap;
-        foreach (const QString& key, users.keys())
+        const auto userKeys = users.keys();
+        for (const QString& key : userKeys)
             userMap[key] = users[key];
         usersAndChannels["Users"] = userMap;
     }
@@ -945,7 +941,8 @@ QVariantMap Network::initIrcUsersAndChannels() const
             ++it;
         }
         QVariantMap channelMap;
-        foreach (const QString& key, channels.keys())
+        const auto channelKeys = channels.keys();
+        for (const QString& key : channelKeys)
             channelMap[key] = channels[key];
         usersAndChannels["Channels"] = channelMap;
     }
@@ -970,7 +967,8 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
 
     // sanity check
     int count = users["nick"].toList().count();
-    foreach (const QString& key, users.keys()) {
+    const auto userKeys = users.keys();
+    for (const QString& key : userKeys) {
         if (users[key].toList().count() != count) {
             qWarning() << "Received invalid usersAndChannels init data, sizes of attribute lists don't match!";
             return;
@@ -980,21 +978,13 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
     // now create the individual IrcUsers
     for (int i = 0; i < count; i++) {
         QVariantMap map;
-        foreach (const QString& key, users.keys())
+        for (const QString& key : userKeys)
             map[key] = users[key].toList().at(i);
 
         // If the peer doesn't support LongTime, upconvert the lastAwayMessageTime field
         // from the 32-bit numerical seconds value used in older versions to QDateTime
         if (!proxy()->sourcePeer()->hasFeature(Quassel::Feature::LongTime)) {
-            QDateTime lastAwayMessageTime = QDateTime();
-            lastAwayMessageTime.setTimeSpec(Qt::UTC);
-#if QT_VERSION >= 0x050800
-            lastAwayMessageTime.fromSecsSinceEpoch(map.take("lastAwayMessage").toInt());
-#else
-            // toSecsSinceEpoch() was added in Qt 5.8.  Manually downconvert to seconds for now.
-            // See https://doc.qt.io/qt-5/qdatetime.html#toMSecsSinceEpoch
-            lastAwayMessageTime.fromMSecsSinceEpoch(map.take("lastAwayMessage").toInt() * 1000);
-#endif
+            QDateTime lastAwayMessageTime = QDateTime::fromSecsSinceEpoch(map.take("lastAwayMessage").toInt(), utcTimeZone());
             map["lastAwayMessageTime"] = lastAwayMessageTime;
         }
 
@@ -1006,7 +996,8 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
 
     // sanity check
     count = channels["name"].toList().count();
-    foreach (const QString& key, channels.keys()) {
+    const auto channelKeys = channels.keys();
+    for (const QString& key : channelKeys) {
         if (channels[key].toList().count() != count) {
             qWarning() << "Received invalid usersAndChannels init data, sizes of attribute lists don't match!";
             return;
@@ -1015,7 +1006,7 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap& usersAndChannels)
     // now create the individual IrcChannels
     for (int i = 0; i < count; i++) {
         QVariantMap map;
-        foreach (const QString& key, channels.keys())
+        for (const QString& key : channelKeys)
             map[key] = channels[key].toList().at(i);
         newIrcChannel(map["name"].toString(), map);
     }
@@ -1152,7 +1143,7 @@ void NetworkInfo::skipCapsFromString(const QString& flattenedSkipCaps) {
     //
     // See Network::addCap(), Network::acknowledgeCap(), and friends
     // And https://ircv3.net/specs/core/capability-negotiation
-    skipCaps = flattenedSkipCaps.toLower().split(" ", QString::SplitBehavior::SkipEmptyParts);
+    skipCaps = flattenedSkipCaps.toLower().split(" ", Qt::SkipEmptyParts);
 }
 
 bool NetworkInfo::operator==(const NetworkInfo& other) const

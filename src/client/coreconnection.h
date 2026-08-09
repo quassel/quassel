@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +22,7 @@
 
 #include "client-export.h"
 
-#include <QNetworkConfigurationManager>
+#include <QNetworkInformation>
 #include <QPointer>
 #include <QSslSocket>
 #include <QTimer>
@@ -162,7 +162,7 @@ private:
     CoreAccount _account;
     CoreAccountModel* accountModel() const;
 
-    QPointer<QNetworkConfigurationManager> _qNetworkConfigurationManager;
+    QPointer<QNetworkInformation> _networkInformation;
 
     friend class CoreConfigWizard;
 };

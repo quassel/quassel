@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #pragma once
+
+#include "common-export.h"
 
 #include <type_traits>
 
@@ -118,8 +120,8 @@ public:
     friend QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
 };
 
-QDataStream& operator<<(QDataStream& out, const SignedId64& signedId);
-QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const SignedId64& signedId);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, SignedId64& signedId);
 inline QTextStream& operator<<(QTextStream& out, const SignedId64& signedId)
 {
     out << QString::number(signedId.toQint64());
@@ -194,38 +196,6 @@ Q_DECLARE_METATYPE(QHostAddress)
 // a few typedefs
 using MsgIdList = QList<MsgId>;
 using BufferIdList = QList<BufferId>;
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-/**
- * Catch-all stream serialization operator for enum types.
- *
- * @param[in,out] out   Stream to serialize to
- * @param[in]     value Value to serialize
- * @returns A reference to the stream
- */
-template<typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
-QDataStream& operator<<(QDataStream& out, T value)
-{
-    out << static_cast<typename std::underlying_type<T>::type>(value);
-    return out;
-}
-
-/**
- * Catch-all stream serialization operator for enum types.
- *
- * @param[in,out] in    Stream to deserialize from
- * @param[out]    value Value to deserialize into
- * @returns A reference to the stream
- */
-template<typename T, typename = typename std::enable_if<std::is_enum<T>::value>::type>
-QDataStream& operator>>(QDataStream& in, T& value)
-{
-    typename std::underlying_type<T>::type v;
-    in >> v;
-    value = static_cast<T>(v);
-    return in;
-}
-#endif
 
 // STL-compliant hash functor for Qt types
 template<typename T>

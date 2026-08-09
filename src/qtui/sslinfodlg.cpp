@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -45,7 +45,7 @@ SslInfoDlg::SslInfoDlg(const QSslSocket* socket, QWidget* parent)
     ui.protocol->setText(cipher.protocolString());
 
     connect(ui.certificateChain, selectOverload<int>(&QComboBox::currentIndexChanged), this, &SslInfoDlg::setCurrentCert);
-    foreach (const QSslCertificate& cert, socket->peerCertificateChain()) {
+    for (const QSslCertificate& cert : socket->peerCertificateChain()) {
         ui.certificateChain->addItem(subjectInfo(cert, QSslCertificate::CommonName));
     }
 }
@@ -67,11 +67,7 @@ void SslInfoDlg::setCurrentCert(int index)
     ui.issuerState->setText(issuerInfo(cert, QSslCertificate::StateOrProvinceName));
     ui.issuerCity->setText(issuerInfo(cert, QSslCertificate::LocalityName));
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    const auto& sslErrors = socket()->sslErrors();
-#else
     const auto& sslErrors = socket()->sslHandshakeErrors();
-#endif
     if (sslErrors.isEmpty()) {
         ui.trusted->setText(tr("Yes"));
     }

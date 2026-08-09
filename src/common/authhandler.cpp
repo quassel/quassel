@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +36,7 @@ QSslSocket* AuthHandler::socket() const
 void AuthHandler::setSocket(QSslSocket* socket)
 {
     _socket = socket;
-    connect(socket, selectOverload<QAbstractSocket::SocketError>(&QTcpSocket::error), this, &AuthHandler::onSocketError);
+    connect(socket, &QAbstractSocket::errorOccurred, this, &AuthHandler::onSocketError);
     connect(socket, &QAbstractSocket::disconnected, this, &AuthHandler::onSocketDisconnected);
 }
 

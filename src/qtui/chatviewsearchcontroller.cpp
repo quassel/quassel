@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -113,12 +113,12 @@ void ChatViewSearchController::updateHighlights(bool reuse)
 
     if (reuse) {
         QSet<ChatLine*> chatLines;
-        foreach (SearchHighlightItem* highlightItem, _highlightItems) {
+        for (SearchHighlightItem* highlightItem : _highlightItems) {
             auto* line = qgraphicsitem_cast<ChatLine*>(highlightItem->parentItem());
             if (line)
                 chatLines << line;
         }
-        foreach (ChatLine* line, chatLines) {
+        for (ChatLine* line : chatLines) {
             updateHighlights(line);
         }
     }
@@ -238,8 +238,8 @@ void ChatViewSearchController::updateHighlights(ChatLine* line)
         checkItems << line->item(MessageModel::ContentsColumn);
 
     QHash<quint64, QHash<quint64, QRectF>> wordRects;
-    foreach (ChatItem* item, checkItems) {
-        foreach (QRectF wordRect, item->findWords(searchString(), caseSensitive())) {
+    for (ChatItem* item : checkItems) {
+        for (const QRectF& wordRect : item->findWords(searchString(), caseSensitive())) {
             wordRects[(quint64)(wordRect.x() + item->x())][(quint64)(wordRect.y())] = wordRect;
         }
     }
@@ -253,7 +253,7 @@ void ChatViewSearchController::updateHighlights(ChatLine* line)
             deleteAll = true;
     }
 
-    foreach (QGraphicsItem* child, line->childItems()) {
+    for (QGraphicsItem* child : line->childItems()) {
         auto* highlightItem = qgraphicsitem_cast<SearchHighlightItem*>(child);
         if (!highlightItem)
             continue;
@@ -287,8 +287,8 @@ void ChatViewSearchController::highlightLine(ChatLine* line)
     if (_searchMsgs)
         checkItems << line->item(MessageModel::ContentsColumn);
 
-    foreach (ChatItem* item, checkItems) {
-        foreach (QRectF wordRect, item->findWords(searchString(), caseSensitive())) {
+    for (ChatItem* item : checkItems) {
+        for (const QRectF& wordRect : item->findWords(searchString(), caseSensitive())) {
             _highlightItems << new SearchHighlightItem(wordRect.adjusted(item->x(), 0, item->x(), 0), line);
         }
     }
@@ -297,12 +297,12 @@ void ChatViewSearchController::highlightLine(ChatLine* line)
 void ChatViewSearchController::repositionHighlights()
 {
     QSet<ChatLine*> chatLines;
-    foreach (SearchHighlightItem* item, _highlightItems) {
+    for (SearchHighlightItem* item : _highlightItems) {
         auto* line = qgraphicsitem_cast<ChatLine*>(item->parentItem());
         if (line)
             chatLines << line;
     }
-    foreach (ChatLine* line, chatLines) {
+    for (ChatLine* line : chatLines) {
         repositionHighlights(line);
     }
 }
@@ -310,7 +310,7 @@ void ChatViewSearchController::repositionHighlights()
 void ChatViewSearchController::repositionHighlights(ChatLine* line)
 {
     QList<SearchHighlightItem*> searchHighlights;
-    foreach (QGraphicsItem* child, line->childItems()) {
+    for (QGraphicsItem* child : line->childItems()) {
         auto* highlightItem = qgraphicsitem_cast<SearchHighlightItem*>(child);
         if (highlightItem)
             searchHighlights << highlightItem;
@@ -321,12 +321,12 @@ void ChatViewSearchController::repositionHighlights(ChatLine* line)
 
     QList<QPointF> wordPos;
     if (_searchSenders) {
-        foreach (QRectF wordRect, line->senderItem()->findWords(searchString(), caseSensitive())) {
+        for (const QRectF& wordRect : line->senderItem()->findWords(searchString(), caseSensitive())) {
             wordPos << QPointF(wordRect.x() + line->senderItem()->x(), wordRect.y());
         }
     }
     if (_searchMsgs) {
-        foreach (QRectF wordRect, line->contentsItem()->findWords(searchString(), caseSensitive())) {
+        for (const QRectF& wordRect : line->contentsItem()->findWords(searchString(), caseSensitive())) {
             wordPos << QPointF(wordRect.x() + line->contentsItem()->x(), wordRect.y());
         }
     }

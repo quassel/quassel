@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -102,7 +102,7 @@ void CoreInfoDlg::coreInfoChanged(const QVariantMap& coreInfo)
         }
         else {
             ui.labelCoreVersionDate->setText(
-                tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString(), Qt::DateFormat::DefaultLocaleShortDate));
+                tryFormatUnixEpoch(coreInfo["quasselBuildDate"].toString(), QLocale::ShortFormat));
         }
         ui.labelClientCount->setNum(coreInfo["sessionConnectedClients"].toInt());
     }
@@ -176,7 +176,7 @@ void CoreInfoDlg::updateUptime()
                                    .arg(uphours, 2, 10, QChar('0'))
                                    .arg(upmins, 2, 10, QChar('0'))
                                    .arg(uptime, 2, 10, QChar('0'))
-                                   .arg(startTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
+                                   .arg(QLocale().toString(startTime.toLocalTime(), QLocale::ShortFormat));
         ui.labelUptime->setText(uptimeText);
     }
 }

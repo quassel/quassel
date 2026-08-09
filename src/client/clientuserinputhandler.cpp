@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -50,7 +50,7 @@ void ClientUserInputHandler::completionSuffixChanged(const QVariant& v)
     QString suffix = v.toString();
     QString letter = "A-Za-z";
     QString special = "\x5b-\x60\x7b-\x7d";  // NOLINT(modernize-raw-string-literal)
-    _nickRx = QRegExp(QString("^([%1%2][%1%2\\d-]*)%3").arg(letter, special, suffix).trimmed());
+    _nickRx = QRegularExpression(QString("^([%1%2][%1%2\\d-]*)%3").arg(letter, special, suffix).trimmed());
 }
 
 // this would be the place for a client-side hook
@@ -60,9 +60,10 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo& bufferInfo, const
         return;
 
     if (!msg.startsWith('/')) {
-        if (_nickRx.indexIn(msg) == 0) {
+        const QRegularExpressionMatch match = _nickRx.match(msg);
+        if (match.hasMatch() && match.capturedStart(0) == 0) {
             const Network* net = Client::network(bufferInfo.networkId());
-            IrcUser* user = net ? net->ircUser(_nickRx.cap(1)) : nullptr;
+            IrcUser* user = net ? net->ircUser(match.captured(1)) : nullptr;
             if (user)
                 user->setLastSpokenTo(bufferInfo.bufferId(), QDateTime::currentDateTime().toUTC());
         }
@@ -153,7 +154,7 @@ void ClientUserInputHandler::switchBuffer(const NetworkId& networkId, const QStr
         // unhide the buffer
         ClientBufferViewManager* clientBufferViewManager = Client::bufferViewManager();
         QList<ClientBufferViewConfig*> bufferViewConfigList = clientBufferViewManager->clientBufferViewConfigs();
-        foreach (ClientBufferViewConfig* bufferViewConfig, bufferViewConfigList) {
+        for (ClientBufferViewConfig* bufferViewConfig : bufferViewConfigList) {
             if (bufferViewConfig->temporarilyRemovedBuffers().contains(newBufId)) {
                 bufferViewConfig->requestAddBuffer(newBufId, bufferViewConfig->bufferList().length());
                 // if (bufferViewConfig->sortAlphabetically()) {

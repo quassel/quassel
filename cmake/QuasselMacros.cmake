@@ -1,6 +1,6 @@
 # This file contains various functions and macros useful for building Quassel.
 #
-# (C) 2014-2022 by the Quassel Project <devel@quassel-irc.org>
+# (C) 2014-2026 by the Quassel Project <devel@quassel-irc.org>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
@@ -54,7 +54,7 @@ function(quassel_add_module _module)
     add_library(${target} ${buildmode} "")
     add_library(${alias} ALIAS ${target})
 
-    target_link_libraries(${target} PRIVATE Qt5::Core)
+    target_link_libraries(${target} PRIVATE ${QUASSEL_QT_CORE_TARGET})
     target_include_directories(${target}
         PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR} # for generated files
@@ -181,7 +181,7 @@ function(quassel_add_executable _target)
         find_transitive_link_deps(${_target} link_deps)
         # TODO CMake 3.6: use list(FILTER...)
         foreach(dep IN LISTS link_deps)
-            if(${dep} MATCHES "^Qt5::.*")
+            if(${dep} MATCHES "^Qt6::.*")
                 list(APPEND qt_deps ${dep})
             endif()
         endforeach()
@@ -205,9 +205,11 @@ function(quassel_add_executable _target)
             COMPONENT ${ARG_COMPONENT}
         )
 
-        # Determine the location of macdeployqt. Not available directly via CMake, so look for it in qmake's bindir...
-        get_target_property(QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-        get_filename_component(qt_bin_dir ${QMAKE_EXECUTABLE} DIRECTORY)
+        # Determine the location of macdeployqt. Prefer Qt's tool target if present, otherwise fall back to PATH lookup.
+        if (TARGET ${QUASSEL_QT_QMAKE_TARGET})
+            get_target_property(QMAKE_EXECUTABLE ${QUASSEL_QT_QMAKE_TARGET} IMPORTED_LOCATION)
+            get_filename_component(qt_bin_dir ${QMAKE_EXECUTABLE} DIRECTORY)
+        endif()
         find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS ${qt_bin_dir} REQUIRED)
 
         # Generate and invoke post-install script, finalizing the bundle and creating a DMG image
@@ -276,7 +278,7 @@ function(quassel_add_resource _name)
     # RCC sucks and expects the data files relative to the qrc file, with no way to configure it differently.
     # Only when reading from stdin ("-") it takes the working directory as a base, so we have to use this if
     # we want to use generated qrc files (which obviously cannot be placed in the source directory).
-    # Since neither autorcc nor qt5_add_resources() support this, we have to invoke rcc manually :(
+    # Since neither autorcc nor qt_add_resources() support this, we have to invoke rcc manually :(
     #
     # On Windows, input redirection apparently doesn't work, however piping does. Use this for all platforms for
     # consistency, accommodating for the fact that the 'cat' equivalent on Windows is 'type'.
@@ -288,7 +290,7 @@ function(quassel_add_resource _name)
     add_custom_command(VERBATIM
         COMMENT "Generating ${qrc_src}"
         COMMAND ${cat_cmd} "$<SHELL_PATH:${qrc_filepath}>"
-                | "$<SHELL_PATH:$<TARGET_FILE:Qt5::rcc>>" --name "${lower_name}" --output "$<SHELL_PATH:${qrc_srcpath}>" -
+                | "$<SHELL_PATH:$<TARGET_FILE:${QUASSEL_QT_RCC_TARGET}>>" --name "${lower_name}" --output "$<SHELL_PATH:${qrc_srcpath}>" -
         DEPENDS ${qrc_target}
         MAIN_DEPENDENCY ${qrc_filepath}
         OUTPUT ${qrc_srcpath}
@@ -314,7 +316,7 @@ endfunction()
 #
 # The test name is given in CamelCase as first and mandatory parameter. The corresponding source file
 # is expected the lower-cased test name plus the .cpp extension.
-# The test case is automatically linked against Qt5::Test, GMock, Quassel::Common and
+# The test case is automatically linked against Qt's test library, GMock, Quassel::Common and
 # Quassel::Test::Main, which contains the main function. This main function also instantiates a
 # QCoreApplication, so the event loop can be used in test cases.
 #
@@ -335,7 +337,7 @@ function(quassel_add_test _target)
     set(srcfile ${lower_target}.cpp)
 
     list(APPEND ARG_LIBRARIES
-        Qt5::Test
+        ${QUASSEL_QT_TEST_TARGET}
         Quassel::Common
         Quassel::Test::Global
         Quassel::Test::Main

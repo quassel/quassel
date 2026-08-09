@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This contains code from KStatusNotifierItem, part of the KDE libs     *
@@ -30,8 +30,6 @@
 #    include <QString>
 #    include <QTemporaryDir>
 
-#    include "notificationsclient.h"
-#    include "statusnotifierwatcher.h"
 #    include "systemtray.h"
 
 #    ifdef QT_NO_SYSTEMTRAYICON
@@ -44,6 +42,8 @@
 class QDBusServiceWatcher;
 
 class StatusNotifierItemDBus;
+class OrgFreedesktopNotificationsInterface;
+class OrgKdeStatusNotifierWatcherInterface;
 
 class StatusNotifierItem : public StatusNotifierItemParent
 {
@@ -92,8 +92,8 @@ private:
 
     QDBusServiceWatcher* _serviceWatcher{nullptr};
     StatusNotifierItemDBus* _statusNotifierItemDBus{nullptr};
-    org::kde::StatusNotifierWatcher* _statusNotifierWatcher{nullptr};
-    org::freedesktop::Notifications* _notificationsClient{nullptr};
+    OrgKdeStatusNotifierWatcherInterface* _statusNotifierWatcher{nullptr};
+    OrgFreedesktopNotificationsInterface* _notificationsClient{nullptr};
     bool _notificationsClientSupportsMarkup{false};
     bool _notificationsClientSupportsActions{false};
     quint32 _lastNotificationsDBusId{0};

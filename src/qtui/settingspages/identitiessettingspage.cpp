@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,8 @@
 
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 #include "client.h"
 #include "icon.h"
@@ -108,7 +110,7 @@ void IdentitiesSettingsPage::save()
         // canceled -> reload everything to be safe
         load();
     }
-    foreach (Identity* id, toCreate) {
+    for (Identity* id : toCreate) {
         id->deleteLater();
     }
     changedIdentities.clear();
@@ -120,7 +122,8 @@ void IdentitiesSettingsPage::save()
 void IdentitiesSettingsPage::load()
 {
     currentId = 0;
-    foreach (Identity* identity, identities.values()) {
+    const auto existingIdentities = identities.values();
+    for (Identity* identity : existingIdentities) {
         identity->deleteLater();
     }
     identities.clear();
@@ -128,7 +131,7 @@ void IdentitiesSettingsPage::load()
     changedIdentities.clear();
     ui.identityList->clear();
     setWidgetStates();
-    foreach (IdentityId id, Client::identityIds()) {
+    for (const IdentityId& id : Client::identityIds()) {
         clientIdentityCreated(id);
     }
     setChangedState(false);
@@ -177,7 +180,8 @@ bool IdentitiesSettingsPage::aboutToSave()
 {
     ui.identityEditor->saveToIdentity(identities[currentId]);
     QList<int> errors;
-    foreach (Identity* id, identities.values()) {
+    const auto existingIdentities = identities.values();
+    for (Identity* id : existingIdentities) {
         if (id->identityName().isEmpty())
             errors.append(1);
         if (!id->nicks().count())
@@ -388,7 +392,7 @@ IdentityId CreateIdentityDlg::duplicateId() const
 
 void CreateIdentityDlg::on_identityName_textChanged(const QString& text)
 {
-    ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(text.count());
+    ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }
 
 /*********************************************************************************************/
@@ -411,10 +415,10 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity*>& toCreate,
         connect(Client::instance(), &Client::identityCreated, this, &SaveIdentitiesDlg::clientEvent);
         connect(Client::instance(), &Client::identityRemoved, this, &SaveIdentitiesDlg::clientEvent);
 
-        foreach (CertIdentity* id, toCreate) {
+        for (CertIdentity* id : toCreate) {
             Client::createIdentity(*id);
         }
-        foreach (CertIdentity* id, toUpdate) {
+        for (CertIdentity* id : toUpdate) {
             const Identity* cid = Client::identity(id->id());
             if (!cid) {
                 qWarning() << "Invalid client identity!";
@@ -425,7 +429,7 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity*>& toCreate,
             Client::updateIdentity(id->id(), id->toVariantMap());
             id->requestUpdateSslSettings();
         }
-        foreach (IdentityId id, toRemove) {
+        for (const IdentityId& id : toRemove) {
             Client::removeIdentity(id);
         }
     }
@@ -455,8 +459,8 @@ NickEditDlg::NickEditDlg(const QString& old, QStringList exist, QWidget* parent)
     // TODO: add max nicklength according to ISUPPORT
     QString letter = "A-Za-z";
     QString special = R"([-`{-})";
-    QRegExp rx(QString("[%1%2][%1%2\\d-]*").arg(letter, special));
-    ui.nickEdit->setValidator(new QRegExpValidator(rx, ui.nickEdit));
+    QRegularExpression rx(QString("[%1%2][%1%2\\d-]*").arg(letter, special));
+    ui.nickEdit->setValidator(new QRegularExpressionValidator(rx, ui.nickEdit));
     if (old.isEmpty()) {
         // new nick
         setWindowTitle(tr("Add Nickname"));

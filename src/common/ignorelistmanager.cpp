@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -127,7 +127,7 @@ IgnoreListManager::StrictnessType IgnoreListManager::_match(
     if (!(msgType & (Message::Plain | Message::Notice | Message::Action)))
         return UnmatchedStrictness;
 
-    foreach (IgnoreListItem item, _ignoreList) {
+    for (const IgnoreListItem& item : _ignoreList) {
         if (!item.isEnabled() || item.type() == CtcpIgnore)
             continue;
         if (item.scope() == GlobalScope || (item.scope() == NetworkScope && item.scopeRuleMatcher().match(network))
@@ -170,7 +170,7 @@ void IgnoreListManager::toggleIgnoreRule(const QString& ignoreRule)
 
 bool IgnoreListManager::ctcpMatch(const QString sender, const QString& network, const QString& type)
 {
-    foreach (IgnoreListItem item, _ignoreList) {
+    for (const IgnoreListItem& item : _ignoreList) {
         if (!item.isEnabled())
             continue;
         if (item.scope() == GlobalScope || (item.scope() == NetworkScope && item.scopeRuleMatcher().match(network))) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -87,23 +87,23 @@ void CoreBufferSyncer::storeDirtyIds()
 {
     UserId userId = _coreSession->user();
     MsgId msgId;
-    foreach (BufferId bufferId, dirtyLastSeenBuffers) {
+    for (BufferId bufferId : dirtyLastSeenBuffers) {
         msgId = lastSeenMsg(bufferId);
         if (msgId.isValid())
             Core::setBufferLastSeenMsg(userId, bufferId, msgId);
     }
 
-    foreach (BufferId bufferId, dirtyMarkerLineBuffers) {
+    for (BufferId bufferId : dirtyMarkerLineBuffers) {
         msgId = markerLine(bufferId);
         if (msgId.isValid())
             Core::setBufferMarkerLineMsg(userId, bufferId, msgId);
     }
 
-    foreach (BufferId bufferId, dirtyActivities) {
+    for (BufferId bufferId : dirtyActivities) {
         Core::setBufferActivity(userId, bufferId, activity(bufferId));
     }
 
-    foreach (BufferId bufferId, dirtyHighlights) {
+    for (BufferId bufferId : dirtyHighlights) {
         Core::setHighlightCount(userId, bufferId, highlightCount(bufferId));
     }
 
@@ -211,7 +211,7 @@ void CoreBufferSyncer::purgeBufferIds()
                    [](auto&& bufferInfo) { return bufferInfo.bufferId(); });
 
     QSet<BufferId> storedIds = toQSet(lastSeenBufferIds()) + toQSet(markerLineBufferIds());
-    foreach (BufferId bufferId, storedIds) {
+    for (BufferId bufferId : storedIds) {
         if (actualBuffers.find(bufferId) == actualBuffers.end()) {
             BufferSyncer::removeBuffer(bufferId);
         }

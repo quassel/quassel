@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,7 +27,6 @@ ChatLineModel::ChatLineModel(QObject* parent)
     : MessageModel(parent)
 {
     qRegisterMetaType<WrapList>("ChatLineModel::WrapList");
-    qRegisterMetaTypeStreamOperators<WrapList>("ChatLineModel::WrapList");
 
     connect(QtUi::style(), &UiStyle::changed, this, &ChatLineModel::styleChanged);
 }
@@ -53,7 +52,7 @@ Message ChatLineModel::takeMessageAt(int i)
 
 void ChatLineModel::styleChanged()
 {
-    foreach (ChatLineModelItem item, _messageList) {
+    for (ChatLineModelItem& item : _messageList) {
         item.invalidateWrapList();
     }
     emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1));

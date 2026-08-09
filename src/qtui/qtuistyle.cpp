@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -194,11 +194,11 @@ QString QtUiStyle::color(const QString& key, UiSettings& settings, const QColor&
 QString QtUiStyle::fontDescription(const QFont& font) const
 {
     QFont::Style style = font.style();
-    int weight = font.weight();
+    int weight = 100 * qBound(1, (font.weight() + 50) / 100, 9);
 
     return QString("font: %1 %2 %3pt \"%4\"")
         .arg(style == QFont::StyleItalic ? "italic" : style == QFont::StyleOblique ? "oblique" : "normal")
-        .arg(100 * qBound(1, (weight * 8 + 50) / 100, 9))
+        .arg(weight)
         .arg(font.pointSize())
         .arg(font.family());
 }

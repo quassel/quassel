@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,6 +28,7 @@
 #include <QHostAddress>
 #include <QMutex>
 #include <QObject>
+#include <QRegularExpression>
 #include <QString>
 
 #include "coreidentity.h"
@@ -91,7 +92,7 @@ private:
     QString _configFileName;
     QString _configPath;
     QString _configTag;
-    QRegExp _quasselStanzaRx;
+    QRegularExpression _quasselStanzaRx;
     QString _quasselStanzaTemplate;
 };
 

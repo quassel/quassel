@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -51,7 +51,7 @@ void CoreAccountModel::load()
 {
     clear();
     CoreAccountSettings s;
-    foreach (AccountId accId, s.knownAccounts()) {
+    for (AccountId accId : s.knownAccounts()) {
         QVariantMap map = s.retrieveAccountData(accId);
         CoreAccount acc;
         acc.fromVariantMap(map);  // TODO Hook into kwallet/password saving stuff
@@ -69,11 +69,11 @@ void CoreAccountModel::load()
 void CoreAccountModel::save()
 {
     CoreAccountSettings s;
-    foreach (AccountId id, _removedAccounts) {
+    for (AccountId id : _removedAccounts) {
         s.removeAccount(id);
     }
     _removedAccounts.clear();
-    foreach (const CoreAccount& acc, accounts()) {
+    for (const CoreAccount& acc : accounts()) {
         QVariantMap map = acc.toVariantMap(false);  // TODO Hook into kwallet/password saving stuff
         s.storeAccountData(acc.accountId(), map);
     }
@@ -128,7 +128,7 @@ QList<CoreAccount> CoreAccountModel::accounts() const
 QList<AccountId> CoreAccountModel::accountIds() const
 {
     QList<AccountId> list;
-    foreach (const CoreAccount& acc, accounts())
+    for (const CoreAccount& acc : accounts())
         list << acc.accountId();
     return list;
 }

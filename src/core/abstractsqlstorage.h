@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,6 +35,21 @@ class QThread;
 
 class AbstractSqlMigrationReader;
 class AbstractSqlMigrationWriter;
+
+namespace detail {
+
+template<typename Query>
+inline auto sqlBoundValueNamesCompat(const Query& query, int) -> decltype(query.boundValueNames())
+{
+    return query.boundValueNames();
+}
+
+inline QStringList sqlBoundValueNamesCompat(const QSqlQuery&, long)
+{
+    return {};
+}
+
+}  // namespace detail
 
 class AbstractSqlStorage : public Storage
 {

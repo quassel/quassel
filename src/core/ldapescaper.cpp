@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +24,7 @@ QString LdapEscaper::escapeQuery(const QString& filter)
 {
     QString result;
     for (const auto character : filter) {
-        if (character > 0x7F ||
+        if (character.unicode() > 0x7F ||
             character == '*' ||
             character == '(' ||
             character == ')' ||

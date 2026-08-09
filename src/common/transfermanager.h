@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -61,5 +61,5 @@ private:
     QHash<QUuid, Transfer*> _transfers;
 };
 
-QDataStream& operator<<(QDataStream& out, const TransferManager::TransferIdList& transferIds);
-QDataStream& operator>>(QDataStream& in, TransferManager::TransferIdList& state);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const TransferManager::TransferIdList& transferIds);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, TransferManager::TransferIdList& state);

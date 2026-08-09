@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This contains code from KStatusNotifierItem, part of the KDE libs     *
@@ -34,9 +34,11 @@
 #    include <QTextDocument>
 
 #    include "icon.h"
+#    include "notificationsclient.h"
 #    include "qtui.h"
 #    include "quassel.h"
 #    include "statusnotifieritemdbus.h"
+#    include "statusnotifierwatcher.h"
 
 constexpr int kProtocolVersion{0};
 
@@ -46,29 +48,6 @@ const QString kSniPath{QLatin1String{"/StatusNotifierItem"}};
 const QString kXdgNotificationsService{QLatin1String{"org.freedesktop.Notifications"}};
 const QString kXdgNotificationsPath{QLatin1String{"/org/freedesktop/Notifications"}};
 const QString kMenuObjectPath{QLatin1String{"/MenuBar"}};
-
-#    ifdef HAVE_DBUSMENU
-#        include "dbusmenuexporter.h"
-
-/**
- * Specialization to provide access to icon names
- */
-class QuasselDBusMenuExporter : public DBusMenuExporter
-{
-public:
-    QuasselDBusMenuExporter(const QString& dbusObjectPath, QMenu* menu, const QDBusConnection& dbusConnection)
-        : DBusMenuExporter(dbusObjectPath, menu, dbusConnection)
-    {}
-
-protected:
-    QString iconNameForAction(QAction* action) override  // TODO Qt 4.7: fixme when we have converted our iconloader
-    {
-        QIcon icon(action->icon());
-        return icon.isNull() ? QString() : icon.name();
-    }
-};
-
-#    endif /* HAVE_DBUSMENU */
 
 StatusNotifierItem::StatusNotifierItem(QWidget* parent)
     : StatusNotifierItemParent(parent)
@@ -136,9 +115,6 @@ StatusNotifierItem::StatusNotifierItem(QWidget* parent)
         _notificationsClientSupportsActions = desktopCapabilities.contains("actions");
     }
 
-#    ifdef HAVE_DBUSMENU
-    new QuasselDBusMenuExporter(menuObjectPath(), trayMenu(), _statusNotifierItemDBus->dbusConnection());  // will be added as menu child
-#    endif
 }
 
 void StatusNotifierItem::serviceChange(const QString& name, const QString& oldOwner, const QString& newOwner)

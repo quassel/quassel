@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,8 +23,8 @@
 #include <QTextDocument>
 #include <QVBoxLayout>
 
-#include <KNotifications/KNotification>
-#include <KNotifyConfig/KNotifyConfigWidget>
+#include <KNotification>
+#include <KNotifyConfigWidget>
 #include <knotifications_version.h>
 
 #include "client.h"
@@ -64,22 +64,14 @@ void KNotificationBackend::notify(const Notification& n)
     }
 
     QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, n.message.toHtmlEscaped());
-    KNotification* notification = KNotification::event(type,
-                                                       message,
-                                                       QStringLiteral("dialog-information"),
-                                                       QtUi::mainWindow(),
-                                                       KNotification::RaiseWidgetOnActivation | KNotification::CloseWhenWidgetActivated
-                                                           | KNotification::CloseOnTimeout);
-    connect(notification,
-            selectOverload<uint>(&KNotification::activated),
-            this,
-            selectOverload<>(&KNotificationBackend::notificationActivated));
-#if KNOTIFICATIONS_VERSION >= QT_VERSION_CHECK(5,31,0)
-    notification->setDefaultAction(tr("View"));
-#else
-    notification->setActions(QStringList{tr("View")});
-#endif
+    auto* notification = new KNotification(type, KNotification::CloseWhenWindowActivated | KNotification::CloseOnTimeout, this);
+    notification->setText(message);
+    notification->setIconName(QStringLiteral("dialog-information"));
+    notification->setWindow(QtUi::mainWindow()->windowHandle());
+    auto* defaultAction = notification->addDefaultAction(tr("View"));
+    connect(defaultAction, &KNotificationAction::activated, this, selectOverload<>(&KNotificationBackend::notificationActivated));
     notification->setProperty("notificationId", n.notificationId);
+    notification->sendEvent();
 
     _notifications.append(qMakePair(n.notificationId, QPointer<KNotification>(notification)));
 

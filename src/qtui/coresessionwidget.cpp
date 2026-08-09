@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -41,9 +41,9 @@ void CoreSessionWidget::setData(QMap<QString, QVariant> map)
         ui.labelVersionDate->setText(QString("<i>%1</i>").arg(tr("Unknown date")));
     }
     else {
-        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString(), Qt::DateFormat::DefaultLocaleShortDate));
+        ui.labelVersionDate->setText(tryFormatUnixEpoch(map["clientVersionDate"].toString(), QLocale::ShortFormat));
     }
-    ui.labelUptime->setText(map["connectedSince"].toDateTime().toLocalTime().toString(Qt::DateFormat::DefaultLocaleShortDate));
+    ui.labelUptime->setText(QLocale().toString(map["connectedSince"].toDateTime().toLocalTime(), QLocale::ShortFormat));
     if (map["location"].toString().isEmpty()) {
         ui.labelLocation->hide();
         ui.labelLocationTitle->hide();

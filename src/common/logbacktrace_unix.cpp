@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -41,7 +41,8 @@ void Quassel::logBacktrace(const QString& filename)
     int i, frames = backtrace(callstack, 128);
 
     QFile dumpFile(filename);
-    dumpFile.open(QIODevice::Append);
+    if (!dumpFile.open(QIODevice::Append))
+        return;
     QTextStream dumpStream(&dumpFile);
 
     for (i = 0; i < frames; ++i) {

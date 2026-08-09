@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -195,7 +195,7 @@ void AliasesModel::loadDefaults()
 
     AliasManager::AliasList defaults = AliasManager::defaults();
     beginInsertRows(QModelIndex(), 0, defaults.count() - 1);
-    foreach (AliasManager::Alias alias, defaults) {
+    for (const AliasManager::Alias& alias : defaults) {
         manager.addAlias(alias.name, alias.expansion);
     }
     endInsertRows();

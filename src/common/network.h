@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -46,6 +46,7 @@
 
 // defined below!
 struct NetworkInfo;
+class QTextCodec;
 
 // TODO: ConnectionInfo to propagate and sync the current state of NetworkConnection, encodings etcpp
 
@@ -53,8 +54,6 @@ class COMMON_EXPORT Network : public SyncableObject
 {
     Q_OBJECT
     SYNCABLE_OBJECT
-
-    Q_ENUMS(ConnectionState)
 
     Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName)
     Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer)
@@ -97,6 +96,7 @@ public:
         Reconnecting,
         Disconnecting
     };
+    Q_ENUM(ConnectionState)
 
     // see:
     //  http://www.irc.org/tech_docs/005.html
@@ -192,7 +192,7 @@ public:
      * @param prefix Prefix to be translated.
      */
     QString prefixToMode(const QString& prefix) const;
-    inline QString prefixToMode(const QCharRef& prefix) const { return prefixToMode(QString(prefix)); }
+    inline QString prefixToMode(const QChar& prefix) const { return prefixToMode(QString(prefix)); }
     inline QString prefixesToModes(const QString& prefix) const
     {
         QString modes;
@@ -209,7 +209,7 @@ public:
      * @param prefix Prefix to be translated.
      */
     QString modeToPrefix(const QString& mode) const;
-    inline QString modeToPrefix(const QCharRef& mode) const { return modeToPrefix(QString(mode)); }
+    inline QString modeToPrefix(const QChar& mode) const { return modeToPrefix(QString(mode)); }
     inline QString modesToPrefixes(const QString& mode) const
     {
         QString prefixes;
@@ -257,7 +257,7 @@ public:
     /**@}*/
 
     ChannelModeType channelModeType(const QString& mode);
-    inline ChannelModeType channelModeType(const QCharRef& mode) { return channelModeType(QString(mode)); }
+    inline ChannelModeType channelModeType(const QChar& mode) { return channelModeType(QString(mode)); }
 
     inline const QString& networkName() const { return _networkName; }
     inline const QString& currentServer() const { return _currentServer; }

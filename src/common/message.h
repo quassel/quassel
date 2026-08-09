@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -127,9 +127,9 @@ private:
 
 using MessageList = QList<Message>;
 
-QDataStream& operator<<(QDataStream& out, const Message& msg);
-QDataStream& operator>>(QDataStream& in, Message& msg);
-QDebug operator<<(QDebug dbg, const Message& msg);
+COMMON_EXPORT QDataStream& operator<<(QDataStream& out, const Message& msg);
+COMMON_EXPORT QDataStream& operator>>(QDataStream& in, Message& msg);
+COMMON_EXPORT QDebug operator<<(QDebug dbg, const Message& msg);
 
 Q_DECLARE_METATYPE(Message)
 Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Types)

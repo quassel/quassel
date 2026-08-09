@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -35,11 +35,7 @@ ExecWrapper::ExecWrapper(QObject* parent)
     connect(&_process, &QProcess::readyReadStandardOutput, this, &ExecWrapper::processReadStdout);
     connect(&_process, &QProcess::readyReadStandardError, this, &ExecWrapper::processReadStderr);
     connect(&_process, selectOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &ExecWrapper::processFinished);
-#if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
-    connect(&_process, selectOverload<QProcess::ProcessError>(&QProcess::error), this, &ExecWrapper::processError);
-#else
     connect(&_process, &QProcess::errorOccurred, this, &ExecWrapper::processError);
-#endif
 
     connect(this, &ExecWrapper::output, this, &ExecWrapper::postStdout);
     connect(this, &ExecWrapper::error, this, &ExecWrapper::postStderr);
@@ -60,7 +56,7 @@ void ExecWrapper::start(const BufferInfo& info, const QString& command)
     else {
         _scriptName = match.captured(1);
         static const QRegularExpression splitRx{"\\s+"};
-        params = match.captured(3).split(splitRx, QString::SkipEmptyParts);
+        params = match.captured(3).split(splitRx, Qt::SkipEmptyParts);
     }
 
     // Make sure we don't execute something outside a script dir
@@ -68,7 +64,7 @@ void ExecWrapper::start(const BufferInfo& info, const QString& command)
         emit error(tr(R"(Name "%1" is invalid: ../ or ..\ are not allowed!)").arg(_scriptName));
     }
     else if (!_scriptName.isEmpty()) {
-        foreach (QString scriptDir, Quassel::scriptDirPaths()) {
+        for (const QString& scriptDir : Quassel::scriptDirPaths()) {
             QString fileName = scriptDir + _scriptName;
             if (!QFile::exists(fileName))
                 continue;
@@ -102,10 +98,10 @@ void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status)
 
     // empty buffers
     if (!_stdoutBuffer.isEmpty())
-        foreach (QString msg, _stdoutBuffer.split('\n'))
+        for (const QString& msg : _stdoutBuffer.split('\n'))
             emit output(msg);
     if (!_stderrBuffer.isEmpty())
-        foreach (QString msg, _stderrBuffer.split('\n'))
+        for (const QString& msg : _stderrBuffer.split('\n'))
             emit error(msg);
 
     deleteLater();
@@ -125,7 +121,8 @@ void ExecWrapper::processError(QProcess::ProcessError err)
 void ExecWrapper::processReadStdout()
 {
     QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput());
-    str.replace(QRegExp("\r\n?"), "\n");
+    static const QRegularExpression newlineRx(QStringLiteral("\r\n?"));
+    str.replace(newlineRx, "\n");
     _stdoutBuffer.append(str);
     int idx;
     while ((idx = _stdoutBuffer.indexOf('\n')) >= 0) {
@@ -137,7 +134,8 @@ void ExecWrapper::processReadStdout()
 void ExecWrapper::processReadStderr()
 {
     QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError());
-    str.replace(QRegExp("\r\n?"), "\n");
+    static const QRegularExpression newlineRx(QStringLiteral("\r\n?"));
+    str.replace(newlineRx, "\n");
     _stderrBuffer.append(str);
     int idx;
     while ((idx = _stderrBuffer.indexOf('\n')) >= 0) {

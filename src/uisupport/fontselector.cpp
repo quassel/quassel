@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,7 +54,7 @@ void FontSelector::setSelectedFont(const QFont& font)
 void FontSelector::chooseFont()
 {
     bool ok;
-    QFont font = QFontDialog::getFont(&ok, _demo->font(), nullptr, QString(), QFontDialog::DontUseNativeDialog);
+    QFont font = QFontDialog::getFont(&ok, _font, nullptr, QString(), QFontDialog::DontUseNativeDialog);
     if (ok) {
         setSelectedFont(font);
     }

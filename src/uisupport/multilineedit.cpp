@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,6 +22,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QRegularExpression>
 #include <QScrollBar>
 
 #include "actioncollection.h"
@@ -199,7 +200,7 @@ void MultiLineEdit::updateSizeHint()
 #ifdef Q_OS_MAC
     widget = 0;
 #endif
-    QSize s = style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(100, h).expandedTo(QApplication::globalStrut()), widget);
+    QSize s = style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(100, h), widget);
     if (s != _sizeHint) {
         _sizeHint = s;
         updateGeometry();
@@ -289,7 +290,7 @@ bool MultiLineEdit::event(QEvent* e)
     if (e->type() == QEvent::ShortcutOverride) {
         auto* event = static_cast<QKeyEvent*>(e);
         QKeySequence key = QKeySequence(event->key() | event->modifiers());
-        foreach (QAction* action, GraphicalUi::actionCollection()->actions()) {
+        for (QAction* action : GraphicalUi::actionCollection()->actions()) {
             if (action->shortcuts().contains(key)) {
                 e->ignore();
                 return false;
@@ -606,13 +607,14 @@ bool MultiLineEdit::mircCodesChanged(QTextCursor& cursor, QTextCursor& peekcurso
 QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
 {
     QStringList words;
-    QRegExp mircCode = QRegExp("(\x02|\x1d|\x1f|\x03|\x1E)", Qt::CaseSensitive);
+    static const QRegularExpression mircCode(QStringLiteral("(\x02|\x1d|\x1f|\x03|\x1E)"));
 
     int posLeft = 0;
     int posRight = 0;
 
     for (;;) {
-        posRight = mircCode.indexIn(text, posLeft);
+        QRegularExpressionMatch match = mircCode.match(text, posLeft);
+        posRight = match.capturedStart(0);
 
         if (posRight < 0) {
             words << text.mid(posLeft);
@@ -624,7 +626,7 @@ QString MultiLineEdit::convertMircCodesToHtml(const QString& text)
             posLeft = posRight;
         }
 
-        posRight = text.indexOf(mircCode.cap(), posRight + 1);
+        posRight = text.indexOf(match.captured(0), posRight + 1);
         if (posRight == -1) {
             words << text.mid(posLeft);
             break;  // unclosed color code; can't process
@@ -698,7 +700,7 @@ void MultiLineEdit::on_returnPressed(QString text)
     }
 
     if (!text.isEmpty()) {
-        foreach (const QString& line, text.split('\n', QString::SkipEmptyParts)) {
+        for (const QString& line : text.split('\n', Qt::SkipEmptyParts)) {
             if (line.isEmpty())
                 continue;
             addToHistory(line);
@@ -723,7 +725,7 @@ void MultiLineEdit::on_textChanged()
         if (!pasteProtectionEnabled())
             newText.replace('\n', ' ');
         else if (newText.contains('\n')) {
-            QStringList lines = newText.split('\n', QString::SkipEmptyParts);
+            QStringList lines = newText.split('\n', Qt::SkipEmptyParts);
             clear();
 
             if (lines.count() >= 4) {
@@ -731,7 +733,7 @@ void MultiLineEdit::on_textChanged()
                 msg += "<p>";
                 for (int i = 0; i < 4; i++) {
                     msg += lines[i].left(40).toHtmlEscaped();
-                    if (lines[i].count() > 40)
+                    if (lines[i].size() > 40)
                         msg += "...";
                     msg += "<br />";
                 }
@@ -745,7 +747,7 @@ void MultiLineEdit::on_textChanged()
                     return;
             }
 
-            foreach (QString line, lines) {
+            for (const QString& line : lines) {
                 clear();
                 insert(line);
                 on_returnPressed();

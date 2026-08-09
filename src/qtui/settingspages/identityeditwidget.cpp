@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,6 +25,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QRegularExpression>
 #include <QStandardPaths>
 #include <QUrl>
 
@@ -128,7 +129,7 @@ IdentityEditWidget::IdentityEditWidget(QWidget* parent)
 
 void IdentityEditWidget::setWidgetStates()
 {
-    if (ui.nicknameList->selectedItems().count()) {
+    if (!ui.nicknameList->selectedItems().isEmpty()) {
         ui.renameNick->setEnabled(true);
         ui.nickUp->setEnabled(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]) > 0);
         ui.nickDown->setEnabled(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]) < ui.nicknameList->count() - 1);
@@ -176,7 +177,7 @@ void IdentityEditWidget::displayIdentity(CertIdentity* id, CertIdentity* saveId)
 
 void IdentityEditWidget::saveToIdentity(CertIdentity* id)
 {
-    QRegExp linebreaks = QRegExp("[\\r\\n]");
+    static const QRegularExpression linebreaks(QStringLiteral("[\\r\\n]"));
     id->setRealName(ui.realName->text());
     QStringList nicks;
     for (int i = 0; i < ui.nicknameList->count(); i++) {
@@ -220,7 +221,7 @@ void IdentityEditWidget::on_addNick_clicked()
 void IdentityEditWidget::on_deleteNick_clicked()
 {
     // no confirmation, since a nickname is really nothing hard to recreate
-    if (ui.nicknameList->selectedItems().count()) {
+    if (!ui.nicknameList->selectedItems().isEmpty()) {
         delete ui.nicknameList->takeItem(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]));
         ui.nicknameList->setCurrentRow(qMin(ui.nicknameList->currentRow() + 1, ui.nicknameList->count() - 1));
         setWidgetStates();
@@ -230,7 +231,7 @@ void IdentityEditWidget::on_deleteNick_clicked()
 
 void IdentityEditWidget::on_renameNick_clicked()
 {
-    if (!ui.nicknameList->selectedItems().count())
+    if (ui.nicknameList->selectedItems().isEmpty())
         return;
     QString old = ui.nicknameList->selectedItems()[0]->text();
     QStringList existing;
@@ -244,7 +245,7 @@ void IdentityEditWidget::on_renameNick_clicked()
 
 void IdentityEditWidget::on_nickUp_clicked()
 {
-    if (!ui.nicknameList->selectedItems().count())
+    if (ui.nicknameList->selectedItems().isEmpty())
         return;
     int row = ui.nicknameList->row(ui.nicknameList->selectedItems()[0]);
     if (row > 0) {
@@ -257,7 +258,7 @@ void IdentityEditWidget::on_nickUp_clicked()
 
 void IdentityEditWidget::on_nickDown_clicked()
 {
-    if (!ui.nicknameList->selectedItems().count())
+    if (ui.nicknameList->selectedItems().isEmpty())
         return;
     int row = ui.nicknameList->row(ui.nicknameList->selectedItems()[0]);
     if (row < ui.nicknameList->count() - 1) {
@@ -363,7 +364,8 @@ QSslKey IdentityEditWidget::keyByFilename(const QString& filename)
     QSslKey key;
 
     QFile keyFile(filename);
-    keyFile.open(QIODevice::ReadOnly);
+    if (!keyFile.open(QIODevice::ReadOnly))
+        return key;
     QByteArray keyRaw = keyFile.read(2 << 20);
     keyFile.close();
 
@@ -431,7 +433,8 @@ QSslCertificate IdentityEditWidget::certByFilename(const QString& filename)
 {
     QSslCertificate cert;
     QFile certFile(filename);
-    certFile.open(QIODevice::ReadOnly);
+    if (!certFile.open(QIODevice::ReadOnly))
+        return cert;
     QByteArray certRaw = certFile.read(2 << 20);
     certFile.close();
 

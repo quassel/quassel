@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,8 +28,8 @@ DccConfig::DccConfig(QObject* parent)
     : SyncableObject("DccConfig", parent)
 {
     static auto regTypes = []() -> bool {
-        qRegisterMetaTypeStreamOperators<IpDetectionMode>("DccConfig::IpDetectionMode");
-        qRegisterMetaTypeStreamOperators<PortSelectionMode>("DccConfig::PortSelectionMode");
+        qRegisterMetaType<IpDetectionMode>("DccConfig::IpDetectionMode");
+        qRegisterMetaType<PortSelectionMode>("DccConfig::PortSelectionMode");
         return true;
     }();
     Q_UNUSED(regTypes);

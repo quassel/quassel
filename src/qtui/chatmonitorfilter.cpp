@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -54,7 +54,7 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel* model, QObject* parent)
     _showHighlights = viewSettings.value(showHighlightsSettingsId, false).toBool();
     _operationMode = viewSettings.value(operationModeSettingsId, ChatViewSettings::InvalidMode).toInt();
     // read configured list of buffers to monitor/ignore
-    foreach (QVariant v, viewSettings.value(buffersSettingsId, QVariant()).toList())
+    for (const QVariant& v : viewSettings.value(buffersSettingsId, QVariant()).toList())
         _bufferIds << v.value<BufferId>();
     _showBacklog = viewSettings.value(showBacklogSettingsId, true).toBool();
     _includeRead = viewSettings.value(includeReadSettingsId, false).toBool();
@@ -207,7 +207,7 @@ void ChatMonitorFilter::operationModeSettingChanged(const QVariant& newValue)
 void ChatMonitorFilter::buffersSettingChanged(const QVariant& newValue)
 {
     _bufferIds.clear();
-    foreach (QVariant v, newValue.toList()) {
+    for (const QVariant& v : newValue.toList()) {
         _bufferIds << v.value<BufferId>();
     }
     invalidateFilter();

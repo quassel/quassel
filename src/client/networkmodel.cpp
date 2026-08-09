@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -837,7 +837,7 @@ void ChannelBufferItem::addUsersToCategory(const QList<IrcUser*>& ircUsers)
     int categoryId = -1;
     UserCategoryItem* categoryItem = nullptr;
 
-    foreach (IrcUser* ircUser, ircUsers) {
+    for (IrcUser* ircUser : ircUsers) {
         categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
         categoryItem = findCategoryItem(categoryId);
         if (!categoryItem) {
@@ -982,7 +982,7 @@ IrcUserItem* UserCategoryItem::findIrcUser(IrcUser* ircUser)
 void UserCategoryItem::addUsers(const QList<IrcUser*>& ircUsers)
 {
     QList<AbstractTreeItem*> userItems;
-    foreach (IrcUser* ircUser, ircUsers)
+    for (IrcUser* ircUser : ircUsers)
         userItems << new IrcUserItem(ircUser, this);
     newChilds(userItems);
     emit dataChanged(0);
@@ -1321,7 +1321,7 @@ QList<QPair<NetworkId, BufferId>> NetworkModel::mimeDataToBufferList(const QMime
     QStringList rawBufferList = QString::fromLatin1(mimeData->data("application/Quassel/BufferItemList")).split(",");
     NetworkId networkId;
     BufferId bufferUid;
-    foreach (QString rawBuffer, rawBufferList) {
+    for (const QString& rawBuffer : rawBufferList) {
         if (!rawBuffer.contains(":"))
             continue;
         networkId = rawBuffer.section(":", 0, 0).toInt();
@@ -1337,7 +1337,7 @@ QMimeData* NetworkModel::mimeData(const QModelIndexList& indexes) const
 
     QStringList bufferlist;
     QString netid, uid, bufferid;
-    foreach (QModelIndex index, indexes) {
+    for (const QModelIndex& index : indexes) {
         netid = QString::number(index.data(NetworkIdRole).value<NetworkId>().toInt());
         uid = QString::number(index.data(BufferIdRole).value<BufferId>().toInt());
         bufferid = QString("%1:%2").arg(netid).arg(uid);
@@ -1601,7 +1601,7 @@ BufferId NetworkModel::bufferId(NetworkId networkId, const QString& bufferName, 
 void NetworkModel::sortBufferIds(QList<BufferId>& bufferIds) const
 {
     QList<BufferItem*> bufferItems;
-    foreach (BufferId bufferId, bufferIds) {
+    for (BufferId bufferId : bufferIds) {
         if (_bufferItemCache.contains(bufferId))
             bufferItems << _bufferItemCache[bufferId];
     }
@@ -1609,7 +1609,7 @@ void NetworkModel::sortBufferIds(QList<BufferId>& bufferIds) const
     std::sort(bufferItems.begin(), bufferItems.end(), bufferItemLessThan);
 
     bufferIds.clear();
-    foreach (BufferItem* bufferItem, bufferItems) {
+    for (BufferItem* bufferItem : bufferItems) {
         bufferIds << bufferItem->bufferId();
     }
 }

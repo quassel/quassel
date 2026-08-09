@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2022 by the Quassel Project                        *
+ *   Copyright (C) 2005-2026 by the Quassel Project                        *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +21,8 @@
 #include "storage.h"
 
 #include <random>
+
+#include <QRegularExpression>
 
 #include <QCryptographicHash>
 
@@ -47,7 +49,7 @@ bool Storage::checkHashedPassword(const UserId user, const QString& password, co
         break;
 
     default:
-        qWarning() << "Password hash version" << QString(version) << "is not supported, please reset password";
+        qWarning() << "Password hash version" << static_cast<int>(version) << "is not supported, please reset password";
     }
 
     if (passwordCorrect && version < Storage::HashVersion::Latest) {
@@ -86,7 +88,7 @@ QString Storage::hashPasswordSha2_512(const QString& password)
 
 bool Storage::checkHashedPasswordSha2_512(const QString& password, const QString& hashedPassword)
 {
-    QRegExp colonSplitter("\\:");
+    static const QRegularExpression colonSplitter(QStringLiteral(":"));
     QStringList hashedPasswordAndSalt = hashedPassword.split(colonSplitter);
 
     if (hashedPasswordAndSalt.size() == 2) {
