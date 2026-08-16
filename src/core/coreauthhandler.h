@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <QTimer>
+
 #include "authhandler.h"
 #include "metricsserver.h"
 #include "peerfactory.h"
@@ -57,6 +59,8 @@ private slots:
 
     void onSslErrors();
 
+    void onHandshakeTimeout();
+
     // only in legacy mode
     void onProtocolVersionMismatch(int actual, int expected);
 
@@ -72,4 +76,5 @@ private:
     bool _clientRegistered;
     quint8 _connectionFeatures;
     QVector<PeerFactory::ProtoDescriptor> _supportedProtos;
+    QTimer _handshakeTimer;
 };
