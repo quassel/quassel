@@ -22,6 +22,34 @@
 
 namespace {
 
+// A QVariant can contain another QVariant, list, or map. Keep the limit per
+// thread because peers are deserialized concurrently.
+constexpr int maxVariantDepth = 64;
+thread_local int variantDepth = 0;
+
+class VariantDepthGuard
+{
+public:
+    VariantDepthGuard()
+    {
+        if (variantDepth < maxVariantDepth) {
+            ++variantDepth;
+            _entered = true;
+        }
+    }
+
+    ~VariantDepthGuard()
+    {
+        if (_entered)
+            --variantDepth;
+    }
+
+    bool entered() const { return _entered; }
+
+private:
+    bool _entered{false};
+};
+
 template<typename T>
 bool toVariant(QDataStream& stream, Quassel::Features features, QVariant& data)
 {
@@ -86,6 +114,12 @@ bool Serializers::deserialize(QDataStream& stream, const Quassel::Features& feat
 
 bool Serializers::deserialize(QDataStream& stream, const Quassel::Features& features, QVariant& data)
 {
+    VariantDepthGuard depthGuard;
+    if (!depthGuard.entered()) {
+        qWarning() << "Peer sent too deeply nested QVariant data";
+        return false;
+    }
+
     Types::VariantType type;
     int8_t isNull;
     if (!deserialize(stream, features, type))
