@@ -26,6 +26,10 @@
 
 #include "core.h"
 
+namespace {
+constexpr int handshakeTimeout = 30 * 1000;
+}
+
 CoreAuthHandler::CoreAuthHandler(QSslSocket* socket, QObject* parent)
     : AuthHandler(parent)
     , _peer(nullptr)
@@ -37,11 +41,16 @@ CoreAuthHandler::CoreAuthHandler(QSslSocket* socket, QObject* parent)
     , _legacy(false)
     , _clientRegistered(false)
     , _connectionFeatures(0)
+    , _handshakeTimer(this)
 {
     setSocket(socket);
     connect(socket, &QIODevice::readyRead, this, &CoreAuthHandler::onReadyRead);
 
-    // TODO: Timeout for the handshake phase
+    // Use a total deadline so a client cannot keep the connection alive by
+    // sending occasional partial handshake data.
+    _handshakeTimer.setSingleShot(true);
+    connect(&_handshakeTimer, &QTimer::timeout, this, &CoreAuthHandler::onHandshakeTimeout);
+    _handshakeTimer.start(handshakeTimeout);
 }
 
 void CoreAuthHandler::onReadyRead()
@@ -309,6 +318,7 @@ void CoreAuthHandler::handle(const Protocol::Login& msg)
     _peer->setParent(nullptr);  // Core needs to take care of this one now!
 
     socket()->flush();  // Make sure all data is sent before handing over the peer (and socket) to the session thread (bug 682)
+    _handshakeTimer.stop();
     emit handshakeComplete(_peer, uid);
 }
 
@@ -328,6 +338,13 @@ bool CoreAuthHandler::isLocal() const
 {
     return hostAddress() == QHostAddress::LocalHost ||
            hostAddress() == QHostAddress::LocalHostIPv6;
+}
+
+void CoreAuthHandler::onHandshakeTimeout()
+{
+    qWarning() << qPrintable(tr("Client")) << qPrintable(hostAddress().toString())
+               << qPrintable(tr("did not complete the handshake in time, disconnecting."));
+    close();
 }
 
 /*** SSL Stuff ***/
